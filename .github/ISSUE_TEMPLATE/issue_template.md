@@ -18,7 +18,7 @@ Example: Many users work late and find the bright interface uncomfortable.  .
 
 ---
 
-## 📄 Description  
+## "📋 Proposed Solution  
 <!-- Detailed explanation of what needs to be done. Include requirements if possible. -->  
 - Add a toggle in the settings menu.  
 - Store preference locally and persist across sessions.  
