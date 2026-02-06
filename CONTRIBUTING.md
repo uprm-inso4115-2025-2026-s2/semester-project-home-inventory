@@ -14,24 +14,27 @@
 ---
 
 ## 🎯 Overview
-This guide outlines the complete workflow for contributing to the Home Inventory project. All team members must follow these processes to ensure smooth collaboration and high-quality deliverables.
+This guide outlines the complete workflow for contributing to the Home Inventory project. We follow **Agile development principles** with feature-based teams working in parallel. All team members must follow these processes to ensure smooth collaboration and high-quality deliverables.
 
 ---
 
 ## 🔄 Workflow Summary
 
 ```
-1. Create Issue → 2. Create Branch → 3. Work → 4. Commit → 5. Create PR → 6. Team Lead Review → 7. Manager Review
+1. Create Issue → 2. Create Branch → 3. Work → 4. Commit → 5. PR to Team Branch → 6. Resolve Conflicts → 7. Team Lead Approval → 8. PR to Main → 9. Manager Approval → 10. Merge to Main
 ```
 
 **Step-by-Step:**
-1. **Create Issue** - Use template, tag manager, add labels
-2. **Create Branch** - From issue page, branch from team's sub-branch
+1. **Create Issue** - Use template, tag managers (@LuisJCruz or @Kay9876), add labels
+2. **Work on Branch** - From issue page, work from your team's branch
 3. **Work** - Code + AsciiDoc documentation
 4. **Commit** - Include issue number in message
-5. **Create PR** - Target team's sub-branch, use template
-6. **Team Lead Review** - Merge to team branch
-7. **Manager Review** - Merge to main, close issue
+5. **PR to Team Branch** - Create pull request targeting your team's branch
+6. **Resolve Conflicts** - You resolve your own merge conflicts with team branch
+7. **Team Lead Approval** - Team lead reviews and approves your PR to team branch
+8. **PR to Main** - Team lead creates PR from team branch to main
+9. **Manager Approval** - Manager (@LuisJCruz or @Kay9876) reviews and approves
+10. **Merge to Main** - Manager merges the approved PR to main
 
 ---
 
@@ -65,24 +68,26 @@ This guide outlines the complete workflow for contributing to the Home Inventory
 
 ### Starting Work
 1. **Navigate to the approved issue**
-2. **Click "Create a branch"** on the right side of the issue page
-   - This automatically links your branch to the issue
-2. **Branch from your team's sub-branch**:
-   - Documentation Team: `documentation/issue-XX`
-   - Research Team: `research/issue-XX`
-   - Design Team: `design/issue-XX`
-   - Tech Stack Team: `tech-stack/issue-XX`
-4. **Pull the branch to your local machine or use VSCode linked feature**
+2. **Pull the latest version of your team's branch**
    ```powershell
-   git fetch origin
-   git checkout <branch-name>
+   git checkout <team-branch>
+   git pull origin <team-branch>
    ```
+   Examples:
+   - Documentation Team: `git checkout documentation`
+   - Design Team: `git checkout design`
+   - Feature Teams: `git checkout feature-team-1`
+
+3. **Work directly on your team's branch**
+   - All developers on the same team work on the same branch
+   - Make changes and commit with issue number linked
 
 ### During Development
 - Write code following the `STYLE_GUIDE.md`
-- Update AsciiDoc files in `/docs` folder
+- **Document your work in AsciiDoc** format in `/docs` folder
 - Test your changes thoroughly
 - Keep commits small and focused
+- **Always link commits to your issue** in commit messages
 
 ---
 
@@ -90,34 +95,27 @@ This guide outlines the complete workflow for contributing to the Home Inventory
 
 ### Branch Structure
 ```
-main (protected - manager only)
+main (protected)
 ├── documentation/
-│   ├── documentation/issue-42
-│   └── documentation/domain-sketch
-├── research/
-│   ├── research/issue-28
-│   └── research/api-evaluation
 ├── design/
-│   ├── design/issue-89
-│   └── design/ui-mockups
-└── tech-stack/
-    ├── tech-stack/issue-15
-    └── tech-stack/database-evaluation
+├── feature-team-1/
+├── feature-team-2/
+└── feature-team-3/
 ```
 
-### Branch Naming Convention
-**Format:** `<team>/<issue-number>` or `<team>/<descriptive-name>`
+**How it works:**
+- Each team has ONE shared branch
+- All team members work directly on their team's branch
+- Developers commit to team branch and create PRs for team lead review
+- Team leads approve PRs to merge commits into team branch
+- Team leads create PRs from team branch → main for manager approval
 
-**Examples:**
-- `documentation/issue-42`
-- `research/api-evaluation`
-- `design/notification-ui`
-- `tech-stack/database-schema`
+### Team Branches
+- **documentation** - Documentation Team's shared branch
+- **design** - Design Team's shared branch  
+- **feature-team-X** - Feature teams' shared branches (names TBD)
 
-**Rules:**
-- Always branch from your team's sub-branch
-- Use lowercase and hyphens
-- Include issue number when possible
+**Note:** No individual developer branches - everyone works on their team's branch directly.le
 - Keep names short and descriptive
 
 ---
@@ -163,15 +161,6 @@ Added 3 new user stories for notification preferences.
 Fixes #55
 ```
 
-```
-research(api): evaluate ZXing barcode library (#28)
-
-Completed evaluation of ZXing for barcode scanning capabilities.
-Results documented in /docs/research/barcode-apis.adoc
-
-Fixes #28
-```
-
 ### Commit Best Practices
 - Make atomic commits (one logical change per commit)
 - Commit frequently
@@ -192,8 +181,8 @@ Fixes #28
 2. **Create PR from GitHub**
    - Go to your repository on GitHub
    - Click "Compare & pull request"
-   - **IMPORTANT:** Set base branch to your team's sub-branch (NOT main)
-     - Example: `documentation/issue-42` → `documentation`
+   - **IMPORTANT:** Set base branch to `main` (NOT your team's branch)
+     - Example: `feature-team-1/issue-42` → `main`
 
 3. **Fill out the PR template**
    - [ ] Link to issue: `Closes #XX`
@@ -203,41 +192,45 @@ Fixes #28
      - [ ] Code follows project style guidelines
      - [ ] Self-review completed
      - [ ] Documentation updated (if applicable)
-     - [ ] Branch is up to date with base branch
+     - [ ] Branch is up to date with main branch
    - [ ] Add testing information (if applicable)
    - [ ] Add screenshots/videos (if applicable)
 
-4. **Tag your team lead** for review
+4. **Request review** from team lead or peers
 
-### PR Requirements
-- All checklist items must be completed
-- Feature implementation complete (if applicable)
-- AsciiDoc documentation updated
-- No merge conflicts
-- Descriptive title and description
-- Link to relevant rubrics/requirements
+### Handling Merge Conflicts
 
----
+**YOU are responsible for resolving your own merge conflicts.**
 
+1. **Pull latest changes from main**
+   ```powershell
 ## 👁️ Code Review
 
-### For Team Members (PR Authors)
+### For Developers (PR Authors)
 **Before Requesting Review:**
 - [ ] Self-review your changes
 - [ ] Run any available tests
 - [ ] Check for console errors
-- [ ] Verify documentation is complete
+- [ ] **AsciiDoc documentation created/updated for your work**
 - [ ] Ensure code follows style guide
+- [ ] **Resolve all merge conflicts with your team branch**
+- [ ] **Issue number linked in commit and PR**
 
 **During Review:**
 - Respond to feedback promptly
 - Be open to suggestions
 - Ask questions if feedback is unclear
 - Make requested changes in new commits
+- **Resolve any new conflicts that arise with team branch**
 - Request re-review after changes
 
+**After Team Lead Approval:**
+- Team lead merges your commit to team branch
+- All team members pull latest team branch to stay updated
+- Team lead handles PR from team branch to main
+
 ### For Team Leads
-**Review Responsibilities:**
+**Review Responsibilities for Team Branch PRs:**
 1. **Code Quality**
    - [ ] Follows Google style guidelines
    - [ ] Logic is correct and efficient
@@ -245,9 +238,9 @@ Fixes #28
    - [ ] No security vulnerabilities
 
 2. **Documentation**
-   - [ ] AsciiDoc files updated in `/docs`
+   - [ ] **AsciiDoc documentation created/updated**
    - [ ] Code comments are clear
-   - [ ] Changes align with rubric requirements
+   - [ ] Changes align with feature requirements
 
 3. **Testing**
    - [ ] Tests pass (if applicable)
@@ -256,10 +249,42 @@ Fixes #28
 4. **Process**
    - [ ] PR template completed
    - [ ] Issue is properly linked
-   - [ ] No merge conflicts
+   - [ ] **No merge conflicts present with team branch**
 
 **After Approval:**
-1. Merge PR to team's sub-branch
+1. Merge developer's commit to your team branch
+2. Ensure team branch is up to date
+3. When ready, create a new PR from your team branch → main
+4. Tag managers (@LuisJCruz or @Kay9876) for review
+5. Wait for manager approval
+6. Manager will merge to main
+
+### For Managers (@LuisJCruz, @Kay9876)
+**Review Responsibilities for Main PRs:**
+- [ ] Verify team lead approval and review
+- [ ] Check overall project alignment
+- [ ] Confirm milestone requirements met
+- [ ] Ensure no conflicts with main branch
+- [ ] Verify feature completeness
+- [ ] Check that documentation content was provided
+
+**After Approval:**
+1. Approve the PR
+2. Merge team branch to main
+3. Close related issue (if fully complete)
+4. Update project board
+
+### Review Guidelines
+- **Be respectful and constructive**
+- **Explain reasoning** behind suggestions
+- **Focus on logic**, not personal preferences
+- **Approve when code meets standards**
+- **Use GitHub's review features** (comment, request changes, approve)
+- **Managers do not merge their own PRs** - Wait for the other manager
+- **Focus on logic**, not personal preferences
+- **Approve when code meets standards**
+- **Use GitHub's review features** (comment, request changes, approve)
+- **Do not merge** - Let the author merge their own PR
 2. Delete the feature branch
 3. Create new PR from team branch → `main`
 4. Tag manager for final review
@@ -271,37 +296,45 @@ Fixes #28
 - [ ] Confirm milestone requirements met
 - [ ] Ensure no conflicts with other teams' work
 - [ ] Verify documentation completeness
-
-**After Approval:**
-1. Merge to `main` (protected branch)
-2. Delete team's feature branch
-3. Close related issue
-4. Update project board
-
-### Review Guidelines
-- **Be respectful and constructive**
-- **Explain reasoning** behind suggestions
-- **Focus on logic**, not personal preferences
-- **Approve when code meets standards**
-- **Use GitHub's review features** (comment, request changes, approve)
-
----
-
 ## 📚 Documentation Requirements
 
 ### AsciiDoc Standards
 - **Format:** All documentation in AsciiDoc (`.adoc`)
 - **Location:** `/docs` folder
-- **Structure:**
-  - Informative: Current situation and needs analysis
-  - Descriptive: Domain sketch and system overview
+- **Managed by:** Documentation Team
+
+### Documentation Team Responsibilities
+- Set up and maintain AsciiDoc environment
+- Follow project documentation rubric
+- Integrate documentation content from all teams
+- Manage documentation automation workflow
+- Ensure all teams have access to updated documentation
+
+### For Feature Teams
+When working on features, provide documentation content to the Documentation Team:
+- Feature descriptions and requirements
+- Implementation details
+- Usage instructions
+- Any necessary diagrams or visuals
+
+### When to Provide Documentation
+Provide documentation content when:
+- Creating new features
+- Changing existing functionality
+- Updating user workflows
+- Making design decisions
+
+### Documentation Workflow
+1. **Feature teams create content** - Write documentation in Markdown or text
+2. **Submit to Documentation Team** - Through issue or PR description
+3. **Documentation Team integrates** - Converts to AsciiDoc and integrates into structure
+4. **Automated updates** - Documentation Team manages automation for distributionsystem overview
   - Analytic: Concept analysis and technical details
 
 ### When to Update Documentation
 Update `/docs` files when making changes that affect:
 - Requirements or user stories
 - System architecture
-- APIs or interfaces
 - User workflows
 - Design decisions
 

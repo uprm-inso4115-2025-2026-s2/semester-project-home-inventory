@@ -104,50 +104,45 @@ Design a user-friendly digital system that helps students living independently t
 
 ## 👥 Team Structure
 
-### Organization
-The project is divided into four specialized teams for the first milestone, each with around 5 developers and a team lead.
+### Agile Feature-Based Organization
+The project follows **Agile development principles** with feature-based teams. Each team works independently on a specific feature, allowing parallel development without dependencies.
 
-#### 📚 Team: Documentation
-**Responsibilities:**
-- Set up AsciiDoc structure in `/docs` folder
-- Implement informative parts (current situation, needs, ideas)
-- Create descriptive parts (domain description, rough sketch/narrative/terminology)
-- Develop analytic parts (concept analysis)
-- Use project rubrics/structure as guidance
-- Ensure traceability by linking to domain/requirements
-- Start with A3 integration (problem background, countermeasures)
-- Create issues for tasks like "Draft Domain Rough Sketch" or "Set Up AsciiDoc Templates"
+#### Team Formation
+Teams are organized around key features identified during sprint planning. Each feature team is responsible for:
+- **Full feature ownership** - From research to implementation
+- **Independent development** - Work in parallel without blocking other teams
+- **End-to-end delivery** - Research, design, implementation, testing, and documentation
 
-#### 🔬 Team: Research
-**Responsibilities:**
-- Handle domain and requirements acquisition
-- Conduct interviews and literature reviews
-- Research student inventory challenges (per A3)
-- Evaluate Research APIs for shelf life/expiration dates
-- Research item scanning tools (barcodes)
-- Explore domain-related tools (e.g., for household notifications)
-- Document findings in AsciiDoc
-- Create issues like "Research Expiration APIs" or "Interview Potential Users for Domain Needs"
+#### Current Teams
 
-#### 🎨 Team: Design
-**Responsibilities:**
-- Create UX sketches and app design (wireframes, user flows)
-- Focus on features from A3 (inventory by room/category, notifications, filters)
-- Use tools like Figma or sketches in docs
-- Include personas and validation scenarios
-- Design notification flow and inventory dashboard UI
-- Create issues like "Sketch Inventory Dashboard UI" or "Design Notification Flow"
+**📚 Documentation Team**
+- Set up AsciiDoc documentation environment and structure
+- Follow project documentation rubric
+- Integrate contributions from all feature teams
+- Manage documentation automation workflow
+- Ensure all teams have access to updated documentation
+- Maintain `/docs` folder structure
 
-#### 🔴 Team: Tech Stack
-**Responsibilities:**
-- Decide on tech decisions for front-end (e.g., React for UI/scanning)
-- Choose back-end technologies (e.g., Node.js for APIs)
-- Select database solutions (e.g., MongoDB for items/categories)
-- Plan notifications system (e.g., Firebase)
-- Align with A3 features (automated reminders, reports)
-- Research API integration from Research Team
-- Document in AsciiDoc (machine requirements)
-- Create issues like "Evaluate Front-End Frameworks" or "Prototype Database Schema"
+**🎨 Design Team**
+- Work across all features to create UI/UX designs
+- Create wireframes and user flows
+- Design consistent visual language
+- Provide design assets to feature teams
+
+**Feature Teams** (TBD):
+- Feature teams will be announced once features are finalized during brainstorming
+- Each team will have 4-5 developers + 1 team lead
+- Teams will research and implement their assigned feature
+- *(Specific features and implementation approaches still being determined)*
+
+#### Team Responsibilities
+Each feature team will:
+1. **Research** - Investigate libraries, tools, and implementation approaches for their feature
+2. **Design Collaboration** - Work with Design Team on feature-specific UI/UX
+3. **Implementation** - Build the feature end-to-end
+4. **Documentation** - Provide documentation content to Documentation Team
+5. **Testing** - Ensure feature works correctly
+6. **Integration** - Handle merge conflicts and integrate with team branch
 
 ---
 
@@ -205,10 +200,20 @@ All project documentation is written in **AsciiDoc** format and stored in the `/
 ```
 main (protected)
 ├── documentation/
-├── research/
 ├── design/
-└── tech-stack/
+├── feature-team-1/
+├── feature-team-2/
+└── feature-team-3/
 ```
+
+**How it works:**
+- Each team has one shared branch
+- All developers work directly on their team's branch
+- Developers commit and create PRs for team lead review
+- Team leads merge commits to team branch
+- Team leads PR team branch → main for manager approval
+
+**Workflow:** Developer commit → Team branch → Team Lead review → Team branch merge → Team Lead PR to Main → Manager approval → Main
 
 ---
 
@@ -241,9 +246,6 @@ We welcome contributions from all team members! Please follow these guidelines:
 - **Project Management:** GitHub Issues, Projects, Discussions
 - **Documentation:** AsciiDoc
 
-### Tech Stack
-*To be determined by Design/Tech Stack Team*
-
 ---
 
 ## 📞 Contact
@@ -251,9 +253,9 @@ We welcome contributions from all team members! Please follow these guidelines:
 **Project Manager:** @LuisJCruz, @Kay9876  
 **Team Leads:**
 - Documentation Lead: TBD
-- Research Lead: TBD
 - Design Lead: TBD
-- Tech Stack Lead: TBD
+- Feature Team Leads: TBD (announced after team formation)
+- Feature Team Leads: TBD (announced after team formation)
 
 ---
 

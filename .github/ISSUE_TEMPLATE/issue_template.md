@@ -35,12 +35,12 @@ Example: Many users work late and find the bright interface uncomfortable.  .
 ---
 
 ## 🚦 Urgency & Difficulty  
-**Urgency:** (1 – Low | 10 – Critical)  
-**Difficulty:** (1 – Easy | 10 – Complex)  
+**Urgency:** (1 – Low | 5 – Critical)  
+**Difficulty:** (1 – Easy | 5 – Complex)  
 
 Example:  
-- Urgency: 7 – Important for ensuring inclusivity.  
-- Difficulty: 8 – Requires automated + manual assistive testing.  
+- Urgency: 4 – Important for ensuring inclusivity.  
+- Difficulty: 3 – Requires some research and testing.  
 
 ---
 
