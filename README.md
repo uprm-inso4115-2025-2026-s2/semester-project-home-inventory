@@ -115,25 +115,95 @@ Teams are organized around key features identified during sprint planning. Each 
 
 #### Current Teams
 
-**📚 Documentation Team**
-- Set up AsciiDoc documentation environment and structure
-- Follow project documentation rubric
-- Integrate contributions from all feature teams
-- Manage documentation automation workflow
-- Ensure all teams have access to updated documentation
-- Maintain `/docs` folder structure
+**📚 Documentation Team (2 Team Leads)**
+- **Team Lead:** Alondra S. Arce Perea (@alondra-arce)
+- **Available:** 1 spot remaining
 
-**🎨 Design Team**
-- Work across all features to create UI/UX designs
-- Create wireframes and user flows
-- Design consistent visual language
-- Provide design assets to feature teams
+**Responsibilities:**
+- Organize and compile all documentation from feature teams and Design Team
+- Set up and maintain AsciiDoc structure and automation workflow
+- Ensure documentation follows course rubrics
+- Integrate contributions, review for quality, and prepare final Milestone documents
 
-**Feature Teams** (TBD):
-- Feature teams will be announced once features are finalized during brainstorming
-- Each team will have 4-5 developers + 1 team lead
-- Teams will research and implement their assigned feature
-- *(Specific features and implementation approaches still being determined)*
+---
+
+**🎨 Design Team (Cross-functional)**
+- **Team Lead:** Adriana Figueroa (@AdrianaFigueroa9)
+- **Members:** 2 designers from each feature team (8 total)
+
+**Design Representatives:**
+- **Team 1 (Core Inventory):** Devlin Hahn (@devlin-hahn04), Jorge De León (@JorgeDeLeonOrama)
+- **Team 2 (Alerts & Restock):** Ronaldo Flores Nazario (@ronaldoflores9), Eliel Hernandez Gonzalez (@eliel-hernandez)
+- **Team 3 (Sharing & Budget):** Daniella Melero (@daniellameleroo), Natalia S Vera Rivera (@nataliavera6)
+- **Team 4 (Reports & Insights):** Ian Rivera (@Programian), Jayden Sánchez (@jaydensanchez12)
+
+**Responsibilities:**
+- Create consistent UI/UX design system (colors, components, style guide)
+- Design all screens and user flows in Figma
+- Work closely with feature teams through design representatives
+
+---
+
+### Feature Teams
+
+#### 🔧 Team 1: Core Inventory (7 members)
+**Team Lead:** Kevin Gómez (@kevgom018)
+
+**Features:**
+- Core Item Database & Representation
+- Item Addition / Pantry Upload
+- Inventory View & Filtering
+
+**Members:**
+- 🎨 **Designers:** Devlin Hahn (@devlin-hahn04), Jorge De León (@JorgeDeLeonOrama)
+- 📌 **Researchers:** Januel E. Torres Marquez (@jankii03), Kian-Robert Ramos Vega (@kian-robert), Jorge Rivera (@JorgeRivera94), Lucas Matos Datiz (@L-A-M-D)
+
+---
+
+#### 🔔 Team 2: Alerts & Restock (7 members)
+**Team Lead:** Solimar Cruz Hernandez (@Solimar-Cruz)
+
+**Features:**
+- Notifications & Low-Stock/Expiration Alerts
+- Auto-Generated Grocery List / Restock Planner
+
+**Members:**
+- 🎨 **Designers:** Ronaldo Flores Nazario (@ronaldoflores9), Eliel Hernandez Gonzalez (@eliel-hernandez)
+- 📌 **Researchers:** Kemuel Cubero Rosario (@Kemuel05), Kevin Lara Rodríguez (@kevinlara1), Aryam Z Diaz Torres (@aryamdiaz), Reinaldo J. Martinez Morales (@reinaldo-martinez1)
+
+---
+
+#### 💰 Team 3: Sharing & Budget (7 members)
+**Team Lead:** Andrea Segarra (@andreasegarra)
+
+**Features:**
+- Spending Tracker & Budgeting
+- Roommate Sharing & Duplicate Prevention
+
+**Members:**
+- 🎨 **Designers:** Daniella Melero (@daniellameleroo), Natalia S Vera Rivera (@nataliavera6)
+- 📌 **Researchers:** Fabiola Torres (@FabiolaZTorres), Fernando Castro (@fernan-castro), Yamilette Alemany (@yamilette-alemany), Ernesto S. Soto Rivera (@ernestosoto3)
+
+---
+
+#### 📊 Team 4: Reports & Insights (5 members + 2 spots available)
+**Team Lead:** Fabian Velez (@FabianVelezOcasio)
+
+**Features:**
+- Reports Generator
+- Basic Home/Dashboard Screen
+
+**Members:**
+- 🎨 **Designers:** Ian Rivera (@Programian), Jayden Sánchez (@jaydensanchez12)
+- 📌 **Researchers:** Nicolás Rivera Batista (@nicolasrivera2003), Samarys Barreiro Melendez (@SamarysB)
+- **Available:** 2 spots
+
+**Tasks:**
+- Build reports screen in Flutter (inventory summaries, spending reports, usage rates)
+- Query Supabase efficiently for reports
+- Design and implement main Home/Dashboard screen
+- Create sample report layouts and data visualization (Flutter charts)
+- Light onboarding/welcome screen if time allows
 
 #### Team Responsibilities
 Each feature team will:
@@ -147,6 +217,15 @@ Each feature team will:
 ---
 
 ## 📅 Milestones
+
+### Project Timeline
+
+**Visual Roadmap:**
+
+![Home Inventory Roadmap - Full Timeline](docs/project-management/images/timeline-1.jpg & /timeline-2.jpg)
+*Complete project timeline from Milestone 1 through Milestone 3*
+
+---
 
 ### Milestone 1 (Ends: February 27, 2026)
 **Focus Areas:**
@@ -165,19 +244,6 @@ Each feature team will:
 **Requirements:**
 - Minimum 1 issue per sprint per team member
 - Minimum 1 lecture topic task per milestone
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-*To be determined once tech stack is finalized*
-
-### Installation
-*Instructions will be added once development begins*
-
-### Development Setup
-*Setup guide will be added once tech stack is decided*
 
 ---
 
@@ -201,9 +267,10 @@ All project documentation is written in **AsciiDoc** format and stored in the `/
 main (protected)
 ├── documentation/
 ├── design/
-├── feature-team-1/
-├── feature-team-2/
-└── feature-team-3/
+├── team-1-core-inventory/
+├── team-2-alerts-restock/
+├── team-3-sharing-budget/
+└── team-4-reports-insights/
 ```
 
 **How it works:**
@@ -241,21 +308,29 @@ We welcome contributions from all team members! Please follow these guidelines:
 
 ## 🛠️ Tools & Technologies
 
+### Tech Stack
+- 📱 **Frontend:** Flutter
+- 🗄️ **Backend/Database:** Supabase (PostgreSQL + Auth + Storage)
+- 🎨 **UI/UX Design:** Figma
+- 📄 **Documentation:** AsciiDoc
+
 ### Development Tools
 - **Version Control:** Git & GitHub
 - **Project Management:** GitHub Issues, Projects, Discussions
-- **Documentation:** AsciiDoc
 
 ---
 
 ## 📞 Contact
 
-**Project Manager:** @LuisJCruz, @Kay9876  
+**Project Managers:** @LuisJCruz, @Kay9876
+
 **Team Leads:**
-- Documentation Lead: TBD
-- Design Lead: TBD
-- Feature Team Leads: TBD (announced after team formation)
-- Feature Team Leads: TBD (announced after team formation)
+- **Documentation Lead:** @alondra-arce (1 more lead needed)
+- **Design Lead:** @AdrianaFigueroa9
+- **Team 1 (Core Inventory):** @kevgom018
+- **Team 2 (Alerts & Restock):** @Solimar-Cruz
+- **Team 3 (Sharing & Budget):** @andreasegarra
+- **Team 4 (Reports & Insights):** @FabianVelezOcasio
 
 ---
 
@@ -266,4 +341,43 @@ See [LICENSE](LICENSE) for more information.
 
 ---
 
-**Last Updated:** February 6, 2026 
+## 👥 Complete Team Roster
+
+| # | GitHub Username | Name | Team | Role |
+|---|----------------|------|------|------|
+| 1 | @AdrianaFigueroa9 | Adriana Figueroa | Design Team | Team Lead |
+| 2 | @alondra-arce | Alondra S. Arce Perea | Documentation Team | Team Lead |
+| 3 | @andreasegarra | Andrea Segarra | Team 3: Sharing & Budget | Team Lead |
+| 4 | @aryamdiaz | Aryam Z Diaz Torres | Team 2: Alerts & Restock | Researcher |
+| 5 | @daniellameleroo | Daniella Melero | Team 3: Sharing & Budget | Designer |
+| 6 | @devlin-hahn04 | Devlin Hahn | Team 1: Core Inventory | Designer |
+| 7 | @eliel-hernandez | Eliel Hernandez Gonzalez | Team 2: Alerts & Restock | Designer |
+| 8 | @ernestosoto3 | Ernesto S. Soto Rivera | Team 3: Sharing & Budget | Researcher |
+| 9 | @FabianVelezOcasio | Fabian Velez | Team 4: Reports & Insights | Team Lead |
+| 10 | @FabiolaZTorres | Fabiola Torres | Team 3: Sharing & Budget | Researcher |
+| 11 | @fernan-castro | Fernando Castro | Team 3: Sharing & Budget | Researcher |
+| 12 | @JorgeDeLeonOrama | Jorge De León | Team 1: Core Inventory | Designer |
+| 13 | @JorgeRivera94 | Jorge Rivera | Team 1: Core Inventory | Researcher |
+| 14 | @jankii03 | Januel E. Torres Marquez | Team 1: Core Inventory | Researcher |
+| 15 | @jaydensanchez12 | Jayden Sánchez | Team 4: Reports & Insights | Designer |
+| 16 | @Kay9876 | Kaysha L Pagan-Lopez | Management | Project Manager |
+| 17 | @Kemuel05 | Kemuel Cubero Rosario | Team 2: Alerts & Restock | Researcher |
+| 18 | @kevgom018 | Kevin Gómez | Team 1: Core Inventory | Team Lead |
+| 19 | @kevinlara1 | Kevin Lara Rodríguez | Team 2: Alerts & Restock | Researcher |
+| 20 | @kian-robert | Kian-Robert Ramos Vega | Team 1: Core Inventory | Researcher |
+| 21 | @L-A-M-D | Lucas Matos Datiz | Team 1: Core Inventory | Researcher |
+| 22 | @LuisJCruz | Luis J Cruz-Cruz | Management | Project Manager |
+| 23 | @nataliavera6 | Natalia S Vera Rivera | Team 3: Sharing & Budget | Designer |
+| 24 | @nicolasrivera2003 | Nicolás Rivera Batista | Team 4: Reports & Insights | Researcher |
+| 25 | @Programian | Ian Rivera | Team 4: Reports & Insights | Designer |
+| 26 | @reinaldo-martinez1 | Reinaldo J. Martinez Morales | Team 2: Alerts & Restock | Researcher 
+| 27 | @ronaldoflores9 | Ronaldo Flores Nazario | Team 2: Alerts & Restock | Designer |
+| 28 | @SamarysB | Samarys Barreiro Melendez | Team 4: Reports & Insights | Researcher |
+| 29 | @Solimar-Cruz | Solimar Cruz Hernandez | Team 2: Alerts & Restock | Team Lead |
+| 30 | @yamilette-alemany | Yamilette Alemany | Team 3: Sharing & Budget | Researcher |
+
+**Total:** 30 team members + 2 project managers
+
+---
+
+**Last Updated:** February 10, 2026 

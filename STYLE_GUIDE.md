@@ -10,7 +10,13 @@
 ---
 
 ## 🎯 Overview
-This style guide establishes coding standards and best practices for the Home Inventory project. We follow **Google's Style Guidelines** for code formatting and conventions. Specific language guides will be referenced once the tech stack is finalized.
+This style guide establishes coding standards and best practices for the Home Inventory project. We follow **Google's Style Guidelines** for code formatting and conventions.
+
+**Tech Stack:**
+- 📱 **Frontend:** Flutter (Dart)
+- 🗄️ **Backend/Database:** Supabase (PostgreSQL + Auth + Storage)
+- 🎨 **UI/UX Design:** Figma
+- 📄 **Documentation:** AsciiDoc
 
 **Purpose:** Ensure consistency, maintainability, and quality across the codebase.
 
@@ -41,29 +47,40 @@ This style guide establishes coding standards and best practices for the Home In
 ## 💻 Code Standards
 
 ### Naming Conventions
-*Note: These are general guidelines. Follow language-specific conventions from Google's style guides.*
+*Follow Dart (Flutter) and PostgreSQL naming conventions as specified in Google's style guides.*
 
-- **Variables & Functions**: Use descriptive names that indicate purpose
-  ```javascript
+- **Variables & Functions (Dart)**: Use camelCase for variables, functions, and parameters
+  ```dart
   // Good
-  const userInventoryItems = [];
-  function calculateExpirationDate() {}
+  final List<Item> userInventoryItems = [];
+  int calculateExpirationDate() {}
   
   // Bad
-  const arr = [];
-  function calc() {}
+  final List<Item> user_inventory_items = [];
+  int calc() {}
   ```
 
-- **Constants**: Use for values that don't change
-  ```javascript
-  const MAX_ITEMS_PER_ROOM = 100;
-  const DEFAULT_NOTIFICATION_THRESHOLD = 3;
+- **Constants (Dart)**: Use lowerCamelCase for constants
+  ```dart
+  const int maxItemsPerRoom = 100;
+  const int defaultNotificationThreshold = 3;
+  const int defaultLowStockDays = 7;
   ```
 
-- **Classes/Components**: Use nouns that represent the entity
-  ```javascript
+- **Classes (Dart)**: Use UpperCamelCase
+  ```dart
   class InventoryItem {}
+  class UserProfile {}
   class NotificationService {}
+  ```
+
+- **Database Tables/Columns (PostgreSQL)**: Use snake_case
+  ```sql
+  -- Good
+  items, user_profiles, expiration_dates
+  
+  -- Bad
+  Items, userProfiles, expirationDates
   ```
 
 ### Code Formatting
@@ -79,14 +96,14 @@ This style guide establishes coding standards and best practices for the Home In
 - Avoid obvious comments
 
 **Examples:**
-```javascript
+```dart
 // Good: Explains reasoning
 // Using 3-day threshold to give users time to restock
-const DEFAULT_LOW_STOCK_DAYS = 3;
+const int defaultLowStockDays = 3;
 
 // Bad: States the obvious
 // Set the threshold to 3
-const DEFAULT_LOW_STOCK_DAYS = 3;
+const int defaultLowStockDays = 3;
 ```
 
 ### Error Handling
@@ -112,15 +129,16 @@ const DEFAULT_LOW_STOCK_DAYS = 3;
 - Keep documentation in sync with code
 
 ### Inline Documentation
-```javascript
-/**
- * Calculates days until an item expires
- * @param {Date} expirationDate - The expiration date of the item
- * @param {Date} currentDate - The current date (defaults to today)
- * @returns {number} Number of days until expiration (negative if expired)
- */
-function daysUntilExpiration(expirationDate, currentDate = new Date()) {
-  // Implementation
+```dart
+/// Calculates days until an item expires
+/// 
+/// [expirationDate] - The expiration date of the item
+/// [currentDate] - The current date (defaults to today)
+/// 
+/// Returns the number of days until expiration (negative if expired)
+int daysUntilExpiration(DateTime expirationDate, {DateTime? currentDate}) {
+  currentDate ??= DateTime.now();
+  return expirationDate.difference(currentDate).inDays;
 }
 ```
 
@@ -134,15 +152,25 @@ function daysUntilExpiration(expirationDate, currentDate = new Date()) {
 ## 📚 Additional Resources
 
 ### Google Style Guides
-- [Google Style Guides](https://google.github.io/styleguide/) (Reference once tech stack is determined)
+- **Dart (Flutter):** [Effective Dart Style Guide](https://dart.dev/guides/language/effective-dart/style)
+- **Dart Documentation:** [Dart Language Documentation](https://dart.dev/guides)
+- **Flutter Best Practices:** [Flutter Style Guide](https://docs.flutter.dev/development/packages-and-plugins/developing-packages#style-guide)
+- **SQL/PostgreSQL:** [PostgreSQL Coding Conventions](https://www.postgresql.org/docs/current/sql-syntax.html)
+
+### Supabase Resources
+- [Supabase Documentation](https://supabase.com/docs)
+- [Supabase Flutter Guide](https://supabase.com/docs/guides/with-flutter)
+- [PostgreSQL Best Practices](https://www.postgresql.org/docs/current/tutorial.html)
 
 ### Best Practices
 - [Clean Code Principles](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
 - [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
+- [Flutter Architecture Patterns](https://docs.flutter.dev/development/data-and-backend/state-mgmt/intro)
 
 ### Tools
-- Use linters and formatters for your chosen language
-- Configure your IDE to follow the style guide
+- **Dart/Flutter:** Use `dart format` and `flutter analyze`
+- **IDE:** Configure VS Code or Android Studio with Dart/Flutter extensions
+- **Database:** Use Supabase Studio for database management
 - Use pre-commit hooks to enforce standards
 
 ---
@@ -152,4 +180,4 @@ If you have suggestions for improving this style guide, please open an issue or 
 
 ---
 
-**Last Updated:** February 6, 2026
+**Last Updated:** February 10, 2026

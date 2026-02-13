@@ -98,10 +98,19 @@ This guide outlines the complete workflow for contributing to the Home Inventory
 main (protected)
 ├── documentation/
 ├── design/
-├── feature-team-1/
-├── feature-team-2/
-└── feature-team-3/
+├── team-1-core-inventory/
+├── team-2-alerts-restock/
+├── team-3-sharing-budget/
+└── team-4-reports-insights/
 ```
+
+### Team Branches
+- **documentation** - Documentation Team (@alondra-arce)
+- **design** - Design Team (@AdrianaFigueroa9)
+- **team-1-core-inventory** - Core Inventory Team (@kevgom018)
+- **team-2-alerts-restock** - Alerts & Restock Team (@Solimar-Cruz)
+- **team-3-sharing-budget** - Sharing & Budget Team (@andreasegarra)
+- **team-4-reports-insights** - Reports & Insights Team (@FabianVelezOcasio)
 
 **How it works:**
 - Each team has ONE shared branch
@@ -110,13 +119,16 @@ main (protected)
 - Team leads approve PRs to merge commits into team branch
 - Team leads create PRs from team branch → main for manager approval
 
-### Team Branches
-- **documentation** - Documentation Team's shared branch
-- **design** - Design Team's shared branch  
-- **feature-team-X** - Feature teams' shared branches (names TBD)
+**Note:** No individual developer branches - everyone works on their team's branch directly.
 
-**Note:** No individual developer branches - everyone works on their team's branch directly.le
-- Keep names short and descriptive
+### Branch Naming (Team Branches Only)
+Team branches will  have these names:
+- `documentation`
+- `design`
+- `team-1-core-inventory`
+- `team-2-alerts-restock`
+- `team-3-sharing-budget`
+- `team-4-reports-insights`
 
 ---
 
@@ -259,6 +271,14 @@ Fixes #55
 5. Wait for manager approval
 6. Manager will merge to main
 
+**Team Leads:**
+- **Documentation:** @alondra-arce
+- **Design:** @AdrianaFigueroa9
+- **Team 1 (Core Inventory):** @kevgom018
+- **Team 2 (Alerts & Restock):** @Solimar-Cruz
+- **Team 3 (Sharing & Budget):** @andreasegarra
+- **Team 4 (Reports & Insights):** @FabianVelezOcasio
+
 ### For Managers (@LuisJCruz, @Kay9876)
 **Review Responsibilities for Main PRs:**
 - [ ] Verify team lead approval and review
@@ -325,11 +345,10 @@ Provide documentation content when:
 - Making design decisions
 
 ### Documentation Workflow
-1. **Feature teams create content** - Write documentation in Markdown or text
-2. **Submit to Documentation Team** - Through issue or PR description
-3. **Documentation Team integrates** - Converts to AsciiDoc and integrates into structure
-4. **Automated updates** - Documentation Team manages automation for distributionsystem overview
-  - Analytic: Concept analysis and technical details
+1. **Everyone writes in AsciiDoc** - All developers document their work directly in AsciiDoc format in `/docs` folder
+2. **Documentation Team organizes** - Compiles, reviews, and structures all AsciiDoc files
+3. **Documentation Team integrates** - Ensures all documentation follows course rubrics and maintains consistency
+4. **Automated updates** - Documentation Team manages automation for distribution
 
 ### When to Update Documentation
 Update `/docs` files when making changes that affect:
