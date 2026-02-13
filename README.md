@@ -196,14 +196,7 @@ Teams are organized around key features identified during sprint planning. Each 
 **Members:**
 - 🎨 **Designers:** Ian Rivera (@Programian), Jayden Sánchez (@jaydensanchez12)
 - 📌 **Researchers:** Nicolás Rivera Batista (@nicolasrivera2003), Samarys Barreiro Melendez (@SamarysB)
-- **Available:** 2 spots
 
-**Tasks:**
-- Build reports screen in Flutter (inventory summaries, spending reports, usage rates)
-- Query Supabase efficiently for reports
-- Design and implement main Home/Dashboard screen
-- Create sample report layouts and data visualization (Flutter charts)
-- Light onboarding/welcome screen if time allows
 
 #### Team Responsibilities
 Each feature team will:
