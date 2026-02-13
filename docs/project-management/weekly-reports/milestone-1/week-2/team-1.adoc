@@ -1,0 +1,45 @@
+# Milestone 1 Week 2 — Team 1 Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what Team 1 worked on this week.
+
+---
+
+## What the Team Accomplished This Week
+- The team has begun initial domain acquisition
+- Research is currently being documented to prep for submission before sprint end.
+
+---
+
+## Tasks Completed / Issues Closed
+- None yet but the following are underway
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/11[Domain Terminology Gathering]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/15[Design Database Schema]
+
+---
+
+## What Is Currently In Progress
+- Research for domain acquisition and initial documentation
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/11[Domain Terminology Gathering]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/15[Design Database Schema]
+- Designing the feature's pages according to our initial assumption of what the platform will have
+
+---
+
+## Blockers or Challenges
+- Project documentation base structure is still not available to facilitate colaboration so any work done is still fragmented
+
+---
+
+## Plans for Next Week
+- Complete initial research
+- Design initial wireframes for the features pages
+- Begin base implementation of the project, because our feature is the core of the app
+- Start preparing a demo for the milestone video
+
+---
+
+## Documentation Links
+- This is pending for when the documents are uploaded and accepted via their corresponding issues
+
+---
