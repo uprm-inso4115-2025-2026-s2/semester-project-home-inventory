@@ -1,0 +1,46 @@
+# Milestone 1 Week 2 — Team 4 Progress Report
+
+## Objective
+Ensure that during Sprint Planning, the project has a clear and organized summary of Team 4's progress this week, along with an outline of how the team will move forward with implementing the dashboard and reporting system during the milestone.
+
+---
+
+## What the Team Accomplished This Week
+- Team members began their research on upcoming tasks, ideas, and potential implementations for the project.
+
+- All research is currently in progress and is expected to be completed before the end of the sprint.
+
+---
+
+## Tasks in Progress
+
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/16[Reports & Insights Feature (Dashboard + Reports) #16 by Nicolas Rivera]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/29[Mobile Report Screen Interaction Patterns #29 by Ian Rivera]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/36[Investigate Flutter Technologies for Visualization #36 by Samarys Bareiro]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/43[Research & Define Key Reports and Metrics for Digital Home Inventory App #43 by Jorge Peralta]
+
+---
+
+## Tasks Closed
+- None yet. Research tasks are actively being worked on and are on track for completion before the sprint ends. Additional tasks from this team will begin shortly.
+
+---
+
+## Blockers or Challenges
+- Project documentation base structure is still not available to facilitate colaboration so any work done is still fragmented, but as the project goes on the issue would be fixed.
+
+---
+
+## Plans for Next Week
+- Complete initial research
+- UI/UX design tasks for Dashboard and Reporting System can begin immediately as they are based on research and will produce the necessary assets for development.
+- Starting to implement the static UI for the Home and Reports screens, which can start concurrently with the design phase, using mock data.
+- Creating the foundational database views and functions, which is a critical dependency and should start early.
+- Researching and setting up the charting library, which can begin right away to prepare for future integration.
+
+---
+
+## Documentation Links
+- Pending. Documentation will be linked once the corresponding issues are reviewed and accepted.
+
+---
