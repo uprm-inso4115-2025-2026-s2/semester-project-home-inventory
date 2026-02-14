@@ -1,0 +1,122 @@
+= UI Style Guide – Typography
+:toc: left
+
+== 1. Introduction & Objective
+
+In productivity platforms, clarity is king. While our goal is to maintain attractive visual appeal, the priority for the *Digital Home Inventory* app is **data legibility**.
+
+Students need to check expiration dates, quantities, and prices briefly. Therefore, it is important to choose Fonts, styles, and weights that facilitate readability across all pages and content, reducing cognitive load when managing household tasks.
+
+== 2. Fonts, Weights, and Styles
+
+=== Primary Font: Poppins
+The Primary font for our platform will be **Poppins**. It is a geometric sans-serif font widely used in modern apps.
+
+**Why?** It has personality (like fonts such as Ubuntu) but is cleaner. It works perfectly for *Headings and Section Titles* because its geometric circles make the UI feel friendly yet organized.
+
+=== Secondary Font: Inter
+Our secondary font will be **Inter**. This font was specifically designed for computer screens and User Interfaces.
+
+* **Why?** Unlike fonts such as Nunito (which is very rounded), Inter is neutral and has a tall x-height.
+* **Usage:** This makes it *perfect for numbers (prices, dates)* and lists, which are the core of an inventory app. It ensures that a "0" (zero) doesn't look like an "O" (capital letter O) and that tight lists remain readable.
+
+== 3. Typography Hierarchy Table
+
+Standardized system to ensure consistency across all feature teams.
+
+[cols="1,2,1,2,1,3", options="header"]
+|===
+|Level |Font |Size |Weight |Line-height |Usage
+
+|*H1*
+|Poppins
+|32px
+|Bold (700)
+|120%
+|Main Page Titles (e.g., "My Pantry")
+
+|*H2*
+|Poppins
+|24px
+|SemiBold (600)
+|120%
+|Section Titles (e.g., "Expiring Soon")
+
+|*H3*
+|Poppins
+|20px
+|Medium (500)
+|130%
+|Card Headers / Sub-sections
+
+|*Body L*
+|Inter
+|16px
+|Regular (400)
+|150%
+|Main text, Input fields
+
+|*Body M*
+|Inter
+|14px
+|Regular (400)
+|150%
+|Secondary text, List items
+
+|*Caption*
+|Inter
+|12px
+|Medium (500)
+|140%
+|Timestamps, Labels, Badges
+
+|*Price/Qty*
+|Inter
+|16px
+|SemiBold (600)
+|150%
+|Important numbers (Quantities, Prices)
+|===
+
+== 4. Advantage of Poppins + Inter
+
+With this combination, we get the perfect contrast: Poppins = Structure and Inter = Functionality.
+
+* **Consistency:** Both are sans-serif, keeping the UI clean.
+* **Google Fonts Compatibility:** Both are available in the `google_fonts` package for Flutter, ensuring zero friction for developers.
+* **Data-First Approach:** Inter is optimized for UI elements, making lists and trackers easier to read than if we used a display font.
+
+== 5. Implementation Strategy: Centralized Theme Architecture
+
+=== Guidelines for Developers
+
+To ensure consistency and avoid "spaghetti code" with mismatched font sizes, we will not hardcode text styles in individual widgets. Instead, we will implement a **Centralized Typography Wrapper** within the app's entry point.
+
+=== The Strategy
+
+Once the development environment is set up, the Typography System defined above must be injected into the root of the application (`main.dart`).
+
+**Global Theme Configuration:**
+The `MaterialApp` widget in `main.dart` will serve as the "Source of Truth". We will utilize Flutter's native `TextTheme` to map our hierarchy (H1, H2, Body, etc.) to semantic styles.
+
+=== Reusable Style Usage (The "No-Hardcoding" Rule)
+
+Developers must strictly avoid manually setting `fontFamily` or `fontSize` in their screens. Instead, they must use the centralized theme references.
+
+.Bad Practice ❌
+[source,dart]
+----
+TextStyle(fontFamily: 'Poppins', fontSize: 20)
+----
+
+.Required Practice ✅
+[source,dart]
+----
+Theme.of(context).textTheme.titleLarge
+----
+
+=== Benefits of this Architecture 
+
+* **Scalability:** If we decide to change the font size of all headers later, we only change it in one file (`main.dart`), and it updates the entire app.
+* **Efficiency:** Developers don't need to memorize pixel values (e.g., "Was it 16px or 18px?"); they just use the semantic name (e.g., `bodyLarge`).
+* **Dark Mode Readiness:** By using the centralized theme, the text will automatically adapt colors if we implement Dark Mode later.
