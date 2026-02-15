@@ -77,49 +77,49 @@
 
 | Developer | Week #1 | Week #2 | Week #3 | Week #4 | Penalty |
 |---|---|---|---|---|---|
-| Solimar-Cruz | No | No | No | No | 14.0 |
-| jaydensanchez12 | No | No | No | No | 14.0 |
-| ronaldoflores9 | No | No | No | No | 14.0 |
-| JorgeRivera94 | No | No | No | No | 14.0 |
-| andreasegarra | No | No | No | No | 14.0 |
-| L-A-M-D | No | No | No | No | 14.0 |
+| kevgom018 | Yes | No | No | No | 9.0 |
 | PeraltaJorge9128 | No | No | No | No | 14.0 |
-| nicolasrivera25 | No | No | No | No | 14.0 |
-| AdrianaFigueroa9 | No | No | No | No | 14.0 |
-| kevgom018 | No | No | No | No | 14.0 |
-| SamarysB | No | No | No | No | 14.0 |
-| fernan-castro | No | No | No | No | 14.0 |
-| kevinlara1 | No | No | No | No | 14.0 |
-| kian-robert | No | No | No | No | 14.0 |
-| Programian | No | No | No | No | 14.0 |
-| Kay9876 | No | No | No | No | 14.0 |
-| Kemuel05 | No | No | No | No | 14.0 |
+| nataliavera6 | Yes | No | No | No | 9.0 |
+| eliel-hernandez | Yes | No | No | No | 9.0 |
+| kevinlara1 | Yes | No | No | No | 9.0 |
+| Solimar-Cruz | Yes | No | No | No | 9.0 |
+| yamilette-alemany | Yes | No | No | No | 9.0 |
+| fernan-castro | Yes | No | No | No | 9.0 |
+| reinaldo-martinez1 | Yes | No | No | No | 9.0 |
 | LuisJCruz | No | No | No | No | 14.0 |
 | alondra-arce | No | No | No | No | 14.0 |
-| FabianVelezOcasio | No | No | No | No | 14.0 |
-| daniellameleroo | No | No | No | No | 14.0 |
-| ernestosoto3 | No | No | No | No | 14.0 |
-| aryamdiaz | No | No | No | No | 14.0 |
-| jankii03 | No | No | No | No | 14.0 |
-| Gerardoruiz1 | No | No | No | No | 14.0 |
-| reinaldo-martinez1 | No | No | No | No | 14.0 |
-| yamilette-alemany | No | No | No | No | 14.0 |
-| JorgeDeLeonOrama | No | No | No | No | 14.0 |
-| nataliavera6 | No | No | No | No | 14.0 |
+| SamarysB | No | No | No | No | 14.0 |
 | alianasofiaaa | No | No | No | No | 14.0 |
-| devlin-hahn04 | No | No | No | No | 14.0 |
-| eliel-hernandez | No | No | No | No | 14.0 |
-| FabiolaZTorres | No | No | No | No | 14.0 |
+| jankii03 | Yes | No | No | No | 9.0 |
+| JorgeDeLeonOrama | Yes | No | No | No | 9.0 |
+| devlin-hahn04 | Yes | No | No | No | 9.0 |
+| jaydensanchez12 | Yes | No | No | No | 9.0 |
+| Kemuel05 | Yes | No | No | No | 9.0 |
+| aryamdiaz | Yes | No | No | No | 9.0 |
+| AdrianaFigueroa9 | Yes | No | No | No | 9.0 |
+| Gerardoruiz1 | Yes | No | No | No | 9.0 |
+| nicolasrivera25 | No | No | No | No | 14.0 |
+| ronaldoflores9 | Yes | No | No | No | 9.0 |
+| daniellameleroo | Yes | No | No | No | 9.0 |
+| andreasegarra | Yes | No | No | No | 9.0 |
+| FabianVelezOcasio | Yes | No | No | No | 9.0 |
+| JorgeRivera94 | Yes | No | No | No | 9.0 |
+| ernestosoto3 | Yes | No | No | No | 9.0 |
+| kian-robert | Yes | No | No | No | 9.0 |
+| L-A-M-D | No | No | No | No | 14.0 |
+| Programian | Yes | No | No | No | 9.0 |
+| FabiolaZTorres | Yes | No | No | No | 9.0 |
+| Kay9876 | Yes | No | No | No | 9.0 |
 
 ## Point Percent by Label
 
-| Developer | Design | Team 3 | Task Completed | Team 1 |
+| Developer | Task Completed | Design | Team 1 | Team 3 |
 |---|---|---|---|---|
 | reinaldo-martinez1 | 0.0% | 0.0% | 0.0% | 0.0% |
 | alianasofiaaa | 0.0% | 0.0% | 0.0% | 0.0% |
 | aryamdiaz | 0.0% | 0.0% | 0.0% | 0.0% |
 | fernan-castro | 0.0% | 0.0% | 0.0% | 0.0% |
-| JorgeRivera94 | 0.0% | 0.0% | 100.0% | 100.0% |
+| JorgeRivera94 | 100.0% | 0.0% | 100.0% | 0.0% |
 | Gerardoruiz1 | 0.0% | 0.0% | 0.0% | 0.0% |
 | nataliavera6 | 0.0% | 0.0% | 0.0% | 0.0% |
 | SamarysB | 0.0% | 0.0% | 0.0% | 0.0% |
@@ -129,7 +129,7 @@
 | PeraltaJorge9128 | 0.0% | 0.0% | 0.0% | 0.0% |
 | nicolasrivera25 | 0.0% | 0.0% | 0.0% | 0.0% |
 | jankii03 | 0.0% | 0.0% | 0.0% | 0.0% |
-| ernestosoto3 | 0.0% | 100.0% | 100.0% | 0.0% |
+| ernestosoto3 | 100.0% | 0.0% | 0.0% | 100.0% |
 | FabianVelezOcasio | 0.0% | 0.0% | 0.0% | 0.0% |
 | kevgom018 | 0.0% | 0.0% | 0.0% | 0.0% |
 | daniellameleroo | 0.0% | 0.0% | 0.0% | 0.0% |
@@ -137,10 +137,10 @@
 | Programian | 0.0% | 0.0% | 0.0% | 0.0% |
 | kevinlara1 | 0.0% | 0.0% | 0.0% | 0.0% |
 | Solimar-Cruz | 0.0% | 0.0% | 0.0% | 0.0% |
-| ronaldoflores9 | 100.0% | 0.0% | 100.0% | 0.0% |
+| ronaldoflores9 | 100.0% | 100.0% | 0.0% | 0.0% |
 | alondra-arce | 0.0% | 0.0% | 0.0% | 0.0% |
 | JorgeDeLeonOrama | 0.0% | 0.0% | 0.0% | 0.0% |
-| eliel-hernandez | 100.0% | 0.0% | 100.0% | 0.0% |
+| eliel-hernandez | 100.0% | 100.0% | 0.0% | 0.0% |
 | Kemuel05 | 0.0% | 0.0% | 0.0% | 0.0% |
 | jaydensanchez12 | 0.0% | 0.0% | 0.0% | 0.0% |
 | L-A-M-D | 0.0% | 0.0% | 0.0% | 0.0% |
