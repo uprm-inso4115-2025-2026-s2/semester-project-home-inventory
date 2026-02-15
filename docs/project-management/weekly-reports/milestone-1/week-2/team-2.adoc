@@ -1,0 +1,67 @@
+# Milestone 1 Week 2 — Team 2 Progress Report
+
+---
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what Team 2 worked on this week.
+
+---
+
+## What the Team Accomplished This Week
+- The team began initial domain acquisition and feature research.
+- We carefully reviewed the Team 2 – Milestone 1 – Task Schema guide and role distribution document.
+- Based on the provided structure by a role distribution document, each member selected their primary focus area for this sprint.
+-For Milestone 1, Team 2 divided the feature into structured research roles to ensure clarity.Each researcher selected a main category and will break it down into smaller, well-defined GitHub tasks 
+
+    The selected focus areas include:
+
+    - Expiration Logic (R1)
+    - Low Stock Logic (R2)
+    - Automated Check System (R3)
+
+    - Notifications / Alerts System (R4)
+    - Grocery List & Restock Autogeneration (R5)
+    - Alerts UI & UX (D1)
+    - Grocery List UI (D2)
+- Responsibilities were clearly defined according to the milestone requirement, which focuses strictly on:
+  * Research
+  * Documentation on how the feature should work
+  * Database schema design (Supabase)
+  * User flow and system diagrams
+- No implementation work has started, as this milestone is research and design oriented.
+
+---
+
+## Blockers or Challenges
+- The project documentation base structure is still not fully available.
+
+---
+
+## Plans for Next Week
+- Finalize and document all research findings.
+- Define clear logic rules for selected feature categories.
+- Design database schema structures in Supabase.
+- Create user flow and system diagrams.
+
+---
+
+## Tasks Completed / Issues Closed
+- None completed yet
+
+---
+
+## What Is Currently In Progress
+- Research for domain acquisition and structured documentation.
+- Defining feature ownership and breaking main focus areas into milestone subtasks.
+- Designing feature flows according to initial platform assumptions.
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/42
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/33
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/32
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/30
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/28
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/27
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/26
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/24
+https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/23
+
+---
