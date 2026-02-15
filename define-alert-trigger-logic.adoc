@@ -1,0 +1,49 @@
+= Define Alert Trigger Logic and Scheduling
+
+== Key Information
+
+=== Completed by Reinaldo J. Martinez Morales
+=== Issue: #28
+
+== Common Intervals for Expiration Alerts
+
+* 7 days before expiration
+* 3 days before expiration
+* 1 day before expiration
+* On the day of expiration
+
+== Alert Trigger Logic
+
+=== Description
+The alert trigger logic will be based on the expiration date of the items. The system will check the expiration date against the current date and trigger alerts according to the defined intervals selected by the user.
+
+=== Implementation Steps
+1. Retrieve the expiration date of the item from the database.
+2. Calculate the difference between the current date and the expiration date.
+3. If the difference matches any of the defined intervals, then send a notification.
+4. If a user previously snoozed or removed a notification, the system will not send another alert for that specific item until the next interval is reached. 
+5. In case that the user updated the expiration date, the system will reset the alert logic and start checking for the new expiration date.
+
+This may be achieved using database cron jobs or scheduled tasks that run daily to check for upcoming expirations and trigger alerts accordingly.
+
+== Allow Customized Alert Intervals
+
+Users will have the option to customize the alert intervals based on their preferences. This will allow them to receive alerts at intervals that are most relevant to their needs. For example, an user may choose to receive alerts 10 days before expiration instead of the default 7 days.
+
+The customization requires a complex logic to ensure that the system correctly calculates the alert triggers based on the user-defined intervals. There should be requirements and constraints to prevent users from setting intervals that are too close or too far from each other to the expiration date, which may not provide sufficient time for action.
+
+== Scheduling Alerts
+
+1. The system will run a scheduled script daily to check for items that matches a defined alert interval.
+2. Although the script may run at any time, it is recommended to send the push notification at a time when users are most likely to see it, preferibly during the morning.
+3. If an user has several items expiring on the same day, the system should group notifications to avoid overwhelming the user with multiple alerts.
+
+== Conclusion
+
+* Create default alert triggers based on common intervals of 7, 3, and 1 day before expiration. 
+
+* Allow users to customize these intervals according to their preferences, but under a guided framework to ensure the alerts are effective and actionable. 
+
+* Although the system will check for items daily, it is recommended to send notifications at a time when users are most likely active.
+
+* Triggers must automatically disable if a status changes to "Renewed" or "Archive" to avoid redundant notifications.
