@@ -1,5 +1,12 @@
 = Domain Acquisition: Literature Review & Elicitation Studies
 
+
+====
+**AI Disclosure:** Portions of this literature review and domain research were synthesized with the assistance of Artificial Intelligence tools. The core concepts, validation of sources, and final domain model decisions were verified by the human author, @jankii03.
+====
+
+toc::[]
+
 == Trade & Professional Associations
 Use this list to identify standards for categorization and asset valuation, since automatic identification is not available.
 
@@ -71,3 +78,13 @@ Discrete facts formatted for your Domain Model.
 * **Observation:** The A3 requests "Automated notifications... when a specific item is low".
 * **Reality Check:** Without sensors or scanners, the system cannot know an item is low unless the user manually opens the app and tells it.
 * **Refined Requirement:** The notification logic should likely be Time-Based. For example, "You bought bread 5 days ago, check if it's low", rather than Quantity-Based, as the app has no real-time visibility into the physical usage.
+
+== References
+
+* **[1]** Sorrentini, L. X. (2026). _Digital Home Inventory A3_. University of Puerto Rico, Mayagüez.
+* **[2]** National Association of Productivity & Organizing Professionals (NAPO). _Code of Ethics & Standards of Practice_. Retrieved from https://www.napo.net
+* **[3]** Insurance Information Institute (I.I.I.). _Home Inventory: Know Your Stuff_. Retrieved from https://www.iii.org
+* **[4]** Baker, S. R., Johnson, S., & Kueng, L. (2020). _Financial Returns to Household Inventory Management_. National Bureau of Economic Research (NBER). Working Paper 27694.
+* **[5]** Jones, W., & Teevan, J. (2007). _Personal Information Management_. University of Washington Press.
+* **[6]** Cohen, J. F., et al. (2022). _Household Food Waste Patterns: The Role of Planning and Visibility_. Journal of Consumer Behaviour.
+* **[7]** Thaler, R. (1980). _Toward a Positive Theory of Consumer Choice_. Journal of Economic Behavior & Organization (The Endowment Effect).
