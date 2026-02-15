@@ -104,10 +104,12 @@ jobs:
           commit_message: "[Automated] Milestone Metrics Update"
           repository: metrics-branch
           branch: inso-metrics
-          file_pattern: metrics/**/*.md
+          file_pattern: metrics/Milestone#*.md
+          add_options: "-A"
           commit_user_name: GitHub Action
           commit_user_email: action@github.com
           commit_author: GitHub Action <action@github.com>
+
 
       # Optional (will still fail until repo settings allow PRs)
       - name: Create Pull Request
