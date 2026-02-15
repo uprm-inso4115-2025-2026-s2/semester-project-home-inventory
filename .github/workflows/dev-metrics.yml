@@ -21,6 +21,13 @@ jobs:
           persist-credentials: true
           path: metrics-branch
 
+      # ✅ Safe checkout of your repo so gh_metrics_config.json exists
+      - name: Checkout source repo (main)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: source
+
       - name: Checkout INSO GH Metrics code
         uses: actions/checkout@v4
         with:
@@ -43,8 +50,8 @@ jobs:
       - uses: actions/cache@v3
         name: Define a cache for the virtual environment based on the dependencies lock file
         with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
+          path: inso-gh-query-metrics/.venv
+          key: venv-${{ hashFiles('inso-gh-query-metrics/poetry.lock') }}
 
       - name: Install the project dependencies
         run: |
@@ -55,7 +62,7 @@ jobs:
       - name: Run metrics generator
         run: |
           cd inso-gh-query-metrics
-          poetry run python src/generateMilestoneMetricsForActions.py ${{ github.workspace }}/gh_metrics_config.json
+          poetry run python src/generateMilestoneMetricsForActions.py ${{ github.workspace }}/source/gh_metrics_config.json
         shell: bash
         env:
           GITHUB_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
