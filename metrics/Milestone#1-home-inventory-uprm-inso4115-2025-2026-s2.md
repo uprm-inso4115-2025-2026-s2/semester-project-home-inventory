@@ -77,49 +77,49 @@
 
 | Developer | Week #1 | Week #2 | Week #3 | Week #4 | Penalty |
 |---|---|---|---|---|---|
-| kevgom018 | Yes | No | No | No | 9.0 |
-| PeraltaJorge9128 | No | No | No | No | 14.0 |
-| nataliavera6 | Yes | No | No | No | 9.0 |
-| eliel-hernandez | Yes | No | No | No | 9.0 |
-| kevinlara1 | Yes | No | No | No | 9.0 |
-| Solimar-Cruz | Yes | No | No | No | 9.0 |
-| yamilette-alemany | Yes | No | No | No | 9.0 |
-| fernan-castro | Yes | No | No | No | 9.0 |
-| reinaldo-martinez1 | Yes | No | No | No | 9.0 |
-| LuisJCruz | No | No | No | No | 14.0 |
-| alondra-arce | No | No | No | No | 14.0 |
-| SamarysB | No | No | No | No | 14.0 |
-| alianasofiaaa | No | No | No | No | 14.0 |
-| jankii03 | Yes | No | No | No | 9.0 |
-| JorgeDeLeonOrama | Yes | No | No | No | 9.0 |
-| devlin-hahn04 | Yes | No | No | No | 9.0 |
-| jaydensanchez12 | Yes | No | No | No | 9.0 |
-| Kemuel05 | Yes | No | No | No | 9.0 |
-| aryamdiaz | Yes | No | No | No | 9.0 |
-| AdrianaFigueroa9 | Yes | No | No | No | 9.0 |
-| Gerardoruiz1 | Yes | No | No | No | 9.0 |
-| nicolasrivera25 | No | No | No | No | 14.0 |
-| ronaldoflores9 | Yes | No | No | No | 9.0 |
-| daniellameleroo | Yes | No | No | No | 9.0 |
-| andreasegarra | Yes | No | No | No | 9.0 |
-| FabianVelezOcasio | Yes | No | No | No | 9.0 |
-| JorgeRivera94 | Yes | No | No | No | 9.0 |
-| ernestosoto3 | Yes | No | No | No | 9.0 |
-| kian-robert | Yes | No | No | No | 9.0 |
+| yamilette-alemany | Yes | Yes | No | No | 5.0 |
+| Gerardoruiz1 | Yes | Yes | No | No | 5.0 |
+| kian-robert | Yes | Yes | No | No | 5.0 |
+| ronaldoflores9 | Yes | Yes | No | No | 5.0 |
+| SamarysB | No | Yes | No | No | 7.0 |
+| reinaldo-martinez1 | Yes | Yes | No | No | 5.0 |
 | L-A-M-D | No | No | No | No | 14.0 |
-| Programian | Yes | No | No | No | 9.0 |
-| FabiolaZTorres | Yes | No | No | No | 9.0 |
+| AdrianaFigueroa9 | Yes | Yes | No | No | 5.0 |
+| Programian | Yes | Yes | No | No | 5.0 |
 | Kay9876 | Yes | No | No | No | 9.0 |
+| daniellameleroo | Yes | Yes | No | No | 5.0 |
+| nicolasrivera25 | No | Yes | No | No | 7.0 |
+| FabianVelezOcasio | Yes | Yes | No | No | 5.0 |
+| andreasegarra | Yes | Yes | No | No | 5.0 |
+| eliel-hernandez | Yes | Yes | No | No | 5.0 |
+| Kemuel05 | Yes | Yes | No | No | 5.0 |
+| kevinlara1 | Yes | Yes | No | No | 5.0 |
+| devlin-hahn04 | Yes | Yes | No | No | 5.0 |
+| PeraltaJorge9128 | No | Yes | No | No | 7.0 |
+| JorgeRivera94 | Yes | Yes | No | No | 5.0 |
+| aryamdiaz | Yes | Yes | No | No | 5.0 |
+| kevgom018 | Yes | Yes | No | No | 5.0 |
+| LuisJCruz | No | Yes | No | No | 7.0 |
+| jaydensanchez12 | Yes | Yes | No | No | 5.0 |
+| alondra-arce | No | Yes | No | No | 7.0 |
+| jankii03 | Yes | Yes | No | No | 5.0 |
+| Solimar-Cruz | Yes | Yes | No | No | 5.0 |
+| ernestosoto3 | Yes | Yes | No | No | 5.0 |
+| JorgeDeLeonOrama | Yes | No | No | No | 9.0 |
+| nataliavera6 | Yes | Yes | No | No | 5.0 |
+| fernan-castro | Yes | Yes | No | No | 5.0 |
+| alianasofiaaa | No | No | No | No | 14.0 |
+| FabiolaZTorres | Yes | Yes | No | No | 5.0 |
 
 ## Point Percent by Label
 
-| Developer | Task Completed | Design | Team 1 | Team 3 |
+| Developer | Design | Task Completed | Team 3 | Team 1 |
 |---|---|---|---|---|
 | reinaldo-martinez1 | 0.0% | 0.0% | 0.0% | 0.0% |
 | alianasofiaaa | 0.0% | 0.0% | 0.0% | 0.0% |
 | aryamdiaz | 0.0% | 0.0% | 0.0% | 0.0% |
 | fernan-castro | 0.0% | 0.0% | 0.0% | 0.0% |
-| JorgeRivera94 | 100.0% | 0.0% | 100.0% | 0.0% |
+| JorgeRivera94 | 0.0% | 100.0% | 0.0% | 100.0% |
 | Gerardoruiz1 | 0.0% | 0.0% | 0.0% | 0.0% |
 | nataliavera6 | 0.0% | 0.0% | 0.0% | 0.0% |
 | SamarysB | 0.0% | 0.0% | 0.0% | 0.0% |
@@ -129,7 +129,7 @@
 | PeraltaJorge9128 | 0.0% | 0.0% | 0.0% | 0.0% |
 | nicolasrivera25 | 0.0% | 0.0% | 0.0% | 0.0% |
 | jankii03 | 0.0% | 0.0% | 0.0% | 0.0% |
-| ernestosoto3 | 100.0% | 0.0% | 0.0% | 100.0% |
+| ernestosoto3 | 0.0% | 100.0% | 100.0% | 0.0% |
 | FabianVelezOcasio | 0.0% | 0.0% | 0.0% | 0.0% |
 | kevgom018 | 0.0% | 0.0% | 0.0% | 0.0% |
 | daniellameleroo | 0.0% | 0.0% | 0.0% | 0.0% |
