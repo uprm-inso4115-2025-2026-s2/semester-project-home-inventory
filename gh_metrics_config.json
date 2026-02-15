@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "projectName": "UPRM_Home_Inventory",
+  "projectName": "home-inventory",
   "managers": ["LuisJCruz", "Kay9876"],
   "milestones": {
     "Milestone #1": {
