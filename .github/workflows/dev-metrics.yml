@@ -72,30 +72,11 @@ jobs:
           GITHUB_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
           ORGANIZATION: ${{ github.repository_owner }}
 
-      # 🔎 Debug: prove what files were generated (so we stop guessing)
-      - name: Debug - list generated markdown files
-        run: |
-          echo "=== Generated .md files (maxdepth 2) ==="
-          find inso-gh-query-metrics -maxdepth 2 -type f -name "*.md" -print || true
-          echo "=== inso-gh-query-metrics dir listing ==="
-          ls -lah inso-gh-query-metrics | sed -n '1,200p'
-        shell: bash
-
       - name: Move Generated Metrics to Metrics Branch
         run: |
           mkdir -p metrics-branch/metrics
           # safer than mv inso-gh-query-metrics/*.md (catches nested output too)
           find inso-gh-query-metrics -maxdepth 2 -type f -name "*.md" -exec mv {} metrics-branch/metrics/ \;
-        shell: bash
-
-      # 🔎 Debug: show whether anything actually changed before committing
-      - name: Debug - show diff in metrics branch
-        run: |
-          cd metrics-branch
-          echo "=== git status ==="
-          git status
-          echo "=== git diff --stat ==="
-          git diff --stat || true
         shell: bash
 
       - name: Auto Commit Results
@@ -109,18 +90,3 @@ jobs:
           commit_user_name: GitHub Action
           commit_user_email: action@github.com
           commit_author: GitHub Action <action@github.com>
-
-
-      # Optional (will still fail until repo settings allow PRs)
-      - name: Create Pull Request
-        run: |
-          gh pr create \
-            --base main \
-            --head "inso-metrics" \
-            --title "[Automated] Milestone Metrics Update" \
-            --body "This is an automated pull request to update the milestone metrics." \
-            --repo "${{ github.repository }}" \
-          || echo "PR not created (likely permissions or already exists)."
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
