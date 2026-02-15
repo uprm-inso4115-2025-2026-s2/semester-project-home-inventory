@@ -1,5 +1,9 @@
 = Inventory Sharing Flowchart
+
+Author: Daniella Melero Pereira
+
 :toc:
+
 
 == Overview
 
