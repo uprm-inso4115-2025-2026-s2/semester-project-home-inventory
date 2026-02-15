@@ -1,0 +1,9 @@
+This icon was necessary to provide a simple and effective way to notify users of duplicate items.
+
+author:: Nataliavera6
+
+The number 2 in the icon indicates that there are two items that are duplicates as well as the two identical boxes. 
+
+
+final product:
+image:duplicates warning icon.png[]
