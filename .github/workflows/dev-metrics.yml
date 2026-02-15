@@ -3,7 +3,11 @@ name: Daily Project Metrics Generation
 on:
   schedule:
     - cron: "0 0 * * *" # Runs at 00:00 UTC every day
-  workflow_dispatch: # Allows manual trigger from the GitHub UI
+  workflow_dispatch:
+
+concurrency:
+  group: metrics-generation
+  cancel-in-progress: true
 
 jobs:
   generate_and_commit_metrics:
@@ -13,7 +17,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout existing metrics
+      - name: Checkout existing metrics (inso-metrics)
         uses: actions/checkout@v4
         with:
           ref: inso-metrics
@@ -21,7 +25,6 @@ jobs:
           persist-credentials: true
           path: metrics-branch
 
-      # ✅ Safe checkout of your repo so gh_metrics_config.json exists
       - name: Checkout source repo (main)
         uses: actions/checkout@v4
         with:
@@ -39,21 +42,22 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install poetry
+      - name: Install Poetry
         uses: abatilo/actions-poetry@v2
 
-      - name: Setup a local virtual environment (if no poetry.toml file)
+      - name: Configure Poetry venv (inside metrics repo)
         run: |
+          cd inso-gh-query-metrics
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
 
-      - uses: actions/cache@v3
-        name: Define a cache for the virtual environment based on the dependencies lock file
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v3
         with:
           path: inso-gh-query-metrics/.venv
-          key: venv-${{ hashFiles('inso-gh-query-metrics/poetry.lock') }}
+          key: venv-${{ runner.os }}-${{ hashFiles('inso-gh-query-metrics/poetry.lock') }}
 
-      - name: Install the project dependencies
+      - name: Install dependencies
         run: |
           cd inso-gh-query-metrics
           poetry install
@@ -62,16 +66,36 @@ jobs:
       - name: Run metrics generator
         run: |
           cd inso-gh-query-metrics
-          poetry run python src/generateMilestoneMetricsForActions.py ${{ github.workspace }}/source/gh_metrics_config.json
+          poetry run python src/generateMilestoneMetricsForActions.py "${{ github.workspace }}/source/gh_metrics_config.json"
         shell: bash
         env:
           GITHUB_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
           ORGANIZATION: ${{ github.repository_owner }}
 
+      # 🔎 Debug: prove what files were generated (so we stop guessing)
+      - name: Debug - list generated markdown files
+        run: |
+          echo "=== Generated .md files (maxdepth 2) ==="
+          find inso-gh-query-metrics -maxdepth 2 -type f -name "*.md" -print || true
+          echo "=== inso-gh-query-metrics dir listing ==="
+          ls -lah inso-gh-query-metrics | sed -n '1,200p'
+        shell: bash
+
       - name: Move Generated Metrics to Metrics Branch
         run: |
           mkdir -p metrics-branch/metrics
-          mv inso-gh-query-metrics/*.md metrics-branch/metrics/
+          # safer than mv inso-gh-query-metrics/*.md (catches nested output too)
+          find inso-gh-query-metrics -maxdepth 2 -type f -name "*.md" -exec mv {} metrics-branch/metrics/ \;
+        shell: bash
+
+      # 🔎 Debug: show whether anything actually changed before committing
+      - name: Debug - show diff in metrics branch
+        run: |
+          cd metrics-branch
+          echo "=== git status ==="
+          git status
+          echo "=== git diff --stat ==="
+          git diff --stat || true
         shell: bash
 
       - name: Auto Commit Results
@@ -85,6 +109,7 @@ jobs:
           commit_user_email: action@github.com
           commit_author: GitHub Action <action@github.com>
 
+      # Optional (will still fail until repo settings allow PRs)
       - name: Create Pull Request
         run: |
           gh pr create \
@@ -92,7 +117,8 @@ jobs:
             --head "inso-metrics" \
             --title "[Automated] Milestone Metrics Update" \
             --body "This is an automated pull request to update the milestone metrics." \
-            --repo ${{ github.repository }} || echo "Command failed: Unable to create pull request. It might be due to the PR already existing or lack of permissions."
+            --repo "${{ github.repository }}" \
+          || echo "PR not created (likely permissions or already exists)."
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
