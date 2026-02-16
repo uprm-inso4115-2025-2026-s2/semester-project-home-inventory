@@ -230,7 +230,7 @@ Based on the observed interaction patterns:
   If the project’s graphs are to represent continuous data (such as time series or trends), tap-and-drag inspection is intuitive and widely used.
 
 * **Pinch-to-zoom should be considered carefully**  
-  Most report-style apps omit zooming. It should only be included if users truly benefit from scale manipulation.
+  Most mobile report apps omit zooming. It should only be included if users truly benefit from scale manipulation.
 
 * **Prioritize clarity over excessive interactivity**  
   Many successful apps deliberately restrict gestures to avoid overwhelming users. Gestures should be intuitive.
