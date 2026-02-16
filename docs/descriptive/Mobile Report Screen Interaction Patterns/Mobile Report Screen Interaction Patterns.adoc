@@ -169,17 +169,13 @@ image::battery2.jpeg[Batter Usage 2]
 
 Several consistent interaction patterns can be seen across the analyzed apps:
 
-* **Tap as the primary interaction mechanism**  
-  Every app relies on tapping as the fundamental method for revealing details or selecting data.
+* **Tap as the primary interaction mechanism** - Every app relies on tapping as the fundamental method for revealing details or selecting data.
 
-* **Drag for exploration of data**  
-  Apps displaying continuous data (like PhotoMath, Weather, Battery Usage) allow users to drag across graphs to inspect values dynamically.
+* **Drag for exploration of data** - Apps displaying continuous data (like PhotoMath, Weather, Battery Usage) allow users to drag across graphs to inspect values dynamically.
 
-* **Pinch-to-zoom is rare in report graphs**  
-  Most analytic report apps appear to avoid zoom gestures in their graphs, likely due to fixed time scales or simplified data views. Only PhotoMath supports pinch-to-zoom, perhaps due to its purpose being to show mathematical graphs rather than data reports. 
+* **Pinch-to-zoom is rare in report graphs** - Most analytic report apps appear to avoid zoom gestures in their graphs, likely due to fixed time scales or simplified data views. Only PhotoMath supports pinch-to-zoom, perhaps due to its purpose being to show mathematical graphs rather than data reports. 
 
-* **Graphs often prioritize readability over manipulability**  
-  Many graphs are intentionally static, favoring clarity and simplicity rather than deep interaction.
+* **Graphs often prioritize readability over manipulability** - Many graphs are intentionally static, favoring clarity and simplicity rather than deep interaction.
 
 ---
 
@@ -187,14 +183,11 @@ Several consistent interaction patterns can be seen across the analyzed apps:
 
 Several consistent filtering patterns can be gleaned across the analyzed apps:
 
-* **Time-based filtering dominates**  
-  Most apps filter by day, week, or a range of days.
+* **Time-based filtering dominates** - Most apps filter by day, week, or a range of days.
 
-* **Filtering is usually explicit and UI-driven**  
-  Filters are controlled through buttons, selectors, or tabs instead of gestures.
+* **Filtering is usually explicit and UI-driven** - Filters are controlled through buttons, selectors, or tabs instead of gestures.
 
-* **Minimal filtering complexity**  
-  None of the analyzed apps introduce advanced multi-parameter filtering directly within graph views. The filtering is kept relatively simple, tied to what's most important.
+* **Minimal filtering complexity** - None of the analyzed apps introduce advanced multi-parameter filtering directly within graph views. The filtering is kept relatively simple, tied to what's most important.
 
 ---
 
@@ -202,14 +195,11 @@ Several consistent filtering patterns can be gleaned across the analyzed apps:
 
 Navigation between report views follows predictable models:
 
-* **Discrete views instead of continuous navigation**  
-  Users switch between predefined graphs rather than freely navigating a large data space.
+* **Discrete views instead of continuous navigation** - Users switch between predefined graphs rather than freely navigating a large data space.
 
-* **Tabs and buttons over gestures when selecting graphs**  
-  Switching graphs primarily occurs through visible UI controls (YouTube Studio, Weather app, Screen Time), though some like the Weather app accept swiping to switch graph.
+* **Tabs and buttons over gestures when selecting graphs** - Switching graphs primarily occurs through visible UI controls (YouTube Studio, Weather app, Screen Time), though some like the Weather app accept swiping to switch graph.
 
-* **Limited graph-level navigation**  
-  Scrolling or zooming in on the graph itself is uncommon outside of specialized apps like PhotoMath.
+* **Limited graph-level navigation** - Scrolling or zooming in on the graph itself is uncommon outside of specialized apps like PhotoMath.
 
 ---
 
@@ -223,23 +213,16 @@ Navigation between report views follows predictable models:
 
 Based on the observed interaction patterns:
 
-* **Tap should remain the core interaction mechanism**  
-  Tapping is universally understood and expected for revealing datapoint details.
+* **Tap should remain the core interaction mechanism** - Tapping is universally understood and expected for revealing datapoint details.
 
-* **Drag interactions are valuable for continuous datasets**  
-  If the project’s graphs are to represent continuous data (such as time series or trends), tap-and-drag inspection is intuitive and widely used.
+* **Drag interactions are valuable for continuous datasets** - If the project’s graphs are to represent continuous data (such as time series or trends), tap-and-drag inspection is intuitive and widely used.
 
-* **Pinch-to-zoom should be considered carefully**  
-  Most mobile report apps omit zooming. It should only be included if users truly benefit from scale manipulation.
+* **Pinch-to-zoom should be considered carefully** - Most mobile report apps omit zooming. It should only be included if users truly benefit from scale manipulation.
 
-* **Prioritize clarity over excessive interactivity**  
-  Many successful apps deliberately restrict gestures to avoid overwhelming users. Gestures should be intuitive.
+* **Prioritize clarity over excessive interactivity** - Many successful apps deliberately restrict gestures to avoid overwhelming users. Gestures should be intuitive.
 
-* **Time-based filtering is a safe default**  
-  Filtering by day/week/range aligns with common patterns and user expectations.
+* **Time-based filtering is a safe default** - Filtering by day/week/range aligns with common patterns and user expectations.
 
-* **Filtering should rely on explicit UI controls**  
-  Buttons or tabs provide better discoverability than hidden gestures.
+* **Filtering should rely on explicit UI controls** - Buttons or tabs provide better discoverability than hidden gestures.
 
-* **Avoid unnecessary gesture complexity**  
-  Interactions should feel predictable and consistent with familiar mobile analytic report apps.
+* **Avoid unnecessary gesture complexity** - Interactions should feel predictable and consistent with familiar mobile analytic report apps.
