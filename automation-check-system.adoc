@@ -1,0 +1,195 @@
+= Automated Check System — Scheduled Expiration & Low-Stock Sweep (Milestone 1)
+
+== 1. Executive Summary
+To support automated reminders for *low-stock* and *expired* items, the system needs a background process that periodically scans inventory data and updates item status without user interaction. This document evaluates multiple scheduling approaches and recommends a managed scheduler pattern due to reliability and observability benefits. It also defines objectively checkable requirements (with fit criteria), plus a verification/validation plan and key assumptions to resolve later.
+
+== 2. Purpose & Scope
+The purpose of the automation layer is to run a *scheduled sweep* (daily) that:
+* Detects low-stock items (quantity at/below threshold)
+* Detects expired items (today at/after expiration date)
+* Optionally detects near-expiry items (expiration within N days)
+* Persists status updates and triggers notification events
+* Records run logs/metrics for monitoring
+
+Out of scope (Milestone 1):
+* Implementing the scheduler in production
+* Implementing full notification delivery UI/UX
+* Designing the entire data model (only what is needed to express requirements)
+
+== 3. Stakeholders
+* *End User (Student):* Needs reminders to avoid wasting money and time by repurchasing items unnecessarily.
+* *Operations/Hosting Stakeholder:* Needs confidence that scheduled sweeps run reliably, and needs logs/alerts when they do not.
+
+== 4. Daily Sweep Definition
+=== 4.1 Inputs
+For each inventory item:
+* `quantity` (integer)
+* `low_stock_threshold` (integer)
+* `expiration_date` (date, optional)
+* `notification_preferences` (optional; e.g., enable/disable certain alerts)
+
+=== 4.2 Outputs
+* Persisted flags/status for each item:
+** `LOW_STOCK` (boolean)
+** `EXPIRED` (boolean)
+** `NEAR_EXPIRY` (boolean, optional)
+* Notification events (or records) generated for *new* actionable states
+* Job run record:
+** start time / end time
+** items scanned count
+** low-stock count / expired count / near-expiry count
+** errors (if any)
+
+=== 4.3 Rules
+*Low stock:* `LOW_STOCK = (quantity <= low_stock_threshold)`
+
+*Expired:* `EXPIRED = (today >= expiration_date)` when `expiration_date` exists
+
+*Near-expiry (optional):* `NEAR_EXPIRY = (expiration_date - today <= N days)` when `expiration_date` exists
+
+== 5. Scheduling Approaches Considered
+We consider three approaches to trigger the sweep on a daily schedule.
+
+=== Option A — Server-Side Cron / Dedicated Worker
+*Description:* Run a cron job (or worker process) on a VM/server to execute the sweep once per day.
+
+*Pros:*
+* Simple conceptually
+* Easy to run locally and manually for testing
+* Full control over runtime environment
+
+*Cons:*
+* Single point of failure (server down = sweep missed)
+* Requires DevOps maintenance (patching, monitoring, backups)
+* Observability and retries must be built manually
+
+*Best fit when:* The project already has a continuously running backend server and the team can manage operational burden.
+
+=== Option B — Managed Scheduler + Serverless/Hosted Function (Recommended)
+*Description:* Use a cloud-managed scheduler (cron-like) to invoke a hosted function daily that runs the sweep.
+
+*Pros:*
+* High reliability (managed service)
+* Strong observability (central logs/metrics)
+* Easier failure handling via retries + idempotent handlers
+* Scales without maintaining a dedicated server
+
+*Cons:*
+* Requires cloud/platform setup (IAM/permissions, deployment)
+* Local dev is less straightforward (needs emulator/manual trigger)
+
+*Best fit when:* The project is deployed on a cloud platform or expects to run reliably with minimal ops overhead.
+
+=== Option C — Client-Triggered Background Task (Fallback Only)
+*Description:* The client app triggers checks when opened or via device background scheduling.
+
+*Pros:*
+* Minimal backend scheduling work
+
+*Cons:*
+* Not reliable: depends on user behavior/device power/network state
+* Hard to monitor centrally
+* Does not satisfy “autonomous sweep without user interaction” well
+
+*Best fit when:* Only as a supplement to server-side scheduling, not a primary mechanism.
+
+== 6. Tradeoff Summary
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Option |Reliability |Complexity |Observability |Failure Handling |Scalability |Local Dev
+
+|A: Cron/Worker
+|Medium (server-dependent)
+|Low-Medium
+|Low (custom)
+|Low-Medium (custom)
+|Medium
+|High
+
+|B: Managed Scheduler + Function
+|High (managed)
+|Medium
+|High (built-in tooling)
+|High (retry/idempotency patterns)
+|High
+|Medium
+
+|C: Client Background
+|Low (user/device-dependent)
+|Low
+|Very Low
+|Low
+|N/A
+|Medium-High
+|===
+
+== 7. Recommendation
+*Recommended:* Option B — *Managed Scheduler + Hosted Function*.
+
+*Rationale:* It best satisfies autonomy, reliability, and observability needs while minimizing maintenance burden. Option A is acceptable if a server is guaranteed to be up continuously, but adds operational risk. Option C does not meet the autonomy requirement reliably and should only be used as an auxiliary approach.
+
+== 8. Automation Requirements (Objective + Fit Criteria)
+The following requirements are written to be testable later (fit criteria included).
+
+*REQ-AUTO-001 — Frequency*
+The system shall execute an automated sweep at least once every 24 hours.
+*Fit criterion:* A persisted “last_sweep_at” timestamp shows no gaps greater than 24 hours over a test period.
+
+*REQ-AUTO-002 — Low-Stock Correctness*
+For any item with `quantity <= low_stock_threshold`, the sweep shall mark the item as `LOW_STOCK`.
+*Fit criterion:* Given a deterministic dataset, the set of flagged items exactly matches the rule.
+
+*REQ-AUTO-003 — Expiration Correctness*
+For any item with `expiration_date` and `today >= expiration_date`, the sweep shall mark the item as `EXPIRED`.
+*Fit criterion:* Unit tests across boundary dates (day before, day of, day after) pass.
+
+*REQ-AUTO-004 — Optional Near-Expiry Correctness*
+If the near-expiry feature is enabled, for any item with `expiration_date - today <= N`, the sweep shall mark the item as `NEAR_EXPIRY`.
+*Fit criterion:* With N defined, test dataset produces correct near-expiry set.
+
+*REQ-AUTO-005 — Persistence*
+The sweep shall persist updated status flags and a per-item “last_checked_at” (or equivalent) timestamp.
+*Fit criterion:* After a sweep run, database records show updated flags and timestamps without manual UI intervention.
+
+*REQ-AUTO-006 — Observability*
+Each sweep execution shall record a run summary including start time, end time, items scanned, counts flagged, and errors.
+*Fit criterion:* A “job_runs” record (or log entry with structured fields) exists for each execution.
+
+*REQ-AUTO-007 — Failure Handling & Idempotency*
+If a sweep invocation fails or is retried, the system shall not create duplicate notification events for the same item state.
+*Fit criterion:* Simulate duplicate invocations; notification records remain unique per item per state transition.
+
+== 9. Verification & Validation Plan (Milestone 1 Level)
+=== 9.1 Verification (Are we building it right?)
+Planned checks once implementation begins:
+* Unit tests for classification rules (REQ-AUTO-002/003/004)
+* Deterministic test dataset covering edge cases:
+** threshold boundaries (`quantity == threshold`)
+** missing expiration_date
+** timezone boundary conditions (midnight)
+* Logging/metrics assertions for REQ-AUTO-006
+
+=== 9.2 Validation (Are we building the right thing?)
+Stakeholder review items:
+* Confirm “near-expiry” window (N days) and whether it's configurable
+* Confirm notification frequency expectations (no spam)
+* Confirm what “expired” means in practice (end-of-day vs start-of-day policy)
+
+== 10. Open Questions / Assumptions
+* *Timezone policy:* Are expiration comparisons in user-local time or UTC?
+* *Near-expiry definition:* What is default N and can users change it?
+* *Notification deduplication:* When do we re-notify (e.g., daily reminder vs once)?
+* *Overlapping runs:* If a run takes longer than a day, do we skip overlaps or queue next run?
+* *Data model fields:* Where do we store status flags and job run records (tables/fields TBD)?
+
+== 11. Conceptual Flow
+[mermaid]
+----
+flowchart LR
+  A[Scheduler Trigger] --> B[Run Sweep Function]
+  B --> C[Load Inventory Items]
+  C --> D[Evaluate Rules: Low Stock / Expired / Near-Expiry]
+  D --> E[Persist Flags + last_checked_at]
+  E --> F[Create Notification Events (dedup)]
+  F --> G[Record Run Summary Metrics/Logs]
+----
