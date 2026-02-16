@@ -1,0 +1,13 @@
+== 1. Informative Part
+
+include::team/team.adoc[leveloffset=+1]
+
+include::current-situation-needs-ideas/current-situation.adoc[leveloffset=+1]
+include::current-situation-needs-ideas/needs.adoc[leveloffset=+1]
+include::current-situation-needs-ideas/ideas.adoc[leveloffset=+1]
+
+include::scope-span-synopsis/scope-span.adoc[leveloffset=+1]
+include::scope-span-synopsis/synopsis.adoc[leveloffset=+1]
+
+include::other-activities/other-activities.adoc[leveloffset=+1]
+include::derived-goals/derived-goals.adoc[leveloffset=+1]

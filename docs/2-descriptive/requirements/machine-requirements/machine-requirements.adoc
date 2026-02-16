@@ -1,0 +1,17 @@
+== 2.2.6 Machine Requirements
+
+[abstract]
+Technical/system requirements and constraints (performance, security, data, integrations).
+
+=== Non-functional requirements
+* MR1 (Performance): TODO
+* MR2 (Reliability): TODO
+* MR3 (Security/Privacy): TODO
+
+=== Data requirements
+* TODO: Data stored/used
+* TODO: Data retention constraints
+* TODO: Data quality assumptions
+
+=== Integration requirements (if any)
+* TODO

@@ -1,0 +1,11 @@
+== 4.1.2 Additional Stakeholders
+
+[abstract]
+Stakeholders discovered later as the team learns more about the domain.
+
+[cols="2,3,2,3",options="header"]
+|===
+|Stakeholder |Goals / needs |Influence |Concerns / notes
+
+|TODO |TODO |High/Med/Low |TODO
+|===

@@ -1,0 +1,29 @@
+== 3.1.2 Requirements Concept Analysis
+
+[abstract]
+This section analyzes requirement-related concepts: actors, goals, capabilities, and how they map to domain concepts.
+
+=== Actors and goals (draft)
+[cols="2,4",options="header"]
+|===
+|Actor |Primary goals
+
+|TODO |TODO
+|===
+
+=== Capability map (draft)
+[cols="2,3,3",options="header"]
+|===
+|Actor |Capability needed |Domain concepts involved
+
+|TODO |TODO |TODO
+|===
+
+=== Conflicts and tradeoffs
+* TODO: Tradeoff 1 (e.g., speed vs accuracy)
+* TODO: Tradeoff 2 (e.g., flexibility vs simplicity)
+
+=== Requirement quality checks (draft)
+* Completeness: TODO (what is missing?)
+* Consistency: TODO (any contradictions?)
+* Feasibility: TODO (risks/unknowns?)

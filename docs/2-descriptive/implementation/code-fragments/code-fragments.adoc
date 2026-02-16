@@ -1,0 +1,12 @@
+== 2.3.5 Code Fragments
+
+[abstract]
+Small illustrative code snippets (optional in Milestone 1). Use only if helpful.
+
+[source]
+----
+TODO: Add a small snippet or leave this section empty for now.
+----
+
+=== Notes
+* TODO

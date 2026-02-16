@@ -1,0 +1,14 @@
+== 2.1.5 Events
+
+[abstract]
+Domain events are things that happen that matter to stakeholders (often past-tense verbs).
+
+[cols="2,2,4,3",options="header"]
+|===
+|Event |Triggered by |What changes |Related entities
+
+|TODO |TODO |TODO |TODO
+|===
+
+=== Notes
+* TODO: important event sequences

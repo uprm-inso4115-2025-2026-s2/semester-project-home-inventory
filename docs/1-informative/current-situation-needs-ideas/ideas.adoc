@@ -1,0 +1,21 @@
+== 1.2.3 Ideas
+
+[abstract]
+Outline candidate solution directions. Ideas are not commitments; they are options to address the needs.
+
+=== Idea A — <Short name>
+* Core concept: TODO
+* Needs addressed: TODO (reference N1, N2, ...)
+* Benefits: TODO
+* Risks/unknowns: TODO
+* How we will validate this idea: TODO
+
+=== Idea B — <Short name> (optional)
+* Core concept: TODO
+* Needs addressed: TODO
+* Benefits: TODO
+* Risks/unknowns: TODO
+* How we will validate this idea: TODO
+
+=== Notes
+* TODO: Any decision notes or tradeoffs so far

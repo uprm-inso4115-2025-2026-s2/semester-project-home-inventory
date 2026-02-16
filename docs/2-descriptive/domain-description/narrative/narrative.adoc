@@ -1,0 +1,17 @@
+== 2.1.3 Narrative
+
+[abstract]
+A cohesive story of how the domain works, independent of any specific software system.
+
+=== Overview
+TODO: 1–2 paragraphs describing the domain cycle (who does what, when, and why).
+
+=== Actors and artifacts
+* Actors: TODO
+* Artifacts (things that are created/changed): TODO
+
+=== Typical scenario
+TODO: Write a short scenario (6–10 sentences) showing the domain workflow end-to-end.
+
+=== Exceptions and edge cases
+* TODO

@@ -1,0 +1,8 @@
+== 3.2 Validation and Verification
+
+[abstract]
+Validation ensures we are building the right thing (meets real needs). Verification ensures we built it correctly (meets requirements/specs).
+
+include::scenarios/scenarios.adoc[leveloffset=+1]
+include::walkthroughs/walkthroughs.adoc[leveloffset=+1]
+include::testing/testing.adoc[leveloffset=+1]

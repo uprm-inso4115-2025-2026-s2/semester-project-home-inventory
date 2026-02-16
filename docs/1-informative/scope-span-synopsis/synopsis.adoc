@@ -1,0 +1,11 @@
+== 1.3.2 Synopsis
+
+[abstract]
+Write a short “elevator pitch” for the project.
+
+TODO: Write 5–8 sentences covering:
+. The domain problem in one sentence.
+. Who the primary users/stakeholders are.
+. The high-level approach (no implementation details).
+. What success looks like.
+. One key constraint/assumption.
