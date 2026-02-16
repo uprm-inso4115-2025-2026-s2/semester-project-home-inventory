@@ -1,0 +1,133 @@
+= 2.1.5 Events, Actions, and Behaviors
+Author: Jorge L. De Leon Orama
+
+
+This section presents the main events, actions, and behaviors observed in the environment of a household inventory. It clearly defines the events, actions, and behaviors that are relevant to the domain of Home Inventory.
+
+* Events: The instantaneous occurrence that marks the beginning of a new state in the system.
+* Actions: Individual acts performed by a user or system that contribute to changing the state.
+* Behaviors: Processes consisting of various small actions that together lead to an event.
+
+== Incorporation of Goods into Household Inventory
+
+=== Event 
+* The inventory now contains recorded household items.
+
+=== Actions
+* Introduction of goods into the household inventory.
+
+=== Behavior
+* The process of acquiring goods, which enter the household and become part of the inventory.
+
+
+== Maintenance of Household Inventory
+
+=== Event
+* The inventory now reflects updated information.
+
+=== Actions
+* Modification of inventory contents.
+
+=== Behavior
+* The process of keeping track of items in the inventory to maintain accurate records of household goods.
+
+== Increment of Household Inventory
+=== Event 
+*  The recorded quantity of an item has increased.
+
+=== Action
+* Addition of an already existing item to the inventory.
+
+=== Behavior
+* The process of replenishment of goods to maintain availability over time. 
+
+== Consumption and Depletion of Household Inventory
+
+=== Event
+* The recorded quantity of an item has decreased.
+
+=== Action
+* Removal of an already existing item from the inventory.
+
+=== Behavior
+* The process of consumption or usage, reducing item quantity over time.
+
+== Detection of Inventory Conditions and Needs
+
+=== Event
+* An item has reached a low-stock condition.
+
+=== Action
+* Recognition of diminished availability of an item.
+
+=== Behavior
+* The process of supply evaluation as items deplete over time.
+
+== Stock Management of Household Inventory
+
+=== Event
+* An item is now considered sufficiently stocked.
+
+=== Action
+* Recognition of adequate availability of an item.
+
+=== Behavior
+* The process of maintaining a satisfactory item quantity level over time.
+
+== Item Availability
+
+=== Event
+* An item is now no longer available.
+
+=== Action
+* Exhaustion of an item's quantity.
+
+=== Behavior
+* The process of item quantity depletion over time.
+
+== Item Expiration
+
+=== Event
+* An item is now expired.
+
+=== Action
+* Recognition of an item becoming expired.
+
+=== Behavior
+* The natural process of an item's lifecycle as time-sensitive goods move beyond their usable time period.
+
+
+== Restock Detection
+
+=== Event 
+* A need for replenishment has been identified.
+
+=== Action 
+* Recognition of an item's quantity decreasing below a defined threshold.
+
+=== Behavior
+* The process of adjusting household supplies as quantities decrease and are restored over time. 
+
+== Grocery/Restock List
+
+=== Event
+* A grocery or restock list now exists.
+
+=== Action
+* Compilation of items that require replenishing.
+
+=== Behavior
+* The process of preparing for the replenishment of household supplies as needs arise over time.
+
+== Linked Household Inventory
+
+=== Event
+* The inventory is now shared between multiple people.
+
+=== Action
+* Establishment of shared access to the inventory.
+
+=== Behavior
+* The process of coordinating inventory information among multiple participants as shared resources are collectively maintained over time.
+
+
