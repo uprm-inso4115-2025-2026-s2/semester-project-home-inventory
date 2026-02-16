@@ -116,7 +116,24 @@ Domain events are things that happen that matter to stakeholders (often past-ten
 |Triggered by a User requesting a Spending Report. 
 |The User now has access to a report summarizing their spending based on recorded purchases. 
 |User, Spending Tracker, Items.
-
 |===
+
+=== Important Event Sequences
+
+* A purchase has been recorded. -> Spending totals have changed.
+
+* An Item has been created. -> A User Inventory has been generated. -> Updated information has been reflected in the User Inventory.
+
+* An Item's metadata has been updated. -> Updated information has been reflected in the User Inventory.
+
+* An Item has been added to the User Inventory. -> The recorded quantity of an Item in the User Inventory has increased. -> An Item has been considered sufficiently stocked.
+
+* An Item has been removed from the User Inventory. -> The recorded quantity of an Item in the User Inventory has decreased. -> An Item in the User Inventory has reached a low-stock condition. -> A low-stock alert has been issued.
+
+* An Item has neared its expiration date. -> An expiration alert has been issued.
+
+* An Item has become an unavailable Item. -> A Restock Planner has been created. -> A Restock Planner has been updated.
+
+
 
 
