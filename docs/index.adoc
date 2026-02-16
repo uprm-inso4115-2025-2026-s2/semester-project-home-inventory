@@ -4,7 +4,7 @@
 :sectnums:
 :sectnumlevels: 4
 
-include::1-informative\1.adoc[]
-include::2-descriptive\2.adoc[]
-include::3-analytic\3.adoc[]
-include::4-specific-topics\4.adoc[]
+include::1-informative/1.adoc[]
+include::2-descriptive/2.adoc[]
+include::3-analytic/3.adoc[]
+include::4-specific-topics/4.adoc[]
