@@ -209,7 +209,7 @@ Navigation between report views follows predictable models:
 * Static graphs are common when precise manipulation is unnecessary, the goal being to show data to the user.
 * Drag interactions are favored when users need to inspect continuous data.
 
-== Recommendations for Project
+== Recommendations for the Project
 
 Based on the observed interaction patterns:
 
