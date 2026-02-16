@@ -1,9 +1,9 @@
 = Domain Acquisition: Literature Review & Elicitation Studies
 
 
-====
+
 **AI Disclosure:** Portions of this literature review and domain research were synthesized with the assistance of Artificial Intelligence tools. The core concepts, validation of sources, and final domain model decisions were verified by the human author, @jankii03.
-====
+
 
 toc::[]
 
@@ -20,64 +20,57 @@ Use this list to identify standards for categorization and asset valuation, sinc
 ** *Relevance:* Validates the goal of "Tracking spending" and "Managing the budget". Research here supports the idea that manual inventory tracking acts as a "commitment device" for sticking to a budget, which is essential for the target demographic of students.
 
 == Domain Literature Review 
-Summaries of key texts to justify system logic, specifically addressing the challenges of manual data entry.
+Summaries of key texts to justify system logic, specifically addressing the challenges of manual data entry and the synchronization burden.
 
-=== "Personal Information Management (PIM)" 
-* **Core Finding:** The "Fragmentation Problem." Users struggle when their items are physical but the tracking is digital. The mental effort to manually bridge this gap is high.
-* **Application to Project:** Since "juggling classes, work, and personal problems does not leave a lot of time", the UI must use "Smart Defaults" and "Autocomplete" to reduce cognitive load. If a user types "Mil...", the system should suggest "Milk - Expiring in 7 days" based on common data, rather than forcing them to type everything.
+=== Personal Information Management (PIM) 
+* **Core Finding:** Users struggle when items are physical but tracking is digital. The mental effort to bridge this gap in real-time is the primary cause of system abandonment.
+* **Application to Project:** To minimize the synchronization burden for busy students, the design must move away from real-time micro-updates.
+** *Periodic Reconciliation:* Implement a Weekly Inventory Snapshot. Instead of tracking every glass of milk, the app prompts a batch update to align digital records with physical reality.
+** *Event-Driven Triggers:* By leveraging location services, the app can trigger a notification when the user is at a grocery store: "You're at Selectos. Do you need to move 'Milk' from 'Empty' to 'Full'?" This shifts the burden from memory to environmental cues.
 
-=== "Household Food Waste Patterns" 
-* **Core Finding:** Students fail to track inventory because they lack "situational visibility." They don't know what they have until they open the cupboard.
-* **Application to Project:** Supports the "Problem Background" regarding students relying on memory, which leads to purchasing duplicates. The app must serve as the "external memory."
+=== Household Food Waste Patterns 
+* **Core Finding:** Students fail to track inventory because they lack situational visibility. They don't know what they have until they open the cupboard.
+* **Application to Project:** The app must act as an external memory. By providing a digital mirror of the cupboard, it reduces double-buying caused by memory lapses during high-stress academic periods.
 
-=== "The Endowment Effect in Asset Management" 
+=== The Endowment Effect in Asset Management
 * **Core Finding:** Owners overvalue items they manually track.
-* **Application to Project:** By forcing students to manually enter items, they may become more conscious of waste and spending. This supports the "Countermeasure" of avoiding unnecessary spending.
+* **Application to Project:** Manual entry, while a friction point, serves as a Commitment Device. By interacting with the item's cost during entry, students become more conscious of waste, supporting the project goal of budget management.
 
 == Research Note Cards
-Discrete facts formatted for your Domain Model.
+Discrete facts formatted for the domain model.
 
-.RN-001: Manual Entry Friction & Abandonment
-****
+**RN-001: Manual Entry Friction & Abandonment**
+
 * **Category:** Stakeholder Behavior
 * **Fact:** In manual data entry systems, every additional field reduces user retention.
-* **Implication for App:** You cannot force the user to fill out every field for a simple item. The system must support "Minimum Viable Entry" to ensure students actually use it.
-****
+* **Implication for App:** Support minimum viable entry. A user should be able to log an item with just a name and status in under three seconds to prevent abandonment.
 
-.RN-002: Subjective Categorization
-****
+
+**RN-002: Subjective Categorization**
+
 * **Category:** Intrinsic
-* **Fact:** Without standardized barcodes, categorization becomes subjective. One user puts "Batteries" in "Electronics," another in "Utility Drawer."
-* **Implication for App:** The "Category" and "Location" filters mentioned in the countermeasures must be user-editable or allow for multi-tagging.
-****
+* **Fact:** Without standardized barcodes, categorization is subjective, like "Batteries" in "Electronics" vs. "Utility".
+* **Implication for App:** Use a "Multi-Tagging" system rather than a rigid folder hierarchy, allowing items to exist in multiple logical locations.
 
-.RN-003: Expiration Heuristics
-****
-* **Category:** Support Technology
-* **Fact:** Users rarely manually calculate expiration dates during data entry.
-* **Implication for App:** To support the "Automated notifications and reminders" requirement, the system needs a lookup table of "Average Shelf Life." When a user types "Milk," the app should auto-suggest "Expires: +7 Days," allowing the user to simply confirm or tweak it.
-****
 
-.RN-004: Stockout vs. Capital Constraint
-****
-* **Category:** Intrinsic
-* **Fact:** Students face a "working capital constraint".
-* **Implication for App:** The "Track Spending" feature is critical. The app should visualize the "Total Value" of the inventory to show the user how much cash is "sitting on the shelf," helping them "manage the budget".
-****
+**RN-003: Prospective Memory & Cues**
+
+* **Category:** Cognitive Psychology
+* **Fact:** Task execution is higher when linked to an environmental cue as Location/Time, rather than abstract intention.
+* **Implication for App:** Replace the "always-on" tracking requirement with specific "Triggered Sessions" to capture data when the user is already in a "management" mindset.
+
 
 == Identified Inconsistencies & Abstractions
 
-=== Abstraction
-* **Observation:** In a manual system, tracking specific quantities is tedious.
-* **Why:** Users will not open the app to update that they drank a glass of juice.
-* **Recommendation:** Use broad "States" instead of strict integers for consumables.
-** *Bad:* Quantity: 0.5 Gallons.
-** *Good:* Status: Full -> Open -> Low -> Empty.
+=== State-Based Tracking
+* **Observation:** Tracking specific volumes in a manual system is a "High-Friction" task that students will ignore.
+* **Recommendation:** Use broad **States** instead of integers for consumables.
+** *Target UX:* Status: Full -> Open -> Low -> Empty.
 
 === Inconsistency
-* **Observation:** The A3 requests "Automated notifications... when a specific item is low".
-* **Reality Check:** Without sensors or scanners, the system cannot know an item is low unless the user manually opens the app and tells it.
-* **Refined Requirement:** The notification logic should likely be Time-Based. For example, "You bought bread 5 days ago, check if it's low", rather than Quantity-Based, as the app has no real-time visibility into the physical usage.
+* **Observation:** The project requests "Automated notifications when an item is low," but a manual system has no real-time visibility.
+* **Refined Requirement:** Move from Quantity-Based alerts to Probability-Based or Event-Based alerts.
+** *Example:* "It has been 6 days since you bought Bread; it is likely Low or Expired. Please verify."
 
 == References
 
