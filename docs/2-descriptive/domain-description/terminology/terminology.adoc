@@ -1,0 +1,19 @@
+== 2.1.2 Terminology
+
+[abstract]
+Define the domain’s ubiquitous language. Use one preferred term per concept.
+
+[cols="2,2,4,2",options="header"]
+|===
+|Term |Type |Definition |Synonyms / notes
+
+|TODO |Entity/Event/Action/Rule |TODO |TODO
+|===
+
+=== Naming rules
+* Prefer one official term per concept (avoid synonyms in main text).
+* If synonyms exist, list them but choose one official term.
+* Use consistent capitalization and pluralization.
+
+=== Open questions / disputed terms
+* TODO

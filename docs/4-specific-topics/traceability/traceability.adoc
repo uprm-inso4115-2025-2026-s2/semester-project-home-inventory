@@ -1,0 +1,15 @@
+== Traceability
+
+[abstract]
+Traceability links needs → requirements → user stories → concepts (and later, tests). This helps ensure completeness and consistency.
+
+=== Traceability matrix (draft)
+[cols="1,3,3,3,3",options="header"]
+|===
+|Need ID |Need statement |Requirement(s) |User story/stories |Concept(s)
+
+|N1 |TODO |DR1, MR1 |US-Feature-01 |Concept A, Concept B
+|===
+
+=== Gaps and action items
+* TODO: Missing mappings (needs without stories, stories without needs, etc.)

@@ -1,0 +1,23 @@
+== 3.2.2 Walkthroughs
+
+[abstract]
+Walkthroughs validate assumptions by stepping through scenarios with stakeholders or team members.
+
+=== Walkthrough plan
+* Participants: TODO
+* Materials: TODO (screens, diagrams, story list)
+* Method: TODO (think-aloud, structured questions, etc.)
+
+=== Walkthrough questions (draft)
+* TODO: What is confusing or unclear?
+* TODO: Does this workflow match your real process?
+* TODO: What would you expect to happen next?
+* TODO: What would make you not use this?
+
+=== Findings (to fill after walkthroughs)
+[cols="2,4,3",options="header"]
+|===
+|Finding |Evidence |Impact / action
+
+|TODO |TODO |TODO
+|===
