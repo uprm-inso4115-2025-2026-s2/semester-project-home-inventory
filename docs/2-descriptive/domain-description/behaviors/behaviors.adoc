@@ -1,0 +1,15 @@
+== 2.1.7 Behaviors
+
+[abstract]
+Recurring behaviors or rules in the domain: patterns, policies, and “how things are done.”
+
+=== Behavior patterns
+* TODO: Pattern 1 (who does it, when, why)
+* TODO: Pattern 2
+
+=== Domain rules (if known)
+* TODO: Rule 1 (“must always be true”)
+* TODO: Rule 2
+
+=== Edge cases
+* TODO

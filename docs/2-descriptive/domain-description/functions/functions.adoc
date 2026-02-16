@@ -1,0 +1,14 @@
+== 2.1.6 Functions
+
+[abstract]
+Major domain functions/capabilities (what the domain must be able to do), not UI features.
+
+[cols="2,4,3",options="header"]
+|===
+|Function |Description |Primary actors
+
+|TODO |TODO |TODO
+|===
+
+=== Notes
+* TODO: how these functions connect to needs (N1, N2...)

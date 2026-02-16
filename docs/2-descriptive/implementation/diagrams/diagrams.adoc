@@ -1,0 +1,10 @@
+== 2.3.3 Diagrams
+
+[abstract]
+List and explain diagrams (architecture diagrams, flow diagrams, ER diagrams, etc.).
+
+=== Diagram inventory
+* TODO: Diagram name — what it shows — where the image/file lives
+
+=== Notes
+* TODO

@@ -1,0 +1,33 @@
+== 1.2.2 Needs
+
+[abstract]
+List the needs of the domain stakeholders. Phrase needs as outcomes/capabilities, not features.
+
+=== Needs by actor group
+
+==== Actor group: <Name>
+* Need N1: TODO
+* Need N2: TODO
+* Need N3: TODO
+
+==== Actor group: <Name>
+* Need N4: TODO
+* Need N5: TODO
+
+=== Prioritized needs (draft)
+[cols="1,4,2,3",options="header"]
+|===
+|ID |Need statement |Priority |Rationale (tie to pain points)
+
+|N1 |TODO |High/Med/Low |TODO
+|N2 |TODO |High/Med/Low |TODO
+|===
+
+=== Quality needs (non-functional)
+* TODO: Usability
+* TODO: Reliability
+* TODO: Performance
+* TODO: Privacy/security (if applicable)
+
+=== Open questions
+* TODO

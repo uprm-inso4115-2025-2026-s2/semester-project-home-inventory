@@ -1,0 +1,41 @@
+== 1.2.1 Current Situation
+
+[abstract]
+Describe the domain as it exists today (before our solution): actors, workflows, and pain points.
+
+=== Domain context
+TODO: 1–2 short paragraphs describing the problem space and why it matters.
+
+=== Who is involved (actors)
+* TODO: Primary actors
+* TODO: Secondary actors
+* TODO: Organizations/systems involved (if any)
+
+=== Current workflow (as-is)
+. TODO: Step 1
+. TODO: Step 2
+. TODO: Step 3
+. TODO: Common variations or edge cases
+
+=== Pain points
+[cols="2,3,3",options="header"]
+|===
+|Pain point |Who experiences it |Evidence / example
+
+|TODO |TODO |TODO
+|===
+
+=== Consequences
+* TODO: Time/cost impact
+* TODO: Quality/accuracy impact
+* TODO: User experience impact
+* TODO: Organizational impact (if relevant)
+
+=== Assumptions and constraints (as-is)
+* TODO: Assumption 1
+* TODO: Constraint 1
+
+[NOTE]
+====
+Keep this section solution-free. It should describe the world today, not what we plan to build.
+====

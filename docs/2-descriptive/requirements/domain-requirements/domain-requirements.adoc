@@ -1,0 +1,12 @@
+== 2.2.4 Domain Requirements
+
+[abstract]
+Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology.
+
+* DR1: TODO
+* DR2: TODO
+* DR3: TODO
+
+=== Rationale / trace
+* DR1 supports need(s): TODO (N1, N2)
+* DR2 supports need(s): TODO

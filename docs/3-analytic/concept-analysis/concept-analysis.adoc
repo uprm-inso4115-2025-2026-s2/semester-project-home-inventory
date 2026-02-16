@@ -1,0 +1,6 @@
+== 3. Analytic Part
+
+// This file assembles all section files in the "3-analytic" part.
+
+include::concept-analysis/concept-analysis.adoc[leveloffset=+1]
+include::validation-verification/validation-verification.adoc[leveloffset=+1]

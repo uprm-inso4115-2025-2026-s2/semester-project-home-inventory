@@ -1,0 +1,12 @@
+== 2.1 Domain Description
+
+// This section describes the domain in a concrete, structured way.
+
+include::rough-sketch/rough-sketch.adoc[leveloffset=+1]
+include::terminology/terminology.adoc[leveloffset=+1]
+include::narrative/narrative.adoc[leveloffset=+1]
+
+include::entities/entities.adoc[leveloffset=+1]
+include::events/events.adoc[leveloffset=+1]
+include::functions/functions.adoc[leveloffset=+1]
+include::behaviors/behaviors.adoc[leveloffset=+1]

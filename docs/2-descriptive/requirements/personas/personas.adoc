@@ -1,0 +1,10 @@
+== 2.2.7 Personas (Reference)
+
+[abstract]
+This file is optional because personas also appear under 4-specific-topics. Choose one “source of truth.”
+
+TODO: Either:
+. Leave this file empty and reference the main personas section, or
+. Place brief persona summaries here and keep full personas in 4-specific-topics.
+
+See: include::../../4-specific-topics/personas/personas.adoc[]

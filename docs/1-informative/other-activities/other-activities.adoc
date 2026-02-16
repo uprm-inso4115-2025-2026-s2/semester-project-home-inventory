@@ -1,0 +1,19 @@
+== 1.4 Other Activities than Just Developing Source Code
+
+[abstract]
+Describe project activities beyond coding (planning, coordination, documentation, validation, etc.).
+
+=== Documentation and communication
+* TODO: docs-as-code workflow (PRs, reviews)
+* TODO: meeting notes / decision logs
+* TODO: terminology alignment across teams
+
+=== Project planning and coordination
+* TODO: issue tracking and milestones
+* TODO: roles and responsibilities
+* TODO: risk tracking
+
+=== Quality planning
+* TODO: validation plans (users/stakeholders)
+* TODO: verification plans (tests, reviews)
+* TODO: definition of done criteria

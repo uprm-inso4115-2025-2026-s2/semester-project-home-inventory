@@ -1,0 +1,13 @@
+== 2.1.1 Domain Rough Sketch
+
+[abstract]
+Raw, unprocessed domain notes and examples. Organize by feature team if helpful.
+
+=== Feature: <Feature name>
+* Observation/quote: TODO (who/where it came from)
+* Example: TODO (a realistic example)
+* Edge case: TODO
+* Open question: TODO
+
+=== Feature: <Feature name>
+* TODO
