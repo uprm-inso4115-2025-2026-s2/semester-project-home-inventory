@@ -1,0 +1,10 @@
+== 2.3 Implementation
+
+[abstract]
+This section describes initial implementation plans and artifacts (architecture, design, diagrams, UI concepts). For Milestone 1, this is often a plan, not full implementation.
+
+include::software-architecture/software-architecture.adoc[leveloffset=+1]
+include::software-design/software-design.adoc[leveloffset=+1]
+include::diagrams/diagrams.adoc[leveloffset=+1]
+include::screen-designs/screen-designs.adoc[leveloffset=+1]
+include::code-fragments/code-fragments.adoc[leveloffset=+1]

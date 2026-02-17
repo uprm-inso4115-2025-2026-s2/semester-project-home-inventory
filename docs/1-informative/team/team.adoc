@@ -1,0 +1,40 @@
+== 1.1 Team
+
+[abstract]
+Introduce the team structure and roles for the project and justify partner participation.
+
+=== Partner justification
+TODO: 2–4 sentences explaining why all members are partners (or note any external partners and their role).
+
+=== Documentation Leads
+[cols="1,1,2",options="header"]
+|===
+|Name |GitHub |Responsibilities
+
+|TODO |@TODO |TODO
+|===
+
+=== Feature Teams
+==== Feature Team: <Name>
+[cols="1,1,2",options="header"]
+|===
+|Name |GitHub |Responsibilities
+
+|TODO |@TODO |TODO
+|===
+
+=== Design Team
+[cols="1,1,2",options="header"]
+|===
+|Name |GitHub |Responsibilities
+
+|TODO |@TODO |TODO
+|===
+
+=== Managers (if applicable)
+[cols="1,1,2",options="header"]
+|===
+|Name |GitHub |Responsibilities
+
+|TODO |@TODO |TODO
+|===

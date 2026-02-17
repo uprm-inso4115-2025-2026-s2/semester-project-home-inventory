@@ -1,0 +1,24 @@
+== 3.2.1 Scenarios
+
+[abstract]
+Scenarios describe realistic end-to-end situations in the domain and how users expect things to work.
+
+=== Scenario S1 — <Short name>
+* Persona/actor: TODO
+* Context: TODO
+* Trigger: TODO
+
+.Steps
+. TODO: Step 1
+. TODO: Step 2
+. TODO: Step 3
+
+.Expected outcome
+* TODO
+
+.Related needs / stories
+* Needs: TODO (N1, N2)
+* User stories: TODO (US-...)
+
+=== Scenario S2 — <Short name> (optional)
+* TODO

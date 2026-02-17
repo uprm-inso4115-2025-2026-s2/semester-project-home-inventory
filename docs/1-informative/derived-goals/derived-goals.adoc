@@ -1,0 +1,18 @@
+== 1.5 Derived Goals
+
+[abstract]
+State goals that logically follow from the current situation and needs. Make them measurable when possible.
+
+=== Goals
+* G1: TODO (clear outcome)
+* G2: TODO
+* G3: TODO
+
+=== How we will measure success (draft)
+[cols="2,4",options="header"]
+|===
+|Goal |Possible measure
+
+|G1 |TODO
+|G2 |TODO
+|===

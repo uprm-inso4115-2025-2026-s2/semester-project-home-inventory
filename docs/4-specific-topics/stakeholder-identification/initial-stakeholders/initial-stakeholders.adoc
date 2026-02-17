@@ -1,0 +1,19 @@
+== 4.1.1 Initial Stakeholders
+
+[abstract]
+Initial set of stakeholders identified at the start of the project.
+
+[cols="2,3,2,3",options="header"]
+|===
+|Stakeholder |Goals / needs |Influence |Concerns / notes
+
+|TODO |TODO |High/Med/Low |TODO
+|===
+
+=== Stakeholder categories (optional)
+* Primary stakeholders: TODO
+* Secondary stakeholders: TODO
+* External stakeholders: TODO
+
+=== Open questions
+* TODO

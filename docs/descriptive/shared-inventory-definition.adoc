@@ -1,0 +1,136 @@
+== Shared Inventory Definition
+
+== Objective
+
+Define how the shared inventory behaves end-to-end (data model + expected user behavior) so implementation decisions are consistent.
+
+The purpose of this document is to define and describe:
+
+- Ownership and sharing models
+- Expected system behaviors when users interact with shared inventories
+- Scenario-Based Expected Household Behaviors
+- Item interaction rules
+
+== Core Concepts
+
+=== Household
+
+A *household* represents a grouping of users that share or manage one or more inventories. A household may consist of a single user or multiple members. Each household must have:
+
+- Owner (creator)
+
+can have:
+
+- Members list with roles (Owner, Member, Guest)
+- Shared inventory visibility
+
+=== Inventory
+
+An *inventory* is a collection of stock entries associated with a household or an individual user. The term inventory will be all encompassing for both shared and personal inventories, with the distinction being ownership and visibility.
+
+=== Roles
+
+Roles determine what actions a user can perform:
+
+* Owner
+** Invite or remove members
+** Change permissions
+** Delete household
+
+* Member
+** Add / edit / delete items
+** View shared inventory
+
+* Guest (optional)
+** View only
+
+*Note*: Owners possess Member permissions in addition to Owner-specific ones.
+
+== Ownership Models
+
+=== Group-Owned Inventory
+
+- All items belong to the household.
+- Members with the right permissions can modify stock entries.
+
+This Ownership Model is best suited for roommates or families.
+
+=== User-Owned Within Group
+
+- Items are tagged with individual owners.
+- Shared visibility, but existing modification restrictions.
+
+This ownership model is best suited for budgeting or accountability scenarios.
+
+== Scenario-Based Expected Household Behaviors
+
+=== Household Creation
+
+When a user creates a household:
+- They automatically become Owner.
+- An empty inventory is initialized.
+- Sharing is suggested but not required at creation.
+- Default permissions are assigned.
+
+=== User Joins Household
+
+- Shared inventory becomes visible immediately.
+- User inherits current Member permissions (default if no permissions have been assigned by Owner).
+- Existing items remain unchanged.
+
+=== User Leaves Household
+
+- User loses editing rights.
+- Member stock ownership deletion or transfer is required before exit.
+- If the Owner leaves, ownership can be transferred or the household can be deleted.
+
+== Item Interaction Rules
+
+=== Add Item
+
+- Item is added to the shared inventory.
+- Owner tag may be assigned depending on ownership model.
+- Visible to all household members in real time.
+
+=== Edit Item
+
+- Allowed based on role permissions.
+- Changes are visible instantly to all members.
+
+=== Delete Item
+
+- Requires confirmation.
+- Logged for history purposes (visibility of deleted items can be modified by Owner).
+
+== Visibility Rules
+
+- All members can view shared inventory unless restricted by role.
+- Guests (if enabled) have read-only access.
+- Personal inventories remain private unless explicitly shared.
+
+== Technical Implementation Overview
+
+=== Data Relationships
+
+- One Household → One or more Inventories (shared or personal)
+- One Inventory → Many Stock Entries
+- Optional: Stock Entry → Owner User ID
+
+=== Permission Enforcement
+
+- Access and permissions will be Role-based.
+- Server-side validation required for add/edit/delete actions.
+- Client UI should reflect role restrictions but not replace backend validation.
+
+=== Real-Time Updates
+
+- Inventory changes should be notified to all household Members in real time.
+- All connected household members receive updates instantly.
+
+== Summary Rules
+
+. A household contains at least one Member and any amount of inventories.
+. Roles determine editing capabilities.
+. Ownership tags are optional but supported.
+. Join/leave events must preserve data integrity.
+. Real-time synchronization is expected.

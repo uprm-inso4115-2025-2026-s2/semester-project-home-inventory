@@ -1,0 +1,44 @@
+== 4.2 Personas
+
+[abstract]
+Personas represent key user/stakeholder types. Aim for 3–4 personas. Each persona includes goals, frustrations, behaviors, and a short scenario.
+
+=== Persona 1 — <Name>
+* Role / stakeholder type: TODO
+* Background / context: TODO
+* Goals:
+** TODO
+** TODO
+* Frustrations / pain points:
+** TODO
+** TODO
+* Typical behaviors:
+** TODO
+* Constraints (time, tools, policies, environment):
+** TODO
+* Scenario:
+TODO: 5–8 sentences describing a realistic situation in the current domain and what success looks like.
+
+=== Persona 2 — <Name>
+* Role / stakeholder type: TODO
+* Background / context: TODO
+* Goals: TODO
+* Frustrations: TODO
+* Behaviors: TODO
+* Constraints: TODO
+* Scenario: TODO
+
+=== Persona 3 — <Name> (optional)
+* TODO
+
+=== Persona 4 — <Name> (optional)
+* TODO
+
+=== Persona-to-needs trace (recommended)
+[cols="2,4",options="header"]
+|===
+|Persona |Key needs (IDs)
+
+|Persona 1 |N1, N2, N3
+|Persona 2 |N2, N4
+|===

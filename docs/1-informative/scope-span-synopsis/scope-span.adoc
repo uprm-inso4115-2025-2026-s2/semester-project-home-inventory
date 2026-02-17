@@ -1,0 +1,24 @@
+== 1.3.1 Scope and Span
+
+[abstract]
+Define what the project will cover (scope) and the breadth/boundaries of where it applies (span).
+
+=== Scope (in scope)
+* TODO: In-scope item 1
+* TODO: In-scope item 2
+* TODO: In-scope item 3
+
+=== Out of scope (for now)
+* TODO: Out-of-scope item 1
+* TODO: Out-of-scope item 2
+
+=== Span (boundaries and breadth)
+* Target users: TODO
+* Target environment/context: TODO
+* Scale assumptions (volume, number of users, frequency): TODO
+* Operational constraints (policies, time, tools): TODO
+* Expected evolution (what might expand later): TODO
+
+=== Risks and dependencies
+* Risks: TODO
+* Dependencies: TODO (data, stakeholders, tools)

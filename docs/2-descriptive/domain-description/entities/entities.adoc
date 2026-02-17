@@ -1,0 +1,14 @@
+== 2.1.4 Entities
+
+[abstract]
+Key domain entities (nouns) and their attributes.
+
+[cols="2,4,4",options="header"]
+|===
+|Entity |Description |Key attributes
+
+|TODO |TODO |TODO
+|===
+
+=== Notes
+* TODO: entity relationships (high-level)

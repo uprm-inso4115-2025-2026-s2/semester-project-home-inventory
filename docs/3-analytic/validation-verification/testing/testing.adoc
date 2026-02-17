@@ -1,0 +1,28 @@
+== 3.2.3 Testing
+
+[abstract]
+Testing is the primary verification mechanism. For Milestone 1, describe the test strategy and initial test ideas.
+
+=== Verification strategy (draft)
+* Code review: TODO
+* Automated tests: TODO
+* Manual checks: TODO
+
+=== Test types
+* Unit tests: TODO
+* Integration tests: TODO
+* End-to-end tests: TODO
+* UI tests (if applicable): TODO
+
+=== Initial test cases (draft)
+[cols="2,3,3",options="header"]
+|===
+|Test case |What it verifies |Related requirement/story
+
+|TODO |TODO |TODO
+|===
+
+=== Definition of Done (draft)
+* TODO: Code meets acceptance criteria
+* TODO: Tests pass
+* TODO: Documentation updated
