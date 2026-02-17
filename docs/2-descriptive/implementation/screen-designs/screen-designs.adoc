@@ -1,0 +1,14 @@
+== 2.3.4 Screen Designs
+
+[abstract]
+Early UI concepts or wireframes (even rough). Focus on user flows, not polish.
+
+=== Key user flows
+* TODO: Flow 1 — steps — purpose
+* TODO: Flow 2
+
+=== Wireframes / mockups
+* TODO: Link or embed images if available
+
+=== Usability notes
+* TODO

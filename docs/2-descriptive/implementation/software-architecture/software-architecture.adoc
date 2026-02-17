@@ -1,0 +1,21 @@
+== 2.3.1 Software Architecture
+
+[abstract]
+High-level architecture: major components, responsibilities, and interactions.
+
+=== Architecture overview
+TODO: 1–2 paragraphs describing the overall approach.
+
+=== Components (draft)
+[cols="2,4,3",options="header"]
+|===
+|Component |Responsibility |Interfaces / dependencies
+
+|TODO |TODO |TODO
+|===
+
+=== Data flow (draft)
+* TODO: how data moves through the system
+
+=== Risks and open questions
+* TODO

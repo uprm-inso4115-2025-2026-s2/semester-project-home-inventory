@@ -1,0 +1,142 @@
+== 2.1.5 Events
+
+[abstract]
+Domain events are things that happen that matter to stakeholders (often past-tense verbs).
+
+[cols="2,2,4,3",options="header"]
+|===
+|Event |Triggered by a |What changes |Related entities
+
+|A purchase has been recorded. 
+|Triggered by the Occupant recording a purchase of an Item that they include in their Inventory. 
+|The purchase is now reflected in the Spending Tracker. 
+|Occupant, Spending Tracker, Item.
+
+|Spending totals have changed. 
+|Triggered by the recording of a purchase or the deletion of a recorded purchase. 
+|The Spending Tracker now reflects updated spending totals. 
+|Occupant, Spending Tracker.
+
+|An Item has been created. 
+|Triggered by a Occupant registering a new Item. 
+|The Inventory now contains a recorded Item, and the Item can be Searched/Filtered. 
+|Occupant, Inventory, Item.
+
+|An Item's metadata has been updated. 
+|Triggered by a Occupant modifying the metadata of an existing Item or the Item reaching its expiration date. 
+|The Item's metadata is now updated, and the Inventory reflects the updated information. 
+|Occupant, Inventory, Item.
+
+|A Inventory has been generated. 
+|Triggered by an addition of an Item to the Inventory for the first time.
+|The Inventory now reflects the presence of a new Item.
+|Inventory, Item.
+
+|Updated information has been reflected in the Inventory. 
+|Triggered by a modification of inventory contents. 
+|The Inventory now reflects the updated information. 
+|Inventory, Item.
+
+|The recorded quantity of an Item in the Inventory has increased. 
+|Triggered by an addition of an already existing Item to the inventory. 
+|The Inventory now reflects an increase in the recorded quantity of an Item. 
+|Inventory, Item.
+
+|An Item has been considered sufficiently stocked. 
+|Triggered by a recognition of adequate availability of an Item. 
+|The Inventory now reflects the sufficient stock status of an Item. 
+|Occupant, Inventory, Item.
+
+|The recorded quantity of an Item in the Inventory has decreased. 
+|Triggered by a removal of an already existing Item from the Inventory. 
+|The Inventory now reflects a decrease in the recorded quantity of an Item. 
+|Inventory, Item.
+
+|An Item in the Inventory has reached a low-stock condition. 
+|Triggered by a recognition of an Item's quantity falling below a defined threshold. 
+|The Item is flagged as low-stock in the Inventory,and Item is included in the Restock Planner. 
+|Occupant, Inventory, Item, Restock Planner.
+
+|A low-stock alert has been issued.
+|Triggered by a recognition of an Item reaching a Low-stock condition. 
+|The Occupant is alerted of the low-stock condition of an Item. 
+|Occupant, Item.
+
+|An Item has neared its expiration date. 
+|Triggered by a recognition of an Item nearing its expiration date. 
+|The Occupant is now alerted that an Item is nearing its expiration date, the Inventory reflects the nearing expiration status. 
+|Occupant, Item, Inventory.
+
+|An Item has been expired. 
+|Triggered by a recognition of an Item reaching its expiration date. 
+|The Inventory reflects the expired status.
+|Occupant, Inventory, Item. 
+
+|An expiration alert has been issued. 
+|Triggered by a recognition of an Item becoming expired. 
+|The Occupant is alerted of the expired status of an Item. 
+|Occupant, Item.
+
+|An Item has become an unavailable Item. 
+|Triggered by a recognition of an Item becoming unavailable. 
+|The Inventory reflects the unavailability, and reflects the unavailable item in the Restock Planner. 
+|Occupant, Inventory, Item, Restock Planner.
+
+|A Restock Planner has been created. 
+|Triggered by a compilation of Items that require replenishing. 
+|The Occupant now has a record of Items that need to be restocked. 
+|Occupant, Inventory, Item, Restock Planner.
+
+|An Item in the Restock Planner has been marked as fulfilled. 
+|Triggered by a recognition of an Item being replenished. 
+|The Restock Planner now reflects an updated status for the Item. 
+|Occupant, Restock Planner, Item.
+
+|A Restock Planner has been updated.
+|Triggered by changes in the status of Items that require replenishing. 
+|The Occupant now has an updated record of Items that need to be restocked (Restock Planner). 
+|Occupant, Inventory, Item, Restock Planner.
+
+|The Inventory is now shared between multiple Occupants. 
+|Triggered by an establishment of shared access to the Inventory. 
+|The Inventory is now accessible to multiple Occupants, and reflects shared information, including the Restock Planner. 
+|Occupant, Inventory, Restock Planner
+
+|The shared relationship of the Inventory has been revoked. 
+|Triggered by any Occupant revoking shared access to the Inventory. 
+|The Occupant who revoked shared access to the Inventory no longer sees updates done by other Occupants on the Inventory, reflecting information specific to the individual Occupant. 
+|Occupant, Inventory, Restock Planner.
+
+|An Inventory Summary Report has been generated. 
+|Triggered by a Occupant requesting an Inventory Summary Report. 
+|The Occupant now has access to a report summarizing the contents of a Inventory. 
+|Occupant, Inventory.
+
+|A Spending Report has been generated. 
+|Triggered by a Occupant requesting a Spending Report. 
+|The Occupant now has access to a report summarizing their spending based on recorded purchases. 
+|Occupant, Spending Tracker, Items.
+|===
+
+=== Important Event Sequences
+
+* A purchase has been recorded. -> Spending totals have changed.
+
+* An Occupant Creates their first Item -> An Inventory has been generated. -> Updated information has been reflected in the Inventory. 
+
+* An Item has been created. -> Updated information has been reflected in the Inventory.
+
+* An Item's metadata has been updated. -> Updated information has been reflected in the Inventory.
+
+* An Item has been added several times to the Inventory. -> The recorded quantity of an Item in the Inventory has increased. -> An Item has been considered sufficiently stocked.
+
+* An Item has been removed from the Inventory. -> The recorded quantity of an Item in the Inventory has decreased. -> An Item in the Inventory has reached a low-stock condition. -> A low-stock alert has been issued.
+
+* An Item has neared its expiration date. -> An expiration alert has been issued.
+
+* An Item has become an unavailable Item for the first time. -> A Restock Planner has been created. -> A Restock Planner has been updated.
+
+* An Item has become an unavailable Item. -> A Restock Planner has been updated.
+
+
+

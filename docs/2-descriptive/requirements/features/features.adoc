@@ -1,0 +1,11 @@
+== 2.2.2 Features
+
+[abstract]
+A feature-level view of the solution (groupings of user stories). This is a draft list for Milestone 1.
+
+[cols="2,4,3",options="header"]
+|===
+|Feature |What it enables |Related stories
+
+|TODO |TODO |US-<Feature>-01, US-<Feature>-02
+|===

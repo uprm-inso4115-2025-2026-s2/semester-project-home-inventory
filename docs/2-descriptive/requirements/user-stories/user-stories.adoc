@@ -1,0 +1,30 @@
+== 2.2.1 User Stories
+
+[abstract]
+Initial user stories organized by feature. Include acceptance criteria and trace to personas/needs when possible.
+
+=== Feature: <Feature name>
+
+==== US-<Feature>-01: <Short title>
+As a **<persona/actor>**, I want **<goal>**, so that **<benefit>**.
+
+* Related persona(s): TODO
+* Related need(s): TODO (N1, N2, ...)
+* Priority: High/Med/Low
+
+.Acceptance Criteria
+* GIVEN TODO, WHEN TODO, THEN TODO.
+* GIVEN TODO, WHEN TODO, THEN TODO.
+
+.Notes / assumptions
+* TODO
+
+==== US-<Feature>-02: <Short title>
+As a **<persona/actor>**, I want **<goal>**, so that **<benefit>**.
+
+* Related persona(s): TODO
+* Related need(s): TODO
+* Priority: TODO
+
+.Acceptance Criteria
+* TODO

@@ -1,0 +1,7 @@
+== 4.1 Stakeholder Identification
+
+[abstract]
+This section identifies stakeholders relevant to the domain and summarizes their goals, influence, and concerns.
+
+include::initial-stakeholders/initial-stakeholders.adoc[leveloffset=+1]
+include::additional-stakeholders/additional-stakeholders.adoc[leveloffset=+1]

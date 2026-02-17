@@ -1,0 +1,14 @@
+== 2.3.2 Software Design
+
+[abstract]
+Design decisions at a more detailed level than architecture (modules, domain model, APIs, etc.).
+
+=== Key design decisions
+* TODO: Decision 1 (and why)
+* TODO: Decision 2
+
+=== Domain model notes
+* TODO: How domain concepts map to classes/modules (draft)
+
+=== API/interface sketch (optional)
+* TODO

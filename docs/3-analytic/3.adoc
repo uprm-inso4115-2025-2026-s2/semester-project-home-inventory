@@ -1,0 +1,4 @@
+== 3. Analytic Part
+
+include::concept-analysis/concept-analysis.adoc[leveloffset=+1]
+include::validation-verification/validation-verification.adoc[leveloffset=+1]

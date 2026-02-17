@@ -1,0 +1,40 @@
+== 3.1.1 Domain Concept Analysis
+
+[abstract]
+This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants.
+
+=== Core concepts (draft)
+[cols="2,4",options="header"]
+|===
+|Concept |Definition
+
+|TODO |TODO
+|===
+
+=== Concept details
+==== Concept: <Name>
+* Definition: TODO
+* Key attributes:
+** TODO: attribute — meaning/type
+** TODO
+* Relationships:
+** TODO: relates to <Other concept> because ...
+* Invariants / business rules:
+** TODO: “must always be true” rule
+* Examples (from rough sketch):
+** TODO
+
+=== Relationship overview (draft)
+[cols="2,2,4",options="header"]
+|===
+|Concept A |Concept B |Relationship
+
+|TODO |TODO |TODO
+|===
+
+=== Constraints and edge cases
+* TODO: constraint 1
+* TODO: edge case 1
+
+=== Trace to evidence
+* TODO: For each major concept, note which rough sketch bullet(s) or observation(s) support it.
