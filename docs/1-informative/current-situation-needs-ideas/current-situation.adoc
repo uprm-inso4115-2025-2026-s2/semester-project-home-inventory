@@ -4,36 +4,64 @@
 Describe the domain as it exists today (before our solution): actors, workflows, and pain points.
 
 === Domain context
-TODO: 1–2 short paragraphs describing the problem space and why it matters.
+Students and young adults living independently often struggle to keep track of household items, shared supplies, and personal belongings. While several home inventory applications exist, most are designed for insurance documentation or business inventory management rather than lightweight everyday use.
+
+As a result, many users rely on memory, notes, or informal tracking methods, which leads to forgotten purchases, duplicate buying, and poor visibility into shared household resources. The current market lacks a simple, student-friendly solution optimized for fast item capture and collaborative household use.
+
 
 === Who is involved (actors)
-* TODO: Primary actors
-* TODO: Secondary actors
-* TODO: Organizations/systems involved (if any)
+* Primary actors: Students and young adults managing personal household items
+* Secondary actors: Roommates or cohabitants sharing supplies
+* Organizations/systems involved: Existing home inventory mobile applications (e.g., Sortly, PantryCheck)
+
 
 === Current workflow (as-is)
-. TODO: Step 1
-. TODO: Step 2
-. TODO: Step 3
-. TODO: Common variations or edge cases
+. User purchases or owns household items
+. User optionally records items manually in notes or an inventory app
+. Inventory is rarely updated consistently over time
+. User forgets what items are already available
+. User repurchases duplicate or unnecessary items
+. In shared households, roommates lack visibility into available supplies
 
 === Pain points
 [cols="2,3,3",options="header"]
 |===
 |Pain point |Who experiences it |Evidence / example
 
-|TODO |TODO |TODO
+|Too much of a hassle when adding items
+|Students and casual users
+|User reviews have reported that manual item entry consumes too much time and discourages the continued use of the software.
+
+|Inventory becomes outdated quickly
+|Almost all users
+|Many users abandon inventory apps after initial setup due to maintainance taking too much time.
+
+|Excessive or poorly timed notifications
+|Mobile users
+|Reviews indicate that too many notifications pop up in other applications,  leading users to disabling alerts, one of the main purposes of said apps.
+
+|Pricing perceived as too high for casual use
+|Students and young adults
+|Premium tiers are often designed for business users rather than individuals, but lock features that could come in handy for individual users.
+
+|Poor support for shared households
+|Roommates
+|Most existing apps lack real time collaboration for co-living scenarios.
 |===
 
+
 === Consequences
-* TODO: Time/cost impact
-* TODO: Quality/accuracy impact
-* TODO: User experience impact
-* TODO: Organizational impact (if relevant)
+* Time/cost impact: Users and students waste money on duplicate purchases and spend extra time checking inventory manually using written lists or other tracking software.
+* Quality/accuracy impact: Household inventory records quickly become unreliable due to key features being locked by a paywall.
+* User experience impact: Frustration leads to abandonment of existing apps.
+* Organizational impact: Shared households experience coordination inefficiencies.
+
 
 === Assumptions and constraints (as-is)
-* TODO: Assumption 1
-* TODO: Constraint 1
+* Assumption: Target users prefer low-effort mobile workflows.
+* Assumption: Users are more likely to maintain inventory if entry is fast and simple.
+* Constraint: Users have limited patience for manual data entry.
+* Constraint: The solution must work well on mobile devices with intermittent connectivity.
 
 [NOTE]
 ====

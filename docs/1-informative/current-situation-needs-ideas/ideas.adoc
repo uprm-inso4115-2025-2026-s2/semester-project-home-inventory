@@ -3,12 +3,35 @@
 [abstract]
 Outline candidate solution directions. Ideas are not commitments; they are options to address the needs.
 
-=== Idea A — <Short name>
-* Core concept: TODO
-* Needs addressed: TODO (reference N1, N2, ...)
-* Benefits: TODO
-* Risks/unknowns: TODO
-* How we will validate this idea: TODO
+== Idea A — Lightweight Smart Inventory
+
+* Core concept: A mobile home inventory application optimized for ultra fast item capture and shared household visibility, built with Flutter and a service like Firebase for real time synchronization.
+* Needs addressed: N1, N2, N3, N4, N5
+* Key capabilities:
+  - Rapid item entry with minimal required fields
+  - Real time shared inventory across household members
+  - Quick search and filtering to check item availability
+  - Optional reminder system
+  - Offline support with background sync
+
+* Expected benefits:
+  - Reduces the hassle of item entry
+  - Improves long-term inventory accuracy
+  - Prevents duplicate purchases
+  - Enables smooth roommate coordination
+  - Maintains low notification fatigue
+
+* Risks / unknowns:
+  - Users may still abandon after initial novelty wears off
+  - Real-time sync conflicts in households with more than one user
+  - Offline synchronization edge cases
+  - User adoption of shared features may vary
+
+* How we will validate this idea:
+  - Conduct usability tests measuring item entry by time
+  - Track weekly retention during pilot testing
+  - Test with small shared households (2-4 users)
+  - Monitor notification opt-out rates
 
 === Idea B — <Short name> (optional)
 * Core concept: TODO
