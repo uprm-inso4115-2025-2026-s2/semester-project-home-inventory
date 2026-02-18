@@ -44,9 +44,9 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
 |Students and young adults
 |Premium tiers are often designed for business users rather than individuals, but lock features that could come in handy for individual users.
 
-|Poor support for shared households
-|Roommates
-|Most existing apps lack real time collaboration for co-living scenarios.
+|Lack of effective shared household inventory support
+|Roommates and cohabitants
+|Most existing apps provide limited or no real-time collaboration features, which makes it difficult for multiple household members to maintain a single accurate inventory. This can lead to miscommunication or duplicate purchases for the house/dorm.
 |===
 
 

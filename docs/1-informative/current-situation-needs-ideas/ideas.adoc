@@ -5,7 +5,7 @@ Outline candidate solution directions. Ideas are not commitments; they are optio
 
 == Idea A — Lightweight Smart Inventory
 
-* Core concept: A mobile home inventory application optimized for ultra fast item capture and shared household visibility, built with Flutter and a service like Firebase for real time synchronization.
+* Core concept: A mobile home inventory application optimized for ultra fast item capture and shared household visibility, built with Flutter and a service like Supabase for real time synchronization.
 * Needs addressed: N1, N2, N3, N4, N5
 * Key capabilities:
   - Rapid item entry with minimal required fields
