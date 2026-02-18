@@ -1,19 +1,37 @@
 == 2.1.2 Terminology
 
 [abstract]
-Define the domain’s ubiquitous language. Use one preferred term per concept.
+This section contains the domain`s ubiquitous language. Here we designate our preferred terms for entities, rules, events and actions from the domain. These were compiled from interviews with domain stakeholders, experts and general knowledge.
 
-[cols="2,2,4,2",options="header"]
+[cols="^,^,4,3",options="header"]
 |===
 |Term |Type |Definition |Synonyms / notes
-
-|TODO |Entity/Event/Action/Rule |TODO |TODO
+| Home  | Entity | A physical space where people can, or do, live in | Household, Property, House, Place
+| Product | Entity | A household item that is commonly restocked such as milk, toilet paper, dishwashing soap, etc. | 
+| Stock | Entity | An instance of a Product, the Product entity holds a list of Stock containing each of the inidividual items bought such as two cartons of milk each with its specific expiration date and location, etc. | Item, Stock Entry
+| Room | Entity | A specific area within a Home where Stock can be stored or located such as kitchen, bedroom, garage | StorageArea 
+| Inventory | Entity | The list of available Products in a Home | List
+| Stock Location | Entity | The association between Stock and the Room where it is stored | Placement, StorageSpot
+| Stakeholder | Entity | A person that has a vested interest in a Home and its Inventory, Stakeholders have specific roles depicting their involvement | Resident, Roommate, Manager, Owner, HouseholdMember, Homeowner, User
+| Role | Rule | The access control concept that dictates how much of a Home and an Inventory a Stakeholder can change |
+| Owner | Entity | A Stakeholder Role that has the utmost access and permission to make changes to their Homes and Inventories | Manager, Homeowner
+| Member | Entity | A Stakeholder Role that describes a Stakeholder who lives in a Home and who should have access to its Inventory | Resident, Roommate, HouseholdMember
+| Guest | Entity | A Stakeholder Role that should have view-only access to their Inventory and Home | 
+| Category | Entity | A grouping label used to organize Products by type or purpose such as food, cleaning, electronics |
+| Expiration | Event | The point in time after which Stock is no longer usable | 
+| Expiration Date | Rule | The specific date associated with Stock`s Expiration | BestByDate, UseByDate
+| Expired Stock | Event | An event triggered when Stock passes its Expiration Date | Spoiled, OutOfDate
+| Stock Status | Rule | The current state of Stock in the Inventory (e.g., available, low stock, expired) | AvailabilityState
+| Quantity | Rule | The measurable amount of a Product available in the Inventory | Count, Level, Amount
+| Unit | Rule | The measurement type used for a Product`s Quantity (e.g., pieces, liters, pounds) | MeasurementUnit
+| Consumption | Event | The act of using or reducing an Product`s Quantity over time | Usage, Depletion
+| Purchase | Action | The act of buying a Product to increase its Quantity in the Inventory | Restock, Buy
+| Shopping List | Entity | A temporary list of Products that need to be purchased soon | GroceryList, PurchaseList
+| Supplier | Entity | A store or provider where a Product can be purchased or restocked from | Store, Vendor
+| Restock Threshold | Rule | The minimum Quantity at which a Product should be replenished | MinimumStock, LowStockLimit
+| Restock Request | Action | A request created to indicate a Product needs to be purchased or refilled | ShoppingTask, RefillRequest
+| Budget | Entity | A resource allocation plan/rule-set which divides amount of money into Categories to allow for specific amount of Purchases in those Categories |
 |===
 
-=== Naming rules
-* Prefer one official term per concept (avoid synonyms in main text).
-* If synonyms exist, list them but choose one official term.
-* Use consistent capitalization and pluralization.
-
 === Open questions / disputed terms
-* TODO
+- Barcodes and UPC may be included in the future, but this is dependent on the scope of the project and the implementation details.
