@@ -6,4 +6,7 @@ var todosRoutes = GoRoute(
   builder: (_, __) {
     return TodosPage();
   },
+  routes: [
+
+  ]
 );
