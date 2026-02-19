@@ -5,29 +5,49 @@ List the needs of the domain stakeholders. Phrase needs as outcomes/capabilities
 
 === Needs by actor group
 
-==== Actor group: <Name>
-* Need N1: TODO
-* Need N2: TODO
-* Need N3: TODO
+=== Actor group: Students and young adults
+* Need N1: Quickly record household items with minimal effort
+* Need N2: Maintain an accurate inventory without frequent manual updates
+* Need N3: Easily check what items are already available before making purchases
 
-==== Actor group: <Name>
-* Need N4: TODO
-* Need N5: TODO
+=== Actor group: Roommates / Cohabitants
+* Need N4: View shared household inventory in real time
+* Need N5: Coordinate purchases to avoid duplicates across the household
 
 === Prioritized needs (draft)
 [cols="1,4,2,3",options="header"]
 |===
-|ID |Need statement |Priority |Rationale (tie to pain points)
+|ID |Need statement |Priority |Rationale
 
-|N1 |TODO |High/Med/Low |TODO
-|N2 |TODO |High/Med/Low |TODO
+|N1 |Users must be able to record items in seconds
+|High
+|Addresses high-friction item entry reported in user feedback
+
+|N2 |Users must maintain an up-to-date inventory with low ongoing effort
+|High
+|Mitigates abandonment caused by needing high maintainance
+
+|N3 |Users must quickly verify existing items before purchasing
+|High
+|Reduces duplicate purchases and wasted spending
+
+|N4 |Household members must share inventory visibility
+|Medium
+|Improves coordination in shared living environments
+
+|N5 |Users must minimize unnecessary or disruptive notifications
+|Medium
+|Prevents notification fatigue and alert disabling
 |===
 
-=== Quality needs (non-functional)
-* TODO: Usability
-* TODO: Reliability
-* TODO: Performance
-* TODO: Privacy/security (if applicable)
+== Quality Needs (Non-Functional)
+
+* Usability: Item entry should require only a few user actions and be intuitive for first-time users.
+* Reliability: Inventory data must remain consistent across devices and users.
+* Performance: Inventory views should load within 2 seconds on typical mobile networks.
+* Availability: The system should support offline use with automatic synchronization when connectivity returns.
+* Security/Privacy: Household data must be access-controlled and securely stored.
+* Scalability: The system should support multiple households and concurrent users without performance degradation.
 
 === Open questions
 * TODO
