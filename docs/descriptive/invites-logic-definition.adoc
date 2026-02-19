@@ -1,0 +1,150 @@
+== Invites Logic Definition
+
+== Objective
+
+Define how invitation flows work between roommates so onboarding and access to shared resources is predictable and secure.
+
+The purpose of this document is to define and describe:
+
+    Invitation lifecycle states:
+
+        - Sent
+        - Accepted
+        - Declined
+        - Expired
+        - Revoked
+        - Determine who is allowed to send invitations (owner only vs all members vs role-based).
+
+    Specify validation rules:
+
+        - Duplicate invites
+        - Invalid emails
+        - Expiration timing
+
+    Document expected behavior for:
+
+        - Invite acceptance
+        - Invite rejection
+        - Invite cancellation
+        - User joining via link vs direct invite
+
+== Core Concepts
+
+=== Invitation
+
+An *invitation* is a temporary request made by an Owner or authorized Member, that allows a user to join a household or shared inventory group.
+
+Each invitation contains:
+- Sender
+- Recipient
+- Target household or group
+- Status
+- Expiration timestamp
+
+=== Invitation Permissions
+
+Permissions determine what user is allowed to send invitations.
+
+Users with the appropriate permissions can include:
+
+* Owner-Only
+** Only the household Owner may send invitations.
+
+* Role-Based
+** Owners and designated Members may send invitations.
+
+By default, invite permissions are Owner-Only with optional role-based expansion. 
+
+== Invitation Lifecycle States
+
+=== Sent
+- Invitation has been created and delivered.
+- Awaiting recipient response.
+- Editable or revocable by sender.
+
+=== Accepted
+- Recipient has joined the household.
+- Invitation is marked as accepted and becomes inactive.
+- Permissions are assigned based on default role settings.
+
+=== Declined
+- Recipient declines the invitation.
+- Invitation is marked as declined and becomes inactive.
+- Sender may resend a new invitation.
+
+=== Expired
+- Invitation exceeded its time limit.
+- Cannot be accepted and is marked as inactive.
+- Requires a new invitation to be sent.
+
+=== Revoked
+- Sender or Owner cancels the invitation before acceptance.
+- Recipient loses the ability to join using that link.
+
+== Validation Rules
+
+=== Duplicate Invites
+- Only allow invitations made to the same email for the same household to be editable, not duplicated.
+- Allow resend only after expiration, decline, or revocation.
+
+=== Invalid Emails
+- Validate email format before sending.
+- Prevent sending invites to malformed or blocked addresses.
+
+=== Expiration Timing
+- Default expiration window: 72 hours.
+- System should automatically invalidate expired invites.
+- Expired invites are not reusable.
+
+== Expected System Behaviors
+
+=== Invite Acceptance
+- User gains access immediately upon confirmation.
+- Assigned default Member role unless specified otherwise.
+- Real-time notification sent to existing household members.
+
+=== Invite Rejection
+- Invitation marked Declined.
+- No access granted.
+- Sender notified of rejection.
+- Household is notified of the declined invitation.
+
+=== Invite Cancellation
+- Sender or Owner may revoke before acceptance.
+- Invitation becomes invalid instantly.
+- Houselhold Members are notified of the cancellation.
+- Recipient link becomes unusable.
+
+=== User Joining via Link vs Direct Invite
+
+* Direct Invite
+** Recipient receives invite through application.
+
+* Link Invite
+** Shareable link allows multiple recipients.
+** Requires validation step before access is granted.
+
+== Security Considerations
+
+- Invitations must use secure tokens.
+- Tokens should be single-use or time-bound.
+- Server-side validation required for all joins.
+- Audit logging recommended for invite creation and acceptance.
+
+== Summary Rules
+
+. Invitations are temporary and must expire.
+. Only authorized roles may issue invites.
+. Active invites are editable as to avoid duplicate active invites.
+. Acceptance grants immediate access with default role.
+. Revoked or expired invites cannot be reused.
+. Server-side validation overrides client behavior.
+
+== Success Criteria
+
+* Invitation lifecycle states clearly defined.
+* Permission rules documented.
+* Validation rules prevent misuse or duplication.
+* Acceptance and rejection flows explicitly described.
+* Understandable to both technical and non-technical team members.
+* Ready to guide implementation of onboarding and access control.
