@@ -10,7 +10,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Home Page")),
+      backgroundColor: CupertinoColors.white,
+      appBar: AppBar(title: Text("Home Page"), backgroundColor: Colors.blue),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -24,7 +24,7 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<void> addTodo(TodoEntity todo) async {
     final model = TodoModel.fromEntity(todo);
-    await _supabaseService.insert('todos', model.toJson());
+    await _supabaseService.insert('todos', model.toJson()..remove('id'));
   }
 
   @override
