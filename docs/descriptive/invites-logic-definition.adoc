@@ -53,7 +53,7 @@ Users with the appropriate permissions can include:
 * Role-Based
 ** Owners and designated Members may send invitations.
 
-By default, invite permissions are Owner-Only with optional role-based expansion. 
+By default, invite permissions can only be made by Owners, unless Mmber permissions are expanded.
 
 == Invitation Lifecycle States
 
@@ -65,7 +65,7 @@ By default, invite permissions are Owner-Only with optional role-based expansion
 === Accepted
 - Recipient has joined the household.
 - Invitation is marked as accepted and becomes inactive.
-- Permissions are assigned based on default role settings.
+- Permissions are assigned based on role configuraton.
 
 === Declined
 - Recipient declines the invitation.
@@ -79,20 +79,17 @@ By default, invite permissions are Owner-Only with optional role-based expansion
 
 === Revoked
 - Sender or Owner cancels the invitation before acceptance.
-- Recipient loses the ability to join using that link.
+- Recipient loses the ability to join using that instance of the invitation.
+- Marked as revoked and becomes inactive.
 
 == Validation Rules
 
 === Duplicate Invites
-- Only allow invitations made to the same email for the same household to be editable, not duplicated.
+- Only allow invitations made to the same user for the same household to be editable, not duplicated.
 - Allow resend only after expiration, decline, or revocation.
 
-=== Invalid Emails
-- Validate email format before sending.
-- Prevent sending invites to malformed or blocked addresses.
-
 === Expiration Timing
-- Default expiration window: 72 hours.
+- Default expiration window: 72 hours (editable by inviter).
 - System should automatically invalidate expired invites.
 - Expired invites are not reusable.
 
@@ -101,7 +98,7 @@ By default, invite permissions are Owner-Only with optional role-based expansion
 === Invite Acceptance
 - User gains access immediately upon confirmation.
 - Assigned default Member role unless specified otherwise.
-- Real-time notification sent to existing household members.
+- Notification sent to existing household members.
 
 === Invite Rejection
 - Invitation marked Declined.
@@ -113,7 +110,7 @@ By default, invite permissions are Owner-Only with optional role-based expansion
 - Sender or Owner may revoke before acceptance.
 - Invitation becomes invalid instantly.
 - Houselhold Members are notified of the cancellation.
-- Recipient link becomes unusable.
+- Recipient invite becomes unusable.
 
 === User Joining via Link vs Direct Invite
 
