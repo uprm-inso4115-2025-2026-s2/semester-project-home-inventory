@@ -1,0 +1,40 @@
+# Milestone 1 Week 3 — Team 1 Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what Team 1 worked on this week.
+
+
+## What the Team Accomplished This Week
+- Continued documentation of core findings of the domain
+- Begun implementation with sample feature and directory structures
+- Preliminary database schema design
+
+
+## Tasks Completed / Issues Closed
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/11[Domain Terminology Gathering]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/15[Design Database Schema]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/14[Tech Stack Base Incorporation]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/82[Needs and Pain Points]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/67[Domain Attributes Clasifications]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/38[Consistency and Hierarchy Standards]
+
+
+## What Is Currently In Progress
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/116[Flexible Item Wireframes]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/109[Core Entities Supabase Implementation]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/41[Barcode Scanning Package Research]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/12[Domain Rough Sketch]
+
+
+## Blockers or Challenges
+- Difficulty coming up with issues
+- Difficulty deciding what aspects of flutter to incorporate into the project to not over complicate things for the members
+
+
+## Plans for Next Week
+- Design initial wireframes for the features pages
+- Start preparing a demo for the milestone video
+
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above
