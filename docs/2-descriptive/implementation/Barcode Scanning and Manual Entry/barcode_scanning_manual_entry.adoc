@@ -1,6 +1,8 @@
 = Research & Reference: Barcode Scanning and Manual Item Entry Implementation
 :author: Devlin Hahn 
 
+**AI Disclosure:** Portions of the research and example code snippets were written with the assistance of Artificial Intelligence tools. The flow diagram of the feature architecture, required and optional fields for manual entry, error handling, and other elements were verified by the human author, @devlin-hahn04.
+
 == Executive Summary
 
 This document researches and documents implementation approaches for barcode scanning and manual item entry in our Home Inventory Flutter application. The goal is to provide the team with clear workflows, best practices, and implementation references for combining both methods seamlessly. The recommended approach uses the `mobile_scanner` package for barcode scanning with a manual fallback for cases where scanning fails or barcodes are unsupported.
