@@ -1,0 +1,286 @@
+= Reports & Insights Module Documentation
+:toc:
+:sectnums:
+
+<<<
+
+== Objective
+
+This document defines the technical specifications for the *Reports & Insights* module.
+
+It includes:
+
+- Home/Dashboard screen
+- Inventory Summary Report
+- Spending Report
+- Usage Rate Report
+- Database data requirements
+
+The purpose of this documentation is to ensure team alignment before and during implementation, reduce ambiguity in calculations, and prevent inconsistencies in queries and UI behavior.
+
+---
+
+== 1. Feature Scope (v1)
+
+The following components are included in version 1:
+
+=== 1.1 Home / Dashboard
+
+The Dashboard provides a high-level summary of inventory and spending insights.
+
+It must display:
+
+- Total inventory items
+- Low-stock items count
+- Expiring soon items count
+- Total spending (current month)
+- Optional: Most used category
+
+Each summary card must navigate to its corresponding full report.
+
+---
+
+=== 1.2 Inventory Summary Report
+
+Provides aggregated insights about stored items.
+
+Includes:
+
+- Total items
+- Breakdown by category
+- Breakdown by room
+- Low-stock count
+- Expiring soon count
+
+---
+
+=== 1.3 Spending Report
+
+Tracks spending behavior over time.
+
+Includes:
+
+- Total spending for selected time range
+- Spending grouped by category
+- Time-based trend (line chart)
+
+Supported filters:
+
+- Last 7 days
+- Last 30 days
+- Last 90 days
+
+---
+
+=== 1.4 Usage Rate Report
+
+Measures how quickly items are consumed.
+
+Includes:
+
+- Usage per item
+- Usage per category
+- Time-based consumption trend
+
+---
+
+== 2. Metric Definitions
+
+All calculations must follow the definitions below.
+
+=== 2.1 Inventory Metrics
+
+Total Items:
+----
+COUNT(inventory_items)
+----
+
+Low Stock:
+----
+Items where current_stock <= minimum_stock
+----
+
+Expiring Soon:
+----
+Items where expiration_date <= (current_date + defined_threshold_days)
+----
+
+---
+
+=== 2.2 Spending Metrics
+
+Total Spending (period):
+----
+SUM(purchase_events.cost)
+WHERE purchase_date BETWEEN start_date AND end_date
+----
+
+Spending by Category:
+----
+SUM(cost) GROUP BY category_id
+----
+
+Monthly Spending:
+----
+SUM(cost) WHERE month(purchase_date) = current_month
+----
+
+All currency values must follow consistent formatting (e.g., 2 decimal places).
+
+---
+
+=== 2.3 Usage Rate Metrics
+
+Usage Rate (per item):
+----
+Total quantity consumed / number_of_days_in_period
+----
+
+Where:
+
+- Quantity consumed = SUM(usage_events.delta)
+- Period = selected time range
+
+Usage by Category:
+----
+SUM(usage_events.delta) GROUP BY category_id
+----
+
+If insufficient timestamp data exists, usage rate must return null or "Not enough data".
+
+---
+
+== 3. Database Data Contract
+
+The Reports module depends on the following tables:
+
+=== 3.1 inventory_items
+
+Required fields:
+
+- id
+- user_id or home_id
+- category_id
+- room_id
+- current_stock
+- minimum_stock
+- expiration_date
+
+Indexes recommended:
+
+- user_id/home_id
+- category_id
+- expiration_date
+
+---
+
+=== 3.2 purchase_events
+
+Required fields:
+
+- id
+- item_id
+- cost
+- quantity
+- purchase_date
+
+Indexes recommended:
+
+- item_id
+- purchase_date
+- user_id/home_id
+
+---
+
+=== 3.3 usage_events
+
+Required fields:
+
+- id
+- item_id
+- delta
+- occurred_at
+
+Indexes recommended:
+
+- item_id
+- occurred_at
+
+---
+
+Aggregation Strategy:
+
+- Heavy grouping (SUM, GROUP BY) should be executed server-side.
+- Dashboard queries must minimize round trips.
+- Frequently accessed summaries may use lightweight caching.
+
+---
+
+== 4. Chart Guidelines
+
+Inventory Breakdown:
+- Bar chart (by category or room)
+- Donut chart (distribution view)
+
+Spending Trend:
+- Line chart (time-based)
+
+Spending by Category:
+- Bar chart
+
+Usage Trend:
+- Line chart
+
+All charts must:
+
+- Include axis labels
+- Display units (currency, units/day, etc.)
+- Handle empty states
+- Display meaningful fallback when no data exists
+
+---
+
+== 5. Dashboard Behavior Specification
+
+The Dashboard must:
+
+- Display summary cards with real-time aggregated values
+- Navigate to corresponding report on tap
+- Show loading indicators while fetching data
+- Display empty state if no data exists
+- Display error state if query fails
+
+Performance goal:
+Dashboard should load in under 1 second under normal conditions.
+
+---
+
+== 6. Edge Cases & Assumptions
+
+Missing Price:
+- Exclude from spending totals or treat as 0 (decision must remain consistent).
+
+Missing Timestamps:
+- Usage rate cannot be computed.
+- Return null or display "Insufficient Data".
+
+Timezone:
+- All date calculations must use consistent timezone logic (UTC or defined app timezone).
+
+Rounding:
+- Currency: 2 decimal places
+- Usage rate: up to 2 decimal places
+
+Shared Homes:
+- Reports aggregate data at home_id level unless otherwise specified.
+
+---
+
+== Success Criteria
+
+- This documentation file exists in the repository.
+- All metrics include formulas and required fields.
+- Queries can be implemented directly from this document.
+- No calculation logic is undefined.
+- Approved by Team Lead before full implementation.
+
