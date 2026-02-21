@@ -1,0 +1,586 @@
+= Research & Reference: Barcode Scanning and Manual Item Entry Implementation
+:author: Devlin Hahn 
+
+**AI Disclosure:** Portions of the research and example code snippets were written with the assistance of Artificial Intelligence tools. The flow diagram of the feature architecture, required and optional fields for manual entry, error handling, and other elements were verified by the human author, @devlin-hahn04.
+
+== Executive Summary
+
+This document researches and documents implementation approaches for barcode scanning and manual item entry in our Home Inventory Flutter application. The goal is to provide the team with clear workflows, best practices, and implementation references for combining both methods seamlessly. The recommended approach uses the `mobile_scanner` package for barcode scanning with a manual fallback for cases where scanning fails or barcodes are unsupported.
+
+== Part 1: Barcode Scanning Implementation
+
+=== 1.1 Recommended Package: `mobile_scanner`
+
+After researching available options, the regularly updated `mobile_scanner` package is the recommended solution for our Flutter application. The latest package version is `mobile_scanner: ^7.1.4` and is supported by Android, iOS and also desktop versions.
+
+==== Key Features
+
+- Fast barcode and QR code scanning
+- Supports multiple barcode formats
+- Real-time detection
+- Customizable camera and scanner behavior
+- Scan window limitation for precision
+- Torch/flash control
+- Camera switching (front/back)
+- Auto-zoom capability (Android only)
+
+=== 1.2 Platform Configuration
+
+==== Android Setup
+Add to android/gradle.properties (optional - reduces app size by ~9MB):
+
+[source, properties]
+
+dev.steenbakker.mobile_scanner.useUnbundled=true
+
+==== iOS Setup
+Add to `ios/Runner/Info.plist`:
+
+[source, xml]
+
+<key>NSCameraUsageDescription</key>
+<string>This app needs camera access to scan barcodes for inventory items</string>
+
+==== Minimum Requirements
+
+Android: `minSdkVersion 21`
+
+iOS: iOS 11+ (standard)
+
+=== 1.3 Basic Scanning Implementation
+
+==== Simple Scanner Example
+
+Photos of simple scanner example referenced as `scanner` and `manual`
+
+[source,dart]
+
+import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:device_preview/device_preview.dart';
+void main() {
+  runApp(
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const MyApp(), // Wrap your app
+    ),
+  );
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const BarcodeScannerScreen(),
+      builder: DevicePreview.appBuilder, // Add this line
+    );
+  }
+}
+// Simple placeholder for ManualEntryScreen since we're just testing the scanner
+class ManualEntryScreen extends StatelessWidget {
+  final String? initialBarcode;
+  const ManualEntryScreen({super.key, this.initialBarcode});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Manual Entry'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Manual Entry Screen', style: TextStyle(fontSize: 24)),
+            const SizedBox(height: 20),
+            Text('Barcode: ${initialBarcode ?? 'None'}'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Back to Scanner'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class BarcodeScannerScreen extends StatefulWidget {
+  const BarcodeScannerScreen({super.key});
+  @override
+  State<BarcodeScannerScreen> createState() => _BarcodeScannerScreenState();
+}
+class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
+  String? scannedCode;
+  bool _isScanning = true;
+  void _handleBarcode(BarcodeCapture capture) {
+    if (!_isScanning) return;
+    final barcode = capture.barcodes.firstOrNull;
+    if (barcode != null && mounted) {
+      setState(() {
+        scannedCode = barcode.rawValue;
+        _isScanning = false;
+      }); 
+      _navigateToItemEntry(scannedCode!);
+    }
+  }
+  void _navigateToItemEntry(String barcode) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ManualEntryScreen(initialBarcode: barcode),
+      ),
+    ).then((_) {
+      if (mounted) {
+        setState(() {
+          _isScanning = true;
+          scannedCode = null;
+        });
+      }
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan Barcode'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => _navigateToItemEntry(''),
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          MobileScanner(
+            onDetect: _handleBarcode,
+          ),
+          if (scannedCode != null)
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Scanned: $scannedCode',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+=== 1.4 Advanced Scanner with Controller
+
+This version of the barcode scanner provides an enhanced control over the barcode scanbning experience by using a dedicated `MobileScannerController`, managing all scanner settings and state. It enables use of a torch (flashlight), camera switching, and barcode format filtering.
+
+Photos of advanced scanner example referenced as `advanced_scanner`.
+
+[source, dart]
+
+import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:device_preview/device_preview.dart';
+void main() {
+  runApp(
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const MyApp(),
+    ),
+  );
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const ScannerScreen(),
+      builder: DevicePreview.appBuilder,
+    );
+  }
+}
+class ScannerScreen extends StatefulWidget {
+  const ScannerScreen({super.key});
+  @override
+  State<ScannerScreen> createState() => _ScannerScreenState();
+}
+class _ScannerScreenState extends State<ScannerScreen> {
+  final MobileScannerController controller = MobileScannerController();
+  String? scannedCode;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scanner'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        actions: [
+          // Torch button
+          IconButton(
+            icon: const Icon(Icons.flash_on),
+            onPressed: () => controller.toggleTorch(),
+          ),
+          // Camera switch button
+          IconButton(
+            icon: const Icon(Icons.camera_front),
+            onPressed: () => controller.switchCamera(),
+          ),
+        ],
+      ),
+      body: MobileScanner(
+        controller: controller,
+        onDetect: (capture) {
+          final barcode = capture.barcodes.first;
+          if (barcode.rawValue != null) {
+            setState(() {
+              scannedCode = barcode.rawValue;
+            });       
+            // Show dialog with scanned code
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Barcode Scanned'),
+                content: Text('Code: ${barcode.rawValue}'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+}
+
+=== 1.5 Scan Window (Focused Scanning Area)
+
+This implementation example shopws the users exactly where to aim the camera for barcode scanning by defining a rectangular window in the center of the screen where the barcode detection is active and darkens the rest of the screen and helping users focus on the correct area and improve accuracy on where to position the barcode for successful scanning.
+
+Photos of window scanner example referenced as `window_scan` and `successful_window_scan`.
+
+[source,dart]
+
+import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:device_preview/device_preview.dart';
+void main() {
+  runApp(
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const MyApp(),
+    ),
+  );
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const ScannerScreen(),
+      builder: DevicePreview.appBuilder,
+    );
+  }
+}
+class ScannerScreen extends StatefulWidget {
+  const ScannerScreen({super.key});
+  @override
+  State<ScannerScreen> createState() => _ScannerScreenState();
+}
+class _ScannerScreenState extends State<ScannerScreen> {
+  final MobileScannerController controller = MobileScannerController();
+  String? scannedCode;
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    // Define the scan window (centered rectangle)
+    final scanWindow = Rect.fromCenter(
+      center: Offset(size.width / 2, size.height / 2),
+      width: size.width * 0.8,
+      height: size.height * 0.15,
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scanner'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        actions: [
+          // Torch button
+          IconButton(
+            icon: const Icon(Icons.flash_on),
+            onPressed: () => controller.toggleTorch(),
+          ),
+          // Camera switch button
+          IconButton(
+            icon: const Icon(Icons.camera_front),
+            onPressed: () => controller.switchCamera(),
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          // Mobile Scanner with scan window
+          MobileScanner(
+            controller: controller,
+            scanWindow: scanWindow, // Only scan within this area
+            onDetect: (capture) {
+              final barcode = capture.barcodes.first;
+              if (barcode.rawValue != null) {
+                setState(() {
+                  scannedCode = barcode.rawValue;
+                });               
+                // Show dialog with scanned code
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Barcode Scanned'),
+                    content: Text('Code: ${barcode.rawValue}'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+          ),         
+          // Custom paint overlay for visual guide
+          CustomPaint(
+            size: size,
+            painter: _ScanWindowPainter(scanWindow: scanWindow),
+          ),
+        ],
+      ),
+    );
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+}
+// Custom painter for scan window overlay
+class _ScanWindowPainter extends CustomPainter {
+  final Rect scanWindow;
+  _ScanWindowPainter({required this.scanWindow});
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Semi-transparent background paint
+    final backgroundPaint = Paint()
+      ..color = Colors.black.withOpacity(0.5)
+      ..style = PaintingStyle.fill;
+    // Create path with cutout for scan window
+    final path = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..addRect(scanWindow)
+      ..fillType = PathFillType.evenOdd;
+    // Draw the dark overlay with cutout
+    canvas.drawPath(path, backgroundPaint);
+    // Draw green border around scan window
+    final borderPaint = Paint()
+      ..color = Colors.green
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+    canvas.drawRect(scanWindow, borderPaint);
+    // Optional: Draw corner guides for better UX
+    final cornerPaint = Paint()
+      ..color = Colors.green
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;
+    // Draw small circles at each corner
+    final corners = [
+      Offset(scanWindow.left, scanWindow.top),
+      Offset(scanWindow.right, scanWindow.top),
+      Offset(scanWindow.left, scanWindow.bottom),
+      Offset(scanWindow.right, scanWindow.bottom),
+    ];
+    for (var corner in corners) {
+      canvas.drawCircle(corner, 8, cornerPaint);
+    }
+  }
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+=== 1.6 Limitations and Failure Cases
+
+[options="header"]
+|===
+| Issue | Mitigation
+| Damaged barcode | Manual entry fallback
+| Unsupported format | Manual entry with format detection
+| Poor lighting | Torch/flash option, auto-zoom (Android)
+| Reflective surface | Adjust angle, multiple scan attempts
+| No camera permission | Graceful permission request flow
+| Offline use | Local barcode validation, offline storage
+| Duplicate scans | Use detectionSpeed: DetectionSpeed.noDuplicates or debouncing
+|===
+
+== Part 2: Manual Item Entry
+
+=== 2.1 Form Field Requirements
+
+==== Required vs Optional Fields
+
+[options="header"]
+|===
+| Field | Required? | Notes
+| Item Name | ✅ Required | User-friendly display name
+| Barcode | ⚠️ If scanned | Auto-filled from scan, optional for manual
+| Category | ✅ Required | For organization (default: "Uncategorized")
+| Quantity | ✅ Required | Default: 1
+| Purchase Price | Optional | For insurance valuation
+| Purchase Date | Optional | Default to today
+| Room/Location | ✅ Required | Physical location (default: "Other")
+| Description | Optional | Notes, details
+| Photos | Optional | 1-5 photos per item
+| Receipt Image | Optional | For warranty claims
+|===
+
+== Part 3: Hybrid Workflow (Scan + Manual Fallback)
+
+=== 3.1 Recommended Hybrid Flow Diagram
+
+[source]
+
+┌─────────────────┐
+│   Start Scan    │
+│     Screen      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Camera Active  │
+│  - Show scan    │
+│    window       │
+│  - Show "Enter  │
+│    Manually"    │
+│    button       │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+    ▼         ▼
+┌─────────┐ ┌─────────────────┐
+│ Barcode │ │  Manual Entry   │
+│ Detected│ │  Button Pressed │
+└────┬────┘ └────────┬────────┘
+     │               │
+     ▼               ▼
+┌─────────┐ ┌─────────────────┐
+│ Validate│ │  Manual Entry   │
+│ Format  │ │  Screen (empty) │
+└────┬────┘ └────────┬────────┘
+     │               │
+     ▼               │
+┌─────────┐          │
+│ Success?│          │
+└────┬────┘          │
+     │               │
+   ┌─┴──────┐        │
+   │        │        │
+   ▼        ▼        │
+┌──────┐ ┌──────┐    │
+│ Yes  │ │  No  │    │
+└──┬───┘ └──┬───┘    │
+   │        │        │
+   │        └────────┼
+   │                 │
+   ▼                 ▼
+┌─────────────────┐ ┌─────────────────┐
+│  Review & Save  │ │ Manual Entry    │
+│  - Required     │ │ Screen          │
+│    fields auto- │ │ (barcode pre-   │
+│    filled?      │ │  filled)        │
+└────────┬────────┘ └────────┬────────┘
+         │                   │
+         └─────────┬─────────┘
+                   │
+                   ▼
+          ┌─────────────────┐
+          │  Review & Save  │
+          │  - Complete any │
+          │    missing      │
+          │    fields       │
+          │  - Verify all   │
+          │    details      │
+          └────────┬────────┘
+                   │
+                   ▼
+          ┌─────────────────┐
+          │   Save Item     │
+          │   to Database   │
+          └─────────────────┘
+
+== Part 4: Best Practices & Recommendations
+
+=== 4.1 Scanner Best Practices
+
+[options="header"]
+|===
+| Practice | Implementation
+| Prevent duplicate scans | Use detectionSpeed: DetectionSpeed.noDuplicates or debounce logic
+| Provide visual feedback | Show scan window overlay, highlight detected codes
+| Include torch option | Add flash toggle for low-light conditions
+| Handle permissions gracefully | Request permissions with explanation, show fallback if denied
+| Support multiple formats | Configure controller with common formats (EAN, UPC, QR)
+| Limit scan area | Use scanWindow to improve accuracy and UX
+|===
+
+=== 4.2 Manual Entry Best Practices
+
+[options="header"]
+|===
+| Practice | Implementation
+| Set intelligent defaults | Default quantity=1, date=today, category="Uncategorized"
+| Validate required fields | Item name, category, room must be provided
+| Progressive disclosure | Show advanced fields only when needed
+| Save partial drafts | Auto-save to local storage if user navigates away
+| Batch entry support | Consider "Add Another" button after save
+| Photo integration | Camera/gallery picker for item photos
+|===
+
+=== 4.3 Error Handling Matrix
+
+[options="header"]
+|===
+| Scenario | User Message | Fallback
+| No camera permission | "Camera access needed to scan barcodes" | Show manual entry button
+| Scan timeout (10s) | "No barcode detected" | Show manual entry option
+| Unsupported format | "Barcode format not recognized" | Pre-fill barcode field in manual form
+| Network offline | "Working offline - scan will save locally" | Local storage queue
+| Duplicate scan | "Item already exists" | Offer to update or create new
+|===
+
+== Part 5: References & Resources
+
+- Mobile scanner package: https://pub.dev/packages/mobile_scanner
+
+- Flutter camera permissions: https://docs.flutter.dev/cookbook/plugins/picture-using-camera
+
+
+
+
+
+
