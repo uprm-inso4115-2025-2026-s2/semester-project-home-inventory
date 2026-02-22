@@ -313,6 +313,134 @@ We welcome contributions from all team members! Please follow these guidelines:
 
 ---
 
+## 🏗️ Project Architecture
+
+### Clean Architecture Principles
+
+This project follows **Clean Architecture** principles to ensure:
+- **Separation of Concerns** - Each layer has a specific responsibility
+- **Independence** - Business logic is independent of frameworks, UI, and databases
+- **Testability** - Each layer can be tested in isolation
+- **Maintainability** - Changes in one layer don't affect others
+- **Scalability** - Easy to add new features without breaking existing code
+
+### `/lib` Folder Structure
+
+The Flutter application code is organized in the `src/lib/` directory following a clean architecture pattern:
+
+```
+lib/
+├── main.dart              # Application entry point
+├── config/                # App-wide configuration
+│   ├── router.dart        # Navigation and routing configuration
+│   └── theme.dart         # App theme and styling
+├── core/                  # Shared code used across features
+│   ├── data/              # Core data layer (services, utilities)
+│   │   └── services/      # Shared services (e.g., Supabase)
+│   ├── domain/            # Core business logic
+│   └── presentation/      # Core UI components
+│       ├── routes.dart    # Core route definitions
+│       └── home_page.dart # Main home page
+└── features/              # Feature-based modules (one per feature)
+    ├── auth/              # Example: Authentication feature
+    │   ├── data/          # Data layer implementation
+    │   ├── domain/        # Business logic and entities
+    │   └── presentation/  # UI components
+    └── example_feature/   # Example: Reference feature structure
+        ├── data/          # Data layer (API, database, repositories implementation)
+        │   ├── models/    # Data models (JSON serialization)
+        │   └── repositories/  # Repository implementations
+        ├── domain/        # Domain layer (business logic)
+        │   ├── entities/  # Business entities (pure Dart objects)
+        │   └── repositories/  # Repository interfaces (contracts)
+        └── presentation/  # Presentation layer (UI)
+            ├── pages/     # Full screen pages
+            ├── widgets/   # Reusable UI components
+            └── routes.dart  # Feature-specific routes
+```
+
+### Layer Responsibilities
+
+#### 1. **Domain Layer** (`domain/`)
+- **Pure business logic** - No dependencies on Flutter or external packages
+- **Entities** - Core business objects with business rules
+- **Repository Interfaces** - Contracts that define how data should be accessed
+- **Use Cases** - Application-specific business rules (optional, for complex features)
+
+#### 2. **Data Layer** (`data/`)
+- **Repository Implementations** - Concrete implementations of domain interfaces
+- **Models** - Data structures for API/database (extends entities, adds serialization)
+- **Data Sources** - External data access (API clients, database queries)
+- **Mappers** - Convert between models and entities
+
+#### 3. **Presentation Layer** (`presentation/`)
+- **Pages** - Full-screen views/screens
+- **Widgets** - Reusable UI components
+- **State Management** - Controllers, providers, or blocs (depending on approach)
+- **Routes** - Navigation definitions for the feature
+
+### Development Guidelines
+
+#### Adding a New Feature
+
+1. **Create feature folder structure:**
+   ```
+   features/your_feature/
+   ├── data/
+   │   ├── models/
+   │   └── repositories/
+   ├── domain/
+   │   ├── entities/
+   │   └── repositories/
+   └── presentation/
+       ├── pages/
+       ├── widgets/
+       └── routes.dart
+   ```
+
+2. **Follow the dependency rule:**
+   - Domain layer has NO dependencies on other layers
+   - Data layer depends ONLY on domain layer
+   - Presentation layer depends ONLY on domain layer (and optionally data for injection)
+   - Dependencies point INWARD (presentation → domain ← data)
+
+3. **Implement from inside out:**
+   - Start with **domain** (entities, repository interfaces)
+   - Then **data** (models, repository implementations)
+   - Finally **presentation** (UI, pages, widgets)
+
+4. **Register routes:**
+   - Add feature routes in `features/your_feature/presentation/routes.dart`
+   - Register in main router at `config/router.dart`
+
+#### Example Workflow
+
+See `features/example_feature/` for a complete reference implementation showing:
+- Entity definition (`domain/entities/todo_entity.dart`)
+- Repository interface (`domain/repositories/todo_repository.dart`)
+- Data model with JSON serialization (`data/models/todo_model.dart`)
+- Repository implementation (`data/repositories/todo_repository_impl.dart`)
+- UI pages and widgets (`presentation/`)
+
+#### Core vs Features
+
+- **`core/`** - Use for shared code used by MULTIPLE features
+  - Examples: Supabase service, common utilities, shared UI components
+  
+- **`features/`** - Use for feature-specific code
+  - Each feature should be self-contained and independent
+  - Features should not import from other features
+
+#### Benefits of This Structure
+
+✅ **Scalability** - Easy to add new features without affecting existing ones  
+✅ **Team Collaboration** - Teams can work on different features independently  
+✅ **Testability** - Each layer can be tested in isolation  
+✅ **Maintainability** - Clear separation makes code easier to understand and modify  
+✅ **Flexibility** - Easy to swap implementations (e.g., change database provider)  
+
+---
+
 ## 📞 Contact
 
 **Project Managers:** @LuisJCruz, @Kay9876
