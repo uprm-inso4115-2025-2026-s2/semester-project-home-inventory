@@ -9,4 +9,4 @@ The number 2 in the icon indicates that there are two items that are duplicates 
 Final product::
 
 
-image:duplicates warning icon.png[]
+image:images/duplicates warning icon.png[]

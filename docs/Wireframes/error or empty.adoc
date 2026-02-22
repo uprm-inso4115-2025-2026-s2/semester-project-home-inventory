@@ -1,0 +1,11 @@
+
+Author: Nataliavera6
+
+This icon was necessary to provide a simple and effective way to notify users of errors in the folder or empty folders.
+The sad face in the icon suggests negative issues with the folder that must be adressed by user.
+
+
+Final product::
+
+
+image:images/error_or_empty_file_icon.png.png[]
