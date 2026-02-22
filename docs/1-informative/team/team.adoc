@@ -1,40 +1,125 @@
 == 1.1 Team
 
 [abstract]
-Introduce the team structure and roles for the project and justify partner participation.
+
+For Milestone 1, the team was organized into four functional groups. These are Research,
+Functionality, Design, and Documentation; plus three Managers. In this context, all team members
+are considered partners. No external partners have been identified for this milestone; if any arise,
+their roles and responsibilities will be documented. The lists are presented in alphabetical order
+and indicate each group’s Team Leader. The Tasks column is reserved for recording completed
+issues. 
 
 === Partner justification
 TODO: 2–4 sentences explaining why all members are partners (or note any external partners and their role).
 
-=== Documentation Leads
-[cols="1,1,2",options="header"]
-|===
-|Name |GitHub |Responsibilities
+=== Team organization
 
-|TODO |@TODO |TODO
-|===
+*Managers:*
 
-=== Feature Teams
-==== Feature Team: <Name>
-[cols="1,1,2",options="header"]
+[cols="3,3,6",options="header"]
 |===
-|Name |GitHub |Responsibilities
+|Student |GitHub username |Tasks
 
-|TODO |@TODO |TODO
+|Kaysha L Pagan-Lopez |@Kay9876 |
+|Luis J Cruz-Cruz |@LuisJCruz |
 |===
 
-=== Design Team
-[cols="1,1,2",options="header"]
-|===
-|Name |GitHub |Responsibilities
 
-|TODO |@TODO |TODO
+*Documentation Team:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Alondra S. Arce Perea (Team Lead) |@alondra-arce |
+
+|TBD (Open Spot) |TBD |
 |===
 
-=== Managers (if applicable)
-[cols="1,1,2",options="header"]
-|===
-|Name |GitHub |Responsibilities
 
-|TODO |@TODO |TODO
+*Team 1: Core Inventory (7 members):*
+
+[cols="2,2,4",options="header"]
+|===
+|Name |GitHub |Issues
+
+|Kevin Gómez (Team Lead) |@kevgom018 |#11, #12, #14, #22, #34, #107
+
+|Devlin Hahn (Designer) |@devlin-hahn04 |#38, #39, #41
+
+|Jorge De León (Designer) |@JorgeDeLeonOrama |#17, #116
+
+|Januel E. Torres Marquez (Researcher) |@jankii03 |#52, #135, #136, #137
+
+|Kian-Robert Ramos Vega (Researcher) |@kian-robert |#67, #108, #109
+
+|Jorge Rivera (Researcher) |@JorgeRivera94 |#15, #122
+
+|Lucas Matos Datiz (Researcher) |@L-A-M-D |#82
+|===
+
+
+*Team 2: Alerts & Restock (7 members):*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Solimar Cruz Hernandez (Team Lead) |@Solimar-Cruz |#22, #32, #33, #30, #34, #107
+
+|Ronaldo Flores Nazario (Designer) |@ronaldoflores9 |#20, #42, #84
+
+|Eliel Hernandez Gonzalez (Designer) |@eliel-hernandez |Document UI/UX for alert settings and grocery/restock planner experience; contribute wireframe notes for alert states and user actions.
+
+|Kemuel Cubero Rosario (Researcher) |@Kemuel05 |Provide rough-sketch examples for low-stock and expiration workflows; document edge cases (missed updates, incorrect quantities, disabled notifications).
+
+|Kevin Lara Rodríguez (Researcher) |@kevinlara1 |Draft initial user stories for alerts and restock planning; document acceptance criteria for threshold triggers and grocery list generation.
+
+|Aryam Z Diaz Torres (Researcher) |@aryamdiaz |Research notification scheduling and prioritization approaches; document assumptions, constraints, and usability considerations for reminders.
+
+|Reinaldo J. Martinez Morales (Researcher) |@reinaldo-martinez1 |Draft validation/verification ideas for alerts (scenarios + test cases); document risks and mitigations for reliability of notifications.
+|===
+
+
+*Team 3: Sharing & Budget:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Andrea Segarra (Team Lead) |@andreasegarra |Lead Team 3 documentation contributions; coordinate PR reviews; define budgeting/spending tracking approach and sharing rules; align terminology for shared inventory, ownership, and budgets.
+
+|Daniella Melero (Designer) |@daniellameleroo |Document UI/UX for budgeting screens and spending entry flows; contribute wireframe notes for shared inventory indicators and duplicate-prevention prompts.
+
+|Natalia S Vera Rivera (Designer) |@nataliavera6 |Document UI/UX for roommate sharing, permissions, and ownership indicators; contribute flow notes for adding expenses and viewing budget summaries.
+
+|Fabiola Torres (Researcher) |@FabiolaZTorres |Provide rough-sketch examples for roommate coordination and expense tracking; document common pain points and edge cases (shared purchases, split costs).
+
+|Fernando Castro (Researcher) |@fernan-castro |Draft initial user stories for spending tracker and budgeting; document acceptance criteria for calculations and budget thresholds.
+
+|Yamilette Alemany (Researcher) |@yamilette-alemany |Research approaches for duplicate purchase prevention and shared workflows; document assumptions, constraints, and usability considerations for sharing.
+
+|Ernesto S. Soto Rivera (Researcher) |@ernestosoto3 |Support validation/verification ideas for sharing + budgeting (scenarios/test cases); document risks (sync conflicts, inconsistent entries) and mitigations.
+|===
+
+
+*Team 4: Reports & Insights:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Fabian Velez (Team Lead) |@FabianVelezOcasio |Lead Team 4 documentation contributions; coordinate PR reviews; define reporting scope (inventory + spending insights) and dashboard requirements; align terminology for metrics and reports.
+
+|Ian Rivera (Designer) |@Programian |Document UI/UX for dashboard and report views; contribute wireframe notes for charts, filters, and report navigation.
+
+|Jayden Sánchez (Designer) |@jaydensanchez12 |Document UI/UX for reports generator flow (selecting report type/timeframe); contribute layout and interaction notes for insights presentation.
+
+|Nicolás Rivera Batista (Researcher) |@nicolasrivera2003 |Provide rough-sketch examples for reports and “insights” needs; draft initial user stories for generating and viewing reports; document edge cases for missing/partial data.
+
+|Samarys Barreiro Melendez (Researcher) |@SamarysB |Draft validation/verification ideas for reports (scenarios + test cases); document assumptions and constraints for accuracy and performance of report calculations.
+
+|TBD (Open Spot) |TBD |Reserved for incoming team member; tasks to be assigned (e.g., additional user stories, terminology support, or report metrics research).
+
+|TBD (Open Spot) |TBD |Reserved for incoming team member; tasks to be assigned (e.g., dashboard KPIs research, UX notes, or testing plan support).
 |===
