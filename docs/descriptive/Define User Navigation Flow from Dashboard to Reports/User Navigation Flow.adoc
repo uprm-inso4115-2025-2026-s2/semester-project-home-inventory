@@ -22,14 +22,11 @@ Exact UI placement is intentionally undefined at this stage.
 
 Several navigation paradigms were considered for accessing the Reports section:
 
-* *Bottom Navigation*  
-  Suitable for primary, frequently accessed sections. Provides persistent visibility but competes for limited screen space.
+* *Bottom Navigation* - Suitable for primary, frequently accessed sections. Provides persistent visibility but competes for limited screen space.
 
-* *Navigation Drawer*  
-  Allows many sections without cluttering the main interface. However, discoverability may be lower for key features.
+* *Navigation Drawer* - Allows many sections without cluttering the main interface. However, discoverability may be lower for key features.
 
-* *Tab-Based Navigation*  
-  Useful for switching between closely related views but less appropriate for structurally distinct sections.
+* *Tab-Based Navigation* - Useful for switching between closely related views but less appropriate for structurally distinct sections.
 
 === Selected Approach
 
