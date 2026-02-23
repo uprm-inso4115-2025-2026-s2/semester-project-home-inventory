@@ -86,5 +86,5 @@ flowchart TD
 == Open Questions for Later Implementation
 
 * Should filters persist between sessions?
-* Should reports be accessible from additional entry points (e.g., notifications)?
+* Should reports be accessible from additional entry points like notifications?
 * Should frequently used reports be surfaced on the Dashboard?
