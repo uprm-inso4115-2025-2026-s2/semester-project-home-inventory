@@ -18,6 +18,29 @@ Entry mechanism:
 
 Exact UI placement is intentionally undefined at this stage.
 
+== Navigation Paradigm Evaluation
+
+Several navigation paradigms were considered for accessing the Reports section:
+
+* *Bottom Navigation*  
+  Suitable for primary, frequently accessed sections. Provides persistent visibility but competes for limited screen space.
+
+* *Navigation Drawer*  
+  Allows many sections without cluttering the main interface. However, discoverability may be lower for key features.
+
+* *Tab-Based Navigation*  
+  Useful for switching between closely related views but less appropriate for structurally distinct sections.
+
+=== Selected Approach
+
+Reports are to be accessed via a Dashboard navigation element (Reports button).
+
+Reasoning:
+
+* Reports represent a distinct functional area rather than a constantly switched context.
+* Avoids persistent UI occupation required by bottom navigation.
+* Provides explicit user intent when entering reporting features.
+
 == Screens Involved
 
 The reporting flow may involve the following screens or UI states:
