@@ -1,6 +1,5 @@
-== 2.1.1 Domain Rough Sketch
+== Domain Rough Sketch
 
-[abstract]
 Raw, unprocessed domain notes and examples. Organize by feature team if possible.
 
 Please note that most(if not all) of the quotes mentioned have been translated from Spanish. Also names have been removed to protect privacy, in their place, the person's perceived role in the domain is shown (e.g. instead of Kevin Gomez, we would place Student).

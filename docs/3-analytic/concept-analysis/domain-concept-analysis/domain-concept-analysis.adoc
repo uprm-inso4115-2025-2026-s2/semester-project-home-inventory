@@ -1,6 +1,5 @@
-== 3.1.1 Domain Concept Analysis
+== Domain Concept Analysis
 
-[abstract]
 This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants.
 
 === Core concepts (draft)

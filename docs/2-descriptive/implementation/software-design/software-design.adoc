@@ -1,6 +1,5 @@
-== 2.3.2 Software Design
+== Software Design
 
-[abstract]
 Design decisions at a more detailed level than architecture (modules, domain model, APIs, etc.).
 
 === Key design decisions

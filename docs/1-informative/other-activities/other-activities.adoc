@@ -1,6 +1,5 @@
-== 1.4 Other Activities than Just Developing Source Code
+== Other Activities than Just Developing Source Code
 
-[abstract]
 Describe project activities beyond coding (planning, coordination, documentation, validation, etc.).
 
 === Documentation and communication

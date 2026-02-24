@@ -1,9 +1,8 @@
-== 1.2.2 Needs
+== Needs
 
-[abstract]
-List the needs of the domain stakeholders. Phrase needs as outcomes/capabilities, not features.
+The needs below describe what students living independently and their roommates must be able to accomplish to manage household essentials reliably. These needs are expressed as outcomes and capabilities (what stakeholders need to achieve), rather than specific app features or implementation details.
 
-=== Needs by actor group
+*Needs by actor group*
 
 === Actor group: Students and young adults
 * Need N1: Quickly record household items with minimal effort
@@ -14,7 +13,7 @@ List the needs of the domain stakeholders. Phrase needs as outcomes/capabilities
 * Need N4: View shared household inventory in real time
 * Need N5: Coordinate purchases to avoid duplicates across the household
 
-=== Prioritized needs (draft)
+=== Prioritized needs
 [cols="1,4,2,3",options="header"]
 |===
 |ID |Need statement |Priority |Rationale
@@ -40,7 +39,7 @@ List the needs of the domain stakeholders. Phrase needs as outcomes/capabilities
 |Prevents notification fatigue and alert disabling
 |===
 
-== Quality Needs (Non-Functional)
+=== Quality Needs (Non-Functional)
 
 * Usability: Item entry should require only a few user actions and be intuitive for first-time users.
 * Reliability: Inventory data must remain consistent across devices and users.
@@ -48,6 +47,3 @@ List the needs of the domain stakeholders. Phrase needs as outcomes/capabilities
 * Availability: The system should support offline use with automatic synchronization when connectivity returns.
 * Security/Privacy: Household data must be access-controlled and securely stored.
 * Scalability: The system should support multiple households and concurrent users without performance degradation.
-
-=== Open questions
-* TODO
