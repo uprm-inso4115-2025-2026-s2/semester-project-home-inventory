@@ -1,1 +1,0 @@
-// This directory holds entities and asbtract repositories, essentially all the contracts with how the app interacts with the domain
