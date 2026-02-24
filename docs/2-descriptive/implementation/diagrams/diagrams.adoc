@@ -1,6 +1,6 @@
-== 2.3.3 Diagrams
+== Diagrams
 
-[abstract]
+
 List and explain diagrams (architecture diagrams, flow diagrams, ER diagrams, etc.).
 
 === Diagram inventory

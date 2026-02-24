@@ -1,4 +1,5 @@
-== 2. Descriptive Part
+<<<
+== Descriptive Part
 
 include::domain-description/domain-description.adoc[leveloffset=+1]
 include::requirements/requirements.adoc[leveloffset=+1]

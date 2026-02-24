@@ -1,6 +1,5 @@
-== 2.1.2 Terminology
+== Terminology
 
-[abstract]
 This section contains the domain`s ubiquitous language. Here we designate our preferred terms for entities, rules, events and actions from the domain. These were compiled from interviews with domain stakeholders, experts and general knowledge.
 
 [cols="^,^,4,3",options="header"]

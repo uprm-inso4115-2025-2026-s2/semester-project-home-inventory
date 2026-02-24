@@ -1,4 +1,4 @@
-== 4.1.1 Initial Stakeholders
+== Initial Stakeholders
 
 [abstract]
 Initial set of stakeholders identified at the start of the project.

@@ -1,9 +1,8 @@
-== 1.2.3 Ideas
+== Ideas
 
-[abstract]
 Outline candidate solution directions. Ideas are not commitments; they are options to address the needs.
 
-== Idea A — Lightweight Smart Inventory
+=== Lightweight Smart Inventory
 
 * Core concept: A mobile home inventory application optimized for ultra fast item capture and shared household visibility, built with Flutter and a service like Supabase for real time synchronization.
 * Needs addressed: N1, N2, N3, N4, N5
@@ -33,12 +32,12 @@ Outline candidate solution directions. Ideas are not commitments; they are optio
   - Test with small shared households (2-4 users)
   - Monitor notification opt-out rates
 
-=== Idea B — <Short name> (optional)
-* Core concept: TODO
-* Needs addressed: TODO
-* Benefits: TODO
-* Risks/unknowns: TODO
-* How we will validate this idea: TODO
+// === Idea B — <Short name> (optional)
+// * Core concept: TODO
+// * Needs addressed: TODO
+// * Benefits: TODO
+// * Risks/unknowns: TODO
+// * How we will validate this idea: TODO
 
-=== Notes
-* TODO: Any decision notes or tradeoffs so far
+// === Notes
+// * TODO: Any decision notes or tradeoffs so far

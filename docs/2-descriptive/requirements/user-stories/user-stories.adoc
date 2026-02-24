@@ -1,6 +1,5 @@
-== 2.2.1 User Stories
+== User Stories
 
-[abstract]
 Initial user stories organized by feature. Include acceptance criteria and trace to personas/needs when possible.
 
 === Feature: <Feature name>
