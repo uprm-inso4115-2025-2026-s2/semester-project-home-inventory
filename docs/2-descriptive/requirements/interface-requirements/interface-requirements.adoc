@@ -1,4 +1,4 @@
-== 2.2.5 Interface Requirements
+== Interface Requirements
 
 [abstract]
 UI/interaction requirements at a high level (what users must be able to see/do).

@@ -1,0 +1,4 @@
+== Scope, Span, and Synopsis
+
+include::scope-span.adoc[leveloffset=+1]
+include::synopsis.adoc[leveloffset=+1]

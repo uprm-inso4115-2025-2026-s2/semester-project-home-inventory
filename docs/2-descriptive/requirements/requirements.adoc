@@ -1,4 +1,4 @@
-== 2.2 Requirements
+== Requirements
 
 [abstract]
 This section captures initial requirements at multiple levels (stories, features, epics, constraints).

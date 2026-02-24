@@ -1,6 +1,5 @@
-== 2.2.6 Machine Requirements
+== Machine Requirements
 
-[abstract]
 Technical/system requirements and constraints (performance, security, data, integrations).
 
 === Non-functional requirements

@@ -1,4 +1,4 @@
-== 3.2 Validation and Verification
+== Validation and Verification
 
 [abstract]
 Validation ensures we are building the right thing (meets real needs). Verification ensures we built it correctly (meets requirements/specs).

@@ -1,4 +1,4 @@
-== 4.1.2 Additional Stakeholders
+== Additional Stakeholders
 
 [abstract]
 Stakeholders discovered later as the team learns more about the domain.

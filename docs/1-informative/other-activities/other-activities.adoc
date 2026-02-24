@@ -1,19 +1,8 @@
-== 1.4 Other Activities than Just Developing Source Code
+== Other Activities
+Projects are successful when coding is supported by planning, communication, validation, and documentation. The following activities keep the Digital Home Inventory project organized and ready for future development.
 
-[abstract]
-Describe project activities beyond coding (planning, coordination, documentation, validation, etc.).
+* Although feature implementation is important, the project’s success depends on coordination across multiple teams and consistent documentation. Our docs-as-code approach (AsciiDoc in the repository) provides a shared source of truth for the domain description, requirements, architecture decisions, and milestone deliverables. Maintaining updated documentation makes it easier for team members to collaborate, onboard new contributors, and keep terminology consistent across design, analysis, and code.
 
-=== Documentation and communication
-* TODO: docs-as-code workflow (PRs, reviews)
-* TODO: meeting notes / decision logs
-* TODO: terminology alignment across teams
+* Before full-scale implementation, the team must plan for quality assurance. This includes defining what “done” means for each feature, establishing acceptance criteria for user stories, and preparing verification activities such as unit testing, integration testing, and UI testing. In parallel, validation activities such as personas, scenarios, and walkthroughs help confirm that requirements reflect real student needs (e.g., avoiding duplicates, preventing expirations, staying within budget, and coordinating with roommates).
 
-=== Project planning and coordination
-* TODO: issue tracking and milestones
-* TODO: roles and responsibilities
-* TODO: risk tracking
-
-=== Quality planning
-* TODO: validation plans (users/stakeholders)
-* TODO: verification plans (tests, reviews)
-* TODO: definition of done criteria
+* Project management and communication are also essential. The team uses GitHub Issues to track tasks and milestones, pull requests for reviews, and branch rules to control integration into `main`. Regular check-ins between feature teams, the Design Team, and the Documentation Team help surface risks early (for example, notification reliability, shared-inventory synchronization conflicts, and data consistency for reports). By defining responsibilities, documenting decisions, and planning validation and testing alongside development, the project lays a structured foundation for a reliable and maintainable system.
