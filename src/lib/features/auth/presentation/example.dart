@@ -1,0 +1,1 @@
+// This directory hold the pages and widgets, essentially all the parts of the application concerning the presentation layer
