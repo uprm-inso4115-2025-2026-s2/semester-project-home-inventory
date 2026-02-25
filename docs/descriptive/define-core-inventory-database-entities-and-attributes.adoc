@@ -158,7 +158,7 @@ Data Type: Integer
 Nullable: NOT NULL  
 Default: no default value  
 
-Attribute: quantity  
+Attribute: count  
 Data Type: Integer  
 Nullable: NOT NULL  
 Default: 1  
@@ -184,7 +184,7 @@ Nullable: NOT NULL
 Default: current timestamp  
 
 
-=== User–Home Relationship
+=== Managed
 
 Represents the association between users and the homes they manage.
 
