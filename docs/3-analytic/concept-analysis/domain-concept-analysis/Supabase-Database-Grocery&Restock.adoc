@@ -1,0 +1,187 @@
+= Design Supabase Database Schema for Grocery & Restock System
+
+== Key Information
+* Issue: (add issue #)
+* Recommended Assigned Developer: @Solimar-Cruz
+* Scope: Inventory tracking + expiration monitoring + automated grocery list generation
+
+== 🎯 Objective
+Design a relational schema that supports:
+* Current inventory quantities
+* Expiration tracking (per item/batch)
+* Threshold-based restocking rules
+* Automated grocery list generation
+* Item states (e.g., in_stock, low_stock, out_of_stock, expired)
+
+== 📋 Proposed Tables
+
+=== 1) users (Supabase Auth)
+* Use Supabase `auth.users`
+* App tables reference users via `auth.users.id` (uuid)
+
+---
+
+=== 2) households
+Represents a shared space (e.g., apartment, family).
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|name |text |Required
+|created_by |uuid |FK → auth.users.id
+|created_at |timestamptz |default now()
+|===
+
+---
+
+=== 3) household_members
+Connects users to households (for sharing data + permissions).
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|household_id |uuid |PK/FK → households.id
+|user_id |uuid |PK/FK → auth.users.id
+|role |text |owner/member
+|created_at |timestamptz |default now()
+|===
+
+---
+
+=== 4) inventory_items (catalog)
+Defines the item itself (name/unit/barcode/category). Does not change often.
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|household_id |uuid |FK → households.id
+|name |text |Required
+|category |text |Optional (or separate categories table)
+|default_unit |text |ct, lb, oz, L, etc.
+|barcode |text |Optional
+|created_at |timestamptz |default now()
+|===
+
+---
+
+=== 5) inventory_stock (current state)
+Stores the current stock for each item (fast reads for the app).
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|household_id |uuid |FK → households.id
+|item_id |uuid |FK → inventory_items.id (unique per household)
+|quantity_on_hand |numeric |Current quantity
+|state |text |in_stock / low_stock / out_of_stock / expired
+|updated_at |timestamptz |default now()
+|===
+
+NOTE: `state` can be computed in the app later, but storing it helps support “track item states” now.
+
+---
+
+=== 6) inventory_batches (expiration monitoring)
+Tracks expiration at a batch/lot level (supports multiple expirations per item).
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|household_id |uuid |FK → households.id
+|item_id |uuid |FK → inventory_items.id
+|quantity |numeric |Qty in this batch
+|expires_on |date |Expiration date
+|added_at |timestamptz |default now()
+|===
+
+This enables:
+* “expiring soon” filters
+* “expired” detection
+* FIFO consumption logic later
+
+---
+
+=== 7) restock_rules (threshold-based restocking)
+Defines when and how much to restock.
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|household_id |uuid |FK → households.id
+|item_id |uuid |FK → inventory_items.id (unique per household)
+|min_threshold |numeric |If stock <= this → restock needed
+|target_quantity |numeric |Generate enough to reach target
+|enabled |boolean |default true
+|cadence |text |any / daily / weekly (optional)
+|last_triggered_at |timestamptz |Optional
+|created_at |timestamptz |default now()
+|===
+
+---
+
+=== 8) grocery_lists
+Represents a generated (or manual) grocery list.
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|household_id |uuid |FK → households.id
+|status |text |active / archived / completed
+|created_by |uuid |FK → auth.users.id
+|created_at |timestamptz |default now()
+|updated_at |timestamptz |default now()
+|===
+
+---
+
+=== 9) grocery_list_items
+Items on a grocery list (manual or generated).
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|list_id |uuid |FK → grocery_lists.id
+|item_id |uuid |FK → inventory_items.id
+|quantity_needed |numeric |Default 1 (or computed)
+|source |text |manual / restock_rule / low_stock / expiring
+|is_checked |boolean |default false
+|created_at |timestamptz |default now()
+|===
+
+---
+
+=== 10) stock_movements (recommended audit log)
+Tracks every change (+/-) for history and debugging.
+
+[cols="1,1,1"]
+|===
+|Column |Type |Notes
+|id |uuid |PK
+|household_id |uuid |FK → households.id
+|item_id |uuid |FK → inventory_items.id
+|quantity_delta |numeric |+ restock, - consume
+|reason |text |restock / consume / adjustment / waste
+|created_by |uuid |FK → auth.users.id
+|created_at |timestamptz |default now()
+|===
+
+== ✅ ER Diagram (Mermaid)
+```mermaid
+erDiagram
+  households ||--o{ household_members : has
+  households ||--o{ inventory_items : owns
+  inventory_items ||--|| inventory_stock : current_state
+  inventory_items ||--o{ inventory_batches : expires_by_batch
+  inventory_items ||--o{ restock_rules : restock_config
+  households ||--o{ grocery_lists : has
+  grocery_lists ||--o{ grocery_list_items : contains
+  inventory_items ||--o{ grocery_list_items : listed_as
+  households ||--o{ stock_movements : logs
+  inventory_items ||--o{ stock_movements : changes
