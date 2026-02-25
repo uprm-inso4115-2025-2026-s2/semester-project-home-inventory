@@ -1,0 +1,65 @@
+= Inventory Transaction Tracking Model
+
+== Key Information:
+
+=== Issue ##148
+=== Completed by: @Kemuel05
+
+== Overview
+
+This document defines how inventory quantity changes should be recorded as transactions.
+The goal is to keep a clear and consistent history of how and when item quantities change.
+
+== What Is a Stock Transaction
+
+A stock transaction represents any action that changes the quantity of an inventory item.
+
+Examples of stock transactions include:
+
+* Restocking an item (quantity increases).
+* Using or consuming an item (quantity decreases).
+* Manual quantity adjustments.
+
+If an action changes quantity, it should be considered a transaction.
+
+== Transaction Data Table
+
+This table describes the basic information each transaction should store.
+
+[cols="1,1"]
+|===
+|Field |Description
+
+|Item reference
+|The inventory item affected by the change.
+
+|Quantity change
+|The amount added or removed from the item’s quantity.
+
+|Reason
+|Why the change happened (restock, used, manual edit).
+
+|Time of transaction 
+|When the quantity change occurred.
+|===
+
+== Transaction Rules
+
+* All quantity changes should be recorded as transactions.
+* Transactions should never change quantity without a clear reason.
+* Transaction history should be read-only after creation.
+
+== Relationship to Inventory Quantity
+
+* Inventory items store the current quantity.
+* Transactions explain how that quantity was reached over time.
+* The current quantity should always match the result of applied transactions.
+
+== Recommendation
+
+Record all inventory quantity changes as transactions with a clear reason and timestamp.
+This approach provides transparency and allows future features like history review and analytics.
+
+== Sources
+
+* https://10xerp.com/blog/5-steps-to-implement-an-effective-inventory-tracking-system/
