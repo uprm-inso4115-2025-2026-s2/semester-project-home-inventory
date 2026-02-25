@@ -48,4 +48,4 @@ Based on the research, the recommended approach is a fixed quantity threshold wi
 
 
 * https://abcsupplychain.com/optimize-reduce-inventory/
-* https://www.geeksforgeeks.org/inventory-management-system/
+
