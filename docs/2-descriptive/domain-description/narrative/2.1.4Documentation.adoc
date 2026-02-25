@@ -1,0 +1,62 @@
+= 2.1.4 Domain Narrative
+
+== Overview
+
+The relevant domain consists of students living independently who must manage physical household items within limited time and budget constraints. In this environment, students acquire, store, consume, discard, and replace items necessary for daily living.
+
+The domain includes physical goods, storage locations within a home, financial expenditure related to those goods, and social coordination between roommates sharing a living space.
+
+== Domain Entities
+
+*Student:* a person living independently who is responsible for maintaining household essentials. A student may live alone or share a residence with roommates.
+
+*Household Item:* a tangible object stored within the home for functional use. Examples include food, cleaning supplies, hygiene products, and medicine. Each household item has attributes such as:
+
+* Quantity
+* Location
+* Expiration date (if applicable)
+* Purchase Cost
+
+*Location:* represents the physical area where an item is stored, such as kitchen, bathroom, or bedroom. Locations allow users to quickly identify where items are kept.
+
+*Budget:* represents the financial limitation under which a student operates. Spending on household items reduces available financial resources.
+
+*Shared Household:* exists when multiple students cohabit and share responsibility for certain household items. In this context, coordination and communication affect purchasing behavior.
+
+== Domain Behaviors
+
+*Acquisition:* students acquire household items through purchase or other means. Acquisition increases the quantity of an item within the household and reduces available financial resources.
+
+*Quantity Update:* When an item is consumed or restocked, its quantity is updated. The Inventory Record must immediately reflect this change to maintain consistency.
+
+*Consumption:* Students use household items over time. Consumption decreases the quantity of an item. When quantity reaches zero, the item is no longer available for use.
+
+*Expiration:* Certain household items deteriorate over time. After their expiration date, they are no longer suitable for use and may be discarded.
+
+*Discarding:* Items may be discarded when fully consumed, expired, damaged, or deemed unnecessary.
+
+*Replacement:* When a needed item becomes unavailable or insufficient in quantity, students purchase a replacement.
+
+*Duplicate Purchasing:* In shared households, lack of coordination may lead to multiple students independently purchasing the same item, resulting in unnecessary surplus.
+
+*Financial Impact:* Frequent replacement, overstocking, and duplicate purchases reduce available budget and may contribute to financial strain.
+
+== Domain Constraints
+
+* *Physical Availability:* An item cannot be consumed if there is none of it left.
+* *Expiration:* An item should not be used past its expiration date.
+* *Finite Resource:* Household items are limited and must be replenished.
+* *Shared Awareness:* In shared households, miscommunications may lead to redundant purchases.
+
+== Domain Dynamics
+
+Over time, household item quantities fluctuate due to acquisition and consumption. Items transition between available, low in quantity, expired, and discarded states.
+
+Students must balance:
+
+* Time constraints
+* Financial limitations
+* Storage capacity
+* Coordination with roommates
+
+The tension between these factors creates the real-world problem of inefficient inventory management.
