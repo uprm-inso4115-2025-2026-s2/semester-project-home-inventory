@@ -1,7 +1,8 @@
-== 1.2.1 Current Situation
+== Current Situation
 
-[abstract]
-Describe the domain as it exists today (before our solution): actors, workflows, and pain points.
+Students living independently often struggle to keep track of household items such as groceries, cleaning supplies, and personal care products. Because they rely on memory or scattered notes, they frequently buy duplicates, run out of essentials unexpectedly, and discover food or medicine after it has expired.
+
+In shared households, the problem is worse: roommates lack visibility into what is already available, which increases duplicate purchases and makes budgeting harder. The current environment lacks a simple, student-friendly system optimized for fast item updates, reminders, and shared coordination.
 
 === Domain context
 Students and young adults living independently often struggle to keep track of household items, shared supplies, and personal belongings. While several home inventory applications exist, most are designed for insurance documentation or business inventory management rather than lightweight everyday use.
@@ -10,12 +11,12 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
 
 
 === Who is involved (actors)
-* Primary actors: Students and young adults managing personal household items
-* Secondary actors: Roommates or cohabitants sharing supplies
-* Organizations/systems involved: Existing home inventory mobile applications (e.g., Sortly, PantryCheck)
+ * Primary actors: Students and young adults managing personal household items
+ * Secondary actors: Roommates or cohabitants sharing supplies
+ * Organizations/systems involved: Existing home inventory mobile applications (e.g., Sortly, PantryCheck)
 
 
-=== Current workflow (as-is)
+=== Current workflow (as-is) 
 . User purchases or owns household items
 . User optionally records items manually in notes or an inventory app
 . Inventory is rarely updated consistently over time
@@ -63,7 +64,7 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
 * Constraint: Users have limited patience for manual data entry.
 * Constraint: The solution must work well on mobile devices with intermittent connectivity.
 
-[NOTE]
-====
-Keep this section solution-free. It should describe the world today, not what we plan to build.
-====
+// [NOTE]
+// ====
+// Keep this section solution-free. It should describe the world today, not what we plan to build.
+// ====

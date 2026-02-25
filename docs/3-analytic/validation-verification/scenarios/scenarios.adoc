@@ -1,4 +1,4 @@
-== 3.2.1 Scenarios
+== Scenarios
 
 [abstract]
 Scenarios describe realistic end-to-end situations in the domain and how users expect things to work.

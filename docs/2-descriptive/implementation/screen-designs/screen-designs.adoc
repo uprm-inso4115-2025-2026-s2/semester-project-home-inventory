@@ -1,6 +1,5 @@
-== 2.3.4 Screen Designs
+== Screen Designs
 
-[abstract]
 Early UI concepts or wireframes (even rough). Focus on user flows, not polish.
 
 === Key user flows

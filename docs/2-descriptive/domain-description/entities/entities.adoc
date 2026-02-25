@@ -1,6 +1,5 @@
-== 2.1.4 Entities
+== Entities
 
-[abstract]
 Key domain entities (nouns) and their attributes.
 
 [cols="2,4,4",options="header"]
