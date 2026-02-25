@@ -1,0 +1,73 @@
+= Supabase Data Structure for Inventory and Stock Changes
+
+== Key Information:
+
+=== Issue #147
+=== Completed by: @Kemuel05
+
+== Overview
+
+This document describes a simple data structure for storing inventory items and tracking stock changes over time.
+It focuses on the minimum data needed to support inventory tracking and low-stock logic.
+
+== Inventory Items Table
+
+Represents the current state of each inventory item.
+
+[cols="1,1"]
+|===
+|Field |Description
+
+|Item name
+|The name of the inventory item.
+
+|Category (optional)
+|Optional grouping for the item.
+
+|Current quantity
+|The current amount of the item in stock.
+
+|Low stock threshold
+|The quantity at which the item is considered low stock.
+
+|Created time (Optional)
+|When the item was added to inventory.
+|===
+
+== Stock Changes Table
+
+This table represents changes made to an item’s quantity over time.
+
+[cols="1,1"]
+|===
+|Field |Description
+
+|Item reference
+|The item whose quantity was changed.
+
+|Quantity change
+|A positive or negative number representing the change.
+
+|Reason
+|Why the quantity changed (restock, used, manual edit).
+
+|Time of change
+|When the quantity change occurred.
+|===
+
+== Relationship Between Tables
+
+* One inventory item can have multiple stock changes.
+* Stock changes explain how the current quantity of an item was reached.
+
+== Simple Restock Flow
+
+1. A user restocks an item by adding a quantity.
+2. A stock change is recorded with a positive quantity value.
+3. The item’s current quantity is updated.
+4. Low-stock logic checks the updated quantity against the low stock threshold.
+
+== Recommendation
+
+Using one table for inventory items and one table for stock changes keeps the system simple and easy to extend.
+This structure supports low-stock detection while allowing future features like history tracking.
