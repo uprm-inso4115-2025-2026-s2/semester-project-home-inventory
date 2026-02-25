@@ -16,12 +16,12 @@ Default: auto-generated
 Attribute: email  
 Data Type: String  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: name  
 Data Type: String  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: created_at  
 Data Type: Timestamp (date+time)
@@ -41,7 +41,7 @@ Default: auto-generated
 Attribute: name  
 Data Type: String  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: created_at  
 Data Type: Timestamp (date+time)
@@ -61,7 +61,7 @@ Default: auto-generated
 Attribute: name  
 Data Type: String  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: created_at  
 Data Type: Timestamp (date+time)
@@ -81,12 +81,12 @@ Default: auto-generated
 Attribute: name  
 Data Type: String  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: home_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: created_at  
 Data Type: Timestamp (date+time)
@@ -106,27 +106,27 @@ Default: auto-generated
 Attribute: name  
 Data Type: String  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: brand  
 Data Type: String  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: size  
 Data Type: String  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: variant  
 Data Type: String  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: barcode  
 Data Type: String  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: created_at  
 Data Type: Timestamp (date+time)
@@ -146,17 +146,17 @@ Default: auto-generated
 Attribute: product_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: owner_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: room_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: quantity  
 Data Type: Integer  
@@ -166,17 +166,17 @@ Default: 1
 Attribute: purchase_date  
 Data Type: Date  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: expiration_date  
 Data Type: Date  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: notes  
 Data Type: String  
 Nullable: Nullable  
-Default: —  
+Default: no default value  
 
 Attribute: created_at  
 Data Type: Timestamp (date+time)
@@ -191,12 +191,12 @@ Represents the association between users and the homes they manage.
 Attribute: user_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: home_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: role  
 Data Type: String  
@@ -211,12 +211,12 @@ Represents the association between users and owners they track inventory for.
 Attribute: user_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 Attribute: owner_id  
 Data Type: Integer  
 Nullable: NOT NULL  
-Default: —  
+Default: no default value  
 
 
 == Notes
