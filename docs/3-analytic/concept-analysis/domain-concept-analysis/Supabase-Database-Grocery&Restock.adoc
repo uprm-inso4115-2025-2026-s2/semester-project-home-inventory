@@ -5,7 +5,7 @@
 * Recommended Assigned Developer: @Solimar-Cruz
 * Scope: Inventory tracking + expiration monitoring + automated grocery list generation
 
-== 🎯 Objective
+== Objective
 Design a relational schema that supports:
 * Current inventory quantities
 * Expiration tracking (per item/batch)
@@ -13,7 +13,7 @@ Design a relational schema that supports:
 * Automated grocery list generation
 * Item states (e.g., in_stock, low_stock, out_of_stock, expired)
 
-== 📋 Proposed Tables
+==Proposed Tables
 
 === 1) users (Supabase Auth)
 * Use Supabase `auth.users`
@@ -172,7 +172,7 @@ Tracks every change (+/-) for history and debugging.
 |created_at |timestamptz |default now()
 |===
 
-== ✅ ER Diagram (Mermaid)
+== ER Diagram
 ```mermaid
 erDiagram
   households ||--o{ household_members : has
