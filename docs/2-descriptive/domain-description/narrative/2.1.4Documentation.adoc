@@ -1,0 +1,65 @@
+= 2.1.4 Domain Narrative
+
+== Overview
+
+The Digital Home Inventory domain models how students living independently manage, organize, and monitor household items to reduce waste, avoid duplicate purchases, and maintain budget awareness.
+
+The domain focuses on inventory tracking, stock monitoring, expiration awareness, spending visibility, and shared coordination between roommates. It provides a structured way to manage household resources in an environment where time constraints and limited budgets make manual tracking unreliable.
+
+== Core Entities
+
+*User:* represents a student who maintains and interacts with a digital inventory of household items. A user may manage inventory individually or share access with roommates.
+
+*Household Item:* represents any physical object stored within the household environment. Examples include pantry goods, cleaning supplies, bathroom products, and medicine. Each household item has attributes such as:
+
+* Quantity
+* Category
+* Location
+* Expiration date (if applicable)
+* Spending history
+
+*Category:* groups related household items to improve organization and search efficiency. Examples include "pantry items," "cleaning supplies," and "bathroom supplies."
+
+*Location:* represents the physical area where an item is stored, such as kitchen, bathroom, or bedroom. Locations allow users to quickly identify where items are kept.
+
+*Inventory Record:* represents the centralized digital representation of all Household Items managed by a user or shared group. It maintains the current state, quantities, and historical updates of items.
+
+== Core Behaviors
+
+*Item Registration:* Users add new Household Items to the Inventory Record, assigning them to a Category and Location. Once added, the item becomes part of the centralized system.
+
+*Quantity Update:* When an item is consumed or restocked, its quantity is updated. The Inventory Record must immediately reflect this change to maintain consistency.
+
+*Low Stock Monitoring:* If an item's quantity falls below a defined threshold, the system generates a notification to alert the user. This supports timely replenishment and reduces unexpected shortages.
+
+*Expiration Monitoring:* Items with expiration dates are monitored. When approaching expiration, the system generates reminders to help reduce waste.
+
+*Spending Tracking:* The domain records expenditures associated with Household Items. This enables users to compare total spending with their intended budget and avoid unnecessary overstocking.
+
+*Shared Inventory Coordination:* When multiple users share an inventory (e.g., roommates), all users view synchronized data. Updates by one user are reflected consistently for all others. This reduces duplicate purchases and improves coordination.
+
+*Reporting:* The system generates reports summarizing current inventory levels, expenditure, and usage rates. These reports assist users in planning future purchases efficiently.
+
+== Domain Constraints
+
+* *Inventory Consistency Rule* +
+All additions, updates, and deletions must be accurately reflected in the centralized Inventory Record.
+* *Threshold Accuracy Rule* +
+Notifications must trigger only when the defined stock or expiration thresholds are reached.
+* *Duplicate Prevention Rule* +
+Shared inventory views must remain synchronized to prevent multiple users from purchasing the same item unnecessarily.
+* *Report Integrity Rule* +
+Generated reports must accurately reflect the actual inventory state and recorded spending.
+
+== Scope Clarification
+
+The Digital Home Inventory domain focuses exclusively on tracking and managing items within a household environment.
+
+It does not include:
+
+* External purchasing systems
+* Retail transactions
+* Payment processing
+* Third-party integrations
+
+The domain strictly models household item organization, monitoring, and budgeting logic.
