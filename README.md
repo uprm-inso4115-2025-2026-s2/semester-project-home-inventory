@@ -292,7 +292,6 @@ All project documentation is written in **AsciiDoc** format and stored in the `/
 - **[STYLE_GUIDE.md](STYLE_GUIDE.md)** - Coding standards and best practices
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Complete workflow guide
 - **[LICENSE](LICENSE)** - Project license
-- **[Daily Sweep Architecture (Expiration + Low-Stock)](docs/2-descriptive/implementation/software-architecture/design-and-document-sweep-architecture.adoc)** - Architecture spec for the daily scheduler → sweep worker → Supabase flow, including run logging and verification plan
 
 ### Branch Structure
 

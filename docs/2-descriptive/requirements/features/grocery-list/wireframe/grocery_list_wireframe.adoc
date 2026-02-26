@@ -14,9 +14,11 @@ image::images/Items under collection Wireframe.png[Items under collection Wirefr
 
 This wireframe represents the page that will show the items under a collection. Here the user will be able to see the items that are available to add to their grocery list. These items will be displayed in a grid view as a button that will have the image and name of the product. Every time the user press the item will add one of that item into their grocery list. 
 
-image::images/Add Costume item Wireframe.png[Add Costume item Wireframe, 300, align="center"]
+image::images/Add Costume item Wireframe.png[Add Costume item Wireframe, 300, align="center"] 
+image::images/Edit Costume item Wireframe.png[Edit Costume item Wireframe, 300, align="center"]
 
-If under the collections the user doesn't find the item they are looking for, they can add a new item to the collection by clicking the + button. This will open this page were the user would see a preview of the item they are adding and a form to add the item to the custom collection.
+
+If under the collections the user doesn't find the item they are looking for, they can add a new item to the collection by clicking the + button. This will open this page were the user would see a preview of the item they are adding and a form to add the item to the custom collection. The user would also have the option to edit a custom item they already have in the custom collection. 
 
 image::images/My Grocery list Wireframe.png[My Grocery list Wireframe, 300, align="center"]
 
@@ -30,6 +32,10 @@ If the user touch one item on their grocery list, this will open an action sheet
 image::images/History Wireframe.png[History Wireframe, 300, align="center"]
 
 Here the user will see the items that they have completed. This will display the day they select it's completed, the image and name of the item, and the quantity of the item that they have bought.
+
+image::images/Custom items edit Wireframe.png[Custom Items list Wireframe, 300, align="center"]
+
+In the custom items collection the user would have the option to enter a page where they can see all the items they have created. Here they will have the option to edit the item or delete it.
 
 
 == Conclusion
