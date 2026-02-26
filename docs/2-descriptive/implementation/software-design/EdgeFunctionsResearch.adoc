@@ -41,6 +41,16 @@ When multiple roommates update the same item simultaneously:
 * Functions create a signed, short-lived token for roommate invites.
 * A dedicated `/accept-invite` endpoint validates the token and joins the user to the household.
 
+== Risks and Technical Considerations
+* Edge Functions are serverless, so they may have a cold start time, with the possibility of causing a slight delay.
+* _Mitigation_: Implement UI updates in the frontend so the user sees the item added immediately, even while the function validates the transaction in the background.
+
+* Complex logic (like summing expenses from multiple tables) risks hitting execution time limits.
+* _Mitigation_: Keep Edge Functions performant on optimizing database queries.
+
+* Updating the same inventory item at the exact same time may cause conflicts.
+* _Mitigation_: Use database transactions to ensure data integrity. Can also use PostgreSQL `SELECT FOR UPDATE` to lock the row during updates.
+
 == Quickstart & Deployment
 
 After creating or configuring the project, create your first Edge Function.
