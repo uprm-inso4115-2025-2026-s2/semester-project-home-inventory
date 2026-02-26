@@ -1,11 +1,3 @@
-== 1.3.2 Synopsis
+== Synopsis
 
-[abstract]
-Write a short “elevator pitch” for the project.
-
-TODO: Write 5–8 sentences covering:
-. The domain problem in one sentence.
-. Who the primary users/stakeholders are.
-. The high-level approach (no implementation details).
-. What success looks like.
-. One key constraint/assumption.
+The project aims to develop a student-focused digital home inventory system that addresses the inefficiencies and stress caused by relying on memory and informal tracking of household essentials. By providing a centralized inventory organized by room and category, the system will help students accurately manage items, avoid duplicate purchases, and prevent food and medicine from expiring unnoticed. The application will support smart notifications for low-stock and upcoming expirations, quick search and filtering for efficient organization, and budgeting features that track household spending and generate simple reports. For students living with roommates, the system will enable shared inventory visibility and clear ownership indicators to improve coordination and reduce redundant shopping. Through iterative design, user-centered validation, and continuous refinement across milestones, the project seeks to deliver a scalable, user-friendly solution that reduces waste, supports better budgeting, and improves day-to-day household management for students living independently.

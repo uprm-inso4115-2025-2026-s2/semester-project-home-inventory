@@ -1,0 +1,32 @@
+= Description Tech Stack of Expiration Alert System
+
+== Infrastructure
+
+The expiration alert system may be built on the following infrastructure:
+
+* Scheduler or Trigger: Supabase Cron
+** Supabase Cron allows to run a recurring database task/function at specified interals. It may be used by the team to identify items about to expire.
+
+* Logic: Supabase Edge Functions
+** Supabase Edge Function are triggered by the scheduler. It may query the database, group expiring items by user to prevent multiple notifications, and construct the notification payload.
+
+* Notification Service: FIrebase Cloud Messaging (FCM)
+** It acts as the notification service to send alerts to users. It supports both Android and iOS (Flutter) platforms including (React Native) and can be integrated with the edge functions to deliver notifications.
+
+* Database: Supabase
+** Supabase provides a PostgreSQL database to store the user data and item's information.
+
+== Logic & Trigger Flow
+
+. Daily Scan: At a scheduled time specified by developers, the Supabase Cron calls the edge function.
+
+. The Edge Function will then execute a SQL querty to find items that are about to expire according to time frame specified by both developers and users.
+
+. If a user has multiple items expiring, the system aggregates them into a single notification to avoid several notifications to the same user.
+
+. The edge function will then retrieve the user's device token from the database and send a notification through FCM with the list of expiring items.
+
+== Other Implementation Details
+
+* Flutter has a package called firebase_messaging that allows Flutter apps to receive notifications from FCM.
+

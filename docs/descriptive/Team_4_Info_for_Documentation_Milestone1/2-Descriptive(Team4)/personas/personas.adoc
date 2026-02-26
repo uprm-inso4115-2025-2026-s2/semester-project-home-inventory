@@ -1,0 +1,143 @@
+= Section 4.2 – Personas for Dashboard & Reports Module
+:sectnums:
+:toc:
+:toclevels: 2
+
+<<<
+
+== Overview
+
+This document defines user personas derived from the Dashboard and Reports & Insights module (Section 4.2).
+
+The purpose of these personas is to ensure that analytics features, metrics, and UI decisions align with real user needs and decision-making behavior.
+
+The personas below are directly mapped to:
+- Dashboard summary cards
+- Inventory Summary Report
+- Spending Report
+- Usage Rate Report
+
+
+== Persona 1: Maria – The Budget-Conscious Homeowner
+
+=== Background
+Maria is a 38-year-old homeowner managing household expenses for a family of four. She tracks groceries, cleaning supplies, and essential items to avoid overspending and waste.
+
+=== Goals
+- Monitor monthly spending trends.
+- Avoid buying duplicate items.
+- Identify which categories consume the most budget.
+- Reduce waste from expired items.
+
+=== Pain Points
+- Doesn’t remember what is already in stock.
+- Overspends due to lack of visibility into monthly totals.
+- Frequently throws away expired items.
+
+=== Key Dashboard Interests
+- Total spending (current month)
+- Expiring soon items count
+- Low-stock items count
+
+=== Report Usage Behavior
+- Reviews Spending Report at least once per month.
+- Uses category breakdown in Inventory Summary to identify high-cost categories.
+- Checks Usage Rate Report occasionally to understand consumption patterns.
+
+=== Feature Mapping
+- Dashboard → Monthly Spending Card
+- Inventory Summary → Breakdown by Category
+- Spending Report → Monthly total + trends
+- Usage Rate Report → Consumption trends
+
+
+== Persona 2: Daniel – The Organized Planner
+
+=== Background
+Daniel is a 25-year-old graduate student who prefers structured systems. He keeps his home inventory organized and enjoys tracking data to optimize efficiency.
+
+=== Goals
+- Maintain accurate stock levels.
+- Prevent low-stock surprises.
+- Optimize purchasing timing.
+- Keep inventory categorized and structured.
+
+=== Pain Points
+- Forgets to restock items until they run out.
+- Wants better visibility into stock distribution by room.
+- Needs quick high-level insights without reading detailed reports.
+
+=== Key Dashboard Interests
+- Total inventory items
+- Low-stock items count
+- Breakdown by room
+
+=== Report Usage Behavior
+- Frequently checks Inventory Summary Report.
+- Uses Usage Rate Report to determine how fast items are consumed.
+- Uses low-stock indicators to plan restocking trips.
+
+=== Feature Mapping
+- Dashboard → Total Items + Low Stock Cards
+- Inventory Summary → Breakdown by Room
+- Usage Rate Report → Rate of consumption
+- Dashboard Navigation → Quick access to detailed reports
+
+
+== Persona 3: Sofia – The Small Home-Based Seller
+
+=== Background
+Sofia runs a small home-based baking business. She tracks ingredient inventory and supply costs to maintain profitability.
+
+=== Goals
+- Monitor ingredient spending.
+- Avoid stockouts during busy periods.
+- Identify which supplies drive higher costs.
+- Forecast purchasing needs.
+
+=== Pain Points
+- Running out of critical ingredients unexpectedly.
+- Difficulty identifying cost-heavy supplies.
+- Limited visibility into consumption trends.
+
+=== Key Dashboard Interests
+- Low-stock alerts
+- Monthly spending
+- Category spending breakdown
+
+=== Report Usage Behavior
+- Uses Spending Report weekly.
+- Reviews Usage Rate Report to estimate reorder timing.
+- Checks Inventory Summary before purchasing supplies.
+
+=== Feature Mapping
+- Dashboard → Low-Stock + Spending Cards
+- Spending Report → Category cost analysis
+- Usage Rate Report → Reorder forecasting
+- Inventory Summary → Ingredient distribution overview
+
+
+== Cross-Persona Insights
+
+Across all personas:
+
+- Dashboard must provide immediate, high-level visibility.
+- Spending metrics are critical for financial decision-making.
+- Low-stock and expiring indicators drive preventive actions.
+- Reports must support deeper analysis beyond summary cards.
+
+These personas justify:
+- Inclusion of monthly spending tracking.
+- Breakdown by category and room.
+- Low-stock and expiring alerts.
+- Usage rate analytics.
+
+== Conclusion
+
+The Dashboard and Reports & Insights module (Section 4.2) supports multiple user motivations:
+
+- Cost control
+- Organization and structure
+- Operational continuity
+
+Future UI decisions and metric prioritization should reference these personas to ensure alignment with real user behavior.

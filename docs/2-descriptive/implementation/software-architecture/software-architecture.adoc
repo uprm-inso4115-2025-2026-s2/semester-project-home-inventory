@@ -1,6 +1,5 @@
-== 2.3.1 Software Architecture
+== Software Architecture
 
-[abstract]
 High-level architecture: major components, responsibilities, and interactions.
 
 === Architecture overview

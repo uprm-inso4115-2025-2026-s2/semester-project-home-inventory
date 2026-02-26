@@ -1,7 +1,7 @@
 == Domain Requirements Acquisition
 
 [abstract]
-This section explains how the team will gather domain requirements, who will be involved, and what resources/evidence will be used.
+This section documents the methodology, planning, and resources used by the team to gather and validate domain knowledge. It details how we acquired realistic insights into how students manage household inventories, coordinate with roommates, and track expenses.
 
 include::plan/plan.adoc[leveloffset=+1]
 include::resources/resources.adoc[leveloffset=+1]

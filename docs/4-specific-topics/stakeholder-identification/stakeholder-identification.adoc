@@ -1,4 +1,4 @@
-== 4.1 Stakeholder Identification
+== Stakeholder Identification
 
 [abstract]
 This section identifies stakeholders relevant to the domain and summarizes their goals, influence, and concerns.

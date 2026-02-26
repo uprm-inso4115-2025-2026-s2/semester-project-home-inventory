@@ -1,6 +1,5 @@
-== 2.1.7 Behaviors
+== Behaviors
 
-[abstract]
 Recurring behaviors or rules in the domain: patterns, policies, and “how things are done.”
 
 === Behavior patterns
