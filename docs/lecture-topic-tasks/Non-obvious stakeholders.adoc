@@ -118,7 +118,7 @@ In the presentation, examples of non-obvious stakeholders in the domain of a sup
 
 | Guests or Visitors | "Accuracy? I just ate a snack. I don't think about inventory at all, for it's not my house. The system's accuracy will suffer because of me unless I could perhaps have a way to log my consumption."
 
-| Parents | "Accuracy means I can send exactly what my student needs instead of guessing or asking what they're low on."
+| Parents or Family | "Accuracy means I can send exactly what my student son, daughter or relative needs instead of guessing or asking what they're low on."
 |===
 
 === Phenomenon: Notification Timing
