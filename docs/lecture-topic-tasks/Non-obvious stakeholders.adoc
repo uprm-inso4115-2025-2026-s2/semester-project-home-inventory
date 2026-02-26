@@ -1,11 +1,11 @@
 = Identifying Non-Obvious Stakeholders in the Digital Home Inventory Project
-:author: Disclosure: AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. The author @Programian has taken into account ideas and feedback provided by AI, but the final document accurately represents the work of the author crossed-checked with AI tools and the relevant lecture slides.
+//:author: Disclosure: AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. The author @Programian has taken into account ideas and feedback provided by AI, but the final document accurately represents the work of the author crossed-checked with both AI tools and the relevant lecture slides.
 :toc:
 :icons: font
 
 == Introduction
 
-The project's A3 document primarily identifies direct users (students living alone or with roommates) as the key stakeholders for the Digital Home Inventory project. However, as discussed in the Domain Engineering lecture slides, stakeholder identification should be broad and take into account non-obvious stakeholders that would include "individuals, groups, institutions, enterprises, organizations, associations" who have interest in or dependency on the domain.
+The project's A3 document primarily identifies direct users (students living alone or students who are presently living together as roommates) as the key stakeholders for the Digital Home Inventory project. However, as discussed in the Domain Engineering lecture slides, stakeholder identification should be broad and take into account non-obvious stakeholders that would include "individuals, groups, institutions, enterprises, organizations, associations" who have interest in or dependency on the domain.
 
 This document was drafted to identify non-obvious stakeholders whose perspectives might otherwise be missed, ensuring our domain description and eventual system design account for all relevant viewpoints.
 
@@ -39,7 +39,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 | Requirements/Insights | Have a "share inventory snapshot" functionality (read-only, expiring access). Have pre-move-in planning view separated from active household management. Have the ability to claim items upon move-in or flag items they'll contribute.
 |===
 
-=== 3. Guest/Visitor
+=== 3. Guests or Visitors
 
 |===
 | Attribute | Description 
@@ -53,7 +53,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 | Requirements/Insights | System should anticipate "unexplained consumption" and provide reconciliation mechanisms. "Guest mode" or temporary period where consumption is expected but not tracked. Audit features that prompt "Did you have guests this weekend?" to explain discrepancies. Have guests manually log their consumption through a QR code that gives access to logging consumption but not to actually manage the home inventory.
 |===
 
-=== 4. Parents/Family Members
+=== 4. Parents or Family
 
 |===
 | Attribute | Description 
@@ -67,7 +67,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 | Requirements/Insights | Have a "wishlist" or "needs" guest or visitor view that family can access without full system access. Have the ability to mark items as "contributed by [contributor's name]" for acknowledgment. Notify when the student is low on items family typically supplies.
 |===
 
-=== 5. Landlord/Property Manager
+=== 5. Landlord or Property Manager
 
 |===
 | Attribute | Description 
@@ -81,14 +81,14 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 | Requirements/Insights | Distinguish between tenant-owned and landlord-owned items. Have "restricted item" flags for prohibited products. Have maintenance tracking for appliances (e.g., "fridge filter due for replacement").
 |===
 
-=== 6. Roommates who are getting started
+=== 6. Multiple Roommates Unknown to Each Other Assigned to Live Together
 
 |===
 | Attribute | Description 
 
-| Description & Relationship | Students who will live together in future semesters but haven't yet met or coordinated. They need to plan who brings what to avoid ending up with three toasters and no coffee maker.
+| Description & Relationship | Students who are given or assigned housing that they will share with other students whom they haven't met yet or coordinated with. They need to plan who brings what to avoid ending up with three toasters and no coffee maker. Unlike friends choosing to live together, these students lack existing trust and communication channels, making coordination more challenging.
 
-| Interest/Dependency | They need pre-occupancy coordination tools. They depend on inventory planning features that work before anyone has moved in.
+| Interest/Dependency | They need pre-occupancy coordination tools that work for groups of strangers. They depend on inventory planning features that facilitate fair contribution splitting without pre-existing relationships.
 
 | Domain vs. Implementation | Domain Engineering: Yes, the "pre-household formation" phase exists. Implementation: Yes, planning mode separate from active household mode.
 
@@ -102,11 +102,11 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 |===
 | Stakeholder | Perspective 
 
-| Current Roommate | "Ownership is about who paid for the item and who gets to keep it when someone moves out. I need to track this to avoid arguments and ensure fair cost-splitting."
-
 | Former Roommate | "Ownership is about retrieving my property after I've moved out. I need to know what I left behind, its condition, and have a way to reclaim it."
 
-| Landlord | "Ownership is about distinguishing what belongs to me (appliances, fixtures) versus what belongs to tenants. I need to ensure my property isn't damaged or removed."
+| Landlord or Property Manager | "Ownership is about distinguishing what belongs to me (appliances, fixtures) versus what belongs to tenants. I need to ensure my property isn't damaged or removed."
+
+| Multiple Roommates Unknown to Each Other Assigned to Live Together | "Ownership is about who contributes what. Even if we share something like a toaster or coffee maker, the one who brought it has a claim to it."
 |===
 
 === Phenomenon: Inventory Accuracy
@@ -114,9 +114,9 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 |===
 | Stakeholder | Perspective 
 
-| Current Roommate | "Accuracy means I can trust the system to tell me what we have so I don't buy duplicates or run out of essentials."
+| Future Roommate | "Accuracy means I can trust the system to tell me what's already in the household before I move in so I don't buy duplicates."
 
-| Guest | "Accuracy? I just ate a snack. I don't think about inventory at all. The system's accuracy will suffer because of me."
+| Guests or Visitors | "Accuracy? I just ate a snack. I don't think about inventory at all, for it's not my house. The system's accuracy will suffer because of me unless I could perhaps have a way to log my consumption."
 
 | Parents | "Accuracy means I can send exactly what my student needs instead of guessing or asking what they're low on."
 |===
@@ -126,11 +126,11 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 |===
 | Stakeholder | Perspective 
 
-| Current Roommate | "Notify me when we're low on something so I can add it to my shopping list before I run out completely."
-
 | Future Roommate | "Notify me before I move in about what's already in the apartment so I don't buy duplicates during my move-in shopping."
 
-| Parents | "Notify me when you're running out of something so I can bring it."
+| Parents or Family | "Notify me when you're running out of something so I can bring it."
+
+| Multiple Roommates Unknown to Each Other Assigned to Live Together | "Notify me when someone has already bought or is bringing something so that I don't buy or bring duplicates."
 |===
 
 == Implications for System Design
@@ -149,6 +149,6 @@ Based on this stakeholder analysis, the following design considerations emerge:
 
 == References
 
-- Domain Stakeholders lecture slides
-- Project A3
-- Deepseek AI
+- Schütz-Schmuck, M. (2021, January 22). Domain Stakeholders [PowerPoint slides]. Department of Computer Science and Engineering, University of Puerto Rico at Mayagüez.
+- Sorrentini, L. (2024). Digital Home Inventory A3. INSO 4115 Project Document.
+- Deepseek AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. I @Programian the author have taken into account ideas and feedback provided by AI, but the final document accurately represents my work crossed-checked with both AI tools and the relevant lecture slides.
