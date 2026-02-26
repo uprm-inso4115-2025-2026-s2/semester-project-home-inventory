@@ -1,0 +1,154 @@
+= Identifying Non-Obvious Stakeholders in the Digital Home Inventory Project
+:author: Disclosure: AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. The author @Programian has taken into account ideas and feedback provided by AI, but the final document accurately represents the work of the author crossed-checked with AI tools and the relevant lecture slides.
+:toc:
+:icons: font
+
+== Introduction
+
+The project's A3 document primarily identifies direct users (students living alone or with roommates) as the key stakeholders for the Digital Home Inventory project. However, as discussed in the Domain Engineering lecture slides, stakeholder identification should be broad and take into account non-obvious stakeholders that would include "individuals, groups, institutions, enterprises, organizations, associations" who have interest in or dependency on the domain.
+
+This document was drafted to identify non-obvious stakeholders whose perspectives might otherwise be missed, ensuring our domain description and eventual system design account for all relevant viewpoints.
+
+== Non-Obvious Stakeholders
+
+=== 1. Former Roommate
+
+|===
+| Attribute | Description 
+
+| Description & Relationship | A student who previously lived in the shared housing and left items behind. They may have moved out mid-semester, graduated, or transferred. Their items remain in the inventory (e.g., kitchen appliances, bulk food, cleaning supplies).
+
+| Interest/Dependency | They have a vested interest in retrieving their property or ensuring it's not discarded without consent. They depend on accurate inventory tracking to know what items they left behind and their current status.
+
+| Domain vs. Implementation | Domain Engineering: Yes, the concept of "orphaned items" and ownership transitions is fundamental to shared inventory. Implementation: Yes, users who move out should be able to clear the inventory of items they are taking with them and unlink from a home inventory that they will no longer partake in.
+
+| Requirements/Insights | The system could support "item ownership", tracking items for their respective owners or buyers. Ownership transfer workflows should be considered (e.g., "claim item," "relinquish item"). There is a need for "abandoned item" detection and handling policies.
+|===
+
+=== 2. Future Roommate
+
+|===
+| Attribute | Description 
+
+| Description & Relationship | A student who has signed a lease to move into the apartment in the coming weeks or months. They need to coordinate what household items are already present versus what they need to bring or purchase.
+
+| Interest/Dependency | They need visibility into the existing inventory to avoid duplicate purchases before moving in. They depend on accurate, shareable inventory snapshots.
+
+| Domain vs. Implementation | Domain Engineering: Yes, pre-occupancy planning is a legitimate phase of the inventory lifecycle. Implementation: Possibly view-only access before account activation.
+
+| Requirements/Insights | Have a "share inventory snapshot" functionality (read-only, expiring access). Have pre-move-in planning view separated from active household management. Have the ability to claim items upon move-in or flag items they'll contribute.
+|===
+
+=== 3. Guest/Visitor
+
+|===
+| Attribute | Description 
+
+| Description & Relationship | Friends, partners, or family members who visit the household temporarily. They may consume items (snacks, drinks, toiletries) during their stay without logging these consumptions.
+
+| Interest/Dependency | Minimal direct interest, but their behavior affects inventory accuracy. The system depends on accounting for "inventory shrinkage" from external consumption.
+
+| Domain vs. Implementation | Domain Engineering: Yes, consumption events can originate from non-users. Implementation: They should not have access to manage the home inventory, but they could possibly have a way to log usage as visitors (could be through a QR code).
+
+| Requirements/Insights | - System should anticipate "unexplained consumption" and provide reconciliation mechanisms. "Guest mode" or temporary period where consumption is expected but not tracked. Audit features that prompt "Did you have guests this weekend?" to explain discrepancies. Have guests manually log their consumption through a QR code that gives access to logging consumption but not to actually manage the home inventory.
+|===
+
+=== 4. Parents/Family Members
+
+|===
+| Attribute | Description 
+
+| Description & Relationship | Family members who send care packages, shop for the student during visits, or contribute bulk items like Costco groceries to the household inventory.
+
+| Interest/Dependency | They want to know what their student actually needs before sending packages or shopping. They depend on inventory visibility to avoid sending duplicates.
+
+| Domain vs. Implementation | Domain Engineering: Yes, items can enter the system through external contributors. Implementation: Possibly have a limited "contributor view" or wishlist sharing. Could simply have a guest or visitor mode that allows viewing an inventory without necessarily having permission to modify it.
+
+| Requirements/Insights | - Have a "wishlist" or "needs" guest or visitor view that family can access without full system access. Have the ability to mark items as "contributed by [name]" for acknowledgment. Notify when the student is low on items family typically supplies.
+|===
+
+=== 5. Landlord/Property Manager
+
+|===
+| Attribute | Description 
+
+| Description & Relationship | Owns the apartment and is responsible for appliances (refrigerator, dishwasher, etc.) and possibly initial supplies upon move-in. May have rules about certain items (e.g., no space heaters, specific cleaning products to avoid damage).
+
+| Interest/Dependency | They need to ensure their property (appliances) are properly maintained and that tenants aren't storing prohibited or illegal items. They depend on inventory visibility for appliances and restricted items.
+
+| Domain vs. Implementation | Domain Engineering: Yes, the domain includes items that belong to the landlord vs. tenant. Implementation: Possibly have a read-only view for landlord portal integration.
+
+| Requirements/Insights | - Distinguish between tenant-owned and landlord-owned items. Have "restricted item" flags for prohibited products. Have maintenance tracking for appliances (e.g., "fridge filter due for replacement").
+|===
+
+=== 6. Roommates who are getting started
+
+|===
+| Attribute | Description 
+
+| Description & Relationship | Students who will live together in future semesters but haven't yet met or coordinated. They need to plan who brings what to avoid ending up with three toasters and no coffee maker.
+
+| Interest/Dependency | They need pre-occupancy coordination tools. They depend on inventory planning features that work before anyone has moved in.
+
+| Domain vs. Implementation | Domain Engineering: Yes, the "pre-household formation" phase exists. Implementation: Yes, planning mode separate from active household mode.
+
+| Requirements/Insights | Have a "pre-household planning" workspace. Have a "who's bringing what" registry functionality. Have a migration path from planning workspace to active household inventory.
+|===
+
+== Perspective Statements
+
+=== Phenomenon: Item Ownership
+
+|===
+| Stakeholder | Perspective 
+
+| Current Roommate | "Ownership is about who paid for the item and who gets to keep it when someone moves out. I need to track this to avoid arguments and ensure fair cost-splitting."
+
+| Former Roommate | "Ownership is about retrieving my property after I've moved out. I need to know what I left behind, its condition, and have a way to reclaim it."
+
+| Landlord | "Ownership is about distinguishing what belongs to me (appliances, fixtures) versus what belongs to tenants. I need to ensure my property isn't damaged or removed."
+|===
+
+=== Phenomenon: Inventory Accuracy
+
+|===
+| Stakeholder | Perspective 
+
+| Current Roommate | "Accuracy means I can trust the system to tell me what we have so I don't buy duplicates or run out of essentials."
+
+| Guest | "Accuracy? I just ate a snack. I don't think about inventory at all. The system's accuracy will suffer because of me."
+
+| Parents | "Accuracy means I can send exactly what my student needs instead of guessing or asking what they're low on."
+|===
+
+=== Phenomenon: Notification Timing
+
+|===
+| Stakeholder | Perspective 
+
+| Current Roommate | "Notify me when we're low on something so I can add it to my shopping list before I run out completely."
+
+| Future Roommate | "Notify me before I move in about what's already in the apartment so I don't buy duplicates during my move-in shopping."
+
+| Parents | "Notify me when you're running out of something so I can bring it."
+|===
+
+== Implications for System Design
+
+Based on this stakeholder analysis, the following design considerations emerge:
+
+1. **Flexible Ownership Model**: Support multiple ownership states (individual, shared, landlord, orphaned) with transfer workflows.
+
+2. **Multi-phase Access**: Different system modes for pre-occupancy planning, active household management, and post-occupancy retrieval.
+
+3. **External Contributor Views**: Limited-access views for parents, future roommates, and landlords without full system accounts.
+
+4. **Shrinkage Reconciliation**: Features that account for consumption by non-users (guests) through periodic audits or guest mode logging.
+
+5. **Abandoned Item Handling**: Policies and workflows for items left behind by former residents.
+
+== References
+
+- Domain Stakeholders lecture slides
+- Project A3
+- Deepseek AI
