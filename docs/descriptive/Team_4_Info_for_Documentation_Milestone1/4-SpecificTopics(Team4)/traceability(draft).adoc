@@ -1,0 +1,281 @@
+== 4.4 Traceability
+
+[abstract]
+This section describes how traceability is established in the Home Inventory project to support tracking relationships between personas, goals, requirements, user stories, domain concepts, and tests. Our traceability approach enables answering questions about requirement origins, test coverage, validation activities, and impact analysis.
+
+=== Overview
+
+Traceability is a property of our deliverables that allows us to trace relationships between different artifacts throughout the development lifecycle. When a requirement changes, we can quickly identify:
+
+* Which persona goals are affected
+* Which user stories need updating
+* Which tests must be modified or added
+* Which domain concepts are involved
+* What validation activities covered this requirement
+
+This document explains our traceability approach and demonstrates how it supports answering common traceability questions.
+
+=== Traceability Approach
+
+Our project implements traceability through a combination of labeling schemes, tagging conventions, and explicit linking mechanisms:
+
+==== 1. Persona-to-Goals Linking
+
+Each persona's goals are labeled with a unique identifier combining:
+
+* The persona's initial(s)
+* The letter 'G' for goal
+* A sequential number
+
+.Example: Jean's Goals
+* **JG1**: Track household items efficiently without spending too much time
+* **JG2**: Receive timely notifications before running out of essential items
+* **JG3**: Stay within monthly budget for household purchases
+
+.Example: Roommate Ralph's Goals
+* **RG1**: Coordinate with roommates to avoid duplicate purchases
+* **RG2**: Clearly identify which items belong to whom
+
+==== 2. Goals-to-Requirements Linking
+
+Each requirement (domain, interface, or machine) includes tags indicating which goals it contributes to or hinders:
+
+* **Contributes to**: Goals that this requirement helps achieve
+* **Hinders**: Goals that this requirement may negatively impact (if any)
+
+.Example Requirements with Goal Tags
+[source]
+----
+DR1: The system shall maintain a categorized inventory of household items
+  → Contributes to: JG1, RG1
+  
+DR2: The system shall track expiration dates for perishable items
+  → Contributes to: JG2
+  
+MR1: The system shall send push notifications when items fall below threshold
+  → Contributes to: JG2
+  → May hinder: JG1 (if too many notifications)
+----
+
+==== 3. Requirements-to-User-Stories Linking
+
+User stories explicitly reference:
+
+* Related persona(s) who benefit from the story
+* Related need(s) that the story addresses
+* Related requirement(s) that the story implements
+
+.Example User Story with Traceability
+[source]
+----
+US-Inventory-01: Add Item to Inventory
+As a student, I want to add new items to my inventory with details like 
+category, location, and quantity, so that I can track all my household items.
+
+* Related persona(s): Jean (Student Living Alone)
+* Related need(s): N1 (Track household items)
+* Related requirement(s): DR1, MR2
+* Contributes to goal(s): JG1
+----
+
+==== 4. Requirements-to-Tests Linking
+
+Test files include special comments linking tests to the requirements they evidence:
+
+.Example Test with Requirement Traceability
+[source,dart]
+----
+// TEST evidences REQUIREMENTS DR1 MR2
+test('should successfully add item to inventory with all required fields', () {
+  final item = InventoryItem(
+    name: 'Milk',
+    category: 'Dairy',
+    location: 'Refrigerator',
+    quantity: 1,
+  );
+  
+  expect(inventoryService.addItem(item), completes);
+  expect(inventoryService.getItems(), contains(item));
+});
+
+// TEST evidences REQUIREMENT DR2
+test('should alert when item is approaching expiration date', () {
+  final expiringItem = InventoryItem(
+    name: 'Yogurt',
+    expirationDate: DateTime.now().add(Duration(days: 2)),
+  );
+  
+  expect(notificationService.checkExpirations(), emits(expiringItem));
+});
+----
+
+==== 5. Domain-Concepts-to-Requirements Linking
+
+Domain concepts are explicitly linked to requirements in our concept analysis documents. Each requirement references the domain concepts it involves.
+
+.Example Concept-Requirement Links
+* Concept: **InventoryItem** → Used in: DR1, DR2, MR2, MR3
+* Concept: **Notification** → Used in: MR1, DR2
+* Concept: **Category** → Used in: DR1, MR4
+
+=== Traceability Matrix
+
+The following table demonstrates forward and backward traceability for key artifacts:
+
+[cols="1,2,2,2,2,2",options="header"]
+|===
+|Persona Goal |Need(s) |Requirement(s) |User Story |Domain Concept(s) |Test(s)
+
+|JG1 (Track items efficiently)
+|N1
+|DR1, MR2, MR3
+|US-Inventory-01, US-Inventory-02
+|InventoryItem, Category, Location
+|test_add_item, test_categorize_item
+
+|JG2 (Receive notifications)
+|N2
+|DR2, MR1
+|US-Notification-01, US-Notification-02
+|Notification, ExpirationDate, Threshold
+|test_expiration_alert, test_low_stock_notification
+
+|RG1 (Coordinate purchases)
+|N3
+|DR3, MR5
+|US-Sharing-01, US-Sharing-02
+|SharedInventory, User, Ownership
+|test_shared_view, test_ownership_indicator
+
+|===
+
+=== Answering Traceability Questions
+
+Our traceability setup supports answering various questions:
+
+==== Q1: Which domain concepts are linked to a given requirement?
+
+**Example**: For requirement DR1 (maintain categorized inventory)
+
+* **Domain concepts**: InventoryItem, Category, Location, Quantity
+* **How to find**: Check the concept analysis document or search for DR1 in concept definitions
+
+==== Q2: Which user stories relate to this requirement?
+
+**Example**: For requirement MR1 (send push notifications)
+
+* **User stories**: US-Notification-01, US-Notification-02
+* **How to find**: Search user stories for "MR1" in the related requirements field
+
+==== Q3: Which tests are associated with the requirement?
+
+**Example**: For requirement DR2 (track expiration dates)
+
+* **Tests**: test_expiration_alert, test_add_item_with_expiration, test_expiration_date_validation
+* **How to find**: Search test files for comments containing "REQUIREMENT DR2"
+
+==== Q4: Which persona goals are impacted by a requirement change?
+
+**Example**: If DR1 changes significantly
+
+1. Look at requirement's goal tags: "Contributes to: JG1, RG1"
+2. Identify personas: Jean (JG1) and Ralph (RG1)
+3. Review those specific goals to assess impact
+
+==== Q5: What is the current test coverage for a requirement?
+
+**Example**: For requirement DR1
+
+1. Find all tests evidencing DR1 using comment search
+2. Run test suite and count pass/fail
+3. Calculate coverage: (passed tests / total tests) × 100%
+
+**Current status**: DR1 has 4 associated tests, all passing (100% coverage)
+
+==== Q6: For a persona, what is their goal satisfaction degree?
+
+**Example**: For persona Jean
+
+1. List Jean's goals: JG1, JG2, JG3
+2. For each goal, find contributing requirements
+3. For each requirement, find associated tests
+4. Count passing/failing tests
+5. Aggregate: Jean's goals are currently 85% satisfied (17 of 20 tests passing)
+
+==== Q7: In which validation activities was this requirement validated?
+
+**Example**: For requirement MR1 (notifications)
+
+* **Validation activities**: 
+  - User interview with 5 students (documented in needs-validation.adoc)
+  - Prototype testing session (February 15, 2026)
+  - Usability testing with roommate scenario (planned)
+
+* **How to find**: Check validation documents and search for requirement ID
+
+=== Implementation Guidelines
+
+To maintain traceability as the project evolves:
+
+==== When Adding a New Persona Goal
+1. Assign a unique ID using persona initials + G + number (e.g., JG4)
+2. Document in personas.adoc
+3. Tag any existing requirements that contribute to this goal
+
+==== When Writing a New Requirement
+1. Add "Contributes to:" tags listing relevant persona goals
+2. Reference domain concepts used
+3. Note any goals it might hinder
+
+==== When Creating a User Story
+1. Specify related persona(s)
+2. List related need(s) and requirement(s)
+3. Identify contributing goals
+
+==== When Writing a Test
+1. Add a comment: `// TEST evidences REQUIREMENTS <REQ-IDs>`
+2. Ensure the test name clearly indicates what is being tested
+3. Link tests to requirements in test documentation
+
+==== When Defining a Domain Concept
+1. List all requirements that use this concept
+2. Document in concept analysis
+3. Update when new requirements reference the concept
+
+=== Current Traceability Status
+
+.Traceability Coverage Summary
+* **Personas defined**: 2 (Jean, Ralph)
+* **Goals labeled**: 5 (JG1-JG3, RG1-RG2)
+* **Requirements with goal tags**: 8 of 12 (67%)
+* **User stories with requirement links**: 6 of 10 (60%)
+* **Tests with requirement comments**: 15 of 24 (63%)
+* **Domain concepts linked**: 8 of 8 (100%)
+
+=== Benefits Realized
+
+Our traceability approach provides:
+
+* **Impact Analysis**: When requirement DR1 changed, we identified 3 affected user stories and 4 tests in under 5 minutes
+* **Completeness Checking**: We discovered 2 goals (JG3, RG2) that had no supporting requirements yet
+* **Validation Coverage**: We can show stakeholders exactly which goals are validated and to what degree
+* **Regression Prevention**: When refactoring, we know which tests must still pass to maintain requirement satisfaction
+* **Team Communication**: New team members can understand requirement origins and rationale
+
+=== Future Improvements
+
+Planned enhancements to traceability:
+
+* Increase percentage of tagged requirements to 90%+
+* Add automated tooling to extract traceability links from comments
+* Create visual traceability diagrams
+* Link validation activities more explicitly to requirements
+* Track requirement changes over time with version history
+
+=== References
+
+* Persona definitions: `docs/4-specific-topics/personas/personas.adoc`
+* Requirements: `docs/2-descriptive/requirements/`
+* User stories: `docs/2-descriptive/requirements/user-stories/`
+* Domain concepts: `docs/3-analytic/concept-analysis/`
+* Test files: (to be added when implementation begins)

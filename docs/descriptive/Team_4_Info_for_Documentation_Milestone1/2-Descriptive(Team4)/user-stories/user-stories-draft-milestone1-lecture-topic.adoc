@@ -1,3 +1,5 @@
+=Lecture Topic Task: Functionalities as user stories for Requirements in Milestone 1
+
 == 2.2.1 User Stories
 
 [abstract]
@@ -126,3 +128,4 @@ The dashboard pulls together everything the system tracks. It knows what items e
 
 * The dashboard updates in real time as people add items, mark things as finished, or log purchases. Andrea never looks at stale information or makes decisions based on last week's data.
 
+By Fabian Leonel Velez Ocasio (Issue #138)
