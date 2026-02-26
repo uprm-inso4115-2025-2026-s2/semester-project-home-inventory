@@ -1,76 +1,42 @@
-= 2.1.4 Domain Narrative
+== 2.1.4 Domain Narrative
 
 [abstract]
-This narrative describes how students living independently manage their household items in everyday life. The domain exists independently of any system—these are the phenomena and concepts that occur in the observable world.
+A cohesive story of how the domain works, independent of any specific software system.
 
-== Overview
+=== Overview
 
-Students living alone or with roommates go about their daily lives. They attend classes, study, work part-time jobs, and spend time with friends. Somewhere in between, they need to eat, keep themselves clean, and maintain their living spaces. This means buying food, keeping track of what they already have, noticing when things run out, and figuring out who is responsible for what when living with others.
+Students living independently go through a continuous cycle of acquiring, using, and replacing household items. They buy food and supplies when they have time and money, store them somewhere in their living space, and consume them gradually throughout the week. When items run low or run out, someone must eventually notice and take action to replace them. In shared households, this cycle involves multiple people who must coordinate—or fail to coordinate—about what is needed, who will buy it, and who owes what. The cycle repeats constantly, driven by daily needs and constrained by limited time, money, and attention.
 
-In shared apartments, the refrigerator contains a mix of everyone's food. Some items are clearly marked with names. Most are not. Milk gets finished, and no one remembers who bought it. Toilet paper runs out, and everyone assumes someone else will replace it. The pantry accumulates half-empty boxes and expired goods that no one claims. These small confusions happen daily, costing students money, time, and sometimes goodwill with their roommates.
+=== Actors and Artifacts
 
-== Domain Entities
+*Actors:*
+- Students living alone
+- Students living with roommates
+- Roommates collectively (as a group that shares resources)
 
-*Student:* a person living independently who acquires, uses, and replaces household items. Students have limited time between responsibilities, limited money from jobs or family support, and varying levels of attention to household management. Some are organized, most are not, and all have other things to think about.
+*Artifacts:*
+- Household items (food, cleaning supplies, toiletries, medicine)
+- Storage spaces (refrigerator, cabinets, pantry, bathroom shelves)
+- Shopping lists (mental or written)
+- Money spent on purchases
+- Shared resources that belong to no one individually
+- Personal items that belong to specific students
 
-*Household Item:* a physical object kept in the home for daily use. This includes food in the refrigerator and pantry, cleaning supplies under the sink, toiletries in the bathroom, and medicine in the cabinet. Each item has a quantity—a number of eggs, a percentage of soap remaining, a count of toothpaste tubes. Many items eventually expire or get used up.
+=== Typical Scenario
 
-*Storage Space:* the physical places where items are kept—kitchen cabinets, refrigerator shelves, bathroom counters, bedroom closets, pantry corners. Each home has its own geography of storage. Finding something means knowing or guessing where it was last placed.
+A student named Mateo wakes up on a Wednesday morning and wants to make coffee. He opens the cabinet and finds the coffee bag is almost empty—maybe enough for one more cup. He makes his coffee and thinks about buying more, but he is already running late for class. He forgets by the time he leaves. Two days later, on Friday morning, he reaches for the coffee again and finds nothing. He is already dressed for his 8am class and has no time to stop at a store. He goes without coffee, frustrated, and spends the morning tired. That afternoon, between classes, he stops at the supermarket and buys coffee. When he gets home, he puts it in the cabinet and life continues. A week later, the same thing happens with milk.
 
-*Shared Resource:* an item that multiple students in a household use collectively. Toilet paper, dish soap, trash bags, salt, coffee, cooking oil—these things get used by everyone. Their presence is noticed only when they are gone.
+In a shared household, another student named Sofia notices the apartment is out of trash bags. She mentions it in the group chat, but no one replies. She assumes someone else will handle it. Three days pass, the trash is overflowing, and still no trash bags. Finally, she buys them herself, annoyed that she had to spend her money on something everyone uses. When she brings them home, her roommate Andrea says, "Oh, I bought some yesterday too—I didn't see your message." Now the apartment has two packs of trash bags and less space in the cabinet.
 
-*Personal Item:* an item belonging to a specific student, often purchased for individual needs or preferences. Specialty foods for dietary restrictions, expensive shampoo, medication, protein powder—these things are not meant for communal use.
+=== Exceptions and Edge Cases
 
-*Budget:* the finite money a student has for all expenses—rent, utilities, food, transportation, entertainment. Money spent on household items is money not available for other things.
-
-*Expiration:* the natural deterioration of items over time. Milk sours, bread molds, vegetables rot. This happens whether anyone notices or not.
-
-== Domain Behaviors
-
-*Acquisition:* students obtain household items, usually by purchasing them. This happens during regular grocery trips, quick convenience store runs, or online orders. Money leaves the budget, items enter the home.
-
-*Storage:* once acquired, items are placed somewhere in the home. Sometimes they go where they belong. Sometimes they sit on counters, get shoved into random cabinets, or stay in grocery bags for days.
-
-*Consumption:* items are used over time. Food gets eaten, soap dispenses, toothpaste squeezes. With each use, quantity decreases. This happens gradually, often unnoticed until someone reaches for an item and finds it empty.
-
-*Noticing:* at some point, someone realizes an item is low or gone. This might happen when reaching for it, when looking in the fridge before cooking, or when someone mentions they are out. Noticing before it is too late allows for replacement. Noticing after means going without.
-
-*Searching:* when a student needs something, they look for it. Success depends on memory, organization, and whether someone else moved it. Failed searches lead to assuming the item does not exist, which leads to buying duplicates or doing without.
-
-*Replacement:* when an item runs out, someone must get more. For personal items, responsibility is clear. For shared items, it is ambiguous. Sometimes no one acts, and the household goes without. Sometimes multiple people act independently, and duplicates pile up.
-
-*Coordination:* in shared homes, students communicate about household items. Quick texts, sticky notes on the fridge, verbal reminders in passing. "We're out of trash bags." "I'm going to the store, anyone need anything?" "Who finished the milk?" This coordination is informal and often incomplete.
-
-== Natural Challenges
-
-*Forgetfulness:* students have too much going on to remember everything. What is in the fridge, how much is left, when it expires—this information lives in short-term memory and disappears under pressure.
-
-*Incomplete Information:* at any moment, no one knows the full state of household items. What is behind the milk, how much detergent remains, whether someone finished the rice—these facts exist only when someone checks. In shared homes, information is even more fragmented.
-
-*Ambiguous Responsibility:* for shared items, no one is naturally accountable. Everyone assumes someone else will notice when things are low, someone else will buy replacements. Things fall through cracks.
-
-*Delayed Awareness:* most students discover shortages at the worst possible moment—when already cooking, when the store is closed, when they are out of time. By then, it is too late.
-
-*Waste:* food expires, duplicates accumulate, money leaks away. Students accept this as normal, part of the cost of living independently.
-
-*Social Friction:* in shared homes, household items become sources of tension. Disagreements about what is shared, who pays, who replaces—these small conflicts accumulate.
-
-== Relationships Between Entities
-
-Students acquire items and store them throughout the home. Some items are personal, belonging to one student. Others are shared, used by everyone. Over time, consumption reduces quantities until items run out, at which point someone must acquire replacements.
-
-Money flows out of budgets with each acquisition. When items expire before being consumed, money is wasted. When multiple people buy the same shared item unknowingly, money is wasted. When students cannot find something and buy it again, money is wasted.
-
-Coordination happens between students sharing a home. Information about what is needed, what is low, and who will buy travels through conversations, messages, and notes. The quality of this coordination directly affects waste, duplicate purchases, and household friction.
-
-== Domain Dynamics
-
-Over time, household items cycle through natural states. They are acquired, stored, used, depleted, and eventually replaced. This cycle operates continuously, driven by daily needs and constrained by time, money, and attention.
-
-In some households, awareness stays ahead of depletion. Someone notices milk is low and buys more before it runs out. Someone sees expiring yogurt and uses it in time. Someone communicates needs clearly, and responsibility for shared items rotates fairly.
-
-In most student households, awareness lags behind. Depletion is discovered at the moment of need. Expiration is discovered after the fact. Replacement happens reactively rather than proactively. The system of household management runs on memory, luck, and occasional bursts of organization.
-
-The tension between ideal and reality creates the problems students experience: money wasted on duplicates and expired food, stressful moments when essentials are missing, friction with roommates over shared resources, and the constant mental effort of trying to keep track of things that resist tracking.
-
-This is the domain as it exists—messy, human, and full of opportunities for things to go wrong.
+- An item expires before anyone uses it, wasting the money spent on it.
+- Multiple roommates buy the same shared item independently because no one communicated.
+- A personal item gets used by someone else, causing conflict.
+- Someone forgets they already have an item and buys another, creating a duplicate.
+- A student runs out of something at a time when stores are closed or they have no money.
+- Roommates disagree about who should pay for shared items or whether an item was actually shared.
+- An item is moved from its usual place and cannot be found when needed.
+- Someone notices an item is low but forgets to buy it before it runs out.
+- A student on a strict budget cannot afford to replace an item immediately.
+- Items accumulate in storage spaces and get buried behind newer purchases, forgotten until long after they expire.
