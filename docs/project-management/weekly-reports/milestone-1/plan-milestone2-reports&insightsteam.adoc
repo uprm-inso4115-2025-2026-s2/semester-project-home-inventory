@@ -1,0 +1,288 @@
+= Milestone 2 - Team 4: Reports & Insights Feature Implementation Plan
+:author: FabianVelezOcasio
+:date: 2026-02-25
+:revnumber: 1.0
+:toc: macro
+:toc-title: Table of Contents
+:icons: font
+
+== Milestone 2 Target Deliverables
+
+By the end of Milestone 2 (February 28 – April 3), the **Reports and Insights module** must be fully implemented and demo‑ready, with all features originally planned for Milestone 1 now delivered in this milestone.
+
+The feature should allow a user to:
+
+View a **dashboard (Home)** with:
+
+  * Summary metric cards (inventory value, total items, expenses)
+  * Interactive charts: pie chart (distribution of expenses by category), bar chart (items per room)
+  * Dynamic filters by category, room, and date range
+  * Real‑time data from Supabase (no mocks)
+
+Access a **Reports section** with:
+
+  * Detailed report views with line charts (expense history per month) and stacked bar charts (expense comparison by roommate)
+  * Search functionality with real‑time results
+  * Drill‑down capability: tap on chart elements to see detailed item lists
+  * PDF export with metadata (date, filters applied)
+
+Benefit from **backend optimizations**:
+
+  * Materialized views for fast aggregated queries
+  * Consumption‑rate functions (daily consumption, cost per use, inventory turnover)
+
+* Use a library of **reusable UI components** (MetricCard, FilterChipBar, DateRangePicker, EmptyStateWidget) for consistency
+* (Stretch) Experience a first‑time **onboarding flow** and PNG image export if time permits
+
+All functionality must be built following Clean Architecture principles, connected to live Supabase data, and styled according to the existing high‑fidelity designs.
+
+== High‑Level Implementation Scope
+
+=== 1. Presentation Layer (Flutter UI):
+
+
+* Dashboard (Home) Screen with filters and charts
+* Reports Listing Screen
+* Detailed Report Screens (with charts, tables, drill‑down)
+* Search UI (SearchDelegate or custom search bar)
+* PDF Export button and generation UI feedback
+* Loading, Error, and Empty States for all screens
+* Reusable component library extracted from common patterns
+
+=== 2. State Management (Part of the Presentation Layer):
+
+**DashboardCubit**:
+
+  * fetchMetrics()
+  * applyFilters()
+  * clearFilters()
+
+**ReportsCubit**:
+
+  * fetchReports()
+  * searchReports()
+  * exportToPDF()
+
+**DrillDownCubit** (for detail views):
+
+  * fetchFilteredItems(category, room, etc.)
+
+Well‑defined states:
+
+  * Initial
+  * Loading
+  * Loaded (with data)
+  * Error
+  * Empty (no results)
+
+=== 3. Domain Layer:
+
+Entities:
+
+  * `Metric` (for dashboard cards)
+  * `Report` (for report listings)
+  * `ChartDataPoint` (for all chart types)
+  * `Filter` (to encapsulate filter state)
+
+Repository interfaces:
+
+  * `DashboardRepository`
+  * `ReportsRepository`
+
+(Optional but recommended) Use Cases:
+
+  * `GetDashboardMetrics`
+  * `GetReports`
+  * `ExportReportAsPDF`
+
+=== 4. Data Layer:
+
+* **SupabaseDashboardRepository** implementation
+* **SupabaseReportsRepository** implementation
+* Materialized view queries (pre‑aggregated data)
+* PostgreSQL function calls for consumption metrics
+* Model definitions and JSON ↔ Entity mapping
+* Caching strategy using Hive or SharedPreferences
+* PDF generation service abstraction
+
+=== 5. Backend / Database (Supabase/Postgres):
+
+Materialized views:
+
+  * `valor_inventario_por_categoria`
+  * `gastos_por_mes`
+  * `valor_por_habitacion`
+
+PostgreSQL functions:
+
+  * `calcular_tasa_consumo_diario`
+  * `calcular_costo_por_uso`
+  * `calcular_rotacion_inventario`
+
+- Indexes for performance optimization
+- Scheduled refresh strategy for materialized views (if needed)
+
+=== 6. UI Styling & UX:
+
+* Consistent spacing, typography, and color palette (already designed)
+* Interactive chart tooltips and legends
+* Form validation for filters (date ranges, etc.)
+* Error handling with Snackbars/Dialogs
+* Responsive layout for different screen sizes
+* Pull‑to‑refresh for manual data refresh
+* "Last updated" timestamp indicator
+
+== Preliminary Work Breakdown (Subject to Chnage depending on schedule)
+
+=== Phase 1 - Backend Foundation 
+
+* [ ] Design and create materialized views in Supabase
+* [ ] Implement PostgreSQL consumption functions
+* [ ] Set up database indexes for query performance
+* [ ] Create repository interfaces in domain layer
+* [ ] Implement initial Supabase repository stubs
+
+=== Phase 2 - Data Layer & Caching 
+
+* [ ] Implement `SupabaseDashboardRepository` with materialized view queries
+* [ ] Implement `SupabaseReportsRepository` with function calls
+* [ ] Set up Hive/SharedPreferences caching layer
+* [ ] Implement cache expiry and refresh logic
+* [ ] Add error handling and retry mechanisms
+
+=== Phase 3 - State Management & Filtering 
+
+* [ ] Create DashboardCubit with states
+* [ ] Create ReportsCubit with states
+* [ ] Implement filter logic (dropdowns, chips, date range)
+* [ ] Connect filters to repository queries
+* [ ] Implement "Clear filters" and "Apply" functionality
+* [ ] Preserve filter state across sessions (optional)
+
+=== Phase 4 - UI Implementation - Dashboard 
+
+* [ ] Build Dashboard screen layout following designs
+* [ ] Implement MetricCard widget with dynamic data
+* [ ] Implement pie chart (expenses by category)
+* [ ] Implement bar chart (items per room)
+* [ ] Connect Dashboard UI to DashboardCubit
+* [ ] Add loading and error states
+
+=== Phase 5 - UI Implementation - Reports 
+
+* [ ] Build Reports listing screen
+* [ ] Build detailed report screen with line chart
+* [ ] Build detailed report screen with stacked bar chart
+* [ ] Implement search UI and connect to ReportsCubit
+* [ ] Implement drill‑down navigation (chart tap → detail list)
+* [ ] Add empty states for search with no results
+
+=== Phase 6 - Export & Polish 
+
+* [ ] Implement PDF export functionality
+* [ ] Add storage permission handling
+* [ ] Add "Export to PDF" button to report screens
+* [ ] Implement pull‑to‑refresh on dashboard
+* [ ] Add "last updated" indicator
+* [ ] Refactor reusable components into shared library
+* [ ] UI polish and bug fixes
+
+=== Phase 7 - Stretch Goals & Stabilization 
+
+* [ ] Implement onboarding welcome screen (if time permits)
+* [ ] Implement PNG image export (if time permits)
+* [ ] Cross‑platform testing (iOS & Android)
+* [ ] Performance profiling and optimization
+* [ ] Final QA and demo preparation
+
+== Suggested Ownership Direction
+
+Work may be distributed as follows:
+
+* **Backend/Database Specialist** (1 person): Phase 1 – Materialized views, PostgreSQL functions, indexing
+
+* **Data Layer Developer** (1 person): Phase 2 – Repository implementations, caching layer, Supabase integration
+
+* **State Management Developer** (1 person): Phase 3 – Cubits, filter logic, state handling
+
+* **Frontend Developers** (2–3 people): Phases 4, 5, 6 – UI implementation for dashboard and reports, PDF export, reusable components
+
+* **QA / Cross‑functional Support** (1 person): Continuous testing, bug reporting, validation across phases
+
+The **Team Lead** will:
+
+* Define architectural contracts and ensure Clean Architecture compliance
+* Coordinate between backend and frontend tracks
+* Review pull requests
+* Prevent scope creep and manage priorities
+* Facilitate daily stand‑ups and remove blockers
+
+== Dependencies / Risks
+
+=== Dependencies
+
+* **Supabase schema finalized** – The underlying inventory and expense tables must be stable before materialized views can be created
+
+* **Authentication system** – User ID must be available for row‑level security and personalized data
+
+* **Charting library compatibility** – Must confirm `fl_chart` or chosen library works with current Flutter version
+
+* **PDF generation library** – Must evaluate performance with complex charts (screenshot approach may be needed)
+
+* **Design assets** – Designs are complete, but any missing icons or illustrations must be exported before UI implementation begins
+
+=== Risks
+
+[cols="1a,2a", options="header"]
+|===
+| Risk | Mitigation
+| **Large data volumes** causing slow queries | Materialized views and proper indexing; implement caching layer
+| **Chart performance** with many data points | Optimize data aggregation; test with realistic datasets early
+| **PDF rendering of charts** | Evaluate screenshot‑based capture as fallback; prototype early
+| **Storage permissions** on Android 10+ | Thorough testing on multiple API levels; use `permission_handler` correctly
+| **Timeline compression** (all Milestone 1 tasks now in one milestone) | Strict prioritization; defer stretch goals if needed; focus on core deliverables first
+| **Row‑Level Security (RLS)** blocking queries | Test with authenticated user early; involve backend specialist
+| **Scope creep** | Team lead to enforce scope boundaries; any additions must go through change request
+|===
+
+== Backlog Readiness Plan
+
+Before Milestone 2 begins:
+
+1. **By March 4** – Team lead will convert each phase into structured GitHub Issues using the team's standardized template:
+
+   * **Objective**: What needs to be accomplished
+   * **Description**: Technical details and approach
+   * **Acceptance Criteria**: Specific, testable outcomes
+   * **Testing Plan**: How to verify the work
+   * **Difficulty**: 1-5 scale
+   * **Urgency**: 1–5 scale
+
+2. **By March 4** – All issues will be labeled appropriately:
+
+   * `milestone-2`
+   * `feature`
+   * `frontend` / `backend` / `data-layer`
+   * `phase-1` through `phase-7`
+   * `stretch-goal` (for optional items)
+
+3. **By March 4** – Issues will be added to the project board under the Milestone 2 column, with dependencies clearly marked (e.g., Phase 1 must be complete before Phase 2 can start)
+
+4. **Sprint Planning (March 4)** – Team will review issues, assign owners, estimate effort, and confirm sprint commitments
+
+== Sprint Plan (February 28 – April 3)
+
+=== Sprint 1 (February 28 – March 17)
+
+* Phase 1: Backend Foundation 
+* Phase 2: Data Layer & Caching 
+* Phase 3: State Management & Filtering 
+* Phase 4: UI Implementation – Dashboard (partial: MetricCard + filters, charts started)
+
+=== Sprint 2 (March 18 – April 3)
+
+* Phase 4: UI Implementation – Dashboard (complete: all charts connected)
+* Phase 5: UI Implementation – Reports
+* Phase 6: Export & Polish
+* Phase 7: Stretch Goals & Stabilization (as time permits)
+
