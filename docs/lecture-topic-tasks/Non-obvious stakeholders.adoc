@@ -7,7 +7,7 @@
 
 The project's A3 document primarily identifies direct users (students living alone or students who are presently living together as roommates) as the key stakeholders for the Digital Home Inventory project. However, as discussed in the Domain Stakeholders presentation, stakeholder identification should be broad and take into account non-obvious stakeholders that would include "individuals, groups, institutions, enterprises, organizations, associations" who have interest in or dependency on the domain. 
 
-In the presentation, examples of non-obvious stakeholders in the domain of a supermarket check-out are laid out: a shelf refilling employee, a driver of resupply truck, and a driver of public transportation passing by the supermarket. The present lecture topic task document was drafted to identify non-obvious stakeholders whose perspectives might otherwise be missed, ensuring our domain description and eventual system design account for all relevant viewpoints.
+In the presentation, examples of non-obvious stakeholders in the domain of a supermarket check-out are laid out: a shelf refilling employee, a driver of a resupply truck, and a driver of public transportation passing by the supermarket. The present lecture topic task document was drafted to identify non-obvious stakeholders whose perspectives might otherwise be missed, ensuring our domain description and eventual system design account for all relevant viewpoints.
 
 == Non-Obvious Stakeholders
 
