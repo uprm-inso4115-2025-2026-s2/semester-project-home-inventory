@@ -6,5 +6,11 @@ List and explain diagrams (architecture diagrams, flow diagrams, ER diagrams, et
 === Diagram inventory
 * TODO: Diagram name — what it shows — where the image/file lives
 
+* Figure 1: ER diagram for our project's entities.
+image:stock_ERD.png[]
+
+* Figure 2: Table diagram for our project's backend.
+image:stock_table_diagram.png[]
+
 === Notes
 * TODO
