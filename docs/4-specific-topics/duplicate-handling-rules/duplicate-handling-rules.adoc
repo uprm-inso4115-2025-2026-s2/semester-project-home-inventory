@@ -1,0 +1,302 @@
+= HOME INVENTORY PROJECT
+== Duplicate Handling Rules
+
+== Objective
+
+Define how the system must behave *after* a duplicate is detected to ensure
+consistent and predictable outcomes across item addition, scanning, imports,
+roommate coordination, alerts, budgeting, and reporting.
+
+This document answers:
+* What the user sees (UI/UX)
+* What data changes happen (merge vs. block vs. new entry)
+* How shared households and ownership affect behavior
+* How budgeting and reporting stay correct
+
+== Scope
+
+This document covers handling behavior for duplicates detected in:
+
+* Manual item addition
+* Barcode scanning
+* Bulk uploads / CSV imports
+* Shared roommate inventory mode
+* Budgeting and reporting modules
+
+Out of scope:
+* The detection algorithm itself (see: Duplicate Item Criteria).
+
+== Definitions
+
+=== Product Definition
+
+A *Product* represents what an item is (e.g., “Clorox Bleach 64oz Original”).
+A product may have one barcode/UPC and a normalized name + brand + size + variant.
+
+=== Stock Entry
+
+A *Stock Entry* represents a specific acquisition of a product and includes:
+quantity, purchase time, expiration date (optional), storage location, and owner.
+
+=== Duplicate Types
+
+. *Product Duplicate:* Attempt to create a new Product that matches an existing Product definition.
+. *Stock Duplicate:* Attempt to create a new Stock Entry that matches an existing Stock Entry (accidental double entry or same batch).
+
+== Core Principles (Hard Rules)
+
+. Barcode match always maps to a single Product definition.
+. Product duplicates must not create new Product definitions.
+. Stock duplicates are handled by quantity aggregation by default (within defined rules).
+. User intent must be preserved:
+* If the user clearly indicates a *new batch* (different expiration or location), allow a separate entry.
+. Shared-household behavior must be consistent with ownership and budgeting rules.
+. All auto-merge actions must be auditable (loggable) and reversible (undo).
+
+== System Behavior Matrix
+
+=== A) Product Duplicate Handling (Same Product Definition)
+
+When a Product duplicate is detected (barcode match or confirmed text match):
+
+System action:
+* Prevent creation of a new Product definition.
+* Reuse the existing Product definition.
+* Continue into Stock Entry flow using the chosen Product.
+
+UI behavior:
+* If barcode match:
+** Auto-select the existing product.
+** Show a small non-blocking notice: "Existing product recognized."
+* If text match (fuzzy):
+** Show a list of best matches.
+** User must choose:
+*** "Use existing product" (recommended)
+*** "Create new product anyway" (requires explicit confirmation + reason)
+
+Confirmation requirements:
+* Barcode match: no confirmation required (hard rule).
+* Text match: confirmation required only if user insists on creating new.
+
+Data handling:
+* Link the stock entry to existing Product ID.
+* Store the match reason:
+** `match_type = barcode|text`
+** `confidence_score` (if text)
+** `user_override = true|false` (if user forces new product)
+
+=== B) Stock Duplicate Handling (Accidental Double-Entry)
+
+When a Stock duplicate is detected (same product + owner + location + close timestamp + same expiration):
+
+Default system action:
+* Merge into existing stock entry by increasing quantity.
+
+Time windows:
+* 0–30 seconds:
+** Auto-merge quantity and block creating a new entry.
+** Show toast: "Added to existing entry (+1). Undo"
+* 30 seconds–2 minutes:
+** Show warning dialog:
+*** "Looks like you just added this item. Add to existing quantity?"
+*** Options: "Add to existing (recommended)" or "Create separate entry"
+* Beyond 2 minutes:
+** Allow separate entry by default.
+** If signals strongly indicate accidental duplication (double-click/import duplicate row), still suggest merge.
+
+UI requirements:
+* Provide "Undo merge" for 10 seconds after auto-merge.
+* If user selects "Create separate entry", require choosing a reason:
+** "Different batch / different expiration"
+** "Different storage location"
+** "Different owner"
+** "Tracking separately (opened vs unopened)"
+** "Other"
+
+Data handling:
+* Merge means:
+** update `quantity = quantity + added_quantity`
+** append merge log record to audit trail
+** do not create a new stock row
+* Separate entry means:
+** create new row with its own timestamps and metadata
+** link to same Product ID
+
+== Special Cases
+
+=== Bulk Purchases
+
+Goal: avoid clutter while preserving expiration/batch accuracy.
+
+Rules:
+* If user enters multiple identical units in one action:
+** Create one stock entry with `quantity = N`.
+* If expiration dates differ:
+** Create multiple stock entries grouped by expiration date.
+* If locations differ:
+** Create multiple stock entries grouped by location.
+
+UI:
+* During bulk add, prompt:
+** "Same expiration date for all?" yes/no
+** "Same storage location for all?" yes/no
+
+=== Imports (CSV / Bulk Upload)
+
+Rules:
+* If an import row matches an existing Product:
+** reuse Product ID (never create duplicate product).
+* If multiple rows refer to same Product in the same import:
+** Prefer aggregation if metadata matches (owner, location, expiration).
+** Otherwise, keep separate entries.
+
+Import conflict UI:
+* Provide an import summary:
+** "X products matched existing"
+** "Y rows merged into existing stock"
+** "Z rows created as separate entries"
+** "Overrides required: N"
+
+Audit:
+* Store import batch ID and per-row resolution:
+** `resolution = merged|separate|skipped|needs_review`
+
+=== Barcode Scanning Flow
+
+Rules:
+* Barcode match:
+** Must map to existing product definition.
+* If stock duplicate window triggers:
+** Apply same time-window merge logic.
+
+UI:
+* Fast path: scan -> auto-add quantity -> toast confirmation.
+* If warning needed (30s–2m):
+** show minimal modal with two big buttons: "Add to existing" / "Create separate"
+
+== Shared Roommate Environments
+
+This system supports two household modes:
+
+=== Mode 1: Shared Inventory + Shared Budget (Fully Shared)
+
+Rules:
+* Stock duplicates across different roommates:
+** Default to merge quantities into shared stock entry if:
+*** same product + same location + same expiration
+* Ownership tracking:
+** optional; if enabled, store `contributed_by_user_id` per add action (not per-stock row).
+
+Budget impact:
+* If shared budget:
+** cost contributions can be split:
+*** evenly by default, or
+*** attributed to the user who added the item (configurable).
+
+UI:
+* Duplicate warning message should say:
+** "This already exists in Shared Inventory. Add quantity to shared stock?"
+
+=== Mode 2: Shared Inventory + Individual Budget (Mixed)
+
+Rules:
+* Inventory may be shared (everyone can see counts), but spending is personal.
+* When a duplicate is detected and merge is suggested:
+** default behavior is still merge quantities (inventory correctness),
+** but the cost attribution remains per-user add action.
+
+Budget impact:
+* Merging stock must not merge spending records.
+* Each add action creates a separate *spend event*:
+** `spend_event {user_id, amount, date, product_id, household_id}`
+
+UI:
+* Must prompt for owner attribution on add:
+** "Who bought this?" default to current user.
+
+=== Mode 3: Individual Inventory (Not Shared)
+
+Rules:
+* Duplicates only considered within the same user inventory.
+* No cross-user merge.
+
+== Budgeting and Reporting Consistency
+
+Key requirement:
+*Inventory merges must not distort spending history.*
+
+Rules:
+* A stock merge changes only inventory quantities and stock metadata.
+* Spending records are immutable events.
+* Reporting should support:
+** "Inventory quantity over time" (state)
+** "Spend over time" (events)
+
+If cost is stored on stock entry (not recommended):
+* On merge:
+** store weighted average cost per unit OR keep last-known cost
+** but always keep original receipts/spend events.
+
+== UI/UX Requirements (Explicit)
+
+=== Duplicate Alerts
+
+* Alerts must be clear, short, and action-oriented.
+* Use severity levels:
+** Info: barcode match reuse
+** Warning: recent stock duplicate (30s–2m)
+** Confirm: user override to create new product on text match
+
+=== Undo
+
+* Provide undo for auto-merge actions (10 seconds).
+* Undo behavior:
+** revert quantity increment
+** restore previous state
+** keep audit log indicating undo performed
+
+=== Consistency Across Platforms
+
+* Same behavior must apply in:
+** Mobile scanning
+** Manual add forms
+** Import wizard
+
+== Audit Trail and Logging
+
+Every duplicate handling action must create a log entry:
+
+Fields (minimum):
+* timestamp
+* user_id
+* household_id
+* action_type: `product_reuse|stock_merge|stock_separate|override_new_product|undo_merge`
+* product_id
+* stock_entry_id (if applicable)
+* reason (if user selected)
+* source: `manual|scan|import`
+* confidence_score (text match only)
+
+== Summary Rules (Quick Reference)
+
+. Product duplicates:
+* Never create new Product for barcode matches.
+* Text matches suggest existing product; user can override with confirmation.
+. Stock duplicates:
+* 0–30s: auto-merge and block new entry
+* 30s–2m: warn and let user choose merge vs separate
+* >2m: allow separate entry (still suggest merge when obvious)
+. Shared households:
+* Shared inventory can merge counts, but budgeting attribution stays per user event.
+. Budget/reporting:
+* Inventory state changes must not rewrite spend history.
+. UX:
+* Clear prompts, minimal friction, undo available, consistent across flows.
+
+== Success Criteria
+
+* Clear, unambiguous handling rules documented for all duplicate scenarios.
+* UI flow defined for merge vs separate vs override decisions.
+* Shared-household behavior aligns with ownership and budgeting modes.
+* Budgeting and reporting remain correct under merges and overrides.
+* Documentation is implementation-ready and consistent with "Duplicate Item Criteria".

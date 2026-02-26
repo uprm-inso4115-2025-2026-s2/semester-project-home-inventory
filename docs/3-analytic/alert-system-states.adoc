@@ -1,0 +1,69 @@
+= Design Item Expiration States
+
+== Item Expiration State Machine
+
+Different states will control the complete process of item management within the alert system. The following states will be defined for any item that has an expiration date:
+
+* **Active**: It will be the default state for any item. The system assigns active status to a newly created item. The system checks the expiration date of the item against the current date.
+
+* **Expiring**: The item enters this staten when the expiration date is approaching. The system will check if the expiration date is within 7, 3 or 1 day(s) and will transition the item to the expiring state accordingly. 
+
+* **Expired**: The item reaches its expiration date which marks it as expired.
+
+* **Renewed**: The item enters this state if the user updates the expiration date. The system will reset the alert logic and start checking for the new expiration date. The system will disable all previous expiration alerts which exist at present and will emerge in the future.
+
+* **Deleted**: The system enters this state when the user selects the option to delete the item. The item will no longer be active, and all alerts will be disabled for this item.
+
+== Alert Preference Schema
+
+The alert preference schema will be designed to accommodate the different states of the item and any interval of the expiration dates provided by the user.
+
+[options="header"]
+|===
+| Field Name | Data Type | Description
+
+| `item_id`
+| UUID
+| Primary key for the item.
+
+| `user_id`
+| UUID
+| Foreign key linking to the user.
+
+| 'expiration_date'
+| Date
+| The date when the item is set to expire.
+
+| `alert_intervals`
+| Integer Array
+| Stores the user's preferred notification days (e.g., `[7, 3, 1]`)Constraints should prevent intervals that are too close to each other or too far from the expiration date. It shall be able to store multiple intervals for a single item.
+
+| 'last_triggered_alert'
+| Date
+| Stores the date when the last alert was triggered for the item.
+
+| `is_snoozed`
+| Boolean
+| Flags if a user previously snoozed or removed a notification so the system will not send another alert until the next interval.
+
+| `state`
+| String
+| Stores the current state of the item (Active, Expiring, Expired, Renewed, Deleted).
+
+| `device_token`
+| String
+| Stores the user's device token to send notifications through FCM.
+|===
+
+== Alert Logic
+
+The alert logic will be implemented as a scheduled task that runs daily to check the expiration dates.
+
+. *Scheduled Trigger*: A supabase cron job runs daily to check for items that are approaching their expiration date.
+
+. *State Transition*: The edge function executes a SQL query to retrieve items. It calculates the difference between the current date and the expiration date. If the difference matches any of the specified interval_alerts, the system transitions the item to the appropiate state.
+
+. *Snooze Check*: The system verifies if the a notification was snoozed for the item.
+
+. *Notification Dispatch*: If the item is in the expiring state and not snoozed, the system sends a notification to the user's device. It shall be noted that the system will only send one notification if the user has several expiring items on the same day. The edge function shall retrieve the user's device token and send the notification through FCM.
+
