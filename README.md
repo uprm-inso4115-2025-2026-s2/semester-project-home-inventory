@@ -293,6 +293,7 @@ All project documentation is written in **AsciiDoc** format and stored in the `/
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Complete workflow guide
 - **[LICENSE](LICENSE)** - Project license
 
+
 ### Branch Structure
 
 ```
