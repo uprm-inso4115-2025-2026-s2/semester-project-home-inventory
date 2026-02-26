@@ -1,0 +1,162 @@
+# Milestone 2 - Team 1: Core Inventory Feature Implementation Plan
+
+== Milestone 2 Target Deliverables
+
+By the end of Milestone 2, the Core Inventory feature must support full CRUD functionality (Create, Read, Update, Delete) for inventory items and be fully integrated with the Supabase backend.
+
+The feature should allow a user to:
+
+* View a list of inventory items
+* View item details
+* Create a new inventory item
+* Edit an existing inventory item
+* Delete an inventory item
+* Persist all changes in Supabase
+* Follow Clean Architecture principles (separation of presentation, domain, and data layers)
+
+The deliverable must be demo-ready, stable, and architecturally clean.
+
+
+== High-Level Implementation Scope
+
+=== 1. Presentation Layer (Flutter UI)
+
+* Inventory List Page
+* Add Item Page
+* Edit Item Page
+* Item Details Page
+* Loading, Error, and Empty States
+* Basic styling and reusable components
+
+=== 2. State Management (Part of the Presentation Layer)
+
+* InventoryCubit
+  * fetchItems()
+  * addItem()
+  * updateItem()
+  * deleteItem()
+* Well-defined states:
+  * Initial
+  * Loading
+  * Loaded
+  * Error
+
+=== 3. Domain Layer
+
+* InventoryItem Entity
+* InventoryRepository interface
+* (Optional but recommended) Use Cases:
+  * GetInventoryItems
+  * AddInventoryItem
+  * UpdateInventoryItem
+  * DeleteInventoryItem
+
+=== 4. Data Layer
+
+* SupabaseInventoryRepository implementation
+* Model definitions
+* JSON ↔ Model ↔ Entity mapping
+* Data Sources (Supabase table integration)
+
+=== 5. UI Styling & UX (Also part of the Presentation Layer)
+
+* Consistent spacing and typography
+* Reusable components (ItemCard, CustomTextField, etc.)
+* Form validation feedback
+* Error handling (Snackbars / Dialogs)
+* Basic mobile responsiveness
+
+
+== Preliminary Work Breakdown
+
+=== Phase 1 - Architecture Setup
+
+* Define InventoryItem entity
+* Create InventoryRepository interface
+* Implement SupabaseInventoryRepository
+* Configure dependency injection (if applicable)
+
+=== Phase 2 - Data Integration
+
+* Implement fetch items from Supabase
+* Implement insert item
+* Implement update item
+* Implement delete item
+* Repository-level testing and validation
+
+=== Phase 3 - State Management
+
+* Create InventoryCubit
+* Implement state transitions
+* Connect repository to cubit methods
+* Handle loading and error states
+
+=== Phase 4 - UI Implementation
+
+* Build Inventory List screen
+* Build Add Item screen
+* Build Edit Item screen
+* Build Item Details screen
+* Connect UI to Cubit
+
+=== Phase 5 - Styling & UX Polish
+
+* Add loading indicators
+* Implement error UI
+* Design empty states
+* Refactor reusable widgets
+* Minor UI refinements
+
+
+== Suggested Ownership Direction
+
+Work may be distributed as follows:
+
+* Developer A: Domain layer + Repository interface
+* Developer B: Supabase integration (data layer)
+* Developer C: State management (Cubit + States)
+* Developer D: UI implementation and styling
+
+The Team Lead will:
+* Define architectural contracts
+* Ensure Clean Architecture compliance
+* Review pull requests
+* Prevent scope creep
+
+
+== Dependencies / Risks
+
+=== Dependencies
+
+* Finalized Supabase table schema
+* Authentication system providing user ID
+* Agreed navigation structure (I recommend using GoRouter in my experience it is the simplest)
+
+=== Risks
+
+* Tight coupling between UI and data layer
+* Poor state modeling leading to complexity
+* Supabase Row-Level Security blocking queries
+* Scope expansion beyond core inventory
+
+
+== Backlog Readiness Plan
+
+Before Milestone 2 begins:
+
+1. Convert each phase into structured GitHub Issues.
+2. Use the team's standardized issue template:
+   * Objective
+   * Description
+   * Acceptance Criteria
+   * Testing Plan
+   * Difficulty
+   * Urgency
+3. Label issues appropriately.
+
+Sprint Plan:
+
+* Sprint 1: Architecture setup + Basic fetch + List screen
+* Sprint 2: Full CRUD + UI polish + Stability improvements
+
+This plan ensures the team is ready for a smooth Milestone 2 kickoff and provides enough clarity to begin backlog creation immediately.
