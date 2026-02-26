@@ -10,7 +10,6 @@ Technical/system requirements and constraints (performance, security, data, inte
 === Data requirements
 * Storage Constraints: Data volume is limited up to 500MB in the database and 1GB for file storage in the Free Tier.
 * Data Integrity: All schema changes must be via Supabase CLI migrations to ensure consistency across the environments.
-* TODO: Data quality assumptions
 
 === Integration requirements (if any)
 * Edge Functions: Any custom backend logic must be compatible with the Deno runtime. Some legacy Node.js libraries may not be supported.
