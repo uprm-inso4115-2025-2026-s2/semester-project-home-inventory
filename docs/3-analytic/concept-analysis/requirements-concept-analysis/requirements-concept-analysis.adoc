@@ -19,10 +19,12 @@ This section analyzes requirement-related concepts: actors, goals, capabilities,
 |===
 
 === Conflicts and tradeoffs
-* TODO: Tradeoff 1 (e.g., speed vs accuracy)
-* TODO: Tradeoff 2 (e.g., flexibility vs simplicity)
+* Tradeoff 1: Rapid Development vs. Infrastructure Control: By choosing Supabase as our backend-as-a-service (BaaS) database, we give priority to development speed and integrated auth/database features over granular server level control. We can accept the connection pooling limits and edge function execution constraints as a reasonable trade-off for reduced DevOps overhead.
+* Tradeoff 2: Realtime Responsiveness vs Message Throughput: We can use Supabase Realtime for low-latency updates to the UI. However, we accept a 256KB payload limit and a maximum of 200 concurrent connections in the Free Tier.
 
 === Requirement quality checks (draft)
+* Feasibility: The project is feasible within the Free Tier limits of Supabase for a small-scale home inventory app. However, we should monitor usage to avoid unexpected costs if the user base grows significantly.
+* Risks: The primary risks is vendor lock-in regarding Auth logic and Edge functions, and potential security misconfigurations ( for example forgetting to enable RLS). We can mitigate these by using the Supabase CLI for schema management and regularly auditing RLS policies. Migrating to a different provider would require refactoring Deno-based logic.
 * Completeness: TODO (what is missing?)
 * Consistency: TODO (any contradictions?)
 * Feasibility: TODO (risks/unknowns?)

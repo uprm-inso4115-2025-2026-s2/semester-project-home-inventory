@@ -3,14 +3,15 @@
 Technical/system requirements and constraints (performance, security, data, integrations).
 
 === Non-functional requirements
-* MR1 (Performance): TODO
-* MR2 (Reliability): TODO
-* MR3 (Security/Privacy): TODO
+* MR1 (Performance): Using Supabase, the system must handle concurrency via Supavisor. Direct PostgreSQL connections are limited based on instance size. Therefore the application must use connection pooling to maintain a high uptime and avoid errors.
+* MR2 (Reliability): The system relies on the current infrastructure of Supabase. Reliability is limited by the Free Tier's storage and connection limits. For bigger production use, the Pro plan is recommended to ensure better performance and reliability.
+* MR3 (Security/Privacy): Security is enforced at the database level via Row-Level Security (RLS). A machine requirement is that all database tables must have RLS enabled with policies that restrict access to authorized users only.
 
 === Data requirements
-* TODO: Data stored/used
-* TODO: Data retention constraints
+* Storage Constraints: Data volume is limited up to 500MB in the database and 1GB for file storage in the Free Tier.
+* Data Integrity: All schema changes must be via Supabase CLI migrations to ensure consistency across the environments.
 * TODO: Data quality assumptions
 
 === Integration requirements (if any)
-* TODO
+* Edge Functions: Any custom backend logic must be compatible with the Deno runtime. Some legacy Node.js libraries may not be supported.
+* Realtime: Integration with the frontend must be in the 200 concurrent connection limit of the Free Tier.
