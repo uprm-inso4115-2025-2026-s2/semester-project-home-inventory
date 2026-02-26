@@ -26,10 +26,10 @@ Domain events are things that happen that matter to stakeholders (often past-ten
 |The Item's metadata is now updated, and the Inventory reflects the updated information. 
 |Occupant, Inventory, Item.
 
-|A Inventory has been generated. 
-|Triggered by an addition of an Item to the Inventory for the first time.
-|The Inventory now reflects the presence of a new Item.
-|Inventory, Item.
+|A new Product has been generated. 
+|Triggered by the addition of a new Item to the Inventory with no relation to an existing Product.
+|The Inventory now reflects the presence of a new Product.
+|Inventory, Item, Product.
 
 |Updated information has been reflected in the Inventory. 
 |Triggered by a modification of inventory contents. 
