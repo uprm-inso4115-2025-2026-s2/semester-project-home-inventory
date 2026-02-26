@@ -292,7 +292,7 @@ All project documentation is written in **AsciiDoc** format and stored in the `/
 - **[STYLE_GUIDE.md](STYLE_GUIDE.md)** - Coding standards and best practices
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Complete workflow guide
 - **[LICENSE](LICENSE)** - Project license
-- **[Notification Idempotency & Deduplication (Sweep Alerts)](docs/2-descriptive/implementation/software-architecture/notification-deduplication-strategy.adoc)** - Strategy to prevent duplicate low-stock/expiration alerts across retries, reruns, and partial failures
+
 
 ### Branch Structure
 
