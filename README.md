@@ -292,7 +292,7 @@ All project documentation is written in **AsciiDoc** format and stored in the `/
 - **[STYLE_GUIDE.md](STYLE_GUIDE.md)** - Coding standards and best practices
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Complete workflow guide
 - **[LICENSE](LICENSE)** - Project license
-- **[Sweep Failure Detection & Recovery Strategy (Daily Sweep)](docs/2-descriptive/implementation/software-architecture/sweep-failure-detection-recovery.adoc)** - Observability signals, run lifecycle, retry/backoff policy, and escalation rules for sweep automation failures
+
 
 ### Branch Structure
 
