@@ -1,0 +1,118 @@
+:toc: left
+
+== User Interaction Flows: Alerts & Notifications
+
+=== Introduction & Objective
+
+For students that live alone, it is very important to keep track of household essentials, but with stressful lifestyles, relying on memory leads to unwanted problems such as food and medicine expiring or purchasing duplicates. The objective of this document is to clearly map out how a user interacts with automated notifications and reminders for items that are low in stock or nearing their expiration dates. Defining these logical pathways ensures that the UI design covers all possible user decisions before we begin creating wireframes.
+
+=== Alert Types & Available User Actions
+
+Before drawing the UI screens, we must define what the user can do when they receive an alert. The system will categorize alerts into three main states:
+
+=== A. Low Stock Alert
+Triggered when an item's current count hits its predefined minimum threshold.
+
+* **Action 1:** Add to Grocery List (Moves the item to the restock planner).
+* **Action 2:** Update Count (Used if the user bought the item recently but forgot to log it in).
+* **Action 3:** Dismiss/Ignore (The user acknowledges the low stock but does not want to buy it right now).
+
+=== B. Expiration Warning (Expiring Soon)
+Triggered X days before the expiration date (e.g., 3 days).
+
+* **Action 1:** Mark as Consumed (The user ate/used it; removes the item from the active database).
+* **Action 2:** Snooze (Remind the user again tomorrow).
+* **Action 3:** Add to Grocery List (Prepare to buy a replacement before it goes bad).
+
+=== C. Expired Alert
+Triggered when the current date matches or exceeds the expiration date.
+
+* **Action 1:** Throw Away (Removes the spoiled item from the inventory).
+* **Action 2:** Re-buy (Removes from inventory AND automatically adds it to the Grocery List).
+
+== 3. Step-by-Step User Flow Definitions
+
+=== Flow 1: Receiving an External Push Notification
+Scenario: The user is outside the app (e.g., on their phone's home screen) and receives an alert from the Supabase backend.
+
+1. *Trigger:* Push Notification Received on the device.
+2. *User Decision Point:*
+    ** *Path A (Dismiss):* The user swipes the notification away. The notification is dismissed from the OS, but remains unread inside the app.
+    ** *Path B (Interact):* The user taps the notification.
+3. *App Opens:* The app deep-links the user directly to the 'Alert Details' Modal for that specific item.
+4. *Resolution:*
+    ** The user selects an action (e.g., "Add to List").
+    ** The app updates the Supabase database.
+    ** The modal closes, and a success message (SnackBar) is displayed.
+
+[mermaid]
+....
+graph TD
+     A([Push Notification Received]) --> B{User Action}
+     B -->|Swipes away| C[Dismissed from OS]
+     B -->|Taps Notification| D[App Opens]
+     D --> E[Deep Link to Alert Details]
+     E --> F{Choose Resolution}
+     F -->|Action: Add to List| G[(Update Supabase DB)]
+     F -->|Action: Dismiss| H[Alert remains Unread]
+     G --> I([Show Success SnackBar])
+....
+
+**Figure 1:** User flow for handling an external push notification.
+
+=== Flow 2: In-App Alert Management (The Alert Feed)
+Scenario: The user opens the app to check their home inventory and navigates manually to the 'Alerts' tab.
+
+1. *Trigger:* User navigates to the Alerts Screen.
+2. *System Check:* Are there active alerts?
+    ** *If No:* Show the 'Empty State' UI (e.g., an illustration saying "All good! Your pantry is safe.").
+    ** *If Yes:* Display a vertical list of alerts ordered by urgency (Expired items first, then Expiring Soon, then Low Stock).
+3. *User Interaction with a List Item:*
+    ** *Action A (Swipe Left):* Quick Action to Dismiss. Remove the item from the view and update the database.
+    ** *Action B (Swipe Right):* Quick Action to Add to List. Updates the database seamlessly.
+    ** *Action C (Tap Item):* Opens the full 'Alert Details' UI to see more information and select from the full range of actions (Snooze, Update Count, etc.).
+
+[mermaid]
+....
+graph TD
+     A([User opens App]) --> B[Navigate to Alerts Tab]
+     B --> C{Active alerts?}
+     C -->|No| D[Show Empty State UI]
+     C -->|Yes| E[Display Alerts List]
+     E --> F{Interact with Item}
+     F -->|Swipe Left| G[Quick Action: Dismiss]
+     F -->|Swipe Right| H[Quick Action: Add to List]
+     F -->|Tap Item| I[Open Alert Details Modal]
+     G --> J[(Update DB)]
+     H --> J
+....
+
+**Figure 2:** User flow for managing alerts within the app.
+
+=== Flow 3: Expiration System Logic (Backend to UI)
+Scenario: How an item's status transitions over time.
+
+1. *State 1 (Good Condition):* Item is added to the inventory with a future expiration date.
+2. *State 2 (Expiring Warning):* The scheduled database job detects the date is 3 days away. The item state changes to "Warning" and triggers an alert.
+    ** *User intercepts:* If the user marks it as 'Consumed', the flow ends here.
+3. *State 3 (Expired):* The database detects the current date has reached the expiration date. The item state changes to "Expired" and triggers a critical alert.
+    ** *User intercepts:* The user must mark it as 'Thrown Away' to resolve the flow.
+
+[mermaid]
+....
+stateDiagram-v2
+     [*] --> Good_Condition: Added to Pantry
+     Good_Condition --> Warning: Cron Job (Date - 3 days)
+     Warning --> Expired: Cron Job (Date == Today)
+     Warning --> Good_Condition: User updates date
+     Warning --> [*]: User marks 'Consumed'
+     Expired --> [*]: User marks 'Thrown Away'
+....
+
+**Figure 3:** State transitions for an item based on expiration dates.
+
+== 4. Edge Cases & UI Considerations
+
+To ensure a robust user experience, the UI must account for the following scenarios:
+* *Batch Alerts:* If a user hasn't opened the app in a week and 10 items expire, we should NOT send 10 separate push notifications. The logic should group them into a "Digest" notification (e.g., "10 items need your attention in the pantry").
+* *Offline Mode:* If the user dismisses an alert while having no internet connection, the app needs to cache this action locally and sync with Supabase once reconnected to avoid showing the same alert twice.

@@ -1,29 +1,127 @@
 == User Stories
 
-Initial user stories organized by feature. Include acceptance criteria and trace to personas/needs when possible.
+The following user stories represent what the Digital Home Inventory system will do for the students who use it. Each story is written from the perspective of a specific persona—Mateo trying to survive a busy week, Sofia watching every dollar, Julian protecting his strict diet, or Andrea keeping four roommates from killing each other over toilet paper. These five stories capture the heart of the system.
 
-=== Feature: <Feature name>
+The story identifiers use prefixes to indicate which feature area they belong to: US-INV for Core Inventory, US-ALT for Alerts and Restock, US-SB for Sharing and Budget, and US-RPT for Reports and Insights, helping readers identify which part of the system each story relates to.
 
-==== US-<Feature>-01: <Short title>
-As a **<persona/actor>**, I want **<goal>**, so that **<benefit>**.
+=== US-INV-01: Add items to inventory
 
-* Related persona(s): TODO
-* Related need(s): TODO (N1, N2, ...)
-* Priority: High/Med/Low
+As **Mateo**, a busy engineering student who works part-time and lives alone, I want to **quickly add items to my digital inventory when I get home from the store**, so that **I can stop relying on my terrible memory and actually know what I have in my kitchen**.
 
-.Acceptance Criteria
-* GIVEN TODO, WHEN TODO, THEN TODO.
-* GIVEN TODO, WHEN TODO, THEN TODO.
+*Also affects:* Sofia, Julian, Andrea
+*Priority:* High — Without this, there is no inventory to manage. Everything else depends on items existing in the system first.
 
-.Notes / assumptions
-* TODO
+**What the system will do:**
 
-==== US-<Feature>-02: <Short title>
-As a **<persona/actor>**, I want **<goal>**, so that **<benefit>**.
+The system gives Mateo a simple way to record what he bought. He walks in the door after a long day, pulls out his phone, and spends thirty seconds typing in milk, eggs, and chicken before collapsing on the couch. The inventory becomes a record of everything in his kitchen, built one item at a time with minimal effort.
 
-* Related persona(s): TODO
-* Related need(s): TODO
-* Priority: TODO
+**Acceptance Criteria**
 
-.Acceptance Criteria
-* TODO
+* When Mateo comes home from the grocery store and opens the app, he finds an "Add Item" button right on the main screen where he can't miss it. He taps it and enters what he bought—milk, eggs, chicken—with maybe a couple extra taps for quantity if he bought more than one. The whole process takes less than a minute because if it takes longer, he won't do it.
+
+* For items that expire, like the chicken breast Mateo plans to cook later in the week, the system lets him enter an expiration date. If he doesn't know it, he can leave it blank and the system will estimate based on the item type—dairy gets a week, fresh meat gets a few days. Later, the system will use this date to warn him before the chicken goes bad.
+
+* Once Mateo saves an item, it appears in his inventory immediately. He doesn't have to wait for anything to load or refresh. The item shows up with the date he added it, so later he'll know whether that milk is from today or two weeks ago.
+
+* If Mateo realizes he made a mistake—he added almond milk but actually bought oat milk—he can edit the item right from the inventory list without starting over. The system saves the change and updates anything else that depends on that information.
+
+* When Mateo adds an item he buys regularly, like his coffee, the system notices and might ask if he wants to set a reminder for when he runs low. It learns over time what matters to him.
+
+=== US-INV-02: See what belongs to whom
+
+As **Sofia**, a budget-conscious student living with two roommates, I want to **clearly see which items in the fridge are shared and which belong to specific people**, so that **I can stop policing my food and just enjoy my groceries without worrying someone finished my expensive almond milk**.
+
+*Also affects:* Julian, Andrea
+*Priority:* High — In shared living situations, unclear ownership leads to conflict. This feature makes the system useful for groups, not just individuals.
+
+**What the system will do:**
+
+The system tracks ownership for every item. When Sofia looks at the fridge, she sees her almond milk marked with her name and the shared milk marked for everyone. No more guessing, no more passive-aggressive notes, no more finding out someone finished her stuff when she needed it most.
+
+**Acceptance Criteria**
+
+* When Sofia opens the app and looks at the kitchen inventory, every item shows a small indicator of who it belongs to. A little "S" for Sofia, or the word "Shared" for things everyone can use. She can see at a glance what's hers and what's communal.
+
+* If Sofia taps on her almond milk, she sees more detail: she bought it on March 3rd, it cost $4.50, and it was marked as personal. If a roommate accidentally uses it, she has clear proof that it was hers when she asks them to replace it.
+
+* When Sofia adds something she bought for the whole apartment, like dish soap or trash bags, she can mark it as shared. The system remembers this and will later help her split the cost with roommates. When she adds something just for herself, like her favorite coffee, she marks it as personal so everyone knows it's off limits.
+
+* When Sofia looks at household spending later, the system separates her personal purchases from shared ones. She can see exactly how much she spent on herself versus how much she spent on the house, which makes budgeting conversations with roommates much clearer.
+
+* If Sofia decides to share something that was originally personal—maybe she bought too much and wants to offer it to everyone—she can edit the item and change it from personal to shared. The system updates it for everyone immediately.
+
+=== US-ALT-01: Receive low-stock warnings
+
+As **Julian**, a student athlete who follows a strict gluten-free diet, I want to **get a warning when I'm running low on my specialty foods**, so that **I never wake up to find I'm out of the things my body needs and that take days to arrive by mail**.
+
+*Also affects:* Mateo, Andrea
+*Priority:* High — This turns the inventory from a passive record into an active helper. Students forget things; the system reminds them.
+
+**What the system will do:**
+
+The system watches Julian's inventory and notices when his essentials get low. For his protein powder that he uses daily, it learns his pace and warns him when he's down to about a week's worth—enough time to order more before his next workout. The system pays attention so Julian doesn't have to.
+
+**Acceptance Criteria**
+
+* When Julian's gluten-free pasta drops below a level he set—maybe two boxes left—the system notices. The next time he opens the app, he sees a small indicator telling him he's running low. No alarm, no panic, just a heads-up while he still has time.
+
+* For items Julian really can't live without, he can set custom thresholds. Maybe he wants to know when his protein powder is down to one container instead of two, because he has space to store only one backup. The system remembers his preference and warns him accordingly.
+
+* If Julian ignores a warning and runs out anyway, the system learns. Next time, it might warn him a little earlier, adjusting to his actual behavior instead of sticking to rigid rules.
+
+* When Julian's protein powder gets low, the system doesn't just tell him it's low. It tells him something more useful: "Based on how fast you usually go through this, you have about 5 days left." The system learns his consumption patterns over time.
+
+* The system doesn't overwhelm Julian with notifications. If he has several low items, it might group them into one message instead of sending separate alerts. It respects his attention.
+
+=== US-SB-01: Split shared purchases with roommates
+
+As **Andrea**, the unofficial household manager for her four-person house, I want to **automatically split the cost of shared items with my roommates**, so that **I don't have to chase people down for money or keep a messy spreadsheet of who owes what after every Costco run**.
+
+*Also affects:* Sofia, Mateo, Julian
+*Priority:* High — Money issues are a major source of roommate conflict. This feature directly addresses a key problem from the project statement.
+
+**What the system will do:**
+
+When Andrea buys things for the house, the system helps divide the cost fairly. She enters her purchases, marks which items were shared and which were personal, and the system figures out how much each roommate owes. It sends quiet reminders so no one forgets, and it keeps a record so there's no arguing about who paid for what last month.
+
+**Acceptance Criteria**
+
+* When Andrea comes back from Costco, she opens the app and starts a new shared purchase. She enters the items one by one, marking each as shared or personal. For the giant pack of toilet paper, she marks it shared. For the snacks she bought just for herself, she marks them personal.
+
+* The system calculates how much each roommate owes based on the shared items. If four people are in the house, it splits the toilet paper four ways. If something was marked as shared but only two people use it—like a specific cleaning supply—Andrea can adjust the split so only those two pay.
+
+* Once the split is calculated, each roommate gets a notification: "Andrea spent $60 on shared items. Your share is $15." They can see the breakdown—what was bought, how much it cost, and how the split was calculated. No more asking "wait, what did you buy?"
+
+* When Sofia pays her share, she marks it as paid in the app. Andrea gets a notification that Sofia has paid, and the system updates the record so everyone can see who still owes money. The transaction history builds up over time, creating a clear record.
+
+* If someone disputes a charge—maybe they don't think they should pay for something—they can flag it in the app. Andrea sees the flag and they can have a conversation, but at least the disagreement is documented instead of happening in a group chat where it gets lost.
+
+* At the end of the month, Andrea can look at her spending and see exactly how much she paid toward household items versus how much she spent on herself. This helps her understand her own budget and have real conversations if her share seems too high.
+
+=== US-RPT-01: See household dashboard with insights
+
+As **Andrea**, the unofficial household manager for her four-person house, I want to **open one screen and immediately understand what's going on with my household**, so that **I can plan shopping trips with confidence instead of guessing what we need or texting roommates who never reply**.
+
+*Also affects:* Sofia, Mateo, Julian
+*Priority:* Medium — This ties everything together but depends on other features working first. It becomes more valuable as the system fills with data.
+
+**What the system will do:**
+
+The dashboard pulls together everything the system tracks. It knows what items exist in the kitchen, bathroom, and pantry. It knows what's running low and what's about to expire. It knows how much the household has spent this month and how that compares to last month. All of this appears in one place, giving Andrea a complete picture without having to dig through different sections or text four unresponsive roommates. When she's standing in the store aisle wondering whether to buy more trash bags, she pulls out her phone and knows for sure.
+
+**Acceptance Criteria**
+
+* When Andrea opens the app, she lands on a dashboard that shows her three things without any extra clicks: how much the household has spent this month, how many items are running low across all rooms, and how many things will expire in the next seven days. She gets the big picture immediately.
+
+* If Andrea is planning a trip to restock the kitchen specifically, she can tap a filter that says "Kitchen Only." The dashboard updates to show only kitchen spending, kitchen items that are low, and kitchen items about to expire. The same works for bathroom, pantry, or any other room the household uses.
+
+* When Sofia wants to understand why her share of the household bill was higher this month, she can look at the spending section and switch between "This Month" and "Last Month." The numbers update to show both periods side by side, making it obvious if something changed—like everyone going through way more laundry detergent in October.
+
+* After Andrea has applied several filters trying to investigate something specific—like bathroom spending over the summer—she can tap "Clear All Filters" and the dashboard instantly returns to its full view. She doesn't have to undo each filter one by one.
+
+* When Andrea looks at the low items section, she sees not just what's low, but where it lives. "Toilet paper low in the bathroom" is more useful than just "toilet paper low." The location helps her act immediately and tells her which part of the store to head to first.
+
+* If Julian looks at the dashboard, he sees a version that highlights his personal items first, then shared items he might be responsible for. The system knows who he is and what matters to him, so he doesn't have to wade through everyone else's stuff to find his own specialty foods.
+
+* The dashboard updates in real time as people add items, mark things as finished, or log purchases. Andrea never looks at stale information or makes decisions based on last week's data.
+

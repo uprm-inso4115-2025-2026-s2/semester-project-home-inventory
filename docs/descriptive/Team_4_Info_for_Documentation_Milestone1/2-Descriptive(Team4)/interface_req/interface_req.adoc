@@ -1,0 +1,107 @@
+= 2.2.4 Dashboard Display – Interface Requirements
+:sectnums:
+:toc:
+:toclevels: 2
+
+<<<
+
+== 1. Overview
+
+This section defines the interface requirements for the Dashboard display of the Home Inventory system.
+
+The Dashboard serves as the primary entry point to the Reports & Insights module and provides high-level visibility into inventory and spending metrics.
+
+These requirements specify layout behavior, visual hierarchy, interaction rules, and data presentation constraints.
+
+== 2. Layout Requirements
+
+2.2.4-IR-1:
+The system shall display summary information using a structured grid layout.
+
+2.2.4-IR-2:
+The Dashboard shall include the following summary cards:
+- Total Inventory Items
+- Low-Stock Items
+- Expiring Soon Items
+- Monthly Spending (Current Month)
+
+2.2.4-IR-3:
+The layout shall remain visually consistent and readable across supported screen resolutions (desktop and tablet).
+
+2.2.4-IR-4:
+Dashboard elements shall not overlap, collapse improperly, or break alignment when resizing the window.
+
+== 3. Summary Card Requirements
+
+2.2.4-IR-5:
+Each summary card shall display:
+- A descriptive title
+- A numeric value
+- A visual emphasis indicator (icon or styling)
+
+2.2.4-IR-6:
+Numeric values shall update dynamically based on current database state.
+
+2.2.4-IR-7:
+Numeric values shall be consistently formatted (e.g., currency formatting for spending, whole numbers for item counts).
+
+2.2.4-IR-8:
+If no data exists for a metric, the system shall display a clear empty-state message (e.g., "No items expiring soon").
+
+== 4. Visual Hierarchy & Alerts
+
+2.2.4-IR-9:
+Cards representing critical states (Low-Stock Items and Expiring Soon Items) shall be visually distinguishable from informational cards.
+
+2.2.4-IR-10:
+The interface shall visually separate financial metrics (Monthly Spending) from inventory count metrics.
+
+2.2.4-IR-11:
+Critical indicators shall be immediately noticeable without requiring user interaction.
+
+== 5. Navigation Behavior
+
+2.2.4-IR-12:
+Each summary card shall be clickable.
+
+2.2.4-IR-13:
+Selecting a summary card shall navigate the user to its corresponding detailed report:
+- Total Items → Inventory Summary Report
+- Low-Stock Items → Inventory Summary (Filtered)
+- Expiring Soon Items → Expiration View
+- Monthly Spending → Spending Report
+
+2.2.4-IR-14:
+Navigation shall preserve application state and not require full application reload.
+
+== 6. Data Representation Constraints
+
+2.2.4-IR-15:
+The system shall calculate Monthly Spending based on transactions within the current calendar month.
+
+2.2.4-IR-16:
+Low-Stock Items shall reflect items below predefined stock threshold.
+
+2.2.4-IR-17:
+Expiring Soon Items shall reflect items within the defined expiration window.
+
+2.2.4-IR-18:
+Displayed values shall reflect real-time database state at the time of rendering.
+
+== 7. Non-Functional Interface Requirements
+
+2.2.4-IR-19:
+Dashboard load time shall not exceed acceptable system response thresholds defined in performance requirements.
+
+2.2.4-IR-20:
+The interface shall maintain consistent styling aligned with the system design guidelines.
+
+== 8. Traceability
+
+These interface requirements support:
+
+- Section 4.2 – Reports & Insights Feature Scope
+- Dashboard functional metrics
+- Persona-driven design decisions
+
+The Dashboard interface must remain aligned with defined user personas and analytical priorities.

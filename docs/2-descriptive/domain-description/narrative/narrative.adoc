@@ -1,17 +1,41 @@
 == Narrative
 
-
 A cohesive story of how the domain works, independent of any specific software system.
 
 === Overview
-TODO: 1–2 paragraphs describing the domain cycle (who does what, when, and why).
 
-=== Actors and artifacts
-* Actors: TODO
-* Artifacts (things that are created/changed): TODO
+Students living independently go through a continuous cycle of acquiring, using, and replacing household items. They buy food and supplies when they have time and money, store them somewhere in their living space, and consume them gradually throughout the week. When items run low or run out, someone must eventually notice and take action to replace them. In shared households, this cycle involves multiple people who must coordinate—or fail to coordinate—about what is needed, who will buy it, and who owes what. The cycle repeats constantly, driven by daily needs and constrained by limited time, money, and attention.
 
-=== Typical scenario
-TODO: Write a short scenario (6–10 sentences) showing the domain workflow end-to-end.
+=== Actors and Artifacts
 
-=== Exceptions and edge cases
-* TODO
+*Actors:*
+- Students living alone
+- Students living with roommates
+- Roommates collectively (as a group that shares resources)
+
+*Artifacts:*
+- Household items (food, cleaning supplies, toiletries, medicine)
+- Storage spaces (refrigerator, cabinets, pantry, bathroom shelves)
+- Shopping lists (mental or written)
+- Money spent on purchases
+- Shared resources that belong to no one individually
+- Personal items that belong to specific students
+
+=== Typical Scenario
+
+A student named Mateo wakes up on a Wednesday morning and wants to make coffee. He opens the cabinet and finds the coffee bag is almost empty—maybe enough for one more cup. He makes his coffee and thinks about buying more, but he is already running late for class. He forgets by the time he leaves. Two days later, on Friday morning, he reaches for the coffee again and finds nothing. He is already dressed for his 8am class and has no time to stop at a store. He goes without coffee, frustrated, and spends the morning tired. That afternoon, between classes, he stops at the supermarket and buys coffee. When he gets home, he puts it in the cabinet and life continues. A week later, the same thing happens with milk.
+
+In a shared household, another student named Sofia notices the apartment is out of trash bags. She mentions it in the group chat, but no one replies. She assumes someone else will handle it. Three days pass, the trash is overflowing, and still no trash bags. Finally, she buys them herself, annoyed that she had to spend her money on something everyone uses. When she brings them home, her roommate Andrea says, "Oh, I bought some yesterday too—I didn't see your message." Now the apartment has two packs of trash bags and less space in the cabinet.
+
+=== Exceptions and Edge Cases
+
+- An item expires before anyone uses it, wasting the money spent on it.
+- Multiple roommates buy the same shared item independently because no one communicated.
+- A personal item gets used by someone else, causing conflict.
+- Someone forgets they already have an item and buys another, creating a duplicate.
+- A student runs out of something at a time when stores are closed or they have no money.
+- Roommates disagree about who should pay for shared items or whether an item was actually shared.
+- An item is moved from its usual place and cannot be found when needed.
+- Someone notices an item is low but forgets to buy it before it runs out.
+- A student on a strict budget cannot afford to replace an item immediately.
+- Items accumulate in storage spaces and get buried behind newer purchases, forgotten until long after they expire.
