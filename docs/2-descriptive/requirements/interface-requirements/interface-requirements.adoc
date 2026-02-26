@@ -1,10 +1,92 @@
 == 2.2.5 Interface Requirements
 
 [abstract]
-UI/interaction requirements at a high level (what users must be able to see/do).
+Interface requirements describe how phenomena and concepts from the domain are represented inside the system, how they are initialized, and how they are kept in sync when the real world changes.
 
-* IR1: TODO
-* IR2: TODO
+=== IR-01: Item Initialization
 
-=== Accessibility and usability considerations
-* TODO
+When a student acquires a new household item in the real world, they must have a way to create a corresponding digital representation inside the system.
+
+*The system shall provide a means for students to add new items to their digital inventory, including name, quantity, category, location, ownership status, and optional expiration date.*
+
+**Questions this addresses:**
+- How does an item first appear in the system?
+- What information must the student provide to accurately represent what they bought?
+- How does the system know an item exists?
+
+=== IR-02: Item Update on Consumption
+
+When a student consumes part of an item in the real world, the digital representation must be updated to reflect the new quantity.
+
+*The system shall provide a means for students to indicate when they have used some or all of an item, decreasing the recorded quantity or marking it as finished.*
+
+**Questions this addresses:**
+- How does the system learn that an item has been partially or fully consumed?
+- How is the digital quantity kept in sync with physical reality?
+- What happens when an item is finished?
+
+=== IR-03: Ownership Specification
+
+When an item exists in a shared household, students need to know whether it is personal or shared.
+
+*The system shall provide a means for students to indicate whether an item is personal or shared, and if personal, which student it belongs to.*
+
+**Questions this addresses:**
+- How does the system distinguish between items one person owns versus everyone uses?
+- Who can see which items?
+- How are conflicts over personal items prevented?
+
+=== IR-04: Low-Stock Threshold Definition
+
+Students have different definitions of what "running low" means for different items.
+
+*The system shall provide a means for students to set custom low-stock thresholds for individual items.*
+
+**Questions this addresses:**
+- How does the system know when "low" means something different for coffee versus toilet paper?
+- Can students customize thresholds to match their consumption patterns?
+- What are sensible defaults when no threshold is set?
+
+=== IR-05: Expiration Date Entry
+
+Expiration dates exist in the real world and must be captured in the system to enable alerts.
+
+*The system shall provide a means for students to enter expiration dates when adding or editing items that expire.*
+
+**Questions this addresses:**
+- How does the system learn when an item will expire?
+- Is expiration date required or optional?
+- How are items without expiration dates handled?
+
+=== IR-06: Purchase Logging
+
+When a student spends money on household items in the real world, that financial transaction must be recorded.
+
+*The system shall provide a means for students to log purchases, including items bought, total cost, date of purchase, and which items were shared versus personal.*
+
+**Questions this addresses:**
+- How does spending information enter the system?
+- How are purchases linked to the items they brought into the home?
+- How does the system know what was shared for later cost splitting?
+
+=== IR-07: Cost Splitting
+
+When a purchase includes shared items, the cost must be divided among roommates according to real-world agreements.
+
+*The system shall provide a means for students to split purchase costs among selected roommates and track who owes what.*
+
+**Questions this addresses:**
+- How are shared costs fairly divided?
+- How does the system know who should pay for what?
+- How are disputes about shared expenses prevented?
+
+=== IR-08: Dashboard Metric Overview
+
+Students need a high-level view of their household's status without digging through multiple screens.
+
+*The system shall provide a dashboard that displays key metrics including total items, low-stock items, expiring items, and current month spending, with summary cards that aggregate data from across the system.*
+
+**Questions this addresses:**
+- How does a student quickly assess what needs attention?
+- What information is most important to show at a glance?
+- How are metrics from different parts of the system brought together in one place?
