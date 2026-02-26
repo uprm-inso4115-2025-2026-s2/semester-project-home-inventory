@@ -1,0 +1,31 @@
+= Item Dispaly Wireframe
+Author: Jorge L. De León Orama
+
+== Overview
+This document visually demonstrates the seperate item display wireframes, and its card stacking method. The Item display wireframe's contents are: 
+
+* Name
+* General Notes
+* Quantity 
+* Expiration Date
+* View More Icon (top right)
+
+== Wireframes 
+The wireframe for a seperate *Non-Expirable* item is the following: 
+
+image:images/seperate_nonexpirable_item_wireframe.png[]
+
+The wireframe for a seperate *Expirable* item is the following, this takes to acount the earliest expiration date in a list of an item with different quanitites:
+
+image:images/seperate_expirable_item_wireframe.png[]
+
+The wireframe for unavailable (out-of-stock) item:
+
+image:images/items_unavailable_wireframe.png[]
+
+The wireframe for item stacking, accompanied with visible status indicators:
+
+image:images/items_vertical_stacking_wireframe.png[]
+
+== Concerns
+The item image size consistency is very low, hence the search for a method in which image sizes remain consistent throughout different image size submsission is highly demanded.
