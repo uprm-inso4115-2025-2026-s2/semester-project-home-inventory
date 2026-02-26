@@ -1,0 +1,5 @@
+== Current Situation, Needs, and Ideas
+
+include::current-situation.adoc[leveloffset=+1]
+include::needs.adoc[leveloffset=+1]
+include::ideas.adoc[leveloffset=+1]

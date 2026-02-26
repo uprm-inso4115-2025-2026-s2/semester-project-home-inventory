@@ -1,0 +1,99 @@
+= Research Supabase RLS for Shared & Private Inventories
+
+PostgreSQL Row-Level Security (RLS) acts as a gatekeeper that is attached to created tables on Supabase. The information is directly manipulated in the database, instead of code filtering data using conditional statements. This type of implementation ensures that users will only see the data they are allowed to see.
+
+When a users logs in, their JWT (JSON Web Token) contains their unique ID. RLS policies compares this ID against, for example, a `household_members` table to determine which items they are authorized to see and manipulate.
+
+== General Benefits
+* Privacy for personal items: users can have “Private” category that roommates cannot see.
+* Reduced backend complexity: The database handles all the permissions, no need to code it in.
+* Real-time views: Supabase handles the data in real-time, so users and roommates can see the inventory updates almost instantly.
+
+== Basic implementation
+In Supabase RLS we can create policies that are used to manipulate the data. These policies include: `SELECT`, `INSERT`, `UPDATE` and `DELETE`. Some basic implementation examples are listed below:
+
+This basic policy is to let all the users read the data.
+
+[source,sql]
+----
+Create policy “Enable read access for all users”
+On “public”.”users”
+As permissive
+For select
+To public
+Using (
+True
+);
+----
+
+This policy gives insert access to users who are authenticated.
+
+[source,sql]
+----
+Create policy “Enable insert for authenticated users only”
+On “public”.”users”
+As permissive
+For insert
+To authenticated
+With check (
+True
+)
+----
+
+== Distinguishing Households & Roommates
+In this system we can distinguish access using a household_id. Where a user belongs to a household, and items are tagged with tht same ID.
+
+=== Implementation examples
+
+[source,sql]
+----
+Create policy “Users can view items in their household”
+On inventory_items
+For select
+Using (
+    Household_id in (
+        Select household_id
+        From household_members
+        Where user_id = auth.uid()
+    )
+);
+----
+
+==== Reusable SQL function: is the user a household admin?
+
+[source,sql]
+----
+Create or replace function is_household_admin(h_id uuid)
+Returns Boolean as $$
+Begin
+    Return exist (
+        Select 1 from household_members
+        Where user_id = auth.uid()
+        And household_id = h_id
+        And role = ‘admin’
+    );
+end;
+----
+
+==== Policy to prevent duplicates
+
+[source,sql]
+----
+Create policy “users can add items to their household”
+On inventory_items
+For insert
+With check (
+    Household_id in (
+        Select household_id from household_members where user_id = auth.uid()
+    )
+);
+----
+
+== Summary
+For the home inventory project RLS fulfills the support of shared inventories and roommate coordination, by the use of policies and real-time updates to the data shown on the application. It also helps by simplifying the implementation of permissions and authentication, as there is no need to code and debug long conditional blocks of code, instead it is all managed in the database directly.
+
+== References
+Supabase official documentation: https://supabase.com/docs/guides/database/overview
+Supabase Row Level Security documentation: https://supabase.com/docs/guides/database/postgres/row-level-security#rls-performance-recommendations
+Auth JWT reference: https://supabase.com/docs/guides/auth/jwt-fields
+PostgreSQl create policty: https://www.postgresql.org/docs/current/sql-createpolicy.html

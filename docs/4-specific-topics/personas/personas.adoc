@@ -1,0 +1,95 @@
+== Personas
+
+[abstract]
+Personas represent key user/stakeholder types. Aim for 3-4 personas. Each persona includes goals, frustrations, behaviors, and a short scenario.
+
+=== Persona 1: Mateo, The Busy Solo Student
+* *Role:* Student living alone
+* *Background:* Mateo is a full-time engineering student who also works a part-time job. He lives by himself in a small apartment near campus and has very little free time or mental energy for household management.
+* *Goals:*
+** Minimize time spent grocery shopping.
+** Avoid throwing away expired perishable food.
+** Keep meal prep quick, simple, and predictable.
+* *Frustrations:*
+** Frequently forgets what ingredients he already has in the fridge.
+** Buys fresh produce or meat, but it goes bad before he finds the time to cook it.
+** Experiences morning stress when he realizes he is completely out of coffee or milk.
+* *Typical behaviors:*
+** Shops sporadically, usually only when the fridge is completely empty.
+** Relies entirely on his memory for his home inventory.
+** Orders expensive takeout when overwhelmed by a disorganized kitchen.
+* *Constraints*:
+** Severe time constraints due to a heavy class and work schedule.
+** Limited mental bandwidth for tracking chores; relies heavily on his smartphone for organization.
+* *Scenario:*
+Mateo comes home late after a grueling day of classes. He remembers buying chicken breasts earlier in the week and plans to quickly pan-fry them for dinner. When he opens the fridge, he realizes he actually bought them almost a week and a half ago, and they have spoiled. Frustrated, he orders an expensive pizza delivery, breaking his weekly food budget, and later realizes he also has three open bottles of ketchup in the pantry. Success for Mateo looks like receiving a push notification on his phone the day before his chicken expires, and being able to quickly check an app at the supermarket to confirm he doesn't need to buy a fourth bottle of ketchup.
+
+=== Persona 2: Sofia, The Budget-Conscious Roommate
+* *Role:* Student living with roommates and Budget-conscious student
+* *Background:* Sofia lives in a shared apartment with two other students. She pays for her own living expenses using a mix of financial aid and a strict monthly budget.
+* *Goals:* 
+** Keep grocery and household supply costs as low as possible.
+** Ensure communal items like toilet paper and dish soap are split fairly.
+** Avoid buying any duplicates of items the apartment already has.
+* *Frustrations:* 
+** Roommates using her specific, more expensive dietary items without asking.
+** Running out of money before the end of the month due to poor collective household planning.
+** Wasting limited apartment storage space on duplicate bulk items.
+* *Behaviors:* 
+** Shops with a strict list and a calculator app open.
+** Tries to use a physical whiteboard on the fridge to track shared apartment needs, but her roommates forget to update it.
+* *Constraints:* 
+** Extremely limited financial budget.
+** Shared physical storage space that fills up quickly.
+** Reliant on uncooperative roommates to manually update the physical whiteboard.
+* *Scenario:* 
+Sofia goes to the supermarket with a strict $50 budget. She checks the apartment's shared whiteboard and sees they need toilet paper and dish soap. She buys them, using up a significant chunk of her cash. When she returns, she finds one of her roommates had already bought bulk toilet paper earlier that afternoon but forgot to erase it from the whiteboard. Now the apartment has no storage space left, and Sofia is short on cash for her own meals. Success for Sofia looks like having a synchronized mobile app where everyone sees real-time shared inventory and purchases, preventing her from spending her limited money on duplicate items.
+
+=== Persona 3: Julian, The Health-Conscious Student
+* *Role:* Student with dietary or medical needs
+* *Background:* Julian is a student athlete who follows a strict, high-protein, gluten-free diet. He lives with roommates but keeps his food entirely separate due to his nutritional requirements and fear of cross-contamination.
+* *Goals:* 
+** Maintain a consistent, uninterrupted supply of specific, specialized dietary items.
+** Accurately track consumption rates of expensive supplements to budget for reorders.
+* *Frustrations:* 
+** Running out of core meal-prep ingredients mid-week.
+** Disorganized pantry spaces making it hard to quickly find what he needs.
+** Specialty items expiring because he bought too much in bulk to save money online.
+* *Behaviors:* 
+** Buys non-perishables in bulk online to save money.
+** Does heavy meal prep every Sunday afternoon.
+** Tracks his macronutrients religiously but struggles to translate that into a grocery inventory.
+* *Constraints:* 
+** Strict dietary policies that don't allow for substituting ingredients.
+** Limited local availability of his required brands.
+* *Scenario:* 
+Julian does his weekly meal prep on Sunday. Halfway through cooking, he goes to his pantry shelf to grab his special gluten-free pasta, only to realize he used the last box on Wednesday and forgot to order more. Because the local grocery store doesn't carry his brand, his entire meal plan is ruined. Success for Julian looks like an automated low-stock alert triggered by his consumption rate, reminding him to order his pasta on Amazon three days before he actually runs out.
+
+=== Persona 4: Andrea, The Unofficial Household Manager
+* *Role:* Frequent household supply buyer and Roommate who shares purchases
+* *Background:* Andrea lives in a house with three other students. Because she is the most organized and has a car, she naturally fell into the role of the "unofficial house manager," doing the bulk of the household shopping at wholesale clubs.
+* *Goals:* 
+** Keep the house perfectly stocked with shared essentials without doing all the mental labor.
+** Get reimbursed quickly and accurately by roommates for shared purchases.
+* *Frustrations:* 
+** Constantly having to text the roommate group chat to ask what they are out of, getting no replies.
+** Getting stuck paying the bill when shared items are consumed but nobody admits to finishing them.
+* *Behaviors:* 
+** Uses a chaotic mix of WhatsApp messages, scattered receipts, and Apple Notes to track house needs.
+** Frequently sends money requests to roommates after a shopping trip.
+* *Constraints:* 
+** Coordinates across three different and uncooperative roommate schedules.
+** Needs accurate, unarguable proof of consumption for financial reimbursements.
+* *Scenario:* 
+Andrea plans a trip to a wholesale club. She texts her roommates asking what they need, but only one replies. She guesses on the rest and buys shared snacks and cleaning supplies. The shared snacks disappear rapidly, and when she asks for everyone to split the cost, arguments break out over who actually ate them. Meanwhile, the house runs out of trash bags because Andrea assumed they had some hidden under the sink. Success for Andrea looks like a transparent, shared digital ledger where roommates can log what they finish and request items, making reimbursements unarguable and keeping the house perfectly stocked.
+
+=== Persona-to-needs trace
+[cols="2,4",options="header"]
+|===
+|Persona |Key needs (IDs)
+
+|Mateo |N1, N4, N7
+|Sofia |N2, N5, N8
+|Julian |N3, N4, N9
+|Andrea |N5, N6, N10
+|===

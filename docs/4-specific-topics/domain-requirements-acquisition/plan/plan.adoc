@@ -1,0 +1,25 @@
+== Requirements Acquisition Plan
+
+[abstract]
+Plan for how we will gather and validate requirements from stakeholders and domain evidence.
+
+=== Goals
+* TODO: What we need to learn/confirm
+
+=== Methods
+* Interviews: TODO (who, how many, what we ask)
+* Surveys: TODO
+* Observation / contextual inquiry: TODO
+* Document analysis: TODO (existing docs, policies, examples)
+
+=== Schedule (draft)
+[cols="2,4",options="header"]
+|===
+|Timeframe |Activities
+
+|This week |TODO
+|Next week |TODO
+|===
+
+=== Risks and mitigations
+* Risk: TODO → Mitigation: TODO

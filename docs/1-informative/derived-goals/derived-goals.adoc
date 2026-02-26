@@ -1,0 +1,9 @@
+== Derived Goals
+
+The project’s goals go beyond building an app, focusing on improving students’ day-to-day household management while guiding team decisions and milestone priorities.
+
+* From the current situation and needs, the project aims to reduce waste and inefficiency in student households by improving visibility into what items are available, where they are stored, and when they need to be replenished. The system should help prevent duplicate purchases, avoid unexpected shortages, and reduce food and medicine expiring unnoticed through clear organization and timely reminders.
+
+* In addition to these user-focused objectives, the project seeks to ensure usability, reliability, and adaptability. The system should be easy to maintain during busy student schedules, with low-friction item updates and configurable notification thresholds. The application should support both solo and shared households, enabling coordination without confusion through shared visibility and ownership indicators. Budget tracking and reporting should provide accurate, understandable insights that help users stay within budget and plan purchases.
+
+* Finally, internal team goals include maintaining consistent documentation, stable terminology, and structured collaboration processes. The team will use a docs-as-code workflow, GitHub issues and pull requests, and planned validation and verification activities (personas, scenarios, walkthroughs, and testing strategy) to keep development aligned with requirements. By following these practices, the team can reduce confusion, prevent concept drift, and build a solid foundation for sustainable progress across milestones.

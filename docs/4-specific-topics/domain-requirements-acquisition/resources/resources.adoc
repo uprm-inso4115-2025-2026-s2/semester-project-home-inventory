@@ -1,0 +1,16 @@
+== Resources
+
+[abstract]
+Evidence sources and supporting materials used to understand the domain and justify requirements.
+
+=== Sources
+* TODO: Link/resource 1 — why it matters
+* TODO: Link/resource 2 — why it matters
+
+=== Internal artifacts
+* Rough sketch notes: TODO (where stored)
+* Terminology table: TODO (where stored)
+* Meeting notes / decisions: TODO (where stored)
+
+=== Open questions
+* TODO

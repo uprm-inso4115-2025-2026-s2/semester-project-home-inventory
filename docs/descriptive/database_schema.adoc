@@ -1,0 +1,14 @@
+= Database Schema
+:showtitle: true 
+
+While issue #15 stated that the database consists of three tables: items, users, and owners; further iterating called for changes in how entities would be modeled. Team discussions lead to including that users can track the inventory of multiple homes, and that a home can have multiple users tracking its inventory. These considerations lead to the consideration of entities: user, owner, home, room, item, and product.
+
+image::2026-02-13T21-29-37-209Z.png[] 
+Figure 1: ER diagram for our project's entities.
+
+Here, users manage multiple homes that contain multiple rooms. Rooms can only belong to one home, and can contain multiple household items. Every item is contained in a room and references a product. Every item is also owned by a single owner. We want to track items belonging to owners, even if those owners are not users. An example of this would be a user attributing items to a roommate who is not themself a user.
+
+Translating this ER to a table diagram, the final entities are:
+
+image::2026-02-13T21-30-09-913Z.png[] 
+Figure 2: Table diagram for our project's backend.

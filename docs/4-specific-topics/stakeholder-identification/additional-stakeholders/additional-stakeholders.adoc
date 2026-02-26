@@ -1,0 +1,24 @@
+== Additional Stakeholders
+
+[abstract]
+Stakeholders discovered later as the team learns more about the domain.
+
+[cols="2,3,2,3",options="header"]
+|===
+|Stakeholder |Goals / needs |Influence |Concerns / notes
+
+|Supabase 
+|Provide reliable database hosting, real-time syncing capabilities, and secure authentication services. 
+|High 
+|Exceeding free-tier limitations, data security breaches, and potential downtime affecting user syncing.
+
+|Notification Service Provider
+|Deliver timely push notifications for expiration warnings, low-stock alerts, and roommate sharing invitations. 
+|Medium 
+|Rate limits, delivery failures, or delays that prevent users from getting critical expiration alerts on time.
+
+|App Store / Google Play Reviewers 
+|Ensure the mobile application complies with platform guidelines regarding user privacy, data handling, and UI/UX standards. 
+|High 
+|App rejection due to improper handling of user data or failure to meet the minimum functionality requirements for listing.
+|===

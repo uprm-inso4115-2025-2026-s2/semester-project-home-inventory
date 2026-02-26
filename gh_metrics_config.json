@@ -1,11 +1,11 @@
 {
   "version": "2.0",
-  "projectName": "UPRM_Home_Inventory",
+  "projectName": "home-inventory",
   "managers": ["LuisJCruz", "Kay9876"],
   "milestones": {
     "Milestone #1": {
-      "startDate": "2026-02-04",
-      "endDate": "2026-02-27",
+      "startDate": "2026-02-04T08:00:00-04:00",
+      "endDate": "2026-02-27T20:00:00-04:00",
       "projectedGroupGrade": 100.0
     },
     "Milestone #2": {

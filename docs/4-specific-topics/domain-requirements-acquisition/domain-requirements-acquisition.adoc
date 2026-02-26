@@ -1,0 +1,7 @@
+== Domain Requirements Acquisition
+
+[abstract]
+This section explains how the team will gather domain requirements, who will be involved, and what resources/evidence will be used.
+
+include::plan/plan.adoc[leveloffset=+1]
+include::resources/resources.adoc[leveloffset=+1]
