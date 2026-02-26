@@ -1,0 +1,83 @@
+= Domain Acquisition: Literature Review & Elicitation Studies
+
+
+
+**AI Disclosure:** Portions of this literature review and domain research were synthesized with the assistance of Artificial Intelligence tools. The core concepts, validation of sources, and final domain model decisions were verified by the human author, @jankii03.
+
+
+toc::[]
+
+== Trade & Professional Associations
+Use this list to identify standards for categorization and asset valuation, since automatic identification is not available.
+
+* **NAPO (National Association of Productivity & Organizing Professionals)**
+** *Relevance:* Since users must manually organize items, the app should follow NAPO's standard "Categorization Principles". This supports the project goal of organizing items "by room or priority" to reduce search time.
+
+* **I.I.I. (Insurance Information Institute)**
+** *Relevance:* For non-consumable home inventory, this body sets the standards for "Proof of Ownership." The app's manual entry fields should match their requirements to add value, supporting the goal to "Track spending of items".
+
+* **NBER (National Bureau of Economic Research) - Household Finance**
+** *Relevance:* Validates the goal of "Tracking spending" and "Managing the budget". Research here supports the idea that manual inventory tracking acts as a "commitment device" for sticking to a budget, which is essential for the target demographic of students.
+
+== Domain Literature Review 
+Summaries of key texts to justify system logic, specifically addressing the challenges of manual data entry and the synchronization burden.
+
+=== Personal Information Management (PIM) 
+* **Core Finding:** Users struggle when items are physical but tracking is digital. The mental effort to bridge this gap in real-time is the primary cause of system abandonment.
+* **Application to Project:** To minimize the synchronization burden for busy students, the design must move away from real-time micro-updates.
+** *Periodic Reconciliation:* Implement a Weekly Inventory Snapshot. Instead of tracking every glass of milk, the app prompts a batch update to align digital records with physical reality.
+** *Event-Driven Triggers:* By leveraging location services, the app can trigger a notification when the user is at a grocery store: "You're at Selectos. Do you need to move 'Milk' from 'Empty' to 'Full'?" This shifts the burden from memory to environmental cues.
+
+=== Household Food Waste Patterns 
+* **Core Finding:** Students fail to track inventory because they lack situational visibility. They don't know what they have until they open the cupboard.
+* **Application to Project:** The app must act as an external memory. By providing a digital mirror of the cupboard, it reduces double-buying caused by memory lapses during high-stress academic periods.
+
+=== The Endowment Effect in Asset Management
+* **Core Finding:** Owners overvalue items they manually track.
+* **Application to Project:** Manual entry, while a friction point, serves as a Commitment Device. By interacting with the item's cost during entry, students become more conscious of waste, supporting the project goal of budget management.
+
+== Research Note Cards
+Discrete facts formatted for the domain model.
+
+**RN-001: Manual Entry Friction & Abandonment**
+
+* **Category:** Stakeholder Behavior
+* **Fact:** In manual data entry systems, every additional field reduces user retention.
+* **Implication for App:** Support minimum viable entry. A user should be able to log an item with just a name and status in under three seconds to prevent abandonment.
+
+
+**RN-002: Subjective Categorization**
+
+* **Category:** Intrinsic
+* **Fact:** Without standardized barcodes, categorization is subjective, like "Batteries" in "Electronics" vs. "Utility".
+* **Implication for App:** Use a "Multi-Tagging" system rather than a rigid folder hierarchy, allowing items to exist in multiple logical locations.
+
+
+**RN-003: Prospective Memory & Cues**
+
+* **Category:** Cognitive Psychology
+* **Fact:** Task execution is higher when linked to an environmental cue as Location/Time, rather than abstract intention.
+* **Implication for App:** Replace the "always-on" tracking requirement with specific "Triggered Sessions" to capture data when the user is already in a "management" mindset.
+
+
+== Identified Inconsistencies & Abstractions
+
+=== State-Based Tracking
+* **Observation:** Tracking specific volumes in a manual system is a "High-Friction" task that students will ignore.
+* **Recommendation:** Use broad **States** instead of integers for consumables.
+** *Target UX:* Status: Full -> Open -> Low -> Empty.
+
+=== Inconsistency
+* **Observation:** The project requests "Automated notifications when an item is low," but a manual system has no real-time visibility.
+* **Refined Requirement:** Move from Quantity-Based alerts to Probability-Based or Event-Based alerts.
+** *Example:* "It has been 6 days since you bought Bread; it is likely Low or Expired. Please verify."
+
+== References
+
+* **[1]** Sorrentini, L. X. (2026). _Digital Home Inventory A3_. University of Puerto Rico, Mayagüez.
+* **[2]** National Association of Productivity & Organizing Professionals (NAPO). _Code of Ethics & Standards of Practice_. Retrieved from https://www.napo.net
+* **[3]** Insurance Information Institute (I.I.I.). _Home Inventory: Know Your Stuff_. Retrieved from https://www.iii.org
+* **[4]** Baker, S. R., Johnson, S., & Kueng, L. (2020). _Financial Returns to Household Inventory Management_. National Bureau of Economic Research (NBER). Working Paper 27694.
+* **[5]** Jones, W., & Teevan, J. (2007). _Personal Information Management_. University of Washington Press.
+* **[6]** Cohen, J. F., et al. (2022). _Household Food Waste Patterns: The Role of Planning and Visibility_. Journal of Consumer Behaviour.
+* **[7]** Thaler, R. (1980). _Toward a Positive Theory of Consumer Choice_. Journal of Economic Behavior & Organization (The Endowment Effect).

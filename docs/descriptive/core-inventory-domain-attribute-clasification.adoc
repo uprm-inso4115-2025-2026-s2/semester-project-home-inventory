@@ -1,0 +1,62 @@
+== Domain Attributes Classification for Core Inventory
+
+This section applies the lecture topic Domain Attributes to the Core Inventory subsystem by classifying key domain entities and behaviors according to their attributes (Static, Dynamic, Dynamic Inert, Dynamic Active, Discrete).
+
+=== 1. Product
+
+Represents an item definition (e.g., "Clorox Bleach 64oz Original").
+
+Classification:
+*Static
+*Discrete
+
+A product's definition does not change over time once created. Its properties (name, barcode, brand, size) remain constant and if we use the example in the beginning a "Clorox Bleach 64oz Original" will remain the same regardless of the passage of time, thus it is classified as Static. It is also Discrete because each product is its own distinct entity in the system.
+
+=== 2. Item Stock Entry
+
+Represents a specific purchase of a product, it includes information such as date of purchase, location of storage and date of expiration if applicable.
+
+Classification:
+*Dynamic Inert
+*Discrete
+
+An item changes only due to external actions such as user updates of the product, consumption, or location change. Since it is changed via external stimuli from the user it is considered Dynamic Inert. Each item has a separate record in the system, making it Discrete.
+
+=== 3. Home
+
+Represents a household container that groups rooms and inventory items.
+
+Classification:
+*Static
+*Discrete
+
+A home is a structural entity within the system and does not change state over time since it serves as a container for other entities. Each home is unique making it Discrete.
+
+=== 4. Room
+
+Represents a physical location within a home (e.g.,bedroom, pantry, fridge).
+
+Classification:
+*Static
+*Discrete
+
+Rooms are structural subdivisions of a home and do not change autonomously meaning that they are Static entities. Each room is uniquely represented, so it is Discrete.
+
+=== 5. Owner
+
+Represents the person associated with a specific item.
+
+Classification:
+*Static
+*Discrete
+
+An owner’s identity does not change over time, while item associations may change, the owner entity itself remains stable so it is Static. Each owner is their own distinct entity, making it Discrete.
+
+=== 6. Duplicate Detection Logic
+
+System logic that determines whether a new entry is a duplicate at either the product or the stock level.
+
+Classification:
+*Dynamic Active
+
+Duplicate detection executes a rule-based behavior when users add or scan items. It responds to system events and applies programmed rule conditions. Therefore, the Duplicate Detection Logic is classified as Dynamic Active since it can change via internally programmed rules and various conditions.

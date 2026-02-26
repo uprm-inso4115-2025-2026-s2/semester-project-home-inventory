@@ -1,0 +1,72 @@
+= Inventory Sharing Flowchart
+
+Author: Daniella Melero Pereira
+
+:toc:
+
+
+== Overview
+
+This document explains the sharing workflow used in the Home Inventory.  
+The sharing feature allows users to invite roommates or household members to access and collaborate on a shared inventory.
+
+The flowchart provides a visual representation of how invitations are sent, processed, and how access to shared inventories is granted and managed.
+
+== Sharing Workflow Summary
+
+The sharing process follows these main steps:
+
+1. The inventory owner selects an inventory to share.
+2. The owner sends an invitation to a roommate.
+3. The system marks the invitation as *Pending*.
+4. The roommate receives the invitation.
+5. The roommate can accept or reject the invitation.
+6. If accepted, access to the shared inventory is granted.
+7. If rejected, the invitation is closed.
+8. The owner can manage or revoke access at any time.
+
+== Flow States
+
+The sharing process includes the following states:
+
+* *Pending* — invitation has been sent but not yet accepted.
+* *Accepted* — roommate accepted the invitation and has access.
+* *Rejected* — roommate declined the invitation.
+* *Revoked* — owner removed access after acceptance.
+
+== Decision Points
+
+The flow includes key decision points:
+
+* Roommate chooses to accept or reject the invitation.
+* System verifies permissions before granting access.
+* Owner may remove access at any time.
+
+== Access & Permissions
+
+Once access is granted:
+
+* The shared inventory appears in the roommate’s **Shared Inventories** list.
+* The roommate’s actions depend on their assigned role:
+  - Viewer → can view items.
+  - Editor → can add or modify items.
+  - Owner (optional) → full control.
+
+== Owner Management Actions
+
+Inventory owners can:
+
+* View who has access
+* Change user roles (if supported)
+* Revoke access
+* Resend invitations
+
+== Purpose of the Flowchart
+
+This flowchart helps:
+
+* Designers understand the user experience
+* Developers implement correct logic and states
+* Team members maintain consistent sharing behavior
+* Identify edge cases and permission handling
+

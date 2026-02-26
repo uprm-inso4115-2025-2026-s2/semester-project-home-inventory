@@ -1,0 +1,40 @@
+# Milestone 1 Week 2 — Design Team Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what the design team worked on this week.
+
+---
+
+## What the Team Accomplished This Week
+- The team has begun to work with the UI style guide while also doing
+research to better understand what would be the best choieces for the guide to include.
+
+---
+
+## Tasks Completed / Issues Closed
+- None yet but they are created and being worked on.
+
+
+---
+
+## What Is Currently In Progress
+- UI style guide: Color palette, typography and components
+- Research issues to better understand the target audience 
+
+---
+
+## Blockers or Challenges
+- None for this week.
+
+---
+
+## Plans for Next Week
+- Complete UI style guide
+- Begin to work on wireframes and eventually mockups for the UI.
+
+---
+
+## Documentation Links
+- This is pending for when the documents are uploaded and accepted via their corresponding issues
+
+---

@@ -1,0 +1,36 @@
+== Requirements Acquisition Plan
+
+[abstract]
+Plan for how we will gather and validate requirements from stakeholders and domain evidence.
+
+=== Goals
+* Understand the actual, messy habits of how students manage household items, rather than their ideal organized behaviors.
+* Determine exactly how roommates communicate about low stock, split financial costs, and establish ownership of shared versus personal items.
+* Identify the primary friction points that cause existing tracking methods to fail.
+* Define concrete domain rules regarding consumption rates and the handling of bulk purchases or multi-packs.
+
+=== Methods
+* **Interviews:** Conduct 4-6 semi-structured interviews with primary stakeholders, including solo students, students living in shared apartments, and student athletes. We will ask for specific, recent examples of food waste, duplicate purchases, and roommate conflicts regarding groceries.
+* **Surveys:** Distribute a short online questionnaire to a broader college student demographic to quantitatively validate how often items expire and the average financial loss per month due to poor inventory tracking.
+* **Observation / contextual inquiry:** Ask interviewees to show their current physical tracking artifacts, such as fridge sticky notes, whiteboards, or shared grocery WhatsApp chat logs, to understand their natural shorthand and terminology.
+* **Document analysis:** Review and analyze existing digital inventory applications to identify feature gaps. Analyze UI/UX design patterns for mobile data visualization to understand the best ways to present consumption reports and insights.
+
+=== Schedule
+[cols="2,4",options="header"]
+|===
+|Timeframe |Activities
+
+|Late Jan. - Early Feb. | Conduct initial informal interviews, gather domain rough sketch observations, and begin competitive document analysis.
+|Mid-Feb. | Synthesize findings into personas, finalize the rough sketch, and draft internal research reports on consumption rates and ownership models.
+|Late Feb. | Validate initial findings with stakeholders, clarify open questions regarding edge cases, and transition acquired knowledge into formal user stories and UI prototypes.
+|===
+
+=== Risks and mitigations
+* **Risk:** Target users are too busy with midterms and work to participate in lengthy formal interviews.
+** **Mitigation:** Keep interviews informal, brief, and conduct them in comfortable, casual settings or via asynchronous voice notes.
+
+* **Risk:** Interviewees might describe their ideal behavior rather than their actual, messy reality.
+** **Mitigation:** Ask grounding questions about specific past events, such as "Tell me about the last time you had to throw out food" or "Show me your most recent shared household receipt."
+
+* **Risk:** Users might state they want an inventory app, but in reality, their tolerance for manual data entry is near zero.
+** **Mitigation:** Focus observation and interview questions heavily on the maximum time/effort threshold users are willing to spend logging items, ensuring our requirements prioritize extreme low-friction input.

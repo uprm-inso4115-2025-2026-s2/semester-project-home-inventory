@@ -1,0 +1,42 @@
+# Milestone 1 Week 2 — Team 3 Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what Team 3 worked on this week.
+
+---
+
+## What the Team Accomplished This Week
+- Team members began their research on upcoming tasks.
+- All research is currently in progress and is expected to be completed before the end of the sprint.
+
+---
+
+## Tasks in Progress
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/46
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/18
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/40
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/21
+
+--- 
+
+## Tasks Closed
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/31
+
+---
+
+## Blockers or Challenges
+- Project documentation base structure is still not available to facilitate colaboration so any work done is still fragmented
+
+---
+
+## Plans for Next Week
+- Complete initial research
+- Design initial wireframes
+- Keep working on Research Issues for better understanding before implementation
+
+---
+
+## Documentation Links
+- This is pending for when the documents are uploaded and accepted via their corresponding issues
+
+---

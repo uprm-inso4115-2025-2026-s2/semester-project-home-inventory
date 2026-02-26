@@ -1,0 +1,60 @@
+== Domain Rough Sketch
+
+Raw, unprocessed domain notes and examples. Organize by feature team if possible.
+
+Please note that most(if not all) of the quotes mentioned have been translated from Spanish. Also names have been removed to protect privacy, in their place, the person's perceived role in the domain is shown (e.g. instead of Kevin Gomez, we would place Student).
+
+=== Interview Snippets and Raw Observations
+
+==== Shared Apartment - 3 Students (Interview, Jan 20 2026)
+* Student A: "If it is not on our fridge note, we assume we are out."
+* Student B: "Sometimes I check the pantry before leaving, but by the time I get to Walmart I forgot what we needed."
+* Student C: "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway."
+* They currently use: fridge sticky note + WhatsApp group chat.
+* No one is formally responsible for keeping track of quantities.
+* Milk is usually bought twice in the same week at least once per month.
+* When asked how they know they are 'low': answer was "when it feels light" or "when we open the backup."
+* They do not write down when the backup is opened.
+
+==== Student Living Alone (Interview, Feb 2 2026)
+* "I buy in bulk from Costco when I go with my parents."
+* Mentions buying 24 yogurt packs at once.
+* Yogurts sometimes expire; estimated 3-5 thrown away last semester.
+* Keeps cleaning supplies in bathroom closet and kitchen under sink.
+* Has never counted exact number of items; estimates visually.
+* Uses Notes app occasionally but stops after 1-2 weeks.
+* Said: "If it takes more than a few seconds to log, I won't do it."
+
+==== Household Owner (2 adults, 1 child)
+* Owner invites family members to shared grocery list app.
+* One adult does most purchases but child sometimes uses last item without saying.
+* Example: toilet paper runs out unexpectedly when guests visit.
+* Keeps medicines in a separate drawer; expiration dates important.
+* Has thrown away expired medicine without realizing there was a second unopened box.
+* Wants to be able to remove access when someone moves out.
+
+==== Student Athlete (Interview, Feb 2 2026)
+* "During exam weeks I eat way more snacks."
+* Protein bars may last 2 weeks normally, but 4-5 days during midterms.
+* Does not adjust shopping quantity formally; just reacts when gone.
+* Buys based on memory of how fast it ran out "last time."
+
+==== Observations from Informal Brainstorming Session
+* People describe items as "full", "almost empty", "backup", rarely with numbers.
+* Essential items mentioned repeatedly: toilet paper, soap, toothpaste, milk, rice.
+* Perishables mentioned: yogurt, vegetables, chicken, medicine.
+* Bulk buying motivated by lower price per unit.
+* Waste mentioned mainly with food, not cleaning supplies.
+* Duplicate buying most common with milk, eggs, rice.
+* Some people separate items by room (kitchen, bathroom, laundry), others do not.
+* No participant mentioned doing periodic full inventory checks.
+* All participants said they have at some point "forgotten what they already had at home."
+* Some participants said they prefer taking a picture of the pantry instead of writing a list.
+
+==== Edge Situations Mentioned
+* Barcode does not scan (damaged packaging).
+* Expiration date unreadable or missing.
+* Guests consume items faster than usual.
+* Someone moves out and still has access to shared list.
+* Item bought in bulk has multiple different expiration dates in same package.
+* Backup stored in car trunk and forgotten.

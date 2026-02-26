@@ -1,0 +1,157 @@
+= HOME INVENTORY PROJECT
+== Duplicate Item Criteria 
+
+== Objective
+
+Define what qualifies as a duplicate item in a food and consumables
+inventory system to ensure consistency in validation, barcode
+scanning, and imports.
+
+== Core Concept: Two-Tier System
+
+This system distinguishes between:
+
+. Product (what the item is)
+  Example: "Clorox Bleach 64oz Original"
+
+. Stock Entry (a specific purchase of that product)
+  Example: One bottle bought Jan 10, stored under sink, expires Dec 2025
+
+One product can have multiple stock entries.
+
+== Duplicate Definitions
+
+=== Type 1: Product Duplicate (Same Product Definition)
+
+Two records are product duplicates if they share:
+
+* Same barcode/UPC
+* OR same normalized name + brand + size + variant
+
+Examples:
+
+* "Dawn Dish Soap 19oz" vs "dawn dish soap 19 oz" → Duplicate
+* Same UPC scanned twice → Duplicate
+* "Tide Pods 42ct" in two different import files → Duplicate
+
+System Action:
+
+* Prevent creating duplicate product definitions
+* For barcode matches: always use existing product
+* For text matches: suggest existing product to user
+
+=== Type 2: Stock Duplicate (Accidental Double-Entry)
+
+Two stock entries are duplicates if ALL of the following match:
+
+* Same product definition
+* Same owner (if shared household)
+* Same storage location
+* Purchase timestamps within 2 minutes
+* Same expiration date (if applicable)
+
+Examples:
+
+* Scanning milk, then manually adding same milk 10 seconds later → Duplicate
+* Clicking "Add" twice rapidly → Duplicate
+* CSV import contains same item twice → Duplicate
+
+System Action:
+
+* Within 30 seconds: block creation and auto-increment quantity
+* Within 2 minutes: warn user and allow confirmation
+* Beyond 2 minutes: allow separate entry
+
+== Bulk Purchases
+
+Buying multiple identical items (e.g., 6 cans of soup):
+
+* Create one stock entry with quantity = 6
+
+Exception:
+* Different expiration dates require separate stock entries.
+
+== What Is Not a Duplicate
+
+These are legitimate separate stock entries:
+
+* Same product, different purchase dates (more than 2 minutes apart)
+* Same product, different expiration dates
+* Same product, different storage locations
+* Same brand, different sizes (different barcodes)
+* Same brand and size, different flavors
+* Same product, different owners (individual inventory mode)
+
+Examples:
+
+* Milk bought Monday vs milk bought Friday → Not duplicate
+* Two yogurts expiring different weeks → Not duplicate
+* Ketchup in pantry vs ketchup in garage → Not duplicate
+* Clorox 64oz vs Clorox 128oz → Not duplicate
+
+== Borderline Cases and Rulings
+
+Same product, same day, different stores  
+Ruling: Not duplicate (timestamps likely hours apart)
+
+Store brand with same barcode across flavors  
+Ruling: Treat as different products (manual override of barcode match)
+
+One opened jar and one unopened jar of same product  
+Ruling: Not duplicate (track separately or use quantity logic)
+
+User marks item 50 percent consumed, then re-adds it  
+Ruling: Medium duplicate warning based on recent activity
+
+Shared household – roommates buy same yogurt  
+Ruling:
+* Shared mode: Potential duplicate, combine quantities
+* Individual mode: Not duplicate
+
+User discards expired milk and buys fresh milk same day  
+Ruling: Not duplicate (different expiration dates)
+
+== Technical Implementation
+
+=== Duplicate Detection Algorithm
+
+Step 1: Check product definition
+
+* If barcode provided → search exact barcode match
+* If no barcode → fuzzy match name + brand + size + variant
+* If found → use existing product
+* If not found → create new product
+
+Step 2: Check stock duplicate
+
+* Search for recent entries matching same product + owner + location
+* If purchase time within 2 minutes:
+** 0–30 seconds: block and increment quantity
+** 30 seconds–2 minutes: warn user
+* Beyond 2 minutes → create new stock entry
+
+=== Normalization Rules
+
+* Product names: lowercase, trim whitespace, remove special marks
+* Sizes: convert to standard units with 5 percent tolerance
+* Brands: normalize common variations (e.g., "P&G" = "Procter & Gamble")
+
+Priority:
+Barcode matching always overrides text matching.
+
+== Summary Rules
+
+. One barcode equals one product (hard rule)
+. Multiple purchases equal multiple stock entries (unless same batch)
+. Two-minute time window for stock duplicate detection
+. Bulk purchases use quantity field
+. Different expiration dates require separate entries
+. User override always allowed with confirmation
+
+== Success Criteria
+
+* Clear, unambiguous duplicate definition documented
+* Product-level vs stock-level duplicates distinguished
+* Borderline cases explicitly addressed
+* Understandable to technical and non-technical teams
+* Ready for implementation in validation, scanning, and imports

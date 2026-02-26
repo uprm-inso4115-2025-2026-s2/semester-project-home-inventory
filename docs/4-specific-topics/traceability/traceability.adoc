@@ -1,0 +1,161 @@
+== 4.4 Traceability
+
+[abstract]
+This section describes how traceability is established in the Home Inventory project. Traceability means our deliverables are linked so we can answer questions about where requirements come from, which personas they serve, and how they connect to domain concepts and user stories.
+
+=== Overview
+
+Traceability helps us understand relationships between different parts of our documentation. When something changes, we can see what else might be affected. For example, if a requirement is modified, we can quickly identify which personas care about that requirement, which user stories implement it, and which domain concepts it involves.
+
+Our approach focuses on creating clear links between artifacts without overcomplicating the documentation.
+
+=== Traceability Approach
+
+We maintain traceability through a simple labeling system:
+
+==== 1. Persona Goals
+
+Each persona's goals are labeled with a short code:
+
+* **Mateo (M)**
+  * **MG1**: Know what food I have without checking the fridge
+  * **MG2**: Stop finding expired items I forgot about
+  * **MG3**: Never run out of coffee or milk in the morning
+
+* **Sofia (S)**
+  * **SG1**: Keep grocery spending within my monthly budget
+  * **SG2**: Ensure shared costs are split fairly with roommates
+  * **SG3**: Avoid buying duplicates of items we already have
+
+* **Julian (J)**
+  * **JG1**: Never run out of my specialty diet foods
+  * **JG2**: Track how fast I use expensive supplements
+  * **JG3**: Keep my personal items separate from shared ones
+
+* **Andrea (A)**
+  * **AG1**: Keep the house stocked without doing all the mental work
+  * **AG2**: Get reimbursed quickly and accurately for shared purchases
+  * **AG3**: Know what's needed before making a Costco trip
+
+==== 2. Requirements to Goals
+
+Each requirement in section 2.2 includes a note about which persona goals it supports:
+
+.Example
+* **IR-01: Item Initialization** → Supports: MG1, SG3, JG1, AG3
+* **IR-04: Low-Stock Threshold Definition** → Supports: MG3, JG1, AG1
+* **IR-07: Cost Splitting** → Supports: SG2, AG2
+
+==== 3. User Stories to Requirements
+
+Each user story in section 2.2.1 lists which requirements it relates to:
+
+.Example
+* **US-INV-01: Add items to inventory** → Implements: IR-01, IR-03
+* **US-ALT-01: Receive low-stock warnings** → Implements: IR-04
+* **US-SB-01: Split shared purchases** → Implements: IR-06, IR-07, IR-08
+
+==== 4. Domain Concepts to Requirements
+
+Domain concepts from section 2.1.4 are linked to requirements that involve them:
+
+.Example
+* **Household Item** → Appears in: IR-01, IR-02, IR-03, IR-05
+* **Shared Resource** → Appears in: IR-03, IR-06, IR-07, IR-09
+* **Budget** → Appears in: IR-06, IR-08
+
+=== Traceability Matrix
+
+The following matrix shows how key elements connect:
+
+[cols="1,2,2,2",options="header"]
+|===
+|Persona Goal |Requirement(s) |User Story |Domain Concept(s)
+
+|MG1 (Know what I have)
+|IR-01, IR-02
+|US-INV-01
+|Household Item
+
+|MG3 (Never run out)
+|IR-04
+|US-ALT-01
+|Low Stock, Threshold
+
+|SG2 (Fair cost splits)
+|IR-06, IR-07, IR-08
+|US-SB-01
+|Shared Resource, Budget
+
+|JG1 (Specialty foods)
+|IR-01, IR-04, IR-05
+|US-INV-01, US-ALT-01
+|Household Item, Expiration
+
+|AG2 (Get reimbursed)
+|IR-06, IR-07, IR-08
+|US-SB-01
+|Shared Resource, Budget
+
+|AG3 (Know what's needed)
+|IR-08
+|US-RPT-01
+|Dashboard Metrics
+|===
+
+=== Questions Traceability Helps Answer
+
+Our traceability setup allows us to answer questions like:
+
+==== Which personas are affected if a requirement changes?
+
+If **IR-04 (Low-Stock Threshold Definition)** changes, we check its goal tags:
+- Supports: MG3, JG1, AG1
+
+This tells us Mateo, Julian, and Andrea might be affected. We then review their specific goals to understand the impact.
+
+==== Where does a requirement come from?
+
+For **IR-07 (Cost Splitting)**, we can trace back to:
+- Persona goals: SG2, AG2 (Sofia wants fair splits, Andrea wants reimbursement)
+- Domain concepts: Shared Resource, Budget
+- User story: US-SB-01
+
+==== Which requirements support a particular persona?
+
+For **Sofia**, we look at her goals (SG1, SG2, SG3) and find supporting requirements:
+- SG1 (Stay within budget) → IR-06 (Purchase Logging)
+- SG2 (Fair cost splits) → IR-07 (Cost Splitting), IR-08 (Reimbursement Tracking)
+- SG3 (Avoid duplicates) → IR-01 (Item Initialization), IR-09 (Shared Resource Visibility)
+
+==== What domain concepts are most important?
+
+By counting requirement references, we see which domain concepts appear most:
+- **Household Item** appears in 5 requirements
+- **Shared Resource** appears in 4 requirements
+- **Budget** appears in 3 requirements
+
+This confirms our focus areas match the project goals.
+
+=== Current Traceability Status
+
+We have established traceability for:
+
+* **Persona goals**: All 10 goals across 4 personas are labeled
+* **Requirements**: All 8 interface requirements are linked to goals
+* **User stories**: All 5 user stories reference relevant requirements
+* **Domain concepts**: Key concepts from the domain narrative are linked to requirements
+
+Work in progress:
+* Adding more detailed goal tags to future requirements
+* Expanding the matrix as new requirements are added
+
+=== Benefits Observed
+
+Even at this early stage, traceability has helped us:
+
+* **Find gaps**: We noticed Sofia's goal SG1 (stay within budget) had fewer supporting requirements than others, prompting us to add IR-06
+* **Check consistency**: We verified that all personas appear in at least one user story
+* **Understand impact**: When discussing changes to IR-04, we immediately knew which personas to consult
+
+As the project moves into implementation and testing, we will extend traceability to include test cases and validation activities.

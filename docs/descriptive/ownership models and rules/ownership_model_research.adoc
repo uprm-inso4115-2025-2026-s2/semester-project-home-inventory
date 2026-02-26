@@ -1,0 +1,120 @@
+= Investigating Ownership Models for Collaborative Inventory Systems
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 2/14/2026
+// Issue #46
+
+== Objective
+This document analyzes conceptual ownership models applicable to shared-resource environments. The goal is to understand how ownership relationships may be structured in order to support sharing, permissions, and accountability within a collaborative inventory domain.
+
+== Definition of Ownership Model
+An ownership model is defined as:
+
+- the actor that holds primary responsibility for a resource
+- the context in which ownership exists
+- the authority and accountability implied by ownership
+
+In collaborative inventory systems, ownership determines how items relate to users and shared inventories.
+
+== Ownership Model 1: User-Owned Resources
+A resource is associated with a specific individual who holds primary responsibility and control independent of group context.
+
+Relationship structure: Resource ↔ User
+
+=== Characteristics
+- Ownership is individual.
+- Responsibility is clearly attributable.
+- Sharing is an additional capability rather than inherent.
+
+=== Advantages
+- Clear accountability
+- Simple responsibility tracking
+- Intuitive model for personal assets
+
+=== Limitations
+- Weak support for inherently shared resources
+- Requires additional mechanisms for collaboration
+- Ownership may conflict with collective use cases
+
+=== Implications for Shared Inventory Systems
+This model is suitable when items represent individual contributions within a shared environment.
+
+== Ownership Model 2: Group-Owned Resources
+A resource belongs to a collective entity such as an inventory or household. Users interact with the resource through membership rather than ownership.
+
+Relationship structure: Resource ↔ Group
+
+=== Characteristics
+- Ownership is collective.
+- Permissions derive from group roles.
+- Resources exist only within a shared context.
+
+=== Advantages
+- Natural support for collaboration
+- Consistent with communal resource management
+- Simplified sharing semantics
+
+=== Limitations
+- No inherent individual accountability
+- Responsibility attribution requires additional mechanisms
+- Ownership transfer is not meaningful
+
+=== Implications for Shared Inventory Systems
+This model is appropriate for communal resources that are jointly maintained and used.
+
+== Ownership Model 3: Hybrid Ownership
+A resource exists within a shared group context but is associated with a responsible member or subset of members.
+
+Relationship structure: Resource ↔ Group and/or Resource ↔ Responsible Member (within group context)
+
+=== Characteristics
+- Combines shared context with individual responsibility
+- Permissions may derive from both roles and ownership
+- Supports accountability within collaboration
+
+=== Advantages
+- Supports both sharing and responsibility
+- Flexible permission modeling
+- Reflects real-world collaborative environments
+
+=== Limitations
+- Increased conceptual complexity
+- Requires explicit ownership lifecycle definition
+- More relationships must be modeled
+
+=== Implications for Shared Inventory Systems
+This model supports systems that require both collaborative access and responsibility attribution.
+
+== Comparative Summary
+
+[cols="1,1,1,1,1"]
+|===
+|Model |Ownership Actor |Accountability |Sharing Support |Conceptual Complexity
+
+|User-Owned
+|Individual
+|Strong
+|Indirect
+|Low
+
+|Group-Owned
+|Collective
+|Weak
+|Native
+|Low
+
+|Hybrid
+|Group + Individual
+|Strong
+|Native
+|Medium
+|===
+
+== Relevance to Ownership Schema Design
+The ownership model selected for a collaborative inventory system determines:
+
+- how items relate to users and groups
+- where ownership relationships exist conceptually
+- how permissions and responsibility may be enforced
+
+This analysis provides a conceptual foundation for defining item ownership rules and the inventory membership structure.
