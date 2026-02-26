@@ -1,0 +1,33 @@
+= Research and Define Expiration Alert System
+
+== Key Information:
+
+=== Issue #27
+=== Completed by: @reinaldo-martinez1
+
+== Expiration Detection Strategies
+
+[cols="1,1,1,1"]
+|===
+|Strategy |Description |Pros |Cons
+|Polling  |The system polls for expired items periodically. |Low latency detection. Simple to implement. |High resource usage and only works if app is open or using background tasks.
+|Database Cron Jobs | The system uses database cron jobs to detect expired items. The scripts may run daily and identify and send push notifications. |Efficient, scalable, and automated. It works when app is closed. |Requires setting up Edge Functions and a scheduling extension.
+|===
+
+== Best Practices for Expiration Detection
+
+* Use a combination of strategies for optimal performance and reliability.
+* Ensure that the system can handle edge cases, such as items that expire while the app is closed.
+* Multi-tier notifications can be implemented to alert users at different stages of expiration (e.g., 24 hours before, 1 hour before, and at the time of expiration).
+* Allow grace periods so useres are not notified at midnight or during inconvenient times.
+* Actionable notifications can be implemented to allow users to take immediate action (e.g., renew subscription, clear expired items).
+
+== Recommendation
+
+My recommendation is to implement the Database Cron Jobs (edge function) strategy for expiration detection. It allows for automated detection of expired items even when the app is closed, and is more efficient than polling. 
+
+== Sources
+
+* https://www.geeksforgeeks.org/system-design/polling-in-system-design/
+
+* https://www.datacamp.com/tutorial/cron-job-in-data-engineering
