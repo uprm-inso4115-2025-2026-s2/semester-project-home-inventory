@@ -1,0 +1,315 @@
+= UI Consistency & Hierarchy Standards for Home Inventory Flutter Application
+:author: Devin Hahn
+
+== Executive Summary
+
+This document defines the consistency and visual hierarchy standards for our Flutter application. The guidelines ensure that as we scale development across multiple teams and features, the user interface remains cohesive, intuitive, and visually structured. By establishing these standards now, we create a shared language between designers and developers, reduce technical debt, and deliver a predictable user experience. The standards leverage Flutter's built-in theming capabilities and Material Design principles while adapting them to our specific application needs.
+
+== Definition of UI Consistency in Flutter Context
+
+Within our Flutter application, UI consistency means:
+
+Visual Uniformity: Similar elements look and behave the same way throughout the app (same buttons work identically in different features)
+
+Predictable Patterns: Users can transfer knowledge from one screen to another without relearning interactions
+
+Themed Implementation: All UI components derive from a centralized theme system rather than implementing styles individually
+
+Platform Appropriateness: While maintaining consistency, we respect platform conventions (Android, iOS, web) where appropriate
+
+=== Core Principles
+
+Don't Repeat: One source of truth for styles via ThemeData
+
+Progressive Disclosure: Show what's needed, hide what's not
+
+Familiarity Over Novelty: Prefer standard patterns over creative but unfamiliar interactions
+
+Accessibility First: Consistent doesn't mean inaccessible - maintain contrast, touch targets, and text scaling
+
+== UI Elements Requiring Consistent Implementation
+
+The following elements MUST maintain consistency across ALL screens and features:
+
+=== 1. Navigation Structure
+
+==== App Bar (Top Navigation)
+
+- Must keep same height in all pages of the app, remaining consistency using **kToolbarHeight**
+
+- Title Alignment: Left-aligned (Android convention) or centered (configurable per platform)
+
+- Back Navigation: Use **Navigator.pop()** consistently; provide back buttons when not in root
+
+[source,dart]
+
+// Consistent AppBar implementation example 
+AppBar(
+title: Text(screenTitle),
+centerTitle: Theme.of(context).platform == TargetPlatform.iOS,
+elevation: 4.0, // Consistent elevation across app
+actions: [...], // Max 3 items
+)
+
+
+==== Bottom Navigation (if applicable)
+
+- Visible Items: 3-5 items maximum (Material Design guideline)
+- Icon + Label: Always show both for clarity
+- Active State: Use theme's primary color for icon, semi-bold for label
+- Inactive State: Use theme's disabled/hint color with appropriate opacity
+
+==== Tab Navigation
+
+- Scrollable vs Fixed: Use scrollable tabs when >4 items (example)
+- Indicator Height: 3px consistent across all tab implementations
+- Text Style: Use theme's text theme with appropriate variants for active/inactive states
+
+=== 2. Spacing System
+
+We could adopt an 8dp baseline grid system, which aligns with Flutter's Material Design defaults:
+
+|===
+| Token | Value | Usage Context
+| spacingXXS | 4dp | Dense layouts, icon spacing from text
+| spacingXS | 8dp | Default spacing between related elements
+| spacingS | 12dp | Between form fields, button groups
+| spacingM | 16dp | Screen edge margins, between sections
+| spacingL | 24dp | Major section breaks
+| spacingXL | 32dp | Large screen padding, modal padding
+| spacingXXL | 48dp | Very large separators, hero sections
+|===
+
+[source,dart]
+
+// Implementation in theme example
+class AppSpacing {
+static const double xxs = 4.0;
+static const double xs = 8.0;
+static const double s = 12.0;
+static const double m = 16.0;
+static const double l = 24.0;
+static const double xl = 32.0;
+static const double xxl = 48.0;
+}
+
+// Usage
+Padding(
+padding: const EdgeInsets.all(AppSpacing.m),
+child: ...
+)
+
+=== 3. Button System
+
+==== Button Hierarchy
+
+|===
+| Button Type | Usage | Visual Style | When to Use
+| ElevatedButton | Primary action | Filled, high emphasis | Main call-to-action per screen (1 per view)
+| FilledButton | Strong alternative | Filled variant | Secondary but important actions
+| OutlinedButton | Secondary action | Outlined, medium emphasis | Non-primary actions, alternatives
+| TextButton | Tertiary action | No container, low emphasis | Less important actions, cancel
+| IconButton | Icon-only action | 48x48 tap target | Toolbar actions, favorite, delete
+| FloatingActionButton | Primary screen action | Circular, prominent | Main app action (if applicable)
+|===
+
+=== 4. Typography Hierarchy
+
+We can implement a clear type scale using Flutter's **TextTheme** without defining specific sizes or weights (these are handled in the existing typography documentation). The hierarchy establishes:
+
+- Display Styles: For large, prominent text (hero sections, major headings)
+- Headline Styles: For section headers, card titles, modal headers
+- Title Styles: For medium emphasis text, list item titles, subtitles
+- Body Styles: For primary and secondary content text
+- Label Styles: For buttons, tabs, badges, and small metadata
+
+[source,dart]
+
+// Consistent text theme usage example 
+Text(
+'Section Title',
+style: Theme.of(context).textTheme.headlineSmall,
+)
+// DONT do this:
+Text(
+'Section Title',
+style: const TextStyle(
+fontSize: 24,
+fontWeight: FontWeight.bold,
+color: Colors.black,
+),
+)
+
+=== 5. Color System Consistency
+
+While specific color values are defined elsewhere, the consistent application of color follows these rules:
+
+- Semantic Usage: Colors must be used according to their meaning (primary for main actions, error for destructive actions, etc.)
+- Theme Integration: Always access colors via **Theme.of(context).colorScheme**
+- No Hardcoding: Never use raw color values directly in widgets
+
+[source,dart]
+
+// DO: Use theme colors
+Container(
+color: Theme.of(context).colorScheme.primaryContainer,
+)
+// DON'T: Hardcode colors
+Container(
+color: const Color(0xFF6200EE),
+)
+
+
+== Visual Hierarchy Rules
+
+Hierarchy determines what users see first, second, and third. Our rules ensure consistent prioritization across all screens.
+
+=== 1. Content Priority Levels
+
+|===
+| Level | Visual Weight | Usage | Flutter Implementation
+| Level 1 (Highest) | High contrast, large typography, prominent colors | Primary actions, critical alerts, main headlines | Use largest text styles, primary actions, primary color
+| Level 2 | Medium-high contrast, semi-bold typography | Section headers, secondary actions | Medium text styles, outlined buttons
+| Level 3 | Medium contrast, regular weight | Body text, form labels | Body text styles
+| Level 4 | Low contrast, muted colors | Supporting text, metadata | Small text styles, muted theme colors
+| Level 5 (Lowest) | Very low contrast, small size | Footnotes, helper text | Smallest text styles, lowest opacity
+|===
+
+=== 2. Establishing Visual Priority
+
+==== Size and Scale
+
+- Larger elements = higher priority
+
+==== Color and Contrast
+
+- Primary color draws immediate attention (use sparingly)
+- Higher contrast = higher priority
+- Muted colors recede visually
+- Never use primary color for non-interactive elements
+
+==== Positioning
+
+- Top and left = higher priority (reading order)
+- Center = focal point for modal content
+- Bottom = action placement (thumb zone on mobile)
+
+==== Whitespace
+
+- More whitespace around an element = higher importance
+
+- Dense grouping = related, equal priority items
+
+- Isolated elements = distinct purpose or warning
+
+=== 3. Action Hierarchy
+
+- Every screen must clearly distinguish between action types:
+
+==== Primary Actions (1 per screen maximum)
+
+- Visually dominant (usually ElevatedButton)
+
+- Positioned prominently (bottom right for mobile, top right for desktop)
+
+- Represents the main task completion
+
+==== Secondary Actions (2-3 per screen)
+
+- Visually distinct but not competing (OutlinedButton or TextButton)
+
+- Alternative paths or supporting actions
+
+- Grouped together, separate from primary
+
+==== Tertiary Actions (unlimited but discreet)
+
+- TextButton or IconButton with labels
+
+- Settings, help, info, etc.
+
+- Positioned in app bar or bottom of screen
+
+[source,dart]
+
+// Example screen layout with proper hierarchy stated previously
+Column(
+crossAxisAlignment: CrossAxisAlignment.start,
+children: [
+// Level 1: Main headline
+Text('Edit Profile', style: Theme.of(context).textTheme.headlineMedium),
+const SizedBox(height: AppSpacing.m),
+// Level 3: Form fields (supporting content)
+TextFormField(
+  decoration: const InputDecoration(labelText: 'Name'),
+),
+const SizedBox(height: AppSpacing.l),
+// Level 4: Helper text
+Text(
+  'Your name appears on your public profile',
+  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+  ),
+),
+const Spacer(),
+// Actions at bottom (Level 2 and 1)
+Row(
+  mainAxisAlignment: MainAxisAlignment.end,
+  children: [
+    TextButton( // Level 2
+      onPressed: () => Navigator.pop(context),
+      child: const Text('Cancel'),
+    ),
+    const SizedBox(width: AppSpacing.s),
+    ElevatedButton( // Level 1 (primary)
+      onPressed: _saveProfile,
+      child: const Text('Save'),
+    ),
+  ],
+),
+
+=== 4. Information Architecture Patterns
+
+=== 1. Consistent Naming Conventions
+
+Use semantic naming in widget trees:
+
+[source,dart]
+
+// Good - Intent is clear
+ElevatedButton(
+onPressed: _submit,
+child: const Text('Submit'),
+)
+OutlinedButton(
+onPressed: _saveDraft,
+child: const Text('Save Draft'),
+)
+// Avoid generic naming
+Button1(...)
+Button2(...)
+
+=== 2. Responsive Consistency
+
+- Maintain hierarchy across screen sizes:
+
+- Mobile: Stack vertically, full-width buttons
+
+- Tablet: Two-column layouts possible, maintain proportions
+
+- Desktop: Horizontal space utilized, wider containers
+
+- Use LayoutBuilder or MediaQuery to adapt while preserving hierarchy:
+
+[source,dart]
+
+LayoutBuilder(
+builder: (context, constraints) {
+if (constraints.maxWidth < 600) {
+return _buildMobileLayout();
+} else {
+return _buildTabletLayout(); // Maintains same hierarchy, different arrangement
+}
+},
+)
+
