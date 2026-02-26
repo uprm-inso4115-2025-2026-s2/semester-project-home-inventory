@@ -50,7 +50,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 
 | Domain vs. Implementation | Domain Engineering: Yes, consumption events can originate from non-users. Implementation: They should not have access to manage the home inventory, but they could possibly have a way to log usage as visitors (could be through a QR code).
 
-| Requirements/Insights | - System should anticipate "unexplained consumption" and provide reconciliation mechanisms. "Guest mode" or temporary period where consumption is expected but not tracked. Audit features that prompt "Did you have guests this weekend?" to explain discrepancies. Have guests manually log their consumption through a QR code that gives access to logging consumption but not to actually manage the home inventory.
+| Requirements/Insights | System should anticipate "unexplained consumption" and provide reconciliation mechanisms. "Guest mode" or temporary period where consumption is expected but not tracked. Audit features that prompt "Did you have guests this weekend?" to explain discrepancies. Have guests manually log their consumption through a QR code that gives access to logging consumption but not to actually manage the home inventory.
 |===
 
 === 4. Parents/Family Members
@@ -64,7 +64,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 
 | Domain vs. Implementation | Domain Engineering: Yes, items can enter the system through external contributors. Implementation: Possibly have a limited "contributor view" or wishlist sharing. Could simply have a guest or visitor mode that allows viewing an inventory without necessarily having permission to modify it.
 
-| Requirements/Insights | - Have a "wishlist" or "needs" guest or visitor view that family can access without full system access. Have the ability to mark items as "contributed by [contributor's name]" for acknowledgment. Notify when the student is low on items family typically supplies.
+| Requirements/Insights | Have a "wishlist" or "needs" guest or visitor view that family can access without full system access. Have the ability to mark items as "contributed by [contributor's name]" for acknowledgment. Notify when the student is low on items family typically supplies.
 |===
 
 === 5. Landlord/Property Manager
@@ -78,7 +78,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 
 | Domain vs. Implementation | Domain Engineering: Yes, the domain includes items that belong to the landlord vs. tenant. Implementation: Possibly have a read-only view for landlord portal integration.
 
-| Requirements/Insights | - Distinguish between tenant-owned and landlord-owned items. Have "restricted item" flags for prohibited products. Have maintenance tracking for appliances (e.g., "fridge filter due for replacement").
+| Requirements/Insights | Distinguish between tenant-owned and landlord-owned items. Have "restricted item" flags for prohibited products. Have maintenance tracking for appliances (e.g., "fridge filter due for replacement").
 |===
 
 === 6. Roommates who are getting started
