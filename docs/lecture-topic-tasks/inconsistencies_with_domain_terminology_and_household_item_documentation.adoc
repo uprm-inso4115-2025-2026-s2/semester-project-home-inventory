@@ -1,0 +1,47 @@
+= Inconsistencies with domain terminology and household item documentation #122
+:showtitle: true
+
+Issue #122 started from the perceived inconsistency between database entity names and our 
+domain terminology; there was no inconsistency between the two as, these names were included 
+as synonyms the domain terminology document. However, the proposed exploration to discover 
+other inconsistencies between domain terminology, database schema, events, actions, and 
+behaviors, shared inventory definition, and duplicate item criteria led to the discovery of 
+two inconsistencies. One was a designation clash between the "A Inventory has been generated" 
+event and the existing glossary terms Item and Product in our domain terminology. The other 
+inconsistency was a weak conflict between the Grouped-Owned Inventory model on the Shared 
+Inventory Definition document and the stock database representation. 
+
+Event "A Inventory has been generated" triggered by the addition of an Item to the Inventory 
+for the first time is stated to change the Inventory so it now reflects the presence of a new 
+Item. Inventory in our terminology is defined as "The list of available Products in a Home," 
+while Item (synonym for Stock) is defined as "An instance of a Product." This event and its 
+description create a designation clash to be addressed with the already existing glossary of 
+terms in our terminology. Additionally the naming of the event alludes to the creation of an 
+already existing Inventory it modifies.
+
+To correct this clash, the event "A Inventory has been generated" has been changed to "A new 
+Product has been generated," triggered by the addition of a new Item to the Inventory with no 
+relation to an existing Product. The event would change the Inventory to now reflect the new 
+Product description, and Item count and description.
+
+Please see docs\2-descriptive\domain-description\events\events.adoc for the updated event 
+description.
+
+The Grouped-Owned Inventory model on the Shared Inventory Definition document describes how 
+all items can be mapped as belonging to the household and multiple Members being able to add, 
+edit, and delete items. It describes how Inventories have multiple Stock entries, and Stock 
+entries optionally have linked Owner tags. This leads to Items having the ability to have 
+multiple Owners, which is not reflected on the ER and table diagrams for database Item 
+representation. The model is satisfiable with the current diagrams only when Items have one 
+and only one Owner.
+
+To correct this weak conflict, the ER and table diagrams for database Item representation 
+have been updated to reflect this model. The intervention will be in the relation between 
+Items and Owners. The concept of "Inventory" in the model is used to describe stock entries 
+associated with a household or an individual user, behavior that is already captured by the 
+relations between tables and therefore not requiring further changes to adapt to this 
+Grouped-Owned Inventory.
+
+Please see the "Revision" section of docs\descriptive\database_schema\database_schema.adoc to 
+see the updated ER and table diagrams, as well as the description of the changes made to 
+address this inconsistency.
