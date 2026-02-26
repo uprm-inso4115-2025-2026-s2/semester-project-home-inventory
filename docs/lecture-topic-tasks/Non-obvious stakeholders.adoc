@@ -64,7 +64,7 @@ This document was drafted to identify non-obvious stakeholders whose perspective
 
 | Domain vs. Implementation | Domain Engineering: Yes, items can enter the system through external contributors. Implementation: Possibly have a limited "contributor view" or wishlist sharing. Could simply have a guest or visitor mode that allows viewing an inventory without necessarily having permission to modify it.
 
-| Requirements/Insights | - Have a "wishlist" or "needs" guest or visitor view that family can access without full system access. Have the ability to mark items as "contributed by [name]" for acknowledgment. Notify when the student is low on items family typically supplies.
+| Requirements/Insights | - Have a "wishlist" or "needs" guest or visitor view that family can access without full system access. Have the ability to mark items as "contributed by [contributor's name]" for acknowledgment. Notify when the student is low on items family typically supplies.
 |===
 
 === 5. Landlord/Property Manager
