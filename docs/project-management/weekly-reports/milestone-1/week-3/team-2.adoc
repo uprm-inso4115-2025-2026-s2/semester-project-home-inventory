@@ -1,0 +1,64 @@
+= Milestone 1 Week 3 — Team 2 Progress Report
+
+== Objective
+
+Ensure that during Scrum Prep, the project has a clear and organized summary of what Team 2 worked on this week and what we will work on in future weeks.
+
+== What the Team Accomplished This Week
+
+* Finalized the Supabase schema design for the Grocery & Restock System.
+* Defined inventory quantity tracking and transaction tracking logic.
+* Completed system architecture and automation flow diagrams for restock logic.
+* Finalized Grocery List user interaction flow.
+* Finalized Alerts & Notifications UI states.
+* Aligned backend schema planning with pre-approved UI wireframes.
+* Prepared Milestone 2 implementation plan.
+
+== Tasks Completed / Issues Closed
+
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/32[Design Supabase Database Schema for Grocery & Restock System]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/33[Create User Flow & System Architecture/Flow Diagrams for Restock Automation]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/147[Supabase Schema for Inventory and Stock Changes]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/146[Define Inventory Quantity Change]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/148[Define Inventory Transaction Tracking]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/42[Define Grocery List User Experience & Interaction Flow]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/153[Design Wireframes & UI States for Alerts & Notifications Screen]
+
+== What Is Currently In Progress
+
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/84[Design Grocery List UI in Figma]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/119[Description Tech Stack of Expiration Alert System]
+* https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/180[Design Supabase Schema for In-App Notifications & Alerts System]
+
+== Blockers or Challenges
+
+* Multiple Supabase schema drafts required consolidation into a unified structure.
+* Automation logic complexity (restock evaluation + expiration handling).
+* Risk of Supabase RLS misconfiguration affecting future implementation.
+
+Currently, no hard blockers preventing progress.
+
+== Plans for Next Week
+
+* Finalize unified Supabase schema across all feature components.
+* Begin backend implementation for:
+  ** Stock movement tracking
+  ** Threshold-based restock logic
+* Continue Grocery List UI implementation.
+* Define technical approach for expiration alert system.
+* Convert Milestone 2 planning document into structured GitHub issues.
+
+== Plans for Milestone 2 (Subject to Change)
+
+* Implement inventory quantity tracking with persistent Supabase integration.
+* Implement automated grocery list generation.
+* Implement expiration monitoring with alert states.
+* Fully integrate Grocery List and Alerts pages with backend logic.
+* Conduct integration testing and stabilization.
+
+== Documentation Links
+
+* Schema design documentation (Grocery & Restock System)
+* Restock Automation Flow Diagrams
+* Milestone 2 Implementation Plan
+* All working issues are linked above.
