@@ -5,3 +5,6 @@ include::stakeholder-identification/stakeholder-identification.adoc[leveloffset=
 include::personas/personas.adoc[leveloffset=+1]
 include::traceability/traceability.adoc[leveloffset=+1]
 include::domain-requirements-acquisition/domain-requirements-acquisition.adoc[leveloffset=+1]
+include::duplicate-handling-rules/duplicate-handling-rules.adoc[leveloffset=+1]
+include::edge-cases-duplicates-budget/edge-cases-duplicates-budget.adoc[leveloffset=+1]
+include::document-duplicate-prevention-logic/document-duplicate-prevention-logic.adoc[leveloffset=+1]

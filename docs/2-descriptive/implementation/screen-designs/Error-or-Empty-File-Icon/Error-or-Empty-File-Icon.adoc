@@ -1,0 +1,22 @@
+== Error or Empty File Icon
+Author: Nataliavera6
+--
+- This icon was necessary to provide a simple and effective way to notify users of errors in the folder or empty folders.
+- The sad face in the icon suggests negative issues with the folder that must be adressed by user.
+--
+= Risks
+- Users may find the icon to be negative or discouraging, which could lead to frustration and a negative user experience.
+- Users may not understand the meaning of the icon and may ignore it, leading to confusion and
+
+= Benefits & Mitigations
+- The icon provides a clear and concise way for users to identify errors in their folders, allowing them to take appropriate action to address the issue.
+- To mitigate the risk of users finding the icon negative or discouraging, we will provide clear instructions on how to address the issue and offer support resources for users who may need assistance.
+
+
+--
+
+Final product::
+
+
+image:images/Error or Empty File Icon Wireframe.png[]
+--

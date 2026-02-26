@@ -1,0 +1,232 @@
+= Research: Supabase Realtime for Shared Inventory and Budgets
+
+The Realtime service of Supabase allows for instant updates to data to connected clients. This helps to create a more dynamic user experience. This way users can see updates to the inventory and budgets instantly, reducing the miscommunication between roommates and overall helping the user with the goals of the project.
+
+== Realtime Features Overview
+Supabase Realtime has the following features:
+
+* **Broadcast:** Send low-latency messages between connected clients.
+* **Presence:** Track and sync user states, showing who is active in the app.
+* **Postgres Changes:** Listen to database changes in real-time, allowing for instant updates to the UI when data changes.
+
+== Advantages for Shared Inventory & Budgets
+The main advantages of using Supabase Realtime for this project are:
+
+* **Simplified real-time updates:** Supabase Realtime handles the complexities of real-time data synchronization, this allows the developers to focus on building the core features rather than dealing with the complex aspects of real-time communication.
+* **Scalability:** Supabase Realtime is designed to scale with your application, ensuring that it can handle a growing number of users and data changes without performance issues.
+* **Integration with Supabase ecosystem:** Since we are already using Supabase for our database and authentication, using Realtime allows for seamless integration and a more cohesive development experience.
+
+== Getting Started with Realtime
+Here is a quickstart into Supabase Realtime:
+
+1. **Install the client library:**
+[source,bash]
+npm install @supabase/supabase-js
+
+2. **Initialize the client:**
+Get your project URL and key.
+[source,javascript]
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://your-project.supabase.co', supabaseKey = 'your-anon-key'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+3. **Create your first Channel:**
+Channels are used for the communication between clients and the server. Channels can be public or private. You can create a channel for inventory updates, for example:
+[source,javascript]
+const channel = supabase.channel('inventory-updates', {config: { public: true }})
+
+
+4. **Set up authorization:**
+Private channels require authentication, in this case you need to create RLS policies on them. For example, you can create a policy that allows only authenticated users to access the channel:
+[source,sql]
+CREATE POLICY “Allow authenticated users to access inventory” ON realtime.messages
+FOR SELECT TO authenticated USING (True)
+
+
+5. **Send and receive messages:**
+Using Supabase client:
+[source,javascript]
+// Listen for messages
+channel
+  .on('broadcast', { event: 'message_sent' }, (payload: { payload: any }) => {
+    console.log('New message:', payload.payload)
+  })
+  .subscribe()
+
+// Send a message
+channel.send({
+  type: 'broadcast',
+  event: 'message_sent',
+  payload: {
+    text: 'Hello, world!',
+    user: 'john_doe',
+    timestamp: new Date().toISOString(),
+  },
+})
+
+
+== Feature Deep Dive
+
+=== Broadcast
+Broadcast can be used for real-time messages and notifications, custom events, database and database change notifications. This can be used for example to notify users when a new item is added to the inventory, or when a budget is updated. This can help to keep all users informed and reduce miscommunication between roommates.
+
+.Receiving Broadcast Messages:
+[source,javascript]
+----
+const channel = supabase.channel('inventory-updates')
+
+function messageReceived(payload) {
+  console.log('New message:', payload)
+}
+
+myChannel
+  .on('broadcast',
+  { event: 'shout'}, (payload) => messageReceived(payload)
+  )
+  .subscribe()
+----
+
+.Send Broadcast Messages:
+[source,javascript]
+----
+const myChannel = supabase.channel('test-channel')
+
+myChannel
+  .send({
+    type: 'broadcast',
+    event: 'shout',
+    payload: { message: 'Hi' },
+  })
+  .then((resp) => console.log(resp))
+
+/**
+ * Sending a message after subscribing will use WebSockets
+ */
+myChannel.subscribe((status) => {
+  if (status !== 'SUBSCRIBED') {
+    return null
+  }
+
+  myChannel.send({
+    type: 'broadcast',
+    event: 'shout',
+    payload: { message: 'Hi' },
+  })
+})
+----
+
+.Broadcast from the Database:
+[source,sql]
+----
+select
+  realtime.send(
+    jsonb_build_object('hello', 'world'), -- JSONB Payload
+    'event', -- Event name
+    'topic', -- Topic
+    false -- Public / Private flag
+  );
+----
+
+=== Presence
+Presence can be used for tracking user online/offline status and active user counters. This can be used to show which roommates are currently active in the app, and how many users are online at a given time. This can help to create a more engaging user experience and encourage collaboration between roommates.
+
+.Sync and track states:
+[source,javascript]
+----
+const roomOne = supabase.channel('room_01')
+
+roomOne
+  .on('presence', { event: 'sync' }, () => {
+    const newState = roomOne.presenceState()
+    console.log('sync', newState)
+  })
+  .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+    console.log('join', key, newPresences)
+  })
+  .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+    console.log('leave', key, leftPresences)
+  })
+  .subscribe()
+----
+
+.Sending states to all subscribers:
+[source,javascript]
+----
+const roomOne = supabase.channel('room_01')
+
+const userStatus = {
+  user: 'user-1',
+  online_at: new Date().toISOString(),
+}
+
+roomOne.subscribe(async (status) => {
+  if (status !== 'SUBSCRIBED') { return }
+
+  const presenceTrackStatus = await roomOne.track(userStatus)
+  console.log(presenceTrackStatus)
+})
+----
+
+=== Postgres Changes
+Finally Postgres Changes can be used for quick testing and development. As well as listening to database events and real-time UI updates. This can be used to instantly update the inventory and budget views when changes are made to the database, it helps to show users new changes without needing to refresh the page.
+
+.Quickstart for listening by schema:
+[source,javascript]
+----
+const channelA = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+----
+
+.Implementation Examples:
+[source,javascript]
+----
+// Listening to INSERT events
+const changesInsert = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT', 
+      schema: 'public',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+
+// Listening to specific tables (e.g., todos)
+const changesTable = supabase
+  .channel('table-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'todos',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+----
+
+== Realtime Settings & Configuration
+To ensure these features work within the Supabase instance, the following settings must be applied:
+
+1.  **Enable Replication:** Navigate to the Supabase Dashboard > Database > Replication. You must toggle the 'Realtime' switch for any table (e.g., `inventory`, `budgets`) you wish to listen to via Postgres Changes.
+2.  **Row Level Security (RLS):** Realtime respects existing RLS policies. Ensure your policies allow `SELECT` for authenticated users so they can receive updates.
+3.  **Project Settings:** Ensure the Realtime service is enabled in your project's API settings.
+
+
+== References
+Supabase official documentation: https://supabase.com/docs/guides/database/overview
+Supabase Realtime documentation: https://supabase.com/docs/guides/realtime
+
+---

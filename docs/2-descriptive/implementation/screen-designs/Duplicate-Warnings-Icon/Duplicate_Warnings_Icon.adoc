@@ -1,0 +1,23 @@
+
+== Duplicate Warnings Icon
+Author: Nataliavera6
+--
+This icon was necessary to provide a simple and effective way to notify users of duplicate items.
+The number 2 in the icon indicates that there are two items that are duplicates as well as the two identical boxes. 
+
+--
+= Risks
+- Users may not understand the meaning of the icon and may ignore it, leading to confusion and potential errors in their inventory management.
+- Users may find the icon visually unappealing or distracting, which could negatively impact their user
+
+= Benefits & Mitigations
+- The number 2 in the icon provides a clear indication of the number of duplicate items, making it easier for users to identify and address the issue.
+- The simple design of the icon helps to minimize visual clutter and allows users to quickly understand its purpose.
+
+
+--
+Final product::
+
+
+image:images/Duplicate Warnings Wireframe.png[]
+--
