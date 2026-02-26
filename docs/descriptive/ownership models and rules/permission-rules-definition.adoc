@@ -101,7 +101,7 @@ To handle conflicts, we can implement the following policies:
 
 - Precedence of most restrictive permission: To prevent edit conflicts, we can implement a policy where the most restrictive permission takes precedence. For example, if a Member has edit permissions on an item but the Owner wants to delete it, the Owner's action would take precedence and the item would be deleted. However, if the Member has edit permissions that allow them to prevent deletion, then the deletion would be denied.
 
-- Multiple invitations for the same user: If a user receives multiple invitations from different Owners for the same household, the system should allow the user to accept only one invitation. Once an invitation is accepted, any other pending invitations for that user and household should be automatically revoked.
+- Only one active Inivite: If a user receives multiple invitations from different Owners for the same household, the system should allow the user to accept only one invitation. Once an invitation is accepted, any other pending invitations for that user and household should be automatically revoked.
 
 == Escalation & Transfer Scenarios
 
