@@ -7,20 +7,20 @@ Stakeholders discovered later as the team learns more about the domain.
 |===
 |Stakeholder |Goals / needs |Influence |Concerns / notes
 
-|Supabase 
-|Provide reliable database hosting, real-time syncing capabilities, and secure authentication services. 
-|High 
-|Exceeding free-tier limitations, data security breaches, and potential downtime affecting user syncing.
+|Landlords / Property Managers
+|Ensure that tenant households are kept in good order and that shared spaces are not overloaded or misused.
+|Low
+|Unclear lines between personal and shared household property; no formal mechanism for landlord oversight.
 
-|Notification Service Provider
-|Deliver timely push notifications for expiration warnings, low-stock alerts, and roommate sharing invitations. 
-|Medium 
-|Rate limits, delivery failures, or delays that prevent users from getting critical expiration alerts on time.
+|Grocery / Retail Stores
+|Attract repeat purchases by students and household groups; provide accurate product data (barcodes, pricing) that inventory systems may rely on.
+|Low
+|Incorrect or inconsistent product metadata in retail databases causing failed barcode lookups.
 
-|App Store / Google Play Reviewers 
-|Ensure the mobile application complies with platform guidelines regarding user privacy, data handling, and UI/UX standards. 
-|High 
-|App rejection due to improper handling of user data or failure to meet the minimum functionality requirements for listing.
+|Mobile Platform Reviewers (App Store / Google Play)
+|Ensure the mobile application complies with platform guidelines regarding user privacy, data handling, and interface standards before public distribution.
+|High
+|App rejection due to improper handling of user data or failure to meet minimum functionality requirements for listing.
 |===
 
 = Lecture Topic Task

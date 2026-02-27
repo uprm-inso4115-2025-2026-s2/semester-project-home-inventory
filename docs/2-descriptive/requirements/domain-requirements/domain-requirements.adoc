@@ -59,3 +59,7 @@ DR6: Users may belong to multiple households.
 * DR-14 through DR-17 support the need to prevent unintended duplicate records before they are persisted (N-data-quality)
 // TODO (Team 2): Link DR* to the needs identified in the alert/restock domain (e.g., N-expiration-awareness, N-restock-notification)
 // TODO (Team 4): Link DR* to the needs identified in the reporting domain (e.g., N-spending-visibility, N-inventory-overview)
+
+include::shared-inventory-definition.adoc[leveloffset=+1]
+include::sharing-rules-and-assumptions.adoc[leveloffset=+1]
+include::permission-rules-definition.adoc[leveloffset=+1]
