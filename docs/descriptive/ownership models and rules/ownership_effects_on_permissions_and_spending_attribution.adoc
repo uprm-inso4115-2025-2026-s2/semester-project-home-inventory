@@ -1,0 +1,103 @@
+= Ownership Implications for Permissions and Responsibility Attribution
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 2/26/2026
+// Issue #101
+
+== Objective
+This document analyzes how item ownership influences permissions and responsibility attribution within a shared inventory system. The goal is to ensure that the selected ownership structure supports enforceable control, accountability, and consistent system behavior.
+
+This analysis builds upon previously defined ownership models, domain invariants, and the selected hybrid ownership structure.
+
+== Ownership as a Behavioral Concept
+Ownership is not only a structural relationship but also a behavioral one. It defines authority over resources and identifies responsibility within a shared context.
+
+In a collaborative inventory domain, ownership must support:
+
+- permission determination
+- responsibility attribution
+- consistent interaction within shared environments
+
+== Relationship Between Ownership and Membership
+
+Ownership exists within an inventory context and is scoped by membership. Users interact with items through their participation in the shared inventory.
+
+Conceptual interaction structure:
+
+User → Membership → Inventory → Item  
+Membership → Responsibility for Item
+
+Implications:
+
+- ownership requires membership
+- permissions are constrained by shared context
+- responsibility is attributed within group participation
+
+== Ownership and Permission Control
+
+Ownership contributes to permission determination by identifying the participant with primary authority over an item.
+
+Permission sources include:
+
+- membership roles defining baseline capabilities
+- ownership responsibility defining elevated authority
+
+Conceptual permission structure:
+
+[cols="1,1,1"]
+|===
+|Responsible Member|Inventory Member|Inventory Administrators
+
+a|* may manage item state and properties
+* holds primary decision authority
+
+a|* interact according to membership role
+* do not possess inherent ownership authority
+
+a|* may manage ownership assignments
+* may override ownership constraints
+
+|===
+
+Implications:
+
+- ownership refines authority within shared access
+- permission logic depends on both membership and ownership relationships
+- authority is scoped to shared context
+
+== Ownership and Responsibility Attribution
+
+Ownership provides a mechanism for associating responsibility with shared resources.
+
+Conceptual responsibility model:
+
+- items exist within shared context
+- ownership identifies responsible participant
+- actions involving items can be attributed through ownership
+
+Implications:
+
+- accountability is preserved in collaborative environments
+- responsibility is never undefined
+- ownership supports attribution of actions or resource-related outcomes
+
+== Conceptual Requirements for Ownership Structure
+
+To support permission control and responsibility attribution, the ownership model must ensure:
+
+- ownership exists within an inventory context
+- only members may hold ownership responsibility
+- items always have a defined responsibility structure
+- permissions can be derived from ownership and membership relationships
+- responsibility attribution is structurally supported
+
+== Implications for Conceptual Schema Design
+
+This analysis establishes behavioral constraints that the conceptual schema must support:
+
+- items must reference an inventory context
+- membership relationships must connect users to shared resources
+- ownership responsibility must be representable within membership scope
+- permission and responsibility relationships must be derivable from conceptual structure
+
+These findings validate the hybrid ownership model as a coherent foundation for defining item ownership rules and shared inventory interaction behavior.

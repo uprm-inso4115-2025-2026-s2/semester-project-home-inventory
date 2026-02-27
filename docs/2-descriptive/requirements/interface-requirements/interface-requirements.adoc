@@ -90,3 +90,99 @@ Students need a high-level view of their household's status without digging thro
 - How does a student quickly assess what needs attention?
 - What information is most important to show at a glance?
 - How are metrics from different parts of the system brought together in one place?
+
+=== IR-08: Dashboard Metric Overview
+
+Students need a high-level view of their household's status without digging through multiple screens.
+
+*The system shall provide a dashboard that displays key metrics including total items, low-stock items, expiring items, and current month spending, with summary cards that aggregate data from across the system.*
+
+**Questions this addresses:**
+- How does a student quickly assess what needs attention?
+- What information is most important to show at a glance?
+- How are metrics from different parts of the system brought together in one place?
+
+
+=== IR-09: Household Data Access Restriction
+
+When a student participates in one or more households in the real world, they should only have access to information belonging to the households they are part of.
+
+*The system shall provide a means to ensure that students can view and interact only with data belonging to households in which they have an active membership.*
+
+**Questions this addresses:**
+
+- How does the system determine which household data a student can access?
+- What prevents students from seeing data from other households?
+- How is access limited when a student belongs to multiple households?
+
+=== IR-10: Cross-Household Isolation
+
+When multiple households exist in the system, their data must remain isolated from one another.
+
+*The system shall enforce strict data isolation so that no student can access, query, or retrieve data from households in which they are not an active member.*
+
+**Questions this addresses:**
+
+- How are households separated at the system level?
+- What prevents accidental or malicious cross-household data access?
+- How is data isolation maintained across all features (inventory, spending, membership)?*
+
+=== IR-11: Shared Inventory Visibility
+
+When items exist within a shared household in the real world, all active members should be able to see those shared items.
+
+*The system shall provide a means for all active household members to view the shared inventory associated with their household.*
+
+**Questions this addresses:**
+
+- Who can see shared items?
+- Are there differences between shared and personal items?
+- How is visibility determined based on membership status?
+
+=== IR-12: Membership List Visibility
+
+When students live together and share responsibilities, they need to know who is part of their household.
+
+*The system shall provide a means for active household members to view the list of members belonging to their household.*
+
+**Questions this addresses:**
+
+- How does a student know who is currently part of their household?
+- How are role distinctions (Owner, Member) communicated?
+- How is membership status reflected?
+
+=== IR-13: Invitation Privacy
+
+When a student invites another person to join their household in the real world, that invitation is a private interaction between those individuals.
+
+*The system shall provide a means to restrict visibility of a pending invite to the inviter and the invitee.*
+
+**Questions this addresses:**
+
+- Who can see pending invitations?
+- How is invite privacy maintained?
+- When does invite visibility change (e.g., after acceptance)?
+
+=== IR-14: Limited Invite Notification
+
+When a new invitation is issued in a household, existing members may need awareness that a membership change is pending.
+
+*The system shall provide a means to notify active household members that a new invite has been issued, without disclosing sensitive invite details.*
+
+**Questions this addresses:**
+
+- How are members informed of structural changes?
+- What information is considered sensitive?
+- How is transparency balanced with privacy?
+
+=== IR-15: Permission Validation on Access
+
+When students attempt to view or modify household data, the system must verify that they have the appropriate permissions.
+
+*The system shall validate membership status and role permissions before granting access to or modifying any household-related data.*
+
+**Questions this addresses:**
+
+- When are permissions checked?
+- What prevents unauthorized data modification?
+- How are role-based restrictions enforced consistently?
