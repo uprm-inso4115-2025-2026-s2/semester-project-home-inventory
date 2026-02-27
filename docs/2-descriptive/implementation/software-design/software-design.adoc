@@ -47,6 +47,7 @@ The following mappings describe how domain concepts translate into system compon
 * **Room**
   - Table: `rooms`
   - Represents a location within a home where inventory items may be stored
+  - Associated with a Home through the `home_id` field
   - Examples include kitchen, pantry, and bathroom
 
 * **Product**
@@ -73,6 +74,7 @@ The following mappings describe how domain concepts translate into system compon
 * **ShoppingList**
   - Table: `shopping_lists`
   - Represents planned purchases for restocking household inventory
+  - Associated with a ShoppingListEntry through the `shopping_list_entries_id` field
 
 * **ShoppingListEntry**
   - Table: `shopping_list_entries`
