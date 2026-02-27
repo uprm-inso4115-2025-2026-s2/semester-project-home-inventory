@@ -44,7 +44,7 @@ Major domain functions/capabilities (what can be done in the domain), described 
 
 |Acknowledge alert (dismiss/defer)
 |Record a household member’s decision to dismiss or defer an alert.
-|ackAlert : AlertLog >< Alert >< Action(dismiss|defer) >< Until? -> AlertLog
+|ackAlert : AlertLog >< Alert >< Action(dismiss\|defer) >< Until? -> AlertLog
 
 |Record quantity change transaction (traceability)
 |Append a transaction describing why/when availability changed.
@@ -52,7 +52,7 @@ Major domain functions/capabilities (what can be done in the domain), described 
 
 |Record spending event
 |Create a spending entry capturing who paid, how much, when, and whether it is shared or personal.
-|recordSpending : Household >< Amount >< Date >< Payer >< Scope(shared|personal) >< ItemType? >< Category? -> Household
+|recordSpending : Household >< Amount >< Date >< Payer >< Scope(shared\|personal) >< ItemType? >< Category? -> Household
 
 |Adjust spending entry (audit-safe)
 |Correct spending records via adjustment/refund entries rather than destructive edits.
