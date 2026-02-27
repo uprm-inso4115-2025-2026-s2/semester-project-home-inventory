@@ -1,9 +1,10 @@
 name: Build & Publish AsciiDoc PDF
 
 on:
-  pull_request:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -15,12 +16,27 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  ASCIIDOC_FILE: docs/index.adoc
+  OUTPUT_DIR: site
+  OUTPUT_PDF: inventory.pdf
+
 jobs:
   build:
+    name: Build PDF + Upload Artifact
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Verify AsciiDoc entry file exists
+        run: |
+          if [ ! -f "${ASCIIDOC_FILE}" ]; then
+            echo "ERROR: AsciiDoc file not found at ${ASCIIDOC_FILE}"
+            echo "Update env.ASCIIDOCTOR_FILE in the workflow if your path is different."
+            exit 1
+          fi
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -30,37 +46,56 @@ jobs:
       - name: Install Asciidoctor PDF
         run: gem install asciidoctor asciidoctor-pdf
 
-      # Adjust input path if your docs entry file is different
       - name: Build PDF
         run: |
-          mkdir -p site
-          asciidoctor-pdf docs/index.adoc -o site/inventory.pdf
+          mkdir -p "${OUTPUT_DIR}"
+          asciidoctor-pdf "${ASCIIDOC_FILE}" -o "${OUTPUT_DIR}/${OUTPUT_PDF}"
 
-      - name: Upload PDF artifact
+      - name: Create landing page for GitHub Pages
+        run: |
+          cat > "${OUTPUT_DIR}/index.html" <<'EOF'
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Project Docs PDF</title>
+              <style>
+                body { font-family: system-ui, Arial, sans-serif; margin: 40px; }
+                a { font-size: 18px; }
+              </style>
+            </head>
+            <body>
+              <h1>Project Documentation</h1>
+              <p><a href="inventory.pdf">Open the latest PDF</a></p>
+            </body>
+          </html>
+          EOF
+
+      - name: Upload PDF as workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: asciidoc-pdf
-          path: site/inventory.pdf
+          path: ${{ env.OUTPUT_DIR }}/${{ env.OUTPUT_PDF }}
+          if-no-files-found: error
 
-      # Only prepare/deploy Pages when pushing to main (not on PRs)
-      - name: Setup Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/configure-pages@v5
-
+      # This prepares the "site/" folder for GitHub Pages deployment
       - name: Upload Pages artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: ${{ env.OUTPUT_DIR }}
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: Deploy to GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
+
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
