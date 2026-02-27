@@ -5,4 +5,4 @@ Validation ensures we are building the right thing (meets real needs). Verificat
 include::scenarios/scenarios.adoc[leveloffset=+1]
 include::walkthroughs/walkthroughs.adoc[leveloffset=+1]
 include::testing/testing.adoc[leveloffset=+1]
-include::validation\core-inventory-data-validation-rules.adoc[leveloffset=+1]
+include::validation/core-inventory-data-validation-rules.adoc[leveloffset=+1]

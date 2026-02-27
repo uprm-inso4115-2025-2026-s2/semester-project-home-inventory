@@ -1,6 +1,6 @@
 == Personas
 
-Personas represent key user/stakeholder types. Aim for 3-4 personas. Each persona includes goals, frustrations, behaviors, and a short scenario.
+Personas represent key user/stakeholder types and are the single source of truth for all requirements, user stories, and features. Each persona includes goals, frustrations, behaviors, constraints, and a short scenario. The persona-to-needs trace table at the end of this file links each persona to specific needs (N1, N2, etc.), which are referenced throughout requirements for justification and traceability.
 
 === Persona 1: Mateo, The Busy Solo Student
 * *Role:* Student living alone
