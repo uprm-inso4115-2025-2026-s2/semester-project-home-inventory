@@ -1,35 +1,45 @@
 == Requirements Acquisition Plan
 
-Plan for how we will gather and validate requirements from stakeholders and domain evidence.
+Plan for how we will gather and validate requirements from stakeholders and domain evidence. For Milestone 1, this plan is intentionally lightweight and focuses on collecting concrete examples that can be traced to needs, scenarios, and requirements.
 
-=== Goals
-* Understand the actual, messy habits of how students manage household items, rather than their ideal organized behaviors.
-* Determine exactly how roommates communicate about low stock, split financial costs, and establish ownership of shared versus personal items.
-* Identify the primary friction points that cause existing tracking methods to fail.
-* Define concrete domain rules regarding consumption rates and the handling of bulk purchases or multi-packs.
+=== Goals (Milestone 1)
+* Capture real (“messy”) household practices instead of idealized descriptions.
+* Understand shared-household coordination (visibility, duplicates, ownership/personal vs shared, and cost splitting).
+* Identify the main friction points that cause tracking methods to be abandoned.
+* Clarify key domain edge cases (bulk purchases, multiple locations, missing/unclear expiration dates).
 
-=== Methods
-* **Interviews:** Conduct 4-6 semi-structured interviews with primary stakeholders, including solo students, students living in shared apartments, and student athletes. We will ask for specific, recent examples of food waste, duplicate purchases, and roommate conflicts regarding groceries.
-* **Surveys:** Distribute a short online questionnaire to a broader college student demographic to quantitatively validate how often items expire and the average financial loss per month due to poor inventory tracking.
-* **Observation / contextual inquiry:** Ask interviewees to show their current physical tracking artifacts, such as fridge sticky notes, whiteboards, or shared grocery WhatsApp chat logs, to understand their natural shorthand and terminology.
-* **Document analysis:** Review and analyze existing digital inventory applications to identify feature gaps. Analyze UI/UX design patterns for mobile data visualization to understand the best ways to present consumption reports and insights.
+=== Methods (Milestone 1)
+* *Interviews (4–6):* Semi-structured interviews with solo students and students in shared households (including at least one student athlete). Focus on recent, specific incidents (waste, duplicates, shortages, roommate friction).
+* *Contextual walkthroughs:* Ask participants to show their current artifacts (fridge notes/whiteboards/messages) and explain their shorthand and terminology.
+* *Light competitive scan:* Review a small set of existing inventory/list apps to identify recurring friction patterns (especially entry effort and notification fatigue).
 
-=== Schedule
+[NOTE]
+====
+Surveys and broader quantitative validation are considered useful but may be deferred if time is limited; Milestone 1 prioritizes rich qualitative evidence suitable for domain description and initial requirements.
+====
+
+=== Schedule (Milestone 1)
+
 [cols="2,4",options="header"]
 |===
 |Timeframe |Activities
 
-|Late Jan. - Early Feb. | Conduct initial informal interviews, gather domain rough sketch observations, and begin competitive document analysis.
-|Mid-Feb. | Synthesize findings into personas, finalize the rough sketch, and draft internal research reports on consumption rates and ownership models.
-|Late Feb. | Validate initial findings with stakeholders, clarify open questions regarding edge cases, and transition acquired knowledge into formal user stories and UI prototypes.
+|Late Jan. – Early Feb.
+|Conduct initial interviews and contextual walkthroughs; expand the rough sketch with concrete quotes/examples; begin light competitive scan.
+
+|Mid-Feb.
+|Synthesize findings into personas/scenarios; refine terminology and concept analysis; record open questions and clashes.
+
+|Late Feb.
+|Validate assumptions with follow-up questions (short check-ins); finalize initial user stories and core interface requirements; mark deferred edge cases explicitly.
 |===
 
-=== Risks and mitigations
-* **Risk:** Target users are too busy with midterms and work to participate in lengthy formal interviews.
-** **Mitigation:** Keep interviews informal, brief, and conduct them in comfortable, casual settings or via asynchronous voice notes.
+=== Risks and mitigations (Milestone 1)
+* *Risk:* Participants are too busy for long interviews.
+** *Mitigation:* Keep sessions short (15–25 minutes) and allow asynchronous voice-note follow-ups.
 
-* **Risk:** Interviewees might describe their ideal behavior rather than their actual, messy reality.
-** **Mitigation:** Ask grounding questions about specific past events, such as "Tell me about the last time you had to throw out food" or "Show me your most recent shared household receipt."
+* *Risk:* Participants describe ideal behavior rather than actual behavior.
+** *Mitigation:* Ask for recent concrete examples (“last time you threw out food”, “last duplicate purchase”, “show your last note/chat”).
 
-* **Risk:** Users might state they want an inventory app, but in reality, their tolerance for manual data entry is near zero.
-** **Mitigation:** Focus observation and interview questions heavily on the maximum time/effort threshold users are willing to spend logging items, ensuring our requirements prioritize extreme low-friction input.
+* *Risk:* Manual entry tolerance is near zero, making tracking unsustainable.
+** *Mitigation:* Explicitly measure “effort tolerance” (seconds/taps) and capture what minimum information participants are willing to record.

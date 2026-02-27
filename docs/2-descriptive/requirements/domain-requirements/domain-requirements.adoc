@@ -1,65 +1,45 @@
 == Domain Requirements
 
-Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology.
+Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology. Terminology follows the domain description: *Household*, *Household member*, *Location*, *Item type*, *Item instance*, and *Spending entry*.
 
-=== Inventory Integrity
-* DR-1: One barcode must map to exactly one Product definition. The system must not create a second Product definition for an already-known barcode.
-* DR-2: A Stock entry must always reference a Product that existed at the time of the purchase.
-* DR-3: Deleting or archiving an item must not erase its associated spending history — financial records are immutable.
+=== Inventory integrity
 
-=== Shared Household Rules
-* DR-4: A Home must always have exactly one Owner. Ownership must be transferred before an Owner can leave.
-* DR-5: A Stakeholder may belong to multiple Homes, each with an independent Role and Membership state.
-* DR-6: Spending records must remain attributed to the Stakeholder who made the purchase, even when inventory quantities are merged.
+* DR-1 (Barcode uniqueness): A single barcode shall map to exactly one *Item type*. The system shall not create a second item-type definition for an already-known barcode.
+* DR-2 (Item instance validity): Every *Item instance* shall reference an existing *Item type* at the time it is recorded.
+* DR-3 (Financial immutability): Removing an item from the tracked inventory (delete/archive/merge/split/adjust) shall not rewrite or delete associated *Spending entries*; financial history is immutable.
 
-=== Duplicate Handling
-* DR-7: When a Stock Duplicate is detected within 30 seconds of the original entry, the system must aggregate quantity rather than create a new Stock row.
-* DR-8: The system must not silently overwrite financial history when merging Stock entries — merge actions must be logged and reversible.
+=== Shared-household rules
 
-=== Budget & Spend Integrity
-// NOTE (potential redundancy): DR-3 and DR-9 both state that financial records are immutable and must not be
-// erased by inventory operations. DR-3 (Inventory Integrity) addresses deletion/archiving; DR-9 (Budget & Spend
-// Integrity) addresses merge/split/adjustment. Consider merging them into one authoritative DR or clearly
-// distinguishing the triggering conditions so readers understand why both exist.
-* DR-9: Inventory state changes (merge, split, quantity adjustment) must never rewrite or delete Spend Events — financial records are immutable.
-* DR-10: A Spend Event must remain attributed to the Stakeholder who initiated the purchase, even when shared inventory quantities are merged across household members.
-* DR-11: Near-Duplicates must preserve user intent — the system must not auto-merge items whose product identity is ambiguous without explicit confirmation.
-* DR-12: Every edge-case resolution that changes inventory state must be auditable and reversible; the system must log the action, the user, and the previous state.
-* DR-13: Reports must distinguish between inventory state (counts, locations, expiry) and spend events (amounts, dates, attribution); these must not be conflated.
+* DR-4 (Household administration): Each *Household* shall have exactly one household admin role at a time. Administrative responsibility shall be transferable before the current admin leaves.
+* DR-5 (Membership independence): A system user may belong to multiple households, each with an independent membership role and membership state.
+* DR-6 (Attribution retention): Spending entries shall remain attributed to the household member who made the purchase, even when inventory quantities are reorganized (merge/split) or when items are marked shared/personal.
 
-=== Prevention & Data Integrity
-* DR-14: Duplicate prevention must occur before database insertion — the system must not create a new Product definition if an authoritative match (barcode) already exists.
-* DR-15: Product definitions must be normalized before comparison; text-based matching must operate on canonical lowercase, trimmed, punctuation-free representations.
-* DR-16: Spend Events must only be created after duplicate resolution is finalized — no spend record may reference an unresolved or provisional Product ID.
-* DR-17: The system must guarantee that no two Products share an identical barcode; this constraint must be enforced at the database level.
+=== Duplicate handling and intent preservation
 
-=== Alerts & Restock (Team 2)
-// TODO (Team 2): Domain requirements for expiration tracking, restock thresholds, and alert conditions are pending.
+* DR-7 (Short-window duplicates): If a duplicate item instance entry is detected within a short window (initially 30 seconds) with matching identity-relevant attributes, the tracked record shall aggregate quantity rather than create a separate entry (unless the user explicitly chooses to keep them separate).
+* DR-8 (Ambiguity guard): If item identity is ambiguous (near-duplicate name/brand/variant without authoritative identifier), the system shall not auto-merge without explicit confirmation.
+* DR-9 (Auditability of corrections): Inventory corrections (merge/split/adjust) shall be auditable and reversible at the record level; the system shall preserve what changed, when, and why.
 
-=== Reports & Insights (Team 4)
-// TODO (Team 4): Domain requirements for spending history, usage rates, and inventory summaries are pending.
+=== Reporting integrity (if reporting is in scope)
 
-DR1: A household must always have exactly one Owner.
+* DR-10 (Separation of concerns): Reports shall distinguish between inventory state (availability, locations, expiry) and spending history (amounts, dates, attribution); these shall not be conflated.
+* DR-11 (Budget derivation): Budget/spending summaries shall be derived from spending entries within a defined budget period and shall not be altered by non-financial inventory corrections (e.g., discarding expired items).
 
-DR2: Ownership must be transferred before Owner leaves.
+=== Alerts and restock (Milestone 1 baseline)
 
-DR3: Each household owns its shared inventory.
+* DR-12 (Threshold-driven low-stock): Low-stock shall be defined by an item-specific threshold (or default threshold when configured); crossing the threshold defines the low-stock condition.
+* DR-13 (Expiration status): If an item instance has an expiration date, its expiration status shall be derivable (active/near-expiry/expired). If the expiration date is missing or unreadable, expiration status shall be treated as unknown (no false-expired condition).
+* DR-14 (Deduplicated alerting): Alerts shall be deduplicated and triggered primarily on actionable state transitions (e.g., NORMAL → LOW_STOCK), so repeated checks without state change do not generate repeated alerts.
 
-DR4: Invite must have exactly one status.
+=== Rationale / trace (Milestone 1)
 
-DR5: Membership must have exactly one status.
+* DR-1..DR-3 support reliability of tracked inventory and financial records (N2, and budgeting quality expectations if enabled).
+* DR-4..DR-6 support shared-household accountability and coordination (N4, N5).
+* DR-7..DR-9 support data quality and conflict reduction during entry/corrections (N1, N2, N3).
+* DR-10..DR-11 support clear reporting and budget reasoning (if spending/reporting is in scope).
+* DR-12..DR-14 support low-stock/expiry awareness with notification quality (N2, N3, and alert quality expectations).
 
-DR6: Users may belong to multiple households.
-
-=== Rationale / trace
-* DR-1, DR-2, DR-3 support the need for accurate inventory and spending records (N-inventory-integrity)
-* DR-4, DR-5, DR-6 support the need for clear household accountability in shared environments (N-sharing)
-* DR-7, DR-8 support the need to prevent accidental duplicate entries while preserving auditability (N-data-quality)
-* DR-9 through DR-13 support the need to protect budget accuracy and report integrity in shared household environments (N-budget-integrity)
-* DR-14 through DR-17 support the need to prevent unintended duplicate records before they are persisted (N-data-quality)
-// TODO (Team 2): Link DR* to the needs identified in the alert/restock domain (e.g., N-expiration-awareness, N-restock-notification)
-// TODO (Team 4): Link DR* to the needs identified in the reporting domain (e.g., N-spending-visibility, N-inventory-overview)
-
-include::shared-inventory-definition.adoc[leveloffset=+1]
-include::sharing-rules-and-assumptions.adoc[leveloffset=+1]
-include::permission-rules-definition.adoc[leveloffset=+1]
+[NOTE]
+====
+Detailed policies and edge-case handling for sharing, permissions, and invitations are deferred for later milestones unless required by Milestone 1 deliverables. Keep the core domain requirements above stable and implementation-independent.
+====
