@@ -21,7 +21,7 @@ Personas represent key user/stakeholder types. Aim for 3-4 personas. Each person
 ** Severe time constraints due to a heavy class and work schedule.
 ** Limited mental bandwidth for tracking chores; relies heavily on his smartphone for organization.
 * *Scenario:*
-Mateo comes home late after a grueling day of classes. He remembers buying chicken breasts earlier in the week and plans to quickly pan-fry them for dinner. When he opens the fridge, he realizes he actually bought them almost a week and a half ago, and they have spoiled. Frustrated, he orders an expensive pizza delivery, breaking his weekly food budget, and later realizes he also has three open bottles of ketchup in the pantry. Success for Mateo looks like receiving a push notification on his phone the day before his chicken expires, and being able to quickly check an app at the supermarket to confirm he doesn't need to buy a fourth bottle of ketchup.
+Mateo comes home late after a grueling day of classes. He remembers buying chicken breasts earlier in the week and plans to quickly pan-fry them for dinner. When he opens the fridge, he realizes he actually bought them almost a week and a half ago, and they have spoiled. Frustrated, he orders an expensive pizza delivery, breaking his weekly food budget, and later realizes he also has three open bottles of ketchup in the pantry. Success for Mateo looks like receiving an alert/notification (delivery TBD / in-app baseline) the day before his chicken expires, and being able to quickly check an app at the supermarket to confirm he doesn't need to buy a fourth bottle of ketchup.
 
 === Persona 2: Sofia, The Budget-Conscious Roommate
 * *Role:* Student living with roommates and Budget-conscious student
