@@ -3,22 +3,48 @@
 [abstract]
 Scenarios describe realistic end-to-end situations in the domain and how users expect things to work.
 
-=== Scenario S1 — <Short name>
-* Persona/actor: TODO
-* Context: TODO
-* Trigger: TODO
+=== Scenario S1 — Low-Stock Trigger After Consumption
+* Persona/actor: Julian, The Health-Conscious Student (primary); Occupant (system actor).
+* Context: Julian keeps a personal shelf of gluten-free meal-prep items separate from roommates. He depends on specific brands that require advance ordering and wants the app to anticipate shortages based on normal weekly usage.
+* Trigger: Julian records that he consumed/removed the last units of a pantry item (example, gluten-free pasta) during meal prep, causing the item quantity to fall below its low-stock threshold.
 
 .Steps
-. TODO: Step 1
-. TODO: Step 2
-. TODO: Step 3
+. Julian opens the app after meal prep and selects the item “Gluten-free pasta” from his Inventory.
+. Julian records consumption by decreasing the item quantity (e.g., from 2 boxes to 0).
+. The system detects the updated quantity is below the defined low-stock threshold and flags the item as low-stock.
+. The system adds the item to the Restock Planner with an initial status of “Needs restock”.
+. The system issues a low-stock alert to Julian (push notification/in-app notiifcation), including the item name.
+
 
 .Expected outcome
-* TODO
+* The Inventory reflects the updated quantity and low-stock status for the item.
+* The item appears in the Restock Planner as needing replenishment.
+* Julian receives a low-stock alert in time to reorder before running out mid-week.
 
 .Related needs / stories
-* Needs: TODO (N1, N2)
-* User stories: TODO (US-...)
+* Needs: N3, N4, N9
+* User stories: 
+** US-ALT-01 (Recieve low-stock warnings)
+** US-INV-01 (Add Items to inventory)
+=== Scenario S2 — Shared Inventory Prevents Duplicate Purchase
+* Persona/actor: Sofia, The Budget-Conscious Roommate (primary); Andrea, The Unofficial Household Manager (secondary); Occupant (system actor)
+* Context: Sofia and her roommates share household essentials. Past issues include duplicate purchases due to out-of-date whiteboards and unclear ownership of shared items.
+* Trigger: Sofia is about to purchase a shared essential (e.g., toilet paper) and checks the shared Inventory before paying.
 
-=== Scenario S2 — <Short name> (optional)
-* TODO
+.Steps
+. Sofia opens the shared Inventory at the supermarket and searches for “toilet paper.”
+. The system displays the current shared quantity and stock status (e.g., “In stock: 24 rolls”).
+. Sofia sees the item is sufficiently stocked and decides not to buy it.
+. Andrea later records a purchase for dish soap; the shared Inventory updates in real time for all Occupants.
+
+.Expected outcome
+* Sofia avoids buying a duplicate shared item, staying within budget.
+* The shared Inventory remains accurate and synchronized across all Occupants.
+
+.Related needs / stories
+* Needs: N2, N5, N8, N10
+* User stories: 
+** US-INV-02 (See what belongs to whom)
+** US-SB-01 (Split shared purchase with roomates)
+** US-RPT-01 (See household dashboard with insights)
+
