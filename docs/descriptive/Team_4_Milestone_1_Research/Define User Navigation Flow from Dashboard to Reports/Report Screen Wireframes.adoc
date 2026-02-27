@@ -1,5 +1,5 @@
 = Report Screen Wireframes
-:author: @Programian
+:author: @Programian, AI was used to help with proofreading the text
 :toc:
 :toclevels: 2
 
