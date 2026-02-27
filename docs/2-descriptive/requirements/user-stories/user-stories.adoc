@@ -1,6 +1,5 @@
-== 2.2.1 User Stories
+== User Stories
 
-[abstract]
 The following user stories represent what the Digital Home Inventory system will do for the students who use it. Each story is written from the perspective of a specific persona—Mateo trying to survive a busy week, Sofia watching every dollar, Julian protecting his strict diet, or Andrea keeping four roommates from killing each other over toilet paper. These five stories capture the heart of the system.
 
 The story identifiers use prefixes to indicate which feature area they belong to: US-INV for Core Inventory, US-ALT for Alerts and Restock, US-SB for Sharing and Budget, and US-RPT for Reports and Insights, helping readers identify which part of the system each story relates to.

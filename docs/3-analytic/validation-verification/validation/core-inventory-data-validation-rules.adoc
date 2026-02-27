@@ -1,0 +1,222 @@
+== Core Inventory Data Validation Rules
+
+This document defines validation rules for Core Inventory entities to ensure that data stored in the system remains consistent, accurate, and meaningful before and after database implementation.
+
+Validation rules are constraints or conditions applied to data fields to ensure that the entered information meets specific criteria before it is stored.
+
+=== General Validation Principles
+
+* Required fields must be present and valid before saving.
+* Text fields must be trimmed (no leading/trailing spaces, this means removing the beginning and the end spaces).
+* Empty strings are not allowed for required text fields.
+* Dates must follow logical ordering constraints.
+* Numeric fields must follow valid ranges.
+* When an attribute is optional, NULL is allowed (instead of an empty string).
+
+=== User Validation Rules
+
+Represents a user who can manage one or more homes and track inventory items.
+
+==== id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+* Default: auto-generated.
+
+==== email
+* Required: Yes
+* Rule: Must be a non-empty string.
+* Constraint: Must contain "@" and a domain portion (example: user@gmail.com).
+* Length: 3 to 254 characters.
+* Notes: Must be stored in lowercase for consistency (This effectively lowers the amount of duplicate accounts created).
+
+==== name
+* Required: Yes
+* Rule: Must be a non-empty string after trimming.
+* Length: 1 to 50 characters.
+
+==== created_at
+* Required: Yes
+* Rule: Must be a valid timestamp.
+* Default: current timestamp.
+
+=== Owner Validation Rules
+
+Represents the person associated with an item. Owners may or may not be system users (for example, roommates).
+
+==== id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+* Default: auto-generated.
+
+==== name
+* Required: Yes
+* Rule: Must be a non-empty string after trimming.
+* Length: 1 to 50 characters.
+
+==== created_at
+* Required: Yes
+* Rule: Must be a valid timestamp.
+* Default: current timestamp.
+
+=== Home Validation Rules
+
+Represents a household environment that contains rooms and inventory items.
+
+==== id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+* Default: auto-generated.
+
+==== name
+* Required: Yes
+* Rule: Must be a non-empty string after trimming.
+* Length: 1 to 100 characters.
+
+==== created_at
+* Required: Yes
+* Rule: Must be a valid timestamp.
+* Default: current timestamp.
+
+=== Room Validation Rules
+
+Represents a location within a home where items are stored (for example, kitchen, pantry, bathroom).
+
+==== id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+* Default: auto-generated.
+
+==== name
+* Required: Yes
+* Rule: Must be a non-empty string after trimming.
+* Length: 1 to 50 characters.
+
+==== home_id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+
+==== created_at
+* Required: Yes
+* Rule: Must be a valid timestamp.
+* Default: current timestamp.
+
+=== Product Validation Rules
+
+Represents a product definition independent of purchase instances.
+
+==== id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+* Default: auto-generated.
+
+==== name
+* Required: Yes
+* Rule: Must be a non-empty string after trimming.
+* Length: 1 to 100 characters.
+
+==== brand
+* Required: No
+* Rule: If provided, must be a non-empty trimmed string.
+* Length: 1 to 80 characters.
+* Example: "Hot Wheels", "Kirkland", "Pepsi".
+
+==== size
+* Required: No
+* Rule: If provided, must be a non-empty trimmed string.
+* Length: 1 to 40 characters.
+* Example: "80oz", "100oz", "1000ml".
+
+==== variant
+* Required: No
+* Rule: If provided, must be a non-empty trimmed string.
+* Length: 1 to 60 characters.
+* Example: "Original", "Lemon", "Strawberry".
+
+==== barcode
+* Required: No
+* Rule: If provided, must be a trimmed string with only digits.
+* Length: 8 to 14 characters (supports common UPC/EAN lengths).
+* Notes: Store as text to preserve leading zeros.
+
+==== created_at
+* Required: Yes
+* Rule: Must be a valid timestamp.
+* Default: current timestamp.
+
+=== Item (Stock Entry) Validation Rules
+
+Represents a specific instance of a product owned by an owner and stored in a room.
+
+==== id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+* Default: auto-generated.
+
+==== product_id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+
+==== owner_id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+
+==== room_id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+
+==== count
+* Required: Yes
+* Rule: Must be an integer.
+* Range: count >= 1.
+* Default: 1.
+
+==== purchase_date
+* Required: No
+* Rule: If provided, must be a valid date.
+* Constraint: Should not be in the far future (recommended).
+* Recommended check: purchase_date <= today.
+
+==== expiration_date
+* Required: No
+* Rule: If provided, must be a valid date.
+* Date logic: If both purchase_date and expiration_date are provided, expiration_date must be >= purchase_date.
+
+==== notes
+* Required: No
+* Rule: If provided, must be a trimmed string.
+* Length: 1 to 300 characters.
+
+==== created_at
+* Required: Yes
+* Rule: Must be a valid timestamp.
+* Default: current timestamp.
+
+=== Managed (User–Home Relationship) Validation Rules
+
+Represents the association between users and the homes they manage.
+
+==== user_id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+
+==== home_id
+* Required: Yes
+* Rule: Must be present.
+* Constraint: Must be an integer > 0.
+
+==== role
+* Required: Yes
+* Rule: Must be a non-empty trimmed string.
+* Allowed values (recommended): "member", "admin".
+* Default: "member".

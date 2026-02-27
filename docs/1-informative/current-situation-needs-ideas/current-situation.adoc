@@ -1,13 +1,13 @@
 == Current Situation
 
-Students living independently often struggle to keep track of household items such as groceries, cleaning supplies, and personal care products. Because they rely on memory or scattered notes, they frequently buy duplicates, run out of essentials unexpectedly, and discover food or medicine after it has expired.
+Students living independently often lose track of household items such as groceries, cleaning supplies, toiletries, and sometimes medicine. Tracking is usually ad-hoc (memory, notes, receipts, or messages), so information becomes outdated quickly. As a result, students may buy duplicates, run out of essentials unexpectedly, and sometimes discover expired items during cleanup.
 
-In shared households, the problem is worse: roommates lack visibility into what is already available, which increases duplicate purchases and makes budgeting harder. The current environment lacks a simple, student-friendly system optimized for fast item updates, reminders, and shared coordination.
+In shared households, the problem is worse: roommates lack visibility into what is already available, which increases duplicate purchases and makes budgeting harder. In many student households there is no consistent shared method for tracking items across people and time; tracking is ad-hoc (memory, notes, messages), so information becomes stale quickly.
 
 === Domain context
 Students and young adults living independently often struggle to keep track of household items, shared supplies, and personal belongings. While several home inventory applications exist, most are designed for insurance documentation or business inventory management rather than lightweight everyday use.
 
-As a result, many users rely on memory, notes, or informal tracking methods, which leads to forgotten purchases, duplicate buying, and poor visibility into shared household resources. The current market lacks a simple, student-friendly solution optimized for fast item capture and collaborative household use.
+As a result, many users rely on memory, notes, or informal tracking methods, which leads to forgotten purchases, duplicate buying, and poor visibility into shared household resources. Most tools students try (notes, basic lists, or heavier inventory apps) are either too informal to stay accurate over time or too cumbersome for everyday tracking, so shared inventory information quickly becomes unreliable.
 
 
 === Who is involved (actors)
@@ -53,7 +53,7 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
 
 === Consequences
 * Time/cost impact: Users and students waste money on duplicate purchases and spend extra time checking inventory manually using written lists or other tracking software.
-* Quality/accuracy impact: Household inventory records quickly become unreliable due to key features being locked by a paywall.
+* Quality/accuracy impact: When tracking relies on tools that are abandoned or partially used (e.g., because advanced features are unavailable or too cumbersome), the record becomes incomplete and therefore untrusted.
 * User experience impact: Frustration leads to abandonment of existing apps.
 * Organizational impact: Shared households experience coordination inefficiencies.
 
@@ -63,8 +63,3 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
 * Assumption: Users are more likely to maintain inventory if entry is fast and simple.
 * Constraint: Users have limited patience for manual data entry.
 * Constraint: The solution must work well on mobile devices with intermittent connectivity.
-
-// [NOTE]
-// ====
-// Keep this section solution-free. It should describe the world today, not what we plan to build.
-// ====
