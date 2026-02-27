@@ -1,5 +1,5 @@
 = User Navigation Flow from Dashboard to Reports
-//Author: Ian Rivera Troche
+:author: Disclosure: This document accurately represents the work of @Programian, but AI was used to garner ideas and feedback when drafting the document.
 :toc:
 :toclevels: 2
 
