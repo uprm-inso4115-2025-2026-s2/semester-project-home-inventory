@@ -1,4 +1,4 @@
-= Milestone #1 Documentation 
+
 :toc: left
 :toclevels: 2
 :sectnums:
@@ -8,3 +8,10 @@ include::1-informative/1.adoc[]
 include::2-descriptive/2.adoc[]
 include::3-analytic/3.adoc[]
 include::4-specific-topics/4.adoc[]
+
+[discrete]
+== Generative AI Disclosure
+In our Digital Home Inventory project, we utilized generative AI tools to enhance our workflow while maintaining ownership of the core ideas and decisions. The tools we used were Claude 4.5 (accessed via a free account), ChatGPT (free tier), and DeepSeek AI. These were primarily employed during the brainstorming and structuring phases, where they helped generate initial ideas for project features, such as inventory tracking, notifications for low stock or expirations, budget management, roommate sharing to avoid duplicates, and report generation. For documentation, we used AI to check grammar, suggest edits, and refine the structure to ensure it correlated correctly with rubric criteria, ensuring the documentation met the assignment criteria.
+The core work originated from our team, starting with original components like our feature analysis, research on requirements (e.g., Supabase schema for items with privacy fields, Flutter UI for scanning), and project scope discussions. AI was used to enhance these, providing suggestions on implementation steps or alternative structures, but we always edited and revised the output to align with our vision. For instance, when AI suggested feature requirements like API integrations for expiration dates, we reviewed them against the A3 document and team discussions, rejecting or modifying those that didn’t fit our student-focused goals.
+To verify AI-generated content, we fact-checked everything with the team, cross-referencing course materials, rubrics, and real-world examples from similar apps. If inconsistencies arose, such as AI recommendations that conflicted with our privacy feature for personal items, we resolved them through brainstorming sessions, deciding collectively whether to incorporate, edit, or discard. One example: AI proposed a complex budgeting algorithm, but it didn’t align with our simple student needs, so we simplified it after team review.
+From using AI, we learned it streamlined research and idea generation, freeing up time for deeper reflection on what the app truly needed for student users. It didn’t reduce engagement, instead it forced us to critically evaluate outputs, enhancing our learning and analytical skills. Overall, AI acted as a supportive tool, not a replacement, helping us iterate faster while keeping the project authentic to our group’s efforts.
