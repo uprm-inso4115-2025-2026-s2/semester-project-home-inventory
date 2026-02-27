@@ -1,6 +1,6 @@
 # Milestone Data
 
-## Date Generated: 2026-02-10
+## Date Generated: 2026-02-27
 | Developer | Points Closed | Percent Contribution | Indivudal Grade | Milestone Grade | Lecture Topic Tasks |
 | --------- | ------------- | -------------------- | --------------- | --------------- | ------------------- |
 | Total | 0 | /100% | /100% | /100% | 0 |
@@ -8,7 +8,7 @@
 
 ## Sprint Task Completion
 
-| Developer | Sprint 1<br>2026/02/10, 03:14 AM<br>2026/02/10, 03:14 AM | Sprint 2<br>2026/02/10, 03:14 AM<br>2026/02/10, 03:14 AM |
+| Developer | Sprint 1<br>2026/02/27, 03:43 PM<br>2026/02/27, 03:43 PM | Sprint 2<br>2026/02/27, 03:43 PM<br>2026/02/27, 03:43 PM |
 |---|---|---|
 
 ## Weekly Discussion Participation
@@ -23,7 +23,7 @@
 | Message |
 | ------- |
 | WARNING: list index out of range |
-| ERROR: Error executing query: [{'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 6, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'title' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}, {'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 7, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'number' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}, {'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 8, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'public' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}, {'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 9, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'url' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}] |
+| ERROR: Project Board with name UPRM_Home_Inventory not found in organization. Ensure that all the team's issues are listed in a board with this *exact* name. |
 | Traceback (most recent call last): |
 |   File "/home/runner/work/semester-project-home-inventory/semester-project-home-inventory/inso-gh-query-metrics/src/generateMilestoneMetricsForActions.py", line 100, in generateMetricsFromV2Config |
 |     team_metrics = getTeamMetricsForMilestone( |
@@ -46,9 +46,6 @@
 |   File "/home/runner/work/semester-project-home-inventory/semester-project-home-inventory/inso-gh-query-metrics/src/generateTeamMetrics.py", line 174, in fetchIssuesFromGithub |
 |     project = getProject(organization=org, project_name=team) |
 |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |
-|   File "/home/runner/work/semester-project-home-inventory/semester-project-home-inventory/inso-gh-query-metrics/src/getProject.py", line 29, in getProject |
-|     response: dict = runGraphqlQuery(query=get_projects_query, variables=params) |
-|                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ |
-|   File "/home/runner/work/semester-project-home-inventory/semester-project-home-inventory/inso-gh-query-metrics/src/utils/queryRunner.py", line 68, in runGraphqlQuery |
-|     raise ConnectionError(f"Error executing query: {response_dict['errors']}") |
-| ConnectionError: Error executing query: [{'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 6, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'title' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}, {'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 7, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'number' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}, {'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 8, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'public' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}, {'type': 'INSUFFICIENT_SCOPES', 'locations': [{'line': 9, 'column': 17}], 'message': "Your token has not been granted the required scopes to execute this query. The 'url' field requires one of the following scopes: ['read:project'], but your token has only been granted the: ['read:org', 'repo'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."}] |
+|   File "/home/runner/work/semester-project-home-inventory/semester-project-home-inventory/inso-gh-query-metrics/src/getProject.py", line 42, in getProject |
+|     raise ValueError( |
+| ValueError: Project Board with name UPRM_Home_Inventory not found in organization. Ensure that all the team's issues are listed in a board with this *exact* name. |
