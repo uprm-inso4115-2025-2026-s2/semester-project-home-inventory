@@ -7,10 +7,10 @@ The revision addressed a conflict between the Group-Owned Inventory model and th
 
 Here, users manage multiple homes that contain multiple rooms. Rooms can only belong to one home, and can contain multiple household items. Every item is contained in a room and references a product. Every item is also owned by a single owner. We want to track items belonging to owners, even if those owners are not users. An example of this would be a user attributing items to a roommate who is not themself a user.
 
-image::stock_ERD.png[]
+image::2-descriptive/implementation/diagrams/stock_ERD.png[]
 Figure 1: ER diagram for the project entities.
 
-image::stock_table_diagram.png[]
+image::2-descriptive/implementation/diagrams/stock_table_diagram.png[]
 Figure 2: Table diagram for the backend.
 
 
