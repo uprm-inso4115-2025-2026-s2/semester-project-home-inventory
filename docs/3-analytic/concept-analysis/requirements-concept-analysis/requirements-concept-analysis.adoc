@@ -1,6 +1,5 @@
-== 3.1.2 Requirements Concept Analysis
+== Requirements Concept Analysis
 
-[abstract]
 This section analyzes requirement-related concepts: actors, goals, capabilities, and how they map to domain concepts.
 
 === Actors and goals (draft)

@@ -1,0 +1,20 @@
+= Notifications Schema
+:showtitle: true
+
+This section describes the database schema for the Notifications & Alerts subsystem.
+
+image::notifications_schema.png[]
+
+Figure 1: Table diagram for the notifications system.
+
+The notifications table stores in-app notifications for users.
+
+Each notification:
+- Belongs to a user
+- May reference an inventory item
+- Has a type
+- Has a priority level
+- Has a status (pending, delivered, read, dismissed)
+- Includes timestamps for tracking
+
+This design allows the system to store and manage notifications directly in the database.

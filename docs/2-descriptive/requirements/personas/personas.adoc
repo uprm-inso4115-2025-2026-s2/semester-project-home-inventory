@@ -1,6 +1,5 @@
-== 2.2.7 Personas (Reference)
+== Personas (Reference)
 
-[abstract]
 This file is optional because personas also appear under 4-specific-topics. Choose one “source of truth.”
 
 TODO: Either:

@@ -1,6 +1,5 @@
-== 2.2.4 Domain Requirements
+== Domain Requirements
 
-[abstract]
 Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology.
 
 * DR1: TODO

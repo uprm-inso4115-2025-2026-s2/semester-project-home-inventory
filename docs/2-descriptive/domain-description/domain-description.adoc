@@ -1,6 +1,4 @@
-== 2.1 Domain Description
-
-// This section describes the domain in a concrete, structured way.
+== Domain Description
 
 include::rough-sketch/rough-sketch.adoc[leveloffset=+1]
 include::terminology/terminology.adoc[leveloffset=+1]

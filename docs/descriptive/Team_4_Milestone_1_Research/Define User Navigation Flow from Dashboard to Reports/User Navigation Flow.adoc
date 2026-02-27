@@ -1,0 +1,87 @@
+= User Navigation Flow from Dashboard to Reports
+//Author: Ian Rivera Troche
+:toc:
+:toclevels: 2
+
+== Purpose
+
+The purpose of this document is to lay out the navigation logic and user flow between the Dashboard and Reports of the Home Inventory app. This document clarifies how users access reports and move between report-related screens.
+
+== Navigation Entry Point
+
+Reports are accessed from the main Dashboard.
+
+Entry mechanism:
+
+* Users navigate to reports via a Reports button navigation element.
+* Reports are treated as a primary application section.
+
+Exact UI placement is intentionally undefined at this stage.
+
+== Navigation Paradigm Evaluation
+
+Several navigation paradigms were considered for accessing the Reports section:
+
+* *Bottom Navigation* - Suitable for primary, frequently accessed sections. Provides persistent visibility but competes for limited screen space.
+
+* *Navigation Drawer* - Allows many sections without cluttering the main interface. However, discoverability may be lower for key features.
+
+* *Tab-Based Navigation* - Useful for switching between closely related views but less appropriate for structurally distinct sections.
+
+=== Selected Approach
+
+Reports are to be accessed via a Dashboard navigation element (Reports button).
+
+Reasoning:
+
+* Reports represent a distinct functional area rather than a constantly switched context.
+* Avoids persistent UI occupation required by bottom navigation.
+* Provides explicit user intent when entering reporting features.
+
+== Screens Involved
+
+The reporting flow may involve the following screens or UI states:
+
+* Dashboard
+* Reports Overview
+* Report Details
+* Filters Panel and/or Filters State
+
+These screens represent logical navigation contexts rather than finalized UI layouts.
+
+== User Flow Diagram
+
+[mermaid]
+----
+flowchart TD
+
+    Dashboard -->|Access Reports| ReportsOverview
+
+    ReportsOverview -->|Select Report| ReportDetails
+    ReportsOverview -->|Back| Dashboard
+
+    ReportDetails -->|Open Filters| FiltersPanel
+    FiltersPanel -->|Apply Filters| ReportDetails
+    FiltersPanel -->|Cancel| ReportDetails
+
+    ReportDetails -->|Back| ReportsOverview
+----
+
+== Interaction Notes
+
+* Reports Overview acts as the central hub for all available reports.
+* Report Details displays the selected report’s specific data and visualizations.
+* Filters modify the Report Details state (what is displayed and how) rather than representing a standalone section.
+* Back navigation returns users to the previous logical screen.
+
+== Design Considerations
+
+* Navigation should minimize unnecessary steps.
+* Transitions between screens should be predictable.
+* Reporting features should remain easily discoverable from the Dashboard.
+
+== Open Questions for Later Implementation
+
+* Should filters persist between sessions?
+* Should reports be accessible from additional entry points like notifications?
+* Should frequently used reports be surfaced on the Dashboard?

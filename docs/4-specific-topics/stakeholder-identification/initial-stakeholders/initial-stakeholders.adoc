@@ -1,4 +1,4 @@
-== 4.1.1 Initial Stakeholders
+== Initial Stakeholders
 
 [abstract]
 Initial set of stakeholders identified at the start of the project.
@@ -7,13 +7,52 @@ Initial set of stakeholders identified at the start of the project.
 |===
 |Stakeholder |Goals / needs |Influence |Concerns / notes
 
-|TODO |TODO |High/Med/Low |TODO
+|Student living alone 
+|Keep track of personal groceries, avoid food waste, and manage a tight budget efficiently. 
+|High 
+|Forgetting what items are currently in stock, letting perishable food expire before consumption.
+
+|Student living with roommates 
+|Coordinate shared groceries, maintain visibility of common household items, and avoid buying duplicates. 
+|High 
+|Lack of communication leading to excess inventory and wasted space in shared areas.
+
+|Roommate who shares purchases 
+|Track who bought what and when, ensuring equitable splitting of common goods like toilet paper, cleaning supplies. 
+|High 
+|Paying more than their fair share, or unexpectedly running out of essential shared items.
+
+|Budget-conscious student 
+|Track consumption rates to predict expenses and minimize spending on unnecessary or duplicate items. 
+|Medium 
+|Overspending due to poor inventory visibility; the app must provide clear insights into shopping habits.
+
+|Student with dietary/medical needs 
+|Strictly monitor specific food items or medications, ensuring continuous availability of safe and necessary options. 
+|Medium 
+|Running out of essential specialized items; potential cross-contamination confusion in shared household tracking.
+
+|Frequent household supply buyers 
+|Fast data entry and easy management of bulk items to keep the inventory accurate without excessive effort. 
+|Medium 
+|Inventory entry taking too much time, making the application a burden rather than a helpful tool.
+
+|Parents/Guardians 
+|Ensure the student has enough food and supplies; potentially view shared shopping lists to help fund purchases. 
+|Low 
+|Money being wasted on expired food or duplicate purchases due to poor planning.
+
+|Project managers / Course staff 
+|Evaluate project execution, verify domain requirements are met, and assess the software engineering process. 
+|High 
+|The project failing to meet academic standards, syllabus requirements, or adequately solving the proposed domain problem.
 |===
 
-=== Stakeholder categories (optional)
-* Primary stakeholders: TODO
-* Secondary stakeholders: TODO
-* External stakeholders: TODO
+=== Stakeholder categories
+* *Primary stakeholders:* Student living alone, Student living with roommates, Roommate who shares purchases.
+* *Secondary stakeholders:* Budget-conscious student, Student with dietary/medical needs, Frequent household supply buyers, Parents/Guardians.
+* *External stakeholders:* Project managers / Course staff.
 
 === Open questions
-* TODO
+* How will users handle the transition of a "personal" item becoming a "shared" item if roommate agreements change?
+* What is the threshold for a household supply to be considered "low stock" across different users' habits?

@@ -1,40 +1,147 @@
-== 1.1 Team
+== Team
 
-[abstract]
-Introduce the team structure and roles for the project and justify partner participation.
+For Milestone 1, the Digital Home Inventory team is organized into feature-based groups to support parallel development: Core Inventory, Alerts & Restock, Sharing & Budget, and Reports & Insights; plus a cross-functional Design Team, a Documentation Team, and two Project Managers. In this context, all team members are considered partners because each member contributes directly to Milestone 1 deliverables. No external partners have been identified for this milestone; if any arise, their roles and responsibilities will be documented in this section. The lists are presented in alphabetical order and indicate each group’s Team Lead. The Tasks column is reserved for recording completed issues and responsibilities during the milestone.
 
-=== Partner justification
-TODO: 2–4 sentences explaining why all members are partners (or note any external partners and their role).
 
-=== Documentation Leads
-[cols="1,1,2",options="header"]
+
+*Managers:*
+
+[cols="3,3,6",options="header"]
 |===
-|Name |GitHub |Responsibilities
+|Student |GitHub username |Tasks
 
-|TODO |@TODO |TODO
-|===
-
-=== Feature Teams
-==== Feature Team: <Name>
-[cols="1,1,2",options="header"]
-|===
-|Name |GitHub |Responsibilities
-
-|TODO |@TODO |TODO
+|Kaysha L Pagan-Lopez |@Kay9876 |
+|Luis J Cruz-Cruz |@LuisJCruz |
 |===
 
-=== Design Team
-[cols="1,1,2",options="header"]
-|===
-|Name |GitHub |Responsibilities
 
-|TODO |@TODO |TODO
+
+*Documentation Team:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Alondra S. Arce Perea (Team Lead) |@alondra-arce | #13, #113, 
+
+|Open Spot | |
 |===
 
-=== Managers (if applicable)
-[cols="1,1,2",options="header"]
-|===
-|Name |GitHub |Responsibilities
 
-|TODO |@TODO |TODO
+
+*Design:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Adriana Figueroa (Team Lead) |@AdrianaFigueroa9 | #19, #22, #34, #51, #93, #94, #107 
+
+|Devlin Hahn |@devlin-hahn04 | #38, #39, #41
+
+|Jorge De León |@JorgeDeLeonOrama | #17, #116, #126, #127
+
+|Ronaldo Flores Nazario |@ronaldoflores9 | #20, #42, #84
+
+|Eliel Hernandez Gonzalez |@eliel-hernandez | #25, #26
+
+|Daniella Melero |@daniellameleroo | #40, #44, #45, #48
+
+|Natalia S Vera Rivera |@nataliavera6 | #21, #102, #103, #104, #106
+
+|Ian Rivera |@Programian | #29, #115, #118
+
+|Jayden Sánchez |@jaydensanchez12 | #56, #129, #130
+|===
+
+
+
+*Team 1: Core Inventory:*
+
+[cols="2,2,4",options="header"]
+|===
+|Name |GitHub |Tasks
+
+|Kevin Gómez (Team Lead) |@kevgom018 |#11, #12, #14, #22, #34, #107
+
+|Devlin Hahn |@devlin-hahn04 |#38, #39, #41
+
+|Jorge De León |@JorgeDeLeonOrama |#17, #116
+
+|Januel E. Torres Marquez |@jankii03 |#52, #135, #136, #137
+
+|Kian-Robert Ramos Vega |@kian-robert |#67, #108, #109
+
+|Jorge Rivera |@JorgeRivera94 |#15, #122
+
+|Lucas Matos Datiz |@L-A-M-D |#82
+|===
+
+
+
+*Team 2: Alerts & Restock:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Solimar Cruz Hernandez (Team Lead) |@Solimar-Cruz |#22, #32, #33, #30, #34, #107
+
+|Ronaldo Flores Nazario |@ronaldoflores9 |#20, #42, #84
+
+|Eliel Hernandez Gonzalez |@eliel-hernandez |#25, #26
+
+|Kemuel Cubero Rosario |@Kemuel05 |#23
+
+|Kevin Lara Rodríguez |@kevinlara1 |#87
+
+|Aryam Z Diaz Torres |@aryamdiaz |#24, #112
+
+|Reinaldo J. Martinez Morales |@reinaldo-martinez1 |#27, #28, #119
+|===
+
+
+
+*Team 3: Sharing & Budget:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Andrea Segarra (Team Lead) |@andreasegarra |#22, #34, #35, #107
+
+|Daniella Melero |@daniellameleroo |#40, #44, #45, #48
+
+|Natalia S Vera Rivera |@nataliavera6 |#21, #102, #103, #104, #106
+
+|Fabiola Torres |@FabiolaZTorres |#46, #95, #96, #101
+
+|Fernando Castro |@fernan-castro |#71
+
+|Yamilette Alemany |@yamilette-alemany |#18, #58, #59, #60
+
+|Ernesto S. Soto Rivera |@ernestosoto3 |#31, #98, #99, #100
+|===
+
+
+
+*Team 4: Reports & Insights:*
+
+[cols="3,3,6",options="header"]
+|===
+|Student |GitHub username |Tasks
+
+|Fabian Velez (Team Lead) |@FabianVelezOcasio |#22, #34, #107
+
+|Ian Rivera |@Programian |#29, #115, #118
+
+|Jayden Sánchez |@jaydensanchez12 |#56
+
+|Nicolás Rivera Batista |@nicolasrivera25 |#16
+
+|Samarys Barreiro Melendez |@SamarysB |#36, #111, #113
+
+|Open Spot | |
+
+|Open Spot | |
 |===

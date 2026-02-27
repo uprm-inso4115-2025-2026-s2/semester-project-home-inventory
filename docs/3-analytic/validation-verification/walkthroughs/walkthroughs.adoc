@@ -1,6 +1,5 @@
-== 3.2.2 Walkthroughs
+== Walkthroughs
 
-[abstract]
 Walkthroughs validate assumptions by stepping through scenarios with stakeholders or team members.
 
 === Walkthrough plan

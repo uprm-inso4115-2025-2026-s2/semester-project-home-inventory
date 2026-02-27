@@ -1,0 +1,184 @@
+= Lecture Topic Task: Domain Attributes Analysis of the Digital Home Inventory Domain
+
+== 1. Introduction
+
+In this lecture topic task, I apply the Domain Attributes framework discussed in class to the Digital Home Inventory domain.
+
+The goal is to classify and analyze the main phenomena in the domain using the following dimensions:
+
+- Continuity, Discreteness, and Hybridicity
+- Statics and Dynamics
+- Dynamic Subtypes (Inert, Reactive, Programmable)
+- Tangibility and Intangibility
+- Dimensionality
+
+The purpose of this analysis is to better understand how the characteristics of the domain affect how the system should be modeled and designed.
+
+== 2. Continuity, Discreteness, and Hybridicity
+
+=== 2.1 Continuous Phenomena
+
+Some aspects of the Digital Home Inventory domain change continuously over time:
+
+- The passage of time toward expiration dates
+- The gradual use of household items
+- Budget reduction over time
+
+These can be viewed as continuous functions over time, even if the system checks them at specific intervals.
+
+=== 2.2 Discrete Phenomena
+
+Most visible system behaviors are discrete:
+
+- Adding or removing items
+- Updating item quantity
+- Triggering notifications
+- Assigning categories
+- Recording purchases
+
+These happen as state changes triggered by specific events.
+
+=== 2.3 Hybrid Nature
+
+The domain can be considered hybrid:
+
+- Continuous in the real world (consumption and time passing)
+- Discrete in how it is represented digitally (inventory updates)
+
+Because of this, the system likely needs both event-driven logic and time-based checks.
+
+== 3. Statics and Dynamics
+
+=== 3.1 Static Phenomena
+
+Some elements are mostly static, such as:
+
+- Category definitions (e.g., "Pantry", "Bathroom Supplies")
+- Room classifications
+- Report templates
+
+These do not depend directly on time and usually do not change often.
+
+=== 3.2 Dynamic Phenomena
+
+Most parts of the domain are dynamic:
+
+- Item quantities
+- Stock levels
+- Spending totals
+- Shared inventory between roommates
+- Notification status
+
+For this reason, the Digital Home Inventory system is mainly dynamic, even if it includes some stable structures.
+
+== 4. Dynamic Classification
+
+=== 4.1 Dynamic Inert
+
+Some changes only happen when there is external input (usually from the user):
+
+- Updating quantity
+- Recording a purchase
+- Deleting an item
+
+These are inert dynamic behaviors because they do not change on their own.
+
+=== 4.2 Dynamic Reactive
+
+The system also performs actions in response to certain conditions:
+
+- Sending low-stock notifications
+- Alerting users about expiration
+- Keeping shared inventories synchronized
+
+These behaviors are reactive because they respond either to user actions or time-based conditions.
+
+=== 4.3 Dynamic Programmable
+
+There are also predefined rules in the system:
+
+- Notification thresholds
+- Expiration alerts
+- Budget warnings
+
+These behaviors are programmable since the system follows defined rules to decide when to act.
+
+== 5. Tangibility and Intangibility
+
+=== 5.1 Physically Tangible Phenomena
+
+- Household items (food, medicine, cleaning supplies)
+- Physical stock levels
+
+These exist in the real world and can be counted or measured.
+
+=== 5.2 Intangible but Precise
+
+- Inventory records
+- Spending totals
+- Budget calculations
+- Expiration timestamps
+
+These are digital representations. They are not physical, but they are precise and well-defined.
+
+=== 5.3 Intangible and Imprecise
+
+- User frustration
+- Perceived urgency
+- Fear of running out of essential items
+
+These cannot be completely formalized, but they explain why features like reminders and reports are important.
+
+== 6. Dimensionality
+
+=== 6.1 Zero-Dimensional (Atomic Values)
+
+- Quantity (integer)
+- Price (numeric value)
+- Expiration date (timestamp)
+- Priority level
+
+These can be modeled as basic data types.
+
+=== 6.2 One-Dimensional
+
+- Purchase history (ordered list of events)
+- Notification logs
+- Usage records
+
+These follow a clear sequence over time.
+
+=== 6.3 Multi-Dimensional
+
+The inventory itself is multi-dimensional:
+
+- Organized by room
+- Categorized by type
+- Assigned to users (roommates)
+- Associated with priority
+- Tracked over time
+
+Because of this structure, the domain requires relationships between entities and cannot be modeled as a simple flat list.
+
+== 7. Modeling Implications
+
+Based on this classification, the Digital Home Inventory domain:
+
+- Is hybrid (continuous and discrete)
+- Is mostly dynamic
+- Includes reactive and programmable behaviors
+- Represents real-world tangible items digitally
+- Is multi-dimensional and structured
+
+As a result, the system should:
+
+- Support event-driven state changes
+- Handle time-based triggers
+- Maintain structured relationships between entities
+- Keep shared data consistent between users
+
+== 8. Conclusion
+
+The Digital Home Inventory domain is hybrid, mostly dynamic, reactive in several aspects, and multi-dimensional in structure.
+
+Applying the Domain Attributes framework helps clarify how the main phenomena behave and how they should be modeled before implementation. This strengthens the conceptual foundation of the project and supports better design decisions.

@@ -1,0 +1,621 @@
+= Navigation Pattern Recommendations for Home Inventory Flutter Application
+:author: Devlin Hahn
+
+== Executive Summary
+
+This document researches and recommends navigation patterns for our Home Inventory Flutter application. The goal is to identify navigation structures that support core user workflows (adding items, viewing inventory, organizing categories, generating reports) while remaining scalable as the app grows. These recommendations will guide wireframing, prototyping, and final implementation decisions.
+
+== Understanding Our User & Workflows
+
+Before evaluating navigation patterns, we must understand who uses or who might find our app suitable to use for their needs:
+
+=== Target Users 
+
+- Homeowners/Renters: Managing personal belongings for insurance, organization, or moving
+
+- Roommates: Keep track of what belongs to who to avoid mixups 
+
+- Occasional Users: Only access app when adding new purchases or filing claims
+
+=== Core User Workflows
+
+|===
+| Workflow | Frequency | Priority | Actions Required
+| Add New Item | Medium-High | Critical | Scan receipt, take photo, enter details, assign category
+| Browse Inventory | High | Critical | View all items, search, filter, sort
+| View Item Details | High | Critical | See photos, receipts, warranty info, value
+| Organize Categories | Low-Medium | Medium | Create/edit/delete categories, move items
+| Generate Reports | Low | Medium | Insurance reports, valuation summaries
+| Settings/Profile | Low | Low | App preferences, backup, export data
+|===
+
+=== Key User Needs
+
+1. Quick access to add items (core action)
+
+2. Efficient browsing/searching of potentially large collections
+
+3. Clear organization by room, category, or custom tags
+
+4. Minimal taps for frequent actions
+
+5. Scanning/photos integration in workflows
+
+== Navigation Patterns Research
+
+I've researched navigation patterns in comparable applications (inventory management, home organization, collection apps) and Flutter best practices.
+
+=== Pattern 1: Bottom Navigation Bar
+
+==== Description
+A persistent bar at the bottom of the screen with 3-5 icons representing top-level sections. Each tap switches the main content area.
+
+==== Common In
+
+- Material Design apps
+
+- Mobile-first applications
+
+- Apps with 3-5 distinct, equally important sections
+
+==== Flutter Implementation
+
+Referenced in photo also inside folder as `bottom_nav`
+
+[source, dart]
+
+import 'package:flutter/material.dart';
+void main() => runApp(const MaterialApp(
+      home: HomeScreen(),
+    ));
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  final List<Widget> _screens = [
+    const Center(child: Text('Inventory')),
+    const Center(child: Text('Add Item')),
+    const Center(child: Text('Categories')),
+    const Center(child: Text('Reports')),
+    const Center(child: Text('Settings')),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() => _selectedIndex = index);
+        },
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.inventory), label: 'Inventory'),
+          NavigationDestination(icon: Icon(Icons.add_circle), label: 'Add'),
+          NavigationDestination(icon: Icon(Icons.category), label: 'Categories'),
+          NavigationDestination(icon: Icon(Icons.bar_chart), label: 'Reports'),
+          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
+    );
+  }
+}
+
+==== Advantages 
+
+- Thumb-friendly on mobile (easy one hand use)
+- Alwawys visible, users know where they are
+- Quick switching between sections
+- Follows platfrom conventions (familiar to users)
+- Works well when only 3-5 sections exist
+
+==== Disadvantages
+
+- Limited to 5 items (Material Design guideline)
+- Takes up screen space (can reduce content area)
+- Not ideal for tablet/desktop layouts
+- Nested navigation can become complex
+- All destinations equally prominent (no hierarchy)
+
+==== Best For
+
+- Mobile-first apps with 3-5 equally important sections
+- Apps where users frequently switch between sections
+- Simple information architecture
+
+=== Pattern 2: Navigation Rail (Sidebar)
+
+==== Description
+A vertical rail on the left side (tablet/desktop) that expands to a drawer on mobile. Destinations are listed vertically with icons and labels.
+
+==== Common In
+
+- Responsive Flutter applications
+- Tablet-optimized apps
+- Apps with many navigation destinations
+
+==== Flutter Implementation
+
+Referenced in photo also inside folder as `side_nav`
+
+[source, dart]
+
+import 'package:flutter/material.dart';
+void main() {
+  runApp(const MyApp());
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SideNavigationScreen(),
+    );
+  }
+}
+class SideNavigationScreen extends StatefulWidget {
+  const SideNavigationScreen({super.key});
+  @override
+  State<SideNavigationScreen> createState() => _SideNavigationScreenState();
+}
+class _SideNavigationScreenState extends State<SideNavigationScreen> {
+  int _selectedIndex = 0;
+  final List<Widget> _screens = [
+    const Center(child: Text('Inventory Screen', style: TextStyle(fontSize: 24))),
+    const Center(child: Text('Add Item Screen', style: TextStyle(fontSize: 24))),
+    const Center(child: Text('Categories Screen', style: TextStyle(fontSize: 24))),
+    const Center(child: Text('Reports Screen', style: TextStyle(fontSize: 24))),
+    const Center(child: Text('Settings Screen', style: TextStyle(fontSize: 24))),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: [
+          // Side Navigation Rail
+          NavigationRail(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.all,
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.inventory),
+                selectedIcon: Icon(Icons.inventory_2),
+                label: Text('Inventory'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.add_circle_outline),
+                selectedIcon: Icon(Icons.add_circle),
+                label: Text('Add'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.category_outlined),
+                selectedIcon: Icon(Icons.category),
+                label: Text('Categories'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.bar_chart_outlined),
+                selectedIcon: Icon(Icons.bar_chart),
+                label: Text('Reports'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.settings_outlined),
+                selectedIcon: Icon(Icons.settings),
+                label: Text('Settings'),
+              ),
+            ],
+          ),
+          // Vertical divider between rail and content
+          const VerticalDivider(thickness: 1, width: 1),       
+          // Main content area
+          Expanded(
+            child: _screens[_selectedIndex],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+==== Advantages
+
+- Scales well across devices (responsive by design)
+- Can accommodate more items than bottom nav
+- Leaves more vertical space for content
+- Clear visual hierarchy
+
+==== Disadvantages
+
+- Less thumb-friendly on large phones
+- Requires responsive implementation
+- May need drawer fallback for mobile
+- Takes horizontal space on tablets
+
+==== Best For
+
+- Apps targeting tablet users
+- Responsive web/desktop versions
+- Apps needing more than 5 top-level sections
+
+=== Pattern 3: Tab-Based Navigation
+
+==== Description
+Horizontal tabs at the top of the screen for switching between related views. Often used within a section rather than for top-level navigation.
+
+==== Common In
+
+- Profile sections (Posts, Photos, About)
+- Category browsing
+- Filtered views of same data
+
+==== Flutter Implementation
+
+Referenced in photo also inside folder as `tab_based_nav`
+
+[source, dart]
+
+import 'package:flutter/material.dart';
+void main() {
+  runApp(const MyApp());
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SimpleTabScreen(),
+    );
+  }
+}
+class SimpleTabScreen extends StatelessWidget {
+  const SimpleTabScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Inventory'),
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.grid_view), text: 'All'),
+              Tab(icon: Icon(Icons.room), text: 'By Room'),
+              Tab(icon: Icon(Icons.category), text: 'By Category'),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            Center(child: Text('All Items View', style: TextStyle(fontSize: 24))),
+            Center(child: Text('By Room View', style: TextStyle(fontSize: 24))),
+            Center(child: Text('By Category View', style: TextStyle(fontSize: 24))),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+==== Advantages
+
+- Contextual - shows related views
+- Space-efficient (uses app bar area)
+- Swipe gestures for quick switching
+- Clear relationship between tabs
+
+==== Disadvantages
+
+- Not suitable for top-level navigation (can conflict with back button)
+- Limited visibility (tabs can scroll out of view)
+- Less discoverable than persistent navigation
+- Can become cluttered with many tabs
+
+==== Best For
+
+- Within-section navigation
+- Different views of same content
+- Filtering and sorting interfaces
+- Secondary navigation patterns
+
+=== Pattern 4: Drawer Navigation (Hamburger Menu)
+
+==== Description
+A hidden panel that slides from the left when triggered by a menu icon. Contains navigation destinations, settings, and utility links.
+
+==== Common In
+
+- Apps with many low-frequency destinations
+- Settings and account sections
+- Apps where main content needs full screen
+
+==== Flutter Implementation
+
+Referenced in photo also inside folder as `hamburger_nav`
+
+[source,dart]
+
+import 'package:flutter/material.dart';
+void main() {
+  runApp(const MyApp());
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DrawerExample(),
+    );
+  }
+}
+class DrawerExample extends StatefulWidget {
+  const DrawerExample({super.key});
+  @override
+  State<DrawerExample> createState() => _DrawerExampleState();
+}
+class _DrawerExampleState extends State<DrawerExample> {
+  String _currentScreen = 'Home';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('$_currentScreen Screen'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.menu, color: Colors.white, size: 40),
+                  SizedBox(height: 16),
+                  Text(
+                    'Home Inventory',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                setState(() {
+                  _currentScreen = 'Home';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.inventory),
+              title: const Text('Inventory'),
+              onTap: () {
+                setState(() {
+                  _currentScreen = 'Inventory';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_circle),
+              title: const Text('Add Item'),
+              onTap: () {
+                setState(() {
+                  _currentScreen = 'Add Item';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.category),
+              title: const Text('Categories'),
+              onTap: () {
+                setState(() {
+                  _currentScreen = 'Categories';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                setState(() {
+                  _currentScreen = 'Settings';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Help'),
+              onTap: () {
+                setState(() {
+                  _currentScreen = 'Help';
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.check_circle,
+              size: 80,
+              color: Colors.blue,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'You are on the $_currentScreen screen',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Tap the ☰ menu icon to open the drawer',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+==== Advantages
+
+- Can accommodate unlimited items
+- Keeps main UI clean and focused
+- Good for infrequently used sections
+- Hierarchical organization possible
+- Follows platform convention
+
+==== Disadvantages
+
+- Low discoverability (hidden by default)
+- Extra tap required for navigation
+- Can feel like "dumping ground"
+- Poor for frequent switching between sections
+- Not thumb-friendly (requires reaching across screen)
+
+==== Best For
+
+- Secondary navigation (settings, help, about)
+- Apps with one primary screen
+- Complementing other navigation patterns
+
+== Navigation Pattern Analysis for Home Inventory
+
+=== How Patterns Map to User Workflows
+
+|===
+| Workflow | Bottom Nav | Rail | Tabs | Drawer
+| Add New Item | ⭐ Direct | Direct | ❌ | Hidden
+| Browse Inventory | ⭐ Direct | Direct | Filter | ❌
+| View Item Details | Via list | Via list | Via list | ❌
+| Organize Categories | Direct | Direct | ⭐ Context | Hidden
+| Generate Reports | Direct | Direct | ❌ | Hidden
+| Settings/Profile | Direct | Direct | ❌ | ⭐ Good
+|===
+
+Key: ⭐ = Best fit | Direct = Primary access | Via list = Accessed through list | Filter = Tab for filtering | Hidden = Available but not primary
+
+=== Evaluation Criteria
+
+|===
+| Pattern | Discoverability | Efficiency | Scalability | Platform Fit | Mobile | Tablet
+| Bottom Nav | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐
+| Navigation Rail | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐ | ⭐⭐⭐
+| Tabs | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐
+| Drawer | ⭐ | ⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐
+|===
+
+=== Key Findings
+
+- Bottom Navigation is ideal for mobile but doesn't scale well to tablet
+- Navigation Rail provides best tablet experience but needs mobile fallback
+- Tabs are perfect for organizing inventory views (by room, by category)
+- Drawer should be reserved for secondary items (settings, help, export)
+
+== Recommended Navigation Architecture
+
+Based on the analysis of user workflows and pattern evaluation, I recommend a hybrid, responsive navigation architecture that combines the strengths of multiple patterns:
+
+=== Primary Recommendation: Responsive Bottom Navigation + Rail
+
+[source,dart]
+
+// Conceptual architecture
+ResponsiveNavigationWrapper
+├── Mobile (< 600px): BottomNavigationBar with 5 items
+├── Tablet/Desktop (≥ 600px): NavigationRail on left
+└── Content Area: Current screen based on selection
+
+==== Why This Approach?
+
+- Mobile users (primary audience) get thumb-friendly bottom navigation
+- Tablet users get optimized layout with navigation rail
+- Consistent information architecture across all devices
+- Scales gracefully as app features grow
+
+=== Secondary Pattern: Tab-Based Organization Within Screens
+
+Within key screens, use tabs to organize related content:
+
+==== Inventory Screen Organization
+
+[source,dart]
+
+Inventory Screen
+├── Tab Bar: [All Items] [By Room] [By Category] [Recent]
+├── Persistent Search Bar
+└── Content area showing selected tab view
+
+==== Why Tabs Here?
+
+- Users need multiple ways to browse their inventory
+- Swipe gestures feel natural for switching views
+- Saves screen space while providing rich functionality
+- Clear mental model for organizing content
+
+== Navigation Priorities
+
+When implementing, follow these priority rules:
+
+- Primary actions (Add Item) should be 1 tap away on all devices
+- Browse workflows should have multiple entry points
+- Settings and help can be 2 taps away
+- Back navigation must behave consistently with platform expectations
+
+=== Navigation Decision Tree
+
+This can be used when adding new features:
+
+[source, dart]
+
+Does this feature need to be accessed frequently?
+├─ YES → Should it be in main navigation?
+│   ├─ YES → Add to Bottom Nav / Rail (max 5 items)
+│   └─ NO → Add to relevant screen as action or tab
+└─ NO → Is it settings/help related?
+    ├─ YES → Place in drawer
+    └─ NO → Place in context menu or nested screen
+
+
+== References
+
+- For bottom navigation bar: `https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html`
+
+- For navigation rail (sidebar): `https://api.flutter.dev/flutter/material/NavigationRail-class.html`
+
+- For tab-based navigation: `https://api.flutter.dev/flutter/material/TabBar-class.html`
+
+- For drawer navigation (hamburger menu): `https://api.flutter.dev/flutter/material/Drawer-class.html`
+
+- For general navigation and routing: https://docs.flutter.dev/ui/navigation`
+
