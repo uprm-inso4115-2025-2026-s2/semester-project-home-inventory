@@ -1,413 +1,75 @@
-= HOME INVENTORY PROJECT
-== Edge Cases (Duplicates/Budget)
+﻿== Edge Cases (Duplicates/Budget)
 
-== Objective
+[NOTE]
+====
+This is a specific-topics reference summary. Full content is distributed across:
 
-Identify and formally document edge cases involving duplicates and budgeting conflicts.
-The goal is to proactively address ambiguous or borderline scenarios that could cause:
+* *Terms (Near-Duplicate, Spend Event, Allocation)*  `domain-description/terminology/terminology.adoc`
+* *Domain-level invariants (immutable spend, shared attribution, audit requirement)*  `requirements/domain-requirements/domain-requirements.adoc` (§ Budget & Spend Integrity)
+* *Interface behavior (variant disambiguation, import idempotency, undo, audit trail UI)* → `requirements/interface-requirements/interface-requirements.adoc` (IR-13 through IR-21)
+====
 
-* incorrect spending calculations
-* inaccurate reports
-* inconsistent roommate coordination
+=== Objective
 
-This document answers:
-* What is considered an edge case (and how it is categorized)
-* What the system must do (inventory + budget + reporting)
-* What the user sees (UI/UX prompts, confirmations)
-* What must be logged to preserve auditability
+Identify edge cases involving duplicates and budgeting conflicts to proactively address ambiguous scenarios that could cause incorrect spending calculations, inaccurate reports, or inconsistent roommate coordination.
 
-== Scope
-
-This document covers edge cases that happen *after* duplicate detection signals exist
-(barcode match, text similarity, same product metadata, recent add/import patterns),
-and focuses on *system behavior* to protect budget integrity.
-
-Includes scenarios in:
-* Manual item addition
-* Barcode scanning
-* Bulk add and multi-quantity entries
-* CSV imports
-* Shared roommate environments (shared inventory modes)
-* Budget tracker and reports/insights
+Scope: cases that occur *after* duplicate detection signals exist (barcode match, text similarity, same product metadata, recent add/import patterns), focused on system behavior to protect budget integrity.
 
 Out of scope:
-* The duplicate detection algorithm itself (see: Duplicate Item Criteria).
-* Full budgeting feature design (this document defines conflict rules only).
 
-== Definitions
+* The duplicate detection algorithm itself (see: Duplicate Item Criteria)
+* Full budgeting feature design (this document defines conflict rules only)
 
-=== Near-Duplicate
-
-A *Near-Duplicate* is an item that is similar enough to raise a duplicate warning
-but not a guaranteed match. Examples:
-* Same product name, different size
-* Same brand, slightly different variant (e.g., "Original" vs "Scented")
-* Same item category, different packaging/bundle
-
-Near-duplicates require user intent confirmation.
-
-=== Spend Event
-
-A *Spend Event* is an immutable record of a purchase action:
-`spend_event {user_id, household_id, product_id, amount, date, source, optional receipt_id}`
-
-Hard rule:
-* Spend events must not be merged automatically as a side-effect of inventory merges.
-
-=== Allocation
-
-*Allocation* is how a spend event is attributed:
-* shared budget split (equal, weighted, custom) OR
-* individual budget attribution (buyer-only)
-
-== Core Principles (Hard Rules)
-
-. Barcode match is authoritative for Product definition reuse.
-. Inventory state changes (merge, split, adjust quantity) must not rewrite spend history.
-. Near-duplicates must preserve user intent through explicit confirmation.
-. A single user action may update inventory quantities, but budget impact must be deterministic and explainable.
-. Shared inventory can merge counts; budgeting attribution remains per-user spend event.
-. Every edge-case resolution must be auditable and reversible when it changes inventory state.
-. Reports must distinguish:
-* Inventory *state* (counts, expiry, location over time)
-* Spend *events* (amounts, dates, attribution)
-
-== Edge Case Categories
-
-=== Category A: Near-Duplicates (Name/Brand/Size/Variant Ambiguity)
-
-==== A1) Same name, different size (e.g., “Rice 5lb” vs “Rice 10lb”)
-Risk:
-* User accidentally creates a duplicate Product definition and splits spend reporting.
-
-Rule:
-* Treat as *separate Product definitions* by default.
-* Prompt user with a near-duplicate warning:
-** “Similar product exists with different size. Are you adding a different size?”
-
-UI:
-* Show match card(s) with size highlighted.
-* Options:
-** “This is a different size (create new product)”
-** “Actually same product (use existing)” (requires selecting the correct size)
-
-Budget behavior:
-* No special handling needed if the user confirms “different size”.
-* Spend event links to the chosen Product ID only.
-
-==== A2) Same brand + size, different variant (e.g., “Clorox 64oz Original” vs “Clorox 64oz Lemon”)
-Rule:
-* Treat as separate Product definitions unless barcode matches.
-* If barcode differs:
-** default: create new product (variant difference is meaningful)
-* If barcode same:
-** must reuse existing product definition (hard rule)
-
-UI:
-* If text match only:
-** show “Variant differs” warning, require selection.
-
-Budget behavior:
-* Spend events remain separate by product.
-
-==== A3) Generic name collisions (e.g., “Milk” vs “Milk 2%” vs “Milk Lactose-Free”)
-Rule:
-* Do not auto-merge at Product level.
-* Require explicit normalization prompt:
-** “Select type to avoid incorrect duplicates.”
-
-UI:
-* Force user to select subtype attributes (fat %, dietary type) when category suggests ambiguity.
-
-Budget behavior:
-* Prevents cross-product spending distortion.
-
-==== A4) Same item, different brand (store brand vs name brand)
-Rule:
-* Not a Product duplicate by default.
-* Only suggest duplicates (near-duplicate) if user searches by generic name.
-
-UI:
-* Suggest: “Similar item exists under different brand” (info only, no block).
-
-Budget behavior:
-* No merging; separate spend events by product.
-
-=== Category B: Stock-Level Edge Cases (Quantity/Batch/Expiration/Location)
-
-==== B1) Partial quantity overlap (user adds “+2”, but existing stock is “5” from earlier)
-Risk:
-* Mistaken creation of separate stock entries inflates inventory.
-Rule:
-* Use stock duplicate time-window handling (see Duplicate Handling Rules).
-* If outside window:
-** allow separate entry, but suggest “Add to existing quantity” when metadata matches (same owner/location/expiration).
-
-Budget behavior:
-* Always create a spend event for the add action (if amount entered).
-* Inventory merge must not merge spend.
-
-==== B2) Same product, different expiration date (new batch)
-Rule:
-* Never auto-merge stock entries with different expiration dates.
-* If user attempts to merge:
-** require confirmation: “Merging will lose expiration tracking.”
-
-UI:
-* Offer “Keep separate by expiration (recommended)”.
-
-Budget behavior:
-* Spend events separate; reports can group by product.
-
-==== B3) Same product, different location (pantry vs bathroom vs fridge)
-Rule:
-* Do not auto-merge across locations if location is a tracked attribute.
-* Suggest merge only if user indicates “same location” was mis-selected.
-
-UI:
-* Provide quick “Change location instead of creating new entry” option.
-
-Budget behavior:
-* No budget changes.
-
-==== B4) Opened vs unopened tracking (same product)
-Rule:
-* If user selects tracking mode “opened/unopened”:
-** allow separate stock entries even if other metadata matches.
-
-UI:
-* Reason picker includes: “Tracking separately (opened vs unopened)”.
-
-Budget behavior:
-* Spend events unaffected.
-
-=== Category C: Budget Conflicts Triggered by Duplicate Handling
-
-==== C1) Double-counting spend on import replays (same CSV uploaded twice)
-Risk:
-* Duplicate spend events inflate totals.
-Rule:
-* Imports must support idempotency by import batch fingerprint:
-** If same import file detected (hash match), default to “Review before apply”.
-* Per-row:
-** if row matches a previously imported row (same receipt_id/transaction_id/row_fingerprint):
-*** default: skip spend event creation
-*** allow override “Import anyway” with reason
-
-UI:
-* Import summary must show:
-** “Potential duplicate transactions detected: N”
-** Provide review table.
-
-Budget behavior:
-* Spend events are created only once per unique transaction fingerprint.
-
-==== C2) Inventory merge accidentally merges “cost on stock”
-Risk:
-* If cost is stored on stock entries, merges can distort unit cost and totals.
-Rule:
-* Recommended: costs live in spend events, not stock rows.
-* If stock stores cost (legacy):
-** on merge:
-*** compute weighted average unit cost for display only
-*** keep original cost snapshots linked to spend events
-** never delete original cost records
-
-UI:
-* Show “Cost preserved from receipts” notice when merging.
-
-==== C3) Shared inventory + individual budgets (mixed mode) and cross-user merges
-Risk:
-* Inventory merges cause spending attribution to shift incorrectly.
-Rule:
-* Cross-user inventory merge is allowed for counts (shared view),
-  but spend attribution remains per user action.
-* Each add action creates:
-** inventory update
-** spend event with buyer attribution
-
-UI:
-* Must prompt “Who bought this?” default current user.
-* If user picks another roommate:
-** require confirmation: “This will affect their budget.”
-
-Reports:
-* Household spend can show both:
-** total household spend
-** per-roommate spend
-
-==== C4) Shared budget splits and duplicate corrections
-Scenario:
-* Item was added twice; one entry is removed or merged later.
-Risk:
-* If deleting inventory also deletes spend, budget becomes wrong.
-Rule:
-* Inventory correction (delete/merge) must not delete spend events automatically.
-* Provide explicit action:
-** “Refund/Remove associated spend event?” (separate, requires confirmation)
-* Default: keep spend event unless user explicitly marks it as erroneous.
-
-UI:
-* When deleting an entry that has spend:
-** show two toggles:
-*** “Remove from inventory” (default on)
-*** “Also mark purchase as mistake (exclude from budget)” (default off)
-
-Audit:
-* Log both actions separately.
-
-=== Category D: Expired Items, Waste, Returns, and Adjustments
-
-==== D1) Expired items removed from inventory
-Risk:
-* Users expect budget to change when they throw away items (it should not).
-Rule:
-* Expiration removal affects inventory and waste metrics, not spend totals.
-* Add optional “waste event” for reporting:
-** `waste_event {product_id, quantity, date, reason=expired}`
-
-UI:
-* “Remove expired items” flow:
-** checkbox: “Add to waste report” (default on)
-
-Reports:
-* Waste report separate from spend report.
-
-==== D2) Returns / refunds
-Rule:
-* Refund is a negative spend event, not an inventory merge.
-* Inventory behavior:
-** If returned, decrement quantity accordingly.
-* Budget behavior:
-** create `spend_event` with negative amount (linked to original if possible)
-
-UI:
-* Refund flow requires:
-** amount refunded
-** date
-** optional link to receipt/spend event
-
-==== D3) Shrinkage / missing items (roommate consumed, lost, stolen)
-Rule:
-* Inventory adjustment allowed without altering spend.
-* Optional “adjustment reason” required.
-
-UI:
-* Adjustment reasons:
-** “Consumed”
-** “Lost”
-** “Shared use”
-** “Unknown”
-
-Reports:
-* Usage/shrinkage metrics separate from budget.
-
-=== Category E: Bulk Purchases and Bundles
-
-==== E1) Bulk purchase entered as one entry (quantity N) with single spend
-Rule:
-* One spend event linked to a quantity-based stock entry is valid.
-* If later split into different expirations:
-** inventory can split stock entry
-** spend event remains linked to product, not specific stock row
-
-UI:
-* Bulk add prompt:
-** “Same expiration date for all?” yes/no
-** “Same location for all?” yes/no
-
-Reports:
-* Unit cost can be computed as `spend_amount / quantity` for analytics only.
-
-==== E2) Bundles that include multiple distinct items (e.g., “Cleaning pack”)
-Risk:
-* Incorrect allocation across categories and reports.
-Rule:
-* Bundle purchases must support itemization:
-** Either:
-*** create a Bundle record with child items and allocate spend across them
-** Or:
-*** treat as one product (less accurate), requires user confirmation
-
-Default:
-* Prompt to itemize if category suggests multi-item pack.
-
-Budget behavior:
-* Allocation must sum to total spend.
-* Child allocations are immutable once confirmed (audit changes if edited).
-
-== Decision Rules Matrix (Quick Reference)
+=== Decision Rules Matrix (Quick Reference)
 
 [cols="1,2,2,2", options="header"]
 |===
 | Scenario | Inventory Action | Budget Action | UI Requirement
 
-| Same barcode | Reuse Product; apply stock duplicate time-window rules | Create spend event for add (if provided) | No confirmation for product reuse
+| Same barcode
+| Reuse Product; apply stock duplicate time-window rules
+| Create spend event for add (if provided)
+| No confirmation for product reuse
 
-| Same name, different size | Separate Product by default | Normal spend event linking | Near-duplicate prompt with size highlight
+| Same name, different size
+| Separate Product by default
+| Normal spend event linking
+| Near-duplicate prompt with size highlight
 
-| Same product, different expiration | Separate stock entries | Spend unchanged | Warning if user tries to merge
+| Same product, different expiration
+| Separate stock entries
+| Spend unchanged
+| Warning if user tries to merge
 
-| CSV imported twice | Prevent duplicate spend via fingerprint | Skip duplicate spend events by default | Import review summary
+| CSV imported twice
+| Prevent duplicate spend via fingerprint
+| Skip duplicate spend events by default
+| Import review summary
 
-| Delete duplicate inventory entry | Remove inventory only | Keep spend unless explicitly excluded | Two-step confirm: inventory vs budget exclusion
+| Delete duplicate inventory entry
+| Remove inventory only
+| Keep spend unless explicitly excluded
+| Two-step confirm: inventory vs budget exclusion
 
-| Refund | Decrement inventory (if returned) | Create negative spend event | Refund flow required
+| Refund
+| Decrement inventory (if returned)
+| Create negative spend event
+| Refund flow required
+
+| Shared household merge
+| Merge inventory counts only
+| Spend attribution stays per-user
+| "Who bought this?" prompt with confirmation if assigning to another member
+
+| Expired item removal
+| Remove from inventory; log waste event
+| Spend unchanged
+| Optional "Add to waste report" checkbox (default on)
 |===
 
-== UI/UX Requirements (Explicit)
-
-=== Edge Case Prompts
-
-* Prompts must be short and action-oriented.
-* Highlight the attribute that caused ambiguity (size, variant, location, expiration).
-* Provide recommended action defaults:
-** “Keep separate” for expiration/location/variant differences
-** “Merge quantity” only when metadata truly matches
-
-=== Safe Defaults
+=== Safe Defaults (Quick Reference)
 
 * Prefer preserving data granularity (separate entries) over aggressive merging when uncertain.
-* Never auto-merge spend events.
-* Never auto-delete spend events as a side-effect of inventory correction.
-
-=== Undo / Reversibility
-
+* Never auto-merge Spend Events.
+* Never auto-delete Spend Events as a side-effect of inventory correction.
 * Inventory auto-merge actions must support undo (10 seconds).
-* Undo must:
-** revert quantity changes
-** keep audit log indicating undo occurred
-
-== Audit Trail and Logging
-
-Every edge-case resolution must generate a log entry.
-
-Minimum fields:
-* timestamp
-* user_id
-* household_id
-* source: `manual|scan|import|adjustment|refund`
-* action_type:
-** `near_duplicate_confirmed`
-** `stock_split_by_expiration`
-** `import_duplicate_transaction_skipped`
-** `inventory_delete_only`
-** `budget_exclusion_applied`
-** `refund_recorded`
-* product_id
-* stock_entry_id (if applicable)
-* spend_event_id (if applicable)
-* reason (if user-selected)
-* previous_state_reference (when modifying inventory state)
-
-== Success Criteria
-
-* Edge cases are clearly categorized and documented.
-* Budget impact scenarios are explicitly analyzed and deterministic.
-* No ambiguity remains regarding how spending is calculated when duplicates exist.
-* Rules are compatible with:
-** Duplicate Item Criteria
-** Duplicate Handling Rules
-** Shared household modes
-** Reports & Insights separation of state vs events
-* Documentation is implementation-ready for testing and validation.

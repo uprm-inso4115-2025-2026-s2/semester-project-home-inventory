@@ -2,6 +2,25 @@
 
 A feature-level view of the solution (groupings of user stories). This is a draft list for Milestone 1.
 
+// NOTE (incomplete): The four feature teams are already defined by the US-* prefixes used in user-stories.adoc.
+// The following features should be listed here:
+//
+// - F-INV: Core Inventory — Add, edit, delete, and organize household items by room, category, and ownership.
+//   Related stories: US-INV-01, US-INV-02
+// - F-ALT: Alerts and Restock — Low-stock threshold tracking, expiration date monitoring, and alert delivery.
+//   Related stories: US-ALT-01
+//   Note: alert-system-states.adoc (Team 2) defines the expiration state machine for this feature — it is currently
+//   misplaced in docs/3-analytic/ root and should inform this feature definition.
+// - F-SB:  Sharing and Budget — Shared inventory visibility, purchase logging, and cost splitting.
+//   Related stories: US-SB-01
+//   Related IRs: IR-06, IR-07, IR-15 (import), IR-16 (correction), IR-17 (refund), IR-19 (attribution prompt)
+// - F-RPT: Reports and Insights — Household dashboard, spending summaries, and inventory overview.
+//   Related stories: US-RPT-01
+//
+// Machine requirements (MR*), behaviors, and domain functions should each reference these feature codes.
+// Also: IR-09 through IR-14 (duplicate recognition, near-duplicate confirmation, double-entry prevention,
+// merge auditability, variant disambiguation, stock separation) primarily belong to F-INV.
+
 [cols="2,4,3",options="header"]
 |===
 |Feature |What it enables |Related stories
