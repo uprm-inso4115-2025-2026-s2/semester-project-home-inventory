@@ -22,7 +22,7 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |===
 |Student |GitHub username |Tasks
 
-|Alondra S. Arce Perea (Team Lead) |@alondra-arce | #13, #113, 
+|Alondra S. Arce Perea (Team Lead) |@alondra-arce | #13, #113, #150, #177 #233, #238, #244, #250
 
 |TBD (unassigned seat) | |
 |===
@@ -35,21 +35,21 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |===
 |Student |GitHub username |Tasks
 
-|Adriana Figueroa (Team Lead) |@AdrianaFigueroa9 | #19, #22, #34, #51, #93, #94, #107 
+|Adriana Figueroa (Team Lead) |@AdrianaFigueroa9 | #19, #22, #34, #51, #93, #94, #107, #176
 
-|Devlin Hahn |@devlin-hahn04 | #38, #39, #41
+|Devlin Hahn |@devlin-hahn04 | #38, #39, #41, #145
 
 |Jorge De León |@JorgeDeLeonOrama | #17, #116, #126, #127
 
 |Ronaldo Flores Nazario |@ronaldoflores9 | #20, #42, #84
 
-|Eliel Hernandez Gonzalez |@eliel-hernandez | #25, #26
+|Eliel Hernandez Gonzalez |@eliel-hernandez | #25, #26, #153
 
 |Daniella Melero |@daniellameleroo | #40, #44, #45, #48
 
 |Natalia S Vera Rivera |@nataliavera6 | #21, #102, #103, #104, #106
 
-|Ian Rivera |@Programian | #29, #115, #118
+|Ian Rivera |@Programian | #29, #115, #118, #141
 
 |Jayden Sánchez |@jaydensanchez12 | #56, #129, #130
 |===
@@ -62,19 +62,19 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |===
 |Student |GitHub username |Tasks
 
-|Kevin Gómez (Team Lead) |@kevgom018 |#11, #12, #14, #22, #34, #107
+|Kevin Gómez (Team Lead) |@kevgom018 |#11, #12, #14, #22, #34, #107, #166
 
-|Devlin Hahn |@devlin-hahn04 |#38, #39, #41
+|Devlin Hahn |@devlin-hahn04 |#38, #39, #41, #145
 
-|Jorge De León |@JorgeDeLeonOrama |#17, #116
+|Jorge De León |@JorgeDeLeonOrama |#17, #116, #126, #127
 
 |Januel E. Torres Marquez |@jankii03 |#52, #135, #136, #137
 
-|Kian-Robert Ramos Vega |@kian-robert |#67, #108, #109
+|Kian-Robert Ramos Vega |@kian-robert |#67, #108, #109, #131
 
 |Jorge Rivera |@JorgeRivera94 |#15, #122
 
-|Lucas Matos Datiz |@L-A-M-D |#82
+|Lucas Matos Datiz |@L-A-M-D |#82, #231, #249, #267
 |===
 
 
@@ -85,19 +85,19 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |===
 |Student |GitHub username |Tasks
 
-|Solimar Cruz Hernandez (Team Lead) |@Solimar-Cruz |#22, #32, #33, #30, #34, #107
+|Solimar Cruz Hernandez (Team Lead) |@Solimar-Cruz |#22, #30, #32, #33, #34, #107
 
 |Ronaldo Flores Nazario |@ronaldoflores9 |#20, #42, #84
 
-|Eliel Hernandez Gonzalez |@eliel-hernandez |#25, #26
+|Eliel Hernandez Gonzalez |@eliel-hernandez |#25, #26, #153
 
-|Kemuel Cubero Rosario |@Kemuel05 |#23
+|Kemuel Cubero Rosario |@Kemuel05 |#23, #146, #147, #148
 
-|Kevin Lara Rodríguez |@kevinlara1 |#87
+|Kevin Lara Rodríguez |@kevinlara1 |#87, #205, #206, #207
 
-|Aryam Z Diaz Torres |@aryamdiaz |#24, #112
+|Aryam Z Diaz Torres |@aryamdiaz |#24, #112, #180, #181
 
-|Reinaldo J. Martinez Morales |@reinaldo-martinez1 |#27, #28, #119
+|Reinaldo J. Martinez Morales |@reinaldo-martinez1 |#27, #28, #119, #199
 |===
 
 
@@ -108,7 +108,7 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |===
 |Student |GitHub username |Tasks
 
-|Andrea Segarra (Team Lead) |@andreasegarra |#22, #34, #35, #107
+|Andrea Segarra (Team Lead) |@andreasegarra |#22, #34, #35, #107, #132, #134, #179
 
 |Daniella Melero |@daniellameleroo |#40, #44, #45, #48
 
@@ -116,7 +116,7 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 
 |Fabiola Torres |@FabiolaZTorres |#46, #95, #96, #101
 
-|Fernando Castro |@fernan-castro |#71
+|Fernando Castro |@fernan-castro |#71, #168, #173, #198
 
 |Yamilette Alemany |@yamilette-alemany |#18, #58, #59, #60
 
@@ -131,19 +131,19 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |===
 |Student |GitHub username |Tasks
 
-|Fabian Velez (Team Lead) |@FabianVelezOcasio |#22, #34, #107
+|Fabian Velez (Team Lead) |@FabianVelezOcasio |#22, #34, #107, #138, #139, #157, #178
 
-|Ian Rivera |@Programian |#29, #115, #118
+|Ian Rivera |@Programian |#29, #115, #118, #141
 
-|Jayden Sánchez |@jaydensanchez12 |#56
+|Jayden Sánchez |@jaydensanchez12 |#56, #129, #130
 
-|Nicolás Rivera Batista |@nicolasrivera25 |#16
+|Nicolás Rivera Batista |@nicolasrivera25 |#16, #193, #196
 
-|Samarys Barreiro Melendez |@SamarysB |#36, #111, #113
+|Samarys Barreiro Melendez |@SamarysB |#36, #111, #113, #155, #156
 
-|Jorge Peralta  |@PeraltaJorge9128 |
+|Jorge Peralta  |@PeraltaJorge9128 | #43, #143, #159
 
-|Gerardo Ruiz |@Gerardoruiz1 |
+|Gerardo Ruiz |@Gerardoruiz1 | #55, #201, #261, #263
 
-|Aliana Figueroa |@alianasofiaaa |
+|Aliana Figueroa |@alianasofiaaa | 
 |===

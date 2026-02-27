@@ -1,6 +1,5 @@
 == Requirements
 
-[abstract]
 This section captures initial requirements at multiple levels (stories, features, epics, constraints).
 
 include::user-stories/user-stories.adoc[leveloffset=+1]
@@ -11,6 +10,4 @@ include::domain-requirements/domain-requirements.adoc[leveloffset=+1]
 include::interface-requirements/interface-requirements.adoc[leveloffset=+1]
 include::machine-requirements/machine-requirements.adoc[leveloffset=+1]
 
-// NOTE: You have a "personas" folder here too, but your repo also has personas in 4-specific-topics.
-// Use one source of truth. Recommended: keep personas in 4-specific-topics and leave this empty or redirect.
-include::personas/personas.adoc[leveloffset=+1]
+// Personas are defined in Section 4 (Specific Topics) to keep a single source of truth.

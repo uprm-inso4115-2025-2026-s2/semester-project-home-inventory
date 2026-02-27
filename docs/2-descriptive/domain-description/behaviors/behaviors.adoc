@@ -2,33 +2,25 @@
 
 Recurring behaviors or rules in the domain: patterns, policies, and "how things are done."
 
-// NOTE (incomplete): This section is entirely placeholder. The following material is already documented elsewhere
-// and should be summarized or referenced here:
-//
-// Behavior patterns (from user stories, events.adoc, and rough-sketch.adoc):
-// - Restock cycle: Stakeholder consumes Stock → quantity decreases → low-stock detected → alert issued → purchase made → quantity replenished.
-// - Shared purchase flow: Stakeholder buys shared item → logs purchase → system splits cost across Members → each Member sees their share.
-// - Expiration monitoring: Stock nears expiration → system transitions item to 'Expiring' state → alert issued → Stakeholder removes/wastes item → waste event logged.
-//   (Full expiration state machine defined in docs/3-analytic/alert-system-states.adoc — currently misplaced there; relevant
-//    behavior content should be summarized here and the file moved to software-design/ or behaviors/)
-//
-// Domain rules (from DR-1..DR-17 in domain-requirements.adoc — behavioral invariants belong here too):
-// - One barcode = one Product definition (DR-1, DR-14, DR-17).
-// - Stock Duplicate within 30 seconds → auto-aggregate quantity (DR-7, IR-11).
-// - Spend Events are immutable — inventory changes must never rewrite financial history (DR-3, DR-9).
-// - A Home must always have exactly one Owner (DR-4).
-// - Ownership must be transferred before an Owner can leave a Home (DR-4).
-//
-// Edge cases: already documented in rough-sketch.adoc (observations), narrative.adoc (exceptions), and
-// edge-cases-duplicates-budget/ (specific-topics). Summarize the ones that affect domain behavior here.
-
 === Behavior patterns
-* TODO: Pattern 1 (who does it, when, why)
-* TODO: Pattern 2
 
-=== Domain rules (if known)
-* TODO: Rule 1 ("must always be true")
-* TODO: Rule 2
+* **Restock cycle:** A stakeholder consumes stock → quantity decreases → low-stock threshold is crossed → alert issued → purchase is made → quantity replenished.
+* **Shared purchase flow:** A stakeholder buys a shared item → logs the purchase → the system splits cost across household members → each member sees their share.
+* **Expiration monitoring:** Stock nears its expiration date → the system transitions the item to an _Expiring_ state → alert issued → stakeholder removes or discards the item → a waste event is logged.
+
+=== Domain rules
+
+* One barcode corresponds to exactly one Product definition (DR-1, DR-14, DR-17).
+* A Stock duplicate entry submitted within 30 seconds triggers automatic quantity aggregation rather than a new entry (DR-7, IR-11).
+* Spend Events are immutable — inventory corrections must never overwrite financial history (DR-3, DR-9).
+* A Household must always have exactly one Owner (DR-4).
+* Ownership must be transferred before an Owner can leave a Household (DR-4).
 
 === Edge cases
-* TODO
+
+* If a stock entry is submitted while offline and synced later, the 30-second duplicate window is evaluated against the server-received timestamp, not the client timestamp.
+* If an item has no expiration date, expiration monitoring is skipped for that stock entry.
+* If an Owner attempts to leave without transferring ownership, the action is blocked until a new Owner is designated.
+
+include::invite-roommate-sharing.adoc[leveloffset=+1]
+include::invites-logic-definition.adoc[leveloffset=+1]

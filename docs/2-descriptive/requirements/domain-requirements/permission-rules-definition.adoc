@@ -1,9 +1,9 @@
-= Permission Rules Definition
+== Permission Rules Definition
 
-== Objective
+=== Objective
 Establish clear role-based permission rules so system actions are consistent and prevent unauthorized changes.
 
-== Core Concepts
+=== Core Concepts
 - Define key terms used in this doc (e.g., Household, Member, Owner, Role, Permission, Action, Resource, RLS, Invite).
 
 Role
@@ -13,9 +13,9 @@ Action
 Resource
 
 
-== Roles Model
+=== Roles Model
 
-=== Primary Roles
+==== Primary Roles
 
 The primary roles in the application are:
 
@@ -23,7 +23,7 @@ The primary roles in the application are:
 - Member: A member of the household with permissions to interact with shared inventory. Members lack administrative capabilities such as managing permissions, but can send invitation and add/edit/ delete inventory items with the right permissions.
 - Viewer: A read-only role that can view shared inventory but cannot make changes or send invitations.
 
-=== Role Hierarchy
+==== Role Hierarchy
 
 The hierarchy is as follows (from highest to lowest):
 
@@ -33,15 +33,15 @@ The hierarchy is as follows (from highest to lowest):
 
 All permissions of a lower role are included in the higher role. For example, an Owner has all the permissions of a Member and a Viewer, while a Member has all the permissions of a Viewer.
 
-=== Membership States
+==== Membership States
 
 - Active: The user is an active member of the household and has the permissions associated with their role.
 - Removed: The user has been removed from the household and no longer has access to any resources or permissions.
 - Pending Invite: The user has been invited to join the household but has not yet accepted the invitation. They do not have any permissions until they accept the invite and become an active member.
 
-== Actions Catalog
+=== Actions Catalog
 
-=== Actions
+==== Actions
 - Inventory: Create / Read / Update / Delete
 - Members: View / Remove / Leave
 - Invites: Create / View / Revoke / Accept / Decline
@@ -49,7 +49,7 @@ All permissions of a lower role are included in the higher role. For example, an
 - Role Management: Promote / Demote / Transfer Ownership
 
 
-=== Owner Rules
+==== Owner Rules
 
 Owner rules include:
 - Full access to all resources and actions within the household.
@@ -58,44 +58,44 @@ Owner rules include:
 - Can manage household settings, such as changing the household name or toggling settings.      
 
 
-=== Member Rules
+==== Member Rules
 
 Member rules include:
 - Read and write access to inventory items within the household.
 - Ability to view and manage their own membership details.
 - Ability to leave the household.
 
-=== Viewer/Guest Role Rules
+==== Viewer/Guest Role Rules
 
 Viewer rules establish that viewers can only view shared inventory but cannot make changes or send invitations.
 
-== Inheritance, Overrides, and Configurability
+=== Inheritance, Overrides, and Configurability
 
-=== Permission Inheritance
+==== Permission Inheritance
 
 Permissions are inherited based on role hierarchy.
 Higher roles automatically have all permissions of lower roles.
 
-=== Overrides / Exceptions
+==== Overrides / Exceptions
 
 Exceptions with item edit permissions can occur when using the User-Owned Within Group ownership model, where only the creator of an item can edit it, regardless of their role.
 - In the Group-Owned Inventory model, all members with the right permissions can edit items regardless of who created them.
 - In the User-Owned Within Group model, only the creator of an item can edit it, regardless of their role.
 
 
-=== Static vs Configurable Permissions
+==== Static vs Configurable Permissions
 
 Hard-coded permissions are simpler to implement and ensure consistency across households, while configurable permissions offer flexibility but are more difficult to implement. For the Minimum Viable Product (MVP), we can implement static roles with predetermined permissions to ensure a clear and consistent user experience.
 
-== Conflict Resolution Rules
+=== Conflict Resolution Rules
 
-=== Conflict Types
+==== Conflict Types
 
 Conflict may arise when a user has multiple roles or when permissions from different rules overlap. For example, if an Owner wants to delete an item created by a Member, but the Member has edit permissions that allow them to prevent deletion, this creates a conflict.
 
 Multiple invitation issued by different Owners for the same user, or when a user has both Owner and Member roles in different households that grant conflicting permissions.
 
-=== Conflict Handling Policy
+==== Conflict Handling Policy
 
 To handle conflicts, we can implement the following policies:
 
@@ -103,9 +103,9 @@ To handle conflicts, we can implement the following policies:
 
 - Only one active Inivite: If a user receives multiple invitations from different Owners for the same household, the system should allow the user to accept only one invitation. Once an invitation is accepted, any other pending invitations for that user and household should be automatically revoked.
 
-== Escalation & Transfer Scenarios
+=== Escalation & Transfer Scenarios
 
-=== Ownership Transfer
+==== Ownership Transfer
 
 - Preconditions: The user initiating the transfer must be the current Owner of the household, and the target user must be an active Member of the same household. The Member must also accept the ownership transfer invitation for the transfer to be successful.
 
@@ -118,7 +118,7 @@ To handle conflicts, we can implement the following policies:
 
 - Transfer failure: If an Owner transfers ownership to a Member, the previous Owner becomes a Member and the new Owner gains all permissions. If the transfer fails mid-way, the system should ensure that the original Owner retains their permissions and the target Member does not gain any permissions until the transfer is completed.
 
-=== Promotion / Demotion
+==== Promotion / Demotion
 
 Only Owners can promote or demote Members. The allowed transitions are as follows:
 
@@ -127,6 +127,6 @@ Only Owners can promote or demote Members. The allowed transitions are as follow
 - Viewer to Member: Allowed by the Owner, but the Viewer must accept the role change.
 - Member to Viewer: Allowed by the Owner, but the Member must accept the role change.
 
-=== Removing Users
+==== Removing Users
 
 Only Owners can remove Members or Viewers from the household. When a user is removed, they lose all access to the household and its resources. The system should also ensure that any pending invitations for the removed user are revoked.

@@ -1,13 +1,21 @@
 == Screen Designs
-
-Early UI concepts or wireframes (even rough). Focus on user flows, not polish.
-
 === Key user flows
-* TODO: Flow 1 — steps — purpose
-* TODO: Flow 2
+* Flow 1, Add Item to Household Inventory - User opens inventory, taps “Add Item”, enters item details like name, quantity and location, and saves. With this the team ensures fast item capture and accurate household tracking.
+* Flow 2, View & Respond to Alerts - User opens the Alerts & Notifications screen, reviews low stock or expiration alerts, and dismisses or fixes them. Purpose: help users maintain inventory awareness and prevent shortages.
 
 === Wireframes / mockups
-* TODO: Link or embed images if available
+
+* Alerts & Notifications Screen: image:Alerts-&-Notifications-Screen/images/alerts-wireframes.png[]
+* Budget Spending Page: image:Budget-Spending-Screen/images/Budges_spending_wireframe.png[]
+
+[NOTE]
+====
+Icon assets and small decorative images (e.g., error/empty icons, duplicate warning icons) are stored under the `Error-or-Empty-File-Icon/images` and `Duplicate-Warnings-Icon/images` folders. To avoid large icon pages in the main design narrative, these are referenced here as implementation artifacts. If the professor wants inline thumbnails, we can add them in a future revision.
+====
 
 === Usability notes
-* TODO
+* Prioritize one handed mobile use with clear, easy to press alert items.
+* Alert states must be immediately understandable.
+* Use simple, recognizable icons to reduce cognitive load.
+* Limit visual clutter in data heavy screens like Budget Spending.
+* Provide clear dismissal or action affordances for notifications.

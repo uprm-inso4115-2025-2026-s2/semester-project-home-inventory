@@ -184,6 +184,11 @@ These invariants describe stable properties of the domain:
 * E5: Expiration date unreadable/missing -> household cannot reliably judge expiration status.
 * E6: Membership change (move-out) -> household needs to update who participates and who is informed.
 
+include::ownership_model_research.adoc[leveloffset=+1]
+include::group-owned_vs_user-owned_item_structures.adoc[leveloffset=+1]
+include::ownership_effects_on_permissions_and_spending_attribution.adoc[leveloffset=+1]
+include::core-inventory-domain-attribute-classification.adoc[leveloffset=+1]
+
 === Trace to earlier documentation
 
 This domain concept model is grounded in the domain rough sketch’s concrete examples of informal tracking, multiple storage locations, qualitative low-stock judgments, bulk buying, expiration waste, and shared-household coordination failures. It supports the needs described in the informative part (minimizing effort while maintaining reliable availability understanding, and improving shared-household coordination) without committing to specific implementation decisions.

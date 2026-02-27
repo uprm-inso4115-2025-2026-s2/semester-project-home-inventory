@@ -1,10 +1,10 @@
-﻿== Duplicate Prevention Logic
+== Duplicate Prevention Logic
 
 [NOTE]
 ====
 This is a specific-topics reference summary. Full content is distributed across:
 
-* *Domain invariants (barcode uniqueness, normalization before insert, deterministic spend attachment)*  `requirements/domain-requirements/domain-requirements.adoc` (§ Prevention & Data Integrity, DR-14 through DR-17)
+* *Domain invariants (barcode uniqueness, normalization before insert, deterministic spend attachment)*  `requirements/domain-requirements/domain-requirements.adoc` (§ Prevention and data integrity, DR-15 through DR-17; barcode uniqueness DR-1)
 * *Detection hierarchy, normalization rules, and prevention workflow*  `descriptive/duplicate-item-criteria.adoc`
 * *Supabase query strategy, DB constraints, and Flutter integration*  `implementation/software-design/software-design.adoc` (§ Duplicate Prevention Implementation)
 * *Interface behavior (duplicate modals, near-duplicate confirmation)* → `requirements/interface-requirements/interface-requirements.adoc` (IR-09 through IR-12)
