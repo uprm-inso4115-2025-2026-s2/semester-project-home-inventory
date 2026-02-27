@@ -1,0 +1,132 @@
+= Stakeholder Identification and Domain Description Units
+
+== Stakeholder Identification
+
+The Digital Home Inventory domain involves individuals and social structures that interact with physical household goods under financial and time constraints.
+
+=== Primary Stakeholders
+
+[upperalpha]
+. Student Living Independently
++
+Role:: Primary actor responsible for acquiring, storing, and replacing household items.
+Goals:: Maintain household supplies, avoid running out of essential items, staying within budget.
+Risks:: Purchasing duplicates, allowing items to expire, budget strain due to overspending.
+Potential Conflicts:: Limited time vs need for organization, Budget constraints vs desire for convenience.
+
+. Roommate
++
+Role:: Co-resident who shares responsibility
+Goals:: Fair sharing of responsibilities, avoiding duplicate purchases, maintain transparency.
+Risks:: Lack of communication, unequal contribution to shared items, lack of coordination.
+Potential Conflicts:: Disagreement over ownership of items, different consumption habits.
+
+=== Secondary Stakeholders
+
+[upperalpha]
+. Parents/ Financial Support Providers
++
+Role:: Indirect financial contributors to household expenses.
+Goals:: Encourage responsible spending, ensure student maintains necessary essentials.
+Risks:: Financial waste due to poor inventory awareness.
+
+== Domain Description Units
+
+=== Unit DH-01
+
+Stakeholder:: Student
+Category:: Inventory
+Kind:: Entity
+Attribute:: Static
+Facet:: Insintric
+Phenomena Names:: household item, quantity
+Formal Statement:: A household item has a finite quantity that decreases through consumption and increases through acquisition.
+
+=== Unit DH-02
+
+Stakeholder:: Student
+Category:: Inventory
+Kind:: Event
+Attribute:: Dynamic
+Facet:: Intrinsic
+Phenomena Names:: acquisition, purchase
+Formal Statement:: Acquisition of a household item increases its available quantity and reduces available financial resources.
+
+=== Unit DH-03
+
+Stakeholder:: Student
+Category:: Inventory
+Kind:: Behavior
+Attribute:: Dynamic
+Facet:: Intrinsic
+Phenomena Names:: consumption
+Formal Statement:: Consumption reduces the available quantity of a household item.
+
+=== Unit DH-04
+
+Stakeholder:: Student
+Category:: Expiration
+Kind:: Event
+Attribute:: Dynamic
+Facet:: Intrinsic
+Phenomena Names:: expiration date
+Formal Statement:: Certain household items become unsuitable for use after their expiration date.
+
+=== Unit DH-05
+
+Stakeholder:: Student
+Category:: Inventory
+Kind:: Constraint
+Attribute:: Static
+Facet:: Insintric
+Phenomena Names:: availability
+Formal Statement:: A household cannot be consumed if its quantity is zero.
+
+=== Unit DH-06
+
+Stakeholder:: Roomate
+Category:: Shared Household
+Kind:: Behavior
+Attribute:: Dynamic
+Facet:: Intrinsic
+Phenomena Names:: duplicate purchase
+Formal Statement:: In a shared household, lack of coordination may result in multiple individuals acquiring the same item independently.
+
+=== Unit DH-07
+
+Stakeholder:: Student
+Category:: Budget
+Kind:: Entity
+Attribute:: Static
+Facet:: Intrinsic
+Phenomena Names:: budget, expenditure
+Formal Statement:: Spending on household items reduces the available budget.
+
+=== Unit DH-08
+
+Stakeholder:: Student
+Category:: Storage
+Kind:: Entity
+Attribute:: Static
+Facet:: Intrinsic
+Phenomena Names:: location, room
+Formal Statement:: Each household item occupies a physical location within the household.
+
+=== Unit DH-09
+
+Stakeholder:: Roomate
+Category:: Shared Household
+Kind:: Behavior
+Attribute:: Dynamic
+Facet:: Intrinsic
+Phenomena Names:: communication
+Formal Statement:: Communication between roommates influences purchasing decisions and inventory redundancy.
+
+=== Unit DH-10
+
+Stakeholder:: Student
+Kind:: Event
+Attribute:: Dynamic
+Facet:: Intrinsic
+Phenomena Names:: discard
+Formal Statement:: A household item may be discarded when fully consumed, expired, or no longer needed.
