@@ -6,6 +6,18 @@ Requirements expressed in domain language (capabilities/outcomes), independent o
 * DR2: TODO
 * DR3: TODO
 
+DR1: A household must always have exactly one Owner.
+
+DR2: Ownership must be transferred before Owner leaves.
+
+DR3: Each household owns its shared inventory.
+
+DR4: Invite must have exactly one status.
+
+DR5: Membership must have exactly one status.
+
+DR6: Users may belong to multiple households.
+
 === Rationale / trace
 * DR1 supports need(s): TODO (N1, N2)
 * DR2 supports need(s): TODO
