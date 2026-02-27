@@ -2,6 +2,24 @@
 
 Major domain functions/capabilities (what the domain must be able to do), not UI features.
 
+// NOTE (incomplete): This table contains only placeholder entries. Based on the user stories, needs, and events already documented,
+// the following domain functions should be defined here:
+//
+// - Record Item (map to US-INV-01, N1, N2) — Stakeholder records a purchased Product into Inventory
+// - Update Stock Quantity (map to US-INV-01, N2) — Stakeholder decrements or increments Stock quantity
+// - Classify Ownership (map to US-INV-02, N4) — Stakeholder marks Stock as personal or shared
+// - Detect Low Stock (map to US-ALT-01, N3) — System evaluates Stock quantity against Restock Threshold
+// - Send Expiration Alert (map to US-ALT-01) — System evaluates Stock expiration date against current date
+// - Log Purchase / Spend Event (map to US-SB-01, IR-06) — Stakeholder records a purchase with cost and attribution
+// - Split Shared Cost (map to US-SB-01, IR-07) — System allocates a Spend Event across household Members
+// - Generate Inventory Report (map to US-RPT-01) — System produces a summary of inventory state
+// - Generate Spending Report (map to US-RPT-01) — System produces a summary of Spend Events by period/category
+// - Manage Household Membership (map to DR-4, DR-5) — Owner invites, assigns roles, and removes Members
+// - Detect and Prevent Duplicates (map to DR-7, DR-14..17, IR-09..12) — System checks for Product/Stock duplicates before insert
+//
+// Also: spending_tracking_logic.adoc exists under functions/spending tracking logic/ but is NOT included here yet.
+// Add: include::spending tracking logic/spending_tracking_logic.adoc[leveloffset=+1]
+
 [cols="2,4,3",options="header"]
 |===
 |Function |Description |Primary actors

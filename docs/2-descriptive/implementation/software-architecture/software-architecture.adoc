@@ -2,6 +2,23 @@
 
 High-level architecture: major components, responsibilities, and interactions.
 
+// NOTE (incomplete): The scope-span.adoc already names the major architectural components:
+// "client, data storage, synchronization, authentication/authorization, and notifications/reminders."
+// software-design.adoc confirms Supabase (data storage, auth, RLS) and Flutter (client).
+// The following draft component table can be started from those two sources:
+//
+// | Flutter Mobile Client | User interface, local state, normalization before backend calls, duplicate warning modals | Supabase REST/Realtime
+// | Supabase Database     | Persistent storage of Products, Stock, Homes, Members, SpendEvents, Invitations | Flutter via PostgREST
+// | Supabase Auth         | User identity, session tokens, household-level access control (RLS) | Flutter via supabase-flutter SDK
+// | Supabase Realtime     | Push inventory/spending changes to all household Members in real time | Flutter listeners
+// | Notification Service  | Scheduled expiration and low-stock alerts (see alert-system-states.adoc) | FCM / device_token; Supabase Edge Function or cron
+//
+// Data flow gap: No data flow diagram exists yet. The Important Event Sequences in events.adoc
+// (e.g., "purchase recorded → spending totals changed") describe the logical flow and can seed this section.
+//
+// Risks gap: rough-sketch.adoc lists edge situations (barcode doesn\'t scan, connectivity gaps, conflicting
+// updates from multiple Members) that represent architectural risks and should be listed here.
+
 === Architecture overview
 TODO: 1–2 paragraphs describing the overall approach.
 

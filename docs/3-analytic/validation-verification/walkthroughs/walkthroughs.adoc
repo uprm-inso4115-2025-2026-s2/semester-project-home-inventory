@@ -1,55 +1,56 @@
 == Walkthroughs
 
-Walkthroughs validate assumptions by stepping through scenarios with stakeholders or team members.
+Walkthroughs are a validation activity: they check whether the team’s understanding of the domain and scenarios matches stakeholder expectations. They do not verify implementation correctness (that is addressed by testing).
 
 === Walkthrough plan
-* Participants: 
-** Development team members.
-** 2-3 prospective users acting as domain informants (e.g., students managing shared living spaces).
-* Materials: 
-** Event table and Imporant Event Sequences from the domain description.
+* Participants:
+** Development team members (facilitators and note-takers).
+** 2–3 prospective users acting as domain informants (e.g., students managing shared living spaces).
+* Materials:
+** Event table and Important Event Sequences from the domain description.
 ** Scenario descriptions (e.g., low-stock detection, expiration handling).
 ** Draft UI mockups or simple screen sketches (used only to anchor discussion, not evaluate design).
-** Terminology list defining entities such as Inventory, Item, Restock Planner, and Spending Tracker.
-* Method: 
-** Scenario-driven walkthrough using a think-aloud approach (method where participants verbalize their thoughts in real time while stepping through a scenario or performing a task).
-** Facilitator presents a situation and asks participants to describe what they would expect to happen.
-** Event sequence is compared live against participant expectations.
+** Terminology list defining key concepts such as household, inventory, item type/item instance, restock list/planner, and spending tracking.
+** Expiration state model summary (states and intervals) from `alert-system-states.adoc`.
+** Technical delivery considerations for expiration alerts from `tech-expiration-alert-system.adoc` (used only to sanity-check feasibility; not evaluated with stakeholders).
+* Method:
+** Scenario-driven walkthrough using a think-aloud approach (participants verbalize what they expect and why at each step).
+** Facilitator presents a situation and asks participants to describe what they expect to happen next.
+** Event sequence is compared live against participant expectations and domain terminology.
 ** Clarifications and disagreements are documented as validation findings.
-** No implementation details are discussed. The focus remains on domain correctness.
+** No implementation details are discussed. The focus remains on domain correctness and stakeholder mental models.
 
 === Walkthrough questions (draft)
-* What part of this process feels different from how you would normally manage items at home?
-* Does this sequence of events reflect what actually happens when something runs out?
-* At this point in the scenario, what would you expect the system to do next?
-* Are any terms (e.g., Restock Planner, Low-Stock Condition) unclear or unnatural?
+* What part of this process feels different from how you normally manage items at home?
+* Does this sequence of events reflect what actually happens when something runs out or runs low?
+* At this point in the scenario, what would you expect the system-to-be to do next?
+* Are any terms (e.g., restock list/planner, low-stock) unclear or unnatural?
 * Would you ever ignore or bypass this step in real life? Why?
 * Is there information you would need that is not represented here?
-* Does this sequence of events reflect how this would happen in real life?
 * Is this the order in which these things would normally occur?
-* When would this feature become annoying or unnecessary?
+* When would this feature become annoying or unnecessary (e.g., too many prompts)?
 
-These questions aim to validate mental models, not measure satisfaction.
+These questions aim to validate mental models and domain assumptions, not measure satisfaction.
 
-=== Findings (to fill after walkthroughs)
+=== Findings (examples / initial hypotheses)
+
 [cols="2,4,3",options="header"]
 |===
-|Finding |Evidence |Impact / action
+|Finding |Evidence (participant/session) |Impact / action
 
 |Low-stock should not trigger immediately after every quantity decrease.
-|Participants stated they would not expect an alert unless the quantity reaches zero or remains low for some time. One participant said, “If I still have two units, I do not need a notification yet.”
-|Introduce configurable threshold levels per Item and clarify definition of “Low-Stock Condition” in terminology.
+|Example hypothesis to validate: participants may not expect an alert unless quantity crosses a chosen threshold (or remains low). Record quotes with participant code and date (e.g., P1, 2026-02-xx).
+|Clarify low-stock meaning in terminology; specify threshold-based triggering and deduplication rules.
 
 |Expiration does not always imply unavailability.
-|During the expiration scenario, participants noted that some items (e.g., canned goods) may still be consumed after expiration at user discretion.
-|Separate “Expired” from “Unavailable” in domain model. Require manual confirmation before triggering “Item has become an unavailable Item.”
+|Example hypothesis to validate: participants may treat expiration differently by item type (e.g., canned goods vs medicine). Record evidence with participant code and date.
+|Separate “expired” from “unavailable” states; require a policy for what happens on expiration (inform vs block vs manual confirmation).
 
-|Restock Planner should allow manual override.
-|Participants indicated they may not want all low-stock or expired items automatically added to Restock Planner.
-|Add rule allowing Occupants to manually remove or defer items from Restock Planner.
+|Restock list/planner should allow manual override.
+|Example hypothesis to validate: participants may not want all low/expired items auto-added. Record evidence with participant code and date.
+|Specify rules for manual remove/defer and for auto-add gating to reduce clutter.
 
-|Shared Inventory alerts may be excessive.
-|Participants expressed concern about multiple occupants receiving redundant alerts for minor changes.
-|Add rule to allow notification preferences per Occupant.
-
+|Shared-household alerts may be excessive.
+|Example hypothesis to validate: multiple household members receiving redundant alerts may be perceived as noisy. Record evidence with participant code and date.
+|Add preferences or scoping (who gets alerted); emphasize grouping/deduplication and “transition-only” alerting.
 |===
