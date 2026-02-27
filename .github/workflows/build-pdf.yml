@@ -1,9 +1,9 @@
-name: Build & Publish PDF
+name: Build & Publish AsciiDoc PDF
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
+  push:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -30,6 +30,7 @@ jobs:
       - name: Install Asciidoctor PDF
         run: gem install asciidoctor asciidoctor-pdf
 
+      # Adjust input path if your docs entry file is different
       - name: Build PDF
         run: |
           mkdir -p site
@@ -41,32 +42,25 @@ jobs:
           name: asciidoc-pdf
           path: site/inventory.pdf
 
-      - name: Create a simple landing page
-        if: github.event_name != 'pull_request'
-        run: |
-          cat > site/index.html <<'EOF'
-          <!doctype html>
-          <html>
-            <head><meta charset="utf-8"><title>PDF</title></head>
-            <body>
-              <h1>Latest PDF</h1>
-              <p><a href="inventory.pdf">Open the PDF</a></p>
-            </body>
-          </html>
-          EOF
+      # Only prepare/deploy Pages when pushing to main (not on PRs)
+      - name: Setup Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
   deploy:
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
