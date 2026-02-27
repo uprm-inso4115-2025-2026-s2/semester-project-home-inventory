@@ -1,0 +1,204 @@
+= Document Budget Management Logic
+// Author: Andrea Segarra
+// GitHub user: @andreasegarra
+// Date: 02/26/2026
+// Issue #132
+
+== 1. Objective
+
+Define how budget constraints and financial limits operate within the shared household inventory system to ensure controlled spending, transparency, and accountability among members.
+
+This document establishes the behavioral rules, supported budget types, threshold handling, and edge case management required for future implementation.
+
+---
+
+== 2. Budget Scope Types
+
+The system supports multiple budgeting structures to allow flexibility across different household financial models.
+
+=== 2.1 Household Level Budget
+
+A single shared budget that applies to all spending within the household.
+
+Characteristics:
+* One active budget per cycle per household.
+* All spending records contribute to this budget.
+* Visible to all household members.
+
+Use case:
+* Shared grocery or utility budget.
+
+---
+
+=== 2.2 Category Based Budget
+
+A budget applied to a specific spending category.
+
+Characteristics:
+* Multiple category budgets may exist simultaneously.
+* Each budget applies only to spending entries within its category.
+* Category budgets operate independently of each other.
+
+Use case:
+* Separate budget for Groceries, Cleaning Supplies, etc.
+
+---
+
+=== 2.3 User Based Budget
+
+An individual budget assigned to a specific household member.
+
+Characteristics:
+* Tracks spending only from that member.
+* Allows personal spending limits within a shared environment.
+* Automatically archived if the user leaves the household.
+
+Use case:
+* Personal spending control within a shared space.
+
+---
+
+== 3. Budget Cycle Configuration
+
+Each budget must define a time cycle.
+
+Supported cycles:
+* Monthly (default)
+* Weekly
+* Custom date range
+
+Each budget period must store:
+
+* Budget amount
+* Start date
+* End date
+* Remaining balance
+* Total spent
+* Status (Active, Completed, Exceeded)
+
+At the end of a cycle:
+* The current period is closed.
+* A new budget period instance is created.
+* Historical data remains immutable.
+
+---
+
+== 4. Budget Threshold Behavior
+
+The system must define how it reacts as spending increases.
+
+=== 4.1 Warning Threshold
+
+When spending reaches a configurable percentage (e.g., 80%):
+
+* Notify members.
+* Display a visual warning indicator.
+* No spending restrictions applied.
+
+---
+
+=== 4.2 Soft Limit
+
+When the budget amount is exceeded:
+
+* Allow continued spending.
+* Log excess amount.
+* Mark budget status as "Exceeded".
+* Notify household members.
+
+---
+
+=== 4.3 Hard Limit
+
+If enabled:
+
+* Prevent creation of new spending records once limit is reached.
+* Only authorized users (e.g., Owner) may override.
+
+---
+
+== 5. Relationship Between Spending and Budgets
+
+Every spending record must:
+
+* Belong to a household.
+* Be associated with a category.
+* Identify the user who created it.
+* Be linked to an active budget period (if applicable).
+
+If multiple budget types exist simultaneously:
+
+* A single spending record may affect:
+  - Household budget
+  - Category budget
+  - User budget
+* All relevant budgets must update in real time.
+* Budget totals must remain consistent across recalculations.
+
+---
+
+== 6. Budget Reset and Historical Tracking
+
+The system must preserve financial transparency over time.
+
+When a budget cycle ends:
+
+* The period is locked from modification.
+* Final total spent is stored.
+* Exceeded amount (if any) is recorded.
+* A new period begins automatically (if recurring).
+
+Historical periods must never be overwritten.
+
+---
+
+== 7. Edge Case Handling
+
+=== 7.1 User Leaves Household
+
+* User based budgets are archived.
+* Past spending records remain intact.
+* Household and category budgets remain unaffected historically.
+
+---
+
+=== 7.2 Budget Modified Mid Cycle
+
+If a budget amount changes during an active cycle:
+
+* Modification event must be logged.
+* Remaining balance recalculated.
+* Original value preserved in audit history.
+
+---
+
+=== 7.3 Deleted Spending Record
+
+If a spending entry is deleted:
+
+* Affected budgets must immediately recalculate totals.
+* Budget status must update accordingly.
+
+---
+
+=== 7.4 Duplicate Active Budgets
+
+The system must prevent:
+
+* More than one active budget per scope (household/category/user) per cycle.
+
+Validation rules must enforce uniqueness.
+
+---
+
+== 8. Research Considerations
+
+This model aligns with collaborative finance systems that require:
+
+* Role-based financial accountability
+* Transparent historical tracking
+* Flexible scope-based budgeting
+* Automated period management
+* Real-time recalculation of shared financial data
+
+This analysis provides a structured foundation for implementing a consistent, scalable, and auditable budgeting system within the shared household inventory architecture.

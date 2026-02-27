@@ -22,3 +22,7 @@ Stakeholders discovered later as the team learns more about the domain.
 |High 
 |App rejection due to improper handling of user data or failure to meet the minimum functionality requirements for listing.
 |===
+
+= Lecture Topic Task
+
+include::../../../lecture-topic-tasks/Non-obvious stakeholders.adoc[]

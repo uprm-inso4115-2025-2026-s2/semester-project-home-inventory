@@ -1,0 +1,29 @@
+== System Flow and User Flow Overview
+
+
+=== 1. System Flow: Grocery List Auto-Generation
+
+The System Flow diagram illustrates the backend decision logic that generates the grocery list.
+
+- The AutoCheck system runs independently and produces item status results.
+- The Grocery List Generator consumes those results.
+- Each item is evaluated individually.
+- Items are added based on defined priority rules (Out of Stock, Expired, Low Stock, Frequent Pattern).
+- The system prevents duplicate entries and logs actions.
+
+This diagram represents internal logic and automation behavior. No user interaction is involved in this flow.
+
+=== 2. User Flow: Auto-Generated Grocery List Interaction
+
+The User Flow diagram illustrates how the user interacts with the already-generated grocery list.
+
+- The system auto-generates or updates the list daily.
+- The user navigates to the Grocery List page.
+- The user reviews auto-added items.
+- The user may optionally modify the list (add, edit, or remove items).
+- Changes are saved automatically.
+- The final list reflects both system automation and user modifications.
+
+This diagram represents the front-end interaction and user experience layer.
+
+Together, these diagrams separate system-level automation from user-facing behavior, ensuring clarity between backend logic and user interaction.

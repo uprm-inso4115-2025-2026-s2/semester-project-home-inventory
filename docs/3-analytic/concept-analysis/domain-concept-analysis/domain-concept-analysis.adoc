@@ -1,39 +1,175 @@
 == Domain Concept Analysis
 
-This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants.
+This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants. The goal is to identify recurring ideas and abstract shared concepts that describe how household items are managed in shared and individual living spaces, without the use of any specific software solution.
 
-=== Core concepts (draft)
-[cols="2,4",options="header"]
-|===
-|Concept |Definition
+=== Core concepts
 
-|TODO |TODO
-|===
+* *Household Item*  
+  A physical object kept in a residence for everyday use. This includes food, medicine, or cleaning supplies.
+
+* *Inventory*  
+  The collection of household items associated with a residence.
+
+* *Category*  
+  A grouping of household items based on purpose or type, such as bathroom supplies or cleaning supplies.
+
+* *Location*  
+  A physical area where household items are stored.
+
+* *Quantity*  
+  An indication or approximation of how much of a household item remains available.
+
+* *Expiration*  
+  A time-related constraint after which a household item is no longer usable or safe.
+
+* *Spending*  
+  Money spent to acquire household items over time.
+
+* *Resident*  
+  A person living in a residence who uses, manages, or shares household items.
 
 === Concept details
-==== Concept: <Name>
-* Definition: TODO
+
+==== Concept: Household Item
+* Definition:  
+  A physical object maintained within a household for daily living needs.
 * Key attributes:
-** TODO: attribute — meaning/type
-** TODO
+** Name: Identifier of the item
+** Quantity: Perceived or measured amount remaining
+** Expiration: Date after which the item should not be used
+** Category: Functional grouping of the item
 * Relationships:
-** TODO: relates to <Other concept> because ...
-* Invariants / business rules:
-** TODO: “must always be true” rule
-* Examples (from rough sketch):
-** TODO
+** Belongs to an inventory as part of a household collection
+** May be stored in one or more locations
+* Invariants:
+** A household item must belong to an inventory
+** A household item cannot have a negative quantity
+* Examples:
+** Milk, rice, yogurt, toilet paper, medicine
 
-=== Relationship overview (draft)
-[cols="2,2,4",options="header"]
-|===
-|Concept A |Concept B |Relationship
+==== Concept: Inventory
+* Definition:  
+  The complete set of household items associated with a residence.
+* Key attributes:
+** Items: Collection of household items
+* Relationships:
+** Contains household items
+** Is associated with one or more residents
+* Invariants:
+** An inventory must be associated with at least one resident
+* Examples:
+** Fridge notes used to infer what is available
+** Shared grocery lists or chat messages
 
-|TODO |TODO |TODO
-|===
+==== Concept: Category
+* Definition:  
+  A classification that groups household items by purpose or use.
+* Key attributes:
+** Name: Category label
+* Relationships:
+** Groups household items
+* Invariants:
+** A household item belongs to at least one category
+* Examples:
+** Pantry items
+** Bathroom supplies
+** Cleaning supplies
+
+==== Concept: Location
+* Definition:  
+  A physical space where household items are stored.
+* Key attributes:
+** Name: Room or storage area
+* Relationships:
+** Stores household items
+* Invariants:
+** A household item may be stored in multiple locations
+* Examples:
+** Kitchen cabinet
+** Bathroom closet
+** Hallway storage bin
+** Car trunk
+
+==== Concept: Quantity
+* Definition:  
+  An estimate or measurement of how much of a household item remains.
+* Key attributes:
+** Value: Numeric amount
+* Relationships:
+** Describes the availability of a household item
+* Invariants:
+** Quantity cannot be negative
+* Examples:
+** “Feels light”
+** “Backup opened”
+** Bulk packages partially consumed
+
+==== Concept: Expiration
+* Definition:  
+  A time-based constraint indicating when a household item is no longer safe or useful.
+* Key attributes:
+** Expiration Date: Time after which the item should not be used
+* Relationships:
+** Applies to household items
+* Invariants:
+** Expiration information may be missing or unreadable
+* Examples:
+** Yogurt expiring before consumption
+** Medicine discarded after expiration
+
+==== Concept: Spending
+* Definition:  
+  Money spent acquiring household items over time.
+* Key attributes:
+** Amount: Monetary value
+* Relationships:
+** Is associated with the acquisition of household items
+* Invariants:
+** Spending values must be non-negative
+* Examples:
+** Bulk buying to reduce unit cost
+** Duplicate purchases of essentials
+
+==== Concept: Resident
+* Definition:  
+  A person living in a residence who uses or manages household items.
+* Key attributes:
+** Role: Participant in the household
+* Relationships:
+** Interacts with an inventory
+** May share an inventory with other residents
+* Invariants:
+** A resident may be associated with one or more inventories
+* Examples:
+** Student living alone
+** Shared apartment residents
+** Family household members
+
+=== Relationship overview
+
+* An inventory contains multiple household items.
+* Household items may be grouped into one or more categories.
+* Household items are stored in physical locations.
+* Household items have quantities that change over time.
+* Some household items are subject to expiration constraints.
+* Acquiring household items contributes to household spending.
+* One or more residents may interact with the same inventory.
+* Shared inventories can lead to coordination issues such as duplicate purchases.
 
 === Constraints and edge cases
-* TODO: constraint 1
-* TODO: edge case 1
+
+* Household items are often described by quality rather than by quantity.
+* Items purchased in bulk may have multiple expiration dates within one package.
+* Expiration dates may be unreadable or missing.
+* Items may be consumed faster during unique situations.
+* Items may be stored in secondary or forgotten locations.
+* Residents may move out while still associated with the shared inventory.
 
 === Trace to evidence
-* TODO: For each major concept, note which rough sketch bullet(s) or observation(s) support it.
+
+* *Household Item, Quantity*: Items described as almost empty, backup, or forgotten.
+* *Inventory*: Reliance on memory, fridge notes, and shared lists.
+* *Category and Location*: Separation of items by room or purpose.
+* *Expiration*: Food and medicine expiring unnoticed.
+* *Spending*: Duplicate buying and bulk purchasing behavior.
+* *Resident*: Students, families, and shared living situations.

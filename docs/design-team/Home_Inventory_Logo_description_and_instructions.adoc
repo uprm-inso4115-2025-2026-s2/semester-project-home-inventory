@@ -1,0 +1,90 @@
+
+= Home Inventory Logo Documentation
+
+== 1. Logo Overview
+
+The logo represents a *Home Inventory Management System*.
+
+It combines three core visual elements:
+
+* *House icon* → Represents the home
+* *Magnifying glass* → Represents tracking and searching
+* *Checklist/List lines* → Represents structured inventory items
+
+Together, these elements communicate:
+
+
+A system that helps users organize, track, and manage items inside their homes.
+
+
+== 2. Visual Style
+
+=== Color Choice
+
+The logo uses a muted green tone. (part of the style guide color palette)
+
+*Rationale for green:*
+
+* Represents organization and clarity
+* Suggests stability and reliability
+* Creates a calm, productivity-focused feeling
+* Subtly connects to sustainability and restocking
+
+
+The color supports the app’s practical and structured purpose.
+
+
+
+== 3. Usage Guidelines
+
+=== Do
+
+* Maintain original proportions
+* Use the approved color palette
+* Keep adequate clear space around the logo
+* Use high-contrast backgrounds (light on dark or dark on light)
+
+=== Don't
+
+* Do not stretch or distort the logo
+* Do not remove or rearrange elements
+
+
+== 4. Clear Space Rule
+
+Maintain minimum spacing around the logo equal to the width of the magnifying glass handle.
+
+This ensures:
+
+* Visual clarity
+* Proper legibility
+* Professional presentation across platforms
+
+
+== 5. Minimum Size
+
+For digital usage:
+
+* Recommended minimum width: 32px
+* For mobile app icons, follow iOS and Android adaptive icon guidelines
+
+Below the minimum size, internal list details may lose clarity.
+
+
+== 6. App Icon Usage
+
+When used as a mobile app icon:
+
+* Center the logo
+* Maintain equal padding on all sides
+* Avoid cropping important elements
+* Ensure strong contrast with background
+
+
+
+== 10. Future Extensions
+
+Potential variations:
+
+* Monochrome version
+* White-only version for dark backgrounds
