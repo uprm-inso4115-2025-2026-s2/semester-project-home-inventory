@@ -2,6 +2,31 @@
 
 Technical/system requirements and constraints (performance, security, data, integrations).
 
+// NOTE (incomplete): Quality needs are already stated in needs.adoc under "Quality Needs (Non-Functional)"
+// and should be translated into MR* requirements here. Suggested mapping:
+//
+// - MR1 (Performance): From needs.adoc — "Household members need inventory information quickly enough to use it
+//   while shopping or planning." Define a response time target (e.g., item add < 2 seconds, search < 1 second).
+// - MR2 (Reliability): From needs.adoc — "Household members need to trust that tracked inventory matches reality."
+//   Define uptime expectation and data consistency guarantees (especially for shared household sync).
+// - MR3 (Security/Privacy): From needs.adoc — "Household members need confidence that household data is only
+//   visible to intended people." Define authentication requirement (Supabase Auth / RLS), data isolation per Home.
+// - MR4 (Usability/Accessibility): From needs.adoc — "Minimal effort and without training." Define max steps to
+//   complete core actions (e.g., add item ≤ 3 taps).
+// - MR5 (Availability/Offline): From needs.adoc — "Usable even when connectivity is unreliable." Define offline
+//   capability expectation and sync reconciliation behavior.
+// - MR6 (Scalability): From needs.adoc — "Remain smooth as more items, households, and members are added."
+//   Define expected max items per Home and members per Home for initial span.
+//
+// Data requirements: The following data entities are already defined in entities.adoc and should be listed here:
+//   Home, Product, Stock, Room, Inventory, StockLocation, Stakeholder, Membership, Invitation, Budget,
+//   SpendEvent (from DR-9/terminology), Category, ShoppingList.
+// Data integrity constraints are defined in DR-1..DR-17 and should be cross-referenced here.
+//
+// Integration requirements: Supabase (database, auth, RLS) and Flutter are already referenced in
+//   software-design.adoc. If barcode scanning (from rough-sketch.adoc edge situations and IR-01) is in scope,
+//   a camera/barcode API integration requirement should be stated here.
+
 === Non-functional requirements
 * MR1 (Performance): Using Supabase, the system must handle concurrency via Supavisor. Direct PostgreSQL connections are limited based on instance size. Therefore the application must use connection pooling to maintain a high uptime and avoid errors.
 * MR2 (Reliability): The system relies on the current infrastructure of Supabase. Reliability is limited by the Free Tier's storage and connection limits. For bigger production use, the Pro plan is recommended to ensure better performance and reliability.

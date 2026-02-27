@@ -1,175 +1,189 @@
 == Domain Concept Analysis
 
-This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants. The goal is to identify recurring ideas and abstract shared concepts that describe how household items are managed in shared and individual living spaces, without the use of any specific software solution.
+This section derives domain concepts from the domain rough sketch (interviews, observations, edge situations). It documents how specific domain statements lead to abstractions (concepts), identifies potential term clashes, and defines relationships and invariants that hold in the domain independent of any system-to-be.
 
-=== Core concepts
+=== Starting point: raw statements held side-by-side
 
-* *Household Item*  
-  A physical object kept in a residence for everyday use. This includes food, medicine, or cleaning supplies.
+The following statements (from the rough sketch) are used as anchors for concept formation:
 
-* *Inventory*  
-  The collection of household items associated with a residence.
+* Shared apartment: "If it is not on our fridge note, we assume we are out."
+* Shared apartment: "Sometimes I check the pantry before leaving, but by the time I get to Walmart I forgot what we needed."
+* Shared apartment: "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway."
+* Shared apartment: "Milk is usually bought twice in the same week at least once per month."
+* Shared apartment: When asked how they know they are 'low': "when it feels light" or "when we open the backup." (and the backup opening is not recorded)
+* Solo student: "If it takes more than a few seconds to log, I won't do it."
+* Solo student: buys in bulk; yogurts sometimes expire; estimated 3–5 thrown away last semester.
+* Household owner: child sometimes uses last item without saying; toilet paper runs out unexpectedly.
+* Household owner: medicines kept separately; expiration dates important; thrown away expired medicine without realizing there was a second unopened box.
+* Household owner: wants to remove access when someone moves out.
+* Student athlete: consumption changes by context ("exam weeks"); buys based on memory of how fast it ran out last time.
+* Brainstorming: people describe items as "full", "almost empty", "backup" (rarely with numbers).
+* Edge situations: unreadable/missing expiration date; multiple expiration dates within a bulk package; backup stored in car trunk and forgotten.
 
-* *Category*  
-  A grouping of household items based on purpose or type, such as bathroom supplies or cleaning supplies.
+These statements motivate the concepts below.
 
-* *Location*  
-  A physical area where household items are stored.
+=== Concept formation: from statements to abstractions
 
-* *Quantity*  
-  An indication or approximation of how much of a household item remains available.
+We derive concepts by asking: (1) what phenomena exist in the domain, (2) what information households use to act, and (3) what changes over time.
 
-* *Expiration*  
-  A time-related constraint after which a household item is no longer usable or safe.
+Examples of abstraction:
 
-* *Spending*  
-  Money spent to acquire household items over time.
+* "If it is not on our fridge note, we assume we are out." ->
+  *Tracked representation* (note/list) vs *reality* (actual item availability), and *assumption under uncertainty*.
 
-* *Resident*  
-  A person living in a residence who uses, manages, or shares household items.
+* "Rice in two places" ->
+  item storage *location*, and the possibility of multiple locations for the same item.
 
-=== Concept details
+* "when it feels light" / "open the backup" ->
+  *low-stock judgment* that is qualitative and strategy-based, and *backup* as a household practice.
 
-==== Concept: Household Item
-* Definition:  
-  A physical object maintained within a household for daily living needs.
-* Key attributes:
-** Name: Identifier of the item
-** Quantity: Perceived or measured amount remaining
-** Expiration: Date after which the item should not be used
-** Category: Functional grouping of the item
-* Relationships:
-** Belongs to an inventory as part of a household collection
-** May be stored in one or more locations
-* Invariants:
-** A household item must belong to an inventory
-** A household item cannot have a negative quantity
-* Examples:
-** Milk, rice, yogurt, toilet paper, medicine
+* "Milk bought twice in the same week" ->
+  *duplicate purchase* as a coordination failure, often arising from missing shared understanding.
 
-==== Concept: Inventory
-* Definition:  
-  The complete set of household items associated with a residence.
-* Key attributes:
-** Items: Collection of household items
-* Relationships:
-** Contains household items
-** Is associated with one or more residents
-* Invariants:
-** An inventory must be associated with at least one resident
-* Examples:
-** Fridge notes used to infer what is available
-** Shared grocery lists or chat messages
+* "3–5 yogurts thrown away last semester" / medicines expired with unopened box ->
+  *expiration* and *batches* (same item type can exist in multiple packages with different expiration dates).
 
-==== Concept: Category
-* Definition:  
-  A classification that groups household items by purpose or use.
-* Key attributes:
-** Name: Category label
-* Relationships:
-** Groups household items
-* Invariants:
-** A household item belongs to at least one category
-* Examples:
-** Pantry items
-** Bathroom supplies
-** Cleaning supplies
+* "remove access when someone moves out" ->
+  *membership* and *access to shared household information* (domain concept: who belongs to the household at a given time).
 
-==== Concept: Location
-* Definition:  
-  A physical space where household items are stored.
-* Key attributes:
-** Name: Room or storage area
-* Relationships:
-** Stores household items
-* Invariants:
-** A household item may be stored in multiple locations
-* Examples:
-** Kitchen cabinet
-** Bathroom closet
-** Hallway storage bin
-** Car trunk
+=== Core domain concepts (derived)
 
-==== Concept: Quantity
-* Definition:  
-  An estimate or measurement of how much of a household item remains.
-* Key attributes:
-** Value: Numeric amount
-* Relationships:
-** Describes the availability of a household item
-* Invariants:
-** Quantity cannot be negative
-* Examples:
-** “Feels light”
-** “Backup opened”
-** Bulk packages partially consumed
+[cols="2,4",options="header"]
+|===
+|Concept |Definition (domain-level)
 
-==== Concept: Expiration
-* Definition:  
-  A time-based constraint indicating when a household item is no longer safe or useful.
-* Key attributes:
-** Expiration Date: Time after which the item should not be used
-* Relationships:
-** Applies to household items
-* Invariants:
-** Expiration information may be missing or unreadable
-* Examples:
-** Yogurt expiring before consumption
-** Medicine discarded after expiration
+|Household
+|A living unit (dorm, apartment, shared house) in which one or more people manage household essentials.
 
-==== Concept: Spending
-* Definition:  
-  Money spent acquiring household items over time.
-* Key attributes:
-** Amount: Monetary value
-* Relationships:
-** Is associated with the acquisition of household items
-* Invariants:
-** Spending values must be non-negative
-* Examples:
-** Bulk buying to reduce unit cost
-** Duplicate purchases of essentials
+|Household member
+|A person who currently belongs to a household and participates in consuming, replenishing, or coordinating around items.
 
-==== Concept: Resident
-* Definition:  
-  A person living in a residence who uses or manages household items.
-* Key attributes:
-** Role: Participant in the household
-* Relationships:
-** Interacts with an inventory
-** May share an inventory with other residents
-* Invariants:
-** A resident may be associated with one or more inventories
-* Examples:
-** Student living alone
-** Shared apartment residents
-** Family household members
+|Household item
+|A physical good kept for everyday use (e.g., milk, rice, toilet paper, soap, medicine).
 
-=== Relationship overview
+|Item type
+|The kind of item (e.g., "milk") independent of any specific package.
 
-* An inventory contains multiple household items.
-* Household items may be grouped into one or more categories.
-* Household items are stored in physical locations.
-* Household items have quantities that change over time.
-* Some household items are subject to expiration constraints.
-* Acquiring household items contributes to household spending.
-* One or more residents may interact with the same inventory.
-* Shared inventories can lead to coordination issues such as duplicate purchases.
+|Item instance / package
+|A concrete package/unit of an item type (e.g., a specific milk carton, a specific box of medicine).
 
-=== Constraints and edge cases
+|Inventory
+|The collection of household items that exist within a household at a given time.
 
-* Household items are often described by quality rather than by quantity.
-* Items purchased in bulk may have multiple expiration dates within one package.
-* Expiration dates may be unreadable or missing.
-* Items may be consumed faster during unique situations.
-* Items may be stored in secondary or forgotten locations.
-* Residents may move out while still associated with the shared inventory.
+|Tracked inventory record
+|A representation of item availability used by household members (e.g., fridge note, mental model, list). This may diverge from the real inventory.
 
-=== Trace to evidence
+|Location (storage place)
+|A physical place where items are stored (e.g., kitchen cabinet, hallway bin, bathroom closet, car trunk).
 
-* *Household Item, Quantity*: Items described as almost empty, backup, or forgotten.
-* *Inventory*: Reliance on memory, fridge notes, and shared lists.
-* *Category and Location*: Separation of items by room or purpose.
-* *Expiration*: Food and medicine expiring unnoticed.
-* *Spending*: Duplicate buying and bulk purchasing behavior.
-* *Resident*: Students, families, and shared living situations.
+|Availability
+|A household’s current “how much is left” understanding, often qualitative ("full", "almost empty", "backup").
+
+|Quantity (optional formalization)
+|A more precise measure of availability (counts/units). The domain can operate without exact numbers.
+
+|Low-stock judgment
+|A decision that an item is running low, derived from strategies like “feels light”, “opened backup”, or a numeric threshold.
+
+|Backup supply
+|A household practice of keeping a spare instance/package to reduce the risk of running out.
+
+|Consumption
+|Use of items over time (may vary by context such as exams/guests).
+
+|Replenishment (restock)
+|Acquiring more of an item after consumption reduces availability.
+
+|Expiration date
+|A date after which an item instance/package is considered expired or undesirable.
+
+|Item batch (optional)
+|A set of item instances with the same expiration date (useful when bulk packages contain multiple expirations).
+
+|Coordination failure
+|A situation where household members act on inconsistent information (e.g., duplicate purchase, unexpected shortage).
+|===
+
+=== Term clashes and clarifications
+
+To prevent inconsistent usage across documentation, we clarify common ambiguous terms:
+
+* *Inventory* (real-world items in the household) vs *Tracked inventory record* (note/list/memory). The rough sketch shows these diverge (e.g., “not on fridge note -> assume out”).
+* *Item type* (“milk”) vs *Item instance/package* (a specific carton). This matters for expiration and “second unopened box”.
+* *Low-stock* is not inherently numeric; in the domain it is often qualitative (“feels light”, “open backup”).
+* *Backup* is a domain concept (household practice), not an application feature.
+* *Household membership* changes over time (“remove access when someone moves out”): membership is a domain phenomenon; access control is a system concern derived from it.
+
+=== Relationships (domain model)
+
+[cols="2,2,4",options="header"]
+|===
+|Concept A |Concept B |Relationship
+
+|Household |Household member
+|A household has one or more members; membership may change over time.
+
+|Household |Inventory
+|A household has an inventory (items that exist in the household).
+
+|Household item |Item type
+|Each household item corresponds to an item type.
+
+|Item type |Item instance/package
+|An item type may have multiple item instances/packages in the household at once (bulk buying, backup supply).
+
+|Item instance/package |Location
+|Each item instance is stored in one location at a time; the same item type may be split across locations.
+
+|Item instance/package |Expiration date
+|Some item instances have an expiration date; others do not.
+
+|Household member |Consumption / replenishment
+|Members consume and replenish items; consumption rates vary by context (exam weeks, guests).
+
+|Tracked inventory record |Inventory (reality)
+|Tracked records approximate reality and may be incomplete, outdated, or wrong.
+
+|Household |Coordination failure
+|Coordination failures arise when members act on inconsistent or outdated tracked records.
+|===
+
+=== Events, actions, and behaviors (domain-level)
+
+* Events (instantaneous state changes):
+  - An item becomes *out* (unexpected shortage).
+  - An item becomes *low* (as judged by a strategy such as “backup opened”).
+  - An item expires (or is discovered expired).
+
+* Actions (intentional acts):
+  - Check availability (pantry check, fridge note check).
+  - Consume an item (use the last roll, eat snacks faster during exams).
+  - Replenish an item (buy milk, buy bulk yogurt).
+
+* Behaviors (multi-step ongoing processes):
+  - Household maintenance cycle: consume -> notice low/out -> decide purchase -> replenish -> store -> repeat.
+  - Shared-household coordination: negotiate who buys what, or fail and duplicate-buy.
+
+=== Invariants (domain rules)
+
+These invariants describe stable properties of the domain:
+
+* I1: A household has at least one member at any time it is considered active.
+* I2: An item instance/package, if it exists, is stored in some location (even if the location is forgotten, e.g., car trunk).
+* I3: Not all household judgments require numeric quantities; qualitative availability (“full”, “almost empty”, “backup”) is valid domain information.
+* I4: If an item instance has an expiration date, it can become expired without being consumed, creating waste.
+* I5: A household may possess multiple instances of the same item type simultaneously (bulk buying, backups).
+* I6: Tracked records can diverge from reality; decisions may be made based on assumptions under uncertainty (“not on note -> assume out”).
+
+=== Edge cases and risks (from rough sketch)
+
+* E1: Same item type stored in multiple locations (rice in cabinet + hallway bin) -> risk of undercounting or duplicate purchase.
+* E2: Backup supply opened but not recorded -> low-stock event is not propagated to shared understanding.
+* E3: Consumption rate varies by context (exam weeks, guests) -> replenishment based on “last time” memory becomes unreliable.
+* E4: Multiple expiration dates in a bulk package -> motivates batch-level tracking if expiration awareness is important.
+* E5: Expiration date unreadable/missing -> household cannot reliably judge expiration status.
+* E6: Membership change (move-out) -> household needs to update who participates and who is informed.
+
+=== Trace to earlier documentation
+
+This domain concept model is grounded in the domain rough sketch’s concrete examples of informal tracking, multiple storage locations, qualitative low-stock judgments, bulk buying, expiration waste, and shared-household coordination failures. It supports the needs described in the informative part (minimizing effort while maintaining reliable availability understanding, and improving shared-household coordination) without committing to specific implementation decisions.
