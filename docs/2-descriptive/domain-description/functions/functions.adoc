@@ -66,3 +66,5 @@ Major domain functions/capabilities (what can be done in the domain), described 
 |Determine whether spending crosses warning/limit thresholds.
 |budgetThresholdCrossed : BudgetStatus >< Thresholds -> Bool
 |===
+
+include::spending_tracking_logic.adoc[leveloffset=+1]

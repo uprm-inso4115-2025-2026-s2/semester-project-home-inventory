@@ -3,14 +3,38 @@
 [abstract]
 Evidence sources and supporting materials used to understand the domain and justify requirements.
 
-=== Sources
-* TODO: Link/resource 1 — why it matters
-* TODO: Link/resource 2 — why it matters
+=== External sources
+
+* **NAPO — National Association of Productivity & Organizing Professionals** +
+  Provides standardized categorization principles for household organization. Informs the goal of organizing items by room or category to reduce search time and cognitive load during inventory management.
+
+* **Insurance Information Institute (I.I.I.)** +
+  Sets standards for proof of ownership in home inventory contexts. Informs the manual entry fields required for non-consumable items and the goal of tracking spending.
+
+* **NBER — National Bureau of Economic Research (Household Finance)** +
+  Validates the importance of budget-tracking as a behavioral commitment device for students. Supports the domain goal of spend visibility and the tight budget constraints of the primary stakeholder group.
+
+* **Personal Information Management (PIM) research** +
+  Key finding: users abandon tracking systems when real-time synchronization is required. Informs the design preference for event-driven or batch-entry models over continuous micro-updates.
+
+* **Household Food Waste studies** +
+  Key finding: students lack situational visibility of what they own, causing over-purchasing and waste. Directly supports the need for a digital inventory mirror and expiration alerting.
+
+* **Endowment Effect in Asset Management** +
+  Key finding: manual interaction with an item's cost increases conscious awareness of waste. Supports the use of manual entry as a commitment device for budget management.
+
+Full literature review notes are documented in: `docs/lecture-topic-tasks/domain-acquisition-ltt.adoc`
 
 === Internal artifacts
-* Rough sketch notes: TODO (where stored)
-* Terminology table: TODO (where stored)
-* Meeting notes / decisions: TODO (where stored)
+
+* **Domain rough sketch and narrative** — `docs/2-descriptive/domain-description/rough-sketch/` and `docs/2-descriptive/domain-description/narrative/`
+* **Terminology table** — `docs/2-descriptive/domain-description/terminology/terminology.adoc`
+* **Ownership model research** — `docs/3-analytic/concept-analysis/domain-concept-analysis/ownership_model_research.adoc`
+* **Domain invariants** — `docs/2-descriptive/domain-description/domain_invariants.adoc`
+* **Duplicate item criteria** — `docs/descriptive/duplicate-item-criteria.adoc`
+* **Spending tracking logic** — `docs/2-descriptive/domain-description/functions/spending_tracking_logic.adoc`
 
 === Open questions
-* TODO
+
+* Interviews and surveys planned for late January through February have not yet been formally documented. Findings from those activities should be added here once completed.
+* Competitive analysis of existing inventory apps (planned in the acquisition plan) should be summarized and linked here once conducted.

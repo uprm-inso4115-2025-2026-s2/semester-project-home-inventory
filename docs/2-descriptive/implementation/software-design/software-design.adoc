@@ -136,3 +136,6 @@ The following mappings describe how domain concepts translate into system compon
 * Private items enforced via `owner_id = auth.uid()`
 
 ---
+
+include::database_schema.adoc[leveloffset=+1]
+include::notifications_schema.adoc[leveloffset=+1]
