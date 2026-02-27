@@ -1,269 +1,32 @@
-= HOME INVENTORY PROJECT
-== Document Duplicate Prevention Logic
+﻿== Duplicate Prevention Logic
 
-== Objective
+[NOTE]
+====
+This is a specific-topics reference summary. Full content is distributed across:
 
-Design and formally document the internal validation logic that prevents unintended duplicate entries before they are stored in the system.
+* *Domain invariants (barcode uniqueness, normalization before insert, deterministic spend attachment)*  `requirements/domain-requirements/domain-requirements.adoc` (§ Prevention & Data Integrity, DR-14 through DR-17)
+* *Detection hierarchy, normalization rules, and prevention workflow*  `descriptive/duplicate-item-criteria.adoc`
+* *Supabase query strategy, DB constraints, and Flutter integration*  `implementation/software-design/software-design.adoc` (§ Duplicate Prevention Implementation)
+* *Interface behavior (duplicate modals, near-duplicate confirmation)* → `requirements/interface-requirements/interface-requirements.adoc` (IR-09 through IR-12)
+====
 
-This document serves as a technical reference for implementation within:
+=== Objective
 
-* Team 1 – Core Inventory
-* Team 3 – Sharing & Budget
+Formally document the internal validation logic that prevents unintended duplicate entries before they are stored in the system.
 
-The goal is to:
+Applies to: Team 1 (Core Inventory) and Team 3 (Sharing & Budget).
 
-* Protect data integrity
-* Prevent duplicate purchases
-* Maintain accurate budgeting
-* Preserve clean product definitions
-* Support shared roommate environments
+Scope: prevention logic that occurs BEFORE inserting new inventory records, BEFORE creating new Product definitions, and BEFORE committing Spend Events.
 
-== Scope
+Out of scope: post-insertion duplicate correction; budget edge-case conflict resolution (see: Edge Cases (Duplicates/Budget)).
 
-This document defines duplicate prevention logic that occurs:
-
-* BEFORE inserting new inventory records
-* BEFORE creating new Product definitions
-* BEFORE committing spend events
-
-This document includes:
-
-* Validation hierarchy
-* Normalization rules
-* Supabase query strategy
-* Pseudo-logic for duplicate workflow
-* Integration notes for Flutter + Supabase
-
-Out of scope:
-
-* Post-insertion duplicate correction
-* Budget edge-case conflict resolution
-(See: Edge Cases (Duplicates/Budget))
-
-== Core Prevention Principles
+=== Prevention Principles (Quick Reference)
 
 . Duplicate prevention must occur before database insertion.
-. Barcode match is authoritative.
+. Barcode match is authoritative  it overrides name/brand differences.
 . Product definitions must be normalized before comparison.
-. Near-duplicates require explicit user confirmation.
-. Spend events must only be created after duplicate resolution is finalized.
+. Near-duplicates require explicit user confirmation before reuse.
+. Spend Events must only be created after duplicate resolution is finalized.
 . Prevention logic must be deterministic and reproducible.
-
-== Duplicate Detection Hierarchy
-
-The system must evaluate duplicates using the following strict hierarchy:
-
-=== Level 1 – Barcode Match (Authoritative)
-
-If a barcode (UPC/EAN) exists:
-
-* Query Supabase for existing product with identical barcode.
-* If found:
-** Reuse existing Product ID.
-** Do NOT create new Product definition.
-** Apply stock duplicate handling rules.
-* If not found:
-** Create new Product definition.
-
-Hard Rule:
-Barcode match overrides name/brand differences.
-
-=== Level 2 – Structured Metadata Match
-
-If no barcode is provided:
-
-Compare normalized:
-
-* product_name
-* brand
-* size
-* variant (optional)
-* unit_of_measure
-
-Matching Logic:
-
-Exact match on:
-`normalized_name + normalized_brand + normalized_size`
-
-If exact match found:
-
-* Suggest reuse of existing product.
-* Default action: reuse.
-
-If partial match (name + brand only):
-
-* Treat as near-duplicate.
-* Require confirmation.
-
-=== Level 3 – Fuzzy / Similarity Check
-
-If no exact structured match:
-
-Perform similarity detection:
-
-* Case-insensitive comparison
-* Remove extra spaces
-* Remove punctuation
-* Normalize units (oz → ounce, lb → pound)
-
-If similarity threshold > 85%:
-
-* Flag as potential duplicate
-* Show confirmation prompt
-
-Default action: create new product unless user confirms reuse.
-
-== Normalization Rules
-
-All text fields must be normalized before comparison.
-
-=== Text Normalization
-
-* Convert to lowercase
-* Trim leading/trailing whitespace
-* Collapse multiple spaces into one
-* Remove punctuation
-* Replace accented characters
-* Normalize common abbreviations:
-** oz → ounce
-** lb → pound
-** ct → count
-
-Example:
-
-" Clorox  64oz.  Lemon "  
-becomes  
-"clorox 64 ounce lemon"
-
-=== Size Normalization
-
-Convert sizes to canonical format:
-
-* Store numeric value separately from unit
-* Convert compatible units (if possible)
-Example:
-64 oz → 64 ounce
-1 lb → 16 ounce (optional advanced rule)
-
-=== Brand Normalization
-
-Brands must be:
-
-* Lowercase
-* Trimmed
-* Stored consistently (no trailing spaces)
-
-== Supabase Query Strategy
-
-All duplicate checks must be executed BEFORE insert.
-
-=== Barcode Check Query
-
-[source,sql]
-----
-SELECT id FROM products
-WHERE barcode = :barcode
-LIMIT 1;
-----
-
-=== Structured Match Query
-
-[source,sql]
-----
-SELECT id FROM products
-WHERE normalized_name = :normalized_name
-AND normalized_brand = :normalized_brand
-AND normalized_size = :normalized_size
-LIMIT 5;
-----
-
-=== Similarity Check (Optional Advanced)
-
-If using Postgres full-text search:
-
-[source,sql]
-----
-SELECT id, similarity(normalized_name, :normalized_name) AS score
-FROM products
-WHERE similarity(normalized_name, :normalized_name) > 0.85
-ORDER BY score DESC
-LIMIT 5;
-----
-
-Note:
-Similarity search should NOT auto-merge — only suggest.
-
-== Duplicate Prevention Workflow (Pseudo Logic)
-
-[source]
-----
-function addProduct(input):
-
-  normalized = normalize(input)
-
-  if input.barcode exists:
-      existing = queryByBarcode(input.barcode)
-      if existing found:
-          return reuse(existing)
-
-  exactMatch = queryByStructuredMatch(normalized)
-  if exactMatch found:
-      prompt user:
-          "Identical product exists. Reuse?"
-      if yes:
-          return reuse(exactMatch)
-
-  similarMatches = queryBySimilarity(normalized)
-  if similarMatches not empty:
-      prompt user:
-          "Similar products found."
-          show list
-      if user selects one:
-          return reuse(selected)
-
-  create new product
-  return newProduct
-----
-
-== Integration Notes (Flutter + Supabase)
-
-=== Flutter Responsibilities
-
-* Normalize fields before sending to backend.
-* Show duplicate warning modals.
-* Require explicit user confirmation for:
-** near-duplicate reuse
-** merge actions
-
-=== Supabase Responsibilities
-
-* Enforce unique constraint on barcode.
-* Store normalized fields in dedicated columns.
-* Execute duplicate queries atomically before insert.
-* Reject conflicting barcode inserts.
-
-Recommended DB Constraints:
-
-* UNIQUE(barcode)
-* INDEX(normalized_name, normalized_brand, normalized_size)
-
-== Data Integrity Guarantees
-
-The system must guarantee:
-
-* No two products share identical barcode.
-* No unintended product definitions are created.
-* Duplicate prevention decisions are auditable.
-* Spend events only attach to confirmed Product IDs.
-
-== Success Criteria
-
-* Validation hierarchy is explicit and deterministic.
-* Normalization rules remove ambiguity.
-* Supabase queries are implementation-ready.
-* Workflow supports Flutter frontend integration.
-* Logic integrates cleanly with:
-** Core Inventory
-** Sharing & Budget
-** Duplicate Handling Rules
-** Edge Cases (Duplicates/Budget)
+. No two Products may share an identical barcode (enforced at DB level).
+. Duplicate prevention decisions must be auditable.

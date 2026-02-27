@@ -31,9 +31,27 @@ This section contains the domain`s ubiquitous language. Here we designate our pr
 | Shopping List | Entity | A temporary list of Products that need to be purchased soon | GroceryList, PurchaseList
 | Supplier | Entity | A store or provider where a Product can be purchased or restocked from | Store, Vendor
 | Restock Threshold | Rule | The minimum Quantity at which a Product should be replenished | MinimumStock, LowStockLimit
+| Product Duplicate | Rule | Two records that refer to the same Product definition, identified by matching barcode or normalized name + brand + size + variant |
+| Stock Duplicate | Rule | Two Stock entries for the same Product, same owner, same location, and purchase timestamps within 2 minutes — indicating an accidental double-entry |
+| Membership | Entity | The association between a Stakeholder and a Home, carrying a Role and a status (active, pending, removed) |
+| Invitation | Entity | A pending request sent to a Stakeholder to join a Home as a Member; has statuses: pending, accepted, declined, expired, revoked |
 | Restock Request | Action | A request created to indicate a Product needs to be purchased or refilled | ShoppingTask, RefillRequest
 | Budget | Entity | A resource allocation plan/rule-set which divides amount of money into Categories to allow for specific amount of Purchases in those Categories |
+| Near-Duplicate | Rule | An item similar enough to an existing Product to trigger a duplicate warning, but not an authoritative match. Examples: same product name with different size, same brand with a slightly different variant. Requires explicit user confirmation before reuse. | SimilarItem, PotentialDuplicate
+| Spend Event | Entity | An immutable record of a purchase action: `{user_id, household_id, product_id, amount, date, source, optional receipt_id}`. Spend events must not be merged or deleted as a side-effect of inventory changes. | PurchaseRecord, Transaction
+| Allocation | Rule | How a Spend Event is attributed — either as a shared budget split (equal, weighted, or custom) or as an individual attribution to the buyer only. | Attribution, BudgetSplit
 |===
 
 === Open questions / disputed terms
-- Barcodes and UPC may be included in the future, but this is dependent on the scope of the project and the implementation details.
+// NOTE (inconsistency): The original note below stated barcodes were a future possibility. However, barcode/UPC
+// is now treated as fully in-scope: it appears in entities.adoc (Product.barcode), DR-1 (one barcode = one Product),
+// DR-14 and DR-17 (barcode uniqueness enforced at DB level), IR-DUP-1 (barcode match → reuse existing Product),
+// and software-design.adoc (UNIQUE(barcode) constraint). This open question should be resolved or removed.
+- Barcodes and UPC: now considered in scope. The Product entity includes a barcode attribute; uniqueness is enforced
+  at the database level (UNIQUE constraint). Remaining open question: what happens when a barcode does not scan
+  (damaged packaging) or is missing? See rough-sketch.adoc edge situations and IR-DUP-2 (text-based fallback).
+// TODO: Add missing terms that appear in requirements but are not yet in this table:
+//   - Barcode / UPC (referenced in DR-1, DR-14, entities.adoc but not defined as a term)
+//   - Waste Event (referenced in DR-EC-F / IR-EC-F but not defined here)
+//   - Restock Planner (referenced in events.adoc but not in terminology table)
+//   - Spend Event audit log fields (referenced in IR-EC-I but audit log is not a defined term)

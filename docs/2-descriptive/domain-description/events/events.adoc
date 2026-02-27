@@ -2,6 +2,15 @@
 
 Domain events are things that happen that matter to stakeholders (often past-tense verbs).
 
+// NOTE (terminology inconsistency): This table uses 'Occupant' and 'Item' throughout. The project's ubiquitous
+// language (terminology.adoc) defines the preferred terms as 'Stakeholder' (for any person with a role in a Home)
+// and 'Stock' / 'Product' (for household items). 'Occupant' and 'Item' are not listed in the terminology table.
+// These should be replaced with the canonical terms for consistency across all documentation.
+// Additionally, 'Restock Planner' is referenced here but is not defined in terminology.adoc — add it there.
+// Also missing from this table: events related to duplicate detection (Stock Duplicate detected,
+// near-duplicate flagged, merge confirmed/rejected) and Membership/Invitation events (Invitation sent,
+// accepted, declined, expired) which are in scope per DR-4, DR-5, and terminology.adoc.
+
 [cols="2,2,4,3",options="header"]
 |===
 |Event |Triggered by a |What changes |Related entities
