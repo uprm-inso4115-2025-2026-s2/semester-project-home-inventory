@@ -4,10 +4,10 @@
 * Flow 2, View & Respond to Alerts - User opens the Alerts & Notifications screen, reviews low stock or expiration alerts, and dismisses or fixes them. Purpose: help users maintain inventory awareness and prevent shortages.
 
 === Wireframes / mockups
-* Alerts & Notifications Screen: image:Alerts-&-Notifications-Screen/images/alerts-wireframes.png[]
-* Budget Spending Page: image:Budget-Spending-Screen/images/Budges_spending_wireframe.png[].
-* Error or Empty File Icon: image:Error-or-Empty-File-Icon/images/Error or Empty File Icon Wireframe.png[]
-* Duplicate Warnings Icon: image:Duplicate-Warnings-Icon/images/Duplicate Warnings Wireframe.png[]
+* Alerts & Notifications Screen: image:2-descriptive/implementation/screen-designs/Alerts-&-Notifications-Screen/images/alerts-wireframes.png[]
+* Budget Spending Page: image:2-descriptive/implementation/screen-designs/Budget-Spending-Screen/images/Budges_spending_wireframe.png[]
+* Error or Empty File Icon: image:2-descriptive/implementation/screen-designs/Error-or-Empty-File-Icon/images/Error or Empty File Icon Wireframe.png[]
+* Duplicate Warnings Icon: image:2-descriptive/implementation/screen-designs/Duplicate-Warnings-Icon/images/Duplicate Warnings Wireframe.png[]
 
 === Usability notes
 * Prioritize one handed mobile use with clear, easy to press alert items.

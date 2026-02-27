@@ -1,13 +1,13 @@
 == Diagrams 
 
 === High-Level Architecture
-image::stock_table_diagram.png[]
+image::2-descriptive/implementation/diagrams/stock_table_diagram.png[]
 
 Shows the backend's database flows and how they interact.  
 Useful because it provides reviewers with a quick understanding of system boundaries and responsibilities.
 
 === Final ERD
-image::stock_ERD.png[]
+image::2-descriptive/implementation/diagrams/stock_ERD.png[]
 
 Shows the finalized database schema including users, homes, rooms, items, products, and relationship tables.  
 Useful because it validates data structure and clarifies how application features map to persistent storage.
