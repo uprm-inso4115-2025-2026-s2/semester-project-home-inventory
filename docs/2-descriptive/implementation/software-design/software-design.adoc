@@ -32,7 +32,6 @@ The following mappings describe how domain concepts translate into system compon
   - Table: `households`
   - Represents a shared living group
   - Links multiple users together
-  - Serves as the authorization boundary for access control
 
 * **HouseholdMembership**
   - Table: `household_members`
