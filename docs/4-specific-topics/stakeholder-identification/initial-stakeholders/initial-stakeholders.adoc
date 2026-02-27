@@ -1,6 +1,5 @@
 == Initial Stakeholders
 
-[abstract]
 Initial set of stakeholders identified at the start of the project.
 
 [cols="2,3,2,3",options="header"]

@@ -1,0 +1,270 @@
+== Interface Requirements
+
+
+Interface requirements describe how phenomena and concepts from the domain are represented inside the system, how they are initialized, and how they are kept in sync when the real world changes.
+
+=== IR-01: Item Initialization
+
+When a student acquires a new household item in the real world, they must have a way to create a corresponding digital representation inside the system.
+
+*The system shall provide a means for students to add new items to their digital inventory, including name, quantity, category, location, ownership status, and optional expiration date.*
+
+**Questions this addresses:**
+- How does an item first appear in the system?
+- What information must the student provide to accurately represent what they bought?
+- How does the system know an item exists?
+
+=== IR-02: Item Update on Consumption
+
+When a student consumes part of an item in the real world, the digital representation must be updated to reflect the new quantity.
+
+*The system shall provide a means for students to indicate when they have used some or all of an item, decreasing the recorded quantity or marking it as finished.*
+
+**Questions this addresses:**
+- How does the system learn that an item has been partially or fully consumed?
+- How is the digital quantity kept in sync with physical reality?
+- What happens when an item is finished?
+
+=== IR-03: Ownership Specification
+
+When an item exists in a shared household, students need to know whether it is personal or shared.
+
+*The system shall provide a means for students to indicate whether an item is personal or shared, and if personal, which student it belongs to.*
+
+**Questions this addresses:**
+- How does the system distinguish between items one person owns versus everyone uses?
+- Who can see which items?
+- How are conflicts over personal items prevented?
+
+=== IR-04: Low-Stock Threshold Definition
+
+Students have different definitions of what "running low" means for different items.
+
+*The system shall provide a means for students to set custom low-stock thresholds for individual items.*
+
+**Questions this addresses:**
+- How does the system know when "low" means something different for coffee versus toilet paper?
+- Can students customize thresholds to match their consumption patterns?
+- What are sensible defaults when no threshold is set?
+
+=== IR-05: Expiration Date Entry
+
+Expiration dates exist in the real world and must be captured in the system to enable alerts.
+
+*The system shall provide a means for students to enter expiration dates when adding or editing items that expire.*
+
+**Questions this addresses:**
+- How does the system learn when an item will expire?
+- Is expiration date required or optional?
+- How are items without expiration dates handled?
+
+=== IR-06: Purchase Logging
+
+When a student spends money on household items in the real world, that financial transaction must be recorded.
+
+*The system shall provide a means for students to log purchases, including items bought, total cost, date of purchase, and which items were shared versus personal.*
+
+**Questions this addresses:**
+- How does spending information enter the system?
+- How are purchases linked to the items they brought into the home?
+- How does the system know what was shared for later cost splitting?
+
+=== IR-07: Cost Splitting
+
+When a purchase includes shared items, the cost must be divided among roommates according to real-world agreements.
+
+*The system shall provide a means for students to split purchase costs among selected roommates and track who owes what.*
+
+**Questions this addresses:**
+- How are shared costs fairly divided?
+- How does the system know who should pay for what?
+- How are disputes about shared expenses prevented?
+
+=== IR-08: Dashboard Metric Overview
+
+Students need a high-level view of their household's status without digging through multiple screens.
+
+*The system shall provide a dashboard that displays key metrics including total items, low-stock items, expiring items, and current month spending, with summary cards that aggregate data from across the system.*
+
+**Questions this addresses:**
+- How does a student quickly assess what needs attention?
+- What information is most important to show at a glance?
+- How are metrics from different parts of the system brought together in one place?
+
+=== IR-09: Duplicate Product Recognition
+
+When a Stakeholder attempts to add an item whose barcode already exists in the system, the system must automatically link the new Stock entry to the existing Product rather than creating a new Product definition. The Stakeholder must be notified of the match.
+
+=== IR-10: Near-Duplicate Confirmation
+
+When a Stakeholder adds an item whose name, brand, and size closely match an existing Product (no barcode), the system must present the matching Product and require the Stakeholder to either confirm reuse or explicitly choose to create a new Product.
+
+=== IR-11: Accidental Double-Entry Prevention
+
+When a Stakeholder adds an item within 30 seconds of a previous identical entry (same Product, location, owner), the system must block a new Stock row, increment the existing quantity, and display an undo option.
+
+=== IR-12: Merge Auditability
+
+Every auto-merge of Stock entries must be recorded with: timestamp, user, product reference, quantity delta, and reason. This log must be accessible to the Owner of the Home.
+
+=== IR-13: Near-Duplicate Variant Disambiguation
+
+When a Stakeholder adds an item whose name matches an existing Product but whose size, variant, or brand differs, the system must present the conflicting attribute (size, variant, flavor) highlighted in the match card and require the Stakeholder to choose: "This is a different variant (create new product)" or "Use existing product."
+
+The system must treat same-name/different-size entries as separate Product definitions by default and must not auto-merge them.
+
+=== IR-14: Stock Entry Separation by Expiration and Location
+
+When a Stakeholder attempts to merge two Stock entries for the same Product that have different expiration dates or different storage locations, the system must warn: "Merging will lose expiration/location tracking." The default action must be "Keep separate." Merging must require explicit confirmation.
+
+=== IR-15: Import Idempotency and Duplicate Spend Prevention
+
+When a Stakeholder uploads a CSV import file that was previously imported (detected by file hash), the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint (receipt_id / transaction_id / row hash) matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.
+
+=== IR-16: Inventory Correction Without Budget Impact
+
+When a Stakeholder deletes or merges an inventory entry that has associated Spend Events, the system must present two independent controls: "Remove from inventory" (default on) and "Also mark purchase as mistake — exclude from budget" (default off). Inventory correction must never delete Spend Events automatically. Both actions must be logged separately in the audit trail.
+
+=== IR-17: Refund and Return Flow
+
+When a Stakeholder returns a purchased item, the system must provide a refund flow that: decrements inventory quantity, creates a negative Spend Event linked to the original where possible, and requires: amount refunded, date, and an optional link to the original receipt or Spend Event.
+
+=== IR-18: Waste and Shrinkage Adjustment
+
+When a Stakeholder removes expired, lost, or consumed items from inventory outside of a normal purchase/return flow, the system must: allow inventory adjustment without altering any Spend Event, require an adjustment reason (Consumed / Lost / Shared use / Unknown), and offer an optional "Add to waste report" checkbox (default on for expired removals). Waste metrics must be reported separately from spending.
+
+=== IR-19: Shared Household Budget Attribution Prompt
+
+When a Stakeholder adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. If the Stakeholder selects another household member, the system must require confirmation: "This will affect their budget." Cross-user inventory merges are permitted for quantity counts, but each Spend Event must retain its original buyer attribution.
+
+=== IR-20: Undo for Auto-Merge Actions
+
+Every auto-merge of inventory quantities (e.g., stock duplicate within 30-second window) must be reversible within 10 seconds via an undo control. Undo must revert quantity changes and record the undo in the audit log.
+
+=== IR-21: Audit Trail for Edge-Case Resolutions
+
+Every edge-case resolution that modifies inventory state must generate a log entry containing at minimum: timestamp, user_id, household_id, source (manual / scan / import / adjustment / refund), action_type, product_id, stock_entry_id (if applicable), spend_event_id (if applicable), reason (if user-selected), and a reference to the previous state. This log must be accessible to the Home Owner.
+
+When a student acquires a new household item in the real world, they must have a way to create a corresponding digital representation inside the system.
+
+*The system shall provide a means for students to add new items to their digital inventory, including name, quantity, category, location, ownership status, and optional expiration date.*
+
+**Questions this addresses:**
+- How does an item first appear in the system?
+- What information must the student provide to accurately represent what they bought?
+- How does the system know an item exists?
+
+=== IR-02: Item Update on Consumption
+
+When a student consumes part of an item in the real world, the digital representation must be updated to reflect the new quantity.
+
+*The system shall provide a means for students to indicate when they have used some or all of an item, decreasing the recorded quantity or marking it as finished.*
+
+**Questions this addresses:**
+- How does the system learn that an item has been partially or fully consumed?
+- How is the digital quantity kept in sync with physical reality?
+- What happens when an item is finished?
+
+=== IR-03: Ownership Specification
+
+When an item exists in a shared household, students need to know whether it is personal or shared.
+
+*The system shall provide a means for students to indicate whether an item is personal or shared, and if personal, which student it belongs to.*
+
+**Questions this addresses:**
+- How does the system distinguish between items one person owns versus everyone uses?
+- Who can see which items?
+- How are conflicts over personal items prevented?
+
+=== IR-04: Low-Stock Threshold Definition
+
+Students have different definitions of what "running low" means for different items.
+
+*The system shall provide a means for students to set custom low-stock thresholds for individual items.*
+
+**Questions this addresses:**
+- How does the system know when "low" means something different for coffee versus toilet paper?
+- Can students customize thresholds to match their consumption patterns?
+- What are sensible defaults when no threshold is set?
+
+=== IR-05: Expiration Date Entry
+
+Expiration dates exist in the real world and must be captured in the system to enable alerts.
+
+*The system shall provide a means for students to enter expiration dates when adding or editing items that expire.*
+
+**Questions this addresses:**
+- How does the system learn when an item will expire?
+- Is expiration date required or optional?
+- How are items without expiration dates handled?
+
+=== IR-06: Purchase Logging
+
+When a student spends money on household items in the real world, that financial transaction must be recorded.
+
+*The system shall provide a means for students to log purchases, including items bought, total cost, date of purchase, and which items were shared versus personal.*
+
+**Questions this addresses:**
+- How does spending information enter the system?
+- How are purchases linked to the items they brought into the home?
+- How does the system know what was shared for later cost splitting?
+
+=== IR-07: Cost Splitting
+
+When a purchase includes shared items, the cost must be divided among roommates according to real-world agreements.
+
+*The system shall provide a means for students to split purchase costs among selected roommates and track who owes what.*
+
+**Questions this addresses:**
+- How are shared costs fairly divided?
+- How does the system know who should pay for what?
+- How are disputes about shared expenses prevented?
+
+=== IR-08: Dashboard Metric Overview
+
+Students need a high-level view of their household's status without digging through multiple screens.
+
+*The system shall provide a dashboard that displays key metrics including total items, low-stock items, expiring items, and current month spending, with summary cards that aggregate data from across the system.*
+
+**Questions this addresses:**
+- How does a student quickly assess what needs attention?
+- What information is most important to show at a glance?
+- How are metrics from different parts of the system brought together in one place?
+
+=== IR-EC-A: Near-Duplicate Variant Disambiguation
+
+When a Stakeholder adds an item whose name matches an existing Product but whose size, variant, or brand differs, the system must present the conflicting attribute (size, variant, flavor) highlighted in the match card and require the Stakeholder to choose: "This is a different variant (create new product)" or "Use existing product."
+
+The system must treat same-name/different-size entries as separate Product definitions by default and must not auto-merge them.
+
+=== IR-EC-B: Stock Entry Separation by Expiration and Location
+
+When a Stakeholder attempts to merge two Stock entries for the same Product that have different expiration dates or different storage locations, the system must warn: "Merging will lose expiration/location tracking." The default action must be "Keep separate." Merging must require explicit confirmation.
+
+=== IR-EC-C: Import Idempotency and Duplicate Spend Prevention
+
+When a Stakeholder uploads a CSV import file that was previously imported (detected by file hash), the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint (receipt_id / transaction_id / row hash) matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.
+
+=== IR-EC-D: Inventory Correction Without Budget Impact
+
+When a Stakeholder deletes or merges an inventory entry that has associated Spend Events, the system must present two independent controls: "Remove from inventory" (default on) and "Also mark purchase as mistake — exclude from budget" (default off). Inventory correction must never delete Spend Events automatically. Both actions must be logged separately in the audit trail.
+
+=== IR-EC-E: Refund and Return Flow
+
+When a Stakeholder returns a purchased item, the system must provide a refund flow that: decrements inventory quantity, creates a negative Spend Event linked to the original where possible, and requires: amount refunded, date, and an optional link to the original receipt or Spend Event.
+
+=== IR-EC-F: Waste and Shrinkage Adjustment
+
+When a Stakeholder removes expired, lost, or consumed items from inventory outside of a normal purchase/return flow, the system must: allow inventory adjustment without altering any Spend Event, require an adjustment reason (Consumed / Lost / Shared use / Unknown), and offer an optional "Add to waste report" checkbox (default on for expired removals). Waste metrics must be reported separately from spending.
+
+=== IR-EC-G: Shared Household Budget Attribution Prompt
+
+When a Stakeholder adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. If the Stakeholder selects another household member, the system must require confirmation: "This will affect their budget." Cross-user inventory merges are permitted for quantity counts, but each Spend Event must retain its original buyer attribution.
+
+=== IR-EC-H: Undo for Auto-Merge Actions
+
+Every auto-merge of inventory quantities (e.g., stock duplicate within 30-second window) must be reversible within 10 seconds via an undo control. Undo must revert quantity changes and record the undo in the audit log.
+
+=== IR-EC-I: Audit Trail for Edge-Case Resolutions
+
+Every edge-case resolution that modifies inventory state must generate a log entry containing at minimum: timestamp, user_id, household_id, source (manual / scan / import / adjustment / refund), action_type, product_id, stock_entry_id (if applicable), spend_event_id (if applicable), reason (if user-selected), and a reference to the previous state. This log must be accessible to the Home Owner.

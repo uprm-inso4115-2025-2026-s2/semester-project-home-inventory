@@ -1,29 +1,43 @@
-== Features
+=== Features
 
-A feature-level view of the solution (groupings of user stories). This is a draft list for Milestone 1.
+Features describe user-visible capabilities of the system-to-be at a level above individual requirements. The list below is intentionally concise for Milestone 1 and is grounded in the alert/grocery-list artifacts (auto-check output, trigger priorities, and the grocery list user flow).
 
-// NOTE (incomplete): The four feature teams are already defined by the US-* prefixes used in user-stories.adoc.
-// The following features should be listed here:
-//
-// - F-INV: Core Inventory — Add, edit, delete, and organize household items by room, category, and ownership.
-//   Related stories: US-INV-01, US-INV-02
-// - F-ALT: Alerts and Restock — Low-stock threshold tracking, expiration date monitoring, and alert delivery.
-//   Related stories: US-ALT-01
-//   Note: alert-system-states.adoc (Team 2) defines the expiration state machine for this feature — it is currently
-//   misplaced in docs/3-analytic/ root and should inform this feature definition.
-// - F-SB:  Sharing and Budget — Shared inventory visibility, purchase logging, and cost splitting.
-//   Related stories: US-SB-01
-//   Related IRs: IR-06, IR-07, IR-15 (import), IR-16 (correction), IR-17 (refund), IR-19 (attribution prompt)
-// - F-RPT: Reports and Insights — Household dashboard, spending summaries, and inventory overview.
-//   Related stories: US-RPT-01
-//
-// Machine requirements (MR*), behaviors, and domain functions should each reference these feature codes.
-// Also: IR-09 through IR-14 (duplicate recognition, near-duplicate confirmation, double-entry prevention,
-// merge auditability, variant disambiguation, stock separation) primarily belong to F-INV.
-
-[cols="2,4,3",options="header"]
+[cols="1,3,2,3",options="header"]
 |===
-|Feature |What it enables |Related stories
+|ID |Feature |Primary value |Related stories / notes
 
-|TODO |TODO |US-<Feature>-01, US-<Feature>-02
+|F-INV
+|Inventory tracking (create/update items)
+|Enables a reliable tracked view of household items (quantity, location, ownership, optional expiration).
+|Supports US-INV-* (core inventory stories). Basis for alerts and grocery list generation.
+
+|F-ALERT
+|Alert generation from actionable state changes
+|Notifies household members when tracked conditions become actionable (e.g., LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY/EXPIRED), with deduplication based on state transitions.
+|Supports US-ALT-* and the “alert trigger logic” notes. Delivery method can be in-app initially; push may be later.
+
+|F-AUTOCHECK
+|Automated daily check (AutoCheck) over inventory
+|Produces an “AutoCheck Output” (items + status results) used to drive alerts and grocery list updates without requiring the user to manually inspect everything.
+|Grounded in the AutoCheck/alert artifacts. Verification focuses on boundary cases (threshold equality, expiration date boundaries) and idempotency.
+
+|F-GL-AUTO
+|Auto-generated grocery list from AutoCheck Output
+|Keeps a grocery list updated based on priority triggers, reducing missed restocks and duplicate planning.
+|Consumes AutoCheck Output. Priority triggers (in order): (1) OUT_OF_STOCK, (2) EXPIRED, (3) LOW_STOCK, (4) FREQUENT & (LOW/OUT). Items already on the list are skipped. Actions are logged.
+
+|F-GL-USER
+|Grocery list review and editing flow
+|Users can review auto-added items, then remove/edit/add items manually; updated list is saved automatically.
+|Based on the grocery list user flow artifacts. Emphasizes user override and preventing clutter.
+
+|F-SPEND (optional scope if budgeting is in Milestone 1)
+|Spending capture and basic summaries
+|Allows household members to record spending and view simple period summaries (shared vs personal), supporting budget awareness.
+|Supports US-SB-* and US-RPT-* (basic reporting). Detailed finance flows can be deferred if needed.
 |===
+
+[NOTE]
+====
+Feature F-GL-AUTO and F-GL-USER are based on the provided grocery list generator flow and user flow artifacts. Implementation details such as UI layout and backend scheduling are deferred to Section 2.3; here we capture only the user-visible capability and the trigger/priority semantics.
+====

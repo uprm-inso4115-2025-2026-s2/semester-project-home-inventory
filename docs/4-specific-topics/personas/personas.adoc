@@ -1,6 +1,5 @@
 == Personas
 
-[abstract]
 Personas represent key user/stakeholder types. Aim for 3-4 personas. Each persona includes goals, frustrations, behaviors, and a short scenario.
 
 === Persona 1: Mateo, The Busy Solo Student

@@ -1,6 +1,5 @@
 == Traceability
 
-[abstract]
 This section describes how traceability is established in the Home Inventory project. Traceability means our deliverables are linked so we can answer questions about where requirements come from, which personas they serve, and how they connect to domain concepts and user stories.
 
 === Overview

@@ -1,6 +1,5 @@
 == Requirements Acquisition Plan
 
-[abstract]
 Plan for how we will gather and validate requirements from stakeholders and domain evidence.
 
 === Goals

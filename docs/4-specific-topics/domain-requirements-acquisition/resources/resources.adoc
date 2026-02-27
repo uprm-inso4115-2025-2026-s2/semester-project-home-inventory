@@ -1,6 +1,5 @@
 == Resources
 
-[abstract]
 Evidence sources and supporting materials used to understand the domain and justify requirements.
 
 === External sources
