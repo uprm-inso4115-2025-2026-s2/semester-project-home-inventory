@@ -42,7 +42,7 @@ Mateo comes home late after a grueling day of classes. He remembers buying chick
 ** Shared physical storage space that fills up quickly.
 ** Reliant on uncooperative roommates to manually update the physical whiteboard.
 * *Scenario:* 
-Sofia goes to the supermarket with a strict $50 budget. She checks the apartment's shared whiteboard and sees they need toilet paper and dish soap. She buys them, using up a significant chunk of her cash. When she returns, she finds one of her roommates had already bought bulk toilet paper earlier that afternoon but forgot to erase it from the whiteboard. Now the apartment has no storage space left, and Sofia is short on cash for her own meals. Success for Sofia looks like having a synchronized mobile app where everyone sees real-time shared inventory and purchases, preventing her from spending her limited money on duplicate items.
+Sofia goes to the supermarket with a strict $50 budget. She checks the apartment's shared whiteboard and sees they need toilet paper and dish soap. She buys them, using up a significant chunk of her cash. When she returns, she finds one of her roommates had already bought bulk toilet paper earlier that afternoon but forgot to erase it from the whiteboard. Now the apartment has no storage space left, and Sofia is short on cash for her own meals. Success for Sofia looks like a synchronized mobile app where changes are recorded and synchronized so everyone sees updated shared inventory and purchases, preventing her from spending her limited money on duplicate items.
 
 === Persona 3: Julian, The Health-Conscious Student
 * *Role:* Student with dietary or medical needs
@@ -62,7 +62,7 @@ Sofia goes to the supermarket with a strict $50 budget. She checks the apartment
 ** Strict dietary policies that don't allow for substituting ingredients.
 ** Limited local availability of his required brands.
 * *Scenario:* 
-Julian does his weekly meal prep on Sunday. Halfway through cooking, he goes to his pantry shelf to grab his special gluten-free pasta, only to realize he used the last box on Wednesday and forgot to order more. Because the local grocery store doesn't carry his brand, his entire meal plan is ruined. Success for Julian looks like an automated low-stock alert triggered by his consumption rate, reminding him to order his pasta on Amazon three days before he actually runs out.
+Julian does his weekly meal prep on Sunday. Halfway through cooking, he goes to his pantry shelf to grab his special gluten-free pasta, only to realize he used the last box on Wednesday and forgot to order more. Because the local grocery store doesn't carry his brand, his entire meal plan is ruined. Success for Julian looks like threshold-based, adjustable low-stock alerts that remind him to reorder specialty items before he runs out.
 
 === Persona 4: Andrea, The Unofficial Household Manager
 * *Role:* Frequent household supply buyer and Roommate who shares purchases
@@ -89,6 +89,6 @@ Andrea plans a trip to a wholesale club. She texts her roommates asking what the
 
 |Mateo |Know what food is currently in stock; receive expiration alerts before items spoil; avoid running out of essential daily items
 |Sofia |Prevent duplicate purchases in shared households; split shared costs fairly among roommates; stay within a strict monthly budget
-|Julian |Maintain an uninterrupted supply of specialty dietary items; track consumption rates to predict restocking needs; keep personal items separate from shared inventory
+|Julian |Maintain an uninterrupted supply of specialty dietary items; predict restocking needs using adjustable threshold alerts; keep personal items separate from shared inventory
 |Andrea |Coordinate shared household stocking without carrying all the mental load; obtain accurate, verifiable records for roommate reimbursement; know what is needed before a bulk shopping trip
 |===
