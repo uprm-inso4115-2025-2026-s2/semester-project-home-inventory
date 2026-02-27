@@ -1,0 +1,154 @@
+= Evaluation of Group-Owned vs User-Owned Item Structures
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 2/26/2026
+// Issue #95
+
+== Objective
+This document evaluates conceptual ownership structures for items within a shared inventory system. The goal is to determine whether items should belong to individual users, the shared inventory, or follow a hybrid ownership structure.
+
+This evaluation builds upon previously defined ownership models and domain invariants to identify the ownership structure that best supports collaborative use, accountability, and permission logic.
+
+
+== Evaluation Criteria
+
+Ownership structures are evaluated based on their ability to:
+
+- satisfy domain invariants governing items, membership, and inventories
+- support collaborative interaction within a shared context
+- provide clear responsibility attribution
+- support enforceable permission logic
+- represent domain relationships coherently
+
+
+== Ownership Structure 1: User-Owned Items
+
+=== Conceptual Structure
+Items belong to individual users and exist independently of group ownership. The shared inventory provides context for interaction but is not the owning entity.
+
+Relationship structure:
+Item → User
+Item associated with Inventory context
+
+=== Evaluation
+
+[cols="1,1,1,1,1"]
+|===
+|Support for Domain Invariants|Collaboration Support|Accountability|Permission Logic|Conceptual Relationship Impact
+
+a|- Partially satisfies item-in-inventory requirement. 
+- Requires additional structure to maintain shared context.
+- Ownership is not inherently scoped to membership.
+
+a|- Sharing must be explicitly added.
+- Not naturally aligned with collective resource management.
+
+a|- Strong individual responsibility attribution.
+
+a| - Ownership-based permissions are clear.
+- Group-based permissions become secondary.
+
+a|User-centered ownership model with inventory as contextual container.
+
+|===
+
+=== Assessment
+User-owned structure provides strong accountability but weak alignment with shared-resource semantics.
+
+
+== Ownership Structure 2: Group-Owned Items
+
+=== Conceptual Structure
+Items belong to the shared inventory as a collective entity. Users interact with items through membership relationships.
+
+Relationship structure:
+Inventory → Item
+User → Membership → Inventory
+
+=== Evaluation
+
+[cols="1,1,1,1,1"]
+|===
+|Support for Domain Invariants|Collaboration Support|Accountability|Permission Logic|Conceptual Relationship Impact
+
+a|- Fully satisfies item-in-inventory requirement.
+- Ownership scoped to shared context.
+- Strong alignment with membership-based interaction.
+
+a|- Native support for shared resource interaction.
+
+a|- Responsibility attribution is not inherent.
+
+a|- Permissions derive from membership roles.
+
+a|Inventory-centered ownership model with membership-mediated interaction.
+
+|===
+
+=== Assessment
+Group-owned structure strongly supports collaboration but lacks inherent responsibility attribution.
+
+
+== Ownership Structure 3: Hybrid Ownership
+
+=== Conceptual Structure
+Items exist within a shared inventory context but are associated with a responsible member within that context.
+
+Relationship structure:
+Inventory → Item
+Membership → Responsibility for Item
+
+=== Evaluation
+
+[cols="1,1,1,1,1"]
+|===
+|Support for Domain Invariants|Collaboration Support|Accountability|Permission Logic|Conceptual Relationship Impact
+
+a|- Fully satisfies item-in-inventory requirement.
+- Ownership scoped to membership context.
+- Consistent with shared participation model.
+
+a|- Native support for shared interaction.
+
+a|- Clear responsibility attribution within shared context.
+
+a|- Supports combination of role-based and ownership-based permissions.
+
+a|Shared context with scoped individual responsibility.
+
+|===
+
+=== Assessment
+Hybrid ownership balances collaboration and accountability while maintaining alignment with domain invariants.
+
+
+== Comparative Summary
+
+[cols="1,1,1,1,1"]
+|===
+|Structure |Collaboration |Accountability |Invariant Alignment |Conceptual Fit
+
+|User-Owned
+|Indirect
+|Strong
+|Partial
+|Moderate
+
+|Group-Owned
+|Native
+|Weak
+|Strong
+|Strong
+
+|Hybrid
+|Native
+|Strong
+|Strong
+|Strong
+|===
+
+
+== Recommendation
+Based on domain invariants and shared-resource requirements, the hybrid ownership structure provides the most complete conceptual model. It preserves shared context while enabling responsibility attribution and flexible permission logic.
+
+This structure supports collaborative interaction, aligns ownership with membership, and provides a coherent foundation for defining item ownership rules and schema relationships.

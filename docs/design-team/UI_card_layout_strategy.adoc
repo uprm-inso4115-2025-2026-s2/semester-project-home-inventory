@@ -1,0 +1,354 @@
+= UI Card Stacking/Layout Patterns (Research)
+Author: Jorge L. De León Orama
+:toc:
+:sectnums:
+:doctype: article
+
+== Overview 
+This document analyzes common UI stacking/layout patterns and card presentation models to determine an appropriate visual standard for item listings within the Home Inventory application. It evaluates grid-based and flow-based layouts, as well as square, rectangular, dense, and feature card variants, using defined usability and structural criteria. Based on the operational nature of the application, a List/Vertical Stack combined with Rectangular Cards is recommended, supported by responsive breakpoints to ensure adaptability across device sizes.
+
+== Common Rules for UI Card Layouts
+
+=== Core Rules for Listing UI Designs
+
+==== Structure & Spacing
+
+* Utilize an 8-point grid system for layout.
+** This means that all spacing, padding, and margins should be in increments of 8 pixels (8,16,24,32,...).
+** This ensures that everything aligns clearly and consistently throughout the UI, enforcing a clean and organized appearance. [1] 
+
+==== Hierarchy 
+* Place the most critical information at the top. 
+* Use size and contrast to guide the user's eye, following a logical, top-to-bottom, left-to-right flow. [1]
+
+==== Filtering & Sorting
+* Implement clear and accessible filtering and sorting options to help users manage, browse, and locate items easily. [1]
+
+==== Consistency
+* Maintain uniform, standardized, and predictable UI elements and, where necessary, conform to existing design system standards. [1] 
+
+==== Visibility & Clarity
+* Provide clear visual feedback and ensure that the system's status is always visible to the user.
+* Avoid clutter and ensure that the design is clean and straightforward. [1]
+
+==== Mobile-First Considerations
+* Optimize for mobile by using hamburger menus, sticky headers, and when possible, hover states for desktop.
+** Hamburger menu: is a UI design pattern featuring three horizontal lines(☰) that, when clicked, reveal a hidden menu. [2]
+** Sticky header: a UI design pattern where the website header (containing navigation, logo, or search) stays fixed at the top of the viewport while the user scrolls down. [3]
+
+==== Minimal Design
+* Focus on essentials to support the user's primary goals, avoiding unnecessary elements that may distract or overwhelm the user. [1]
+
+=== Data Table/List Specific Rules
+
+==== Minimize Clutter
+* Avoid overloading tables with too many status icons, buttons, or information.
+
+==== Interaction
+* Use hover effects to highlight rows for easier, less overwhelming navigation.
+
+==== Density
+* Design based on pixel density (_dp_ or _dip_) to ensure elements scale properly across different device sizes. 
+** **_dp_ or _dip_** Stands for "density-independent pixels". It is a flexible unit of measurement used to ensure that user interface elements appear at a consistent physical size across screens with different pixel densities. [4]
+
+=== Typography & Color Guidelines
+
+==== Text Weights
+* Limit to two font weights to maintain consistency and readability.
+
+==== Color Palette 
+* Use the 60/30/10 rule (60% primary, 30% secondary, 10% accent) for a balanced design.
+
+==== Text Colors
+* Limit to two with more important text being darker, and for dark mode, reversed.
+
+=== Functionality & Control
+
+==== User Control
+* Provide clear navigation and options for reversing actions (undo,redo).
+
+==== Error Prevention Recovery
+* Design the interface so a mistake is hard to make or impossible to make and ensure users can easily recover from them.
+** Example: Disable the "Delete" button until an item is selected, and provide a confirmation dialog before finalizing the deletion.
+
+== Common UI Stacking/Layout Patterns
+
+=== Grid Layout
+
+==== Uniform Grid 
+* Uniform Grid, also known as fixed grid, is a layout where all cells are the same size. 
+** Equal rows and columns.
+* Uniform grids can flatten importance and can hide critical information.
+
+==== Responsive/Fluid Grid
+* The Responsive or Fluid Grid is a layout where the number of columns changes based on the screen size (the card size remains the same).
+* Frequent column changes can disrupt predictability in task-heavy systems.
+
+==== Masonry Grid
+* The Masonry Grid, also known as Staggered Grid, is a layout where the columns are aligned but the row heights vary (rows are not fixed).
+* Prioritizes exploration, not structured interaction.
+
+==== Hierarchical Grid
+* The Hierarchical Grid is a layout that mixes two different levels of visual importance, Featured and Standard cells. Instead of every cell being equal (like a uniform grid), the design includes:
+** Featured cells: larger sized and more visually prominent cells, used to draw attention.
+** Standard cells: regular-sized cells that follow the normal flow of the grid.
+* Can mislead users in data-driven contexts.
+
+==== Column Grid
+* The Column Grid, also known as the Vertical Rhythm Grid, is a layout where the content aligns to invisible vertical columns rather than fixed card boxes. 
+* Columns are fixed but row heights can vary.
+* Column grids are better for structured reading than visual selection.
+
+==== Modular Grid
+* The Modular Grid is a strict row and column system that uses a mathematically structured layout where the screen is divided into consistent rectangular and invisible grid guides, and every element aligns to that structure. It is the most disciplined form of layout. 
+* Modular grids are powerful but can be unnecessarily heavy for lightweight apps.
+
+=== Grid Layout Best/Avoid When Table
+
+[cols= "2,4,4", options="header"]
+|===
+|Grid Type | Best When: | Avoid When:
+
+|Uniform Grid 
+a| 
+* Items are structurally similar.
+* Users need to quickly view items.
+* Visual Identification is more important than reading.
+* Predictable alignment and comparison is wanted.
+a|
+* Item content varies significantly in length or structure.
+* You must show alerts, priorities, featured content (hierarchy).
+* Users need to read detailed metadata rather than scan visually.
+* Forced equal heights create wasted space or cropping.
+
+
+|Responsive/Fluid Grid 
+a|
+* You must support multiple device sizes.
+* You want to preserve component proportions while adjusting column count.
+* The system supports mobile, tablet, and desktop.
+* Flexibility is needed without redesigning layouts per device
+a|
+* Precise spatial consistency is required across devices.
+* Layout changes could confuse users performing operational tasks.
+* Users rely on muscle memory or fixed positioning.
+
+|Masonry Grid 
+a|
+* Content varies naturally in size.
+* Engagement is more important than scanning. 
+* Maximum space usage is more important than uniformity.
+a|
+* Users must compare items side-by-side.
+* Data must align for readability.
+* The interface supports management, auditioning, or decision workflows.
+* Predictable navigation order matters.
+
+|Hierarchical Grid 
+a|
+* Certain content must be emphasized over others.
+* Guiding user attention to alerts, recommendations, or important information is a priority.
+a|
+* All items are equally important.
+* The emphasis could bias user behavior unintentionally.
+* Content changes frequently, causing layout shifts.
+* Strict comparability across items is needed.
+
+|Column Grid 
+a|
+* Readability and structured information are critical.
+* Designing forms, lists, or data-heavy interfaces.
+* Elements must align cleanly for cognitive clarity.
+* The layout prioritizes organization over visual browsing.
+a|
+* The interface is highly visual or image-driven.
+* Card-based browsing is the primary interaction.
+* Rigid alignment would reduce flexibility of content presentation.
+
+|Modular Grid
+a|
+* A scalable, system-wide layout foundation is needed.
+* Multiple screens or teams must maintain consistent structure.
+* The product is expected to grow and evolve significantly.
+* A design system, often using an 8-point spacing scale, is being enforced.
+a|
+* The project is under too much upfront constraint.
+* Design exploration and flexibility are more valuable than consistency.
+* The grid complexity would make the system harder to design and build.
+
+|===
+=== Common Stacking/Flow Patterns
+
+==== List/Vertical Stack
+* A List or Vertical Stack layout arranges items sequentially in a single column, where each item occupies full available width and is stacked vertically. 
+* Characterized by:
+** Having one column.
+** Having full-width items.
+** Natural top-to-bottom reading flow.
+** Predictable scroll behavior.
+** Sacrifices density for clarity.
+
+==== Carousel/Horizontal Stack
+* Carousel or Horizontal Stack layout arranges items sequentially along a horizontal axis, allowing users to scroll or swipe left and right to navigate through content.
+* Characterized by:
+** Having a single row.
+** Scrollable via swipe (mobile) or arrows(desktop).
+** Often partially shows the next/previous items to signal more content.
+** Emphasizes progressive disclosure (show a few, reveal more on interaction).
+** Trades visibility for compactness.
+
+
+==== Split Layout
+* A Split Layout, also known as Master-Detailed Layout, divides the screen into two or more regions, where each region presents related but different levels of information simultaneously. Instead of stacking content in one direction, the interface is partitioned into parallel sections that work together.
+* Characterized by:
+** Having the screen divided into panes (commonly two).
+** Each pane has a distinct role.
+** Content updates in one pane based on interaction in another.
+** On small mobile devices, Split Layouts often collapse into stacked navigation.
+
+=== Common Stacking/Flow Patterns Best/Avoid When Table
+
+[cols= "2,4,4", options="header"]
+|===
+|Stack | Best When: | Avoid When:
+
+|List/Vertical Stack
+a|
+* Users need to read structured metadata.
+* Items contain multiple attributes.
+* Comparison across fields matters.
+* The workflow is operational and management-based (maintaining, reviewing, modifying,...).
+* The interface prioritizes clarity over density.
+a|
+* Recognition via image is primary.
+* You need to show many items at once.
+* Screen space efficiency is critical.
+* The interaction is browse-heavy rather than read-heavy.
+
+|Carousel/Horizontal Stack
+a|
+* Highlighting a small, curated set of items is the motive.
+* Screen space is limited but browsing is important.
+* Items are secondary to the main task.
+* You want to reduce vertical clutter while still offering options.
+* The content benefits from quick, gesture-based navigation.
+a|
+* Users must compare many items simultaneously.
+* Discoverability of all items is critical (carousels hide content off-screen).
+* The workflow is task-heavy or data-management oriented (maintaining, reviewing, modifying,...).
+* Important content could be missed due to horizontal scrolling.
+* Accessibility or precise navigation is a priority.
+
+|Split Layout
+a|
+* Users must reference a list while viewing or editing details. 
+* The workflow involves selection -> inspection -> modification.
+* Screen space allows simultaneous views.
+* Context should remain visible without constant navigation.
+a|
+* Screen size is small.
+* Tasks are simple and sequential rather than parallel.
+* The added layout complexity makes it harder to design and implement, but the user does not benefit from the simultaneous views.
+* Content does not require simultaneous visibility.
+|===
+
+== Common Card Presentation Models
+
+=== Square Cards
+* Usual Contents:
+** Large visual (image or icon), its the primary identifier of the item.
+** Short title (one line).
+** Minimal metadata.
+** Tap action to open details.
+
+=== Rectangular Cards
+* Usual Contents:
+** Thumbnail or icon (left/top).
+** Title + supporting metadata (2-4 fields).
+** Status indicators.
+** Secondary actions (edit, quick add, etc...).
+
+=== Dense Cards
+* Usual Contents:
+** Rectangular shaped card.
+** Small icon or no image.
+** Title.
+** Condensed metadata (side-by-side fields).
+** Minimal padding and vertical spacing.
+** Quick actions (edit, delete, etc...).
+
+=== Feature Cards 
+* Usual Contents:
+** Strong visual hierarchy (larger size or color block).
+** Key message or insight.
+** Supporting explanation.
+** Primary action (Fix, View, etc...).
+** Optional illustration or icon.
+
+== Common Card Presentation Models Best/Avoid When Table
+
+[cols= "2,4,4", options="header"]
+|===
+|Card Model | Best When: | Avoid When:
+
+|Square Cards 
+a|
+* Recognition is more important than reading.
+* Items are visually distinguishable (photos).
+* You need dense overviews (many items visible at once).
+* The card acts as a selection entry point, not an information container.
+a|
+* Items require multiple attributes (dates, status, location, etc...).
+* Users must compare structured data.
+* Text length varies significantly.
+* Operational decisions depend on visible metadata.
+
+|Rectangular Cards
+a|
+* Users must read structured information quickly.
+* Items include attributes that need alignment.
+* The workflow mixes recognition and interpretation.
+* Cards support light management tasks.
+a|
+* The UI is purely visual browsing.
+* Very high-density listing is required (many items showed at once).
+* The card becomes overly tall due to too much content.
+
+|Dense Cards
+a|
+* Efficiency matters more than aesthetics.
+* Users are editing, or maintaining data.
+* Many items must be visible simultaneously.
+* The UI behaves like a tool rather than a catalog.
+a|
+* New users need visual clarity or onboarding.
+* Content benefits from imagery or hierarchy.
+* Touch targets would become too small on mobile.
+* The interface is exploratory or consumer-facing rather than operational.
+
+|Feature Cards
+a|
+* Drawing attention to something important is the goal.
+* Communicating alerts, recommendation, or summaries.
+* Presenting system-generated insights.
+* Guiding the user toward a next action.
+a|
+* Every item is equally important.
+* Used repeatedly in lists, as it will lose emphasis value.
+* The screen is task-heavy and requires neutrality.
+* It would interrupt scanning flow by introducing too much visual hierarchy.
+|===
+
+== Recommendation
+The primary listing should be List/Vertical Stacking combined with Rectangular Card. This structure improves readability and supports structured metadata display, allowing users to manage item information without visual clutter. The application listings are very dense, hence sacrificing density for clarity is the best choice. Rectangular Cards provide space for status indicators, attributes and user actions. The system should utilize responsive breakpoints to adjust the layout when the screen reaches a specific size.
+
+== References
+
+* [1] “Rules for creating good-looking user interfaces, from a developer,” Weberdominik.com, Sep. 16, 2025. https://weberdominik.com/blog/rules-user-interfaces/ (accessed Feb. 25, 2026).
+‌
+
+* [2] M. Soegaard. “Your Guide to Hamburger Menus” IxDF - Interaction Design Foundation. https://www.interaction-design.org/literature/article/hamburger-menu-ux (accessed Feb. 25, 2026).
+
+* [3] W. L. in R.-B. U. Experience, “Sticky headers: 5 ways to make them better,” Nielsen Norman Group, Apr. 04, 2021. https://www.nngroup.com/articles/sticky-headers/
+
+* [4] “Material Design,” Material Design, 2026. https://m2.material.io/design/layout/pixel-density.html (accessed Feb. 25, 2026).

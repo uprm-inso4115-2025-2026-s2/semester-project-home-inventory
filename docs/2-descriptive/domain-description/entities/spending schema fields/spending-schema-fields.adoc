@@ -1,0 +1,289 @@
+= Spending Schema Fields
+// Author: Andrea Segarra
+// GitHub user: @andreasegarra
+// Date: 02/26/2026
+// Issue #
+
+== 1. Objective
+
+Define the required data fields necessary to support item level spending tracking and budget based monitoring within the shared household inventory system.
+
+This document proposes a conceptual Spending schema (fields + constraints) to guide future database design, Supabase policies, and UI integration.
+
+---
+
+== 2. Spending Record Definition
+
+A *Spending* record represents one logged financial transaction event within a household (e.g., purchase, refund, or adjustment). Spending records support:
+
+* Household level spending rollups
+* Category based totals
+* User attribution and accountability
+* Budget period evaluation and historical reporting
+* Optional item level cost tracking
+
+---
+
+== 3. Proposed Spending Schema
+
+=== 3.1 Table: `spending`
+
+The schema below is conceptual and may be adapted to match the project’s database conventions (naming, timestamps, constraints).
+
+[cols="1,1,1,3,3", options="header"]
+|===
+|Field |Type (Conceptual) |Required |Description |Notes (Budgeting / Tracking)
+
+|id
+|uuid
+|Yes
+|Primary key for the spending record.
+|Used for audit and referencing.
+
+|household_id
+|uuid
+|Yes
+|Household/group identifier where the transaction belongs.
+|Required for household budgets and access control.
+
+|created_by_user_id
+|uuid
+|Yes
+|User who logged/created the spending record.
+|Required for accountability and user budget rollups.
+
+|paid_by_user_id
+|uuid (nullable)
+|No
+|User who actually paid, if different from creator.
+|Optional support for reimbursement or payer based budgets.
+
+|category_id
+|uuid
+|Yes
+|Category associated with the transaction.
+|Required for category based budget totals.
+
+|item_id
+|uuid (nullable)
+|No
+|Inventory item linked to this transaction (if applicable).
+|Optional; supports item level cost tracking.
+
+|amount
+|decimal(10,2)
+|Yes
+|Monetary value of the transaction.
+|Primary input for budget calculations.
+
+|currency
+|string (ISO 4217)
+|No (default system currency)
+|Currency code (e.g., USD).
+|Only necessary if multi-currency is supported.
+
+|transaction_type
+|enum(`purchase`,`refund`,`adjustment`)
+|Yes
+|Defines how amount affects totals.
+|Avoid negative amounts by applying sign via type.
+
+|purchase_date
+|timestamptz
+|Yes
+|When the transaction occurred.
+|Used to determine applicable budget period.
+
+|merchant_name
+|string (nullable)
+|No
+|Vendor/store name.
+|Improves audit and reporting.
+
+|description
+|string (nullable)
+|No
+|Optional notes (e.g., “Weekly groceries”).
+|Improves transparency during reviews.
+
+|quantity
+|numeric (nullable)
+|No
+|Quantity purchased (when item-linked).
+|Enables unit level reporting.
+
+|unit_price
+|decimal(10,2) (nullable)
+|No
+|Price per unit (if quantity provided).
+|Allows validation and insights.
+
+|receipt_url
+|string (nullable)
+|No
+|Link to receipt image/file.
+|Optional for verification/audit.
+
+|receipt_id
+|uuid (nullable)
+|No
+|Reference to a normalized receipt entity (if used).
+|Supports multiple spending lines from one receipt.
+
+|budget_period_id
+|uuid (nullable)
+|No (recommended)
+|Reference to budget period instance used at logging time.
+|Stabilizes history if budgets change mid cycle.
+
+|applied_budget_id
+|uuid (nullable)
+|No
+|Reference to the budget configuration impacted.
+|Supports multi-budget systems (household/category/user).
+
+|applied_scope_type
+|enum(`household`,`category`,`user`) (nullable)
+|No
+|Which scope the spending applied to.
+|Can be derived; stored for audit clarity.
+
+|created_at
+|timestamptz
+|Yes
+|System timestamp for creation.
+|Audit.
+
+|updated_at
+|timestamptz
+|Yes
+|System timestamp for last update.
+|Audit.
+
+|is_deleted
+|boolean
+|No (default false)
+|Soft delete flag for preserving history.
+|Prevents breaking budget summaries.
+
+|deleted_at
+|timestamptz (nullable)
+|No
+|Deletion timestamp (if soft delete).
+|Audit.
+
+|edited_by_user_id
+|uuid (nullable)
+|No
+|Last editor of the record.
+|Accountability.
+|===
+
+---
+
+== 4. Required vs Optional Fields
+
+=== 4.1 Minimum Required Fields
+
+To support core spending tracking and category/household budget monitoring, the minimum required fields are:
+
+* `id`
+* `household_id`
+* `created_by_user_id`
+* `category_id`
+* `amount`
+* `transaction_type`
+* `purchase_date`
+* `created_at`
+* `updated_at`
+
+=== 4.2 Optional but Recommended
+
+These fields improve auditability, reporting, and historical budget accuracy:
+
+* `budget_period_id`
+* `applied_budget_id`
+* `merchant_name`
+* `description`
+* `receipt_url` or `receipt_id`
+* `paid_by_user_id`
+* `item_id`
+
+---
+
+== 5. Structural Constraints (Enforceable Rules)
+
+=== 5.1 Amount and Transaction Rules
+
+* `amount > 0` for `transaction_type=purchase`
+* For refunds/adjustments, use `transaction_type` to determine impact rather than negative `amount`.
+
+Recommended rule:
+*Store `amount` as a positive value and apply sign via `transaction_type`* to avoid inconsistent aggregation.
+
+=== 5.2 Household Membership Rules
+
+* `created_by_user_id` must be a member of `household_id` at the time of record creation.
+* If present, `paid_by_user_id` must also be a valid household member (unless external payers are explicitly supported later).
+
+=== 5.3 Category Validity
+
+* `category_id` must exist and be valid for the household context (global categories or household-defined categories depending on implementation).
+* `category_id` must not be null to support category budget rollups.
+
+=== 5.4 Item Linkage Validity
+
+If `item_id` is present:
+
+* The referenced item must belong to the same `household_id`.
+* If the system supports private items, item linkage must comply with visibility rules (e.g., prevent unauthorized access to private item spending).
+
+=== 5.5 Budget Period Consistency (If Stored)
+
+If `budget_period_id` is present:
+
+* `purchase_date` must fall within the budget period’s `[start_date, end_date]`.
+* `applied_budget_id` must be consistent with the linked budget period scope rules.
+
+=== 5.6 Soft Delete and Budget Recalculation
+
+If a record is deleted:
+
+* Prefer `is_deleted=true` instead of hard delete.
+* Budget totals must recalculate (or adjust incrementally) to maintain accuracy.
+* Historical budget period summaries should remain stable and auditable.
+
+---
+
+== 6. How the Spending Schema Supports Budgeting
+
+This schema supports budget evaluation through aggregation by:
+
+* Household: sum by `household_id` within a time window
+* Category: sum by `category_id` within a time window
+* User: sum by `created_by_user_id` or `paid_by_user_id` within a time window
+* Budget period: derived via `purchase_date`, stabilized via `budget_period_id` (if stored)
+
+Optional budget linkage fields (`budget_period_id`, `applied_budget_id`) provide stronger auditability when budgets are modified mid cycle.
+
+---
+
+== 7. Conceptual ER Relationship Diagram
+
+This diagram summarizes the conceptual relationships.
+
+----
+Household (1) ────< Spending >──── (1) User
+                    |
+                    |── (1) Category
+                    |── (0..1) Item
+                    |── (0..1) BudgetPeriod
+                    |── (0..1) Budget (applied)
+----
+
+Relationship notes:
+* Each Spending belongs to exactly one Household.
+* Each Spending has exactly one creator User (`created_by_user_id`).
+* `paid_by_user_id` is optional and may reference a User.
+* Each Spending must reference one Category.
+* Spending may optionally link to an Item and/or stored Budget references.
