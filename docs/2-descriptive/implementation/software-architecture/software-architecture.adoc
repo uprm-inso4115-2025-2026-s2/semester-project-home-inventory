@@ -20,18 +20,59 @@ High-level architecture: major components, responsibilities, and interactions.
 // updates from multiple Members) that represent architectural risks and should be listed here.
 
 === Architecture overview
-TODO: 1–2 paragraphs describing the overall approach.
+The team's solution follows a client backend architecture where a Flutter mobile application provides a user interface and local interaction flow, while the Supabase software provides the backend services which are required for authentication, data storage, file storage, and real-time updates. The Flutter app connects to Supabase over secure HTTPS using the Supabase client SDK, keeping the mobile client thin and focused on visual presentation, input validation, and offline friendly UX patterns.
 
-=== Components (draft)
+The core data (items, households, members, and activity) is persisted in Postgres, which is managed by Supabase, and is protected using Row Level Security (RLS) policies so users can only access data belonging to their household(s). Media assets (e.g., receipts, item photos) are stored in Supabase Storage with access that is controlled by bucket policies and signed URLs if needed. When collaboration is required (e.g., shared lists or household changes), the app will subscribe to Supabase Realtime to receive updates without requiring a manual refresh.
+
+=== Components
 [cols="2,4,3",options="header"]
 |===
 |Component |Responsibility |Interfaces / dependencies
 
-|TODO |TODO |TODO
+|Flutter Mobile App
+|User interface, user interactions, basic client side validation, navigation, and state management. This displays inventory, shared supplies, and household context, initiates the CRUD operations and subscriptions.
+|Supabase Flutter SDK, device camera/filesystem for media capture, push notifications provider, local persistence.
+
+|Auth (Supabase Auth)
+|User registration/login, session management, password reset, and identity for authorization checks.
+|Supabase Auth, JWT sessions, email provider for verification/reset
+
+|API/Data Access Layer (Supabase PostgREST)
+|It exposes database tables/views as REST endpoints, executes the CRUD operations from the clien, enforces database constraints.
+|Postgres, PostgREST, RLS policies, Supabase client queries
+
+|Database (Supabase Postgres)
+|The primary persistent store for all structured application data (users, households, memberships, items, categories, transactions/activity logs).
+|Postgres, migrations/SQL, triggers/functions, RLS policies, indexes
+
+|Realtime (Supabase Realtime)
+|Publishes the changes to subscribed clients to support the collaboration (e.g., household inventory updates).
+|Supabase Realtime, database replication events, Flutter subscriptions
+
+|File Storage (Supabase Storage)
+|Stores and serves media assets such as: item photos, receipts, and attachments.
+|Storage buckets, signed URLs, bucket policies, Flutter upload/download via Supabase SDK
+
+|Security & Access Control (RLS + Policies)
+|Ensures the users can only read/write data allowed by their household membership and role.
+|Postgres RLS, policy definitions, JWT claims from Supabase Auth, role mapping (e.g., owner/member)
 |===
 
-=== Data flow (draft)
-* TODO: how data moves through the system
+=== Data flow
+* The user opens the app and signs using a  Supabase Auth. Supabase returns a session (JWT) that the Flutter client then stores securely and attaches to subsequent requests.
+* After the authentication, the app queries Supabase (PostgREST) for the user's households and memberships. RLS policies will restrict results to only the records the user is allowed to see.
+* When the user creates/updates an inventory item, the Flutter app will send a create/update request to Supabase. Postgres constraints the validation of data and RLS verifies authorization before committing.
+* If the user attaches an image (e.g., item photo or receipt), the app will upload the file to Supabase Storage, then store the resulting file path/URL reference in Postgres.
+* The other members of the same household will receive updates through Supabase Realtime subscriptions (e.g., INSERT/UPDATE events) so their UI refreshes automatically.
+* When the user views inventory details, the app will fetch item records from Postgres and, if needed, it will retrieve the media via Storage (public bucket) or via signed URLs (private bucket).
 
 === Risks and open questions
-* TODO
+* Risk: An incorrect or overly permissive RLS policies could expose household data to unauthorized users.
+* Risk: Realtime subscriptions may increase battery/network usage on mobile if it's not managed carefully (background behavior, reconnect storms).
+* Risk: The media storage costs may grow quickly if images are not compressed, resized, or lifecycle-managed.
+* Risk: Offline/poor connectivity may cause inconsistent user experience unless a local caching and conflict handling are designed.
+* Open question: What roles are required (owner/admin/member/view-only) and what exact permissions should each role have?
+* Open question: Should Storage buckets be private with signed URLs, or public with strict naming + metadata controls?
+* Open question: Do we need an audit/activity log table (who changed what/when) for accountability and debugging?
+* Open question: What offline strategy do we want (read-only cache vs. offline edits with later sync/conflict resolution)?
+

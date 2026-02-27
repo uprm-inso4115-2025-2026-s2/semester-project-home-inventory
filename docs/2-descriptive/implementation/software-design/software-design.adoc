@@ -96,5 +96,3 @@ The following mappings describe how domain concepts translate into system compon
 * Private items enforced via `owner_id = auth.uid()`
 
 ---
-
-
