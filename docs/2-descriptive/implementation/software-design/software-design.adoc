@@ -3,67 +3,98 @@
 Design decisions at a more detailed level than architecture (modules, domain model, APIs, etc.).
 
 === Key design decisions
-* TODO: Decision 1 (and why)
-* TODO: Decision 2
+
+* **Decision 1: Use Supabase Realtime for live synchronization**
+
+Supabase Realtime will be used to propagate inventory and budget updates instantly to connected clients. This decision was mainly made because the application requires the roommates to see changes like item additions, deletions, budget updates, etc. with minimal delay. Realtime's Postgres Changes and Broadcast features will reduce the need for manual polling and improve the overall user experience while integrating seamlessly with the existing Supabase stack.
+
+* **Decision 2: Enforce access control using Supabase Row-Level Security (RLS)**
+
+All data access permissions will be enforced at the database level using the RLS Policies. This ensures that users will only see items belonging to their household. Using RLS reduces backend complexity, prioritizing security and preventing any data leaks. Policies will rely on `auth.uid()` and `household_members` to determine authorization.
+
+* **Decision 3: Use Edge Functions for complex business logic**
+
+Supabase Edge Functions will handle operations that require transactional guarantees or cross-table validation such as budget enforcement, invite validation, or conflict resolution. RLS alone will be insufficient for these cases, so Edge Functions will provide serverside execution in a secure Deno Runtime to allow small operations using database transactions. 
+
+---
 
 === Domain model notes
-* TODO: How domain concepts map to classes/modules (draft)
 
-=== API/interface sketch (optional)
-* TODO
+The following mappings describe how domain concepts translate into system components:
 
-=== Duplicate Prevention Implementation
+* **User**
+  - Source: Supabase Auth
+  - Key field: `auth.uid()`
+  - Related table: `users`
+  - Purpose: ownership and identity
 
-==== Database Constraints (Supabase)
+* **Household**
+  - Table: `households`
+  - Represents a shared living group
+  - Links multiple users together
 
-All duplicate checks must be executed *before* insert. Recommended constraints:
+* **HouseholdMembership**
+  - Table: `household_members`
+  - Fields: `user_id`, `household_id`, `role`
+  - Used by RLS policies to authorize access
+  - Supports admin vs member roles
 
-* `UNIQUE(barcode)` on the `products` table
-* `INDEX(normalized_name, normalized_brand, normalized_size)` on the `products` table
+* **InventoryItem**
+  - Table: `inventory_items`
+  - Fields include: `household_id`, `owner_id`, `is_private`
+  - Real-time updates enabled via Supabase Realtime
+  - Protected by RLS household policies
 
-==== Supabase Query Strategy
+* **Budget / Expense**
+  - Tables: `budgets`, `expenses`, `household_summary`
+  - Validated through Edge Functions before writes
+  - Updated automatically via database webhooks
 
-===== Barcode Check
+* **InviteToken**
+  - Generated via Edge Function
+  - Short-lived signed token
+  - Used by `/accept-invite` endpoint
 
-[source,sql]
-----
-SELECT id FROM products
-WHERE barcode = :barcode
-LIMIT 1;
-----
+---
 
-===== Structured Metadata Match
+==== Realtime Channels
 
-[source,sql]
-----
-SELECT id FROM products
-WHERE normalized_name = :normalized_name
-AND normalized_brand = :normalized_brand
-AND normalized_size = :normalized_size
-LIMIT 5;
-----
+* `inventory-updates`
+  - Purpose: notify clients when items change
+  - Mechanism: Supabase Realtime Postgres Changes or Broadcast
 
-===== Similarity Check (Optional / Advanced)
+* `budget-updates`
+  - Purpose: push household budget recalculations
 
-[source,sql]
-----
-SELECT id, similarity(normalized_name, :normalized_name) AS score
-FROM products
-WHERE similarity(normalized_name, :normalized_name) > 0.85
-ORDER BY score DESC
-LIMIT 5;
-----
+---
 
-NOTE: Similarity search must NOT auto-merge — it may only suggest candidates.
+==== Edge Function Endpoints
 
-==== Flutter Responsibilities
+* **POST /validate-budget** 
+** Input: `{ amount, household_id }`
+** *Behavior:*
+    *** Computes current monthly spending
+    *** Rejects if limit exceeded (403)
+    *** Otherwise approves write
+** Used before inserting expenses
 
-* Normalize all product fields (lowercase, trim, collapse spaces, convert units) *before* sending to backend.
-* Display duplicate warning modals when the backend returns a match.
-* Require explicit user confirmation for: near-duplicate reuse and merge actions.
+* **POST /accept-invite**
+** Input: `{ token }`
+** *Behavior:*
+    *** Validates signed invite token
+    *** Adds user to `household_members`
+    *** Returns success/failure
 
-==== Supabase Responsibilities
+---
 
-* Enforce `UNIQUE(barcode)` and reject conflicting inserts.
-* Store normalized fields in dedicated columns (`normalized_name`, `normalized_brand`, `normalized_size`).
-* Execute duplicate check queries atomically before any insert transaction.
+==== RLS Policy Strategy
+
+* SELECT policies filters by household membership
+* INSERT policies verifies user belongs to household
+* Admin-only actions use helper function:
+  - `is_household_admin(h_id uuid)`
+* Private items enforced via `owner_id = auth.uid()`
+
+---
+
+
