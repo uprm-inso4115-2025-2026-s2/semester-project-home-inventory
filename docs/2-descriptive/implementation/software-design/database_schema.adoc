@@ -1,34 +1,16 @@
 = Database Schema
-:showtitle: true 
+:showtitle: true
 
-While issue #15 stated that the database consists of three tables: items, users, and owners; further iterating called for changes in how entities would be modeled. Team discussions lead to including that users can track the inventory of multiple homes, and that a home can have multiple users tracking its inventory. These considerations lead to the consideration of entities: user, owner, home, room, item, and product.
+The database schema models users, homes, rooms, products, and stock (item instances). An earlier draft of the schema existed; it was revised in issue #122 (Lecture Topic Task: Inconsistencies with domain terminology and household item documentation).
 
-image::outdated_stock_ERD.png[] 
-Figure 1: ER diagram for our project's entities.
+The revision addressed a conflict between the Group-Owned Inventory model and the original stock representation: the original schema required each item to have exactly one owner. The relationship between Owner and Item was changed to many-to-many, and a new *Owns* table was added so an item can be owned by multiple owners while an owner can still own multiple items.
 
 Here, users manage multiple homes that contain multiple rooms. Rooms can only belong to one home, and can contain multiple household items. Every item is contained in a room and references a product. Every item is also owned by a single owner. We want to track items belonging to owners, even if those owners are not users. An example of this would be a user attributing items to a roommate who is not themself a user.
 
-Translating this ER to a table diagram, the final entities are:
+image::stock_ERD.png[]
+Figure 1: ER diagram for the project entities.
 
-image::outdated_stock_table_diagram.png[] 
-Figure 2: Table diagram for our project's backend.
+image::stock_table_diagram.png[]
+Figure 2: Table diagram for the backend.
 
-## Revision
-As part of issue #122 [Lecture Topic Task]: Inconsistencies with domain terminology and 
-household item documentation, this diagrams were revised to address a weak conflict between
-the Grouped-Owned Inventory model on the Shared Inventory Definition document and this stock 
-database representation. The model was satisfiable by this schema only when Items have one and only one Owner.
 
-This revision then changed the relationship between Owner and Item to be many-to-many, and
-as a consequence, added a new table Owns to represent the relationship. This change now 
-allows for an Item to be owned by multiple Owners while keeping the ability of an Owner to 
-own multiple Items.
-
-image:stock_ERD.png[] 
-Figure 3: Revised ER diagram for our project's entities.
-
-As mentioned above, the relationship between Owner and Item is now many-to-many, which 
-requires the creation of a new Owns table.
-
-image:stock_table_diagram.png[] 
-Figure 4: Revised table diagram for our project's backend.
