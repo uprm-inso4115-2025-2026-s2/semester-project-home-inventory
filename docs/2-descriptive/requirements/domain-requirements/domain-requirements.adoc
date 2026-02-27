@@ -31,6 +31,12 @@ Requirements expressed in domain language (capabilities/outcomes), independent o
 * DR-13 (Expiration status): If an item instance has an expiration date, its expiration status shall be derivable (active/near-expiry/expired). If the expiration date is missing or unreadable, expiration status shall be treated as unknown (no false-expired condition).
 * DR-14 (Deduplicated alerting): Alerts shall be deduplicated and triggered primarily on actionable state transitions (e.g., NORMAL → LOW_STOCK), so repeated checks without state change do not generate repeated alerts.
 
+=== Prevention and data integrity
+
+* DR-15 (Normalization before comparison): Product definitions (*Item type*) shall be normalized before duplicate comparison and before insert so that prevention logic is consistent and reproducible.
+* DR-16 (Deterministic spend attachment): *Spending entries* shall be created and attached to product/inventory records in a deterministic way; duplicate resolution must be finalized before any spending entry is created.
+* DR-17 (Single product per barcode at persistence): At persistence, one barcode shall map to exactly one *Item type*; duplicate prevention must enforce this before insert (consistent with DR-1).
+
 === Rationale / trace (Milestone 1)
 
 * DR-1..DR-3 support reliability of tracked inventory and financial records (N2, and budgeting quality expectations if enabled).
@@ -38,6 +44,7 @@ Requirements expressed in domain language (capabilities/outcomes), independent o
 * DR-7..DR-9 support data quality and conflict reduction during entry/corrections (N1, N2, N3).
 * DR-10..DR-11 support clear reporting and budget reasoning (if spending/reporting is in scope).
 * DR-12..DR-14 support low-stock/expiry awareness with notification quality (N2, N3, and alert quality expectations).
+* DR-15..DR-17 support duplicate prevention and data integrity (normalization, deterministic spend attachment, barcode uniqueness at persistence).
 
 [NOTE]
 ====
