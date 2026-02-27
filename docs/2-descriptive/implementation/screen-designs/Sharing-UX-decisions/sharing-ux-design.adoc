@@ -1,0 +1,169 @@
+= Sharing UX Decisions
+:author: @daniellameleroo
+:toc:
+:toclevels: 2
+
+== Overview
+
+This document explains the main UX decisions made for the inventory sharing
+features: *Invite Roommate* and *Shared Inventory*. Each decision includes
+a short rationale covering usability, clarity, or accessibility.
+
+The screens are located in Wireframes Folder 
+
+images:images/Invite Roommate Wireframes1.png[]
+images:images/Created_shared_inventory_wireframes1.png[]
+
+'''
+
+== 1. How Users Initiate Sharing
+
+*Decision:* Sharing is started from a dedicated *Manage Members* section,
+not from the inventory list itself.
+
+*Rationale:* Keeping the invite flow separate from the main inventory view
+prevents accidental triggers and makes it clear that sharing is a deliberate,
+settings-level action. Users who never share are not exposed to extra UI.
+
+'''
+
+== 2. Invitation Flow (Two Steps)
+
+*Decision:* The invite is split into two screens — enter email/username,
+then set a role — before sending.
+
+*Rationale:* Combining both steps into one screen would make it crowded and
+increase the chance of sending an invite with the wrong role. Two focused
+steps reduce errors and give the user a natural checkpoint before committing.
+
+'''
+
+== 3. Role Defaulting to Editor
+
+*Decision:* When setting access level, *Editor* is pre-selected by default.
+
+*Rationale:* Most roommate invites are collaborative. Defaulting to Editor
+avoids the frustration of an invitee not being able to add items. Owner is
+available but requires an extra confirmation step given its full privileges.
+
+'''
+
+== 4. Invite Confirmation Screen
+
+*Decision:* After sending, a success screen shows the email, role, and
+expiry before offering next steps.
+
+*Rationale:* Confirming the details reassures the user the invite went out
+correctly and with the right role. Showing the expiry (7 days) sets
+expectations without the user having to look it up.
+
+'''
+
+== 5. Visual Distinction of Shared Inventories
+
+*Decision:* Shared inventories use a *blue left border* and are grouped
+under a separate *"Shared With Me"* heading on the home screen.
+
+*Rationale:* A purely label-based distinction (e.g. a small badge) is easy
+to miss. A colored border creates an immediate visual separation that works
+even when scanning quickly. Grouping under a heading reinforces ownership
+context so users always know which inventory is theirs.
+
+'''
+
+== 6. Role Indicator in the Nav Bar
+
+*Decision:* Inside a shared inventory, the user's role (Editor, Viewer, etc.)
+is shown as a subtitle in the navigation bar.
+
+*Rationale:* Users need a persistent, low-effort way to know what they can
+do. Showing it in the nav bar means it is always visible without taking up
+content space. This is especially important for Viewers who might otherwise
+try actions that are unavailable.
+
+'''
+
+== 7. Hiding Actions Instead of Disabling Them
+
+*Decision:* Buttons like *Add Item*, *Edit*, and *Delete* are hidden
+entirely for Viewer role rather than shown as disabled/greyed out.
+
+*Rationale:* Disabled buttons invite confusion — users tap them, get no
+feedback, and wonder why they do not work. Hiding them keeps the interface
+clean and unambiguous. A read-only notice is shown in their place to explain
+the limitation clearly.
+
+'''
+
+== 8. Pending and Expired Invitations
+
+*Decision:* Invitations expire after 7 days. An amber warning appears in the
+invitations list when an invite is within 1 day of expiry.
+
+*Rationale:* A hard expiry limits the security window of open invite links.
+The warning gives the sender time to resend before it lapses, avoiding a
+situation where the invitee tries to accept an expired link without the sender
+knowing.
+
+'''
+
+== 9. Revoked Access Handling
+
+*Decision:* If a user is removed from an inventory while they are actively
+viewing it, they are redirected to My Inventories immediately with a clear
+message: _"You no longer have access."_
+
+*Rationale:* Silent failure (e.g., actions just stop working) would be
+confusing. An immediate redirect with a plain-language message is the most
+transparent outcome and avoids the user wondering if the app is broken.
+
+'''
+
+== 10. Owner Cannot Leave Without Transferring
+
+*Decision:* The last Owner is blocked from leaving the inventory until
+they transfer ownership to another member.
+
+*Rationale:* An ownerless shared inventory would leave the remaining members
+unable to manage access or delete the inventory. Blocking the action and
+explaining why is preferable to a destructive, irreversible state.
+
+'''
+
+== Summary
+
+[cols="2,3", options="header"]
+|===
+| Decision
+| Key Reason
+
+| Sharing starts in Manage Members
+| Deliberate, settings-level action — avoids accidental invites
+
+| Two-step invite flow
+| Reduces role errors, gives a checkpoint before sending
+
+| Editor as default role
+| Most invites are collaborative; Owner requires explicit confirmation
+
+| Success screen with details
+| Confirms role and expiry so the sender knows exactly what was sent
+
+| Blue border + separate grouping
+| Instant visual scan, clear ownership context
+
+| Role in nav bar
+| Always visible, no extra taps needed to know what you can do
+
+| Hide actions for Viewer
+| Cleaner than disabled buttons; read-only notice explains why
+
+| 7-day expiry with amber warning
+| Security limit + early signal to resend before it lapses
+
+| Redirect on revoked access
+| Transparent failure over silent/broken behaviour
+
+| Block last owner from leaving
+| Prevents an unmanageable ownerless inventory
+|===
