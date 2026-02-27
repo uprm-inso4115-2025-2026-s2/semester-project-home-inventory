@@ -1,4 +1,4 @@
-﻿== Edge Cases (Duplicates/Budget)
+== Edge Cases (Duplicates/Budget)
 
 [NOTE]
 ====
@@ -6,7 +6,7 @@ This is a specific-topics reference summary. Full content is distributed across:
 
 * *Terms (Near-Duplicate, Spend Event, Allocation)*  `domain-description/terminology/terminology.adoc`
 * *Domain-level invariants (immutable spend, shared attribution, audit requirement)*  `requirements/domain-requirements/domain-requirements.adoc` (§ Budget & Spend Integrity)
-* *Interface behavior (variant disambiguation, import idempotency, undo, audit trail UI)* → `requirements/interface-requirements/interface-requirements.adoc` (IR-13 through IR-21)
+* *Interface behavior (variant disambiguation, import idempotency, undo, audit trail UI)* → `requirements/interface-requirements/interface-requirements.adoc` (Appendix A: Edge-Case Interface Requirements, IR-EC-A through IR-EC-I)
 ====
 
 === Objective
