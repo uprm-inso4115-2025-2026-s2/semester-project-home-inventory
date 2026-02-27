@@ -32,6 +32,7 @@ The following mappings describe how domain concepts translate into system compon
   - Table: `households`
   - Represents a shared living group
   - Links multiple users together
+  - Serves as the authorization boundary for access control
 
 * **HouseholdMembership**
   - Table: `household_members`
@@ -39,11 +40,48 @@ The following mappings describe how domain concepts translate into system compon
   - Used by RLS policies to authorize access
   - Supports admin vs member roles
 
-* **InventoryItem**
-  - Table: `inventory_items`
-  - Fields include: `household_id`, `owner_id`, `is_private`
+* **Home**
+  - Table: `homes`
+  - Represents the physical household environment where inventory is managed
+  - Provides the structural context for rooms and stored items
+
+* **Room**
+  - Table: `rooms`
+  - Represents a location within a home where inventory items may be stored
+  - Examples include kitchen, pantry, and bathroom
+
+* **Product**
+  - Table: `products`
+  - Represents a reusable product definition independent of a specific purchase
+  - Used to normalize item metadata such as brand, size, and unit
+
+* **Stock (Inventory Item Instance)**
+  - Table: `stock`
+  - Represents a purchased instance of a product tracked within the inventory
+  - Includes quantity, status, purchase details, and expiration data
   - Real-time updates enabled via Supabase Realtime
   - Protected by RLS household policies
+
+* **StockLocation**
+  - Table: `stock_locations`
+  - Represents the placement or movement of stock within rooms
+  - Supports tracking of current location and location history
+
+* **Inventory**
+  - Table: `inventories`
+  - Represents the collection of stock associated with a home
+
+* **ShoppingList**
+  - Table: `shopping_lists`
+  - Represents planned purchases for restocking household inventory
+
+* **ShoppingListEntry**
+  - Table: `shopping_list_entries`
+  - Represents individual items within a shopping list including quantity and priority
+
+* **Category / Supplier**
+  - Tables: `categories`, `suppliers`
+  - Provide organizational and sourcing metadata for products
 
 * **Budget / Expense**
   - Tables: `budgets`, `expenses`, `household_summary`
@@ -51,6 +89,7 @@ The following mappings describe how domain concepts translate into system compon
   - Updated automatically via database webhooks
 
 * **InviteToken**
+  - Table: `invite_tokens`
   - Generated via Edge Function
   - Short-lived signed token
   - Used by `/accept-invite` endpoint
