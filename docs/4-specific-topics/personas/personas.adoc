@@ -86,10 +86,10 @@ Andrea plans a trip to a wholesale club. She texts her roommates asking what the
 === Persona-to-needs trace
 [cols="2,4",options="header"]
 |===
-|Persona |Key needs (IDs)
+|Persona |Key needs
 
-|Mateo |N1, N4, N7
-|Sofia |N2, N5, N8
-|Julian |N3, N4, N9
-|Andrea |N5, N6, N10
+|Mateo |Know what food is currently in stock; receive expiration alerts before items spoil; avoid running out of essential daily items
+|Sofia |Prevent duplicate purchases in shared households; split shared costs fairly among roommates; stay within a strict monthly budget
+|Julian |Maintain an uninterrupted supply of specialty dietary items; track consumption rates to predict restocking needs; keep personal items separate from shared inventory
+|Andrea |Coordinate shared household stocking without carrying all the mental load; obtain accurate, verifiable records for roommate reimbursement; know what is needed before a bulk shopping trip
 |===

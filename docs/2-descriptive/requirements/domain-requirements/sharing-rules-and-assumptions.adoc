@@ -1,12 +1,9 @@
-= Document Sharing Rules & Assumptions
-:toc:
-:toclevels: 3
-:sectnums:
+== Document Sharing Rules & Assumptions
 
-== Objective
+=== Objective
 Clarify system-wide assumptions and documentation rules so future implementation and collaboration decisions remain aligned.
 
-== Core Assumptions
+=== Core Assumptions
 
 - Data ownership is at the household level, not individual users.
 - Permissions are role-based and hierarchical.
@@ -15,40 +12,40 @@ Clarify system-wide assumptions and documentation rules so future implementation
 - Ownership transfer affects role authority, not historical data ownership.
 - System actions are logged but not publicly visible.
 
-=== Data Ownership Assumptions
+==== Data Ownership Assumptions
 - Each household owns its shared inventory data.
 - Users own their personal profile data.
 - Shared inventory item ownership depend on the ownership model (e.g., Group-Owned, User-Owned or Hybrid-Owned Within Group).
 - Ownership transfer affects role authority, not historical data ownership.
 
-=== Privacy Assumptions
+==== Privacy Assumptions
 - Users can only view data belonging to households they are members of.
 - No cross-household visibility is allowed.
 - Invites are private between inviter and invitee.
 - In User-Owned Within Group model, users can only edit items they created, but all members can view shared inventory.
 - Private households can be created where only the creator can view and manage certain inventory, while still allowing for shared inventory in other households.
 
-=== Default Visibility Rules
+==== Default Visibility Rules
 - Shared inventory items are visible to all active household members.
 - Membership lists are visible to all members.
 - Budget/spending entries default to shared visibility unless otherwise defined.
 - Pending invites visibility is limited to the inviter and invitee, but household members are notified of new invites without details.
 
-== System Constraints
+=== System Constraints
 
 - A user may belong to multiple households.
 - A household must always have exactly one Owner.
 - Ownership must be transferred before an Owner leaves.
 - Permissions must be enforced at backend level.
 
-== Naming & Terminology Conventions
-=== Entity Naming Conventions
+=== Naming & Terminology Conventions
+==== Entity Naming Conventions
 - Use singular nouns for database entities ("Household", "membership", "inventory_item", ...).
 - Use snake_case for database tables.
 - Use camelCase for frontend variables.
 - Roles must use consistent naming: "owner", "member", "viewer".
 
-=== Domain Terminology Rules
+==== Domain Terminology Rules
 
 Official terms must be used consistently across documentation and implementation:
 - "Household" is the official term for a shared inventory group.
@@ -59,7 +56,7 @@ Official terms must be used consistently across documentation and implementation
 - "Inventory" refers to the collection of items within a household, not individual items.
 
 
-=== Status Naming Conventions
+==== Status Naming Conventions
 
 Invite status should be standardized as follows:
 - "pending": The invite has been sent but not yet accepted or declined.

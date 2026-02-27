@@ -1,4 +1,4 @@
-== 4.4 Traceability
+== Traceability
 
 [abstract]
 This section describes how traceability is established in the Home Inventory project. Traceability means our deliverables are linked so we can answer questions about where requirements come from, which personas they serve, and how they connect to domain concepts and user stories.
@@ -139,40 +139,21 @@ This confirms our focus areas match the project goals.
 
 === Current Traceability Status
 
-// NOTE (outdated — update required): The counts and links below reflect only the original 8 IRs.
-// Since this was written, the following requirements have been added and are NOT yet traced in the matrix above:
-//
-// Interface Requirements (IR-09 through IR-21, 13 new):
-//   IR-09: Duplicate Product Recognition
-//   IR-10: Near-Duplicate Confirmation
-//   IR-11: Accidental Double-Entry Prevention
-//   IR-12: Merge Auditability
-//   IR-13: Near-Duplicate Variant Disambiguation
-//   IR-14: Stock Entry Separation by Expiration and Location
-//   IR-15: Import Idempotency and Duplicate Spend Prevention
-//   IR-16: Inventory Correction Without Budget Impact
-//   IR-17: Refund and Return Flow
-//   IR-18: Waste and Shrinkage Adjustment
-//   IR-19: Shared Household Budget Attribution Prompt
-//   IR-20: Undo for Auto-Merge Actions
-//   IR-21: Audit Trail for Edge-Case Resolutions
-//
-// Domain Requirements (17 new):
-//   DR-1 through DR-17 (all of domain-requirements.adoc)
-//
-// The traceability matrix should be expanded to:
-//   - Link IR-09..12 and DR-1..8 to persona goals (SG3 duplicate avoidance, AG1 household stocking, MG2 expiry)
-//   - Link DR-9..13 (Budget & Spend Integrity) to SG2 (fair cost splits), AG2 (reimbursement), US-SB-01
-//   - Link DR-14..17 (Prevention & Data Integrity) to SG3, DR-7, IR-09..11
-//   - Link IR-15 (import idempotency) and IR-16 (inventory correction) to US-SB-01
-
 We have established traceability for:
 
 * **Persona goals**: All 10 goals across 4 personas are labeled
-* **Requirements**: All 8 original interface requirements are linked to goals (IR-09 through IR-21 not yet traced in the matrix)
+* **Requirements**: All 8 original interface requirements are linked to goals
 * **User stories**: All 5 user stories reference relevant requirements
 * **Domain concepts**: Key concepts from the domain narrative are linked to requirements
-* **Domain requirements DR-1..DR-17**: not yet in the traceability matrix (TODO)
+
+[NOTE]
+====
+The following items are not yet traced in the matrix above and require expansion in a future update:
+
+* **IR-09 through IR-21** (duplicate handling, merge auditability, budget correction, undo, and audit trail requirements) — link to persona goals: SG3 (duplicate avoidance), MG2 (expiry awareness), AG1 (household stocking), AG2 (reimbursement)
+* **DR-1 through DR-17** (all domain requirements) — link DR-1..8 to inventory management goals; DR-9..13 to SG2/AG2/US-SB-01; DR-14..17 to SG3/IR-09..11
+* **IR-15** (import idempotency) and **IR-16** (inventory correction without budget impact) — link to US-SB-01
+====
 
 Work in progress:
 * Adding more detailed goal tags to future requirements
