@@ -1,0 +1,127 @@
+= Flutter Technologies for Visualization Research
+
+FL Chart: A highly customizable Flutter chart library that supports Line Chart, Bar Chart, Pie 
+Chart, Scatter Chart, and Radar Chart.
+
+* Distributed under the MIT license, meaning its free and suitable for academic or
+commercial projects without licensing concerns.
+* Allows for a good amount of control over chart appearance, animations, and other 
+interactions.
+* While generally efficient for typical dashboard use cases, performance issues and 
+rendering bugs may appear when handling large datasets.
+
+Syncfusion Flutter Charts: A Flutter Charts library which includes data visualization widgets 
+such as cartesian and circular charts, to create real-time, interactive, high-performance, animated 
+charts.
+
+* A commercial license is required, though a free community license is available under 
+specific conditions.
+* Optimized for large datasets and complicated interactions, making it suitable for data 
+heavy applications.
+* Includes advanced functionality such as zooming, panning, tooltips, and legends with 
+minimal custom code.
+
+Graphic: A library based on the “grammar of graphics” system, offering immense flexibility in 
+composing unique visualizations.
+
+* Enables the creation of highly customized and unique visualizations beyond traditional 
+chart types.
+* Allows full control over user interactions and animated transitions.
+* The grammar-based approach provides better capabilities but requires more familiarity 
+with data visualization concepts compared to widget-based libraries.
+
+[cols="1,1,1,1"]
+|===
+| |FL Chart |Syncfusion Flutter Charts |Graphic
+
+|Performance
+|Good: Lightweight and 
+efficient for common 
+charts and sizes.
+|Excellent: Optimized for large 
+datasets and complex 
+interactions.
+|Moderate: Performance depends 
+on complexity of 
+specs and data 
+transformation.
+
+|Ease of Use
+|Excellent: Simple API, easy to 
+get standard charts 
+running quickly.
+|Good: Many ready-made 
+widgets, but has a 
+very large and 
+complex API.
+|Moderate: Requires 
+understanding of 
+grammar-based
+visualization 
+concepts.
+
+|Customization
+|Excellent: High control over 
+styling, animations, 
+and interactions.
+|Excellent: Extensive built-in 
+customizations 
+options.
+|Excellent: Extremely flexible. 
+Supports custom and 
+non-standard visuals.
+
+|Chart Variety
+|Good: Has a basic selection. Line,
+bar, pie, scatter, radar, 
+etc.
+|Excellent: Wide range of chart 
+types and datasets
+(cartesian, circular, 
+financial, etc.).
+|Moderate: Fewer pre-made 
+charts, but all fully 
+composable.
+
+|Learning Curve
+|Excellent: Ideal for beginners or 
+quick and simple 
+dashboards.
+|Moderate: Has a large amount of 
+features and requires 
+time to explore 
+options.
+|Difficult: Best for developers 
+comfortable with data 
+visualization 
+concepts.
+
+|Licensing and Cost
+|Excellent: Free (MIT License)
+|Moderate: Commercial (Free 
+community license 
+available.
+|Excellent: Free (MIT License)
+|===
+
+Compared to Syncfusion Flutter Charts and Graphic, FL Chart excels in simplicity, ease of 
+integration, and accessibility. It provides the necessary chart types and customization options for 
+this project while remaining efficient and fully open source so there are no licensing constraints. 
+Although the other libraries offer more advanced or specialized features, FL Chart offers the best 
+balance between functionality and development efficiency, making it the most suitable choice for 
+this project’s visualization needs.
+
+== References
+
+[1] “Graphic library,” graphic library - Dart API, 
+https://pub.dev/documentation/graphic/latest/graphic/
+
+[2] “Flutter charts: Beautiful & Interactive Live Charts,” Syncfusion, 
+https://www.syncfusion.com/flutter-widgets/flutter-charts#:~:text=Why%20Choose%20Syncfusion%20Flutter%20Charts,cater%20to%20all%20charting%20scenarios.
+
+[3] M. Naeem, “Creating beautiful charts with FL chart package in flutter: A guide for flutter 
+enthusiasts 2024,” The Tech Vate, https://thetechvate.com/beautiful-charts-with-fl-chart/
+
+[4] A. Prasad, “Top flutter charts, plots, visualization packages for line chart, bar chart, radial 
+chart, Pie Chart, sparkline, Speedometer & More: Flutter gems,” Flutter Gems - A Curated List 
+of Top Dart and Flutter packages, https://fluttergems.dev/plots-visualization/

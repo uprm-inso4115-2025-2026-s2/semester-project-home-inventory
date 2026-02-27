@@ -1,0 +1,179 @@
+# Milestone 2 - Team 3: Sharing & Budget Feature Implementation Plan
+- Author: Andrea Segarra
+- Date: 2026-02-26
+- user: andreasegarra
+- Issue: #179
+
+== Milestone 2 Target Deliverables
+_(Subject to change along the course of Milestone 2)_
+
+By the end of Milestone 2, the Sharing & Budget module must support a functional vertical slice of:
+
+* Roommate invitation flow
+* Shared inventory visibility
+* Duplicate detection warning
+* Basic spending logging
+* Basic budget calculation
+* Supabase RLS enforcement
+* Realtime updates for shared data
+
+The feature must be:
+
+* Integrated with Supabase
+* Role-aware (permission-based)
+* Realtime-ready
+* Architecturally aligned with the overall project structure
+
+
+== Implementation Scope
+
+=== Sharing & Membership (Core Flow)
+
+Users must be able to:
+
+* Create or belong to a household
+* Invite a roommate
+* Accept/decline an invite
+* View household members
+* View shared inventory
+
+==== Implementation Focus
+
+* Invitation lifecycle logic
+* Membership validation
+* Prevent duplicate active invites
+* Enforce permissions
+
+
+=== Duplicate Detection System
+
+When adding an item:
+
+* System checks for duplicates inside the same household
+* Shows warning modal if duplicate detected
+* Allows defined action (cancel / proceed / merge if defined)
+
+==== Implementation Focus
+
+* Duplicate query logic
+* Duplicate rules enforcement
+* Edge case handling (case sensitivity, partial matches if defined)
+
+
+=== Spending Tracking & Budget
+
+Users must be able to:
+
+* Log spending associated with an item or household
+* View total spent (basic calculation)
+* View remaining budget
+* Persist all spending records in Supabase
+
+==== Implementation Focus
+
+* Budget table integration
+* Spending record creation
+* Monthly aggregation logic
+* Simple remaining budget calculation
+
+
+== Data & Permission Layer
+
+Implementation must include:
+
+* Membership data structure
+* Invitations
+* Spending records
+* Budget settings
+* Permission enforcement policies
+
+Permissions must:
+
+* Restrict access to household members
+* Enforce invite visibility rules
+* Prevent unauthorized spending edits
+
+
+== Work Breakdown
+
+=== Phase 1 – Integration Alignment
+
+* Confirm required schema fields
+* Validate household data structure
+* Confirm navigation flow
+
+=== Phase 2 – Sharing Flow Implementation
+
+* Implement invite creation
+* Implement invite acceptance/decline
+* Implement member retrieval
+* Validate permission constraints
+
+=== Phase 3 – Duplicate Detection
+
+* Implement duplicate check logic
+* Integrate warning UI
+* Handle defined edge cases
+
+=== Phase 4 – Spending & Budget
+
+* Implement spending record creation
+* Implement monthly aggregation
+* Connect to budget overview UI
+
+=== Phase 5 – Stabilization & Testing
+
+* Multi-user scenario validation
+* Permission testing
+* Edge case testing
+* Demo preparation
+
+
+== Dependencies / Risks
+
+=== Dependencies
+
+* Core Inventory CRUD (Team 1)
+* Authentication system providing user ID
+* Finalized household schema
+
+=== Risks
+
+* Permission misconfiguration blocking valid actions
+* Duplicate detection false positives
+* Budget logic expanding beyond scope
+* Tight coupling between UI and logic
+
+
+== Backlog Readiness Plan
+
+Before Milestone 2 begins:
+
+. Break each phase into GitHub Issues.
+. Use standardized issue format:
+.. Objective
+.. Description
+.. Acceptance Criteria
+.. Testing Plan
+.. Difficulty
+.. Urgency
+. Label issues appropriately
+
+
+== Sprint Plan (Feb 28 – April 3)
+
+=== Sprint 1: Core Sharing & Spending Foundation
+
+* Implement roommate sharing workflow (invite → accept/decline → membership)
+* Enforce household-based permission rules
+* Integrate basic spending creation and retrieval
+* Conduct initial cross-feature integration testing
+
+=== Sprint 2: Duplicate Handling & Budget Finalization
+
+* Implement duplicate detection logic and warning behavior
+* Develop budget overview interface (total spent + remaining)
+* Validate defined edge cases and system constraints
+* Stabilize and prepare feature for milestone demonstration
+
+pdf::sharing-budget-M2-plan.pdf[]

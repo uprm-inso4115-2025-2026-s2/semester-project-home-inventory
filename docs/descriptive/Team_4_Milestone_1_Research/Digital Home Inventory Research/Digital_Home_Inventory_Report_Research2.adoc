@@ -1,0 +1,95 @@
+= Digital Home Inventory
+:toc:
+:sectnums:
+:author: Jorge Peralta
+:revdate: February 14, 2026
+
+_Research & Definition of Key Reports and Metrics_
+
+== Competitor Analysis
+
+* *Sortly* – Strong categorization and inventory value tracking.
+* *Pantry Check* – Expiration tracking and usage-based restocking.
+* *Mint* – Advanced spending analytics and budgeting reports.
+* *OurGroceries* – Shared household coordination and duplicate prevention.
+
+== Core Metrics & Formulas
+
+=== Usage Rate
+
+----
+Usage Rate = (Previous Quantity − Current Quantity) / Time Period
+----
+
+=== Estimated Depletion Date
+
+----
+Estimated Days Remaining = Current Quantity / Usage Rate
+----
+
+=== Monthly Average Spending
+
+----
+Monthly Average Spending = Total Spending / Number of Months
+----
+
+=== Category Spending Percentage
+
+----
+Category % = (Category Spending / Total Spending) × 100
+----
+
+=== Inventory Turnover Rate
+
+----
+Turnover Rate = Units Used / Average Inventory
+----
+
+=== Expiration Risk Indicator
+
+----
+If (Expiration Date − Today ≤ Threshold Days) → Flag as 'Expiring Soon'
+----
+
+=== Duplicate Purchase Detection Logic
+
+----
+If Item Exists AND Quantity > 0 → Trigger Duplicate Warning
+----
+
+== Prioritized Reports
+
+[cols="1,2,2", options="header"]
+|===
+|Priority
+|Report
+|Impact
+
+|High
+|Low Stock & Expiration
+|Prevents waste and emergencies
+
+|High
+|Monthly Spending Summary
+|Improves budget control
+
+|High
+|Category Spending Report
+|Identifies overspending
+
+|Medium
+|Usage Trend Report
+|Predicts restocking needs
+
+|Medium
+|Room-Based Inventory Report
+|Improves organization
+|===
+
+== Conclusion
+
+The implementation of structured reporting features is essential to the success of the Digital Home Inventory application. By combining real-time inventory tracking with financial analytics and predictive usage modeling, the system provides students with meaningful insights that go beyond simple item storage.
+
+These reports enable users to prevent waste, avoid duplicate purchases, monitor expiration dates, and maintain better financial discipline. The integration of usage rate calculations and spending summaries transforms raw inventory data into actionable intelligence that supports smarter decision-making.
+
+Ultimately, the value of this feature lies in its ability to reduce unnecessary spending, improve organization, and simplify household management for students living independently. With clearly defined metrics and prioritized reporting, the application directly supports its mission of helping students manage their homes efficiently, save money, and reduce stress in their daily lives.
