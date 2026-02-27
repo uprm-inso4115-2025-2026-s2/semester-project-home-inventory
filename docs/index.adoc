@@ -1,4 +1,4 @@
-= Milestone #1 Documentation AAAAAAAAAAAAAAAAAAAAAAAAA
+= Milestone #1 Documentation
 :toc: left
 :toclevels: 2
 :sectnums:

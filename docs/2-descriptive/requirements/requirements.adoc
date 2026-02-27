@@ -1,6 +1,5 @@
 == Requirements
 
-[abstract]
 This section captures initial requirements at multiple levels (stories, features, epics, constraints).
 
 include::user-stories/user-stories.adoc[leveloffset=+1]
