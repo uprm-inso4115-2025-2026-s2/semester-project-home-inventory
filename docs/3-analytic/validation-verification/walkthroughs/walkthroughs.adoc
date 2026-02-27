@@ -3,20 +3,53 @@
 Walkthroughs validate assumptions by stepping through scenarios with stakeholders or team members.
 
 === Walkthrough plan
-* Participants: TODO
-* Materials: TODO (screens, diagrams, story list)
-* Method: TODO (think-aloud, structured questions, etc.)
+* Participants: 
+** Development team members.
+** 2-3 prospective users acting as domain informants (e.g., students managing shared living spaces).
+* Materials: 
+** Event table and Imporant Event Sequences from the domain description.
+** Scenario descriptions (e.g., low-stock detection, expiration handling).
+** Draft UI mockups or simple screen sketches (used only to anchor discussion, not evaluate design).
+** Terminology list defining entities such as Inventory, Item, Restock Planner, and Spending Tracker.
+* Method: 
+** Scenario-driven walkthrough using a think-aloud approach (method where participants verbalize their thoughts in real time while stepping through a scenario or performing a task).
+** Facilitator presents a situation and asks participants to describe what they would expect to happen.
+** Event sequence is compared live against participant expectations.
+** Clarifications and disagreements are documented as validation findings.
+** No implementation details are discussed. The focus remains on domain correctness.
 
 === Walkthrough questions (draft)
-* TODO: What is confusing or unclear?
-* TODO: Does this workflow match your real process?
-* TODO: What would you expect to happen next?
-* TODO: What would make you not use this?
+* What part of this process feels different from how you would normally manage items at home?
+* Does this sequence of events reflect what actually happens when something runs out?
+* At this point in the scenario, what would you expect the system to do next?
+* Are any terms (e.g., Restock Planner, Low-Stock Condition) unclear or unnatural?
+* Would you ever ignore or bypass this step in real life? Why?
+* Is there information you would need that is not represented here?
+* Does this sequence of events reflect how this would happen in real life?
+* Is this the order in which these things would normally occur?
+* When would this feature become annoying or unnecessary?
+
+These questions aim to validate mental models, not measure satisfaction.
 
 === Findings (to fill after walkthroughs)
 [cols="2,4,3",options="header"]
 |===
 |Finding |Evidence |Impact / action
 
-|TODO |TODO |TODO
+|Low-stock should not trigger immediately after every quantity decrease.
+|Participants stated they would not expect an alert unless the quantity reaches zero or remains low for some time. One participant said, “If I still have two units, I do not need a notification yet.”
+|Introduce configurable threshold levels per Item and clarify definition of “Low-Stock Condition” in terminology.
+
+|Expiration does not always imply unavailability.
+|During the expiration scenario, participants noted that some items (e.g., canned goods) may still be consumed after expiration at user discretion.
+|Separate “Expired” from “Unavailable” in domain model. Require manual confirmation before triggering “Item has become an unavailable Item.”
+
+|Restock Planner should allow manual override.
+|Participants indicated they may not want all low-stock or expired items automatically added to Restock Planner.
+|Add rule allowing Occupants to manually remove or defer items from Restock Planner.
+
+|Shared Inventory alerts may be excessive.
+|Participants expressed concern about multiple occupants receiving redundant alerts for minor changes.
+|Add rule to allow notification preferences per Occupant.
+
 |===
