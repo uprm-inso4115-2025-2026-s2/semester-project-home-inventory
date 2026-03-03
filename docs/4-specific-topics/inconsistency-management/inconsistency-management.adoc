@@ -1,8 +1,7 @@
 = Inconsistency Management
 :showtitle: true
 
-An exploration of our domain terminology, database schema, events, actions and behaviors,shared 
-inventory definition, and duplicate item criteria led to the discovery of two inconsistencies.
+An exploration of our domain terminology, database schema, events, actions and behaviors,shared inventory definition, and duplicate item criteria led to the discovery of two inconsistencies.
 
 * Event "A Inventory has been generated" triggered by the addition of an Item to the Inventory for the first time is stated to change the Inventory so it now reflects the presence of a new Item. Inventory in our terminology is defined as "The list of available Products in a Home," while Item (synonym for Stock) is defined as "An instance of a Product." This event and its description create a designation clash to be addressed with the already existing glossary of terms in our terminology. Additionally the naming of the event alludes to the creation of an Inventory, but the described change is the modification of an already existing Inventory. To correct this clash, the event was separated into two events:
 ** The "What changed" section of the "An Inventory has been generated" has been changed to "The Inventory is created and reflects the presence of the new Item." This was done to separate the creation of the Inventory from the modification of the Inventory, and to clarify that the Inventory is created as a result of the addition of an Item to the Inventory for the first time. 
