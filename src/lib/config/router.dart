@@ -6,7 +6,7 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: "/home",
     routes: <RouteBase>[
-      mainRoutes
+      mainRoutes,
     ],
   );
 
