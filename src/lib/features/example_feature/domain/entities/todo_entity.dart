@@ -2,7 +2,8 @@
 
 class TodoEntity {
   final int id;
-  final String name;
+  String name;
+  bool completed;
 
-  const TodoEntity({required this.id, required this.name});
+  TodoEntity({required this.id, required this.name, this.completed = false});
 }

@@ -10,8 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CupertinoColors.white,
-      appBar: AppBar(title: Text("Home Page"), backgroundColor: Colors.blue),
+      appBar: AppBar(title: Text("Home Page")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -23,12 +22,12 @@ class HomePage extends StatelessWidget {
                 width: 40.w,
                 height: 5.h,
                 decoration: BoxDecoration(
-                  color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.blueGrey,
                 ),
                 child: Text(
                   "Go to TODOs page",
-                  style: TextStyle(color: CupertinoColors.black),
+                  style: TextStyle(color: CupertinoColors.white),
                 ),
               ),
               onPressed: () {

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/config/injection_dependencies.dart';
 import 'package:src/config/router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:src/config/theme.dart';
 
 Future<void> main() async {
-  await Supabase.initialize(
-    url: 'https://qieckuegdgcefdkqnsav.supabase.co',
-    anonKey: 'sb_publishable_1w1-TrfGRbG2nvDv-UUMVQ_EE2lj-HB',
-  );
+  await initializeDependencies();
   runApp(MyApp());
 }
 
@@ -19,6 +17,7 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, screen) {
         return MaterialApp.router(
+          theme: AppTheme.lightTheme,
           title: 'Home Inventory',
           routerConfig: AppRouter.router,
           debugShowCheckedModeBanner: false,

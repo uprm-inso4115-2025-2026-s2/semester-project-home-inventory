@@ -10,4 +10,6 @@ abstract class TodoRepository {
   Future<void> updateTodo(TodoEntity todo);
 
   Future<void> deleteTodo(TodoEntity tod);
+
+  Stream<List<TodoEntity>> streamTodos(String name);
 }
