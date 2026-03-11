@@ -1,5 +1,21 @@
 import '../entities/expiration_status.dart';
 
+/// Determines the expiration status of an item based on its expiration date.
+///
+/// The function compares the item's expiration date with the current date
+/// and classifies it into one of three states:
+///
+/// - `ok` → the item is not close to expiration
+/// - `nearExpiration` → the item will expire within the threshold window
+/// - `expired` → the item expires today or has already expired
+///
+/// If the expiration date is `null`, the item is treated as `ok`.
+///
+/// The comparison uses normalized dates (year, month, day) to avoid
+/// time-of-day inconsistencies.
+///
+/// [thresholdInDays] defines how many days before expiration an item is
+/// considered near expiration. The default threshold is 7 days.
 
 // determines expiration status of an item based on its expiration date
 ExpirationStatus checkExpiration({
