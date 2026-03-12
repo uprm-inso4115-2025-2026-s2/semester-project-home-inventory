@@ -12,16 +12,18 @@ class AppTheme {
   static const Color backgroundColor = Color(0xFFFBF7EF);
 
   static const Color redAccent = Color(0xFFFF0000);
-  static const Color greenAccent = Color(0xFF5FFF89); // For success messages or "Add to..." actions
+  static const Color greenAccent = Color(
+    0xFF5FFF89,
+  ); // For success messages or "Add to..." actions
 
   static ThemeData get lightTheme {
     return ThemeData(
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
       useMaterial3: true,
 
       scaffoldBackgroundColor: backgroundColor,
 
-      colorScheme: const ColorScheme.dark(
+      colorScheme: const ColorScheme.light(
         primary: primaryColor,
         secondary: accentColor,
         surface: surfaceColor,
