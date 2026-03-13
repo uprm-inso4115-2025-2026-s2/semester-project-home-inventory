@@ -19,7 +19,7 @@ The Reports Overview screen features report cards that users can tap to go to on
 
 image::images/Report Screen Mockups.png[]
 
-The three detailed report screens are Inventory Stock Summary, Item Usage Rates, and Expenditures. The tappable components in each of the screens are: the back arrow (top left), the Filters button (top right), the page arrow (middle of the Inventory Stock Summary page only), the graph bars (Inventory Stock Summary page only), the search bar (bottom middle), and the export button (bottom right). *Note that all text in {} is sample text, the real data should be pulled from backend. Text not in {} should be implemented as shown. Each of the tables should be scrollable to find more data.*
+The three detailed report screens are Inventory Stock Summary, Item Usage Rates, and Expenditures. The tappable components in each of the screens are: the back arrow (top left), the Filters button (top right), the page arrow (middle of the Inventory Stock Summary page only), the graph bars (Inventory Stock Summary page only), the search bar (bottom middle), and the export button (bottom right). *Note that all text in {} is sample text, the real data should be pulled from backend. Text not in {} should be implemented as shown. Each of the tables should be scrollable to find more data. Graphs shown here are merely examples, the real implementation will require graph generation with dynamic real data pulled from backend.*
 
 ==== Button Explanations
 
