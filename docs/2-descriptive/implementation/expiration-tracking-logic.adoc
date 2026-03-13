@@ -1,0 +1,40 @@
+= Expiration Tracking Logic
+
+== Overview
+
+The expiration tracking logic determines whether an item is expired,
+near expiration, or still valid. This logic is implemented through the
+`checkExpiration()` function inside the alerts_restock feature.
+
+== States
+
+The function classifies items into three possible states:
+
+* `ok` – the item is not close to expiration
+* `nearExpiration` – the item will expire within the configured threshold
+* `expired` – the item expires today or has already expired
+
+== Rules
+
+The classification follows these rules:
+
+* If the expiration date is `null`, the item is considered `ok`
+* If the expiration date is today or in the past, the item is `expired`
+* If the expiration date is within the threshold window, the item is `nearExpiration`
+* Otherwise, the item is classified as `ok`
+
+== Threshold
+
+The expiration threshold is configurable through `thresholdInDays`.
+By default, the system considers items near expiration when they are
+within 7 days of their expiration date.
+
+== Testing
+
+Unit tests were implemented to verify the following cases:
+
+* Null expiration date
+* Expiration date in the past
+* Expiration date equal to today
+* Expiration date within the threshold window
+* Expiration date outside the threshold
