@@ -1,0 +1,37 @@
+= Low Stock Detection Logic
+
+== Overview
+
+The low stock detection logic determines whether an item is considered
+in stock, low in stock, or out of stock based on the current quantity
+and a defined threshold.
+
+This logic is implemented through the `checkStock()` function inside
+the alerts_restock feature.
+
+== States
+
+The system classifies items into three possible states:
+
+* IN_STOCK – The quantity is above the defined threshold.
+* LOW_STOCK – The quantity is greater than zero but less than or equal to the threshold.
+* OUT_OF_STOCK – The quantity is zero.
+
+== Rules
+
+The evaluation follows these rules:
+
+1. If the stock value is `null` or invalid, the item is treated as `IN_STOCK`.
+2. If the stock value is `0`, the item is classified as `OUT_OF_STOCK`.
+3. If the stock value is less than or equal to the configured threshold, the item is classified as `LOW_STOCK`.
+4. Otherwise, the item is classified as `IN_STOCK`.
+
+== Implementation
+
+The logic is implemented in:
+
+`src/lib/features/alerts_restock/domain/usecases/check_stock.dart`
+
+Unit tests validating this behavior are located in:
+
+`src/test/features/alerts_restock/domain/usecases/check_stock_test.dart`
