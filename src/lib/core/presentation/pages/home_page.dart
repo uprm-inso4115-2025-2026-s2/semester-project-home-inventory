@@ -16,27 +16,33 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("This is the main page of the app"),
-            CupertinoButton(
-              child: Container(
-                alignment: Alignment.center,
-                width: 40.w,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.blueGrey,
-                ),
-                child: Text(
-                  "Go to TODOs page",
-                  style: TextStyle(color: CupertinoColors.white),
-                ),
-              ),
-              onPressed: () {
-                AppRouter.goTo(context, 'todos');
-              },
-            ),
+            buildButton(context, "Go to TODOs page", () {
+              AppRouter.goTo(context, 'todos');
+            }),
+            buildButton(context, "Grocery List", () {
+              AppRouter.goTo(context, "grocery_home");
+            }),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildButton(BuildContext context, String text, VoidCallback action) {
+    return CupertinoButton(
+      child: Container(
+        alignment: Alignment.center,
+        width: 40.w,
+        height: 5.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.blueGrey,
+        ),
+        child: Text(text, style: TextStyle(color: CupertinoColors.white)),
+      ),
+      onPressed: () {
+        action();
+      },
     );
   }
 }
