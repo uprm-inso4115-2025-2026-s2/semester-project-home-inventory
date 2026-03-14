@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/config/theme.dart';
 import 'package:src/features/example_feature/domain/entities/todo_entity.dart';
 import 'package:src/features/example_feature/presentation/cubits/todo_cubit.dart';
 
@@ -29,7 +30,7 @@ class TodoTile extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: BorderRadius.circular(10),
-          color: Colors.blueGrey,
+          color: AppTheme.accentColor, // Example of using the custom color defined in the theme
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,12 +43,12 @@ class TodoTile extends StatelessWidget {
                     sl<TodoCubit>().toggleTodo(todo);
                   },
                 ),
-                Text(todo.name, style: TextStyle(fontSize: 16.sp)),
+                Text(todo.name, style: Theme.of(context).textTheme.bodyLarge),
               ],
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              color: Colors.redAccent,
+              color: AppTheme.redAccent, // Example of using the custom color defined in the theme
               onPressed: tapDelete(context),
             ),
           ],
@@ -96,7 +97,6 @@ class TodoTile extends StatelessWidget {
       );
     };
   }
-
 
   VoidCallback tapDelete(BuildContext context) {
     return () {

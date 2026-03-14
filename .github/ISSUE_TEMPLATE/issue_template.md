@@ -49,8 +49,8 @@ Example: Many users work late and find the bright interface uncomfortable.  .
 **Urgency:** (1 – Low | 5 – Critical)
 
 Example:  
-- Urgency: 4 – Important for ensuring inclusivity.  
 - Difficulty: 3 – Requires some research and testing.  
+- Urgency: 4 – Important for ensuring inclusivity.  
 
 ---
 
