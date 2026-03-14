@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Top(
               color: Colors.black,
-              leftButton: () {},
+              leftButton: () => AppRouter.goTo(context, 'history'),
               title: "Grocery",
               iconColor: primary,
               leftButtonText: "History",

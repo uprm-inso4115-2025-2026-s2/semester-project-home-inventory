@@ -99,7 +99,7 @@ class Top extends StatelessWidget {
                   style: TextStyle(
                     color: color,
                     decoration: TextDecoration.none,
-                    fontSize: 22.sp,
+                    fontSize: 21.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

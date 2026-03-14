@@ -1,53 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 import 'package:src/features/grocery_list/presentation/widgets/item_tile.dart';
+import 'package:src/features/grocery_list/presentation/widgets/top.dart';
 
-/// Content shown when "My Grocery List" tab is selected on the home screen.
-class MyGroceryListPage extends StatefulWidget {
-  const MyGroceryListPage({super.key});
-
-  @override
-  State<MyGroceryListPage> createState() => _MyGroceryListPageState();
-}
-
-class _MyGroceryListPageState extends State<MyGroceryListPage> {
-  int quantity = 0;
-
-  void incrementQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void decrementQuantity() {
-    setState(() {
-      quantity--;
-    });
-  }
+class History extends StatelessWidget {
+  const History({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        child: Column(
+          children: [
+            Top(
+              color: Colors.black,
+              leftButton: () => context.pop(),
+              title: "History",
+              iconColor: primary,
+            ),
+            SizedBox(height: 2.h),
+            Expanded(child: historyList()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static const dates = ['Today', 'Yesterday', 'March 11, 2025'];
+  static const itemsPerDate = 3;
+
+  Widget historyList() {
     return ListView(
-      padding: EdgeInsets.zero,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
+      padding: EdgeInsets.zero,
       children: [
-        searchBar(context),
-        SizedBox(height: 2.h),
-        item(context),
+        for (final date in dates) ...[
+          dateHeader(date),
+          for (var i = 0; i < itemsPerDate; i++)
+            ItemTile(title: 'title', isHistory: true),
+        ],
       ],
     );
   }
 
-  Widget item(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 8,
-      itemBuilder: (context, index) => ItemTile(title: 'title'),
+  Widget dateHeader(String date) {
+    return Padding(
+      padding: EdgeInsets.only(top: 2.h, bottom: 1.h),
+      child: Text(
+        date,
+        style: TextStyle(
+          fontSize: 22.sp,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 

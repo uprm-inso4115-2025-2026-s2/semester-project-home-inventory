@@ -10,7 +10,8 @@ import 'package:src/features/grocery_list/presentation/widgets/top.dart';
 import 'package:src/features/grocery_list/presentation/widgets/upload_image.dart';
 
 class AddItem extends StatefulWidget {
-  const AddItem({super.key});
+  const AddItem({super.key, this.isCustom = false});
+  final bool isCustom;
 
   @override
   State<AddItem> createState() => _AddItemState();
@@ -30,7 +31,7 @@ class _AddItemState extends State<AddItem> {
           Top(
             color: Colors.black,
             leftButton: () => context.pop(),
-            title: "Add Item",
+            title: widget.isCustom ? "Edit Item" : "Add Item",
             iconColor: primary,
           ),
           SizedBox(height: 2.h),
@@ -59,12 +60,14 @@ class _AddItemState extends State<AddItem> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 5.h),
         child: CupertinoButton(
-          onPressed: () {},
+          onPressed: () {
+            context.pop();
+          },
           color: primary,
           padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
           borderRadius: BorderRadius.circular(15),
           child: Text(
-            'Add Item',
+            widget.isCustom ? "Edit Item" : "Add Item",
             style: TextStyle(color: Colors.white, fontSize: 18.sp),
           ),
         ),
@@ -95,6 +98,7 @@ class _AddItemState extends State<AddItem> {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
+                    color: backgroundColor,
                   ),
                 ),
                 SizedBox(height: 1.h),

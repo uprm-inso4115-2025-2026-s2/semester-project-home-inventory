@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/config/router.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 import 'package:src/features/grocery_list/presentation/widgets/top.dart';
 
 class Categories extends StatelessWidget {
-  const Categories({super.key});
+  const Categories({super.key, this.isCustom = true});
+  final bool isCustom;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +22,28 @@ class Categories extends StatelessWidget {
             leftButton: () => context.pop(),
             title: "Vegetables",
             iconColor: primary,
+            widget: isCustom ? customButton(context) : null,
           ),
           searchBar(context),
           SizedBox(height: 2.h),
           item(),
         ],
+      ),
+    );
+  }
+
+  Widget customButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        AppRouter.goTo(context, "custom_items");
+      },
+      child: Text(
+        "Edit",
+        style: TextStyle(
+          fontSize: 18.sp,
+          color: primary,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -89,7 +108,11 @@ class Categories extends StatelessWidget {
             Container(color: Colors.red, width: 10.w, height: 5.h),
             Text(
               "Item",
-              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: backgroundColor,
+              ),
             ),
             SizedBox(height: 1.h),
           ],

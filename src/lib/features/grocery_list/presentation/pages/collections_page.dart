@@ -15,7 +15,6 @@ class CollectionsPage extends StatelessWidget {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       children: [
-        SizedBox(height: 2.h),
         searchBar(context),
         SizedBox(height: 2.h),
         collection(context),
@@ -62,15 +61,11 @@ class CollectionsPage extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 8,
       itemBuilder: (context, index) =>
-          _collectionCard(context, "title", CupertinoIcons.bag_fill),
+          collectionCard(context, "title", CupertinoIcons.bag_fill),
     );
   }
 
-  Widget _collectionCard(
-    BuildContext context,
-    String title,
-    IconData icon,
-  ) {
+  Widget collectionCard(BuildContext context, String title, IconData icon) {
     return GestureDetector(
       onTap: () {
         AppRouter.goTo(context, "categories");

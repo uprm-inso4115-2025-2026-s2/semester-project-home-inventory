@@ -1,53 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 import 'package:src/features/grocery_list/presentation/widgets/item_tile.dart';
+import 'package:src/features/grocery_list/presentation/widgets/top.dart';
 
-/// Content shown when "My Grocery List" tab is selected on the home screen.
-class MyGroceryListPage extends StatefulWidget {
-  const MyGroceryListPage({super.key});
-
-  @override
-  State<MyGroceryListPage> createState() => _MyGroceryListPageState();
-}
-
-class _MyGroceryListPageState extends State<MyGroceryListPage> {
-  int quantity = 0;
-
-  void incrementQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void decrementQuantity() {
-    setState(() {
-      quantity--;
-    });
-  }
+class CustomItems extends StatelessWidget {
+  const CustomItems({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
-      children: [
-        searchBar(context),
-        SizedBox(height: 2.h),
-        item(context),
-      ],
-    );
-  }
-
-  Widget item(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 8,
-      itemBuilder: (context, index) => ItemTile(title: 'title'),
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        children: [
+          Column(
+            children: [
+              Top(
+                color: Colors.black,
+                leftButton: () => context.pop(),
+                title: "Edit Custom Items",
+                iconColor: primary,
+              ),
+              SizedBox(height: 2.h),
+              searchBar(context),
+              SizedBox(height: 2.h),
+              itemsList(context),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -80,6 +63,18 @@ class _MyGroceryListPageState extends State<MyGroceryListPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget itemsList(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return ItemTile(title: "Item $index", isCustom: true);
+      },
     );
   }
 }
