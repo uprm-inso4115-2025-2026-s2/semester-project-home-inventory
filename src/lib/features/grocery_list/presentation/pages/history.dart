@@ -22,7 +22,6 @@ class History extends StatelessWidget {
               title: "History",
               iconColor: primary,
             ),
-            SizedBox(height: 2.h),
             Expanded(child: historyList()),
           ],
         ),
