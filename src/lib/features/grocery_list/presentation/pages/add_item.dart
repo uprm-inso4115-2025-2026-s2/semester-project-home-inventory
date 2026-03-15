@@ -4,10 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/core/presentation/widgets/button.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
-import 'package:src/features/grocery_list/presentation/widgets/text_field.dart';
-import 'package:src/features/grocery_list/presentation/widgets/top.dart';
-import 'package:src/features/grocery_list/presentation/widgets/upload_image.dart';
+import 'package:src/core/presentation/widgets/text_field.dart';
+import 'package:src/core/presentation/widgets/top.dart';
+import 'package:src/core/presentation/widgets/upload_image.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({super.key, this.isCustom = false});
@@ -57,20 +58,8 @@ class _AddItemState extends State<AddItem> {
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 5.h),
-        child: CupertinoButton(
-          onPressed: () {
-            context.pop();
-          },
-          color: primary,
-          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-          borderRadius: BorderRadius.circular(15),
-          child: Text(
-            widget.isCustom ? "Edit Item" : "Add Item",
-            style: TextStyle(color: Colors.white, fontSize: 18.sp),
-          ),
-        ),
+      bottomNavigationBar: Button(
+        buttonText: widget.isCustom ? "Edit Item" : "Add Item",
       ),
     );
   }

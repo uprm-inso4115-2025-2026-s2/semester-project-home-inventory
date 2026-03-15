@@ -5,7 +5,7 @@ import 'package:src/config/router.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 import 'package:src/features/grocery_list/presentation/pages/collections_page.dart';
 import 'package:src/features/grocery_list/presentation/pages/my_grocery_list_page.dart';
-import 'package:src/features/grocery_list/presentation/widgets/top.dart';
+import 'package:src/core/presentation/widgets/top.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

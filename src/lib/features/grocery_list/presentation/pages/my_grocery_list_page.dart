@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/core/presentation/widgets/search_bar.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 import 'package:src/features/grocery_list/presentation/widgets/item_tile.dart';
 
@@ -34,7 +35,7 @@ class _MyGroceryListPageState extends State<MyGroceryListPage> {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       children: [
-        searchBar(context),
+        MySearchBar(),
         SizedBox(height: 2.h),
         item(context),
       ],
