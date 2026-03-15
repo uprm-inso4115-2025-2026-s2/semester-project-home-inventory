@@ -15,13 +15,19 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Home Page",
-          style: Theme.of(context).textTheme.displayMedium, // Example of using the custom typography defined in the theme
+          style: Theme.of(context)
+              .textTheme
+              .displayMedium, // Example of using the custom typography defined in the theme
         ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            buildButton(context, "Grocery List", () {
+              AppRouter.goTo(context, "grocery_home");
+            }),
+            
             Text("This is the main page of the app"),
             SizedBox(height: 20),
             CupertinoButton(
@@ -50,13 +56,14 @@ class HomePage extends StatelessWidget {
                 height: 5.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppTheme.primaryColor, // Example of using the custom color defined in the theme
+                  color: AppTheme
+                      .primaryColor, // Example of using the custom color defined in the theme
                 ),
                 child: Text(
                   "Go to TODOs page",
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyLarge?.copyWith(color: AppTheme.surfaceColor),// Example of using the custom typography and color defined in the theme
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppTheme.surfaceColor,
+                  ), // Example of using the custom typography and color defined in the theme
                 ),
               ),
               onPressed: () {
@@ -66,6 +73,24 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildButton(BuildContext context, String text, VoidCallback action) {
+    return CupertinoButton(
+      child: Container(
+        alignment: Alignment.center,
+        width: 40.w,
+        height: 5.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.blueGrey,
+        ),
+        child: Text(text, style: TextStyle(color: CupertinoColors.white)),
+      ),
+      onPressed: () {
+        action();
+      },
     );
   }
 }
