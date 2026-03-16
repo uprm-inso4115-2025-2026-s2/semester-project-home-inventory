@@ -1,0 +1,42 @@
+= Concept Formation - Home Inventory Project
+
+Reinaldo J. Martinez Morales +
+Team #2
+
+== Domain Description Units
+
+. "During exam weeks I eat way more snacks." _(Student Athlete, Feb 2 2026)_
+. "Protein bars may last 2 weeks normally, but 4–5 days during midterms." _(Student Athlete, Feb 2 2026)_
+. "Guests consume items faster than usual." _(Edge Situations)_
+. "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway." _(Shared Apartment, Jan 20 2026)_
+. "Keeps cleaning supplies in bathroom closet and kitchen under sink." _(Student Living Alone, Feb 2 2026)_
+. "Backup stored in car trunk and forgotten." _(Edge Situations)_
+. "No one is formally responsible for keeping track of quantities." _(Shared Apartment, Jan 20 2026)_
+. "One adult does most purchases but child sometimes uses last item without saying." _(Household Owner)_
+. Andrea "naturally fell into the role of the unofficial house manager." _(Persona 4)_
+. "Constantly having to text the roommate group chat to ask what they are out of, getting no replies." _(Persona 4)_
+
+== Concept Formation
+
+*Units 1, 2, 3* — exam weeks, midterms, guest visits
+All describe circumstances that temporarily shift how fast items are consumed, making past usage an unreliable guide for replenishment. 
+
+*Definition:* A *Consumption Context* defines any situation which happens repeatedly or any life event which occurs at specific times because these situations and events cause household items to be used up at different rates than their normal patterns to create disruptions in steady state operations.
+
+*Units 4, 5, 6* — rice in two rooms, supplies split across kitchen and bathroom, backup in car trunk
+
+All describe the same item type stored across more than one location simultaneously, causing members to misjudge total availability. +
+
+*Definition:* *Distributed Stock* describes the situation where multiple identical items are kept in different storage areas throughout a home. The practice occurs because people buy items in bulk and they keep extra supplies and their daily life practices involve unstructured storage methods. This practice increases the chance of a household member making incorrect stock assessments because they do not consider all available items.
+
+
+*Units 7, 8, 9, 10* — no assigned tracker, default shopper, passive consumer, unresponsive roommate
+
+All describe behavioral patterns that members fall into without formal agreement, determining who coordinates replenishment and who does not. +
+
+*Definition:* An *Informal Household Role* is a recurrent, unassigned behavioral pattern that a household member naturally adopts in relation to household management—such as primary shopper, passive consumer, or budget tracker. The role exists because of existing habits and personal characteristics but not through any formal agreement which determines its responsibilities.
+
+
+== Domain Narrative
+
+The normal item depletion rate increases when a *Consumption Context* changes because past usage patterns no longer provide accurate information for making replenishment decisions. Multiple households keep *Distributed Stock* because they store identical items across different locations, which makes their family members misjudge the available items and results in them buying unnecessary products. The first problem and the second problem stem from the distribution pattern which exists in *Informal Household Roles* because people who lack formal assignments will begin coordinating work while some others choose to watch and remain inactive. The three concepts show why informal tracking fails because people in the household display good intentions.
