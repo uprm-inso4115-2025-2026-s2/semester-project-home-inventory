@@ -21,6 +21,20 @@ void main(){
     quantity: 4,
     status: Status.FULL,
   );
+  //Tests when a stock is right on the threshold of low stock, which according to the stock status logic, should be treated as low stock
+  final thresholdItem = StockEntity(
+    id: 4,
+    brand: 'TestBrand',
+    quantity: 5,
+    status: Status.FULL,
+  );
+  //Tests when a quantity is negative, which should be treated as in stock, according to stock status logic
+  final negativeItem = StockEntity(
+    id: 5,
+    brand: 'TestBrand',
+    quantity: -1,
+    status: Status.FULL,
+  );
   final outOfStockItem = StockEntity(
     id: 3,
     brand: 'TestBrand',
@@ -36,20 +50,35 @@ void main(){
     id: 1,
     ownerId: 1,
     stock: {
-      product: [lowStockItem, inStockItem, outOfStockItem],
+      product: [lowStockItem, inStockItem, outOfStockItem, thresholdItem, negativeItem],
     },
+  );
+  final emptyInventory = InventoryEntity(
+    id: 2,
+    ownerId: 2,
+    stock: {},
   );
   test('automatedCheckStock correctly identifies low stock and out of stock items', (){
     final result = automatedCheckStock(inventory);
 
     expect(result.lowStockItems, contains(lowStockItem));
-    expect(result.lowStockItems.length, 1); // only one low stock item
+    expect(result.lowStockItems, contains(thresholdItem));
+    expect(result.lowStockItems.length, 2); // two low stock items
 
     expect(result.outOfStockItems, contains(outOfStockItem));
     expect(result.outOfStockItems.length, 1); // only one out of stock item
 
+    //ignores the rest of the items since they are considered in stock
     expect(result.lowStockItems, isNot(contains(inStockItem)));
     expect(result.outOfStockItems, isNot(contains(inStockItem)));
+    expect(result.outOfStockItems, isNot(contains(negativeItem)));
+    expect(result.lowStockItems, isNot(contains(negativeItem)));
+  });
+   test('returns empty list when inventory is empty',(){
+    final result = automatedCheckStock(emptyInventory);
+
+    expect(result.lowStockItems, isEmpty);
+    expect(result.outOfStockItems, isEmpty);
   });
 
 }
