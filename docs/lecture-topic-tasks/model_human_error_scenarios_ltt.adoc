@@ -1,0 +1,40 @@
+= Lecture Topic Task: Model Human Error Scenarios in Digital Home Inventory Management
+
+== Reference
+
+Lecture: Overview of Domain Engineering
+Slides: Domain Facets - Human Behavior  (29-32)
+
+== Objective
+
+This document aims to Identify and document common human error scenarios that may occur when users interact with the Digital Home Inventory system.
+
+Human behavior is an important aspect of domain modeling because real users do not always follow ideal workflows. Understanding potential mistakes or unexpected behaviors helps ensure that the domain model, system rules, and UI design can accommodate real-world usage patterns and reduce the likelihood of data inconsistencies.
+
+== Common Human Error Scenarios in Digital Home Inventory Management
+
+=== Common User Interactions and Potential Errors
+1. **Adding Items**: Users may accidentally add duplicate items, misspell item names, or input incorrect quantities.
+2. **Updating Quantities**: Users might forget to update quantities after using or discarding items, leading to inaccurate inventory counts.
+3. **Assigning Ownership**: Users may incorrectly assign ownership of items, especially in shared households, leading to confusion about item responsibility.
+4. **Deleting Items**: Users may accidentally delete items from the inventory, resulting in loss of important data about their possessions.
+5. **Categorization Errors**: Users might miscategorize items, making it difficult to locate them later or generate accurate reports.   
+
+== Impact of Human Errors on the Domain Model
+
+== How Human Errors Affect can occur in the Digital Home Inventory system
+
+
+
+== Potential Impacts
+- **Data Integrity Issues**: Human errors can lead to inaccurate or inconsistent data in the inventory, which may affect the reliability of the system.
+- **Data Inconsistency**: Errors can lead to inaccurate inventory data, which may affect decision-making and reporting.
+- **User Frustration**: Repeated errors can lead to user frustration and decreased trust in the system.
+- **Operational Inefficiency**: Inaccurate data may require additional time and effort to correct, reducing the overall efficiency of inventory management.
+
+
+== Error scenarios and Mitigation Strategies
+
+
+
+
