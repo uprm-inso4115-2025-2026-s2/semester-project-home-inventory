@@ -68,11 +68,11 @@ class InventorySupabaseDataSource {
     }
   }
   
-  Future<InventoryModel> createInventory(int ownerId) async {
+  Future<InventoryModel> createInventory(InventoryModel inventory) async {
     try {
       final response = await _supabaseClient
           .from('inventories')
-          .insert({'ownerId': ownerId})
+          .insert({'ownerId': inventory.ownerId})
           .select()
           .single();
       

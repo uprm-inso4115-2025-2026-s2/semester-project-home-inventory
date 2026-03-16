@@ -7,7 +7,8 @@ import '../../domain/entities/enums.dart';
 import '../data_sources/inventory_supabase_datasource.dart';    
 import '../models/inventory.dart';                              
 import '../models/product.dart';                          
-import '../models/stock.dart';                    
+import '../models/stock.dart';     
+import '/core/util/util.dart';
 
 //Implements the domain repository contract and bridges the domain layer with the data layer
 //Responsabilities:
@@ -58,16 +59,17 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
 }
   
   @override
-  Future<InventoryEntity> createInventory(int ownerId) async {
+  Future<InventoryEntity> createInventory(InventoryEntity inventory) async {
     
     //Validation
-    if(ownerId <= 0){
+    if(inventory.ownerId <= 0){
       throw RepositoryException('Invalid owner ID');
     }
 
     try {
-      final inventoryModel = await _dataSource.createInventory(ownerId);
-      return inventoryModel.toEntity({});
+      final inventoryModel= InventoryModel.fromEntity(inventory);
+      final createdModel = await _dataSource.createInventory(inventoryModel);
+      return createdModel.toEntity({});
     } catch (e) {
       throw RepositoryException('Failed to create inventory: $e');
     }
@@ -86,23 +88,11 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
 
     try {
-      // Convert entity stock map to model stock map
-      final stockModels = <String, List<StockModel>>{};
-      
-      for (final entry in inventory.stock.entries) {
-        stockModels[entry.key.id.toString()] = entry.value
-            .map((stock) => StockModel.fromEntity(stock as StockModel))
-            .toList();
-      }
-      
-      final inventoryModel = InventoryModel(
-        id: inventory.id,
-        ownerId: inventory.ownerId,
-        stock: stockModels,
-      );
-      
-      final updatedModel = await _dataSource.updateInventory(inventoryModel);
-      return updatedModel.toEntity(inventory.stock);
+      final inventoryModel= InventoryModel.fromEntity(inventory);
+
+      final updateModel= await _dataSource.updateInventory(inventoryModel);
+      return updateModel.toEntity(inventory.stock);
+
     } catch (e) {
       throw RepositoryException('Failed to update inventory: $e');
     }
@@ -125,7 +115,7 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
 
     //Validating imageUrl format if needed
-    if (product.imageUrl != null && !_isValidUrl(product.imageUrl!)) {
+    if (product.imageUrl != null && !AppUtils.isValidUrl(product.imageUrl!)) {
       throw RepositoryException('Invalid image URL format');
     }
 
@@ -156,7 +146,7 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
 
     //Validating imageUrl format if needed
-    if (product.imageUrl != null && !_isValidUrl(product.imageUrl!)) {
+    if (product.imageUrl != null && !AppUtils.isValidUrl(product.imageUrl!)) {
       throw RepositoryException('Invalid image URL format');
     }
 
@@ -210,9 +200,17 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
   }
   
   @override
-  Future<StockEntity> addStock(int productId, StockEntity stock) async {
+  Future<StockEntity> addStock(int inventoryId, int productId, StockEntity stock) async {
     
     //Validation
+    if(inventoryId <= 0){
+      throw RepositoryException('Invalid inventory ID');
+    }
+
+    if(productId <= 0){
+      throw RepositoryException('Invalid product ID');
+    }
+
     if(stock.brand.isEmpty){
       throw RepositoryException('Brand cannot be empty');
     }
@@ -243,9 +241,17 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
   }
   
   @override
-  Future<StockEntity> updateStock(StockEntity stock) async {
+  Future<StockEntity> updateStock(int inventoryId, int productId, StockEntity stock) async {
     
     //Validation
+    if(inventoryId <= 0){
+      throw RepositoryException('Invalid inventory ID');
+    }
+
+    if(productId <= 0){
+      throw RepositoryException('Invalid product ID');    
+    }
+
     if(stock.brand.isEmpty){
       throw RepositoryException('Brand cannot be empty');
     }
@@ -272,9 +278,17 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
   }
   
   @override
-  Future<void> deleteStock(int stockId) async {
+  Future<void> deleteStock(int inventoryId, int productId, int stockId) async {
     
     //Validation
+    if(inventoryId <= 0){
+      throw RepositoryException('Invalid inventory ID');
+    }
+  
+    if(productId <= 0){
+      throw RepositoryException('Invalid product ID');
+    }
+
     if(stockId <= 0){
       throw RepositoryException('Invalid stock ID');
     }
@@ -287,9 +301,13 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
   }
   
   @override
-  Future<List<StockEntity>> getStockForProduct(int productId) async {
+  Future<List<StockEntity>> getStockForProduct(int inventoryId, int productId) async {
     
     //Validation
+    if(inventoryId <= 0){
+      throw RepositoryException('Invalid inventory ID');
+    }
+
     if(productId <= 0){
       throw RepositoryException('Invalid product ID');
     }
@@ -304,8 +322,5 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
   }
 
-  bool _isValidUrl(String url) {
-    return Uri.tryParse(url)?.hasAbsolutePath ?? false;
-  }
 
 }
