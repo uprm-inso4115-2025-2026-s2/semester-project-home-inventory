@@ -31,6 +31,14 @@ void main(){
     status: Status.FULL,
     expirationDate: DateTime(2026, 3, 20), // beyond threshold
   );
+  //Tests when stock expires on the same day
+  final sameDayExpirationItem = StockEntity(
+    id: 4,
+    brand: 'TestBrand',
+    quantity: 20,
+    status: Status.FULL,
+    expirationDate: DateTime(2026, 3, 10), // same day as base date
+  );
   final product = ProductEntity(
     id: 1,
     name: 'TestProduct',
@@ -40,20 +48,33 @@ void main(){
     id: 1,
     ownerId: 1,
     stock: {
-      product: [nearExpirationItem, expiredItem, okItem],
+      product: [nearExpirationItem, expiredItem, okItem, sameDayExpirationItem],
     },
   );
+  final emptyInventory = InventoryEntity(
+    id: 2,
+    ownerId: 2,
+    stock: {},
+  );
+  
   test('automatedCheckExpiration correctly identifies expired and near expiration items', (){
     final result = automatedCheckExpiration(inventory, baseDate);
 
     expect(result.expiredItems, contains(expiredItem));
-    expect(result.expiredItems.length, 1); // only one expired item
+    expect(result.expiredItems, contains(sameDayExpirationItem));
+    expect(result.expiredItems.length, 2); // two expired items
 
     expect(result.nearExpirationItems, contains(nearExpirationItem));
     expect(result.nearExpirationItems.length, 1); // only one near expiration item
 
     expect(result.expiredItems, isNot(contains(okItem)));
     expect(result.nearExpirationItems, isNot(contains(okItem)));
+  });
+  test('returns empty list when inventory is empty',(){
+    final result = automatedCheckExpiration(emptyInventory, baseDate);
+
+    expect(result.expiredItems, isEmpty);
+    expect(result.nearExpirationItems, isEmpty);
   });
 
 }
