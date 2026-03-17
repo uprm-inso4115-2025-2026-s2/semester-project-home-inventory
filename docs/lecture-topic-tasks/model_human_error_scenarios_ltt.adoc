@@ -45,3 +45,9 @@ Errors when creating invites can lead to unauthorized access to the inventory, w
 6. **User invites the wrong person**: Implement a confirmation step when inviting users to share the inventory, and provide clear instructions on how to manage permissions and revoke access if necessary. Additionally, provide an option for users to review and manage their shared inventory settings to ensure that only authorized individuals have access.
 
 
+
+
+=== Documentation Sections
+
+Scenario Analysis belongs in section 3.2.
+Mitigation strategies belong in section 2.2
