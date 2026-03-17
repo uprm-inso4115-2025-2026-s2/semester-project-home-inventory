@@ -3,7 +3,6 @@ import '../entities/product.dart';
 import '../entities/stock.dart';
 import '../entities/enums.dart';
 
-
 //Acts as a contract between domain and data layers, following Clean Architecture principles by:
 //Using only entities, no implementation details and does not depend on external imports
 
@@ -18,14 +17,7 @@ abstract class InventoryRepository {
 
   //Updating a specific inventory for the specified owner 
   Future<InventoryEntity> updateInventory(InventoryEntity inventory);
-  
-  // Product operations
-  Future<ProductEntity> addProduct(ProductEntity product);
-  Future<ProductEntity> updateProduct(ProductEntity product);
-  Future<void> deleteProduct(int productId);
-  Future<List<ProductEntity>> getAllProducts();
-  Future<List<ProductEntity>> searchProducts(String query, {List<Tag>? tags});
-  
+   
   // Stock operations
   //Parameter inventoryID is the ID of the inventory containing the product
   //Parameter productID is the ID of the product to add stock to 

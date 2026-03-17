@@ -1,3 +1,4 @@
+import 'package:src/features/core_inventory/domain/repositories/product_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/repositories/inventory_repositories.dart'; 
 import '../../domain/entities/inventory.dart';                  
@@ -26,8 +27,9 @@ class RepositoryException implements Exception {
 
 class InventoryRepositoryImpl implements InventoryRepository {
   final InventorySupabaseDataSource _dataSource;
+  final ProductRepository _productRepository;
   
-  InventoryRepositoryImpl(this._dataSource);
+  InventoryRepositoryImpl(this._dataSource, this._productRepository);
   
 @override
 Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
@@ -43,9 +45,12 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     
     for (final entry in inventoryModel.stock.entries) {
 
-      final productId = int.parse(entry.key);
-      final productModel = await _dataSource.fetchProductById(productId);  // Using fetch product by id from data source file
-      final productEntity = productModel.toEntity() as ProductEntity;
+      final productId = int.parse(entry.key);    //
+      final productEntity = await _productRepository.getProductById(productId);
+
+      if(productEntity == null){
+        throw RepositoryException('Product with ID $productId not found');
+      }
       
       stockEntities[productEntity] = entry.value
           .map((model) => model.toEntity() as StockEntity)
@@ -98,106 +103,6 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
   }
   
-  @override
-  Future<ProductEntity> addProduct(ProductEntity product) async {
-    
-    //Validation
-    if(product.name.isEmpty){
-      throw RepositoryException('Product name cannot be empty');
-    }
-
-    if(product.description.isEmpty){
-      throw RepositoryException("Product description cannot be empty");
-    }
-
-    if(product.unit != null && product.unit!.isEmpty){
-      throw RepositoryException('Unit cannot be empty if provided');
-    }
-
-    //Validating imageUrl format if needed
-    if (product.imageUrl != null && !AppUtils.isValidUrl(product.imageUrl!)) {
-      throw RepositoryException('Invalid image URL format');
-    }
-
-    try {
-      final productModel = ProductModel.fromEntity(product as ProductModel);
-      final createdModel = await _dataSource.insertProduct(productModel);
-      return createdModel.toEntity() as ProductEntity;
-    } catch (e) {
-      throw RepositoryException('Failed to add product: $e');
-    }
-  }
-  
-  @override
-  Future<ProductEntity> updateProduct(ProductEntity product) async {
-    
-    //Validation
-    if(product.name.isEmpty){
-      throw RepositoryException('Product name cannot be empty');
-    }
-
-    if(product.description.isEmpty){
-      throw RepositoryException("Product description cannot be empty");
-    }
-
-
-    if(product.unit != null && product.unit!.isEmpty){
-      throw RepositoryException('Unit cannot be empty if provided');
-    }
-
-    //Validating imageUrl format if needed
-    if (product.imageUrl != null && !AppUtils.isValidUrl(product.imageUrl!)) {
-      throw RepositoryException('Invalid image URL format');
-    }
-
-    try {
-      final productModel = ProductModel.fromEntity(product as ProductModel);
-      final updatedModel = await _dataSource.updateProduct(productModel);
-      return updatedModel.toEntity() as ProductEntity;
-    } catch (e) {
-      throw RepositoryException('Failed to update product: $e');
-    }
-  }
-  
-  @override
-  Future<void> deleteProduct(int productId) async {
-    
-    //Validation
-    if(productId <= 0){
-      throw RepositoryException('Invalid product ID');
-    }
-
-    try {
-      await _dataSource.deleteProduct(productId);
-    } catch (e) {
-      throw RepositoryException('Failed to delete product: $e');
-    }
-  }
-  
-  @override
-  Future<List<ProductEntity>> getAllProducts() async {
-    try {
-      final productModels = await _dataSource.fetchAllProducts();
-      return productModels
-          .map((model) => model.toEntity() as ProductEntity)
-          .toList();
-    } catch (e) {
-      throw RepositoryException('Failed to get all products: $e');
-    }
-  }
-  
-  @override
-  Future<List<ProductEntity>> searchProducts(String query, {List<Tag>? tags}) async {
-    try {
-      final tagNames = tags?.map((tag) => tag.name).toList();
-      final productModels = await _dataSource.searchProducts(query, tags: tagNames);
-      return productModels
-          .map((model) => model.toEntity() as ProductEntity)
-          .toList();
-    } catch (e) {
-      throw RepositoryException('Failed to search products: $e');
-    }
-  }
   
   @override
   Future<StockEntity> addStock(int inventoryId, int productId, StockEntity stock) async {
@@ -232,9 +137,9 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
 
 
     try {
-      final stockModel = StockModel.fromEntity(stock as StockModel);
-      final createdModel = await _dataSource.insertStock(stockModel);
-      return createdModel.toEntity() as StockEntity;
+      final stockModel = StockModel.fromEntity(stock);
+      final createdModel = await _dataSource.insertStock(inventoryId, productId, stockModel);
+      return createdModel.toEntity();
     } catch (e) {
       throw RepositoryException('Failed to add stock: $e');
     }
@@ -269,9 +174,9 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
 
 
    try {
-      final stockModel = StockModel.fromEntity(stock as StockModel);
-      final updatedModel = await _dataSource.updateStock(stockModel);
-      return updatedModel.toEntity() as StockEntity;
+      final stockModel = StockModel.fromEntity(stock);
+      final updatedModel = await _dataSource.updateStock(inventoryId, productId, stockModel);
+      return updatedModel.toEntity();
     } catch (e) {
       throw RepositoryException('Failed to update stock: $e');
     }
@@ -313,9 +218,9 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
 
     try {
-      final stockModels = await _dataSource.fetchStockForProduct(productId);
+      final stockModels = await _dataSource.fetchStockForProduct(inventoryId, productId);
       return stockModels
-          .map((model) => model.toEntity() as StockEntity)
+          .map((model) => model.toEntity())
           .toList();
     } catch (e) {
       throw RepositoryException('Failed to get stock for product: $e');

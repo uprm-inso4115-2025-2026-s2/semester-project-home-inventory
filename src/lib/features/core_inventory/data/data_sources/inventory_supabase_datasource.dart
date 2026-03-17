@@ -99,111 +99,21 @@ class InventorySupabaseDataSource {
     }
   }
   
-  // ========== PRODUCT METHODS ==========
-  
-  Future<ProductModel> insertProduct(ProductModel product) async {
-    try {
-      final response = await _supabaseClient
-          .from('products')
-          .insert(product.toJson())
-          .select()
-          .single();
-      
-      return ProductModel.fromJson(response);
-    } on PostgrestException catch (e) {
-      throw DataSourceException('Failed to insert product: ${e.message}');
-    }
-  }
-  
-  Future<ProductModel> updateProduct(ProductModel product) async {
-    try {
-      final response = await _supabaseClient
-          .from('products')
-          .update(product.toJson())
-          .eq('id', product.id)
-          .select()
-          .single();
-      
-      return ProductModel.fromJson(response);
-    } on PostgrestException catch (e) {
-      throw DataSourceException('Failed to update product: ${e.message}');
-    }
-  }
-  
-  Future<void> deleteProduct(int productId) async {
-    try {
-      await _supabaseClient
-          .from('products')
-          .delete()
-          .eq('id', productId);
-    } on PostgrestException catch (e) {
-      throw DataSourceException('Failed to delete product: ${e.message}');
-    }
-  }
-  
-  Future<List<ProductModel>> fetchAllProducts() async {
-    try {
-      final response = await _supabaseClient
-          .from('products')
-          .select();
-      
-      return (response as List)
-          .map((json) => ProductModel.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } on PostgrestException catch (e) {
-      throw DataSourceException('Failed to fetch products: ${e.message}');
-    }
-  }
-  
-  Future<List<ProductModel>> searchProducts(String query, {List<String>? tags}) async {
-    try {
-      var searchQuery = _supabaseClient
-          .from('products')
-          .select()
-          .ilike('name', '%$query%');
-      
-      if (tags != null && tags.isNotEmpty) {
-        // This assumes tags are stored as an array in Supabase
-        searchQuery = searchQuery.contains('tags', tags);
-      }
-      
-      final response = await searchQuery;
-      
-      return (response as List)
-          .map((json) => ProductModel.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } on PostgrestException catch (e) {
-      throw DataSourceException('Failed to search products: ${e.message}');
-    }
-  }
-
-  Future<ProductModel> fetchProductById(int productId) async {
-  try {
-    final response = await _supabaseClient
-        .from('products')
-        .select()
-        .eq('id', productId)
-        .maybeSingle();
-    
-    if (response == null) {
-      throw DataSourceException('Product with ID $productId not found');
-    }
-    
-    return ProductModel.fromJson(response);
-  } on PostgrestException catch (e) {
-    throw DataSourceException('Supabase error fetching product: ${e.message}');
-  } catch (e) {
-    throw DataSourceException('Unexpected error fetching product: $e');
-  }
-}
   
   // ========== STOCK METHODS ==========
   
-  Future<StockModel> insertStock(StockModel stock) async {
+  Future<StockModel> insertStock(int inventoryId, int productId, StockModel stock) async {
     try {
+
+      final stockData= {
+        ...stock.toJson(),
+        'inventoryId': inventoryId,
+        'productId': productId,
+      };
+      
       final response = await _supabaseClient
           .from('stock')
-          .insert(stock.toJson())
+          .insert(stockData)
           .select()
           .single();
       
@@ -213,11 +123,18 @@ class InventorySupabaseDataSource {
     }
   }
   
-  Future<StockModel> updateStock(StockModel stock) async {
+  Future<StockModel> updateStock(int inventoryId, int productId, StockModel stock) async {
     try {
+
+      final stockData= {
+        ...stock.toJson(),
+        'inventoryId': inventoryId,
+        'productId': productId,
+      };
+
       final response = await _supabaseClient
           .from('stock')
-          .update(stock.toJson())
+          .update(stockData)
           .eq('id', stock.id)
           .select()
           .single();
@@ -239,11 +156,12 @@ class InventorySupabaseDataSource {
     }
   }
   
-  Future<List<StockModel>> fetchStockForProduct(int productId) async {
+  Future<List<StockModel>> fetchStockForProduct(int inventoryId, int productId) async {
     try {
       final response = await _supabaseClient
           .from('stock')
           .select()
+          .eq('inventoryId', inventoryId)
           .eq('productId', productId);
       
       return (response as List)
