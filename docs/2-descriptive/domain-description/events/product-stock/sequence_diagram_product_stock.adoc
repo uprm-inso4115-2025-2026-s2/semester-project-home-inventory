@@ -1,0 +1,13 @@
+= Sequence Diagram for Product Stock Page
+Author: Jorge L. De León Orama
+
+== Overview
+This document presents the sequence diagram for the Product Stock Page and provides a brief synopsis highlighting key steps and interactions.
+
+== Purpose
+This sequence diagram was created to establish a clear and concrete sequence of actions that can occur within the Product Stock Page. It supports a better understanding of the system behavior and helps define the functional requirements of this page.
+
+== Sequence Diagram
+The complete sequence diagram can be found at `./sequence_diagram_product_stock.pdf`. It illustrates the interactions between the interface, application, and infrastructure layers. The diagram represents the full set of actions that a user may perform while navigating the Product Stock Page.
+
+The sequence begins when the user selects the "View Stock" button. The system then performs the necessary data fetch operations and renders the Product Stock Page. From there, the user can view a specific product instance, edit the selected product, or navigate back to either the Core Inventory Page or the Home Page.
