@@ -173,6 +173,8 @@ The requirement-level concepts and decision-rule vocabulary above are anchored i
 * Low-stock determination alternatives: `low-stock-research-strategies.adoc`
 * Inventory/stock-change schema notes used to align terminology: `schema-for-inventory-&-stock-changes.adoc` (and related notification schema notes where applicable)
 
+include::requirements-evidence-concept-analysis.adoc[leveloffset=+1]
+
 === Known decision logic (expressed as requirement-level rules)
 
 The following rules are expressed at the requirements level (not as implementation details). They should later become explicit requirements with fit criteria.

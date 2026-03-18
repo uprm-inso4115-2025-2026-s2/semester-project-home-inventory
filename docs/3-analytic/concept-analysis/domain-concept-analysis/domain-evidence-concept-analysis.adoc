@@ -1,0 +1,64 @@
+=== Evidence Concept Analysis
+
+This subsection documents how raw observations from the domain rough sketch were transformed into structured domain concepts. The goal is to ensure traceability between the initial unstructured notes and the final abstractions used in the domain model.
+
+==== Rough Sketch vs Concept Formation
+
+[cols="1,1"]
+|===
+| Rough Sketch Statement | Derived Concept
+
+| "I forget what groceries I already have at home"
+| Household Item
+
+| "Sometimes we buy the same item twice"
+| Duplicate purchase / Coordination issue
+
+| "I don't know when my food expires"
+| Expiration Date
+
+| "We keep an extra one just in case"
+| Backup supply (multiple instances of a Household Item)
+
+| "We run out of things unexpectedly"
+| Inventory State (LOW_STOCK / OUT_OF_STOCK)
+|===
+
+By analyzing these statements side-by-side:
+
+- Different expressions referring to "groceries", "items", and "products" are unified under the concept of *Household Item*.
+- Repeated mentions of duplicates and shortages indicate coordination issues within shared households.
+- Time-based concerns introduce the concept of *Expiration Date* tied to specific item instances.
+
+==== Concept Formation Decisions
+
+The following abstractions were introduced by grouping similar ideas:
+
+- "Groceries", "items", "products" - *Household Item*
+- Multiple physical units - *Item Instance*
+- "Extra one" - *Backup supply*
+- "Expires" - *Expiration Date*
+- "Running out" - *Inventory State*
+
+These groupings allow consistent reasoning across different user statements and scenarios.
+
+==== Identifying Concept Relationships
+
+From the analysis:
+
+- A *Household Item* may have multiple *Item Instances*
+- Each *Item Instance* may have an *Expiration Date*
+- A *Household Item* can be associated with an *Inventory State*
+- Household members interact with shared items in a common environment
+
+==== Terminology Alignment
+
+Potential inconsistencies were identified and resolved:
+
+- "Item", "product", and "groceries" - standardized as *Household Item*
+- "Running out" vs "not available" - unified under *Inventory State*
+- "Extra" vs "backup" - unified as *Backup supply*
+
+==== Domain Scope Note
+
+This analysis focuses strictly on domain concepts and avoids system-specific terminology. Instead of referring to "users", domain roles such as household members, roommates, or students are implied.

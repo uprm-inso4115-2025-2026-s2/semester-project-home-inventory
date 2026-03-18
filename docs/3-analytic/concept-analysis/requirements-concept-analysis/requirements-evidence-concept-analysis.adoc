@@ -1,0 +1,57 @@
+=== Evidence Concept Analysis
+
+This subsection documents how requirement-level concepts were derived from raw observations in the rough sketch. It ensures traceability between real-world problems and the requirements defined for the system.
+
+==== Rough Sketch vs Requirement Concepts
+
+[cols="1,1"]
+|===
+| Rough Sketch Statement | Requirement-Level Concept
+
+| "If it takes more than a few seconds to log, I won't do it"
+| Fast capture
+
+| "Sometimes we buy the same item twice"
+| Shared coordination / Duplicate prevention
+
+| "I check the fridge note before buying"
+| Tracked record vs real-world state
+
+| "I don't notice when things expire"
+| Expiration awareness / Alerts
+
+| "We run out of things unexpectedly"
+| Inventory State (LOW_STOCK / OUT_OF_STOCK)
+|===
+
+By analyzing these statements:
+- Repeated complaints about effort lead to the requirement for *fast capture*.
+- Coordination issues between household members lead to *shared visibility and synchronization*.
+- Expiration-related concerns introduce the need for *alerts and monitoring*.
+- Unexpected shortages introduce the concept of *actionable inventory states*.
+
+==== Requirement Formation Decisions
+
+The following requirement concepts were introduced:
+
+- *Fast capture* - minimize friction when logging a Household Item  
+- *Shared coordination* - allow multiple household members to interact with the same inventory  
+- *Expiration awareness* - notify or highlight items nearing expiration  
+- *Inventory State* - classify Household Items as LOW_STOCK, OUT_OF_STOCK, or NORMAL  
+
+These concepts were selected because they directly address the domain problems identified in the rough sketch.
+
+==== Alignment with Domain Concepts
+
+Requirement-level concepts align with domain concepts as follows:
+
+- Fast capture → operations on *Household Item*  
+- Inventory State → state of a *Household Item*  
+- Expiration awareness → tied to *Item Instance* and *Expiration Date*  
+- Shared coordination → interaction between household members over shared items  
+
+This ensures consistency between domain analysis (Section 3.1) and requirements.
+
+==== Scope Note
+
+While requirement concepts may include system-related behavior (e.g., alerts, automation), they remain grounded in domain needs rather than implementation specific details.
