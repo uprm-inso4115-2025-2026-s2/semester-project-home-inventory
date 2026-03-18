@@ -1,13 +1,12 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/inventory.dart';
-import '../models/product.dart';
 import '../models/stock.dart';
 
-
-//Data source class handles all direct communication with Supabase
-//Only place where Supabase is imported and used!
-//Responsabilities:
-//execute raw database queries, convert Supabase responses to Models, handle database-specific errors and return Models to repository
+// Data source class handles all direct communication with Supabase
+// Only place where Supabase is imported and used
+// Responsibilities:
+// execute raw database queries, convert Supabase responses to Models, 
+// handle database-specific errors and return Models to repository
 
 // Custom exceptions for data source
 class DataSourceException implements Exception {
@@ -22,45 +21,20 @@ class InventorySupabaseDataSource {
   
   // ========== INVENTORY METHODS ==========
   
+  //Fetches an inventory by owner ID with all its stock data
   Future<InventoryModel> fetchInventoryByOwnerId(int ownerId) async {
     try {
-      // Fetch the inventory
-      final inventoryResponse = await _supabaseClient
+      final response = await _supabaseClient
           .from('inventories')
           .select()
           .eq('ownerId', ownerId)
           .maybeSingle();
       
-      if (inventoryResponse == null) {
+      if (response == null) {
         throw DataSourceException('Inventory not found for owner $ownerId');
       }
       
-      // Fetch all products for this inventory
-      final productsResponse = await _supabaseClient
-          .from('products')
-          .select()
-          .eq('inventoryId', inventoryResponse['id']);
-      
-      // Fetch stock for each product
-      final stockMap = <String, List<StockModel>>{};
-      
-      for (final product in productsResponse) {
-        final productId = product['id'].toString();
-        final stockResponse = await _supabaseClient
-            .from('stock')
-            .select()
-            .eq('productId', product['id']);
-        
-        stockMap[productId] = (stockResponse as List)
-            .map((json) => StockModel.fromJson(json as Map<String, dynamic>))
-            .toList();
-      }
-      
-      return InventoryModel(
-        id: inventoryResponse['id'] as int,
-        ownerId: inventoryResponse['ownerId'] as int,
-        stock: stockMap,
-      );
+      return InventoryModel.fromJson(response);
     } on PostgrestException catch (e) {
       throw DataSourceException('Supabase error: ${e.message}');
     } catch (e) {
@@ -68,107 +42,236 @@ class InventorySupabaseDataSource {
     }
   }
   
+  //Creates a new inventory for an owner
   Future<InventoryModel> createInventory(InventoryModel inventory) async {
     try {
       final response = await _supabaseClient
           .from('inventories')
-          .insert({'ownerId': inventory.ownerId})
+          .insert({
+            'ownerId': inventory.ownerId,
+            'stock': {}, //Initialize empty stock map
+          })
           .select()
           .single();
-      
-      return InventoryModel(
-        id: response['id'] as int,
-        ownerId: response['ownerId'] as int,
-        stock: {},
-      );
+    
+
+
+
+      return InventoryModel.fromJson(response);
     } on PostgrestException catch (e) {
       throw DataSourceException('Failed to create inventory: ${e.message}');
     }
   }
   
+  //Updates an entire inventory (including stock)
   Future<InventoryModel> updateInventory(InventoryModel inventory) async {
     try {
-      await _supabaseClient
+      final response = await _supabaseClient
           .from('inventories')
-          .update({'ownerId': inventory.ownerId})
-          .eq('id', inventory.id);
+          .update(inventory.toJson())
+          .eq('id', inventory.id)
+          .select()
+          .single();
       
-      return inventory; // Return the updated model
+      return InventoryModel.fromJson(response);
     } on PostgrestException catch (e) {
       throw DataSourceException('Failed to update inventory: ${e.message}');
     }
   }
   
+  // ========== STOCK METHODS (All operations go through inventory) ==========
   
-  // ========== STOCK METHODS ==========
-  
-  Future<StockModel> insertStock(int inventoryId, int productId, StockModel stock) async {
+  //Adds stock to a specific product within an inventory
+  Future<InventoryModel> addStockToInventory(
+    int inventoryId, 
+    int productId, 
+    StockModel newStock
+  ) async {
     try {
-
-      final stockData= {
-        ...stock.toJson(),
-        'inventoryId': inventoryId,
-        'productId': productId,
-      };
-      
+      //1. Fetching the current inventory
       final response = await _supabaseClient
-          .from('stock')
-          .insert(stockData)
+          .from('inventories')
+          .select()
+          .eq('id', inventoryId)
+          .maybeSingle();
+      
+      if (response == null) {
+        throw DataSourceException('Inventory with ID $inventoryId not found');
+      }
+      
+      //2. Parsing to InventoryModel
+      final inventory = InventoryModel.fromJson(response);
+      
+      //3. Updating the stock map
+      final updatedStockMap = Map<String, List<StockModel>>.from(inventory.stock);
+      final productIdStr = productId.toString();
+      
+      if (updatedStockMap.containsKey(productIdStr)) {
+        //Add to existing list
+        updatedStockMap[productIdStr] = [...updatedStockMap[productIdStr]!, newStock];
+      } else {
+        
+        //Create new list for this product
+        updatedStockMap[productIdStr] = [newStock];
+      }
+      
+      //4. Converting stock map to JSON format for Supabase
+      final stockJson = updatedStockMap.map(
+        (key, value) => MapEntry(
+          key, 
+          value.map((stock) => stock.toJson()).toList()
+        ),
+      );
+      
+      //5. Updating only the stock portion of the inventory
+      final updateResponse = await _supabaseClient
+          .from('inventories')
+          .update({'stock': stockJson})
+          .eq('id', inventoryId)
           .select()
           .single();
       
-      return StockModel.fromJson(response);
+      return InventoryModel.fromJson(updateResponse);
     } on PostgrestException catch (e) {
-      throw DataSourceException('Failed to insert stock: ${e.message}');
+      throw DataSourceException('Failed to add stock: ${e.message}');
+    } catch (e) {
+      throw DataSourceException('Unexpected error adding stock: $e');
     }
   }
   
-  Future<StockModel> updateStock(int inventoryId, int productId, StockModel stock) async {
+  //Updating existing stock for a specific product within an inventory
+  Future<InventoryModel> updateStockInInventory(
+    int inventoryId, 
+    int productId, 
+    StockModel updatedStock
+  ) async {
     try {
-
-      final stockData= {
-        ...stock.toJson(),
-        'inventoryId': inventoryId,
-        'productId': productId,
-      };
-
+      //1. Fetching the current inventory
       final response = await _supabaseClient
-          .from('stock')
-          .update(stockData)
-          .eq('id', stock.id)
+          .from('inventories')
+          .select()
+          .eq('id', inventoryId)
+          .maybeSingle();
+      
+      if (response == null) {
+        throw DataSourceException('Inventory with ID $inventoryId not found');
+      }
+      
+      //2. Parsing to InventoryModel
+      final inventory = InventoryModel.fromJson(response);
+      
+      //3. Updating the specific stock in the map
+      final updatedStockMap = Map<String, List<StockModel>>.from(inventory.stock);
+      final productIdStr = productId.toString();
+      
+      if (updatedStockMap.containsKey(productIdStr)) {
+        updatedStockMap[productIdStr] = updatedStockMap[productIdStr]!
+            .map((stock) => stock.id == updatedStock.id ? updatedStock : stock)
+            .toList();
+      } else {
+        throw DataSourceException('Product $productId not found in inventory');
+      }
+      
+      //4. Converting stock map to JSON format for Supabase
+      final stockJson = updatedStockMap.map(
+        (key, value) => MapEntry(
+          key, 
+          value.map((stock) => stock.toJson()).toList()
+        ),
+      );
+      
+      //5. Updating only the stock portion of the inventory
+      final updateResponse = await _supabaseClient
+          .from('inventories')
+          .update({'stock': stockJson})
+          .eq('id', inventoryId)
           .select()
           .single();
       
-      return StockModel.fromJson(response);
+      return InventoryModel.fromJson(updateResponse);
     } on PostgrestException catch (e) {
       throw DataSourceException('Failed to update stock: ${e.message}');
+    } catch (e) {
+      throw DataSourceException('Unexpected error updating stock: $e');
     }
   }
   
-  Future<void> deleteStock(int stockId) async {
+  //Deleting stock from a specific product within an inventory
+  Future<InventoryModel> deleteStockFromInventory(
+    int inventoryId, 
+    int productId, 
+    int stockId
+  ) async {
     try {
-      await _supabaseClient
-          .from('stock')
-          .delete()
-          .eq('id', stockId);
+      //1. Fetching the current inventory
+      final response = await _supabaseClient
+          .from('inventories')
+          .select()
+          .eq('id', inventoryId)
+          .maybeSingle();
+      
+      if (response == null) {
+        throw DataSourceException('Inventory with ID $inventoryId not found');
+      }
+      
+      //2. Parsing to InventoryModel
+      final inventory = InventoryModel.fromJson(response);
+      
+      //3. Removing the specific stock from the map
+      final updatedStockMap = Map<String, List<StockModel>>.from(inventory.stock);
+      final productIdStr = productId.toString();
+      
+      if (updatedStockMap.containsKey(productIdStr)) {
+        updatedStockMap[productIdStr] = updatedStockMap[productIdStr]!
+            .where((stock) => stock.id != stockId)
+            .toList();
+      }
+      
+      //4. Converting stock map to JSON format for Supabase
+      final stockJson = updatedStockMap.map(
+        (key, value) => MapEntry(
+          key, 
+          value.map((stock) => stock.toJson()).toList()
+        ),
+      );
+      
+      //5. Updating only the stock portion of the inventory
+      final updateResponse = await _supabaseClient
+          .from('inventories')
+          .update({'stock': stockJson})
+          .eq('id', inventoryId)
+          .select()
+          .single();
+      
+      return InventoryModel.fromJson(updateResponse);
     } on PostgrestException catch (e) {
       throw DataSourceException('Failed to delete stock: ${e.message}');
+    } catch (e) {
+      throw DataSourceException('Unexpected error deleting stock: $e');
     }
   }
   
-  Future<List<StockModel>> fetchStockForProduct(int inventoryId, int productId) async {
+  //Getting all stock for a specific product within an inventory
+  Future<List<StockModel>> getStockForProduct(int inventoryId, int productId) async {
     try {
       final response = await _supabaseClient
-          .from('stock')
+          .from('inventories')
           .select()
-          .eq('inventoryId', inventoryId)
-          .eq('productId', productId);
+          .eq('id', inventoryId)
+          .maybeSingle();
       
-      return (response as List)
-          .map((json) => StockModel.fromJson(json as Map<String, dynamic>))
-          .toList();
+      if (response == null) {
+        throw DataSourceException('Inventory with ID $inventoryId not found');
+      }
+      
+      final inventory = InventoryModel.fromJson(response);
+      final productIdStr = productId.toString();
+      
+      return inventory.stock[productIdStr] ?? [];
     } on PostgrestException catch (e) {
       throw DataSourceException('Failed to fetch stock: ${e.message}');
+    } catch (e) {
+      throw DataSourceException('Unexpected error fetching stock: $e');
     }
   }
 }
