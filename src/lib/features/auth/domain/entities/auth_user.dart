@@ -6,7 +6,7 @@ class AuthUser {
   /// Email address of the user. May be null to match the return
   /// type of the data source, but should be non-null for
   /// authenticated users.
-  final String? email;
+  final String email;
 
   /// User display name.
   final String? name;

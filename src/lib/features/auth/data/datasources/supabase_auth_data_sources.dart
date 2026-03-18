@@ -20,7 +20,7 @@ class SupabaseAuthDataSource implements AuthDataSource {
       final user = await authService.signUp(email: email, password: password);
 
       if (user == null) return null;
-      return AuthUserModel(id: user.id, email: user.email);
+      return AuthUserModel(id: user.id, email: user.email ?? "NONE");
     } catch (_) {
       return null;
     }
@@ -35,7 +35,7 @@ class SupabaseAuthDataSource implements AuthDataSource {
       final user = await authService.signIn(email: email, password: password);
 
       if (user == null) return null;
-      return AuthUserModel(id: user.id, email: user.email);
+      return AuthUserModel(id: user.id, email: user.email ?? "NONE");
     } catch (_) {
       return null;
     }
@@ -54,14 +54,14 @@ class SupabaseAuthDataSource implements AuthDataSource {
   AuthUserModel? getCurrentUser() {
     final user = authService.getCurrentUser();
     if (user == null) return null;
-    return AuthUserModel(id: user.id, email: user.email);
+    return AuthUserModel(id: user.id, email: user.email ?? "NONE");
   }
 
   @override
   Stream<AuthUserModel?> watchCurrentUser() {
     return authService.watchCurrentUser().map((user) {
       if (user == null) return null;
-      return AuthUserModel(id: user.id, email: user.email);
+      return AuthUserModel(id: user.id, email: user.email ?? "NONE");
     });
   }
 }
