@@ -1,0 +1,153 @@
+= Stakeholder Perspectives
+Home Inventory — Requirements 
+@daniellameleroo - Team #3
+:doctype: article
+:toc: left
+:toc-title: Table of Contents
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+---
+
+== Introduction
+
+This document identifies and describes the stakeholder perspectives for the Home Inventory System. Based on the Domain Stakeholders lecture (Schütz-Schmuck, 2021), stakeholders are individuals, groups, or organizations that have an interest in or dependency on the domain. Capturing their perspectives early in the requirements phase ensures completeness of concerns, reduces the risk of missing critical requirements, and provides a foundation for writing user stories.
+
+As the lecture notes, not all stakeholders are obvious, being broad is encouraged. For example, just as a bus driver passing a supermarket may be a stakeholder for a checkout system, a property manager or insurance agent may be a relevant stakeholder for a home inventory system even if they are not primary users.
+
+---
+
+== Identified stakeholder groups
+
+The following five stakeholder groups were identified for the Home Inventory System:
+
+[cols="1,2,2,2", options="header"]
+|===
+| Stakeholder
+| What they care about
+| What they need
+| How they interact
+
+| Homeowner
+| Full control over inventory, insurance coverage, asset tracking
+| Add, edit, remove items; view reports; manage household members
+| Primary user — daily interaction, manages all data
+
+| Family member / roommate
+| Access to shared items, awareness of household inventory
+| View shared items, add personal items, see item availability
+| Regular user — views and updates items they own or share
+
+| Insurance agent
+| Accurate item valuations, proof of ownership, coverage completeness
+| Export reports with item values, photos, purchase dates
+| Occasional — reviews exported reports for claim purposes
+
+| Developer / maintainer
+| System stability, data integrity, maintainability
+| Clear data model, API access, logging and error handling
+| Technical — builds and maintains the system
+
+| Property manager
+| Inventory condition tracking, damage documentation
+| View item condition and history, generate condition reports
+| Occasional — inspects and documents item states
+|===
+
+---
+
+== Stakeholder perspectives in detail
+
+=== Homeowner
+
+The homeowner is the primary user of the system. Their main interest is maintaining a complete and accurate record of all household assets for personal, financial, and insurance purposes. They care most about ease of use, data accuracy, and control over who can view or modify inventory data.
+
+* Needs full CRUD access to all inventory items.
+* Wants to generate reports for insurance or resale purposes.
+* Wants to control privacy settings — certain items should only be visible to them.
+* Interacts with the system frequently, likely on a daily or weekly basis.
+
+=== Family member / roommate
+
+Family members or roommates share the household and interact with shared items. Their perspective focuses on transparency and ease of access to items they use or co-own. They are less concerned with the full inventory and more interested in items relevant to them.
+
+* Needs to view shared household items and their availability.
+* Wants to add or update items they personally own within the household.
+* Does not need access to private items or financial data of the homeowner.
+* Interacts with the system regularly but with limited permissions.
+
+=== Insurance agent
+
+The insurance agent is an external stakeholder who interacts with the system indirectly through exported reports. Their interest is in the accuracy and completeness of item records for claim processing and coverage validation.
+
+* Needs detailed item records including purchase value, condition, and photos.
+* Requires exportable reports in standard formats (PDF or CSV).
+* Does not interact with the live system — only with exported documents.
+* Cares about data completeness, not system usability.
+
+=== Developer / system maintainer
+
+The developer is responsible for building and maintaining the system. Their perspective is technical — they care about system stability, data integrity, and maintainability.
+
+* Needs a well-defined data model and clear system requirements.
+* Cares about scalability — the system should handle large item lists efficiently.
+* Requires logging and error handling for debugging and maintenance.
+* Interacts with the system at the code level, not through the UI.
+
+=== Property manager
+
+A property manager oversees multiple rental units and may use the inventory system to document the condition of items across properties. This is a non-obvious stakeholder — similar to the bus driver in the supermarket example from the lecture.
+
+* Needs to track item condition and document damage over time.
+* Wants to generate condition reports for tenant move-in and move-out inspections.
+* Does not manage daily inventory — only periodic reviews.
+* Interacts with the system occasionally and primarily through reports.
+
+---
+
+== Conflicting and incommensurate perspectives
+
+As noted in the lecture, stakeholder perspectives may in part be incommensurate — meaning they cannot always be fully reconciled. The following conflicts were identified:
+
+[cols="1,1,1,2", options="header"]
+|===
+| Conflict
+| Stakeholder A
+| Stakeholder B
+| Nature
+
+| Data visibility
+| Family member wants to see all household items
+| Homeowner wants to keep some items private
+| Incommensurate — privacy vs. access
+
+| Item editing rights
+| Roommate wants to update shared items freely
+| Homeowner wants to approve changes to shared items
+| Conflict — autonomy vs. control
+
+| Report detail level
+| Insurance agent needs full item history and values
+| Homeowner prefers a simplified summary for privacy
+| Conflict — completeness vs. privacy
+|===
+
+
+== Why stakeholder perspectives matter
+
+Listing stakeholder perspectives serves two key purposes as described in the lecture:
+
+* *Transparency* — on larger projects, a shared catalog of stakeholders ensures all team members understand who the system serves and why. This reduces the risk of building features that miss key user needs.
+
+* *Completeness of concerns* — each stakeholder group brings a unique set of requirements and expectations. Without capturing all perspectives, requirements may be incomplete, leading to costly changes later in development.
+
+For the Home Inventory System specifically, identifying the insurance agent and property manager as non-obvious stakeholders ensures the export and reporting features are designed with their needs in mind — not just the primary homeowner experience.
+
+---
+
+== Reference
+
+Schütz-Schmuck, M. (2021). _Domain Stakeholders_. Department of Computer Science and Engineering, University of Puerto Rico at Mayagüez.
+
+https://simplystakeholders.com/stakeholder-requirements/
