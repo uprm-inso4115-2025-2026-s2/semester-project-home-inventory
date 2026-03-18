@@ -1,5 +1,10 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/data/services/pdf_export_service.dart';
 
 class InventoryStockReportPage extends StatelessWidget {
   const InventoryStockReportPage({super.key});
@@ -13,8 +18,61 @@ class InventoryStockReportPage extends StatelessWidget {
   }
 }
 
-class _ReportView extends StatelessWidget {
+class _ReportView extends StatefulWidget {
   const _ReportView();
+
+  @override
+  State<_ReportView> createState() => _ReportViewState();
+}
+
+class _ReportViewState extends State<_ReportView> {
+  final GlobalKey _chartKey = GlobalKey();
+
+  Future<Uint8List?> _captureChart() async {
+    try {
+      final boundary =
+      _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+
+      if (boundary == null) return null;
+
+      final image = await boundary.toImage(pixelRatio: 3.0);
+      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+      return byteData?.buffer.asUint8List();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _exportPdf(BuildContext context, ReportState state) async {
+    final pdfService = PdfExportService();
+
+    final categories = state.currentPageData
+        .map((c) => {
+      'name': c.name,
+      'quantity': c.quantity,
+    })
+        .toList();
+
+    final items = state.items
+        .map((i) => {
+      'name': i.name,
+      'category': i.category,
+      'quantity': i.quantity,
+      'status': i.status,
+    })
+        .toList();
+
+    final chartImage = await _captureChart();
+
+    await pdfService.exportInventoryStockReport(
+      startDate: state.startDate,
+      page: state.page,
+      categories: categories,
+      items: items,
+      chartImage: chartImage,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,23 +87,41 @@ class _ReportView extends StatelessWidget {
         ),
         title: const Text(
           'Inventory Stock Summary',
-          style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: false,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: const Color(0xFF8B9D7F),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: const [
-                Text('Filters', style: TextStyle(color: Colors.white, fontSize: 14)),
-                SizedBox(width: 4),
-                Icon(Icons.arrow_drop_down, color: Colors.white, size: 20),
-              ],
+          BlocBuilder<ReportCubit, ReportState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () => _exportPdf(context, state),
+                icon: const Icon(Icons.picture_as_pdf, color: Colors.black87),
+                tooltip: 'Export to PDF',
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF8B9D7F),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text('Filters', style: TextStyle(color: Colors.white, fontSize: 14)),
+                    SizedBox(width: 4),
+                    Icon(Icons.arrow_drop_down, color: Colors.white, size: 20),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -61,7 +137,11 @@ class _ReportView extends StatelessWidget {
                   children: const [
                     Text(
                       'March 9 - 15',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
                     ),
                     Text(
                       '2026',
@@ -70,7 +150,10 @@ class _ReportView extends StatelessWidget {
                   ],
                 ),
               ),
-              _BarChart(data: state.currentPageData),
+              RepaintBoundary(
+                key: _chartKey,
+                child: _BarChart(data: state.currentPageData),
+              ),
               const SizedBox(height: 16),
               Expanded(child: _DataTable(items: state.items)),
               _SearchBar(),
@@ -89,7 +172,7 @@ class _BarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final maxVal = data.isEmpty ? 100 : data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
@@ -128,7 +211,7 @@ class _BarChart extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text('< Page ${context.read<ReportCubit>().state.page + 1} >', style: TextStyle(color: Colors.black)),
+          Text('< Page ${context.read<ReportCubit>().state.page + 1} >', style: const TextStyle(color: Colors.black)),
         ],
       ),
     );
@@ -203,9 +286,9 @@ class _StatusBadge extends StatelessWidget {
     final colors = status == 'OK'
         ? [const Color(0xFFD4EDDA), const Color(0xFF155724)]
         : status == 'LOW'
-            ? [const Color(0xFFFFF3CD), const Color(0xFF856404)]
-            : [const Color(0xFFF8D7DA), const Color(0xFF721C24)];
-    
+        ? [const Color(0xFFFFF3CD), const Color(0xFF856404)]
+        : [const Color(0xFFF8D7DA), const Color(0xFF721C24)];
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(color: colors[0], borderRadius: BorderRadius.circular(4)),
@@ -256,21 +339,21 @@ class ReportCubit extends Cubit<ReportState> {
 class ReportState {
   final DateTime startDate = DateTime(2026, 3, 9);
   final int page = 0;
-  
+
   List<CategoryData> get currentPageData => page == 0
       ? [
-          CategoryData('Food', 44),
-          CategoryData('Kitchen', 20),
-          CategoryData('Cleaning', 38),
-          CategoryData('Hygiene', 24),
-          CategoryData('Bathroom', 30),
-        ]
+    CategoryData('Food', 44),
+    CategoryData('Kitchen', 20),
+    CategoryData('Cleaning', 38),
+    CategoryData('Hygiene', 24),
+    CategoryData('Bathroom', 30),
+  ]
       : [
-          CategoryData('Utilities', 64),
-          CategoryData('Medicine', 20),
-          CategoryData('Laundry', 0),
-        ];
-  
+    CategoryData('Utilities', 64),
+    CategoryData('Medicine', 20),
+    CategoryData('Laundry', 0),
+  ];
+
   List<ItemData> get items => [
     ItemData('Eggs', 'Food', 18, 'OK'),
     ItemData('Beans (cans)', 'Food', 15, 'OK'),
