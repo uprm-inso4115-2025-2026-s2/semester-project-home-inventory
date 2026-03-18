@@ -8,9 +8,10 @@ Design decisions at a more detailed level than architecture (modules, domain mod
 
 Supabase Realtime will be used to propagate inventory and budget updates instantly to connected clients. This decision was mainly made because the application requires the roommates to see changes like item additions, deletions, budget updates, etc. with minimal delay. Realtime's Postgres Changes and Broadcast features will reduce the need for manual polling and improve the overall user experience while integrating seamlessly with the existing Supabase stack.
 
-* **Decision 2: Enforce access control using Supabase Row-Level Security (RLS)**
+* **Decision 2: Handle access control primarily in the client and domain layer**
 
-All data access permissions will be enforced at the database level using the RLS Policies. This ensures that users will only see items belonging to their household. Using RLS reduces backend complexity, prioritizing security and preventing any data leaks. Policies will rely on `auth.uid()` and `household_members` to determine authorization.
+Access control will be handled primarily in the client-side use cases and repository layer in order to centralize business logic and reduce unnecessary database overhead. This approach allows better control over application behavior while keeping the system more flexible.
+Supabase Row-Level Security (RLS) will be used only as a fallback safety mechanism, mainly to ensure that users are authenticated and to prevent unauthorized access at the database level.
 
 * **Decision 3: Use Edge Functions for complex business logic**
 
@@ -56,16 +57,15 @@ The following mappings describe how domain concepts translate into system compon
   - Used to normalize item metadata such as brand, size, and unit
 
 * **Stock (Inventory Item Instance)**
-  - Table: `stock`
+  - Stored within: inventories
   - Represents a purchased instance of a product tracked within the inventory
   - Includes quantity, status, purchase details, and expiration data
-  - Real-time updates enabled via Supabase Realtime
-  - Protected by RLS household policies
+  - Exists as part of an Inventory rather than as a standalone aggregate
 
 * **StockLocation**
-  - Table: `stock_locations`
-  - Represents the placement or movement of stock within rooms
-  - Supports tracking of current location and location history
+  - Represents the association between stock and rooms within a household
+  - Implemented as a mapping between stock items and room identifiers rather than a standalone table
+  - Used to determine where items are located within the household
 
 * **Inventory**
   - Table: `inventories`
@@ -74,11 +74,11 @@ The following mappings describe how domain concepts translate into system compon
 * **ShoppingList**
   - Table: `shopping_lists`
   - Represents planned purchases for restocking household inventory
-  - Associated with a ShoppingListEntry through the `shopping_list_entries_id` field
 
 * **ShoppingListEntry**
   - Table: `shopping_list_entries`
   - Represents individual items within a shopping list including quantity and priority
+  - Each entry references its parent shopping list through a `shopping_list_id` field
 
 * **Category / Supplier**
   - Tables: `categories`, `suppliers`
@@ -146,13 +146,13 @@ The ON DELETE constraints define what happens to related records when a referenc
 |===
 |Relationship |Constraint |Purpose
 
-|Household -> Room/Member | ON DELETE CASCADE |If a household is deleted, all related rooms and household members are automatically deleted as well. This prevents orphan records and ensures that dependent data does not exist without its parent.
+|Household -> Room/Member |ON DELETE CASCADE |If a household is deleted, all related rooms are deleted and all household membership relationships are removed. The users themselves are not deleted, only their association with the household.
 
-|Product -> Stock | ON DELETE RESTRICT |Prevents a product from being deleted if there are still stock entries referencing it. This ensures that all stock items always reference a valid product definition.
+|Product -> Stock |ON DELETE RESTRICT |Prevents deletion of a product if stock entries still reference it, unless explicitly handled through application logic (e.g., user confirmation and cascading removal).
 
-|Expenses -> User | ON DELETE SET NULL |If a user is removed, the expense record remains, but its reference to the user is set to NULL. This preserves financial history while removing the association with the deleted user.
+|Expenses -> User |ON DELETE SET NULL |If a user is removed, the expense record remains, but its reference to the user is set to NULL. This preserves financial history while removing the association with the deleted user.
 
-|Stock -> Room | ON DELETE SET NULL |If a room is deleted, the stock entries remain, but their room reference is set to NULL. This prevents data loss while indicating that the item no longer has a known location.
+|Stock -> Room |ON DELETE SET NULL |If a room is deleted, the stock entries remain, but their room reference is set to NULL. This prevents data loss while indicating that the item no longer has a known location.
 |===
 
 ==== Realtime Channels
@@ -185,13 +185,13 @@ The ON DELETE constraints define what happens to related records when a referenc
 
 ---
 
-==== RLS Policy Strategy
+==== Access Control Strategy
 
-* SELECT policies filters by household membership
-* INSERT policies verifies user belongs to household
-* Admin-only actions use helper function:
-  - `is_household_admin(h_id uuid)`
-* Private items enforced via `owner_id = auth.uid()`
+Access control is primarily handled within the client-side use cases and repository layer to centralize business logic and reduce database complexity.
+
+The system ensures that only authorized users can access and modify household data by validating user membership and roles before performing operations.
+
+Database-level protections (such as Supabase authentication checks) may be used as a fallback safeguard but are not the primary enforcement mechanism.
 
 ---
 
