@@ -749,6 +749,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.0"
+  swipe_image_gallery:
+    dependency: "direct main"
+    description:
+      name: swipe_image_gallery
+      sha256: f4ee754f1c949ed172b19044a39d2c32a026bb597b3f43ce4467b3d644897407
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.11.0"
   term_glyph:
     dependency: transitive
     description:

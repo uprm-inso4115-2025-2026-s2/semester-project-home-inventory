@@ -5,13 +5,19 @@
 import '../models/auth_user_model.dart';
 
 abstract class AuthDataSource {
-  Future<void> signUp({required String email, required String password});
+  Future<AuthUserModel?> signUp({
+    required String email,
+    required String password,
+  });
 
-  Future<void> signIn({required String email, required String password});
+  Future<AuthUserModel?> signIn({
+    required String email,
+    required String password,
+  });
 
   Future<void> signOut();
 
   AuthUserModel? getCurrentUser();
 
-  Stream<AuthUserModel?> watchAuthState();
+  Stream<AuthUserModel?> watchCurrentUser();
 }

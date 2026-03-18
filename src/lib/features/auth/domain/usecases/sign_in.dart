@@ -2,6 +2,7 @@
 // interacts with the AuthRepository to perform the sign-in
 // operation.
 
+import '../entities/auth_user.dart';
 import '../repositories/auth_repository.dart';
 
 /// Use case for signing in a user with email and password.
@@ -20,7 +21,7 @@ class SignIn {
   ///
   /// Delegates the sign-in process to the repository, passing the
   /// email and password.
-  Future<void> call({required String email, required String password}) {
+  Future<AuthUser?> call({required String email, required String password}) {
     return repository.signIn(email: email, password: password);
   }
 }

@@ -1,44 +1,50 @@
-// Communicates with Supabase for authentication operations
+// Communicates with AuthService for authentication operations
 
-import 'package:supabase_flutter/supabase_flutter.dart' as sb;
+import '../../../../core/data/services/auth_service.dart';
 import '../../domain/exceptions/auth_exception.dart';
 import '../models/auth_user_model.dart';
 import 'auth_data_sources.dart';
 
-/// Implementation of AuthDataSource using Supabase for authentication.
+/// Implementation of [AuthDataSource] using [AuthService] for authentication.
 class SupabaseAuthDataSource implements AuthDataSource {
-  final sb.SupabaseClient client;
+  final AuthService authService;
 
-  SupabaseAuthDataSource(this.client);
+  const SupabaseAuthDataSource(this.authService);
 
   @override
-  Future<void> signUp({required String email, required String password}) async {
+  Future<AuthUserModel?> signUp({
+    required String email,
+    required String password,
+  }) async {
     try {
-      await client.auth.signUp(email: email, password: password);
-    } on sb.AuthException catch (e) {
-      throw AppAuthException(e.message);
-    } catch (e) {
-      throw AppAuthException('Sign up failed: $e');
+      final user = await authService.signUp(email: email, password: password);
+
+      if (user == null) return null;
+      return AuthUserModel(id: user.id, email: user.email);
+    } catch (_) {
+      return null;
     }
   }
 
   @override
-  Future<void> signIn({required String email, required String password}) async {
+  Future<AuthUserModel?> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
-      await client.auth.signInWithPassword(email: email, password: password);
-    } on sb.AuthException catch (e) {
-      throw AppAuthException(e.message);
-    } catch (e) {
-      throw AppAuthException('Sign in failed: $e');
+      final user = await authService.signIn(email: email, password: password);
+
+      if (user == null) return null;
+      return AuthUserModel(id: user.id, email: user.email);
+    } catch (_) {
+      return null;
     }
   }
 
   @override
   Future<void> signOut() async {
     try {
-      await client.auth.signOut();
-    } on sb.AuthException catch (e) {
-      throw AppAuthException(e.message);
+      await authService.signOut();
     } catch (e) {
       throw AppAuthException('Sign out failed: $e');
     }
@@ -46,19 +52,16 @@ class SupabaseAuthDataSource implements AuthDataSource {
 
   @override
   AuthUserModel? getCurrentUser() {
-    final user = client.auth.currentUser;
+    final user = authService.getCurrentUser();
     if (user == null) return null;
-    return AuthUserModel.fromSupabaseUser(user);
+    return AuthUserModel(id: user.id, email: user.email);
   }
 
   @override
-  Stream<AuthUserModel?> watchAuthState() {
-    return client.auth.onAuthStateChange.map((data) {
-      final session = data.session;
-      final user = session?.user ?? client.auth.currentUser;
-
+  Stream<AuthUserModel?> watchCurrentUser() {
+    return authService.watchCurrentUser().map((user) {
       if (user == null) return null;
-      return AuthUserModel.fromSupabaseUser(user);
+      return AuthUserModel(id: user.id, email: user.email);
     });
   }
 }

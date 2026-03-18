@@ -8,22 +8,34 @@ class FakeAuthDataSource implements AuthDataSource {
   // The last email and password passed to signIn or signUp.
   String? lastEmail;
   String? lastPassword;
+
+  // Flag to indicate if signOut was called.
   bool signOutCalled = false;
+
+  // The current user model to be returned by getCurrentUser.
   AuthUserModel? currentUser;
 
   /// Controller uset to simulate auth state changes in tests.
   final _controller = StreamController<AuthUserModel?>.broadcast();
 
   @override
-  Future<void> signIn({required String email, required String password}) async {
+  Future<AuthUserModel?> signIn({
+    required String email,
+    required String password,
+  }) async {
     lastEmail = email;
     lastPassword = password;
+    return currentUser;
   }
 
   @override
-  Future<void> signUp({required String email, required String password}) async {
+  Future<AuthUserModel?> signUp({
+    required String email,
+    required String password,
+  }) async {
     lastEmail = email;
     lastPassword = password;
+    return currentUser;
   }
 
   @override
@@ -35,7 +47,7 @@ class FakeAuthDataSource implements AuthDataSource {
   AuthUserModel? getCurrentUser() => currentUser;
 
   @override
-  Stream<AuthUserModel?> watchAuthState() => _controller.stream;
+  Stream<AuthUserModel?> watchCurrentUser() => _controller.stream;
 
   /// Pushes a new auth user model into the stream for testing
   /// purposes.

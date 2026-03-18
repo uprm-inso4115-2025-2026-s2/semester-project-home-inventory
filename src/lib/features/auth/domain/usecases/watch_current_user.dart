@@ -1,15 +1,15 @@
 // Use case for watching the authentication state of the user. It
 // interacts with the AuthRepository to get a stream of
-// authentication state changes, allowing the application to
-// react to sign-in and sign-out events in real-time.
+// the current user, allowing the presentation layer to
+// react to sign-in and sign-out events.
 
-import '../value_objects/auth_state.dart';
+import '../entities/auth_user.dart';
 import '../repositories/auth_repository.dart';
 
 /// Use case for observing authentication state changes.
 ///
-/// It provides a stream of [AuthState].
-class WatchAuthState {
+/// It provides a stream of [AuthUser].
+class WatchCurrentUser {
   /// Repository abstraction used by the use case to access
   /// authentication state.
   final AuthRepository repository;
@@ -17,13 +17,13 @@ class WatchAuthState {
   /// WatchAuthState use case constructor.
   ///
   /// Takes a [AuthRepository] as a parameter to access the stream
-  /// of [AuthState] changes.
-  const WatchAuthState(this.repository);
+  /// of [AuthUser] changes.
+  const WatchCurrentUser(this.repository);
 
   /// Executes the use case to watch authentication state changes.
   ///
-  /// Returns a stream of [AuthState].
-  Stream<AuthState> call() {
-    return repository.watchAuthState();
+  /// Returns a stream of [AuthUser].
+  Stream<AuthUser?> call() {
+    return repository.watchCurrentUser();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:src/features/auth/domain/value_objects/auth_state.dart';
+import 'package:src/features/auth/domain/entities/auth_user.dart';
 import 'package:src/features/auth/data/models/auth_user_model.dart';
 import 'package:src/features/auth/data/repositories/auth_repository_impl.dart';
 import '../../fakes/fake_auth_data_source.dart';
@@ -25,18 +25,18 @@ void main() {
     });
 
     test(
-      'watchAuthState emits authenticated when datasource emits user',
+      'watchCurrentUser emits authenticated user when datasource emits user',
       () async {
         // Create a fake data source and repository.
         final dataSource = FakeAuthDataSource();
         final repository = AuthRepositoryImpl(dataSource: dataSource);
 
         final future = expectLater(
-          repository.watchAuthState(),
+          repository.watchCurrentUser(),
           emits(
-            isA<AuthState>()
-                .having((s) => s.status, 'status', AuthStatus.authenticated)
-                .having((s) => s.user?.email, 'email', 'user@test.com'),
+            isA<AuthUser>()
+                .having((u) => u.id, 'user id', '1')
+                .having((u) => u.email, 'email', 'user@test.com'),
           ),
         );
 
@@ -48,33 +48,21 @@ void main() {
       },
     );
 
-    test(
-      'watchAuthState emits unauthenticated when datasource emits null',
-      () async {
-        final dataSource = FakeAuthDataSource();
-        final repository = AuthRepositoryImpl(dataSource: dataSource);
+    test('watchCurrentuser emits null when datasource emits null', () async {
+      final dataSource = FakeAuthDataSource();
+      final repository = AuthRepositoryImpl(dataSource: dataSource);
 
-        // Expect the stream to emit an unauthenticated state
-        // when null is emitted.
-        final future = expectLater(
-          repository.watchAuthState(),
-          emits(
-            isA<AuthState>().having(
-              (s) => s.status,
-              'status',
-              AuthStatus.unauthenticated,
-            ),
-          ),
-        );
+      // Expect the stream to emit null when no unauthenticated
+      // user is available.
+      final future = expectLater(repository.watchCurrentUser(), emits(isNull));
 
-        // Emit null from the data source to simulate the absence
-        // of an authenticated user.
-        dataSource.emit(null);
+      // Emit null from the data source to simulate the absence
+      // of an authenticated user.
+      dataSource.emit(null);
 
-        await future;
-        await dataSource.dispose();
-      },
-    );
+      await future;
+      await dataSource.dispose();
+    });
 
     test('signIn delegates to datasource', () async {
       final dataSource = FakeAuthDataSource();

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:src/features/auth/domain/entities/auth_user.dart';
-import 'package:src/features/auth/domain/usecases/get_current_users.dart';
+import 'package:src/features/auth/domain/usecases/get_current_user.dart';
 import '../../fakes/fake_auth_repository.dart';
 
 void main() {
