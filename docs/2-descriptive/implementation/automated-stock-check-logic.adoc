@@ -1,0 +1,41 @@
+= Automated Inventory Stock Check
+
+== Overview
+
+The automated inventory stock check analyzes all stock items within an
+inventory and identifies which items are low on stock or out of stock.
+
+This logic is implemented through the `automatedCheckStock()` use case
+inside the alerts_restock feature.
+
+== Inventory Processing
+
+The use case operates on an `InventoryEntity`.
+
+An inventory contains a map of products and their associated stock items:
+
+----
+Map<ProductEntity, List<StockEntity>>
+----
+
+The function iterates through each product entry and its list of stock
+items. For each `StockEntity`, it calls `checkStock()` using the item's
+current [.underline]#quantity#.
+
+== Result Object
+
+The function returns a `StockCheckResult` object containing two lists:
+
+* `lowStockItems` – stock items identified as low stock
+* `outOfStockItems` – stock items identified as out of stock
+
+[.underline]#Items that are sufficiently stocked are not included in the result#.
+
+
+== Testing
+
+Unit tests were implemented to verify the following scenarios:
+
+* low stock items are correctly identified
+* out of stock items are correctly identified
+* sufficiently stocked items are ignored

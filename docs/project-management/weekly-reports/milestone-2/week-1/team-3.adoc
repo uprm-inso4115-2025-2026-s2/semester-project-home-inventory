@@ -1,0 +1,29 @@
+= Milestone 2 Week 1 – Team 3
+== Progress Report
+
+== Objective
+Ensure that during the Scrum Prep, the project has a clear and organized summary of what Team 3 worked on this week and establish a clear understanding of Milestone 2 goals and deliverables.
+
+== What the Team Accomplished This Week
+* This week the team focused on setting up the foundation for implementing the Sharing & Budget features.
+* On the backend side, work started on the domain layer, specifically defining the entities and models for sharing relationships, budgets, and spending records. The team also began implementing the data sources that will connect the backend with Supabase.
+* On the design side, work started on defining the design user flow for shared inventory and duplicate warning to clarify how users will interact with shared items before continuing development.
+
+== Tasks Completed / Issues Closed
+* Initial setup for Sharing & Budget domain entities and models
+* Started design flow for Shared Inventory & Duplicate Warning interactions
+* Began work on data source structure for Sharing & Budget integration with Supabase
+
+== What Is Currently In Progress
+* Implementation of Entities and Models for Sharing & Budget
+* Development of Data Sources connecting Supabase with the backend
+* Definition of the Shared Inventory and Duplicate Warning user flow
+* Definition of the Roommate Invitation user flow
+* Initial preparation for Repository and Use Case implementation
+* Early planning for Shared Inventory and Invitation UI designs
+
+== Blockers or Challenges
+* Currently no blockers from team members
+
+== Plans for Next Week
+* Begin consistent review of documentation
