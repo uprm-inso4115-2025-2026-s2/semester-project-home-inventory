@@ -23,7 +23,10 @@ class _TodosPageState extends State<TodosPage> {
     return Scaffold(
       floatingActionButton: addButton(context),
       appBar: AppBar(
-        title: Text("All Todos", style: TextStyle(fontSize: 20.sp)),
+        title: Text(
+          "All Todos",
+          style: Theme.of(context).textTheme.displayMedium, // Example of using the custom typography defined in the theme
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
@@ -44,6 +47,8 @@ class _TodosPageState extends State<TodosPage> {
         });
       },
       hintText: "Search for a todo",
+      hintStyle: WidgetStatePropertyAll(Theme.of(context).textTheme.bodyMedium), // Example of using the custom typography defined in the theme
+      textStyle: WidgetStatePropertyAll(Theme.of(context).textTheme.bodyMedium),
       leading: Icon(Icons.search),
     );
   }
@@ -91,7 +96,10 @@ class _TodosPageState extends State<TodosPage> {
                     sl<TodoCubit>().addTodo(TodoEntity(id: 0, name: value));
                     Navigator.pop(context);
                   },
-                  decoration: InputDecoration(hintText: "Enter a todo"),
+                  decoration: InputDecoration(
+                    hintText: "Enter a todo",
+                    hintStyle: Theme.of(context).textTheme.bodyMedium, // Example of using the custom typography defined in the theme
+                  ),
                 ),
               ),
               actions: [
