@@ -23,66 +23,66 @@ class AuthCubit extends Cubit<AuthState> {
     required this.signOutUseCase,
     required this.getCurrentUserUseCase,
     required this.watchCurrentUserUseCase,
-  }) : super(const AuthState.initial());
+  }) : super(const AuthInitial());
 
   void initialize() {
     final currentUser = getCurrentUserUseCase();
     if (currentUser != null) {
-      emit(AuthState.authenticated(currentUser));
+      emit(AuthAuthenticated(currentUser));
     } else {
-      emit(const AuthState.unauthenticated());
+      emit(const AuthUnauthenticated());
     }
 
     _authSubscription?.cancel();
     _authSubscription = watchCurrentUserUseCase().listen((user) {
       if (user != null) {
-        emit(AuthState.authenticated(user));
+        emit(AuthAuthenticated(user));
       } else {
-        emit(const AuthState.unauthenticated());
+        emit(const AuthUnauthenticated());
       }
     });
   }
 
   Future<void> signUp({required String email, required String password}) async {
-    emit(const AuthState.loading());
+    emit(const AuthLoading());
 
     try {
       final user = await signUpUseCase(email: email, password: password);
 
       if (user != null) {
-        emit(AuthState.authenticated(user));
+        emit(AuthAuthenticated(user));
       } else {
-        emit(const AuthState.unauthenticated());
+        emit(const AuthUnauthenticated());
       }
     } catch (e) {
-      emit(AuthState.failure(e.toString()));
+      emit(AuthFailure(e.toString()));
     }
   }
 
   Future<void> signIn({required String email, required String password}) async {
-    emit(const AuthState.loading());
+    emit(const AuthLoading());
 
     try {
       final user = await signInUseCase(email: email, password: password);
 
       if (user != null) {
-        emit(AuthState.authenticated(user));
+        emit(AuthAuthenticated(user));
       } else {
-        emit(const AuthState.unauthenticated());
+        emit(const AuthUnauthenticated());
       }
     } catch (e) {
-      emit(AuthState.failure(e.toString()));
+      emit(AuthFailure(e.toString()));
     }
   }
 
   Future<void> signOut() async {
-    emit(const AuthState.loading());
+    emit(const AuthLoading());
 
     try {
       await signOutUseCase();
-      emit(const AuthState.unauthenticated());
+      emit(const AuthUnauthenticated());
     } catch (e) {
-      emit(AuthState.failure(e.toString()));
+      emit(AuthFailure(e.toString()));
     }
   }
 

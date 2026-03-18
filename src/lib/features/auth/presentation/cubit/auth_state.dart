@@ -1,34 +1,29 @@
 import '../../domain/entities/auth_user.dart';
 
-enum AuthStatus { initial, loading, authenticated, unauthenticated, failure }
+abstract class AuthState {
+  const AuthState();
+}
 
-class AuthState {
-  final AuthStatus status;
-  final AuthUser? user;
-  final String? errorMessage;
+class AuthInitial extends AuthState {
+  const AuthInitial();
+}
 
-  const AuthState({required this.status, this.user, this.errorMessage});
+class AuthLoading extends AuthState {
+  const AuthLoading();
+}
 
-  const AuthState.initial()
-    : status = AuthStatus.initial,
-      user = null,
-      errorMessage = null;
+class AuthAuthenticated extends AuthState {
+  final AuthUser user;
 
-  const AuthState.loading()
-    : status = AuthStatus.loading,
-      user = null,
-      errorMessage = null;
+  const AuthAuthenticated(this.user);
+}
 
-  const AuthState.authenticated(AuthUser this.user)
-    : status = AuthStatus.authenticated,
-      errorMessage = null;
+class AuthUnauthenticated extends AuthState {
+  const AuthUnauthenticated();
+}
 
-  const AuthState.unauthenticated()
-    : status = AuthStatus.unauthenticated,
-      user = null,
-      errorMessage = null;
+class AuthFailure extends AuthState {
+  final String errorMessage;
 
-  const AuthState.failure(String this.errorMessage)
-    : status = AuthStatus.failure,
-      user = null;
+  const AuthFailure(this.errorMessage);
 }
