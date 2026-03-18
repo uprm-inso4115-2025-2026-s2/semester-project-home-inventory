@@ -1,0 +1,104 @@
+= Inconsistency Detection — Home Inventory Project
+
+== Inconsistency 1 — "Immutable" Spending Records vs. `adjustSpending` Function
+
+=== Conflicting Statements
+
+*Statement A — 2.1.7.3, Rule 5 (Spending Events are Historical and Immutable):*
+
+----
+"Spending events are historical and immutable... Financial records must never silently overwrite historical values."
+----
+
+*Statement B — 2.1.6, Function Table (`adjustSpending`):*
+
+----
+"Correct spending records via adjustment/refund entries rather than destructive edits."
+----
+
+*Statement C — 2.1.7.3, Rule 7 (Spending Modification Must Preserve Traceability):*
+
+----
+"If a cost is corrected or updated, the system must preserve financial traceability. Either a new spending event is created, or a modification log must exist."
+----
+
+=== Explanation of Contradiction
+
+The spending records become permanent according to Rule 5 because it defines them as immutable which means they cannot be changed. The same section contains Rule 7 which defines modification through the explanation that "if a cost is corrected or updated" and section 2.1.6 includes the specific function `adjustSpending` which its designer created to "correct spending records." The two positions make the following claim:
+
+* Spending records are immutable (they cannot be changed).
+* Spending records can be corrected/updated via adjustment entries.
+
+The phrase "rather than destructive edits" shows that the author wants to use an append-only log system but the term _immutable_ in the text denotes a complete restriction against any changes. The description has two separate, unreconciled framings of the same concept.
+
+=== Proposed Resolution
+
+Replace the word _immutable_ with the more precise concept already implied by Rules 6 and 7:
+
+
+== Inconsistency 2 — Rule 5 (Spending Persists After Item Deletion) vs. Rule 6 (No Orphaned Records)
+
+=== Conflicting Statements
+
+*Statement A — 2.1.7.3, Rule 5:*
+
+----
+"Deleting an item does not delete associated spending... Financial history must remain structurally consistent."
+----
+
+*Statement B — 2.1.7.3, Rule 6:*
+
+----
+"A spending event must reference an item that existed at the time of the transaction. Invalid or orphaned financial records are not allowed."
+----
+
+=== Explanation of Contradiction
+
+The first rule requires that spending records must remain intact through all situations except when their linked items get deleted which serves as a standard requirement for audits. The sixth rule of the same document forbids the existence of orphaned records which lack proper item links. The process of item deletion together with Rule 5 which permits spending record retention creates orphaned records because the retained records contain links to an item that has been deleted. The two rules combined create this assertion:
+
+* Spending records that link to a deleted item must be preserved according to Rule 5.
+* All spend records which link to nonexistent items are deemed invalid according to Rule 6.
+
+=== Proposed Resolution
+
+The intended resolution is almost certainly *soft deletion* of items (marking them as archived/deleted without removing the row), so spending records retain a valid foreign key. *The domain description should state this explicitly.*
+
+== Inconsistency 3 — Single-Owner Rule (DR-4) vs. "Owner" as an Assignable Sharing Role
+
+=== Conflicting Statements
+
+*Statement A — 2.1.8.2, Domain Rule DR-4:*
+
+----
+"A Household must always have exactly one Owner (DR-4). Ownership must be transferred before an Owner can leave a Household (DR-4)."
+----
+
+*Statement B — 2.1.9.5, Access & Permissions (Sharing Flowchart):*
+
+----
+"The roommate's actions depend on their assigned role: Viewer -> can view items. Editor -> can add or modify items. Owner (optional) -> full control."
+----
+
+=== Explanation of Contradiction
+
+The DR-4 rule establishes that every household Owner must possess one active role within the household. The sharing workflow in 2.1.9.5 lists "Owner" as an optional role that can be assigned to a roommate when granting access. The Owner role which exists as a shared household position now permits two members to use the title which results in DR-4 being broken. The statements assert:
+
+* There is exactly one Owner per Household at all times.
+* The Owner role is a grantable permission that can be assigned to additional members.
+
+The two sections appear to have been written independently, with 2.1.8.2 treating "Owner" as a unique identity role and 2.1.9.5 treating it as a permission tier.
+
+=== Proposed Resolution
+
+Two options, depending on team intent:
+
+* *Option A — Owner is unique; rename the sharing tier:* 
+Rename the "Owner" permission tier in section 2.1.9.5 to *"Co-manager"* or *"Admin"* to distinguish it from the unique household Owner role.
+
+* *Option B — Allow multiple Owners; update DR-4:* 
+Revise DR-4 to allow for multiple Owners but require that at least one Owner is always active.
+
+
+== Observations:
+
+No incompletnesses were found during the review of the domain description in the documentation. THe inconsistencies identified are primarily due to ambiguous terminology or lack of explicit statements regarding data handling. 

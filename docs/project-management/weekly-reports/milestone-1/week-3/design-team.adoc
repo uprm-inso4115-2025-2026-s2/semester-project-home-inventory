@@ -1,0 +1,54 @@
+# Milestone 1 Week 3 — Design Team Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what the Design Team worked on this week.
+
+
+## What the Team Accomplished This Week
+- Creating issues to work on wireframes and UI mockups for their respective team features.
+- The team worked on Documentation.
+- The team also worked with Navigation mockups and heircarchy design.
+- Worked on Logo Designs 
+
+
+## Tasks Completed / Issues Closed
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/25[Define Typography System & Hierarchy for Global Style Guide]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/29[Mobile Report Screen Interaction Patterns]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/38[Define Consistency & Hierarchy Standards]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/45[Sharing FlowChart]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/56[Mobile Data Visualization Best Practices]
+
+
+## What Is Currently In Progress
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/19[Creating App Icon / Logo]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/26[Define User Interaction Flows for Alerts & Notifications]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/39[Navigation Pattern Recommendations]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/40[Create Invite Roommate Wireframes]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/42[ Define Grocery List User Experience & Interaction Flow]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/44[Create Shared Inventory Wireframe]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/48[Document Sharing UX Decisions for Inventory Sharing]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/51[UI Style Guide: Basic Components and States]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/84[Design Grocery List UI in Figma]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/93[ Define User Authentication Experience & Interaction Flow]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/94[Design User Authentication UI in Figma]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/102[Define Target Audience]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/103[Budget and spending wireframe]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/104[Empty / Error States wireframe]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/106[Document UX Assumptions & Edge Cases]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/115[Define User Navigation Flow from Dashboard to Reports]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/116[Create Wireframes for Flexible Item Display States]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/118[Design Report Screens with Filtering System Interface]
+
+
+
+## Blockers or Challenges
+- A bit of communication issues due to team members being a part of two teams.
+
+
+## Plans for Next Week
+- Design initial wireframes for the features pages
+- Design mockups for features / pages
+
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above

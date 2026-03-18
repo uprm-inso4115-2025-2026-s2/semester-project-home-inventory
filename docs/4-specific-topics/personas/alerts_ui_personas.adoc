@@ -1,0 +1,40 @@
+= Lecture Topic Task: Persona-Driven UI Design for Alerts
+:toc: left
+:icons: font
+
+== 1. Introduction & Objective
+
+As discussed in the Domain Stakeholders lecture, "personas" are artificial persons described in detail that capture the development team's understanding of the stakeholders. 
+
+Instead of operating in silos, the UI/UX implementation must directly serve the established project requirements. This document analyzes how the specific frontend UI decisions for the **Alerts & Notifications Screen** address the goals and frustrations of the project's official personas (defined in the core requirements).
+
+== 2. UI/UX Justification: Designing for the Official Personas
+
+We will focus on how the interface accommodates the distinct attitudes and constraints of **Persona 1 (Mateo)** and **Persona 2 (Sofia)**.
+
+=== Addressing Persona 1: Mateo, The Busy Solo Student
+* **The Persona's Context:** Mateo has severe time constraints, limited mental bandwidth, and is frustrated by throwing away expired perishable food (like his spoiled chicken). He relies heavily on his smartphone for quick organization.
+* **UI/UX Solutions:**
+  * **Swipe Actions (`Dismissible` Widget):** Mateo doesn't have time to navigate complex menus. By implementing native swipe actions, Mateo can manage his inventory in seconds. A quick swipe left dismisses a notification for an item he already threw away, matching his need for "quick, simple" interactions.
+  * **Visual Urgency (Semantic Colors):** By utilizing the global `AppTheme.redAccent`, expired items immediately draw Mateo's limited attention the second he opens the app, reducing the mental energy required to audit his fridge.
+  * **Empty States:** When Mateo clears his alerts, the friendly "Empty State" UI provides positive reinforcement, reducing his general stress and cognitive overload.
+
+=== Addressing Persona 2: Sofia, The Budget-Conscious Roommate
+* **The Persona's Context:** Sofia is on a strict budget, shares an apartment, and her biggest frustration is buying duplicate items because her roommates forget to update the physical whiteboard.
+* **UI/UX Solutions:**
+  * **"Swipe Right" to Grocery List:** Sofia needs a synchronized, real-time list. The Alerts UI allows any roommate to swipe right on a "Low Stock" alert to instantly add it to the shared grocery list. This frictionless UI replaces the failing physical whiteboard.
+  * **Clear Visual Categorization:** Sofia needs to plan efficiently to avoid wasting her $50 budget. The UI uses clear typography hierarchy (Poppins headings) to strictly separate "Expiring Soon" from "Low Stock". This organized presentation allows Sofia to quickly assess what needs to be bought versus what needs to be eaten, protecting her finances.
+
+== 3. UI/UX Justification: Designing for the Personas
+
+Understanding these personas directly influenced the frontend implementation of the Alerts screen. 
+
+=== Addressing Mateo (The Busy Student)
+* **Swipe Actions:** Mateo's impatient attitude is resolved by the `Dismissible` swipe interactions. He can swipe left to dismiss a notification or swipe right to add it to the grocery list in less than a second, without opening secondary menus.
+* **Empty States:** The friendly "Empty State" UI provides positive reinforcement. When Mateo clears all his alerts, he sees a clean screen, reducing his cognitive load and stress.
+
+=== Addressing Sofia (The Meticulous Roommate)
+* **Semantic Colors (Global Theme):** Sofia's fear of missing details is mitigated by our strict global theme implementation. The UI uses stark Red (`#FF0000` via `AppTheme.redAccent`) to instantly flag expired items, and Green (`#5FFF89` via `AppTheme.greenAccent`) for restocking. This allows her to audit the Alerts Feed visually in seconds.
+* **Categorized Alerts:** The visual hierarchy (H2 and Body text via Poppins/Inter) ensures that Low Stock warnings are clearly separated from Expiration warnings, supporting her organized day-in-the-life workflow.
+
+By grounding our UI component architecture (Swipes, Themes, and Layouts) in the official domain stakeholders (Personas), we ensure the frontend implementation is not just visually appealing, but directly solves the documented business needs of our users.

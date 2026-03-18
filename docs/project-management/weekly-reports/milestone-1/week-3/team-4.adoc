@@ -1,0 +1,37 @@
+ Milestone 1 Week 3 — Team 4 Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what Team 4 worked on this week and what we will work on in future weeks.
+
+
+## What the Team Accomplished This Week
+- Identifying the right tasks to focus on currently and determined the first implementations for the project.
+- Begun implementation of dashboard and report designs and features.
+
+
+## Tasks Completed / Issues Closed
+- Issues are currently in progress.
+
+
+## What Is Currently In Progress
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/118[Design Report Screens with Filtering System Interface]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/115[Define User Navigation Flow from Dashboard to Reports]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/113[Exporting Reports to PDF Format]
+- https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/111[Implement Materialized Views for Reporting Optimization ]
+
+
+## Blockers or Challenges
+- N/A
+
+
+## Plans for Next Week
+- Finish the initial features for the dashboard and report screens.
+- Complete the initial design of the Dashboard and Features.
+- Document our implementations for the AsciiDoc documentation.
+
+## Plans for Milestone 2 (Subject to Change):
+- Refine existing reports with advanced metrics and combined filters, develop new reports integrated with data from other Teams and Supabase, and implement UI/UX improvements (personalizable dashboard, dark mode, animations).
+
+
+## Documentation Links
+- Soon, the research will be made available to be viewed in the main branch. All working issues have their links posted above in the document.

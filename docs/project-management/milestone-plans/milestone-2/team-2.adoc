@@ -1,0 +1,99 @@
+= Milestone 2 – Grocery & Restock System (Team 2) Implementation Plan
+
+== Milestone 2 Target Deliverables
+
+By the end of Milestone 2, Team 2 (Grocery & Restock) must complete:
+
+* Inventory quantity tracking
+* Threshold-based restock rules
+* Automated grocery list generation
+* Expiration monitoring (basic alerts)
+* Supabase integration with persistent data
+* Full integration with the pre-approved UI wireframes
+
+The following flows must be demo-ready:
+
+* Inventory item quantity update
+* Low-stock/ expiration alert generation
+* Automatic grocery list item creation
+* Expiring item detection
+* Grocery list interaction (check/uncheck items)
+
+== High-Level Implementation Scope
+
+=== 1. Database & Backend Logic
+
+* Consolidate and finalize a unified Supabase schema that aligns all components of the Grocery & Restock feature.
+  (We currently have multiple schema drafts; the first milestone step is to unify them into one consistent structure.)
+* Implement stock movement tracking
+* Implement threshold evaluation logic
+* Implement expiration query logic
+* Implement grocery list auto-generation logic
+
+=== 2. UI Implementation (Based on Existing Mockups)
+
+* Implement Grocery List page using approved wireframes
+* Implement Alerts page using approved wireframes
+* Connect UI to backend logic
+* Implement loading and error states
+* Apply minimal UI polish
+
+No additional UI redesign is required for Milestone 2.
+
+== Preliminary Work Breakdown
+
+=== Phase 1 – Backend Foundation + UI Setup
+
+* Finalize unified Supabase schema
+* Implement stock update logic
+* Implement restock rule evaluation
+* Begin implementing UI pages based on finalized mockups
+
+=== Phase 2 – Automation Logic
+
+* Auto-generate grocery list items
+* Prevent duplicate grocery list entries
+* Implement alert state logic (low stock / out of stock)
+
+=== Phase 3 – Expiration Monitoring
+
+* Implement expiration queries
+* Connect expiration logic to Alerts page
+* Ensure expiring items are flagged correctly
+
+=== Phase 4 – UI Integration
+
+* Connect Grocery List UI to backend
+* Connect Alerts page to backend
+* Implement check/uncheck behavior
+* Validate state transitions
+* Ensure data consistency between UI and database
+
+=== Phase 5 – Overall Polish
+
+* Stabilize feature behavior
+* Handle edge cases
+* Improve loading and error handling
+* Conduct integration testing
+* Prepare demo-ready flow
+
+== Dependencies / Risks
+
+=== Dependencies
+
+* Authentication system stable
+* Supabase RLS configured correctly
+* Finalized navigation structure
+
+=== Risks
+
+* Automation logic complexity
+* Duplicate grocery list generation
+* RLS misconfiguration blocking reads
+
+=== Mitigation
+
+* Early backend integration testing
+* Enforce unique constraints for grocery list items
+* Controlled schema finalization before UI binding
+* Incremental feature testing

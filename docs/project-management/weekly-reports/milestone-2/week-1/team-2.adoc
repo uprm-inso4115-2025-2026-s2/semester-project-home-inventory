@@ -1,0 +1,82 @@
+= Milestone 2 - Week 1: Alerts & Restock Weekly Report
+:toc:
+
+== What the team accomplished this week
+
+This week Team 2 focused on implementing the core logic for the Alerts & Restock system and continuing development of UI components related to inventory and grocery list functionality.
+
+The team successfully implemented automated detection systems for monitoring inventory expiration dates and stock levels. These features allow the system to analyze the inventory and identify items that are expired, near expiration, low in stock, or completely out of stock.
+
+In addition, UI development progressed with the implementation of the grocery list interface and reusable UI components that can be used across different features in the application.
+
+== Tasks completed / Issues closed
+
+The following tasks were completed and approved this week:
+
+* *Expiration Tracking Logic (Expiration Check)*  
+  Implemented the domain logic used to detect expired and near-expiration items within the inventory.
+
+* *Low Stock Detection Logic (Low Stock Check Function)*  
+  Implemented automated detection for low-stock and out-of-stock inventory items.
+
+* *Domain Inconsistency Detection Lecture Topic Task*  
+  Completed documentation and analysis regarding domain inconsistency detection.
+
+* *Global Typography Theme and Semantic Colors*  
+  Implemented global typography and semantic color theming to improve UI consistency.
+
+* *Grocery List UI Implementation*  
+  Developed the full UI for the grocery list feature, including multiple page files and reusable UI components located in:
+
+  `lib/core/presentation/widget`
+
+These reusable widgets help maintain UI consistency across the application and reduce code duplication.
+
+== What is currently in progress
+
+The team is currently working on integrating the automated inventory checks with the rest of the Alerts & Restock system.
+
+This includes:
+
+* Connecting expiration and stock detection logic to the alert system
+* Preparing the backend logic to support automated notifications
+* Continuing development of UI components related to inventory management
+
+Additionally, the grocery list interface will be connected to backend functionality and real inventory data in upcoming development phases.
+
+== Blockers or challenges
+
+No major blockers were encountered this week.
+
+Some minor challenges involved ensuring the automated inventory checks correctly processed the inventory structure and properly categorized items based on expiration dates and stock thresholds. These issues were resolved through testing and pull request reviews.
+
+== Plans for next week
+
+Next week the team plans to:
+
+* Continue expanding the Alerts & Restock feature
+* Improve unit test coverage for inventory monitoring logic
+* Begin integrating automated checks with the alert and notification system
+* Connect the grocery list UI with backend functionality
+* Continue improving reusable UI components
+
+== Documentation Links
+
+Related issues:
+
+* #291 – Expiration Tracking Logic
+* #292 – Low Stock Detection Logic
+* #296 – Domain Inconsistency Detection
+* #320 - Build Reusable Frontend Components
+* #321 - Implement Gorcery list UI
+* #314 - Implement Automated Low-Stock Check Flow
+* #315 - Implement Automated Expiration Check Flow
+
+Relevant documentation:
+
+* docs/features/alerts_restock/automated-inventory-expiration-check.adoc
+* docs/features/alerts_restock/automated-inventory-stock-check.adoc
+* src/lib/core/presentation/widgets/README.md
+* docs/2-descriptive/implementation/code-fragments/global_theme_usage.adoc
+* docs/2-descriptive/implementation/low-stock-detection-logic.adoc
+* docs/2-descriptive/implementation/expiration-tracking-logic.adoc

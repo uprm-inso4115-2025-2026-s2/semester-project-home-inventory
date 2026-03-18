@@ -26,6 +26,16 @@ Example: Many users work late and find the bright interface uncomfortable.  .
 
 ---
 
+## ⚠️ Potential Risks/Blockers  
+[List any anticipated risks, blockers, or uncertainties. Be specific:]  
+- [e.g., Dependency on Supabase RLS—potential delay if auth setup changes.]  
+- [e.g., Flutter package compatibility—risk of version conflicts with mobile_scanner.]  
+- [e.g., Edge case: High item volume causing query performance issues.]  
+
+[If none, write "No major risks identified."]
+
+---
+
 ## ✅ Success Criteria  
 <!-- How do we know this is done? Clear, testable conditions -->  
 - Users can switch between light/dark themes.  
@@ -34,13 +44,13 @@ Example: Many users work late and find the bright interface uncomfortable.  .
 
 ---
 
-## 🚦 Urgency & Difficulty  
-**Urgency:** (1 – Low | 5 – Critical)  
+## 🚦Difficulty & Urgency 
 **Difficulty:** (1 – Easy | 5 – Complex)  
+**Urgency:** (1 – Low | 5 – Critical)
 
 Example:  
-- Urgency: 4 – Important for ensuring inclusivity.  
 - Difficulty: 3 – Requires some research and testing.  
+- Urgency: 4 – Important for ensuring inclusivity.  
 
 ---
 

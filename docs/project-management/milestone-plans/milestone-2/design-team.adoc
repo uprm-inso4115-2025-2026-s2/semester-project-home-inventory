@@ -1,0 +1,102 @@
+= Milestone 2 Goals and Plans
+Design Team
+
+== Milestone 2 Target Deliverables
+
+By the end of Milestone 2, the following should be demo-ready:
+
+* Core application pages developed (not just mockups)
+* Routing system implemented and functional
+* Navigation between pages working
+* Updated or newly created wireframes/mockups for any missing pages
+* Pages styled according to the approved UI Style Guide
+* A working front-end flow that demonstrates basic navigation and layout structure
+
+A user should be able to:
+
+* Navigate between main pages using the router
+* View structured page layouts (even if backend is not fully integrated)
+* Experience consistent UI styling across all implemented pages
+
+
+== Implementation Scope
+
+=== 1. Page Development in Code
+
+* Convert Milestone 1 mockups into functional UI components
+* Implement layout structure (header, sidebar, etc.)
+* Apply approved color palette and typography
+* Create reusable components (buttons, cards, forms, modals)
+
+=== 2. Routing System
+
+* Implement application router
+* Define route structure
+* Connect navigation components to routes
+
+=== 3. Missing Page Design Completion
+
+* Identify pages that lack:
+** Wireframes
+** Mockups
+** Component state definitions
+* Complete designs before implementation
+
+=== 4. Component Organization
+
+* Establish folder structure for:
+** Pages
+** Components
+** Layouts
+** Assets
+* Follow consistent naming conventions
+
+
+== Preliminary Work Breakdown
+
+=== Phase 1 – Planning
+
+* Review all Milestone 1 mockups
+* Identify missing pages
+* Finalize list of pages for implementation
+* Define routing map (site structure diagram)
+
+=== Phase 2 – Router Setup
+
+* Install and configure routing library
+* Define main routes
+* Create base layout wrapper
+* Test navigation between placeholder pages
+
+=== Phase 3 – Core Page Implementation
+
+For each page:
+
+* Create page file
+* Implement layout structure
+* Add reusable components
+* Apply styling
+* Ensure responsiveness (basic level)
+
+=== Phase 4 – Missing Design Work
+
+* Create wireframes for missing pages
+* Create high-fidelity mockups if needed
+* Review and approve before coding
+
+=== Phase 5 – UI Consistency & Cleanup
+
+* Refactor repeated UI into reusable components
+* Ensure spacing and typography consistency
+* Validate against Style Guide
+
+
+== Success Criteria
+
+Milestone 2 is successful if:
+
+* Core pages are implemented in code
+* Navigation between pages works
+* Missing wireframes are completed
+* UI consistency matches style guide
+* A working frontend demo can be presented
