@@ -8,20 +8,20 @@ This subsection documents how raw observations from the domain rough sketch were
 |===
 | Rough Sketch Statement | Derived Concept
 
-| "I forget what groceries I already have at home"
+| "All participants said they have at some point forgotten what they already had at home." (Brainstorming session)
 | Household Item
 
-| "Sometimes we buy the same item twice"
-| Duplicate purchase / Coordination issue
+| "Milk is usually bought twice in the same week at least once per month." (Shared apartment interview)
+| Duplicate purchase / Coordination failure
 
-| "I don't know when my food expires"
+| "Yogurts sometimes expire; estimated 3–5 thrown away last semester." (Solo student interview)
 | Expiration Date
 
-| "We keep an extra one just in case"
+| "when we open the backup." / "We have rice in two places." (Shared apartment interview)
 | Backup supply (multiple instances of a Household Item)
 
-| "We run out of things unexpectedly"
-| Inventory State (LOW_STOCK / OUT_OF_STOCK)
+| "toilet paper runs out unexpectedly when guests visit." (Household owner interview)
+| Availability (qualitative state: full, almost empty, backup) / Low-stock judgment
 |===
 
 By analyzing these statements side-by-side:
@@ -38,7 +38,7 @@ The following abstractions were introduced by grouping similar ideas:
 - Multiple physical units - *Item Instance*
 - "Extra one" - *Backup supply*
 - "Expires" - *Expiration Date*
-- "Running out" - *Inventory State*
+- "Running out" - *Availability* (with qualitative judgments: full, almost empty, backup)
 
 These groupings allow consistent reasoning across different user statements and scenarios.
 
@@ -48,7 +48,7 @@ From the analysis:
 
 - A *Household Item* may have multiple *Item Instances*
 - Each *Item Instance* may have an *Expiration Date*
-- A *Household Item* can be associated with an *Inventory State*
+- A *Household Item* can be associated with an *Availability* state (qualitative assessment: full, almost empty, backup)
 - Household members interact with shared items in a common environment
 
 ==== Terminology Alignment
@@ -56,9 +56,11 @@ From the analysis:
 Potential inconsistencies were identified and resolved:
 
 - "Item", "product", and "groceries" - standardized as *Household Item*
-- "Running out" vs "not available" - unified under *Inventory State*
+- "Running out" vs "not available" - unified under *Availability*
 - "Extra" vs "backup" - unified as *Backup supply*
 
 ==== Domain Scope Note
 
 This analysis focuses strictly on domain concepts and avoids system-specific terminology. Instead of referring to "users", domain roles such as household members, roommates, or students are implied.
+
+This section highlights a representative subset of concept formation decisions. The parent concept analysis derives approximately 15 distinct concepts; this section traces 5 foundational concepts to demonstrate the methodology of mapping raw observations to domain abstractions.
