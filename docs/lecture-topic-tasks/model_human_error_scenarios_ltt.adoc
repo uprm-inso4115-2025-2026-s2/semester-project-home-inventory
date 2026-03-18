@@ -20,7 +20,7 @@ This document aims to Identify and document common human error scenarios that ma
 
 == Impact of Human Errors on the Domain Model
 
-== How Human Errors Affect can occur in the Digital Home Inventory system
+=== How Human Errors Affect can occur in the Digital Home Inventory system
 
 Human errors can occur at any stage of user interaction with the Home Inventory system. Errors with inputs and data management can lead to various issues, such as inaccurate inventory data, mismanagement of items, and user dissatisfaction. For example, if a user accidentally adds duplicate items or fails to update quantities, it can lead to an inaccurate representation of their inventory, which may affect their ability to manage their possessions effectively. Additionally, miscategorization of items can make it difficult for users to locate them when needed, leading to frustration and inefficiency in managing their inventory.
 
@@ -28,7 +28,7 @@ Errors in ownership assignment can lead to confusion about responsibilities for 
 
 Errors when creating invites can lead to unauthorized access to the inventory, which may affect the security and privacy of the users' data as well as unintended actions by the invited user. For example, if a user invites the wrong person or fails to manage permissions properly, it can lead to unwanted deletions or modifications of inventory.
 
-== Potential Impacts (Summary)
+=== Potential Impacts (Summary)
 - **Data Integrity Issues**: Human errors can lead to inaccurate or inconsistent data in the inventory, which may affect the reliability of the system.
 - **Data Inconsistency**: Errors can lead to inaccurate inventory data, which may affect decision-making and reporting.
 - **User Dissatisfaction**: Repeated errors can lead to user frustration and decreased trust in the system.
@@ -49,5 +49,5 @@ Errors when creating invites can lead to unauthorized access to the inventory, w
 
 === Documentation Sections
 
-Scenario Analysis belongs in section 3.2.
-Mitigation strategies belong in section 2.2
+- Scenario Analysis belongs in section 3.2.
+- Mitigation strategies belong in section 2.2
