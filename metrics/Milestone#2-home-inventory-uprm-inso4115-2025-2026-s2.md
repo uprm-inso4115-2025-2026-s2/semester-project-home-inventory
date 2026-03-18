@@ -1,40 +1,40 @@
 # Milestone Data
 
-## Date Generated: 2026-03-17
+## Date Generated: 2026-03-18
 | Developer | Points Closed | Percent Contribution | Indivudal Grade | Milestone Grade | Lecture Topic Tasks |
 | --------- | ------------- | -------------------- | --------------- | --------------- | ------------------- |
-| reinaldo-martinez1 | 27.8 | 13.0% | 100.0% | 100.0% | 2 |
+| reinaldo-martinez1 | 27.8 | 11.8% | 100.0% | 100.0% | 2 |
 | alianasofiaaa | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| aryamdiaz | 19.9 | 9.4% | 100.0% | 100.0% | 0 |
+| aryamdiaz | 19.9 | 8.4% | 100.0% | 100.0% | 0 |
 | fernan-castro | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | JorgeRivera94 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| Gerardoruiz1 | 8.7 | 4.1% | 100.0% | 100.0% | 0 |
+| Gerardoruiz1 | 8.7 | 3.7% | 100.0% | 100.0% | 0 |
 | nataliavera6 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | SamarysB | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | FabiolaZTorres | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| andreasegarra | 11.6 | 5.5% | 100.0% | 100.0% | 0 |
+| andreasegarra | 11.6 | 4.9% | 100.0% | 100.0% | 0 |
 | yamilette-alemany | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| PeraltaJorge9128 | 5.9 | 2.8% | 100.0% | 100.0% | 0 |
+| PeraltaJorge9128 | 5.9 | 2.5% | 91.6% | 94.9% | 0 |
 | nicolasrivera25 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | jankii03 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | ernestosoto3 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| FabianVelezOcasio | 11.6 | 5.5% | 100.0% | 100.0% | 0 |
-| kevgom018 | 46.6 | 21.9% | 100.0% | 100.0% | 0 |
+| FabianVelezOcasio | 11.6 | 4.9% | 100.0% | 100.0% | 0 |
+| kevgom018 | 46.6 | 19.7% | 100.0% | 100.0% | 0 |
 | daniellameleroo | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | devlin-hahn04 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| Programian | 11.6 | 5.4% | 100.0% | 100.0% | 0 |
+| Programian | 11.6 | 4.9% | 100.0% | 100.0% | 0 |
 | kevinlara1 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| Solimar-Cruz | 16.7 | 7.9% | 100.0% | 100.0% | 2 |
-| ronaldoflores9 | 26.7 | 12.5% | 100.0% | 100.0% | 0 |
+| Solimar-Cruz | 16.7 | 7.1% | 100.0% | 100.0% | 2 |
+| ronaldoflores9 | 26.7 | 11.3% | 100.0% | 100.0% | 0 |
 | alondra-arce | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | JorgeDeLeonOrama | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| eliel-hernandez | 11.8 | 5.6% | 100.0% | 100.0% | 1 |
-| Kemuel05 | 11.8 | 5.6% | 100.0% | 100.0% | 0 |
-| jaydensanchez12 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
+| eliel-hernandez | 11.8 | 5.0% | 100.0% | 100.0% | 1 |
+| Kemuel05 | 23.7 | 10.0% | 100.0% | 100.0% | 0 |
+| jaydensanchez12 | 11.6 | 4.9% | 100.0% | 100.0% | 0 |
 | L-A-M-D | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
 | kian-robert | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
-| AdrianaFigueroa9 | 2.0 | 0.9% | 35.3% | 61.2% | 0 |
-| Total | 212.83768515221675 | /100% | /100% | /100% | 5 |
+| AdrianaFigueroa9 | 2.0 | 0.8% | 30.9% | 58.5% | 0 |
+| Total | 236.24614593608595 | /100% | /100% | /100% | 5 |
 
 
 ## Sprint Task Completion
@@ -67,8 +67,8 @@
 | alondra-arce | 0/1 | 0/1 |
 | JorgeDeLeonOrama | 0/1 | 0/1 |
 | eliel-hernandez | 2/1 | 0/1 |
-| Kemuel05 | 1/1 | 0/1 |
-| jaydensanchez12 | 0/1 | 0/1 |
+| Kemuel05 | 2/1 | 0/1 |
+| jaydensanchez12 | 1/1 | 0/1 |
 | L-A-M-D | 0/1 | 0/1 |
 | kian-robert | 0/1 | 0/1 |
 | AdrianaFigueroa9 | 1/1 | 0/1 |
@@ -77,75 +77,75 @@
 
 | Developer | Week #1 | Week #2 | Week #3 | Week #4 | Week #5 | Penalty |
 |---|---|---|---|---|---|---|
-| FabiolaZTorres | Yes | Yes | No | No | No | 9.0 |
-| Kemuel05 | Yes | Yes | No | No | No | 9.0 |
-| ernestosoto3 | Yes | Yes | No | No | No | 9.0 |
-| PeraltaJorge9128 | Yes | Yes | No | No | No | 9.0 |
-| Gerardoruiz1 | Yes | Yes | No | No | No | 9.0 |
-| alondra-arce | Yes | Yes | No | No | No | 9.0 |
-| Kay9876 | Yes | No | No | No | No | 14.0 |
-| fernan-castro | Yes | Yes | No | No | No | 9.0 |
-| Programian | Yes | Yes | No | No | No | 9.0 |
-| eliel-hernandez | Yes | Yes | No | No | No | 9.0 |
+| AdrianaFigueroa9 | Yes | No | No | No | No | 14.0 |
+| LuisJCruz | No | Yes | No | No | No | 11.0 |
+| andreasegarra | Yes | Yes | No | No | No | 9.0 |
+| Solimar-Cruz | Yes | Yes | No | No | No | 9.0 |
+| ronaldoflores9 | Yes | Yes | No | No | No | 9.0 |
 | daniellameleroo | Yes | Yes | No | No | No | 9.0 |
 | nicolasrivera25 | Yes | No | No | No | No | 14.0 |
-| JorgeDeLeonOrama | Yes | Yes | No | No | No | 9.0 |
-| andreasegarra | Yes | Yes | No | No | No | 9.0 |
 | alianasofiaaa | No | No | No | No | No | 20.0 |
-| jaydensanchez12 | Yes | Yes | No | No | No | 9.0 |
-| devlin-hahn04 | Yes | Yes | No | No | No | 9.0 |
 | L-A-M-D | Yes | Yes | No | No | No | 9.0 |
-| nataliavera6 | Yes | Yes | No | No | No | 9.0 |
-| FabianVelezOcasio | Yes | Yes | No | No | No | 9.0 |
-| ronaldoflores9 | Yes | Yes | No | No | No | 9.0 |
-| jankii03 | Yes | Yes | No | No | No | 9.0 |
-| kian-robert | Yes | Yes | No | No | No | 9.0 |
+| Kemuel05 | Yes | Yes | No | No | No | 9.0 |
 | reinaldo-martinez1 | Yes | Yes | No | No | No | 9.0 |
+| alondra-arce | Yes | Yes | No | No | No | 9.0 |
 | aryamdiaz | Yes | Yes | No | No | No | 9.0 |
-| LuisJCruz | No | Yes | No | No | No | 11.0 |
-| kevinlara1 | Yes | No | No | No | No | 14.0 |
-| kevgom018 | Yes | Yes | No | No | No | 9.0 |
-| Solimar-Cruz | Yes | Yes | No | No | No | 9.0 |
-| yamilette-alemany | Yes | Yes | No | No | No | 9.0 |
 | JorgeRivera94 | Yes | Yes | No | No | No | 9.0 |
-| AdrianaFigueroa9 | Yes | No | No | No | No | 14.0 |
+| eliel-hernandez | Yes | Yes | No | No | No | 9.0 |
+| fernan-castro | Yes | Yes | No | No | No | 9.0 |
+| ernestosoto3 | Yes | Yes | No | No | No | 9.0 |
+| FabianVelezOcasio | Yes | Yes | No | No | No | 9.0 |
+| PeraltaJorge9128 | Yes | Yes | No | No | No | 9.0 |
 | SamarysB | Yes | Yes | No | No | No | 9.0 |
+| nataliavera6 | Yes | Yes | No | No | No | 9.0 |
+| kevinlara1 | Yes | No | No | No | No | 14.0 |
+| jaydensanchez12 | Yes | Yes | No | No | No | 9.0 |
+| jankii03 | Yes | Yes | No | No | No | 9.0 |
+| Kay9876 | Yes | No | No | No | No | 14.0 |
+| kian-robert | Yes | Yes | No | No | No | 9.0 |
+| kevgom018 | Yes | Yes | No | No | No | 9.0 |
+| Gerardoruiz1 | Yes | Yes | No | No | No | 9.0 |
+| JorgeDeLeonOrama | Yes | Yes | No | No | No | 9.0 |
+| yamilette-alemany | Yes | Yes | No | No | No | 9.0 |
+| devlin-hahn04 | Yes | Yes | No | No | No | 9.0 |
+| FabiolaZTorres | Yes | Yes | No | No | No | 9.0 |
+| Programian | Yes | Yes | No | No | No | 9.0 |
 
 ## Point Percent by Label
 
-| Developer | Documentation | Team 3 | Design | Team Leader Review | Team Leader Approved | Team 1 | Team 2 | Being Worked On | Task Completed | Task Completed and Approved | Team Leader task | Development | Lecture Topic Task | Team 4 |
+| Developer | Lecture Topic Task | Team 2 | Documentation | Task Completed | Team Leader Approved | Team Leader Review | Team 3 | Team 1 | Task Completed and Approved | Team Leader task | Development | Being Worked On | Team 4 | Design |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| reinaldo-martinez1 | 0.0% | 0.0% | 0.0% | 0.0% | 57.1% | 0.0% | 100.0% | 0.0% | 57.1% | 42.9% | 0.0% | 0.0% | 100.0% | 0.0% |
+| reinaldo-martinez1 | 100.0% | 100.0% | 0.0% | 57.1% | 57.1% | 0.0% | 0.0% | 0.0% | 42.9% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | alianasofiaaa | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| aryamdiaz | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 0.0% |
+| aryamdiaz | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% |
 | fernan-castro | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | JorgeRivera94 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| Gerardoruiz1 | 0.0% | 0.0% | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 100.0% |
+| Gerardoruiz1 | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% |
 | nataliavera6 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | SamarysB | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | FabiolaZTorres | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| andreasegarra | 0.0% | 82.8% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 82.8% | 0.0% | 17.2% | 100.0% | 0.0% | 0.0% | 0.0% |
+| andreasegarra | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 82.8% | 0.0% | 17.2% | 100.0% | 0.0% | 82.8% | 0.0% | 0.0% |
 | yamilette-alemany | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| PeraltaJorge9128 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 100.0% |
+| PeraltaJorge9128 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% |
 | nicolasrivera25 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | jankii03 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | ernestosoto3 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| FabianVelezOcasio | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% | 0.0% | 0.0% | 82.8% |
-| kevgom018 | 8.6% | 0.0% | 0.0% | 0.0% | 0.0% | 33.5% | 0.0% | 0.0% | 0.0% | 100.0% | 24.9% | 66.5% | 0.0% | 0.0% |
+| FabianVelezOcasio | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% | 0.0% | 0.0% | 82.8% | 0.0% |
+| kevgom018 | 0.0% | 0.0% | 8.6% | 0.0% | 0.0% | 0.0% | 0.0% | 33.5% | 100.0% | 24.9% | 66.5% | 0.0% | 0.0% | 0.0% |
 | daniellameleroo | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | devlin-hahn04 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| Programian | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 100.0% |
+| Programian | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% |
 | kevinlara1 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| Solimar-Cruz | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 88.0% | 0.0% | 0.0% | 100.0% | 12.0% | 0.0% | 88.0% | 0.0% |
-| ronaldoflores9 | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 0.0% |
+| Solimar-Cruz | 88.0% | 88.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 12.0% | 0.0% | 0.0% | 0.0% | 0.0% |
+| ronaldoflores9 | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 0.0% | 100.0% |
 | alondra-arce | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | JorgeDeLeonOrama | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| eliel-hernandez | 0.0% | 0.0% | 83.3% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 100.0% | 0.0% | 83.3% | 16.7% | 0.0% |
-| Kemuel05 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 0.0% | 100.0% | 0.0% | 100.0% | 0.0% | 0.0% |
-| jaydensanchez12 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
+| eliel-hernandez | 16.7% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 0.0% | 83.3% | 0.0% | 0.0% | 83.3% |
+| Kemuel05 | 0.0% | 100.0% | 0.0% | 50.0% | 50.0% | 0.0% | 0.0% | 0.0% | 50.0% | 0.0% | 100.0% | 0.0% | 0.0% | 0.0% |
+| jaydensanchez12 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% | 100.0% |
 | L-A-M-D | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | kian-robert | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
-| AdrianaFigueroa9 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% |
+| AdrianaFigueroa9 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 # Metrics Generation Logs
 
 | Message |
@@ -170,6 +170,5 @@
 | WARNING: kevinlara1 hasn't completed the minimum 1 task(s) required for sprint 2026/03/03-2026/03/19 |
 | WARNING: alondra-arce hasn't completed the minimum 1 task(s) required for sprint 2026/03/03-2026/03/19 |
 | WARNING: JorgeDeLeonOrama hasn't completed the minimum 1 task(s) required for sprint 2026/03/03-2026/03/19 |
-| WARNING: jaydensanchez12 hasn't completed the minimum 1 task(s) required for sprint 2026/03/03-2026/03/19 |
 | WARNING: L-A-M-D hasn't completed the minimum 1 task(s) required for sprint 2026/03/03-2026/03/19 |
 | WARNING: kian-robert hasn't completed the minimum 1 task(s) required for sprint 2026/03/03-2026/03/19 |
