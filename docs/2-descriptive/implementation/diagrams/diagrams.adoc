@@ -1,14 +1,22 @@
-== Diagrams
+== Diagrams 
 
+Below is an inventory of diagrams included in this section:
 
-List and explain diagrams (architecture diagrams, flow diagrams, ER diagrams, etc.).
+[cols="1,2,3", options="header"]
+|===
+| Type | Filename | Purpose
+| Database Flow Diagram | stock_table_diagram.png | Shows backend database flows and system boundaries
+| Entity-Relationship Diagram (ERD) | stock_ERD.png | Shows finalized database schema and relationships
+|===
 
-=== Diagram inventory
-* Figure 1: ER diagram for our project's entities.
-image:stock_ERD.png[]
+=== Database Flow Diagram
+image::stock_table_diagram.png[]
 
-* Figure 2: Table diagram for our project's backend.
-image:stock_table_diagram.png[]
+Shows the backend's database flows and how they interact. Useful for understanding system boundaries and responsibilities.
 
-=== Notes
-* None
+=== Entity-Relationship Diagram (ERD)
+image::stock_ERD.png[]
+
+Shows the finalized database schema including users, homes, rooms, items, products, and relationship tables. Useful for validating data structure and clarifying how features map to persistent storage.
+
+// Add additional diagrams below as needed

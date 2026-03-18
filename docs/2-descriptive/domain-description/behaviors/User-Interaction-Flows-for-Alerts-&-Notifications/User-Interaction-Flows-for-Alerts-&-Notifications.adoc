@@ -1,12 +1,12 @@
 :toc: left
 
-= User Interaction Flows: Alerts & Notifications
+== User Interaction Flows: Alerts & Notifications
 
-== 1. Introduction & Objective
+=== Introduction & Objective
 
 For students that live alone, it is very important to keep track of household essentials, but with stressful lifestyles, relying on memory leads to unwanted problems such as food and medicine expiring or purchasing duplicates. The objective of this document is to clearly map out how a user interacts with automated notifications and reminders for items that are low in stock or nearing their expiration dates. Defining these logical pathways ensures that the UI design covers all possible user decisions before we begin creating wireframes.
 
-== 2. Alert Types & Available User Actions
+=== Alert Types & Available User Actions
 
 Before drawing the UI screens, we must define what the user can do when they receive an alert. The system will categorize alerts into three main states:
 

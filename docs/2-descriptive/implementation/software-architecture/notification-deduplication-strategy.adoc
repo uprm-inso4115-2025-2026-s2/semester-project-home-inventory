@@ -1,0 +1,349 @@
+= Notification Idempotency & Deduplication Strategy for Sweep-Driven Alerts
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+
+// ============================================================================
+// Related doc(s):
+//   docs/2-descriptive/implementation/software-architecture/design-and-document-sweep-architecture.adoc
+// ============================================================================
+
+[[objective]]
+== Objective
+
+Prevent **duplicate notifications** when the daily sweep is retried, rerun, or partially fails. The goal is a requirements-grounded, objectively verifiable strategy so users are not spammed and the system remains trustworthy under automation retries.
+
+[[scope]]
+== Scope and Assumptions
+
+=== In scope
+* Defining what constitutes a "duplicate" notification for sweep-driven alerts.
+* Defining a deduplication key, windowing policy, and re-notification rules.
+* Comparing at least two viable approaches and recommending one.
+* Defining fit-criterion requirements and a verification matrix.
+
+=== Out of scope
+* UI design for notifications.
+* Choice of notification channel provider (push/email/in-app). This strategy is channel-agnostic.
+
+=== Terminology
+* *Sweep:* the scheduled job that evaluates items and produces derived status (expired/low-stock).
+* *Alert candidate:* an item-condition pair that warrants notifying a user/household.
+* *Deduplication:* suppression of repeated sends for the “same alert” within a defined window/policy.
+* *Idempotency:* retries/reruns produce the same externally observable outcomes (no duplicate sends).
+
+[[problem-definition]]
+== Problem Definition (Precise)
+
+A duplicate occurs when the system sends multiple notifications that represent the *same* alert event, typically due to:
+
+* sweep retry after timeout/crash,
+* repeated sweeps in the same day,
+* partial failure (some notifications sent, then crash, then rerun),
+* scheduler misfires triggering multiple invocations.
+
+If duplicates are not prevented, users receive repeated low-stock/expiration alerts and lose trust.
+
+[[duplicate-definition]]
+=== Definition: What counts as the "same alert"?
+
+An alert is uniquely defined by:
+
+* `recipient_scope`: who the alert is for (user or household/home)
+* `item_id`: which inventory item
+* `condition_type`: expired | low_stock | near_expiry (optional)
+* `condition_window`: the time bucket for dedupe (e.g., day in recipient timezone)
+* `condition_parameters`: relevant threshold/window parameters at time of evaluation (optional but recommended)
+
+A "duplicate notification" is any additional send for the same tuple above within the configured re-notification policy.
+
+[[repeat-policy]]
+=== What is allowed to repeat?
+
+Not all repeats are duplicates. Allowed repeats depend on policy:
+
+* *Expired:* typically notify once per day (or once total) until resolved, depending on UX choice.
+* *Low-stock:* commonly allow once per day while still low.
+* *Near-expiry:* allow once per day during a configurable “near-expiry window.”
+* *State changes:* if an item returns to OK and later becomes low/near-expiry again, it may re-notify (new event).
+
+This doc defines explicit re-notification rules in <<renotify-rules>>.
+
+[[dedupe-key]]
+== Deduplication Key and Window Policy
+
+[[canonical-key]]
+=== Canonical dedupe key
+
+We propose the following canonical key:
+
+* `recipient_scope_id`
+* `item_id`
+* `condition_type`
+* `window_start_date` (YYYY-MM-DD in recipient timezone)
+* `policy_version` (optional; increments when notification policy changes)
+
+Notes:
+* `recipient_scope_id` is either `user_id` or `home_id` (or a shared-inventory scope).
+* `window_start_date` must be computed consistently (timezone decision must be stable).
+
+[[timezone-policy]]
+=== Timezone policy
+
+To avoid inconsistent windows, choose *one*:
+
+* *Option A (recommended):* recipient's configured timezone (preferred for user experience).
+* *Option B:* home/household timezone (if shared inventory is the main unit).
+* *Option C:* UTC (simplest technically, worse UX).
+
+Recommendation: use *recipient scope timezone* (user or home) if available; otherwise fall back to UTC and document it.
+
+[[renotify-rules]]
+== Re-notification Rules (Edge Cases)
+
+[[edge-case-edits]]
+=== Item edited after an alert was sent
+
+If an item is edited after a send, dedupe should behave predictably:
+
+* If `expiration_date` changes such that condition no longer holds (not expired anymore):
+    - allow future alerts only if condition becomes true again (new event).
+* If `threshold` changes:
+    - treat this as a *policy-relevant change*. Either:
+        - include `threshold_version` (or `policy_version`) in the key, or
+        - allow a new alert if threshold change causes a transition to low-stock.
+* If item identity changes (e.g., merge items):
+    - dedupe uses the new `item_id`; old ledger entries remain as audit.
+
+[[edge-case-still-low]]
+=== Item remains low-stock across multiple days
+
+Policy: allow *at most one notification per day* while the item remains low-stock.
+
+Rationale: persistent low-stock conditions should remind users without spamming.
+
+[[edge-case-ok-then-low]]
+=== Item becomes OK then low again
+
+If item transitions low -> OK -> low:
+
+* Allow a new alert immediately when low becomes true again, but still respect daily windowing.
+* Implementation note: re-notification can be keyed off the day window and/or a "condition transition" event record.
+
+[[edge-case-partial-failure]]
+=== Partial failure (some sends succeeded, then crash)
+
+This is the key reliability case:
+
+* Deduplication must suppress re-sends for already-sent alerts when the sweep is rerun.
+* Therefore, dedupe state must be recorded *before* or *atomically with* sending (depending on approach).
+
+[[approaches]]
+== Candidate Approaches
+
+We evaluate two viable dedupe approaches.
+
+[[approach-a]]
+=== Approach A: DB-backed Notification Ledger (Recommended)
+
+Create a `notification_ledger` table that records each attempted notification and enforces uniqueness on the canonical dedupe key.
+
+*Workflow (high-level):*
+1. For each alert candidate, attempt to INSERT ledger row with unique key.
+2. If insert succeeds => send notification, then update ledger status.
+3. If insert fails due to uniqueness => suppress (duplicate).
+4. Record outcomes: `sent`, `skipped_duplicate`, `failed_send`, etc.
+
+*Why it works:*
+* Survives retries and partial failures: once recorded, duplicates are suppressed.
+* Provides auditability and debugging trail.
+
+*Tradeoffs:*
+* Additional DB writes per notification candidate.
+* Requires careful schema + indexes.
+
+[[approach-b]]
+=== Approach B: Per-item "last_notified_at" Fields + Sweep-run Scoped Dedup
+
+Store notification timestamps/metadata on the item itself (or a related per-item table), such as:
+* `items.last_low_stock_notified_at`
+* `items.last_expired_notified_at`
+
+Suppress notifications if last_notified_at is within window.
+
+*Why it can work:*
+* Fewer tables; simpler queries in some cases.
+
+*Where it breaks:*
+* Partial failure ambiguity: if you update last_notified_at after sending and crash mid-way, reruns can resend.
+* Multi-recipient scopes (shared inventory) become complicated.
+* Auditability is weak unless you also store event history.
+
+[[tradeoff-table]]
+=== Tradeoff Summary
+
+[cols="1,1,1,1,1",options="header"]
+|===
+| Criterion | Approach A (Ledger) | Approach B (last_notified_at) | Winner | Notes
+
+| Correctness under retries
+| Strong
+| Medium
+| A
+| Ledger uniqueness prevents duplicates even on repeated sweeps.
+
+| Partial failure safety
+| Strong
+| Weak-Medium
+| A
+| Ledger can record intent/outcome; last_notified_at needs careful ordering.
+
+| Complexity
+| Medium
+| Low-Medium
+| B
+| B is simpler initially, but grows complex with shared scopes.
+
+| Query/write load
+| Medium
+| Low
+| B
+| A writes per candidate; B writes per item condition.
+
+| Traceability/Auditability
+| Strong
+| Weak
+| A
+| Ledger provides a complete history per alert attempt.
+
+| Shared inventory support
+| Strong
+| Medium
+| A
+| Scope is a first-class key in ledger.
+|===
+
+[[recommendation]]
+== Recommendation
+
+Recommend **Approach A: DB-backed Notification Ledger**.
+
+Justification:
+* Highest correctness under retries and partial failures.
+* Best auditability for debugging and grading.
+* More robust for shared inventory/recipient scoping.
+
+Approach B is acceptable only if the team is willing to accept weaker auditability and carefully define update ordering to avoid duplicates during partial failures.
+
+[[design-a]]
+== Approach A: Proposed Ledger Design (Documentation-Level)
+
+[[ledger-schema]]
+=== Minimal `notification_ledger` schema (proposal)
+
+Minimum fields:
+
+* `id` (UUID, PK)
+* `recipient_scope_type` (TEXT: `user` or `home`)
+* `recipient_scope_id` (UUID)
+* `item_id` (UUID)
+* `condition_type` (TEXT: `expired`, `low_stock`, `near_expiry`)
+* `window_start_date` (DATE) — computed per timezone policy
+* `policy_version` (INT) — optional
+* `status` (TEXT: `reserved`, `sent`, `skipped_duplicate`, `failed_send`)
+* `created_at` (TIMESTAMPTZ)
+* `sent_at` (TIMESTAMPTZ, nullable)
+* `error_summary` (TEXT, nullable)
+
+Uniqueness constraint:
+* UNIQUE (`recipient_scope_type`, `recipient_scope_id`, `item_id`, `condition_type`, `window_start_date`, `policy_version`)
+
+Indexes:
+* Index by `created_at DESC` for audits
+* Index by `recipient_scope_id` for per-user/home history queries
+
+[[ledger-flow]]
+=== Ordering for partial-failure safety
+
+Recommended safe sequence:
+
+1. INSERT ledger row with status = `reserved` (unique key enforces dedupe).
+2. Attempt send.
+3. On success: UPDATE ledger status -> `sent`, set `sent_at`.
+4. On failure: UPDATE ledger status -> `failed_send`, set `error_summary`.
+
+On rerun:
+* Attempts to insert same key fail (duplicate) => suppress.
+* Failed sends can be retried by policy (optional), but should be explicit and still deduped by key + retry rules.
+
+[[fit-criterion]]
+== Fit-Criterion Requirements
+
+These are written to be objectively verifiable.
+
+*REQ-NOTIF-001 (Dedup Guarantee)*::
+The system shall not emit more than one notification per `{recipient_scope_id, item_id, condition_type, window_start_date, policy_version}` within the same window.
+
+*REQ-NOTIF-002 (Retry Safety)*::
+The system shall support sweep retries and reruns without duplicating notifications for alerts already sent within the active window.
+
+*REQ-NOTIF-003 (Partial Failure Safety)*::
+If a sweep run partially fails after sending some notifications, rerunning the sweep shall suppress those already-sent notifications.
+
+*REQ-NOTIF-004 (Audit Record)*::
+For each notification attempt, the system shall record an outcome (`sent`, `skipped_duplicate`, `failed_send`) with timestamps sufficient to audit the notification behavior.
+
+*REQ-NOTIF-005 (Re-notification Policy)*::
+For persistent conditions (expired, low-stock), the system shall permit at most one notification per day per condition per recipient scope unless policy version changes or the condition transitions from false to true again.
+
+[[verification]]
+== Verification Plan (Test Matrix)
+
+The following matrix defines how to prove correctness in staging.
+
+[cols="1,2,2,2",options="header"]
+|===
+| Scenario | Setup | Action | Expected Outcome
+
+| Same sweep retried
+| Same candidates produced; ledger present
+| Run sweep twice in short interval
+| Second run suppresses duplicates (ledger uniqueness); no additional sends
+
+| Sweep rerun same day
+| Item remains low-stock
+| Run sweep in AM and PM
+| At most 1 notification for low_stock for that day window
+
+| Sweep next day with unchanged low stock
+| Item still low-stock next day
+| Run sweep next day
+| One new notification allowed for new window_start_date (daily reminder policy)
+
+| Partial failure after some notifications
+| Simulate failure after sending first N
+| Rerun sweep
+| Already-sent alerts are suppressed; failed ones follow retry policy (if enabled)
+
+| Threshold changed
+| Change threshold causing low-stock transition
+| Run sweep
+| If policy_version/threshold_version changes OR transition occurs, alert may be sent once for new key/window
+
+| Item edited (expiration changed)
+| Change expiration so item becomes not expired
+| Run sweep
+| No expired alert; ledger entries remain for audit; future expired alert only if condition becomes true again
+|===
+
+[[traceability]]
+== Traceability Hooks
+
+This document supports the project goals and the sweep architecture:
+
+* Links to sweep execution model:
+    `docs/2-descriptive/implementation/software-architecture/design-and-document-sweep-architecture.adoc`
+* Supports project goal: Smart Notifications (low-stock and expiration alerts) via dedupe + retry-safe behavior.
+* Connects to auditability and trust: prevents spam and provides notification attempt history.

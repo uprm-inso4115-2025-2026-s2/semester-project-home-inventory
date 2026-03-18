@@ -1,0 +1,143 @@
+=== Evidence Concept Analysis
+
+This subsection documents how requirement-level concepts were derived from raw observations in the rough sketch and supporting research artifacts. It ensures traceability between real-world problems and the 13 requirement-level concepts defined in the parent section.
+
+==== Rough Sketch Drivers to Requirement Concepts
+
+[cols="2,2,2",options="header"]
+|===
+| Rough Sketch Driver | Rough Sketch Evidence | Requirement-Level Concept(s)
+
+| Low friction capture
+| "If it takes more than a few seconds to log, I won't do it"
+| Fast capture
+
+| Shared coordination failures
+| "Sometimes we buy the same item twice" / No formal responsibility / Reliance on fridge note + chat
+| Shared visibility, State transition, Deduplication / anti-spam, Auto-add to grocery list
+
+| Multiple storage locations
+| "We have rice in two places." (Shared apartment interview)
+| Tracked record vs reality (divergence between stored locations and system record)
+
+| Qualitative stock judgments
+| "full", "almost empty", "backup"; "feels light" / "open the backup" (often not recorded)
+| Actionable states, Low-stock strategy, Availability representation
+
+| Expiration and waste
+| "I don't notice when things expire" / Yogurts expire; 3-5 thrown away per semester
+| Near-expiry window, Notification record/event, Delivery approach, State transition, Scheduled sweep
+
+| Variable consumption
+| Exam weeks / guest visits change usage rates / "toilet paper runs out unexpectedly when guests visit"
+| Actionable states (demand-dependent), Low-stock strategy (flexibility)
+
+| Membership change
+| Desire to remove access when someone moves out
+| Shared visibility (access control implications), Transaction history (audit trail)
+
+| Tracking reliability
+| "I check the fridge note before buying" — system used as reference point
+| Tracked record vs reality, Transaction history, Notification record/event
+|===
+
+==== Concept Formation from Evidence and Artifacts
+
+The 13 requirement-level concepts were formed by analyzing rough sketch statements, supporting research documents, and actor capabilities. The following table traces the originating evidence for each concept:
+
+[cols="2,3,2",options="header"]
+|===
+| Requirement Concept | Evidence Source | Key Implication
+
+| *Fast capture*
+| "If it takes more than a few seconds to log, I won't do it"
+| Interaction design must minimize burden (few fields, simple confirmation)
+
+| *Tracked record vs reality*
+| "I check the fridge note before buying"; "We have rice in two places." / household inventory changes continuously
+| System represents availability at a point in time; divergence is inevitable and must be managed
+
+| *Shared visibility*
+| "Sometimes we buy the same item twice" / No formal responsibility / Reliance on fridge note + chat
+| Multiple household members must converge on the same understanding without external coordination tools
+
+| *Actionable states*
+| Exam weeks/guest visits cause demand spikes; "toilet paper runs out unexpectedly"
+| States must represent decision triggers, not just raw facts (NORMAL, LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, EXPIRED)
+
+| *State transition*
+| Repeated mentions of duplicates and alerts / Need to avoid notification fatigue
+| Alerts should trigger on *changes* (transitions), not on static conditions remaining unchanged
+
+| *Low-stock strategy*
+| Variable consumption / "runs out unexpectedly" / research in `low-stock-research-strategies.adoc`
+| Fixed per-item threshold selected for balance between simplicity and flexibility (recommended in artifact)
+
+| *Near-expiry window*
+| "I don't notice when things expire" / research in `definition-expiration-alert-system.adoc`
+| Definition of "expiring soon" (N days) required to alert before waste occurs; grace periods needed
+
+| *Scheduled sweep (automation check)*
+| Expiration and stock concerns; need for monitoring beyond user interactions / `automation-check-system.adoc`
+| Daily background process evaluates low-stock and expiration conditions; generates state-transition notifications
+
+| *Notification record/event*
+| Alerts required for expiration and low-stock / `evaluationOfNotification.adoc`
+| Persisted representation of alerts (at least read/unread status in-app) needed for review and deduplication
+
+| *Delivery approach*
+| "I don't notice when things expire" (delayed awareness) / research in `evaluationOfNotification.adoc`
+| In-app notification records selected for Milestone 1 (simpler, testable); push notifications remain optional
+
+| *Deduplication / anti-spam*
+| "Sometimes we buy the same item twice" (coordination failures) / need to avoid notification fatigue
+| Rules required to prevent repeated alerts when state unchanged; repeated list additions when already recorded
+
+| *Auto-add to grocery list*
+| Duplicate purchases + low-stock concerns; coordination through fridge note / `grocerylist_autoadd_decisionlogic.adoc`
+| Rule-based triggers (OUT_OF_STOCK, EXPIRED, LOW_STOCK) convert actionable states into grocery list entries
+
+| *Transaction history*
+| Tracking reliability / "I check the fridge note before buying" / `inventory-transaction-tracking.adoc`
+| Append-only log of quantity changes with reason and timestamp enables traceability and audit; current quantity derives from transactions
+|===
+
+==== Requirement Formation Decisions
+
+The following requirement concepts were selected because they directly address domain problems identified in the rough sketch and supported by research artifacts:
+
+- *Fast capture* — directly addresses "won't log if > few seconds" friction
+- *Tracked record vs reality* — acknowledges that households are dynamic; system is a representation, not ground truth
+- *Shared visibility* — necessary to reduce duplicate purchases and informal fridge-note coordination
+- *Actionable states* — enables decision-making without requiring users to interpret raw facts
+- *State transition* — critical to alert design; prevents notification fatigue
+- *Low-stock strategy* — balances simplicity (fixed threshold) with flexibility (per-item configuration)
+- *Near-expiry window & scheduled sweep* — automate detection of waste risks
+- *Notification record/event & delivery approach* — provide a way to notify without requiring push infrastructure
+- *Deduplication / anti-spam* — protects against alert fatigue and repeated grocery list additions
+- *Auto-add to grocery list* — extends alerts into actionable purchasing recommendations
+- *Transaction history* — provides evidence trail for shared accountability and consumption analysis
+
+==== Alignment with Domain Concepts
+
+Requirement-level concepts align with domain concepts as follows:
+
+- Fast capture - operations on *Household Item*
+- Tracked record vs reality - gap between *real-world Household Item* and *Inventory system representation*
+- Shared visibility - *Household* (shared context) and interaction between *Household members*
+- Actionable states - *Availability* (qualitative state: full, almost empty, backup) and derived judgment states
+- State transition - triggering mechanism for *notifications*
+- Low-stock strategy - implementation of *low-stock judgment* concept
+- Near-expiry window - definition of *expiration-time concern*
+- Scheduled sweep - systematic evaluation of *Item Instance expiration* and *Availability*
+- Notification record/event - recording mechanism for system responses
+- Delivery approach - infrastructure choice for user communication
+- Deduplication / anti-spam - rules governing *notification* production
+- Auto-add to grocery list - connection between *Household Item state* and *purchasing intent*
+- Transaction history - evidence trail for *Household Item* state changes
+
+This ensures consistency between domain analysis (Section 3.1) and requirements.
+
+==== Scope Note
+
+This evidence section traces all 13 requirement-level concepts to their originating rough sketch statements and supporting research artifacts. Concepts include both domain-grounded concerns (fast capture, shared visibility, actionable states) and system-design concerns (scheduled sweep, notification delivery, deduplication). While the latter may involve system behavior, they remain justified by domain drivers and supported by architectural research documented in the supporting artifacts referenced above.

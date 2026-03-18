@@ -1,36 +1,36 @@
 == Ideas
 
-Outline candidate solution directions. Ideas are not commitments; they are options to address the needs.
+Outline candidate solution directions. Ideas are not commitments; they are options to address the needs. The idea below focuses on solution directions and capabilities; implementation technology choices are deferred to later sections.
 
 === Lightweight Smart Inventory
 
-* Core concept: A mobile home inventory application optimized for ultra fast item capture and shared household visibility, built with Flutter and a service like Supabase for real time synchronization.
+* Core concept: A lightweight household inventory tool optimized for very fast item capture and shared visibility in student households, so records stay current with minimal effort.
 * Needs addressed: N1, N2, N3, N4, N5
 * Key capabilities:
-  - Rapid item entry with minimal required fields
-  - Real time shared inventory across household members
+  - Fast item capture with minimal information required at the moment of entry
+  - Shared household view of what items are available and who last updated them
   - Quick search and filtering to check item availability
-  - Optional reminder system
-  - Offline support with background sync
+  - Optional prompts to review items that may be running low or expiring (kept low-noise)
+  - Works during temporary connectivity gaps and reconciles changes when connectivity returns
 
 * Expected benefits:
   - Reduces the hassle of item entry
   - Improves long-term inventory accuracy
   - Prevents duplicate purchases
   - Enables smooth roommate coordination
-  - Maintains low notification fatigue
+  - Reduces the chance that people disable reminders by keeping prompts minimal and relevant
 
 * Risks / unknowns:
   - Users may still abandon after initial novelty wears off
-  - Real-time sync conflicts in households with more than one user
-  - Offline synchronization edge cases
+  - Conflicting updates when multiple household members change the same item list around the same time
+  - Temporary connectivity gaps may lead to mismatched inventories until updates reconcile
   - User adoption of shared features may vary
 
 * How we will validate this idea:
-  - Conduct usability tests measuring item entry by time
+  - Run quick usability sessions to see whether people can capture an item fast enough during realistic moments (e.g., after shopping)
   - Track weekly retention during pilot testing
   - Test with small shared households (2-4 users)
-  - Monitor notification opt-out rates
+  - Observe whether optional prompts are perceived as helpful or disruptive (and whether people disable them)
 
 // === Idea B — <Short name> (optional)
 // * Core concept: TODO

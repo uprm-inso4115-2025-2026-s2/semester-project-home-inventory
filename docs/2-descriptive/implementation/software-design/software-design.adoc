@@ -8,10 +8,9 @@ Design decisions at a more detailed level than architecture (modules, domain mod
 
 Supabase Realtime will be used to propagate inventory and budget updates instantly to connected clients. This decision was mainly made because the application requires the roommates to see changes like item additions, deletions, budget updates, etc. with minimal delay. Realtime's Postgres Changes and Broadcast features will reduce the need for manual polling and improve the overall user experience while integrating seamlessly with the existing Supabase stack.
 
-* **Decision 2: Handle access control primarily in the client and domain layer**
+* **Decision 2: Enforce access control using Supabase Row-Level Security (RLS)**
 
-Access control will be handled primarily in the client-side use cases and repository layer in order to centralize business logic and reduce unnecessary database overhead. This approach allows better control over application behavior while keeping the system more flexible.
-Supabase Row-Level Security (RLS) will be used only as a fallback safety mechanism, mainly to ensure that users are authenticated and to prevent unauthorized access at the database level.
+All data access permissions will be enforced at the database level using the RLS Policies. This ensures that users will only see items belonging to their household. Using RLS reduces backend complexity, prioritizing security and preventing any data leaks. Policies will rely on `auth.uid()` and `household_members` to determine authorization.
 
 * **Decision 3: Use Edge Functions for complex business logic**
 
@@ -57,15 +56,16 @@ The following mappings describe how domain concepts translate into system compon
   - Used to normalize item metadata such as brand, size, and unit
 
 * **Stock (Inventory Item Instance)**
-  - Stored within: inventories
+  - Table: `stock`
   - Represents a purchased instance of a product tracked within the inventory
   - Includes quantity, status, purchase details, and expiration data
-  - Exists as part of an Inventory rather than as a standalone aggregate
+  - Real-time updates enabled via Supabase Realtime
+  - Protected by RLS household policies
 
 * **StockLocation**
-  - Represents the association between stock and rooms within a household
-  - Implemented as a mapping between stock items and room identifiers rather than a standalone table
-  - Used to determine where items are located within the household
+  - Table: `stock_locations`
+  - Represents the placement or movement of stock within rooms
+  - Supports tracking of current location and location history
 
 * **Inventory**
   - Table: `inventories`
@@ -74,11 +74,11 @@ The following mappings describe how domain concepts translate into system compon
 * **ShoppingList**
   - Table: `shopping_lists`
   - Represents planned purchases for restocking household inventory
+  - Associated with a ShoppingListEntry through the `shopping_list_entries_id` field
 
 * **ShoppingListEntry**
   - Table: `shopping_list_entries`
   - Represents individual items within a shopping list including quantity and priority
-  - Each entry references its parent shopping list through a `shopping_list_id` field
 
 * **Category / Supplier**
   - Tables: `categories`, `suppliers`
@@ -96,64 +96,6 @@ The following mappings describe how domain concepts translate into system compon
   - Used by `/accept-invite` endpoint
 
 ---
-
-=== Relational Database Design & Integrity 
-
-To support search performance and ensure data accuracy for automated features (Alerts & Restock), the system enforces physical and logical hierarchies through explicit Foreign Key (FK) constraints specifically in Supabase.
-
-==== Home vs Household
-
-The system distinguishes between Home and Household as two related but different concepts.
-
-A Home represents the physical space where inventory is stored. It contains Rooms and defines where items are located.
-
-A Household represents the social and organizational unit responsible for managing that space. It groups users together, defines roles, and connects to shared data such as budgets, expenses, and inventory access.
-
-This separation allows the system to model both the physical location of items and the people responsible for managing them.
-
-==== Core Inventory Hierarchy
-
-The following relationships define the physical containment and definition of inventory:
-
-* Rooms to Homes: The rooms table includes a home_id. This allows the system to efficiently retrieve all rooms associated with a physical space.
-* Stock to Products: Every stock entry references a product_id. This connects physical instances of a product to their general definitions (brand, unit, category), which is a prerequisite for the Alerts & Restock triggers.
-* Stock to Rooms: Items are linked to their physical location via a room_id in the stock table, ensuring the system can accurately report the "Stock Location."
-
-==== Many-to-Many Ownership 
-
-To satisfy the Grouped-Owned Inventory model, ownership is no longer a strict 1:1 relationship:
-
-* The owns Table: This join table connects stock_id to household_members.id. It allows multiple stakeholders (roommates) to share ownership of a single physical item, resolving previous limitations regarding shared household assets.
-
-==== Feature-Specific Connectivity
-
-* Financial Logic: expenses, budgets, and household_summary are strictly scoped by household_id. This ensures financial analytics are aggregated correctly at the household level and secured via RLS.
-* Shopping Lists: shopping_list_entries reference both the parent list and the products catalog so that planned purchases remain linked to reusable product definitions.
-* Invites: invite_tokens are linked to a household_id to ensure users are added to the correct household context upon redemption.
-* Household Membership: The household_members table links users to households and defines their roles. This relationship is used by RLS policies to control access and permissions.
-
-==== Data Integrity Constraints
-
-To maintain Reliability and Accuracy, the following database-level rules are enforced.
-
-The ON DELETE constraints define what happens to related records when a referenced parent record is removed:
-
-* ON DELETE CASCADE: Automatically deletes all related records.
-* ON DELETE RESTRICT: Prevents deletion if related records still exist.
-* ON DELETE SET NULL: Keeps the record but removes the reference by setting it to NULL.
-
-[cols="1,2,2"]
-|===
-|Relationship |Constraint |Purpose
-
-|Household -> Room/Member |ON DELETE CASCADE |If a household is deleted, all related rooms are deleted and all household membership relationships are removed. The users themselves are not deleted, only their association with the household.
-
-|Product -> Stock |ON DELETE RESTRICT |Prevents deletion of a product if stock entries still reference it, unless explicitly handled through application logic (e.g., user confirmation and cascading removal).
-
-|Expenses -> User |ON DELETE SET NULL |If a user is removed, the expense record remains, but its reference to the user is set to NULL. This preserves financial history while removing the association with the deleted user.
-
-|Stock -> Room |ON DELETE SET NULL |If a room is deleted, the stock entries remain, but their room reference is set to NULL. This prevents data loss while indicating that the item no longer has a known location.
-|===
 
 ==== Realtime Channels
 
@@ -185,13 +127,13 @@ The ON DELETE constraints define what happens to related records when a referenc
 
 ---
 
-==== Access Control Strategy
+==== RLS Policy Strategy
 
-Access control is primarily handled within the client-side use cases and repository layer to centralize business logic and reduce database complexity.
-
-The system ensures that only authorized users can access and modify household data by validating user membership and roles before performing operations.
-
-Database-level protections (such as Supabase authentication checks) may be used as a fallback safeguard but are not the primary enforcement mechanism.
+* SELECT policies filters by household membership
+* INSERT policies verifies user belongs to household
+* Admin-only actions use helper function:
+  - `is_household_admin(h_id uuid)`
+* Private items enforced via `owner_id = auth.uid()`
 
 ---
 

@@ -1,0 +1,280 @@
+= Sweep Failure Detection & Recovery Strategy (Observability, Retries, and Escalation)
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+
+// ============================================================================
+// Related doc(s):
+//   docs/2-descriptive/implementation/software-architecture/design-and-document-sweep-architecture.adoc
+//   docs/2-descriptive/implementation/software-architecture/notification-deduplication-strategy.adoc
+// ============================================================================
+
+[[objective]]
+== Objective
+
+Define how the system will **detect**, **record**, and **respond to** sweep failures (scheduler didn't run, function crashed, DB errors, partial completion). This ensures automation remains reliable and failures do not silently prevent reminders/status updates.
+
+[[scope]]
+== Scope and Assumptions
+
+=== In scope
+* Failure mode catalog for sweep execution (scheduler, function, DB, partial completion).
+* Sweep run lifecycle model and required metadata for run records and logs.
+* Observability plan (logs, persistent run records, and health rules).
+* Recovery policy (retry triggers + backoff + stop conditions).
+* Escalation policy (who/when/how to notify maintainers).
+* Fit-criterion requirements + verification matrix.
+
+=== Out of scope
+* Implementation of monitoring integrations (e.g., third-party alerting tool).
+* UI work for user-facing error states.
+
+=== Key dependencies
+* The sweep worker records run attempts in `sweep_runs` (see sweep architecture doc).
+* Safe retries assume **notification idempotency/deduplication** is defined (see notification dedupe strategy doc).
+
+[[failure-modes]]
+== Failure Mode Catalog (Research-Based)
+
+The following failure modes are expected and must be explicitly handled.
+
+=== Scheduler failures
+* Job not triggered (misconfigured schedule, disabled job, provider outage).
+* Job triggered late (queue delays, rate limiting).
+* Job triggered multiple times (misfire, duplicate triggers, retry behavior).
+
+=== Hosted function failures
+* Timeout (long query/update, cold start, throttling).
+* Crash/exception (unhandled error, runtime dependency issue).
+* Partial progress then crash (updated some DB state, didn't finalize run).
+
+=== Supabase / DB failures
+* Connectivity/auth failure (service key expired/invalid, network issues).
+* Query failure (syntax error, missing table/column, migration mismatch).
+* Contention/locks (row locks, long-running transactions).
+* Constraint violations (bad data, unexpected nulls).
+
+=== Partial completion cases (critical)
+* Derived flags updated, but notifications not processed.
+* Some notifications processed, then crash (must not duplicate on rerun).
+* `sweep_runs` started record exists but not finalized (stuck "started").
+
+[[run-state-model]]
+== Run-State Model
+
+[[lifecycle]]
+=== Lifecycle
+
+A sweep run MUST follow an explicit lifecycle:
+
+* `started` -> `success`
+* `started` -> `failed`
+* `started` -> `partial` (optional but recommended when some work completed)
+
+A run is considered **terminal** when it reaches `success`, `failed`, or `partial`.
+
+[[required-metadata]]
+=== Required metadata (persisted per run)
+
+Minimum fields (conceptual):
+
+* `run_id` (UUID) — correlation ID shared across logs
+* `started_at`, `completed_at` (timestamps)
+* `status` (`started`, `success`, `failed`, `partial`)
+* `items_scanned`
+* `expired_flagged_count`
+* `low_stock_flagged_count`
+* `notifications_attempted` (if notifications are part of the same worker)
+* `notifications_sent`
+* `notifications_skipped_duplicate`
+* `error_summary` (non-empty on `failed`/`partial`)
+* `trigger_source` (`cron`, `manual`, `retry`)
+
+NOTE: If notifications are handled in a separate step/service, replace notification fields with a pointer such as `notification_phase_status` or record them in a notification ledger.
+
+[[observability]]
+== Observability Plan
+
+[[logging]]
+=== Structured logging (per phase)
+
+The sweep worker should emit structured log events (at minimum):
+
+* `run_started` (run_id, trigger_source, scope)
+* `items_query_started` / `items_query_completed` (duration, counts)
+* `flags_update_started` / `flags_update_completed` (duration, rows affected)
+* `notification_phase_started` / `notification_phase_completed` (counts, duration) (if applicable)
+* `run_completed` (status, summary counts)
+* `run_failed` (status, error_summary, stack/context)
+
+All log events should include `run_id` to support correlation.
+
+[[where-logs-live]]
+=== Where observability data lives
+
+* Persistent: `sweep_runs` table (authoritative audit record).
+* Runtime logs: hosted function provider logs (and optionally Supabase logs).
+* Optional: GitHub Discussion/Issue comments for escalations (human-facing visibility).
+
+[[health-rules]]
+=== Health rules (problem detection)
+
+At minimum, define and enforce these health rules:
+
+* *HR-001 (No success window):* If **no successful sweep** has occurred in `X` hours (recommended: 48), trigger escalation.
+* *HR-002 (Consecutive failures):* If `N` consecutive sweeps end in `failed` or `partial` (recommended: 3), trigger escalation.
+
+Optional anomaly signals:
+* Abnormally long runtime compared to baseline (e.g., > 2x typical).
+* Abnormally high flagged counts relative to baseline (possible data bug).
+
+[[recovery]]
+== Recovery / Retry Policy
+
+[[retry-triggers]]
+=== Retry triggers
+
+A retry may be initiated when:
+
+* run status is `failed`
+* run status is `partial`
+* function timed out
+* run is stuck in `started` beyond a timeout threshold (e.g., 30 minutes)
+
+Retries must be safe. This depends on idempotent DB updates and notification dedupe.
+
+[[retry-parameters]]
+=== Retry parameters
+
+Recommended policy:
+
+* Max attempts: `3` retries per scheduled occurrence
+* Backoff: exponential (e.g., 5 min, 15 min, 45 min)
+* Jitter: +/- 20% to avoid thundering herd if provider retries multiple jobs
+
+If retry attempts exceed max, stop retrying and escalate.
+
+[[safe-retry]]
+=== Safe retry requirements
+
+Retrying the sweep must not cause duplicate notifications. This requires:
+
+* A stable dedupe mechanism (e.g., notification ledger uniqueness by key/window).
+* Recording dedupe state before or atomically with sending (so reruns suppress already-sent alerts).
+
+If dedupe is unavailable, retries should be limited to **DB-only flag recomputation** and notifications should be deferred.
+
+[[stop-and-escalate]]
+=== Stop conditions
+
+Stop retrying and escalate when:
+
+* Retries exceed max attempts for the current day/run window
+* Health rule HR-001 or HR-002 triggers
+* Failures indicate configuration problems (auth key invalid, schema mismatch)
+
+[[escalation]]
+== Escalation Strategy
+
+[[who]]
+=== Who gets notified
+
+* Primary: Team 2 lead (Alerts & Restock)
+* Secondary: Project managers (if HR-001 or HR-002 triggers)
+* Optional: Documentation lead (for milestone visibility if failures impact deliverables)
+
+[[channels]]
+=== Channel(s) and cadence
+
+Recommended escalation channels (choose what your team actually uses):
+
+* GitHub Discussion post in a “Reliability / Automation” category
+* Email (only if established for the project)
+
+Cadence:
+* Immediate on HR-002 (consecutive failures)
+* Immediate on HR-001 (no success in X hours)
+
+[[alert-payload]]
+=== Alert payload (what to include)
+
+Each escalation message should include:
+
+* `run_id`
+* `status` and timestamps
+* failure mode guess (scheduler/function/DB)
+* `error_summary`
+* counts (scanned, flagged, notifications attempted/sent/skipped)
+* pointer to logs (provider link if available) and/or `sweep_runs` entry
+
+[[fit-criterion]]
+== Fit-Criterion Requirements
+
+*REQ-REL-001 (Run Record Persisted)*::
+The system shall persist a sweep-run record for every execution attempt, including timestamps and terminal status.
+
+*REQ-REL-002 (Failure Recording)*::
+If a sweep execution fails, the system shall record a non-empty error summary in the sweep-run record.
+
+*REQ-REL-003 (No Success Detection)*::
+The system shall detect and surface when no successful sweep has occurred in 48 hours (configurable threshold).
+
+*REQ-REL-004 (Retry Policy)*::
+The system shall apply a retry policy on sweep failure with a maximum of 3 attempts per scheduled occurrence, using exponential backoff.
+
+*REQ-REL-005 (Escalation on Consecutive Failures)*::
+The system shall escalate to maintainers after 3 consecutive sweep runs end in `failed` or `partial`.
+
+*REQ-REL-006 (Retry Safety)*::
+Rerunning or retrying the sweep shall not duplicate notifications for alerts already sent within the current window, contingent on the dedupe strategy.
+
+[[verification]]
+== Verification Plan (Failure Simulation Matrix)
+
+[cols="1,2,2,2",options="header"]
+|===
+| Scenario | Setup | Action | Expected Outcome
+
+| Scheduler not executed
+| Disable scheduler or simulate missed run
+| Wait beyond expected interval
+| HR-001 triggers escalation (no success in X hours)
+
+| Function timeout
+| Force long-running operation in staging
+| Trigger sweep
+| Run ends `failed`/`partial`; retry policy initiates; run records + logs show timeout
+
+| DB error mid-run
+| Simulate DB failure or invalid query
+| Trigger sweep
+| Run recorded as `failed` with error_summary; retries occur up to max; escalation if persists
+
+| Partial completion
+| Crash after flags update but before completion
+| Trigger sweep then rerun
+| Run recorded as `partial`; rerun succeeds; no duplicate notifications (dedupe required)
+
+| Repeated failures over multiple days
+| Break credentials/schema on purpose
+| Trigger sweeps repeatedly
+| HR-002 triggers escalation after N failures; HR-001 triggers after X hours
+
+| Success after retry
+| Introduce transient failure then fix
+| Trigger sweep; allow retry
+| Initial run fails; subsequent retry succeeds; run history shows recovery
+|===
+
+[[traceability]]
+== Traceability Hooks
+
+* Sweep execution and run recording architecture:
+    `docs/2-descriptive/implementation/software-architecture/design-and-document-sweep-architecture.adoc`
+
+* Notification dedupe required for safe retries:
+    `docs/2-descriptive/implementation/software-architecture/notification-deduplication-strategy.adoc`
+
+This strategy supports the project goal of reliable Smart Notifications by ensuring failures are visible, recoverable, and do not silently prevent reminders.

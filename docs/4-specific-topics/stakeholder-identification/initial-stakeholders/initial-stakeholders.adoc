@@ -1,6 +1,5 @@
 == Initial Stakeholders
 
-[abstract]
 Initial set of stakeholders identified at the start of the project.
 
 [cols="2,3,2,3",options="header"]
@@ -22,10 +21,10 @@ Initial set of stakeholders identified at the start of the project.
 |High 
 |Paying more than their fair share, or unexpectedly running out of essential shared items.
 
-|Budget-conscious student 
-|Track consumption rates to predict expenses and minimize spending on unnecessary or duplicate items. 
-|Medium 
-|Overspending due to poor inventory visibility; the app must provide clear insights into shopping habits.
+|Budget-conscious student
+|Track consumption rates to predict expenses and minimize spending on unnecessary or duplicate items.
+|Medium
+|Overspending due to poor inventory visibility and unclear tracking of shared household purchases.
 
 |Student with dietary/medical needs 
 |Strictly monitor specific food items or medications, ensuring continuous availability of safe and necessary options. 
