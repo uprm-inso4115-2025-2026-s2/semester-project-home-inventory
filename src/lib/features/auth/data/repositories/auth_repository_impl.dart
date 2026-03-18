@@ -11,21 +11,13 @@ class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({required this.dataSource});
 
   @override
-  Future<AuthUser?> signUp({
-    required String email,
-    required String password,
-  }) async {
-    final userModel = await dataSource.signUp(email: email, password: password);
-    return userModel?.toEntity();
+  Future<AuthUser?> signUp({required String email, required String password}) {
+    return dataSource.signUp(email: email, password: password);
   }
 
   @override
-  Future<AuthUser?> signIn({
-    required String email,
-    required String password,
-  }) async {
-    final userModel = await dataSource.signIn(email: email, password: password);
-    return userModel?.toEntity();
+  Future<AuthUser?> signIn({required String email, required String password}) {
+    return dataSource.signIn(email: email, password: password);
   }
 
   @override
@@ -35,13 +27,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   AuthUser? getCurrentUser() {
-    return dataSource.getCurrentUser()?.toEntity();
+    return dataSource.getCurrentUser();
   }
 
   @override
   Stream<AuthUser?> watchCurrentUser() {
-    return dataSource.watchCurrentUser().map((userModel) {
-      return userModel?.toEntity();
-    });
+    return dataSource.watchCurrentUser();
   }
 }

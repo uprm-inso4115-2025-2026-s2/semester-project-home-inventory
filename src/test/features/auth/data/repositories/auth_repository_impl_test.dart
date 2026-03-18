@@ -6,7 +6,7 @@ import '../../fakes/fake_auth_data_source.dart';
 
 void main() {
   group('AuthRepositoryImpl', () {
-    test('getCurrentUser maps model to entity', () {
+    test('getCurrentUser returns current user from datasource', () {
       // Prepare a fake data source with the current user model.
       final dataSource = FakeAuthDataSource()
         ..currentUser = const AuthUserModel(
@@ -48,11 +48,11 @@ void main() {
       },
     );
 
-    test('watchCurrentuser emits null when datasource emits null', () async {
+    test('watchCurrentUser emits null when datasource emits null', () async {
       final dataSource = FakeAuthDataSource();
       final repository = AuthRepositoryImpl(dataSource: dataSource);
 
-      // Expect the stream to emit null when no unauthenticated
+      // Expect the stream to emit null when no authenticated
       // user is available.
       final future = expectLater(repository.watchCurrentUser(), emits(isNull));
 
