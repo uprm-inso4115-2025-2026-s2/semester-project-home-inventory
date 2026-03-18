@@ -3,11 +3,197 @@
 Design decisions at a more detailed level than architecture (modules, domain model, APIs, etc.).
 
 === Key design decisions
-* TODO: Decision 1 (and why)
-* TODO: Decision 2
+
+* **Decision 1: Use Supabase Realtime for live synchronization**
+
+Supabase Realtime will be used to propagate inventory and budget updates instantly to connected clients. This decision was mainly made because the application requires the roommates to see changes like item additions, deletions, budget updates, etc. with minimal delay. Realtime's Postgres Changes and Broadcast features will reduce the need for manual polling and improve the overall user experience while integrating seamlessly with the existing Supabase stack.
+
+* **Decision 2: Enforce access control using Supabase Row-Level Security (RLS)**
+
+All data access permissions will be enforced at the database level using the RLS Policies. This ensures that users will only see items belonging to their household. Using RLS reduces backend complexity, prioritizing security and preventing any data leaks. Policies will rely on `auth.uid()` and `household_members` to determine authorization.
+
+* **Decision 3: Use Edge Functions for complex business logic**
+
+Supabase Edge Functions will handle operations that require transactional guarantees or cross-table validation such as budget enforcement, invite validation, or conflict resolution. RLS alone will be insufficient for these cases, so Edge Functions will provide serverside execution in a secure Deno Runtime to allow small operations using database transactions. 
+
+---
 
 === Domain model notes
-* TODO: How domain concepts map to classes/modules (draft)
 
-=== API/interface sketch (optional)
-* TODO
+The following mappings describe how domain concepts translate into system components:
+
+* **User**
+  - Source: Supabase Auth
+  - Key field: `auth.uid()`
+  - Related table: `users`
+  - Purpose: ownership and identity
+
+* **Household**
+  - Table: `households`
+  - Represents a shared living group
+  - Links multiple users together
+
+* **HouseholdMembership**
+  - Table: `household_members`
+  - Fields: `user_id`, `household_id`, `role`
+  - Used by RLS policies to authorize access
+  - Supports admin vs member roles
+
+* **Home**
+  - Table: `homes`
+  - Represents the physical household environment where inventory is managed
+  - Provides the structural context for rooms and stored items
+
+* **Room**
+  - Table: `rooms`
+  - Represents a location within a home where inventory items may be stored
+  - Associated with a Home through the `home_id` field
+  - Examples include kitchen, pantry, and bathroom
+
+* **Product**
+  - Table: `products`
+  - Represents a reusable product definition independent of a specific purchase
+  - Used to normalize item metadata such as brand, size, and unit
+
+* **Stock (Inventory Item Instance)**
+  - Table: `stock`
+  - Represents a purchased instance of a product tracked within the inventory
+  - Includes quantity, status, purchase details, and expiration data
+  - Real-time updates enabled via Supabase Realtime
+  - Protected by RLS household policies
+
+* **StockLocation**
+  - Table: `stock_locations`
+  - Represents the placement or movement of stock within rooms
+  - Supports tracking of current location and location history
+
+* **Inventory**
+  - Table: `inventories`
+  - Represents the collection of stock associated with a home
+
+* **ShoppingList**
+  - Table: `shopping_lists`
+  - Represents planned purchases for restocking household inventory
+  - Associated with a ShoppingListEntry through the `shopping_list_entries_id` field
+
+* **ShoppingListEntry**
+  - Table: `shopping_list_entries`
+  - Represents individual items within a shopping list including quantity and priority
+
+* **Category / Supplier**
+  - Tables: `categories`, `suppliers`
+  - Provide organizational and sourcing metadata for products
+
+* **Budget / Expense**
+  - Tables: `budgets`, `expenses`, `household_summary`
+  - Validated through Edge Functions before writes
+  - Updated automatically via database webhooks
+
+* **InviteToken**
+  - Table: `invite_tokens`
+  - Generated via Edge Function
+  - Short-lived signed token
+  - Used by `/accept-invite` endpoint
+
+---
+
+=== Relational Database Design & Integrity 
+
+To support search performance and ensure data accuracy for automated features (Alerts & Restock), the system enforces physical and logical hierarchies through explicit Foreign Key (FK) constraints specifically in Supabase.
+
+==== Home vs Household
+
+The system distinguishes between Home and Household as two related but different concepts.
+
+A Home represents the physical space where inventory is stored. It contains Rooms and defines where items are located.
+
+A Household represents the social and organizational unit responsible for managing that space. It groups users together, defines roles, and connects to shared data such as budgets, expenses, and inventory access.
+
+This separation allows the system to model both the physical location of items and the people responsible for managing them.
+
+==== Core Inventory Hierarchy
+
+The following relationships define the physical containment and definition of inventory:
+
+* Rooms to Homes: The rooms table includes a home_id. This allows the system to efficiently retrieve all rooms associated with a physical space.
+* Stock to Products: Every stock entry references a product_id. This connects physical instances of a product to their general definitions (brand, unit, category), which is a prerequisite for the Alerts & Restock triggers.
+* Stock to Rooms: Items are linked to their physical location via a room_id in the stock table, ensuring the system can accurately report the "Stock Location."
+
+==== Many-to-Many Ownership 
+
+To satisfy the Grouped-Owned Inventory model, ownership is no longer a strict 1:1 relationship:
+
+* The owns Table: This join table connects stock_id to household_members.id. It allows multiple stakeholders (roommates) to share ownership of a single physical item, resolving previous limitations regarding shared household assets.
+
+==== Feature-Specific Connectivity
+
+* Financial Logic: expenses, budgets, and household_summary are strictly scoped by household_id. This ensures financial analytics are aggregated correctly at the household level and secured via RLS.
+* Shopping Lists: shopping_list_entries reference both the parent list and the products catalog so that planned purchases remain linked to reusable product definitions.
+* Invites: invite_tokens are linked to a household_id to ensure users are added to the correct household context upon redemption.
+* Household Membership: The household_members table links users to households and defines their roles. This relationship is used by RLS policies to control access and permissions.
+
+==== Data Integrity Constraints
+
+To maintain Reliability and Accuracy, the following database-level rules are enforced.
+
+The ON DELETE constraints define what happens to related records when a referenced parent record is removed:
+
+* ON DELETE CASCADE: Automatically deletes all related records.
+* ON DELETE RESTRICT: Prevents deletion if related records still exist.
+* ON DELETE SET NULL: Keeps the record but removes the reference by setting it to NULL.
+
+[cols="1,2,2"]
+|===
+|Relationship |Constraint |Purpose
+
+|Household -> Room/Member | ON DELETE CASCADE |If a household is deleted, all related rooms and household members are automatically deleted as well. This prevents orphan records and ensures that dependent data does not exist without its parent.
+
+|Product -> Stock | ON DELETE RESTRICT |Prevents a product from being deleted if there are still stock entries referencing it. This ensures that all stock items always reference a valid product definition.
+
+|Expenses -> User | ON DELETE SET NULL |If a user is removed, the expense record remains, but its reference to the user is set to NULL. This preserves financial history while removing the association with the deleted user.
+
+|Stock -> Room | ON DELETE SET NULL |If a room is deleted, the stock entries remain, but their room reference is set to NULL. This prevents data loss while indicating that the item no longer has a known location.
+|===
+
+==== Realtime Channels
+
+* `inventory-updates`
+  - Purpose: notify clients when items change
+  - Mechanism: Supabase Realtime Postgres Changes or Broadcast
+
+* `budget-updates`
+  - Purpose: push household budget recalculations
+
+---
+
+==== Edge Function Endpoints
+
+* **POST /validate-budget** 
+** Input: `{ amount, household_id }`
+** *Behavior:*
+    *** Computes current monthly spending
+    *** Rejects if limit exceeded (403)
+    *** Otherwise approves write
+** Used before inserting expenses
+
+* **POST /accept-invite**
+** Input: `{ token }`
+** *Behavior:*
+    *** Validates signed invite token
+    *** Adds user to `household_members`
+    *** Returns success/failure
+
+---
+
+==== RLS Policy Strategy
+
+* SELECT policies filters by household membership
+* INSERT policies verifies user belongs to household
+* Admin-only actions use helper function:
+  - `is_household_admin(h_id uuid)`
+* Private items enforced via `owner_id = auth.uid()`
+
+---
+
+include::database_schema.adoc[leveloffset=+1]
+include::notifications_schema.adoc[leveloffset=+1]
