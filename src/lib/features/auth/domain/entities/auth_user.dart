@@ -8,6 +8,21 @@ class AuthUser {
   /// authenticated users.
   final String? email;
 
-  /// AuthUser constructor with required id and email.
-  const AuthUser({required this.id, required this.email});
+  /// User display name.
+  final String? name;
+
+  /// URL to the user's profile picture.
+  final String? profilePictureUrl;
+
+  /// User's birthdate.
+  final DateTime? birthday;
+
+  /// AuthUser entity constructor with required id and email.
+  const AuthUser({
+    required this.id,
+    required this.email,
+    this.name,
+    this.profilePictureUrl,
+    this.birthday,
+  });
 }
