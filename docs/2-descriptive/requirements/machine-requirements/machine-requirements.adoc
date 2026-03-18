@@ -1,16 +1,27 @@
 == Machine Requirements
 
-Technical/system requirements and constraints (performance, security, data, integrations).
+Machine requirements describe measurable quality properties and constraints of the system-to-be (performance, reliability, security/privacy, availability, and scalability). They are stated independently of specific vendors or deployment tiers; implementation candidates and platform-specific limits are documented in Section 2.3.
 
-=== Non-functional requirements
-* MR1 (Performance): TODO
-* MR2 (Reliability): TODO
-* MR3 (Security/Privacy): TODO
+=== Non-functional requirements (initial)
 
-=== Data requirements
-* TODO: Data stored/used
-* TODO: Data retention constraints
-* TODO: Data quality assumptions
+* MR-1 Performance: Common inventory views (list/search/filter) shall respond fast enough to be usable while shopping. Initial target: search/filter results returned within 2 seconds under typical mobile-network conditions.
+* MR-2 Reliability and consistency: Shared-household inventory data shall remain consistent across household members after synchronization. Conflicts or reconciliation behavior (if any) shall be predictable and testable.
+* MR-3 Availability and offline tolerance: Core workflows (view inventory, record consumption/restock, view restock list) shall remain usable during temporary connectivity gaps; changes shall synchronize when connectivity returns.
+* MR-4 Security and privacy: Household data shall be accessible only to authorized household members. Removing a member’s access shall take effect promptly (access revocation must prevent future reads/writes).
+* MR-5 Data integrity and auditability: Critical changes (quantity changes, ownership changes, spending entries) shall preserve an audit/transaction history sufficient to explain how current values were reached.
+* MR-6 Notification quality (anti-spam): Alert generation shall be deduplicated and primarily triggered by state transitions (e.g., NORMAL → LOW_STOCK). Re-running automated checks without state changes shall not generate duplicate alerts.
+* MR-7 Scalability (initial span): The system shall remain responsive for the initial span (e.g., up to ~300 tracked items per household and up to 5 household members), with room to expand in later milestones.
 
-=== Integration requirements (if any)
-* TODO
+=== Data requirements (initial)
+
+* DR-Data-1 Schema consistency: Data structures and changes shall be versioned and reproducible across environments (e.g., via migrations or equivalent mechanisms).
+* DR-Data-2 Uniqueness and identifiers: Authoritative identifiers (e.g., barcode for item type when present) shall be treated as unique to prevent duplicate definitions.
+* DR-Data-3 Retention integrity: Removing an item from the tracked inventory shall not silently delete linked financial history; spending records must remain traceable.
+
+=== Integration requirements (initial)
+
+* IR-Int-1 Device capabilities (optional): If barcode scanning is in scope, the system shall integrate with device camera/barcode capabilities on supported mobile platforms.
+* IR-Int-2 Notification delivery: The system shall support presenting alerts to users at least within the application; additional delivery methods (e.g., push notifications) may be considered in later milestones.
+
+[NOTE]
+Implementation candidates (e.g., specific backend services, authentication mechanisms, realtime sync approaches, and platform runtime limits) are documented in Section 2.3 and may change as the project evolves.

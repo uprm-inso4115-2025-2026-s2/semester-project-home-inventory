@@ -1,16 +1,20 @@
 == Resources
 
-[abstract]
-Evidence sources and supporting materials used to understand the domain and justify requirements.
+Evidence sources and supporting materials used to understand the domain and justify requirements. For Milestone 1, we list only the most important sources; extended notes are linked.
 
-=== Sources
-* TODO: Link/resource 1 — why it matters
-* TODO: Link/resource 2 — why it matters
+=== External sources (selected)
+* Household food waste research: supports the need for better visibility and expiration awareness in student households.
+* Personal Information Management (PIM) research: supports the risk that high-effort or overly frequent updates lead to abandonment and notification fatigue.
+* Household finance / budgeting research (general): supports the importance of spending awareness for budget-constrained students.
 
-=== Internal artifacts
-* Rough sketch notes: TODO (where stored)
-* Terminology table: TODO (where stored)
-* Meeting notes / decisions: TODO (where stored)
+Extended literature notes: `docs/lecture-topic-tasks/domain-acquisition-ltt.adoc`
 
-=== Open questions
-* TODO
+=== Internal artifacts (project)
+* Domain rough sketch and narrative: `docs/2-descriptive/domain-description/rough-sketch/` and `docs/2-descriptive/domain-description/narrative/`
+* Terminology table: `docs/2-descriptive/domain-description/terminology/terminology.adoc`
+* Domain concept analysis: Section 3.1 (including invariants and term clashes)
+* Validation and verification artifacts: Section 3.2 (scenarios, walkthrough plan, testing)
+
+=== Open questions (Milestone 1)
+* Interview and walkthrough findings should be summarized and linked here once sessions are completed (participant codes + dates + key quotes).
+* Competitive scan results should be summarized (top friction points and why) once completed.

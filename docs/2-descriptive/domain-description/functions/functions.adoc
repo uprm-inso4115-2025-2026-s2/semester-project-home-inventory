@@ -1,13 +1,70 @@
 == Functions
 
-Major domain functions/capabilities (what the domain must be able to do), not UI features.
+Major domain functions/capabilities (what can be done in the domain), described independently of UI. Function signatures are illustrative and may evolve.
 
-[cols="2,4,3",options="header"]
+[cols="2,4,4",options="header"]
 |===
-|Function |Description |Primary actors
+|Function |Description |Signature (illustrative)
 
-|TODO |TODO |TODO
+|Add item instance
+|Introduce a new item instance/package into a household’s tracked representation.
+|addItemInstance : Household >< ItemType >< Location >< Quantity? >< ExpirationDate? -> Household
+
+|Move item instance
+|Change where an item instance is stored.
+|moveItemInstance : Household >< ItemInstance >< Location -> Household
+
+|Record consumption
+|Decrease availability of an item instance (or item type record) due to use.
+|consume : Household >< ItemInstance >< QuantityDelta -> Household
+
+|Record replenishment
+|Increase availability by adding new item instance(s) or increasing quantity.
+|restock : Household >< ItemType >< Location >< QuantityDelta >< ExpirationDate? -> Household
+
+|Judge low-stock
+|Determine whether an item type is considered low based on household strategy/threshold.
+|isLowStock : ItemType >< Availability >< Threshold? -> Bool
+
+|Determine expiration status
+|Classify an item instance’s expiration state when an expiration date exists.
+|expirationStatus : ItemInstance >< DateNow -> (Active | NearExpiry | Expired | Unknown)
+
+|Create restock entry
+|Add an item type to the restock list/planner with a reason.
+|addToRestockList : RestockList >< ItemType >< Reason -> RestockList
+
+|Defer / dismiss restock entry (manual override)
+|Allow a household member to postpone or remove an entry from restock planning.
+|deferRestock : RestockList >< ItemType >< Until? -> RestockList
+
+|Generate alert (domain-level)
+|Create an alert record when an actionable state is reached (low/out/near-expiry/expired/budget threshold).
+|generateAlert : AlertLog >< AlertType >< Target -> AlertLog
+
+|Acknowledge alert (dismiss/defer)
+|Record a household member’s decision to dismiss or defer an alert.
+|ackAlert : AlertLog >< Alert >< Action(dismiss\|defer) >< Until? -> AlertLog
+
+|Record quantity change transaction (traceability)
+|Append a transaction describing why/when availability changed.
+|recordTransaction : TransactionLog >< ItemInstance >< Change >< Reason >< Time -> TransactionLog
+
+|Record spending event
+|Create a spending entry capturing who paid, how much, when, and whether it is shared or personal.
+|recordSpending : Household >< Amount >< Date >< Payer >< Scope(shared\|personal) >< ItemType? >< Category? -> Household
+
+|Adjust spending entry (audit-safe)
+|Correct spending records via adjustment/refund entries rather than destructive edits.
+|adjustSpending : Household >< SpendingEntry >< Adjustment -> Household
+
+|Compute budget status
+|Compute spent-to-date and remaining budget for a household or category within a budget cycle.
+|budgetStatus : Budget >< List SpendingEntry >< DateNow -> BudgetStatus
+
+|Detect budget threshold crossing
+|Determine whether spending crosses warning/limit thresholds.
+|budgetThresholdCrossed : BudgetStatus >< Thresholds -> Bool
 |===
 
-=== Notes
-* TODO: how these functions connect to needs (N1, N2...)
+include::spending_tracking_logic.adoc[leveloffset=+1]
