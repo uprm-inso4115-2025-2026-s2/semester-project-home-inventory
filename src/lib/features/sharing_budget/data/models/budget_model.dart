@@ -21,10 +21,16 @@ class BudgetModel extends BudgetEntity {
   }
 
   BudgetEntity toEntity() {
-    return this as BudgetEntity;
+    return BudgetEntity(
+      id: id,
+      householdId: householdId,
+      limitAmount: limitAmount,
+      period: period,
+      startDate: startDate,
+    );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'household_id': householdId,
@@ -34,13 +40,13 @@ class BudgetModel extends BudgetEntity {
     };
   }
 
-  factory BudgetModel.fromJson(Map<String, dynamic> json) {
+  factory BudgetModel.fromMap(Map<String, dynamic> map) {
     return BudgetModel(
-      id: json['id'] as int,
-      householdId: json['household_id'] as int,
-      limitAmount: (json['limit_amount'] as num).toDouble(),
-      period: BudgetPeriod.values.firstWhere((p) => p.name == json['period']),
-      startDate: DateTime.parse(json['start_date'] as String),
+      id: map['id'] as int,
+      householdId: map['household_id'] as int,
+      limitAmount: (map['limit_amount'] as num).toDouble(),
+      period: BudgetPeriod.values.firstWhere((p) => p.name == map['period']),
+      startDate: DateTime.parse(map['start_date'] as String),
     );
   }
 

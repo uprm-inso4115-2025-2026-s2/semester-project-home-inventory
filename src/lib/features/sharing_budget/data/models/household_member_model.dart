@@ -19,10 +19,15 @@ class HouseholdMemberModel extends HouseholdMemberEntity {
   }
 
   HouseholdMemberEntity toEntity() {
-    return this as HouseholdMemberEntity;
+    return HouseholdMemberEntity(
+      id: id,
+      householdId: householdId,
+      userId: userId,
+      role: role,
+    );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'household_id': householdId,
@@ -31,12 +36,12 @@ class HouseholdMemberModel extends HouseholdMemberEntity {
     };
   }
 
-  factory HouseholdMemberModel.fromJson(Map<String, dynamic> json) {
+  factory HouseholdMemberModel.fromMap(Map<String, dynamic> map) {
     return HouseholdMemberModel(
-      id: json['id'] as int,
-      householdId: json['household_id'] as int,
-      userId: json['user_id'] as int,
-      role: MemberRole.values.firstWhere((r) => r.name == json['role']),
+      id: map['id'] as int,
+      householdId: map['household_id'] as int,
+      userId: map['user_id'] as int,
+      role: MemberRole.values.firstWhere((r) => r.name == map['role']),
     );
   }
 
