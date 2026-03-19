@@ -22,10 +22,10 @@ These goals compete because reducing friction often means reducing the amount of
 
 *Derived requirements:*
 
-* `DG-REQ-01` The system shall require only the minimum information needed to create an item record initially, while allowing additional metadata to be added later.
-* `DG-REQ-02` The system shall not generate condition-based behaviors such as low-stock or expiration alerts unless the corresponding required item data is present and valid.
-* `DG-REQ-03` The system shall preserve existing item metadata until it is explicitly edited or deleted by an authorized user.
-* `DG-REQ-04` The system shall support update workflows that can be completed quickly enough to remain practical during ordinary student routines.
+* `DG-REQ-01` Users shall be able to create an initial item record with only the minimum information needed to identify and track that item, while adding richer metadata later as needed.
+* `DG-REQ-02` Low-stock and expiration-related behaviors shall only occur when the item information required to evaluate those conditions is present and valid.
+* `DG-REQ-03` Recorded item metadata shall remain stable and trustworthy over time unless an authorized user explicitly changes or removes it.
+* `DG-REQ-04` Routine item updates shall remain lightweight enough to fit ordinary student workflows without creating excessive maintenance burden.
 
 *Trace hooks:* `N1`, `N2`, `N3`; derived goal for adoption and continued use; reliability quality need; related inventory entry and update stories.
 
@@ -40,10 +40,10 @@ These goals compete because a highly proactive reminder strategy may reduce the 
 
 *Derived requirements:*
 
-* `DG-REQ-05` The system shall emit no more than one low-stock notification per item per recipient scope within a single calendar day.
-* `DG-REQ-06` The system shall emit no more than one expiration-related notification per item per recipient scope within a single calendar day unless a new alert condition is created by a state change.
-* `DG-REQ-07` The system shall suppress duplicate notifications caused by sweep retries, reruns, or partial failures within the same deduplication window.
-* `DG-REQ-08` The system shall prioritize relevant and timely notifications over high notification volume by limiting reminders to conditions supported by valid item data and active alert rules.
+* `DG-REQ-05` Users shall receive low-stock reminders often enough to support timely replenishment, but not more than once per item per recipient scope within a single calendar day.
+* `DG-REQ-06` Users shall receive expiration-related reminders often enough to support timely action, but not more than once per item per recipient scope within a single calendar day unless a new alert condition is created by a state change.
+* `DG-REQ-07` Repeated sweep executions shall not produce duplicate notifications for the same item-condition pair within the same deduplication window.
+* `DG-REQ-08` Reminder behavior shall favor relevance and timeliness over notification volume by limiting prompts to conditions supported by valid item data and active alert rules.
 
 *Trace hooks:* smart notifications project goal; `N2`; usability and reliability quality needs; related alerting and automation stories.
 
@@ -58,10 +58,10 @@ These goals compete because coordination improves when household members can see
 
 *Derived requirements:*
 
-* `DG-REQ-09` The system shall allow household members to view the availability and replenishment-relevant status of shared items.
-* `DG-REQ-10` The system shall distinguish shared item data from personal or user-specific item metadata when both exist in the same household context.
-* `DG-REQ-11` The system shall only expose ownership, spending, or other user-specific item information to users with permission to view it.
-* `DG-REQ-12` The system shall preserve a clear distinction between shared items and personal items whenever that distinction affects replenishment or household coordination.
+* `DG-REQ-09` Household members shall be able to see the availability and replenishment-relevant status of shared items.
+* `DG-REQ-10` Shared household data and personal or user-specific item data shall remain distinguishable when both exist in the same household context.
+* `DG-REQ-11` Ownership, spending, and other user-specific item information shall only be visible to users with permission to view it.
+* `DG-REQ-12` The distinction between shared items and personal items shall remain clear whenever that distinction affects replenishment or household coordination.
 
 *Trace hooks:* `N4`, `N5`; derived goal for shared-household coordination and trust; security/privacy quality need; related shared inventory and ownership stories.
 
