@@ -1,19 +1,25 @@
-class HouseholdModel {
-  final int id;
-  final String name;
-  final DateTime createdAt;
+import 'package:src/features/sharing_budget/domain/entities/household_entity.dart';
 
+class HouseholdModel extends HouseholdEntity {
   const HouseholdModel({
-    required this.id,
-    required this.name,
-    required this.createdAt,
+    required super.id,
+    required super.name,
+    required super.ownerId,
   });
 
-  factory HouseholdModel.fromMap(Map<String, dynamic> map) {
+  factory HouseholdModel.fromEntity(HouseholdEntity entity) {
     return HouseholdModel(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      createdAt: DateTime.parse(map['created_at'] as String),
+      id: entity.id,
+      name: entity.name,
+      ownerId: entity.ownerId,
+    );
+  }
+
+  HouseholdEntity toEntity() {
+    return HouseholdEntity(
+      id: id,
+      name: name,
+      ownerId: ownerId,
     );
   }
 
@@ -21,7 +27,19 @@ class HouseholdModel {
     return {
       'id': id,
       'name': name,
-      'created_at': createdAt.toIso8601String(),
+      'owner_id': ownerId,
     };
+  }
+
+  factory HouseholdModel.fromMap(Map<String, dynamic> map) {
+    return HouseholdModel(
+      id: map['id'] as int,
+      name: map['name'] as String,
+      ownerId: map['owner_id'] as int,
+    );
+  }
+
+  factory HouseholdModel.initial() {
+    return const HouseholdModel(id: -1, name: '', ownerId: -1);
   }
 }

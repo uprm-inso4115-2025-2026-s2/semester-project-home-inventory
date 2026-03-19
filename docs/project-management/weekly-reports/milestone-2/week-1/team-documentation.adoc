@@ -1,0 +1,71 @@
+= Milestone 2 - Week 1: Documentation Team Weekly Report
+:toc:
+
+== What the team accomplished this week
+
+This week the Documentation Team focused on organizing the team’s workflow, defining documentation responsibilities, and continuing progress on milestone-related documentation tasks.
+
+A major part of the week was dedicated to working on the document of issues. This included structuring the available tasks, clarifying their scope, and making them easier for team members to claim and complete. This helped improve visibility over the documentation workload and created a clearer process for tracking progress across the team.
+
+In addition, the team continued active work on several documentation issues related to concept analysis, architecture documentation, lecture topic tasks, and issue organization. The team also established a recurring meeting schedule to improve coordination and follow-up during the milestone.
+
+== Tasks completed / Issues closed
+
+The following documentation progress were being worked on this week:
+
+* *Issue #271*  
+  This issue was closed during the week.
+
+* *Document Regular Weight Issues/Tasks (#398)*  
+  The team worked on organizing and documenting the regular-weight documentation issues/tasks.
+
+* *Document Heavier Weight Issues/Tasks (#324)*  
+  The heavier-weight documentation tasks were compiled and structured to support team coordination and issue selection.
+
+* *Lecture Topic Task: Model Human Error Scenarios in Digital Home Inventory Management (#340)*  
+  This lecture-topic-related documentation task was completed and approved.
+
+== What is currently in progress
+
+The team is currently continuing work on the following documentation issues:
+
+* *Evidence Concept Analysis (Section 3.1 - Concept Analysis) (#391)*  
+  Currently being worked on as part of the requirements and analysis documentation.
+
+* *Document Core Inventory State Management Architecture (#383)*  
+  Work was done on this issue, though it was marked as duplicate/fix needed and may require follow-up or adjustment.
+
+The team is also continuing to refine the issues document and improve internal tracking so responsibilities remain clear across the documentation group.
+
+== Team coordination
+
+To improve consistency and communication, the Documentation Team established weekly meetings on:
+
+* *Thursdays from 4:00 PM to 4:30 PM*
+
+These meetings will be used to review progress, resolve blockers, confirm issue ownership, and coordinate upcoming documentation deliverables.
+
+== Blockers or challenges
+
+No challenges.
+
+== Plans for next week
+
+Next week the Documentation Team plans to:
+
+* Continue working on open milestone documentation issues
+* Refine and expand the shared issues document
+* Follow up on architecture and concept analysis documentation
+* Use the Thursday team meeting to monitor progress and assign next steps
+* Continue reviewing completed tasks to ensure consistency and quality across the documentation
+
+== Documentation Links
+
+Related issues:
+
+* #271 - Closed this week
+* #398 - Document Regular Weight Issues/Tasks
+* #391 - Evidence Concept Analysis (Section 3.1 - Concept Analysis)
+* #383 - Document Core Inventory State Management Architecture
+* #340 - Lecture Topic Task: Model Human Error Scenarios in Digital Home Inventory Management
+* #324 - Document Heavier Weight Issues/Tasks

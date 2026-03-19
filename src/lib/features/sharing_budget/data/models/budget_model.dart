@@ -1,43 +1,62 @@
-class BudgetModel {
-  final int id;
-  final String name;
-  final double amount;
-  final DateTime? periodStart;
-  final DateTime? periodEnd;
-  final DateTime createdAt;
+import 'package:src/features/sharing_budget/domain/entities/budget_entity.dart';
+import 'package:src/features/sharing_budget/domain/entities/enums.dart';
 
+class BudgetModel extends BudgetEntity {
   const BudgetModel({
-    required this.id,
-    required this.name,
-    required this.amount,
-    this.periodStart,
-    this.periodEnd,
-    required this.createdAt,
+    required super.id,
+    required super.householdId,
+    required super.limitAmount,
+    required super.period,
+    required super.startDate,
   });
 
-  factory BudgetModel.fromMap(Map<String, dynamic> map) {
+  factory BudgetModel.fromEntity(BudgetEntity entity) {
     return BudgetModel(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      amount: (map['amount'] as num).toDouble(),
-      periodStart: map['period_start'] != null
-          ? DateTime.parse(map['period_start'] as String)
-          : null,
-      periodEnd: map['period_end'] != null
-          ? DateTime.parse(map['period_end'] as String)
-          : null,
-      createdAt: DateTime.parse(map['created_at'] as String),
+      id: entity.id,
+      householdId: entity.householdId,
+      limitAmount: entity.limitAmount,
+      period: entity.period,
+      startDate: entity.startDate,
+    );
+  }
+
+  BudgetEntity toEntity() {
+    return BudgetEntity(
+      id: id,
+      householdId: householdId,
+      limitAmount: limitAmount,
+      period: period,
+      startDate: startDate,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'name': name,
-      'amount': amount,
-      'period_start': periodStart?.toIso8601String(),
-      'period_end': periodEnd?.toIso8601String(),
-      'created_at': createdAt.toIso8601String(),
+      'household_id': householdId,
+      'limit_amount': limitAmount,
+      'period': period.name,
+      'start_date': startDate.toIso8601String(),
     };
+  }
+
+  factory BudgetModel.fromMap(Map<String, dynamic> map) {
+    return BudgetModel(
+      id: map['id'] as int,
+      householdId: map['household_id'] as int,
+      limitAmount: (map['limit_amount'] as num).toDouble(),
+      period: BudgetPeriod.values.firstWhere((p) => p.name == map['period']),
+      startDate: DateTime.parse(map['start_date'] as String),
+    );
+  }
+
+  factory BudgetModel.initial() {
+    return BudgetModel(
+      id: -1,
+      householdId: -1,
+      limitAmount: 0.0,
+      period: BudgetPeriod.monthly,
+      startDate: DateTime.now(),
+    );
   }
 }

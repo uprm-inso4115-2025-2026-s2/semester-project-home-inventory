@@ -1,24 +1,56 @@
 == Scenarios
 
-[abstract]
-Scenarios describe realistic end-to-end situations in the domain and how users expect things to work.
+Scenarios describe realistic end-to-end situations in the domain and how stakeholders expect things to work.
 
-=== Scenario S1 — <Short name>
-* Persona/actor: TODO
-* Context: TODO
-* Trigger: TODO
+[NOTE]
+====
+Expiration-related scenarios and tests refer to the expiration state vocabulary defined in `alert-system-states.adoc` (Active, Expiring, Expired, Renewed, Deleted) and its example alert intervals (e.g., 7/3/1 days). Delivery infrastructure details (summarized in `tech-expiration-alert-system.adoc`) are treated as implementation considerations and are not assumed in scenarios unless explicitly stated.
+====
+
+=== Scenario S1 — Low-Stock Trigger After Consumption
+* Persona/actor: Julian, the health-conscious student (primary); household member.
+* Context: Julian keeps a personal shelf of meal-prep items separate from roommates. He depends on specific brands that require advance ordering and wants to avoid unexpected shortages during the week.
+* Trigger: Julian records that he consumed the last units of a pantry item (e.g., gluten-free pasta), causing the tracked quantity to fall below its low-stock threshold.
+* Expected state transition: NORMAL → LOW_STOCK (and Restock list/planner entry created)
 
 .Steps
-. TODO: Step 1
-. TODO: Step 2
-. TODO: Step 3
+. Julian opens the system after meal prep and selects the item “Gluten-free pasta” from his inventory.
+. Julian records consumption by decreasing the item quantity (e.g., from 2 boxes to 0).
+. The system detects that the updated quantity is below the defined low-stock threshold and flags the item as low-stock.
+. The system adds the item to the restock list/planner with an initial status of “Needs restock”.
+. The system records and presents a low-stock alert to Julian (delivery method TBD), including the item name.
 
 .Expected outcome
-* TODO
+* The inventory reflects the updated quantity and low-stock status for the item.
+* The item appears in the restock list/planner as needing replenishment.
+* Julian becomes aware of the low-stock state in time to reorder before running out mid-week.
 
 .Related needs / stories
-* Needs: TODO (N1, N2)
-* User stories: TODO (US-...)
+* Needs: N1, N2
+* User stories:
+** US-ALT-01 (Receive low-stock warnings)
+** US-INV-01 (Add items to inventory)
 
-=== Scenario S2 — <Short name> (optional)
-* TODO
+
+=== Scenario S2 — Shared Inventory Prevents Duplicate Purchase
+* Persona/actor: Sofia, the budget-conscious roommate (primary); Andrea, the unofficial household manager (secondary); household members.
+* Context: Sofia and her roommates share household essentials. Past issues include duplicate purchases due to out-of-date whiteboards and unclear responsibility for shared items.
+* Trigger: Sofia is about to purchase a shared essential (e.g., toilet paper) and checks the shared inventory before paying.
+* Expected state transition: No stock-state change for “toilet paper” (remains IN_STOCK); shared visibility converges after synchronization
+
+.Steps
+. Sofia opens the shared inventory at the supermarket and searches for “toilet paper.”
+. The system displays the current shared quantity and stock status (e.g., “In stock: 24 rolls”).
+. Sofia sees the item is sufficiently stocked and decides not to buy it.
+. Later, Andrea records a purchase for dish soap; the shared inventory updates for household members once the change is recorded and synchronized.
+
+.Expected outcome
+* Sofia avoids buying a duplicate shared item, staying within budget.
+* Household members converge on the same understanding of the shared inventory after changes are recorded.
+
+.Related needs / stories
+* Needs: N3, N4, N5
+* User stories:
+** US-INV-02 (See what belongs to whom)
+** US-SB-01 (Split shared purchase with roommates)
+** US-RPT-01 (See household dashboard with insights)

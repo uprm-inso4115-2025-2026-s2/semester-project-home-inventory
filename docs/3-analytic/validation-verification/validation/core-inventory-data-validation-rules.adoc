@@ -1,34 +1,39 @@
-== Core Inventory Data Validation Rules
+== Core Inventory Data Integrity Rules (Verification Support)
 
-This document defines validation rules for Core Inventory entities to ensure that data stored in the system remains consistent, accurate, and meaningful before and after database implementation.
+This document lists data integrity rules and invariants that will be verified through tests and reviews. The purpose is to ensure that information recorded about household inventory remains consistent, accurate, and meaningful as it changes over time.
 
-Validation rules are constraints or conditions applied to data fields to ensure that the entered information meets specific criteria before it is stored.
+In this document, “validation rules” are constraints applied to fields and relationships to prevent inconsistent or misleading records. These rules are written at the system/information level (not tied to any specific database product), so they remain applicable even as implementation details evolve.
 
-=== General Validation Principles
+=== Terminology alignment (mapping to domain concepts)
+
+The following names are used in this file to match the project’s domain concept analysis:
+
+* *Household* (previously “Home”): a living environment (dorm, apartment, shared house).
+* *Household member* (previously “Owner”): a person associated with items (may or may not be a system user).
+* *Location* (previously “Room”): a storage place within a household (kitchen, pantry, bathroom, car trunk, etc.).
+* *Item type* (previously “Product”): a definition of an item independent of specific packages (e.g., “Milk”, “Toilet paper”).
+* *Item instance* (previously “Item/Stock entry”): a specific tracked package/instance of an item type, associated with a household member and location.
+
+=== General integrity principles
 
 * Required fields must be present and valid before saving.
-* Text fields must be trimmed (no leading/trailing spaces, this means removing the beginning and the end spaces).
+* Text fields must be trimmed (no leading/trailing whitespace).
 * Empty strings are not allowed for required text fields.
 * Dates must follow logical ordering constraints.
-* Numeric fields must follow valid ranges.
-* When an attribute is optional, NULL is allowed (instead of an empty string).
+* Numeric fields must follow valid ranges (e.g., quantities cannot be negative).
+* If an attribute is optional, NULL is allowed (instead of using an empty string).
+* Relationships must be referentially consistent (references point to existing records).
 
-=== User Validation Rules
+=== System User integrity rules
 
-Represents a user who can manage one or more homes and track inventory items.
-
-==== id
-* Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-* Default: auto-generated.
+Represents a system user who can participate in one or more households and manage inventory information.
 
 ==== email
 * Required: Yes
-* Rule: Must be a non-empty string.
+* Rule: Must be a non-empty string after trimming.
 * Constraint: Must contain "@" and a domain portion (example: user@gmail.com).
 * Length: 3 to 254 characters.
-* Notes: Must be stored in lowercase for consistency (This effectively lowers the amount of duplicate accounts created).
+* Notes: Must be stored in lowercase for consistency.
 
 ==== name
 * Required: Yes
@@ -40,15 +45,14 @@ Represents a user who can manage one or more homes and track inventory items.
 * Rule: Must be a valid timestamp.
 * Default: current timestamp.
 
-=== Owner Validation Rules
+[NOTE]
+====
+Implementation-only fields such as auto-generated identifiers (e.g., integer IDs) are intentionally omitted here, because they do not affect domain correctness. Identifier format and generation belong in the implementation section.
+====
 
-Represents the person associated with an item. Owners may or may not be system users (for example, roommates).
+=== Household member integrity rules
 
-==== id
-* Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-* Default: auto-generated.
+Represents a household member associated with items. A household member may or may not have a system user account (e.g., a roommate without an account).
 
 ==== name
 * Required: Yes
@@ -60,15 +64,9 @@ Represents the person associated with an item. Owners may or may not be system u
 * Rule: Must be a valid timestamp.
 * Default: current timestamp.
 
-=== Home Validation Rules
+=== Household integrity rules
 
-Represents a household environment that contains rooms and inventory items.
-
-==== id
-* Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-* Default: auto-generated.
+Represents a household environment that contains locations and tracked inventory.
 
 ==== name
 * Required: Yes
@@ -80,40 +78,28 @@ Represents a household environment that contains rooms and inventory items.
 * Rule: Must be a valid timestamp.
 * Default: current timestamp.
 
-=== Room Validation Rules
+=== Location integrity rules
 
-Represents a location within a home where items are stored (for example, kitchen, pantry, bathroom).
-
-==== id
-* Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-* Default: auto-generated.
+Represents a storage place within a household (e.g., kitchen, pantry, bathroom).
 
 ==== name
 * Required: Yes
 * Rule: Must be a non-empty string after trimming.
 * Length: 1 to 50 characters.
 
-==== home_id
+==== household_reference
 * Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
+* Rule: Location must be associated with exactly one household.
+* Constraint: The referenced household must exist.
 
 ==== created_at
 * Required: Yes
 * Rule: Must be a valid timestamp.
 * Default: current timestamp.
 
-=== Product Validation Rules
+=== Item type integrity rules
 
-Represents a product definition independent of purchase instances.
-
-==== id
-* Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-* Default: auto-generated.
+Represents an item definition independent of specific packages.
 
 ==== name
 * Required: Yes
@@ -124,19 +110,16 @@ Represents a product definition independent of purchase instances.
 * Required: No
 * Rule: If provided, must be a non-empty trimmed string.
 * Length: 1 to 80 characters.
-* Example: "Hot Wheels", "Kirkland", "Pepsi".
 
 ==== size
 * Required: No
 * Rule: If provided, must be a non-empty trimmed string.
 * Length: 1 to 40 characters.
-* Example: "80oz", "100oz", "1000ml".
 
 ==== variant
 * Required: No
 * Rule: If provided, must be a non-empty trimmed string.
 * Length: 1 to 60 characters.
-* Example: "Original", "Lemon", "Strawberry".
 
 ==== barcode
 * Required: No
@@ -149,47 +132,42 @@ Represents a product definition independent of purchase instances.
 * Rule: Must be a valid timestamp.
 * Default: current timestamp.
 
-=== Item (Stock Entry) Validation Rules
+=== Item instance integrity rules
 
-Represents a specific instance of a product owned by an owner and stored in a room.
+Represents a specific tracked package/instance of an item type, associated with a household member and stored in a location.
 
-==== id
+==== item_type_reference
 * Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-* Default: auto-generated.
+* Rule: Item instance must reference exactly one item type.
+* Constraint: The referenced item type must exist.
 
-==== product_id
+==== household_member_reference
 * Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
+* Rule: Item instance must be associated with a household member (owner/personal association).
+* Constraint: The referenced household member must exist.
 
-==== owner_id
+==== location_reference
 * Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
+* Rule: Item instance must be stored in exactly one location.
+* Constraint: The referenced location must exist.
 
-==== room_id
-* Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
-
-==== count
+==== quantity
 * Required: Yes
 * Rule: Must be an integer.
-* Range: count >= 1.
-* Default: 1.
+* Range: quantity >= 0.
+* Notes: quantity == 0 is allowed to represent OUT_OF_STOCK rather than forcing deletion.
 
 ==== purchase_date
 * Required: No
 * Rule: If provided, must be a valid date.
-* Constraint: Should not be in the far future (recommended).
+* Constraint: purchase_date should not be in the far future (recommended).
 * Recommended check: purchase_date <= today.
 
 ==== expiration_date
 * Required: No
 * Rule: If provided, must be a valid date.
 * Date logic: If both purchase_date and expiration_date are provided, expiration_date must be >= purchase_date.
+* Notes: If expiration_date is missing or unreadable, expiration status should be treated as unknown (no false-expired alerts).
 
 ==== notes
 * Required: No
@@ -201,22 +179,25 @@ Represents a specific instance of a product owned by an owner and stored in a ro
 * Rule: Must be a valid timestamp.
 * Default: current timestamp.
 
-=== Managed (User–Home Relationship) Validation Rules
+=== Household membership integrity rules (user–household relationship)
 
-Represents the association between users and the homes they manage.
+Represents the association between system users and households they can access/manage.
 
-==== user_id
+==== user_reference
 * Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
+* Rule: Must reference an existing system user.
 
-==== home_id
+==== household_reference
 * Required: Yes
-* Rule: Must be present.
-* Constraint: Must be an integer > 0.
+* Rule: Must reference an existing household.
 
 ==== role
 * Required: Yes
 * Rule: Must be a non-empty trimmed string.
 * Allowed values (recommended): "member", "admin".
 * Default: "member".
+
+[NOTE]
+====
+Membership changes (e.g., a roommate moving out) should be represented by updating this relationship so access can be removed. The policy for history retention (what happens to past records) is a requirements decision and should be documented in the requirements section.
+====

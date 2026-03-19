@@ -1,0 +1,100 @@
+= Research Supabase Edge Functions for Sharing & Budget
+
+== Objective
+This document is about how Supabase Edge Functions can solve complex logic for the Sharing & Budget team, specifically in budget validations, automatic recalculations, conflict resolution, and secure invites.
+
+== Overview: Edge Functions vs. RLS
+While Row Level Security (RLS) is good for basic access control, Edge Functions are necessary when:
+
+* Ensuring multiple database updates succeed or fail together (Transactions).
+* Communicating with external APIs.
+* Summing expenses across months to validate against a limit before allowing a write.
+
+[cols="1,2,2", options="header"]
+|===
+| Feature | Row Level Security (RLS) | Edge Functions
+| **Primary Use** | Filtering data per user. | Complex logic and automation.
+| **Security** | Database level (PostgreSQL). | Server-side (Deno Runtime).
+| **Conflict Handling** | Harder to manage race conditions. | Uses DB Transactions for resolution.
+|===
+
+== Proposed Solutions for Sharing & Budget
+
+=== 1. Server-side Budget Validation
+To prevent over spending, a function will intercept purchase requests.
+
+* Before an item is added, the function queries the `total_spent` for the current month. If `total_spent + new_item_price > budget_limit`, the function returns a `403 Forbidden` error.
+
+=== 2. Automatic Household Recalculation
+Uses Database Webhooks to trigger updates.
+
+* When a row is inserted into `inventory`, a webhook calls an Edge Function.
+
+* The function updates the `household_summary` table, ensuring all roommates see the updated budget instantly.
+
+=== 3. Conflict Resolution
+When multiple roommates update the same item simultaneously:
+
+* Use a direct PostgreSQL connection within the function to execute a `BEGIN...COMMIT` transaction block. This ensures that last update does not accidentally erase previous data.
+
+=== 4. Secure Invite Tokens
+* Functions create a signed, short-lived token for roommate invites.
+* A dedicated `/accept-invite` endpoint validates the token and joins the user to the household.
+
+== Risks and Technical Considerations
+* Edge Functions are serverless, so they may have a cold start time, with the possibility of causing a slight delay.
+* _Mitigation_: Implement UI updates in the frontend so the user sees the item added immediately, even while the function validates the transaction in the background.
+
+* Complex logic (like summing expenses from multiple tables) risks hitting execution time limits.
+* _Mitigation_: Keep Edge Functions performant on optimizing database queries.
+
+* Updating the same inventory item at the exact same time may cause conflicts.
+* _Mitigation_: Use database transactions to ensure data integrity. Can also use PostgreSQL `SELECT FOR UPDATE` to lock the row during updates.
+
+== Quickstart & Deployment
+
+After creating or configuring the project, create your first Edge Function.
+
+[source,bash]
+supabase functions new validate-budget
+
+This creates a new function with this started code:
+[source,typescript]
+Deno.serve(async (req) => {
+  const { name } = await req.json()
+  const data = {
+    message: `Hello ${name}!`,
+  }
+  return new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } })
+})
+
+
+Sample Implementation code snippet that ties to the project:
+[source,typescript]
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from "npm:@supabase/supabase-js@2"
+serve(async (req) => {
+  const { amount, household_id } = await req.json()
+  // logic to check budget
+  return new Response(JSON.stringify({ status: 'approved' }), { headers: { "Content-Type": "application/json" } })
+})
+
+Test your function locally with:
+[source,bash]
+supabase start
+supabase functions serve validate-budget
+
+
+Deploy to Production
+[source,bash]
+----
+supabase functions deploy validate-budget
+----
+
+== References
+
+
+* Supabase Edge Functions Guide: https://supabase.com/docs/guides/functions
+* Supabase Database Webhooks: https://supabase.com/docs/guides/database/webhooks
+* PostgreSQL Transactions: https://www.postgresql.org/docs/current/tutorial-transactions.html
+* Deno Documentation: https://docs.deno.com/runtime/

@@ -1,0 +1,66 @@
+= Automated Inventory Expiration Check
+
+== Overview
+
+The automated expiration check analyzes all stock items within an
+inventory and determines which items are expired or close to expiration.
+
+This logic is implemented through the `automatedCheckExpiration()`
+use case inside the alerts_restock feature.
+
+The function iterates through all inventory stock entries and uses the
+existing `checkExpiration()` function to determine the expiration status
+of each item.
+
+== Inventory Structure
+
+The function operates on an `InventoryEntity`.
+
+An inventory contains a map of products and their associated stock items:
+
+----
+Map<ProductEntity, List<StockEntity>>
+----
+
+Each product can contain multiple stock entries, each with its own
+expiration date.
+
+== Processing Logic
+
+The automated expiration check follows these steps:
+
+* Iterate through all product entries in the inventory
+* Retrieve the list of stock items for each product
+* For each `StockEntity`, call `checkExpiration()`
+* Classify the stock item based on the returned `ExpirationStatus`
+
+Items are categorized into two groups:
+
+* `expiredItems`
+* `nearExpirationItems`
+
+*Items classified as `ok` are ignored by this use case.*
+
+== Result Object
+
+The function returns an `ExpirationCheckResult` object.
+
+This object contains two lists:
+
+* `expiredItems` – a list of stock items that have expired
+* `nearExpirationItems` – a list of stock items that will expire within the threshold window
+
+This structure allows other parts of the system to easily generate alerts
+or notifications based on inventory expiration status.
+
+
+== Testing
+
+Unit tests were implemented to verify the following scenarios:
+
+* expired stock items are correctly identified
+* near expiration stock items are correctly identified
+* items outside the expiration threshold are ignored
+* mixed inventory scenarios are categorized correctly
+
+Tests use a fixed reference date to ensure deterministic results.

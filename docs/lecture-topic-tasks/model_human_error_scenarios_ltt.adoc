@@ -1,0 +1,53 @@
+= Lecture Topic Task: Model Human Error Scenarios in Digital Home Inventory Management
+
+Based on lecture: Overview of Domain Engineering
+
+**AI Disclosure:** A significant portion of this lecture topic task was written with the assistance of GitHub Copilot. The identification of human error scenarios was assisted by AI tools, but enhanced and revised by the author. All of the content was reviewed and edited by the author to ensure accuracy and relevance. The use of AI streamlined the process of identifying potential human error scenarios, but the final content reflects the original intention of the author @yamilette-alemany.
+
+== Objective
+
+This document aims to Identify and document common human error scenarios that may occur when users interact with the Digital Home Inventory system.
+
+== Common Human Error Scenarios in Digital Home Inventory Management
+
+=== Common User Interactions and Potential Errors
+1. **Adding Items**: Users may accidentally add duplicate items, misspell item names, or input incorrect quantities.
+2. **Updating Quantities**: Users might forget to update quantities after using or discarding items, leading to inaccurate inventory counts.
+3. **Assigning Ownership**: Users may incorrectly assign ownership of items, especially in shared households, leading to confusion about item responsibility.
+4. **Deleting Items**: Users may accidentally delete items from the inventory, resulting in loss of important data about their possessions.
+5. **Categorization Errors**: Users might miscategorize items, making it difficult to locate them later or generate accurate reports.   
+6. **Invite Errors**: Users may invite the wrong person to share their inventory, or fail to manage permissions properly, leading to unauthorized access or confusion about who has access to the inventory.
+
+== Impact of Human Errors on the Domain Model
+
+=== How Human Errors Affect can occur in the Digital Home Inventory system
+
+Human errors can occur at any stage of user interaction with the Home Inventory system. Errors with inputs and data management can lead to various issues, such as inaccurate inventory data, mismanagement of items, and user dissatisfaction. For example, if a user accidentally adds duplicate items or fails to update quantities, it can lead to an inaccurate representation of their inventory, which may affect their ability to manage their possessions effectively. Additionally, miscategorization of items can make it difficult for users to locate them when needed, leading to frustration and inefficiency in managing their inventory.
+
+Errors in ownership assignment can lead to confusion about responsibilities for certain items, especially in shared households. This can result in disputes or misunderstandings among household members. Additionally, unwanted or accidental deletion of items can lead to loss of important data, which may cause problems for the household and data recovery.
+
+Errors when creating invites can lead to unauthorized access to the inventory, which may affect the security and privacy of the users' data as well as unintended actions by the invited user. For example, if a user invites the wrong person or fails to manage permissions properly, it can lead to unwanted deletions or modifications of inventory.
+
+=== Potential Impacts (Summary)
+- **Data Integrity Issues**: Human errors can lead to inaccurate or inconsistent data in the inventory, which may affect the reliability of the system.
+- **Data Inconsistency**: Errors can lead to inaccurate inventory data, which may affect decision-making and reporting.
+- **User Dissatisfaction**: Repeated errors can lead to user frustration and decreased trust in the system.
+- **Operational Inefficiency**: Inaccurate data may require additional time and effort to correct, reducing the overall efficiency of inventory management.
+- **Security Risks**: Errors in managing permissions or invites can lead to unauthorized access, posing security risks to users' data.
+
+
+== Error scenarios and Mitigation Strategies
+1. **User adds duplicated items**: Implement validation checks to prevent duplicate entries and provide clear feedback to users when they attempt to add an item that already exists in the inventory.
+2. **User forgets to update quantities**: Implement reminders or notifications to prompt users to update quantities after using or discarding items, and provide an easy way to update item data.
+3. **User assigns ownership incorrectly**: Provide clear instructions and guidelines for assigning ownership of items, and implement a review process to verify ownership assignments. Add a help section to assist users in understanding how to assign ownership correctly, and what to do in incorrect assignment scenarios.
+4. **User accidentally deletes items**: Implement a confirmation step before allowing users to delete items, and provide an option to recover deleted items within a certain timeframe.
+5. **User miscategorizes items**: Provide clear categorization options and guidelines for users, and implement a search function that allows users to easily find items regardless of their categorization. Additionally, allow users to easily recategorize items if they realize they have made a mistake.
+6. **User invites the wrong person**: Implement a confirmation step when inviting users to share the inventory, and provide clear instructions on how to manage permissions and revoke access if necessary. Additionally, provide an option for users to review and manage their shared inventory settings to ensure that only authorized individuals have access.
+
+
+
+
+=== Documentation Sections
+
+- Scenario Analysis belongs in section 3.2.
+- Mitigation strategies belong in section 2.2
