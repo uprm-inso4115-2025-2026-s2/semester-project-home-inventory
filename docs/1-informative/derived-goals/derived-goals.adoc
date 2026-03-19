@@ -4,4 +4,68 @@ In addition to the primary goal already established by the current situation and
 
 A further derived goal is to strengthen coordination and trust in shared households. Even when people share expenses and supplies, misunderstandings about what is available and who will replenish items can create friction; the project aims to reduce these coordination breakdowns as a secondary social outcome of improved household awareness. Where budget awareness is in scope, an additional derived goal is to help students reflect on spending patterns around household essentials, supporting more informed planning rather than reactive purchases.
 
-Finally, the project has internal quality goals that support sustainable progress across milestones. The team aims to maintain stable terminology and consistent documentation so decisions remain understandable and traceable over time, reducing rework and concept drift. The project will also emphasize evidence-based development by using validation and verification activities—such as personas, scenarios, walkthroughs, and testing—to continually check that the team’s understanding matches stakeholder reality and that key behaviors work as intended.
+Finally, the project has internal quality goals that support sustainable progress across milestones. The team aims to maintain stable terminology and consistent documentation so decisions remain understandable and traceable over time, reducing rework and concept drift. The project will also emphasize evidence-based development by using validation and verification activities—such as personas, scenarios, walkthroughs, and testing—to continually check that the team's understanding matches stakeholder reality and that key behaviors work as intended.
+
+// M2 ADDITION START
+=== Competing Goals and Resolutions
+
+Although the project's derived goals reinforce one another in many ways, some of them also create natural tensions that must be handled explicitly. Identifying these tensions helps the team avoid inconsistent design decisions and produces derived requirements that clarify how the system should behave when important goals compete.
+
+==== 1. Low-effort use vs. inventory accuracy and reliability
+
+*Competing goal A:* Keep the system lightweight enough that students can realistically maintain it under busy schedules. +
+*Competing goal B:* Preserve inventory information with enough accuracy and completeness for reminders, shared coordination, and planning to remain trustworthy.
+
+These goals compete because reducing friction often means reducing the amount of information required at entry time, but requiring too little information can make the inventory incomplete, stale, or unreliable. The project already emphasizes both low-effort maintenance and accurate inventory visibility, so the system must balance continued adoption with dependable data quality.
+
+*Resolution policy:* The system should minimize required user effort during common workflows, but it must still collect and preserve the minimum information needed to support accurate inventory state and reliable system behavior.
+
+*Derived requirements:*
+
+* `DG-REQ-01` The system shall require only the minimum information needed to create an item record initially, while allowing additional metadata to be added later.
+* `DG-REQ-02` The system shall not generate condition-based behaviors such as low-stock or expiration alerts unless the corresponding required item data is present and valid.
+* `DG-REQ-03` The system shall preserve existing item metadata until it is explicitly edited or deleted by an authorized user.
+* `DG-REQ-04` The system shall support update workflows that can be completed quickly enough to remain practical during ordinary student routines.
+
+*Trace hooks:* `N1`, `N2`, `N3`; derived goal for adoption and continued use; reliability quality need; related inventory entry and update stories.
+
+==== 2. Timely reminders vs. avoiding notification fatigue
+
+*Competing goal A:* Ensure users are reminded in time about low-stock and expiration conditions. +
+*Competing goal B:* Avoid excessive or poorly timed alerts that cause frustration, desensitization, or notification disablement.
+
+These goals compete because a highly proactive reminder strategy may reduce the chance that important conditions are missed, but it also risks overwhelming users and undermining trust in the system. The project emphasizes both smart notifications and low-noise, relevant prompts, so reminders must remain useful without becoming repetitive.
+
+*Resolution policy:* The system should favor timely reminders for important conditions, but it must rate-limit and deduplicate recurring alerts so persistent states remain visible without becoming spam.
+
+*Derived requirements:*
+
+* `DG-REQ-05` The system shall emit no more than one low-stock notification per item per recipient scope within a single calendar day.
+* `DG-REQ-06` The system shall emit no more than one expiration-related notification per item per recipient scope within a single calendar day unless a new alert condition is created by a state change.
+* `DG-REQ-07` The system shall suppress duplicate notifications caused by sweep retries, reruns, or partial failures within the same deduplication window.
+* `DG-REQ-08` The system shall prioritize relevant and timely notifications over high notification volume by limiting reminders to conditions supported by valid item data and active alert rules.
+
+*Trace hooks:* smart notifications project goal; `N2`; usability and reliability quality needs; related alerting and automation stories.
+
+==== 3. Shared household visibility vs. privacy and least privilege
+
+*Competing goal A:* Increase household coordination by making shared inventory visible to cohabitants. +
+*Competing goal B:* Protect user-specific or sensitive information by exposing only the information necessary for coordination.
+
+These goals compete because coordination improves when household members can see what is available and what needs replenishment, but excessive visibility can expose ownership, spending, or personal-item information that not everyone should access. The project scope includes both shared inventory coordination and privacy/security needs, so the system must support collaboration without ignoring access boundaries.
+
+*Resolution policy:* The system should expose the minimum shared information required for household coordination while restricting user-specific metadata to the appropriate scope and permissions.
+
+*Derived requirements:*
+
+* `DG-REQ-09` The system shall allow household members to view the availability and replenishment-relevant status of shared items.
+* `DG-REQ-10` The system shall distinguish shared item data from personal or user-specific item metadata when both exist in the same household context.
+* `DG-REQ-11` The system shall only expose ownership, spending, or other user-specific item information to users with permission to view it.
+* `DG-REQ-12` The system shall preserve a clear distinction between shared items and personal items whenever that distinction affects replenishment or household coordination.
+
+*Trace hooks:* `N4`, `N5`; derived goal for shared-household coordination and trust; security/privacy quality need; related shared inventory and ownership stories.
+
+==== Summary of trade-off handling
+
+These competing-goal resolutions clarify that the system must not optimize convenience, reminders, or transparency in isolation. Instead, the project balances adoption, data trustworthiness, alert usefulness, and household coordination by introducing derived requirements that are concrete enough to guide implementation and later validation and verification.
+// M2 ADDITION END
