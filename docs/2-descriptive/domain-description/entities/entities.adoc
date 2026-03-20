@@ -5,6 +5,21 @@ Key domain entities (nouns) and their attributes. These entities describe the do
 [cols="2,4,4",options="header"]
 |===
 |Entity |Description |Key attributes
+| Home | A physical space where people live and where a household inventory is managed. | name, rooms, inventory, stakeholders
+| Room | A specific area within a Home where Stock can be stored (e.g., kitchen, bedroom, pantry, garage). | name, purpose (optional)
+| Product | A household item definition that is commonly restocked (e.g., milk, toilet paper, dish soap). This represents the item concept independent of a specific purchase. | name, description, tags, unit (optional), image (optional)
+| Stock | An instance of a Product that represents a specific purchased item tracked in the inventory (e.g., two cartons of milk tracked separately by expiration date and location). | brand, quantity, status, expiration date (optional)
+| Inventory | The collection of Products and Stock in a Home, representing what is currently available. | reference to owner, stock registry
+| Stock Location | The association between a Stock item and the Room where it is stored. | stock, room
+| Stakeholder | A person who has a vested interest in a Home and its Inventory. Stakeholders interact with the system according to assigned Roles. | name, associated home(s), role(s)
+| Owner | A Stakeholder role representing the primary manager of a Home who has the highest access and permission to make changes. | permissions, managed home(s)
+| Member | A Stakeholder role representing a person who lives in a Home and should have access to interact with its Inventory. | permissions, associated home(s)
+| Guest | A Stakeholder role representing a person who has view-only or limited access to a Home and its Inventory. | permissions, associated home(s)
+| Category | A grouping label used to organize Products by type or purpose (e.g., food, cleaning, electronics). | name, description (optional)
+| Shopping List | A temporary list of Products that need to be purchased soon. | list of products, quantities (optional), priority (optional)
+| Supplier | A store or provider where a Product can be purchased or restocked (e.g., Walmart, Costco, CVS). | name, location (optional), notes (optional)
+| Budget | A plan that allocates money across Categories to support household purchasing decisions. | amount, categories, time period (optional), limits (optional)
+
 
 |Household
 |A living unit where household essentials and spending are managed.

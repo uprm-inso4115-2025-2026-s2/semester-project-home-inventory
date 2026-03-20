@@ -1,0 +1,50 @@
+= Domain Attributes for Alerts & Restock System
+:toc:
+
+== Overview
+
+The Alerts & Restock feature automatically checks the user's inventory to detect things like expired items, items close to expiring, low stock, or items that are completely out of stock. Since this feature works automatically in the background, there are some important system attributes that affect how well it works.
+
+This document lists the main domain attributes that are important for the Alerts & Restock system and explains why they matter.
+
+== Domain Attributes
+
+[cols="1,2,3"]
+|===
+|Attribute |Description |Why it matters for Alerts & Restock
+
+|Reliability
+|The system should consistently detect when items are expired or when stock levels are low.
+|If the system misses these conditions, users might not get alerts when they should. This would make the feature less useful.
+
+|Accuracy
+|The system should work with correct inventory data like item quantity and expiration dates.
+|If the data is wrong, the system might send false alerts or miss important ones. Accurate data helps make sure alerts are trustworthy.
+
+|Timeliness
+|Alerts should be generated soon after the system detects a condition like low stock or expiration.
+|If alerts are delayed, the user might not see them in time to restock or use the item before it expires.
+
+|Scalability
+|The system should still work well even if a user has a large inventory or many products.
+|As inventories grow, the system should still be able to scan items and generate alerts without slowing down the app.
+
+|Privacy
+|User inventory data should be protected and only accessible to the correct user.
+|Since the system stores personal grocery and household data, it is important to keep that information secure.
+
+|===
+
+== Technical Considerations
+
+These attributes affect how the system should be designed:
+
+* Reliable alerts require the inventory to be scanned consistently.
+* Accurate alerts depend on correct inventory data and validation.
+* Timely alerts may require scheduled checks or automatic triggers.
+* Scalability may require optimized queries when scanning inventory items.
+* Privacy requires proper authentication and data protection.
+
+== Summary
+
+The Alerts & Restock system depends on several important attributes such as reliability, accuracy, timeliness, scalability, and privacy. These attributes help make sure the system detects inventory conditions correctly and sends useful alerts to users.
