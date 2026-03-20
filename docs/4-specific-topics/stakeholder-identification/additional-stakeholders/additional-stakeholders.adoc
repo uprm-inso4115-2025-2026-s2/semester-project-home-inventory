@@ -1,28 +1,30 @@
 == Additional Stakeholders
 
-[abstract]
 Stakeholders discovered later as the team learns more about the domain.
+
+[NOTE]
+====
+*Lecture topic task summary (Non-Obvious Stakeholders):* As part of a lecture topic task on stakeholder identification, we expanded stakeholder analysis beyond the direct users (students living alone or with roommates) to include non-obvious stakeholders whose perspectives affect the domain and requirements. The task identified: (1) *Former roommates* (orphaned items, ownership transfer, move-out access removal), (2) *Future roommates* (pre-move-in planning and duplicate-avoidance via shareable inventory snapshots), (3) *Guests/visitors* (untracked consumption causing “shrinkage” and the need for reconciliation mechanisms), (4) *Parents/family contributors* (bulk/care-package contributions, visibility into needs without full access), (5) *Landlords/property managers* (landlord-owned vs tenant-owned items, restricted items, appliance maintenance), and (6) *Roommates assigned to live together who are strangers* (pre-household formation coordination and fair contribution tracking).
+
+Across these stakeholders, three recurring phenomena emerged: *item ownership* (including transfer/relinquish/claim workflows), *inventory accuracy under external consumption*, and *notification timing* (alerts useful for contributors and coordination, but risky for noise). These findings motivate a flexible ownership model, multi-phase access (planning vs active household vs post-occupancy), limited external contributor views, and explicit handling of discrepancies/shrinkage and membership changes.
+====
 
 [cols="2,3,2,3",options="header"]
 |===
 |Stakeholder |Goals / needs |Influence |Concerns / notes
 
-|Supabase 
-|Provide reliable database hosting, real-time syncing capabilities, and secure authentication services. 
-|High 
-|Exceeding free-tier limitations, data security breaches, and potential downtime affecting user syncing.
+|Landlords / Property Managers
+|Ensure that tenant households are kept in good order and that shared spaces are not overloaded or misused.
+|Low
+|Unclear lines between personal and shared household property; no formal mechanism for landlord oversight.
 
-|Notification Service Provider
-|Deliver timely push notifications for expiration warnings, low-stock alerts, and roommate sharing invitations. 
-|Medium 
-|Rate limits, delivery failures, or delays that prevent users from getting critical expiration alerts on time.
+|Grocery / Retail Stores
+|Attract repeat purchases by students and household groups; provide accurate product data (barcodes, pricing) that inventory systems may rely on.
+|Low
+|Incorrect or inconsistent product metadata in retail databases causing failed barcode lookups.
 
-|App Store / Google Play Reviewers 
-|Ensure the mobile application complies with platform guidelines regarding user privacy, data handling, and UI/UX standards. 
-|High 
-|App rejection due to improper handling of user data or failure to meet the minimum functionality requirements for listing.
+|Mobile Platform Reviewers (App Store / Google Play)
+|Ensure the mobile application complies with platform guidelines regarding user privacy, data handling, and interface standards before public distribution.
+|High
+|App rejection due to improper handling of user data or failure to meet minimum functionality requirements for listing.
 |===
-
-= Lecture Topic Task
-
-include::../../../lecture-topic-tasks/Non-obvious stakeholders.adoc[]

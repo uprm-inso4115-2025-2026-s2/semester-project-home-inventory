@@ -1,11 +1,52 @@
 == Domain Requirements
 
-Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology.
+Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology. Terminology follows the domain description: *Household*, *Household member*, *Location*, *Item type*, *Item instance*, and *Spending entry*.
 
-* DR1: TODO
-* DR2: TODO
-* DR3: TODO
+=== Inventory integrity
 
-=== Rationale / trace
-* DR1 supports need(s): TODO (N1, N2)
-* DR2 supports need(s): TODO
+* DR-1 (Barcode uniqueness): A single barcode shall map to exactly one *Item type*. The system shall not create a second item-type definition for an already-known barcode.
+* DR-2 (Item instance validity): Every *Item instance* shall reference an existing *Item type* at the time it is recorded.
+* DR-3 (Financial immutability): Removing an item from the tracked inventory (delete/archive/merge/split/adjust) shall not rewrite or delete associated *Spending entries*; financial history is immutable.
+
+=== Shared-household rules
+
+* DR-4 (Household administration): Each *Household* shall have exactly one household admin role at a time. Administrative responsibility shall be transferable before the current admin leaves.
+* DR-5 (Membership independence): A system user may belong to multiple households, each with an independent membership role and membership state.
+* DR-6 (Attribution retention): Spending entries shall remain attributed to the household member who made the purchase, even when inventory quantities are reorganized (merge/split) or when items are marked shared/personal.
+
+=== Duplicate handling and intent preservation
+
+* DR-7 (Short-window duplicates): If a duplicate item instance entry is detected within a short window (initially 30 seconds) with matching identity-relevant attributes, the tracked record shall aggregate quantity rather than create a separate entry (unless the user explicitly chooses to keep them separate).
+* DR-8 (Ambiguity guard): If item identity is ambiguous (near-duplicate name/brand/variant without authoritative identifier), the system shall not auto-merge without explicit confirmation.
+* DR-9 (Auditability of corrections): Inventory corrections (merge/split/adjust) shall be auditable and reversible at the record level; the system shall preserve what changed, when, and why.
+
+=== Reporting integrity (if reporting is in scope)
+
+* DR-10 (Separation of concerns): Reports shall distinguish between inventory state (availability, locations, expiry) and spending history (amounts, dates, attribution); these shall not be conflated.
+* DR-11 (Budget derivation): Budget/spending summaries shall be derived from spending entries within a defined budget period and shall not be altered by non-financial inventory corrections (e.g., discarding expired items).
+
+=== Alerts and restock (Milestone 1 baseline)
+
+* DR-12 (Threshold-driven low-stock): Low-stock shall be defined by an item-specific threshold (or default threshold when configured); crossing the threshold defines the low-stock condition.
+* DR-13 (Expiration status): If an item instance has an expiration date, its expiration status shall be derivable (active/near-expiry/expired). If the expiration date is missing or unreadable, expiration status shall be treated as unknown (no false-expired condition).
+* DR-14 (Deduplicated alerting): Alerts shall be deduplicated and triggered primarily on actionable state transitions (e.g., NORMAL → LOW_STOCK), so repeated checks without state change do not generate repeated alerts.
+
+=== Prevention and data integrity
+
+* DR-15 (Normalization before comparison): Product definitions (*Item type*) shall be normalized before duplicate comparison and before insert so that prevention logic is consistent and reproducible.
+* DR-16 (Deterministic spend attachment): *Spending entries* shall be created and attached to product/inventory records in a deterministic way; duplicate resolution must be finalized before any spending entry is created.
+* DR-17 (Single product per barcode at persistence): At persistence, one barcode shall map to exactly one *Item type*; duplicate prevention must enforce this before insert (consistent with DR-1).
+
+=== Rationale / trace (Milestone 1)
+
+* DR-1..DR-3 support reliability of tracked inventory and financial records (N2, and budgeting quality expectations if enabled).
+* DR-4..DR-6 support shared-household accountability and coordination (N4, N5).
+* DR-7..DR-9 support data quality and conflict reduction during entry/corrections (N1, N2, N3).
+* DR-10..DR-11 support clear reporting and budget reasoning (if spending/reporting is in scope).
+* DR-12..DR-14 support low-stock/expiry awareness with notification quality (N2, N3, and alert quality expectations).
+* DR-15..DR-17 support duplicate prevention and data integrity (normalization, deterministic spend attachment, barcode uniqueness at persistence).
+
+[NOTE]
+====
+Detailed policies and edge-case handling for sharing, permissions, and invitations are deferred for later milestones unless required by Milestone 1 deliverables. Keep the core domain requirements above stable and implementation-independent.
+====

@@ -1,28 +1,245 @@
 == Requirements Concept Analysis
 
-This section analyzes requirement-related concepts: actors, goals, capabilities, and how they map to domain concepts.
+This section analyzes requirement-related concepts (actors, goals, capabilities, and requirement-level vocabulary) and maps them to the domain concepts established in the Domain Concept Analysis. It is grounded in (a) the Domain Rough Sketch (interviews/observations) and (b) the project’s internal Milestone 1 notes located in the docs directory (automation checks, low-stock strategies, expiration alert definitions, notification evaluation, grocery-list auto-add logic, transaction tracking, and schema notes). The goal is to keep later requirements (Section 2.2) precise, consistent, and traceable.
 
-=== Actors and goals (draft)
+=== Starting point: requirement drivers anchored in the rough sketch
+
+The rough sketch motivates these requirement drivers:
+
+* *Low friction capture:* “If it takes more than a few seconds to log, I won't do it.”
+* *Shared coordination failures:* milk bought twice; no formal responsibility; reliance on fridge note + chat.
+* *Multiple storage locations:* rice stored in two places.
+* *Qualitative stock judgments:* “full”, “almost empty”, “backup”; low = “feels light” / “open the backup” (and backup-opening often not recorded).
+* *Expiration and waste:* food/medicine expires unnoticed; unopened duplicates exist; unreadable/missing expiration; multiple expirations in bulk packs.
+* *Variable consumption:* exam weeks/guests change usage rates.
+* *Membership change:* desire to remove access when someone moves out.
+
+These drivers shape the requirement-level concepts and tradeoffs below.
+
+=== Actors and goals
+
 [cols="2,4",options="header"]
 |===
-|Actor |Primary goals
+|Actor (domain role) |Primary goals (outcomes)
 
-|TODO |TODO
+|Student living independently (solo)
+|Maintain a reliable understanding of what is available with minimal effort; avoid duplicate purchases; avoid unexpected shortages; reduce waste from expired items.
+
+|Student living with roommates/cohabitants
+|Maintain a shared understanding of availability; coordinate replenishment to avoid duplicates/missed purchases; distinguish shared vs personal items without conflict.
+
+|Household member with budget-awareness focus (persona trait)
+|Understand spending patterns for essentials; avoid overspending; plan purchases using summaries rather than memory.
+
+|Household organizer (persona trait)
+|Reduce confusion about where items are stored and how they are grouped; keep organization stable enough that others can follow it.
+
+|Operations/monitoring stakeholder (class-topic persona)
+|Ensure automated checks and alert generation are reliable, observable, and do not produce duplicates or noisy output.
 |===
 
-=== Capability map (draft)
+=== Requirement-level concepts (definitions and clarifications)
+
+The following concepts are used to express requirements without committing to a specific implementation:
+
+[cols="2,4",options="header"]
+|===
+|Concept |Meaning in requirements
+
+|Fast capture
+|A tracking/update interaction that fits within a few seconds and does not require perfect detail at entry time.
+
+|Tracked record vs reality
+|The system-to-be represents availability, but real household inventory changes continuously; divergence is expected and must be managed.
+
+|Shared visibility
+|Household members can converge on the same understanding of availability and recent changes. “Real-time” is treated as a quality expectation, not a domain concept.
+
+|Actionable states
+|States that drive decisions: e.g., NORMAL, LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, EXPIRED.
+
+|State transition
+|A change from one actionable state to another. Transitions are a primary trigger for alerts to reduce repeated notifications.
+
+|Low-stock strategy
+|How “low” is determined (fixed threshold, percentage-based, reorder point). Initial requirements may accept a fixed per-item threshold.
+
+|Near-expiry window
+|Definition of “expiring soon” (within N days), including any timing/grace policy to avoid inconvenient alert timing.
+
+|Scheduled sweep (automation check)
+|A periodic background check that evaluates low-stock and expiration conditions without requiring the user to open the system.
+
+|Notification record/event
+|A persisted representation of an alert (at least for in-app review), including type, time, and read/unread status.
+
+|Delivery approach
+|In-app notification list vs device-level push. Choice affects complexity, reliability, and verification approach.
+
+|Deduplication / anti-spam
+|Rules preventing repeated alerts or repeated list additions when nothing meaningful changed.
+
+|Auto-add to grocery list
+|Rule-based conversion of actionable states into grocery list entries, with guardrails against clutter.
+
+|Transaction history
+|An append-only log of quantity changes with reason and timestamp, enabling traceability of how current quantity was reached.
+|===
+
+=== Capability map (actors → capabilities → domain concepts)
+
 [cols="2,3,3",options="header"]
 |===
 |Actor |Capability needed |Domain concepts involved
 
-|TODO |TODO |TODO
+|Solo student
+|Capture/update items quickly (create, adjust availability, mark used/restocked)
+|Tracked inventory record, Item type/instance, Availability/Quantity, Consumption, Replenishment, Location, Category
+
+|Solo student
+|Check availability before shopping (search/filter; see current status)
+|Tracked inventory record, Availability/Quantity, Location, Category, Actionable states
+
+|Solo student
+|Reduce expiration waste (see expiring/expired items; decide actions)
+|Item instance/package, Expiration date, (optional) Batch, Expiration states
+
+|Roommate/cohabitant
+|Maintain shared visibility (see the same inventory state and recent changes)
+|Household, Household member, Tracked records, Coordination failure
+
+|Roommate/cohabitant
+|Coordinate replenishment intent/responsibility to avoid duplicates
+|Low-stock judgment/Threshold, Replenishment intent/responsibility, Grocery list entry (if used)
+
+|Budget-focused member
+|Record/review spending summaries for essentials
+|Spending entry (optional), Category, Household
+
+|Operations/monitoring stakeholder
+|Reliable automated checks with observability and deduplication
+|Scheduled sweep, Run results/logs, State transitions, Notification records/events
 |===
 
-=== Conflicts and tradeoffs
-* TODO: Tradeoff 1 (e.g., speed vs accuracy)
-* TODO: Tradeoff 2 (e.g., flexibility vs simplicity)
+=== Requirement groupings (what must be specified later)
 
-=== Requirement quality checks (draft)
-* Completeness: TODO (what is missing?)
-* Consistency: TODO (any contradictions?)
-* Feasibility: TODO (risks/unknowns?)
+These groupings organize later requirements (Section 2.2) and help keep coverage balanced.
+
+*RG1 — Inventory maintenance (core)*
+* Add items with minimal burden.
+* Update availability through common actions (used/consumed, restocked, manual adjustment).
+* Organize items by category and optionally by location.
+* Support multiple storage locations for the same item type (either separate records or multi-location representation).
+
+*RG2 — Shared-household coordination*
+* Shared visibility of inventory and recent changes.
+* Distinguish shared vs personal items.
+* Represent replenishment intent/responsibility to reduce duplicate buying and missed purchases.
+
+*RG3 — Low-stock and out-of-stock awareness*
+* Low-stock determination based on a simple, explainable strategy initially (fixed per-item threshold acceptable).
+* Out-of-stock as a distinct actionable state.
+* Alert generation tied to state transitions and deduplication rules.
+
+*RG4 — Expiration awareness*
+* Expiration applies to some items; others have no expiration date.
+* “Expiring soon” concept defined via near-expiry window (+ optional grace policy).
+* Handle missing/unreadable expiration dates without creating false confidence.
+
+*RG5 — Automation layer (scheduled sweep)*
+* Periodic sweep evaluates low-stock and expiration conditions.
+* Sweep produces persisted state flags and generates notification records/events for new actionable states.
+* Sweep is observable (run summaries/logs) and idempotent (safe retries without duplication).
+
+*RG6 — Grocery list auto-add (rule-based)*
+* Auto-add triggers based on actionable states: OUT_OF_STOCK, EXPIRED, LOW_STOCK (optionally with “frequent pattern” gating).
+* Auto-add must not duplicate items already on the list.
+* Trigger priority and reason must be explainable (“why was this added?”).
+
+*RG7 — Transaction traceability*
+* Every availability change is recorded as a transaction with reason and timestamp.
+* Transaction history is append-only (read-only after creation).
+* Current quantity remains consistent with applied transactions.
+
+=== Evidence for requirement concepts (artifact anchors)
+
+The requirement-level concepts and decision-rule vocabulary above are anchored in project notes located in the docs directory (filenames shown below). These artifacts serve as the retraceable basis for later requirements and tests.
+
+* Scheduled sweep / automation checks: `automation-check-system.adoc`
+* Expiration alert definitions and near-expiry window: `definition-expiration-alert-system.adoc`
+* Notification fatigue concerns and evaluation criteria: `evaluationOfNotification.adoc`
+* Grocery list auto-add priority and de-duplication logic: `grocerylist_autoadd_decisionlogic.adoc`
+* Transaction history and append-only tracking of quantity changes: `inventory-transaction-tracking.adoc`
+* Low-stock determination alternatives: `low-stock-research-strategies.adoc`
+* Inventory/stock-change schema notes used to align terminology: `schema-for-inventory-&-stock-changes.adoc` (and related notification schema notes where applicable)
+
+=== Known decision logic (expressed as requirement-level rules)
+
+The following rules are expressed at the requirements level (not as implementation details). They should later become explicit requirements with fit criteria.
+
+*Scheduled sweep evaluation rules*
+* Low stock: LOW_STOCK becomes true when availability indicates quantity <= low_stock_threshold (when a threshold exists).
+* Expired: EXPIRED becomes true when today >= expiration_date (when an expiration date exists).
+* Near-expiry (optional): NEAR_EXPIRY becomes true when expiration_date - today <= N days (when an expiration date exists).
+* Alerts should be produced on *new* actionable states (state transitions) to avoid repeated notifications for unchanged conditions.
+
+*Grocery list auto-add decision logic (priority + deduplication)*
+* If OUT_OF_STOCK and not already on list → auto-add (reason OUT_OF_STOCK).
+* Else if EXPIRED and not already on list → auto-add (reason EXPIRED).
+* Else if LOW_STOCK and not already on list → auto-add (reason LOW_STOCK).
+* “Frequent pattern” signals (if used) must be gated behind low/out conditions and must not override stock reality.
+
+*Transaction tracking rule*
+* Any action that changes quantity is recorded as a transaction (restock, used/consumed, manual adjustment), with reason and timestamp.
+
+=== Notification delivery: requirement implications of approach options
+
+Two delivery approaches have different requirement implications:
+
+* In-app notification records:
+  - Requires storing notification records and supporting read/unread state.
+  - Easier to validate/verify early because behavior is visible and testable within the system.
+
+* Push notifications:
+  - Adds device registration/token lifecycle, retries, platform-specific delivery behavior, and higher verification burden.
+
+For Milestone 1 scope, in-app notification records are an acceptable baseline; push delivery remains an optional extension.
+
+=== Conflicts and tradeoffs (requirement-level)
+
+* T1: *Speed vs accuracy* — demanding full detail slows capture; minimal capture risks missing expiration/location details.
+* T2: *Flexibility vs consistency* — free-form categories/labels match households but increase terminology drift, especially with roommates.
+* T3: *Shared visibility vs privacy* — shared inventory improves coordination, but some items/spending can be personal; membership change increases access-control expectations.
+* T4: *Reminders vs notification fatigue* — alerts reduce shortages/expiration waste but increase disabling risk; transition-based alerts and deduplication are required.
+* T5: *Simplicity vs “smartness”* — fixed thresholds and explainable triggers are robust; predictive forecasting is fragile under missing/noisy data and variable consumption.
+* T6: *Automation reliability vs user-device dependence* — scheduled sweeps improve reliability but require observability (run summaries/logs, idempotency, error handling).
+
+=== Traceability hooks (how this supports later sections)
+
+To support traceability (class topic 4.4), later requirements should link to:
+
+* Needs IDs (N1–N5)
+* Domain concepts (from 3.1.1)
+* Scenarios (3.2.1) and walkthrough findings (3.2.2)
+* Verification artifacts (test cases in 3.2.3)
+* Optional: related issue IDs once user stories/epics are stabilized
+
+This section establishes the vocabulary used for those links.
+
+=== Requirement quality checks (initial)
+
+*Completeness (under-specified)*
+* Define a concrete near-expiry window (N days) and any grace period policy.
+* Decide initial scope for batch handling (multiple expirations in bulk packs).
+* Specify shared-household coordination semantics: what “intent/responsibility” means (claim vs assign vs unassigned) and how conflicts are handled.
+* Define policy for missing/unreadable expiration dates (no alerts vs prompt vs “unknown expiry” status).
+
+*Consistency (avoid ambiguous terms)*
+* Avoid “real-time” as a hard requirement unless measurable criteria are provided; prefer “shared visibility” + later quality requirements.
+* Keep terminology consistent: item type vs item instance/package; inventory (reality) vs tracked record (representation); backup as practice vs state.
+* Ensure low-stock/out-of-stock/near-expiry/expired terms map consistently to actionable states and transition rules.
+
+*Feasibility (risks/unknowns)*
+* Deduplication rules are essential to prevent notification fatigue and repeated grocery list additions.
+* Automation sweeps must be testable deterministically with boundary cases (threshold equality, expiration boundaries, missing fields).
+* Offline/temporary connectivity gaps create reconciliation complexity; initial scope should define acceptable behavior and verification strategy.

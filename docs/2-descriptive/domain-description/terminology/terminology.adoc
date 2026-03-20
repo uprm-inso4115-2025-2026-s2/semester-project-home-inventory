@@ -1,36 +1,148 @@
 == Terminology
 
-This section contains the domain`s ubiquitous language. Here we designate our preferred terms for entities, rules, events and actions from the domain. These were compiled from interviews with domain stakeholders, experts and general knowledge.
+This section defines the domain’s ubiquitous language: preferred terms for entities, actions, events, and rules observed in student households. The definitions aim to stay independent of any specific system-to-be or implementation.
 
 [cols="^,^,4,3",options="header"]
 |===
 |Term |Type |Definition |Synonyms / notes
-| Home  | Entity | A physical space where people can, or do, live in | Household, Property, House, Place
-| Product | Entity | A household item that is commonly restocked such as milk, toilet paper, dishwashing soap, etc. | 
-| Stock | Entity | An instance of a Product, the Product entity holds a list of Stock containing each of the inidividual items bought such as two cartons of milk each with its specific expiration date and location, etc. | Item, Stock Entry
-| Room | Entity | A specific area within a Home where Stock can be stored or located such as kitchen, bedroom, garage | StorageArea 
-| Inventory | Entity | The list of available Products in a Home | List
-| Stock Location | Entity | The association between Stock and the Room where it is stored | Placement, StorageSpot
-| Stakeholder | Entity | A person that has a vested interest in a Home and its Inventory, Stakeholders have specific roles depicting their involvement | Resident, Roommate, Manager, Owner, HouseholdMember, Homeowner, User
-| Role | Rule | The access control concept that dictates how much of a Home and an Inventory a Stakeholder can change |
-| Owner | Entity | A Stakeholder Role that has the utmost access and permission to make changes to their Homes and Inventories | Manager, Homeowner
-| Member | Entity | A Stakeholder Role that describes a Stakeholder who lives in a Home and who should have access to its Inventory | Resident, Roommate, HouseholdMember
-| Guest | Entity | A Stakeholder Role that should have view-only access to their Inventory and Home | 
-| Category | Entity | A grouping label used to organize Products by type or purpose such as food, cleaning, electronics |
-| Expiration | Event | The point in time after which Stock is no longer usable | 
-| Expiration Date | Rule | The specific date associated with Stock`s Expiration | BestByDate, UseByDate
-| Expired Stock | Event | An event triggered when Stock passes its Expiration Date | Spoiled, OutOfDate
-| Stock Status | Rule | The current state of Stock in the Inventory (e.g., available, low stock, expired) | AvailabilityState
-| Quantity | Rule | The measurable amount of a Product available in the Inventory | Count, Level, Amount
-| Unit | Rule | The measurement type used for a Product`s Quantity (e.g., pieces, liters, pounds) | MeasurementUnit
-| Consumption | Event | The act of using or reducing an Product`s Quantity over time | Usage, Depletion
-| Purchase | Action | The act of buying a Product to increase its Quantity in the Inventory | Restock, Buy
-| Shopping List | Entity | A temporary list of Products that need to be purchased soon | GroceryList, PurchaseList
-| Supplier | Entity | A store or provider where a Product can be purchased or restocked from | Store, Vendor
-| Restock Threshold | Rule | The minimum Quantity at which a Product should be replenished | MinimumStock, LowStockLimit
-| Restock Request | Action | A request created to indicate a Product needs to be purchased or refilled | ShoppingTask, RefillRequest
-| Budget | Entity | A resource allocation plan/rule-set which divides amount of money into Categories to allow for specific amount of Purchases in those Categories |
-|===
 
-=== Open questions / disputed terms
-- Barcodes and UPC may be included in the future, but this is dependent on the scope of the project and the implementation details.
+|Household
+|Entity
+|A living unit (dorm, apartment, shared house) where one or more people manage household essentials.
+|Previously “Home”.
+
+|Household member
+|Entity
+|A person who belongs to a household and participates in consuming, replenishing, or coordinating around items.
+|Previously “Owner” or “Occupant”.
+
+|Location
+|Entity
+|A storage place within a household (kitchen cabinet, pantry area, bathroom closet, car trunk, hallway bin).
+|Previously “Room”.
+
+|Item type
+|Entity
+|The kind of item independent of a specific package (e.g., “Milk”, “Dish soap”, “Toilet paper”).
+|Previously “Product”.
+
+|Item instance (package)
+|Entity
+|A concrete package/unit of an item type (e.g., a specific milk carton or a specific box of medicine).
+|Previously “Stock”.
+
+|Inventory (reality)
+|Entity
+|The set of item instances that physically exist in the household at a given time.
+|Real world, not a list.
+
+|Tracked inventory record
+|Artifact
+|A representation of availability used by household members (fridge note, list, memory, chat message). It may diverge from reality.
+|Supports “tracked vs reality”.
+
+|Availability
+|Property
+|A household’s current understanding of “how much is left,” often qualitative (“full”, “almost empty”, “backup”).
+|May later be represented as quantity.
+
+|Quantity
+|Property
+|A more precise measure of availability (count/units). Quantity can be unknown or approximate.
+|If used, it must never be negative.
+
+|Low-stock judgment
+|Event/Rule
+|A decision that an item is running low, based on a household strategy (“feels light”, “opened backup”) or a threshold.
+|Not inherently numeric.
+
+|Low-stock threshold
+|Rule/Property
+|A boundary value used to decide when an item is considered low.
+|May be fixed quantity initially.
+
+|Out-of-stock
+|State/Event
+|The condition/event where an item is considered unavailable because it is gone (quantity at zero or judged empty).
+|Distinct from low-stock.
+
+|Backup supply
+|Practice/Concept
+|A household practice of keeping a spare instance/package (backup) to reduce the risk of running out.
+|Often used instead of numeric tracking.
+
+|Consumption
+|Action
+|Using an item over time, reducing availability.
+|May vary by context (exam weeks, guests).
+
+|Replenishment (restock)
+|Action
+|Acquiring more of an item, increasing availability.
+|Often triggered after low/out/expiration.
+
+|Restock list / planner
+|Artifact
+|A household-oriented list of items that should be replenished soon.
+|Exists as a concept (notes/list).
+
+|Alert / notification (domain-level)
+|Artifact/Event
+|A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring/expired, budget threshold crossed).
+|Delivery method is an implementation choice.
+
+|Snooze / defer
+|Action
+|A household member delays acting on an alert for a period of time.
+|Domain intent: “remind me later”.
+
+|Dismiss / ignore
+|Action
+|A household member acknowledges an alert and chooses not to act (at least for now).
+|Should not cause repeated spam without changes.
+
+|Expiration date
+|Property
+|A date after which an item instance is considered expired/undesirable (applies to some items, not all).
+|May be unreadable/missing.
+
+|Near-expiry
+|State/Event
+|An item instance is approaching expiration within a defined window (e.g., N days).
+|Window definition belongs in requirements later.
+
+|Expired
+|State/Event
+|An item instance is past its expiration date.
+|Expired does not always imply “unavailable”; policy varies.
+
+|Spending event / spending entry
+|Record
+|A record of a financial transaction in a household (purchase/refund/adjustment), optionally linked to an item type and category.
+|Supports budgeting/reporting.
+
+|Spending category
+|Entity/Label
+|A grouping for spending (e.g., groceries, cleaning, personal care).
+|May align with item categories, but not required.
+
+|Budget
+|Entity/Rule
+|A financial limit defined for a period (household-level or category-level) used to evaluate spending.
+|Budget window/cycle is part of requirements.
+
+|Budget cycle (period)
+|Concept
+|The time window over which spending is compared to a budget (weekly, monthly, custom).
+|Resets/rollovers are policy decisions.
+
+|Budget threshold crossing
+|Event
+|Spending reaches or exceeds a defined threshold (e.g., 80%, 100%).
+|Can trigger alerts, subject to anti-spam rules.
+
+|Transaction (quantity change)
+|Record
+|A record of an availability change (consume/restock/adjust) with time and reason.
+|Supports traceability and verification.
+|===

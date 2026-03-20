@@ -1,0 +1,16 @@
+= Database Schema
+:showtitle: true
+
+The database schema models users, homes, rooms, products, and stock (item instances). An earlier draft of the schema existed; it was revised in issue #122 (Lecture Topic Task: Inconsistencies with domain terminology and household item documentation).
+
+The revision addressed a conflict between the Group-Owned Inventory model and the original stock representation: the original schema required each item to have exactly one owner. The relationship between Owner and Item was changed to many-to-many, and a new *Owns* table was added so an item can be owned by multiple owners while an owner can still own multiple items.
+
+Here, users manage multiple homes that contain multiple rooms. Rooms can only belong to one home, and can contain multiple household items. Every item is contained in a room and references a product. Every item is also owned by a single owner. We want to track items belonging to owners, even if those owners are not users. An example of this would be a user attributing items to a roommate who is not themself a user.
+
+image::2-descriptive/implementation/diagrams/stock_ERD.png[]
+Figure 1: ER diagram for the project entities.
+
+image::2-descriptive/implementation/diagrams/stock_table_diagram.png[]
+Figure 2: Table diagram for the backend.
+
+

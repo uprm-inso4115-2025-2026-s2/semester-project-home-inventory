@@ -1,42 +1,39 @@
-== 2.1.3 Narrative
+== Narrative
 
-[abstract]
 A cohesive story of how the domain works, independent of any specific software system.
 
 === Overview
 
-Students living independently go through a continuous cycle of acquiring, using, and replacing household items. They buy food and supplies when they have time and money, store them somewhere in their living space, and consume them gradually throughout the week. When items run low or run out, someone must eventually notice and take action to replace them. In shared households, this cycle involves multiple people who must coordinate—or fail to coordinate—about what is needed, who will buy it, and who owes what. The cycle repeats constantly, driven by daily needs and constrained by limited time, money, and attention.
+Students living independently go through a continuous cycle of acquiring, using, and replacing household items. They buy food and supplies when they have time and money, store them in locations within their living space, and consume them gradually. When items run low or run out, someone must notice and take action to replenish them. In shared households, this cycle involves multiple household members who must coordinate—or fail to coordinate—about what is needed, who will buy it, and when.
 
-=== Actors and Artifacts
+Tracking is typically informal. Many households rely on memory, a fridge note, a chat message, or a quick pantry check. This tracked understanding can diverge from reality: items may exist but be forgotten in a different location, backups may be opened without being recorded, and purchases may be duplicated because household members act on incomplete information. Waste can occur when items expire unnoticed or when duplicates are purchased while another instance is already available.
 
-*Actors:*
-- Students living alone
-- Students living with roommates
-- Roommates collectively (as a group that shares resources)
+Consumption patterns are not stable. During exam weeks or when guests visit, items can be used faster than usual. Bulk purchases can increase the number of item instances in the household at once, sometimes with different expiration dates within a single bulk pack. The household cycle repeats constantly under constraints of limited time, attention, and coordination.
 
-*Artifacts:*
-- Household items (food, cleaning supplies, toiletries, medicine)
-- Storage spaces (refrigerator, cabinets, pantry, bathroom shelves)
-- Shopping lists (mental or written)
-- Money spent on purchases
-- Shared resources that belong to no one individually
-- Personal items that belong to specific students
+Some households also keep an informal understanding of spending on essentials. Purchases may be remembered loosely, estimated from receipts, or discussed among roommates when money feels tight. When spending is tracked (even imperfectly), it influences decisions such as buying in bulk for lower unit price, delaying non-urgent restocks, or choosing cheaper alternatives. In shared households, disagreements can arise when it is unclear which purchases are personal versus shared or when one member repeatedly pays for shared items. Budget awareness therefore becomes another dimension of household coordination, alongside item availability and replenishment.
 
-=== Typical Scenario
+=== Actors and artifacts
 
-A student named Mateo wakes up on a Wednesday morning and wants to make coffee. He opens the cabinet and finds the coffee bag is almost empty—maybe enough for one more cup. He makes his coffee and thinks about buying more, but he is already running late for class. He forgets by the time he leaves. Two days later, on Friday morning, he reaches for the coffee again and finds nothing. He is already dressed for his 8am class and has no time to stop at a store. He goes without coffee, frustrated, and spends the morning tired. That afternoon, between classes, he stops at the supermarket and buys coffee. When he gets home, he puts it in the cabinet and life continues. A week later, the same thing happens with milk.
+*Actors (domain roles):*
+* Students living alone (single-member household)
+* Students living with roommates/cohabitants (multi-member household)
+* Household members who often coordinate replenishment (informal “household manager” role)
+* Household members who focus on budget awareness (budget-conscious role)
 
-In a shared household, another student named Sofia notices the apartment is out of trash bags. She mentions it in the group chat, but no one replies. She assumes someone else will handle it. Three days pass, the trash is overflowing, and still no trash bags. Finally, she buys them herself, annoyed that she had to spend her money on something everyone uses. When she brings them home, her roommate Andrea says, "Oh, I bought some yesterday too—I didn't see your message." Now the apartment has two packs of trash bags and less space in the cabinet.
+*Artifacts used today (domain-visible):*
+* Fridge notes / whiteboards
+* Chat messages (e.g., group chat)
+* Notes app lists
+* Pantry photos
+* Receipts or memory-based estimates
 
-=== Exceptions and Edge Cases
+=== Typical domain flow (as observed)
 
-- An item expires before anyone uses it, wasting the money spent on it.
-- Multiple roommates buy the same shared item independently because no one communicated.
-- A personal item gets used by someone else, causing conflict.
-- Someone forgets they already have an item and buys another, creating a duplicate.
-- A student runs out of something at a time when stores are closed or they have no money.
-- Roommates disagree about who should pay for shared items or whether an item was actually shared.
-- An item is moved from its usual place and cannot be found when needed.
-- Someone notices an item is low but forgets to buy it before it runs out.
-- A student on a strict budget cannot afford to replace an item immediately.
-- Items accumulate in storage spaces and get buried behind newer purchases, forgotten until long after they expire.
+. Household members acquire items (sometimes in bulk) and store them in household locations.
+. Items are consumed over time; availability decreases.
+. A household member checks availability using informal artifacts (note, memory, pantry check).
+. If the member judges an item to be low or out (often using qualitative strategies like “feels light” or “opened backup”), replenishment is triggered.
+. In shared households, coordination may succeed (one person buys) or fail (duplicate buying).
+. Some items expire before use; households may discover this late and discard them.
+. Household members may keep informal awareness of spending; when tracked, spending influences replenishment choices and can create shared-vs-personal disputes.
+. Membership changes (move-out) require the household to update who participates and who is informed.

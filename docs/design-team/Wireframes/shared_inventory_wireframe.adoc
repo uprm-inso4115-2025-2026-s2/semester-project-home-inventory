@@ -1,0 +1,81 @@
+= Shared Inventory — Wireframes
+:author: @daniellameleroo
+:toc:
+:toclevels: 2
+
+== Overview
+
+Users can view inventories shared with them by other members.
+Each shared inventory shows the user's role and limits actions accordingly.
+
+== User Flow
+
+....
+[My Inventories] --> [Shared Inventory Detail] --> [Item Detail / Edit]
+....
+
+== Role Permissions
+
+....
+Action              | Owner | Editor | Viewer
+--------------------|-------|--------|-------
+View items          |  yes  |  yes   |  yes
+Add / edit items    |  yes  |  yes   |  no
+Delete items        |  yes  |  yes   |  no
+Manage members      |  yes  |  no    |  no
+....
+
+== Screens
+
+=== Screen 1 — My Inventories
+
+image::images/Create_Shared_Inventory_wireframe1.png[]
+
+Personal and shared inventories listed together, visually distinguished.
+
+
+
+*Notes:*
+
+- Shared inventories have a blue left border to distinguish them from personal ones.
+- Each card shows the item count and the user's role.
+
+---
+
+=== Screen 2a — Inventory Detail (Editor)
+
+image::images/Create_Shared_Inventory_wireframe3.png[]
+
+*Notes:*
+
+- Role shown in the nav bar subtitle at all times.
+- Items are grouped by room.
+- "Add Item" is visible — Editor can add and edit.
+
+---
+
+=== Screen 2b — Inventory Detail (Viewer)
+
+image::images/Create_Shared_Inventory_wireframe3.png[]
+
+
+*Notes:*
+
+- "Add Item" replaced with a read-only notice.
+- Items are still tappable to view detail.
+- Edit and Delete are hidden inside item detail too.
+
+== Flow Annotations
+
+=== Navigating to a Shared Inventory
+
+. User lands on My Inventories.
+. Shared inventories appear under *Shared With Me* with a role badge.
+. User taps a card to open the detail view.
+. Role is shown in the nav bar throughout.
+
+=== How Role Affects Actions
+
+. *Viewer* — browse only. Add, Edit, and Delete are hidden.
+. *Editor* — can add, edit, and delete items. Cannot manage members.
+. *Owner* — full access including managing members.
