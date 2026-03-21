@@ -1,0 +1,46 @@
+:nofooter:
+:milestone: Milestone 2
+:team: Team 1
+:week: Week 3
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# {milestone} {week} — {team} Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+
+## What the Team Accomplished This Week
+- Completed Auth feature backend
+- Begun Core Inventory backedn implementation
+- Configured database with relationships between tables
+- Cleared up some domain concept confusion
+- Reviewed documentation
+
+
+## Tasks Completed / Issues Closed
+- {issue-base-url}372[Foreign Key Relationships]
+- {issue-base-url}319[Sequence Diagram for Item Stock Interactions]
+- {issue-base-url}280[Repositories and Datasources]
+- {issue-base-url}276[Auth Feature Backend]
+
+
+## What Is Currently In Progress
+- {issue-base-url}288[Auth Feature Frontend]
+- {issue-base-url}277[Wireframes]
+- {issue-base-url}317[UI Designs]
+- {issue-base-url}409[Data Flow Diagram]
+
+## Blockers or Challenges
+- Some domain misconceptions
+- Flutter clean architecture learning curve
+
+
+## Plans for Next Week
+- Finish auth frontend
+- Finish core inventory backend
+- Begin feature UI for demo
+
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above
