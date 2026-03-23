@@ -1,27 +1,84 @@
 == Machine Requirements
 
-Machine requirements describe measurable quality properties and constraints of the system-to-be (performance, reliability, security/privacy, availability, and scalability). They are stated independently of specific vendors or deployment tiers; implementation candidates and platform-specific limits are documented in Section 2.3.
+Machine requirements define measurable quality properties. Since implementation is ongoing, these requirements establish targets that will be verified once the prototype is complete. Where specific thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated.
 
-=== Non-functional requirements (initial)
+=== MR-01: Availability
 
-* MR-1 Performance: Common inventory views (list/search/filter) shall respond fast enough to be usable while shopping. Initial target: search/filter results returned within 2 seconds under typical mobile-network conditions.
-* MR-2 Reliability and consistency: Shared-household inventory data shall remain consistent across household members after synchronization. Conflicts or reconciliation behavior (if any) shall be predictable and testable.
-* MR-3 Availability and offline tolerance: Core workflows (view inventory, record consumption/restock, view restock list) shall remain usable during temporary connectivity gaps; changes shall synchronize when connectivity returns.
-* MR-4 Security and privacy: Household data shall be accessible only to authorized household members. Removing a member’s access shall take effect promptly (access revocation must prevent future reads/writes).
-* MR-5 Data integrity and auditability: Critical changes (quantity changes, ownership changes, spending entries) shall preserve an audit/transaction history sufficient to explain how current values were reached.
-* MR-6 Notification quality (anti-spam): Alert generation shall be deduplicated and primarily triggered by state transitions (e.g., NORMAL → LOW_STOCK). Re-running automated checks without state changes shall not generate duplicate alerts.
-* MR-7 Scalability (initial span): The system shall remain responsive for the initial span (e.g., up to ~300 tracked items per household and up to 5 household members), with room to expand in later milestones.
+The system shall remain operational during supervised usability testing. No unplanned downtime requiring restart shall occur during testing sessions.
 
-=== Data requirements (initial)
+*Verification*: Session logs; test coordinator observation.
 
-* DR-Data-1 Schema consistency: Data structures and changes shall be versioned and reproducible across environments (e.g., via migrations or equivalent mechanisms).
-* DR-Data-2 Uniqueness and identifiers: Authoritative identifiers (e.g., barcode for item type when present) shall be treated as unique to prevent duplicate definitions.
-* DR-Data-3 Retention integrity: Removing an item from the tracked inventory shall not silently delete linked financial history; spending records must remain traceable.
+---
 
-=== Integration requirements (initial)
+=== MR-02: Response Time
 
-* IR-Int-1 Device capabilities (optional): If barcode scanning is in scope, the system shall integrate with device camera/barcode capabilities on supported mobile platforms.
-* IR-Int-2 Notification delivery: The system shall support presenting alerts to users at least within the application; additional delivery methods (e.g., push notifications) may be considered in later milestones.
+The system shall respond quickly enough that household members can complete inventory tasks without waiting. During usability walkthroughs:
+- No participant shall abandon a task due to perceived slowness
+- All participants shall complete lookup tasks while simulating shopping (standing, holding phone)
 
-[NOTE]
-Implementation candidates (e.g., specific backend services, authentication mechanisms, realtime sync approaches, and platform runtime limits) are documented in Section 2.3 and may change as the project evolves.
+Response time measurements will be collected during walkthroughs to establish baseline for future milestones.
+
+*Verification*: Usability walkthrough observations; timing recorded for each task.
+
+---
+
+=== MR-03: Offline Operation
+
+The mobile client shall support viewing inventory while offline. Adding items and updating quantities while offline is deferred to post-Milestone 2.
+
+*Verification*: Integration tests with connectivity simulation.
+
+---
+
+=== MR-04: Synchronization
+
+When multiple household members use the same inventory, changes shall be visible to other members after refresh. Conflict resolution behavior (if any) shall be documented and testable.
+
+*Verification*: Manual tests with 2-3 concurrent users.
+
+---
+
+=== MR-05: Security and Privacy
+
+Only household members shall have access to household inventory. Access revocation for removed members shall take effect upon next login attempt.
+
+*Verification*: Access control tests with test accounts.
+
+---
+
+=== MR-06: Auditability
+
+Quantity changes shall be logged with timestamp, user ID, item, and previous value.
+
+*Verification*: Schema validation; manual log inspection.
+
+---
+
+=== MR-07: Notification Quality
+
+Repeated automated checks without state changes shall not generate duplicate alerts during testing.
+
+*Verification*: Integration tests with repeated triggers.
+
+---
+
+=== Measurement Plan for Milestone 2 Completion
+
+The following measurements will be collected during Milestone 2 validation activities to establish baseline for future milestones:
+
+|===
+|What to Measure |How |When
+
+|Response times |Record during usability walkthroughs |Post-prototype
+|Sync behavior |Document observed consistency |During multi-user testing
+|Error occurrences |Log all exceptions during testing |Throughout testing
+|User perception |Participant feedback on speed/friction |During walkthroughs
+|===
+
+These measurements will inform quantitative machine requirements for subsequent milestones.
+
+---
+
+=== Out of Scope for Milestone 2
+
+Quantitative targets (specific response time percentiles, concurrent user capacity, uptime percentages) cannot be established without a prototype. These will be defined in Milestone 3 based on measurements collected during Milestone 2 validation.
