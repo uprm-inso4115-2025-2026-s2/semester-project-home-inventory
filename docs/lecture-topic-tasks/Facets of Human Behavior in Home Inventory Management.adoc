@@ -1,0 +1,152 @@
+= Exploring the Human Behavior Facet in Home Inventory Management
+:author: @Programian [1]
+:toc:
+:icons: font
+
+== Introduction
+
+The Domain Facets lecture slides identify "human behavior" as one of eight facets to consider when analyzing a domain [2]. While biddable behavior, the tendency to "fail to honor expectations" despite being directed, is one aspect covered in other analyses, the human behavior facet encompasses a broader range of psychological and social dynamics.
+
+The project's A3 identifies core problems rooted in human behavior: students "rely on memory," face time constraints from "juggling classes, work, and personal problems," and struggle with "lack of communication and coordination" when roommates are involved [3]. Rather than assuming perfect user behavior, understanding these underlying tendencies allows the system to work _with_ human nature rather than against it.
+
+The purpose of this document is to identify cognitive biases, social dynamics, and behavioral patterns relevant to home inventory management in shared student housing. For each phenomenon, we explore how it manifests in the domain and propose design mitigations that account for these tendencies.
+
+== Behavioral Phenomena
+
+=== 1. Present Bias
+
+**Definition:** The tendency to prioritize immediate rewards or short-term convenience over future benefits, even when the long-term payoff is significantly greater [4].
+
+**Domain Manifestation:** Students know that logging items when consumed will save time and money later, but in the moment, logging feels like effort. The immediate reward of "I'll do it later" outweighs the abstract future benefit of accurate inventory. This leads to:
+
+- Items being consumed without being logged
+- Expiration dates not being entered when items are added
+- Stock levels becoming inaccurate over time
+- "I'll log it later" that never happens
+
+**Possible Design Mitigations:**
+
+- **Reduce friction:** Make logging as effortless as possible. Quick-add with minimal fields, voice input, or barcode scanning reduces the immediate cost.
+- **Leverage passive sensing:** Use phone location (e.g., detecting a grocery store visit) to prompt "Did you buy anything?" rather than requiring user initiation.
+- **Provide immediate feedback:** Show how logging now saves future trips. "Logging this now means you won't forget to buy it later."
+- **Batch logging:** Allow users to log multiple items at once during dedicated "inventory moments" rather than requiring real-time logging.
+
+---
+
+=== 2. Social Loafing
+
+**Definition:** The phenomenon where individuals exert less effort when working in a group than when working alone, assuming others will compensate [5].
+
+**Domain Manifestation:** In shared housing, inventory management becomes a collective responsibility. Each roommate may assume someone else will:
+
+- Log item consumption
+- Update the shopping list
+- Notice when something is running low
+- Remove expired items
+
+The result is a "tragedy of the commons" where the shared inventory becomes less accurate over time, and no one feels individually responsible.
+
+**Possible Design Mitigations:**
+
+- **Visualize individual contributions:** Show who last updated each item, who added what, and consumption history per roommate to break anonymity.
+- **Make responsibility explicit:** Instead of a shared "someone" being responsible, assign rotating "inventory champion" weeks or notify specific roommates about specific items they commonly use.
+- **Gamify contributions:** Show activity streaks or "reliability scores" to create positive social pressure. Have a leaderboard system for consistent logging and contributions.
+- **Enable private vs. shared items:** Allow roommates to mark items as "mine" vs. "shared." Shared items get group accountability whereas personal items are the individual's responsibility.
+
+---
+
+=== 3. Loss Aversion
+
+**Definition:** The tendency to prefer avoiding losses over acquiring equivalent gains due to losses feeling more painful than gains [6].
+
+**Domain Manifestation:** Students overstock because the pain of running out of something, such as having no coffee on an exam day, feels far worse than the minor waste of having too much. This leads to:
+
+- Duplicate purchases of non-perishables "just in case"
+- Overfilling cabinets with items that won't be used
+- Hesitation to throw out expired items ("maybe it's still good")
+- Difficulty maintaining minimal, efficient inventory
+
+**Design Mitigations:**
+
+- **Reframe the cost:** Show the monetary value of unused items over time. "You've spent $47 on items that expired unused this semester."
+- **Normalize "just in time" inventory:** Provide confidence that low-stock alerts will give adequate warning before running out.
+- **Celebrate consumption:** Frame using up items as a positive achievement rather than a loss.
+- **Provide safe defaults:** Set recommended reorder points that err slightly on the side of abundance for critical items, but encourage moderation for non-essentials.
+
+---
+
+=== 4. Optimism Bias
+
+**Definition:** The tendency to underestimate the likelihood of experiencing negative outcomes while overestimating the likelihood of positive outcomes [7].
+
+**Domain Manifestation:** Students consistently overestimate their ability to remember their inventory off of pure memory. Common thought patterns include:
+
+- "I'll remember that we're low on milk." → Forgets until seeing the fridge empty.
+- "I don't need to write that down, I'll remember what I bought." → Forgets by the time they get home.
+- "That expiration date is months away, I won't forget." → Forgets until after it expires.
+
+**Design Mitigations:**
+
+- **Make forgetting visible:** Show "last logged" timestamps and send gentle reminders after periods of inactivity.
+- **Reduce memory reliance:** Capture information at the point of acquisition. Scan items when they enter the household.
+- **Assume forgetting:** Design for failure. Assume users will forget to log consumption and provide reconciliation mechanisms.
+- **Proactive not reactive:** Push notifications before items expire, not after. Catch problems before they become losses.
+
+---
+
+=== 5. Default Effect
+
+**Definition:** The tendency to stick with pre-set options rather than actively making a choice, often because changing requires effort [8].
+
+**Domain Manifestation:** Users rarely customize settings, even when customization would improve their experience. This affects:
+
+- Notification thresholds: Users accept default low-stock levels even if inappropriate for their usage patterns
+- Category assignments: Items remain in default categories rather than being organized intuitively
+- Reminder schedules: Users accept default audit frequencies
+
+**Design Mitigations:**
+
+- **Set intelligent defaults:** Base defaults on observed behavior. If a user consistently runs out of milk every 5 days, suggest a 5-day reminder.
+- **Make customization discoverable:** Don't bury settings. Surface them at contextually relevant moments.
+- **Proactive suggestions:** "I noticed you're buying milk more often than usual. Want to adjust your low-stock threshold?"
+- **One-click adjustments:** Allow quick, low-effort customizations without navigating deep menus.
+
+---
+
+== Connecting Back to Project Objectives
+
+The A3 establishes three core objectives for the Digital Home Inventory system:
+
+1. **Reduce unnecessary spending and waste**
+2. **Prevent duplicate purchases**
+3. **Manage on a budget**
+
+Each behavioral phenomenon directly impacts these objectives:
+
+[cols="1,2,3", options="header"]
+|===
+| Objective | Behavioral Barrier | How Mitigations Support
+| Reduce waste | Present Bias, Loss Aversion | Proactive expiration alerts, reframing waste as cost, frictionless logging
+| Prevent duplicates | Optimism Bias, Social Loafing | Visualizing individual contributions, reducing memory reliance, explicit responsibility
+| Manage on budget | Default Effect | Intelligent defaults, consistent triggers, celebrating consistency
+|===
+
+Understanding these human behavior facets allows the system to be designed for how students _actually_ behave, not how we wish they would behave.
+
+== References
+
+[1] Deepseek AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. I @Programian the author have taken into account ideas and feedback provided by AI, but the final document accurately represents my work crossed-checked with both AI tools and the relevant lecture slides.
+
+[2] Schütz-Schmuck, M. (2021). Domain Facets [PowerPoint slides]. Department of Computer Science and Engineering, University of Puerto Rico at Mayagüez.
+
+[3] Sorrentini, L. (2024). Digital Home Inventory A3. INSO 4115 Project Document.
+
+[4] O'Donoghue, T., & Rabin, M. (1999). Doing it now or later. American Economic Review, 89(1), 103-124.
+
+[5] Karau, S. J., & Williams, K. D. (1993). Social loafing: A meta-analytic review and theoretical integration. Journal of Personality and Social Psychology, 65(4), 681–706.
+
+[6] Kahneman, D., & Tversky, A. (1979). Prospect theory: An analysis of decision under risk. Econometrica, 47(2), 263-291.
+
+[7] Sharot, T. (2011). The optimism bias. Current Biology, 21(23), R941-R945.
+
+[8] Johnson, E. J., & Goldstein, D. (2003). Do defaults save lives? Science, 302(5649), 1338-1339.
