@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout existing metrics (inso-metrics)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: inso-metrics
           fetch-depth: 0
@@ -26,13 +26,13 @@ jobs:
           path: metrics-branch
 
       - name: Checkout source repo (main)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           path: source
 
       - name: Checkout INSO GH Metrics code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: Poggecci/INSO-GH-API-QUERY
           path: inso-gh-query-metrics
