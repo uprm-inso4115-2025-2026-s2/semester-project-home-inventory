@@ -21,8 +21,8 @@ The purpose of this document is to identify cognitive biases, social dynamics, a
 
 - Items being consumed without being logged
 - Expiration dates not being entered when items are added
-- Stock levels becoming inaccurate over time
-- "I'll log it later" that never happens
+- Inventory stock levels becoming inaccurate over time
+- "I'll log it later" and it never happens
 
 **Possible Design Mitigations:**
 
@@ -63,7 +63,7 @@ The result is a "tragedy of the commons" where the shared inventory becomes less
 
 - Duplicate purchases of non-perishables "just in case"
 - Overfilling cabinets with items that won't be used
-- Hesitation to throw out expired items ("maybe it's still good")
+- Hesitation to throw out expired items because "maybe it's still good"
 - Difficulty maintaining minimal, efficient inventory
 
 **Design Mitigations:**
