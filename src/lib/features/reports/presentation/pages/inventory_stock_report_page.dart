@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart'; // <-- added for navigation
 import '../../../../core/data/services/pdf_export_service.dart';
 
 // ======================== Models ========================
@@ -109,10 +110,9 @@ class ReportCubit extends Cubit<ReportState> {
   void search(String query) {
     emit(state.copyWith(searchQuery: query));
   }
-
 }
 
-// ======================== UI (unchanged except for the above changes) ========================
+// ======================== UI ========================
 class InventoryStockReportPage extends StatelessWidget {
   const InventoryStockReportPage({super.key});
 
@@ -226,6 +226,12 @@ class _ReportViewState extends State<_ReportView> {
                 ),
               ),
             ),
+          ),
+          // Temporary navigation button to the reports list page
+          IconButton(
+            onPressed: () => context.push('/home/reports'),
+            icon: const Icon(Icons.list, color: Colors.black87),
+            tooltip: 'Go to Reports List',
           ),
         ],
       ),

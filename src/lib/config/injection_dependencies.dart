@@ -10,6 +10,9 @@ import 'package:src/features/example_feature/domain/usecases/stream_todos.dart';
 import 'package:src/features/example_feature/domain/usecases/unmark_todo_completed.dart';
 import 'package:src/features/example_feature/domain/usecases/update_todo.dart';
 import 'package:src/features/example_feature/presentation/cubits/todo_cubit.dart';
+import 'package:src/features/reports/domain/repositories/supabase_report_repository.dart';
+import 'package:src/features/reports/domain/repositories/report_repositories.dart';
+import 'package:src/features/reports/presentation/cubit/report_list_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sl = GetIt.instance;
@@ -21,8 +24,10 @@ Future<void> initializeDependencies() async {
     anonKey: 'sb_publishable_1w1-TrfGRbG2nvDv-UUMVQ_EE2lj-HB',
   );
 
-  // Registering the app's Services
+  // Register SupabaseClient (FIX: added this line)
+  sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
+  // Registering the app's Services
   sl.registerSingleton<SupabaseService>(
     SupabaseService(Supabase.instance.client),
   );
@@ -52,18 +57,20 @@ Future<void> initializeDependencies() async {
   /// they're not 100% standalone.
 
   /// Core Inventory
-
   // ...
 
   /// Alerts and Restock
-
   // ...
 
   /// Sharing and Budget
-
   // ...
 
   /// Reports and Insights
+  sl.registerLazySingleton<ReportRepository>(
+    () => SupabaseReportRepository(sl<SupabaseClient>()),
+  );
 
-  // ...
+  sl.registerFactory<ReportListCubit>(
+    () => ReportListCubit(sl<ReportRepository>()),
+  );
 }
