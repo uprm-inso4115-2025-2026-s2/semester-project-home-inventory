@@ -1,0 +1,56 @@
+= Lecture Topic Task: UML Sequence Diagram for Alert Delivery 
+
+
+==  Objective
+
+This lecture topic task applies UML sequence modeling to represent how alert data moves through the system from automated backend checks to user interaction in the app. Instead of focusing on state transitions of a single item, this task focuses on component interaction and message order. This task also focuses on creating a visualization of this process (using mermaid) that is described within the documentation
+
+==  Existing Documentation Used
+
+This task takes info from the following documentation:
+
+* `docs/3-analytic/concept-analysis/requirements-concept-analysis/automation-check-system.adoc`
+* `docs/3-analytic/alert-system-states.adoc`
+* `docs/2-descriptive/domain-description/behaviors/User-Interaction-Flows-for-Alerts-&-Notifications/User-Interaction-Flows-for-Alerts-&-Notifications.adoc`
+* `docs/3-analytic/concept-analysis/requirements-concept-analysis/notifications_supabase_schema.adoc`
+
+
+
+==  Proposed UML Sequence Diagram (Alternative Representation)
+
+[mermaid]
+....
+sequenceDiagram
+    autonumber
+    participant S as Scheduler/Cron
+    participant F as Edge Function
+    participant D as Supabase DB
+    participant N as Notification Service
+    participant A as Mobile App
+    participant U as User
+
+    S->>F: Trigger daily sweep
+    F->>D: Query inventory + alert preferences
+    D-->>F: Return candidate items
+
+    F->>F: Evaluate rules (low-stock/expiring/expired)
+    F->>D: Persist item state updates
+    F->>D: Insert notification records (deduped)
+
+    alt Push enabled
+        F->>N: Send push payload
+        N-->>A: Deliver push notification
+    else In-app only
+        D-->>A: Notifications available on next fetch
+    end
+
+    U->>A: Open alert and choose action
+    A->>D: Update notification status/action result
+    D-->>A: Confirm write and return updated view
+....
+
+==  Why This Representation Helps
+
+* Separates responsibility among scheduler, function, database, and client.
+* Helps validate that backend automation and UI behavior stay aligned.
+

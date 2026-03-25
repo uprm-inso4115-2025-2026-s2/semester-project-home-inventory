@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Verify AsciiDoc entry file exists
         run: |
@@ -73,7 +73,7 @@ jobs:
           EOF
 
       - name: Upload PDF as workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: asciidoc-pdf
           path: ${{ env.OUTPUT_DIR }}/${{ env.OUTPUT_PDF }}
