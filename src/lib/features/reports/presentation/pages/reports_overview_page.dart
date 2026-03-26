@@ -17,40 +17,32 @@ class ReportsOverviewPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 2.h),
-
               //Page Title
               Text(
                 'Reports Overview',
                 style: Theme.of(context).textTheme.displayMedium,
               ),
-
               SizedBox(height: 4.h),
-
               //Report Cards
               _ReportCard(
                 label: 'Inventory Stock Summary',
-                icon: Icons.inventory_2_outlined,
+                imagePath: 'assets/images/inventory_stock_icon.png',
                 onTap: () => context.go('/home/reports/inventory-stock-summary'),
               ),
-
               SizedBox(height: 3.h),
-
-//TO DO: Navigate to Item Usage Rates screen once implemented
+              // TO DO: Navigate to Item Usage Rates screen once implemented
               _ReportCard(
                 label: 'Item Usage Rates',
-                icon: Icons.bar_chart_rounded,
+                imagePath: 'assets/images/item_usage_rates_icon.png',
                 onTap: () => context.go('/home/reports/item-usage-rates'),
               ),
-
               SizedBox(height: 3.h),
-
-//TO DO: Navigate to Expenditures screen once implemented
+              // TO DO: Navigate to Expenditures screen once implemented
               _ReportCard(
                 label: 'Expenditures',
-                icon: Icons.account_balance_wallet_outlined,
+                imagePath: 'assets/images/expenditures_icon.png',
                 onTap: () => context.go('/home/reports/expenditures'),
               ),
-
               //Bottom bar space (for dashboard bar)
               const Spacer(),
               SizedBox(height: 2.h),
@@ -62,16 +54,16 @@ class ReportsOverviewPage extends StatelessWidget {
   }
 }
 
-///Tappable dark-green report card with a centred icon and a bold label above it.
+/// Tappable dark-green report card with a centred image and a bold label above it.
 class _ReportCard extends StatelessWidget {
   const _ReportCard({
     required this.label,
-    required this.icon,
+    required this.imagePath,
     required this.onTap,
   });
 
   final String label;
-  final IconData icon;
+  final String imagePath; // path to the PNG asset
   final VoidCallback onTap;
 
   @override
@@ -79,28 +71,27 @@ class _ReportCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        //Label sits above the card, bold
+        // Label sits above the card, bold
         Text(
           label,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         SizedBox(height: 1.h),
-
-        //The green card itself
+        // The green card itself
         GestureDetector(
           onTap: onTap,
           child: Container(
             width: double.infinity,
             height: 18.h,
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor, //#3A5A40 dark green
+              color: AppTheme.primaryColor, // #3A5A40 dark green
               borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
-              child: Icon(
-                icon,
-                size: 18.w,
-                color: AppTheme.accentColor.withOpacity(0.85), //muted sage icon
+              child: Image.asset(
+                imagePath,
+                height: 12.h, // scales the icon nicely within the card
+                fit: BoxFit.contain,
               ),
             ),
           ),
