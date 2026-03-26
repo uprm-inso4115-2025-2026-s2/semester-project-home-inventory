@@ -11,7 +11,7 @@ var mainRoutes = GoRoute(
   },
   routes: [
     todosRoutes,
-    inventoryStockReportRoute,
+    reportsOverviewRoute,
     groceryListRoutes
   ],
 );
