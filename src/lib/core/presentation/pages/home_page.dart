@@ -31,8 +31,7 @@ class HomePage extends StatelessWidget {
             Text("This is the main page of the app"),
             SizedBox(height: 20),
 
-            // Navigates to the Reports Overview screen, from which the user
-            // can access the individual report screens
+            //Navigates to the Reports Overview screen from which the user can access the individual detailed report screens
             CupertinoButton(
               child: Container(
                 alignment: Alignment.center,
@@ -40,7 +39,7 @@ class HomePage extends StatelessWidget {
                 height: 5.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFF8B9D7F),
+                  color: const Color(color: AppTheme.accentColor),
                 ),
                 child: Text(
                   "Reports",
