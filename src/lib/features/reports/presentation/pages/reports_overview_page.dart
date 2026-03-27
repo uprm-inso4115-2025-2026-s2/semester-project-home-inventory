@@ -63,7 +63,7 @@ class _ReportCard extends StatelessWidget {
   });
 
   final String label;
-  final String imagePath; // path to the PNG asset
+  final String imagePath; //Path to the PNG asset
   final VoidCallback onTap;
 
   @override
