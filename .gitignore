@@ -1,2 +1,4 @@
 .DS_Store
 .vscode/settings.json
+src/pubspec.lock
+src/pubspec.lock
