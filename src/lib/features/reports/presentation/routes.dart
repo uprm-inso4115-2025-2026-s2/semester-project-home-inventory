@@ -12,7 +12,7 @@ class _ItemUsageRatesStubPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Item Usage Rates')),
-      body: const Center(child: Text('TODO: Implement Item Usage Rates screen')),
+      body: const Center(child: Text('TO DO: Implement Item Usage Rates screen')),
     );
   }
 }
@@ -23,7 +23,7 @@ class _ExpendituresStubPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Expenditures')),
-      body: const Center(child: Text('TODO: Implement Expenditures screen')),
+      body: const Center(child: Text('TO DO: Implement Expenditures screen')),
     );
   }
 }
@@ -44,13 +44,13 @@ var reportsOverviewRoute = GoRoute(
     GoRoute(
       path: 'item-usage-rates',
       name: 'item_usage_rates',
-      // TO DO: Replace stub with real ItemUsageRatesPage once implemented
+//TO DO: Replace stub with real ItemUsageRatesPage once implemented
       builder: (context, state) => const _ItemUsageRatesStubPage(),
     ),
     GoRoute(
       path: 'expenditures',
       name: 'expenditures',
-      // TO DO: Replace stub with real ExpendituresPage once implemented
+//TO DO: Replace stub with real ExpendituresPage once implemented
       builder: (context, state) => const _ExpendituresStubPage(),
     ),
   ],
