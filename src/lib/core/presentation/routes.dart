@@ -13,5 +13,7 @@ var mainRoutes = GoRoute(
     todosRoutes,
     reportsOverviewRoute,
     groceryListRoutes
+    //For testing Purposes
+    reportListRoute,
   ],
 );
