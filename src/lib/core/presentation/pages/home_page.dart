@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                 height: 5.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color(color: AppTheme.accentColor),
+                  color: AppTheme.accentColor,
                 ),
                 child: Text(
                   "Reports",
