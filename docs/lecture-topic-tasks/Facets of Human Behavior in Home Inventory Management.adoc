@@ -1,4 +1,4 @@
-= Exploring the Human Behavior Facet in Home Inventory Management
+= Facets of Human Behavior in Home Inventory Management
 :author: @Programian [1]
 :toc:
 :icons: font
