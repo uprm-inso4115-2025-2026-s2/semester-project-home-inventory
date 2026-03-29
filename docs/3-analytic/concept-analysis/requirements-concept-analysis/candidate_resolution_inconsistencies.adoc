@@ -1,0 +1,168 @@
+= Candidate Solutions for Resolving Requirement Inconsistencies
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 3/28/2026
+// Issue #388
+
+
+
+== Resolution Approach Classification
+
+Two primary strategies are used to resolve inconsistencies:
+
+Elicitation-Based Resolution: relies on additional stakeholder input; clarifies intent, expectations, and real-world behavior
+
+Formal Resolution Tactics: relies on structured reasoning and modeling techniques; resolves conflicts through consistency rules, prioritization, or abstraction
+
+This distinction ensures that both human-centered and system-centered solutions are considered.
+
+
+
+== Elicitation-Based Resolution Cases
+
+=== Case E1: Clarifying Item Ownership Responsibility
+
+Inconsistency:
+Unclear responsibility for managing item updates in shared inventories.
+
+Resolution Approach:
+Conduct stakeholder interviews to determine expected ownership behavior in shared environments.
+
+Outcome:
+
+- ownership responsibility is explicitly assigned to a designated user
+- alternative shared responsibility models are evaluated and rejected based on stakeholder preference
+
+Rationale:
+Direct stakeholder input ensures alignment with real-world expectations and usage patterns.
+
+---
+
+=== Case E2: Notification Frequency Expectations
+
+Inconsistency:
+Conflicting expectations regarding how often users should receive low-stock or expiration alerts.
+
+Resolution Approach:
+Elicit user preferences through surveys or testing scenarios.
+
+Outcome:
+
+- introduce configurable notification frequency settings
+- define default behavior based on common user expectations
+
+Rationale:
+User feedback resolves ambiguity by grounding system behavior in actual preferences.
+
+---
+
+=== Case E3: Definition of “Low Stock”
+
+Inconsistency:
+Ambiguity in what constitutes a low-stock condition across different item types.
+
+Resolution Approach:
+Engage stakeholders to define acceptable thresholds based on usage context.
+
+Outcome:
+
+- establish user-defined thresholds per item or category
+- allow flexibility rather than enforcing a universal standard
+
+Rationale:
+Elicitation captures contextual differences that cannot be generalized effectively.
+
+
+
+== Formal Resolution Tactic Cases
+
+=== Case T1: Priority-Based Requirement Resolution
+
+Inconsistency:
+Conflicting requirements between minimizing user effort and maintaining high data accuracy.
+
+Resolution Approach:
+Apply prioritization rules to determine which requirement takes precedence.
+
+Outcome:
+
+- prioritize reduced user effort for usability
+- introduce supporting mechanisms (e.g., automation) to mitigate accuracy loss
+
+Rationale:
+Formal prioritization provides a structured way to resolve competing system goals.
+
+---
+
+=== Case T2: Constraint Enforcement for Data Consistency
+
+Inconsistency:
+Conflicting updates in shared inventory environments leading to inconsistent item states.
+
+Resolution Approach:
+Introduce domain constraints and validation rules.
+
+Outcome:
+
+- enforce rules such as non-negative quantities
+- restrict simultaneous conflicting updates through system controls
+
+Rationale:
+Formal constraints ensure consistency independent of user behavior.
+
+---
+
+=== Case T3: Abstraction of Item State Representation
+
+Inconsistency:
+Overly detailed or inconsistent representations of item states (e.g., partial usage, estimated quantities).
+
+Resolution Approach:
+Abstract item state into simplified, standardized representations.
+
+Outcome:
+
+- define discrete states (e.g., in stock, low, out of stock)
+- reduce reliance on imprecise or highly variable data
+
+Rationale:
+Abstraction reduces ambiguity and improves model consistency.
+
+
+
+== Comparative Analysis of Resolution Strategies
+
+Elicitation-based approaches:
+
+- align system behavior with real-world expectations
+- reduce misunderstanding of stakeholder intent
+- may require iterative validation
+
+Formal tactics:
+
+- ensure logical consistency and enforceable rules
+- reduce ambiguity through structure and constraints
+- may not fully capture human behavior nuances
+
+Implications:
+
+- both approaches are necessary for robust resolution
+- elicitation informs correctness
+- formal tactics ensure consistency and enforceability
+
+
+
+== Implications for Concept Analysis
+
+These candidate solutions demonstrate that resolving inconsistencies requires both:
+
+- understanding stakeholder intent
+- applying structured modeling techniques
+
+The domain model must support:
+
+- adaptability to refined requirements
+- explicit representation of constraints and priorities
+- integration of user-driven configuration where ambiguity exists
+
+This combined approach strengthens the reliability and coherence of the Digital Home Inventory system.
