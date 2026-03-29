@@ -1,10 +1,5 @@
 = Lecture Topic Task: Domain Events for Inventory Alerts and Restocking
 
-// Traceability
-GitHub issue <<issue-322>> +
-Label: Lecture Topic Task (Team 2) +
-Related docs: <<alert-states>>, <<alert-seq>>
-
 == Objective
 
 Identify and document *domain events* for the Alerts & Restock slice of the Home Inventory system. A domain event is something meaningful that *already happened* in the domain (past tense, business-significant), which other parts of the system may react to—for example by creating alerts, updating read models, or suggesting grocery items. The notion aligns with event-oriented modeling in domain-driven design <<evans-ddd>>.
