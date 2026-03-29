@@ -36,6 +36,8 @@ class HouseholdMemberModel extends HouseholdMemberEntity {
     };
   }
 
+  Map<String, dynamic> toJson() => toMap();
+
   factory HouseholdMemberModel.fromMap(Map<String, dynamic> map) {
     return HouseholdMemberModel(
       id: map['id'] as int,
@@ -44,6 +46,9 @@ class HouseholdMemberModel extends HouseholdMemberEntity {
       role: MemberRole.values.firstWhere((r) => r.name == map['role']),
     );
   }
+
+  factory HouseholdMemberModel.fromJson(Map<String, dynamic> json) =>
+      HouseholdMemberModel.fromMap(json);
 
   factory HouseholdMemberModel.initial() {
     return const HouseholdMemberModel(
