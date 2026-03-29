@@ -1,0 +1,148 @@
+= Countermeasures for Identified Project Risks
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 3/29/2026
+// Issue #389
+
+
+== Risk Selection Criteria
+
+The risks selected for this analysis are those with:
+
+- high impact on system reliability or usability
+- high likelihood of occurring in real-world usage
+- direct influence on core system functionality
+
+These risks require explicit handling to ensure system robustness.
+
+
+== Risk Countermeasure Cases
+
+=== Case R1: Inaccurate inventory data due to low user engagement
+
+Risk Description:
+Inventory data becomes unreliable when users fail to consistently update item usage or stock levels.
+
+Countermeasure:
+Introduce automated assistance mechanisms, including:
+
+- periodic reminders for inventory updates
+- optional quick-update interactions (e.g., one-tap decrement)
+- passive tracking enhancements where feasible
+
+Applied Tactic:
+mitigation
+
+Rationale:
+The risk cannot be fully avoided, but its impact can be reduced by lowering the effort required for user participation.
+
+Implications:
+
+- improves data accuracy without enforcing strict user behavior
+- maintains usability while reducing reliance on manual updates
+
+=== Case R2: Notification fatigue leading to disabled alerts
+
+Risk Description:
+Users may disable notifications if alerts are too frequent or perceived as irrelevant.
+
+Countermeasure:
+Implement adaptive notification controls:
+
+- user-configurable notification frequency
+- prioritization of critical alerts (e.g., expiration vs low stock)
+- batching or summarization of notifications
+
+Applied Tactic:
+mitigation
+
+Rationale:
+Reducing unnecessary or repetitive notifications lowers the likelihood of user disengagement.
+
+Implications:
+
+- preserves effectiveness of alert system
+- balances system proactivity with user tolerance
+
+=== Case R3: Conflicting updates in shared inventory environments
+
+Risk Description:
+Multiple users updating the same item may result in inconsistent or conflicting inventory states.
+
+Countermeasure:
+Introduce system-level consistency controls:
+
+- timestamp-based update ordering
+- optional ownership or responsibility assignment
+- visibility of recent changes to all members
+
+Applied Tactic:
+mitigation
+
+Rationale:
+The system cannot prevent all conflicts, but it can control and resolve them consistently.
+
+Implications:
+
+- improves reliability in collaborative environments
+- supports accountability and transparency
+
+=== Case R4: Missing or incomplete item data
+
+Risk Description:
+Users may omit important data such as expiration dates, limiting system functionality.
+
+Countermeasure:
+Accept partial data while encouraging completeness:
+
+- allow optional fields without blocking core functionality
+- provide non-intrusive prompts for missing data
+- enhance features only when sufficient data is available
+
+Applied Tactic:
+acceptance
+
+Rationale:
+Forcing complete data entry may harm usability; accepting the limitation preserves user adoption.
+
+Implications:
+
+- system remains flexible and user-friendly
+- some advanced features may operate with reduced accuracy
+
+
+== Comparative Analysis of Risk Reduction Strategies
+
+Mitigation:
+
+- reduces impact or likelihood of risks
+- most applicable to user behavior and system interaction risks
+
+Acceptance:
+
+- acknowledges unavoidable limitations
+- used when enforcing constraints would harm usability or adoption
+
+Avoidance and Transfer:
+
+- less applicable in this domain context
+- most risks are inherent to user interaction and cannot be fully eliminated or externalized
+
+Implications:
+
+- a balanced strategy is required
+- over-reliance on mitigation may increase system complexity
+- selective acceptance preserves usability and flexibility
+
+
+== Implications for Requirement Concept Analysis
+
+These countermeasures establish how the system should respond to uncertainty and variability in real-world usage.
+
+The requirements must:
+
+- incorporate mechanisms that reduce risk impact
+- remain adaptable to unpredictable user behavior
+- balance system control with user flexibility
+
+By explicitly defining countermeasures, the system ensures that identified risks are not only acknowledged but actively managed within the requirement design.
