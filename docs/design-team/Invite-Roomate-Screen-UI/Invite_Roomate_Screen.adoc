@@ -31,5 +31,8 @@ image::images/Invite_Roomate_Input_Field.png[]
 
 .Invite Roommate Screen Design With Invalid Input Field.
 image::images/Invite_Roommate_invalid_field.png[]
+
+.Invite Sent.
+image::images/Invite_roomate_sent.png[]
 --
  
