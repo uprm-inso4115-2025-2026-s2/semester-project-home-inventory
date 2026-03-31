@@ -1,0 +1,143 @@
+= Unified Domain Narrative
+:toc:
+:toc-title: Table of Contents
+
+== Purpose
+
+This document is the rewritten domain narrative produced by Stage 3 of the Domain Concept
+Formation Pipeline. All low-level entity lists from the raw domain description units (DDUs)
+have been replaced with their corresponding *domain concept names*, using only the
+terminology defined in the project's Ubiquitous Language dictionary.
+
+The original narrative can be found at:
+`docs/2-descriptive/domain-description/narrative/narrative.adoc`
+
+---
+
+== Unified Narrative
+
+=== 1. The Core Cycle
+
+A *Household* is a living unit managed by one or more *Household Members*. Members
+continuously engage in a cycle of acquiring, storing, and consuming *Household Items*.
+Items are kept in one or more *Locations* within the household, and each item carries a
+set of *Item Attributes* — including quantity, optional expiration date, purchase date,
+and price — that together define its current state.
+
+As consumption occurs, the *Availability State* of a *Household Item* decreases. When
+availability crosses a recognized threshold — whether judged numerically (quantity drops
+below a set limit) or qualitatively ("the bottle feels light," "we just opened the last
+backup") — the item is considered *Low-Stock*. If supply is fully depleted the item is
+*Out-of-Stock*. If an expiration date passes before consumption, the item is *Expired*.
+
+=== 2. The Tracking Gap
+
+A *Household* never has perfect knowledge of its own *Inventory*. What members actually
+know is not the inventory itself, but a *Tracked Inventory Record* — an approximation
+assembled from informal artifacts such as mental notes, shared chat messages, whiteboard
+lists, and recalled receipts. This record diverges from reality whenever a *Household Item*
+is consumed, moved, opened, or acquired without the record being updated.
+
+The divergence between the *Tracked Inventory Record* and the real *Inventory* is the
+primary source of *Coordination Failure*: situations where one or more *Household Members*
+act on stale or incomplete information and produce outcomes such as duplicate purchases,
+missed restocks, or undetected expiration.
+
+=== 3. Replenishment
+
+When a *Household Member* judges an item to be *Low-Stock* or *Out-of-Stock*, a
+*Replenishment Action* is triggered. This action may be planned (added to a restock list
+for the next shopping trip) or immediate (purchased on the same day). A *Replenishment
+Action* results in new *Household Items* entering a *Location*, and the corresponding
+entry in the *Tracked Inventory Record* is updated to reflect the new *Availability State*.
+
+A *Replenishment Action* can fail or be deferred — for instance, if budget constraints
+prevent immediate purchase, or if the responsible *Household Member* is unaware that the
+action is needed due to a stale *Tracked Inventory Record*.
+
+=== 4. Expenditure and Budget
+
+Every *Replenishment Action* incurs an *Expenditure*: a recorded amount paid, attributed
+to a payer, scoped as either personal or shared, and optionally linked to a specific
+*Household Item* or spending category. In shared *Households*, the scope of an
+*Expenditure* (personal vs. shared) is a frequent source of dispute.
+
+A *Budget* constrains how much a *Household* or a *Household Member* may spend within a
+given cycle (e.g., monthly). When cumulative *Expenditures* within the cycle approach or
+exceed the *Budget*, a threshold crossing is recorded and surfaced for review. Budget
+awareness directly influences *Replenishment Actions* — members may delay restocking,
+choose cheaper alternatives, or buy in bulk to remain within budget.
+
+=== 5. Alerts
+
+*Alerts* surface domain-level events that require *Household Member* attention. An *Alert*
+may be triggered by a change in *Availability State* (item is now Low-Stock, Out-of-Stock,
+Near-Expiry, or Expired) or by a *Budget* threshold crossing. A *Household Member* may
+acknowledge an *Alert* by acting on it (triggering a *Replenishment Action*), deferring it
+(snooze), or dismissing it (acknowledge without acting).
+
+An *Alert* must not repeat without a corresponding change in domain state. Repeated
+identical alerts without new triggering events constitute a domain invariant violation.
+
+=== 6. Shared Households and Coordination
+
+In a *Household* with more than one *Household Member*, coordination across members is
+required to prevent *Coordination Failures*. Members must share a consistent view of the
+*Tracked Inventory Record*, agree on the scope of *Expenditures* (personal vs. shared),
+and communicate *Replenishment Actions* to avoid duplicates.
+
+The informal coordination mechanisms currently in use — group chat messages, whiteboard
+lists, verbal agreements — are unreliable and the primary cause of the coordination
+failures this system is designed to address.
+
+=== 7. Membership and Change
+
+*Household* membership changes over time: members may join, leave, or change roles. When
+membership changes, the *Tracked Inventory Record* and *Expenditure* history must remain
+consistent and attributable. Items marked as personal to a departing member must be
+explicitly transferred, archived, or removed from shared visibility.
+
+---
+
+== Changes From Original Narrative
+
+[cols="2,3,3", options="header"]
+|===
+| Section | Original (raw DDU language) | Rewritten (concept terminology)
+
+| Core cycle
+| "food and supplies", "pantry items, bathroom products..."
+| *Household Items* stored in *Locations*
+
+| Tracking gap
+| "fridge notes, chat messages, pantry photos, receipts, memory"
+| *Tracked Inventory Record* (approximation of the real *Inventory*)
+
+| Low-stock judgment
+| "feels light", "opened the backup", "ran out"
+| *Availability State* transition to Low-Stock / Out-of-Stock / Expired
+
+| Replenishment
+| "shopping trip", "grocery run", "buying more"
+| *Replenishment Action*
+
+| Spending
+| "price paid", "receipt", "shared purchase", "personal purchase"
+| *Expenditure* scoped as personal or shared, linked to a spending category
+
+| Budget
+| "budget tracking", "spending cap", "monthly limit"
+| *Budget* with a cycle, threshold, and *Budget Status*
+
+| Notification
+| "reminder", "push notification", "alert"
+| *Alert* triggered by *Availability State* or *Budget* threshold crossing
+
+| Members
+| "student", "roommate", "household manager"
+| *Household Member* within a *Household*
+
+| Coordination failures
+| "duplicate purchase", "stale info", "ownership dispute"
+| *Coordination Failure* caused by divergence between *Tracked Inventory Record* and reality
+|===

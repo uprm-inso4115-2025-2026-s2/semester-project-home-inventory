@@ -2,3 +2,4 @@
 
 include::domain-concept-analysis/domain-concept-analysis.adoc[leveloffset=+1]
 include::requirements-concept-analysis/requirements-concept-analysis.adoc[leveloffset=+1]
+include::domain-concept-formation/domain-concept-formation-pipeline.adoc[leveloffset=+1]
