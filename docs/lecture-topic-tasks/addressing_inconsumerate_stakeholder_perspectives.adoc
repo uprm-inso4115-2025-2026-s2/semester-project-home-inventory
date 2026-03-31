@@ -1,0 +1,203 @@
+= Notification System Design Document: Addressing Incommensurate Stakeholder Perspectives
+:author: Devlin Hahn
+
+**AI Disclosure:** Portions of this design document were developed with the assistance of Artificial Intelligence tools. The analysis of incommensurate perspectives, notification defaults matrix, and user stories were developed by the author based on the existing persona definitions and stakeholder mapping. AI tools were used to format the document. All content has been reviewed and verified by the human author, @devlin-hahn04.
+
+== Executive Summary
+
+The Home Inventory App serves four distinct user personas: Mateo (roommate coordination), Sofía (family management), Gerardo (student/learning focus), and Adriana (occasional user). A critical conflict has emerged during requirements engineering: these personas have fundamentally incompatible perspectives on how notifications should function. As noted in the stakeholder analysis presentation, "stakeholder perspectives may (in part) be incommensurate" (slide 27), meaning these views are not simply different but cannot be simultaneously satisfied by a single uniform solution.
+
+This document proposes a configurable notification system that resolves the conflict through persona-based onboarding defaults, granular notification categories with independent controls, and progressive disclosure to maintain simplicity for users who need it. By implementing this approach, the project ensures completeness of concerns and no stakeholder perspective is ignored, while maintaining transparency throughout development.
+
+== 1. Analysis of Incommensurate Perspectives
+
+=== 1.1 The Notification Conflict
+
+Drawing from the stakeholder mapping document, the four personas hold divergent views on notifications:
+
+[options="header"]
+|===
+| Persona | Stakeholder Group | Perspective on Notifications
+| Mateo | End User (Roommate) | Requires frequent push notifications for shared item updates, roommate activity alerts, and regular inventory review reminders. Notifications are essential for household coordination.
+| Sofía | End User (Homeowner/Renter) | Needs reliable but selective notifications. Push for urgent matters (warranty expirations), email digests for non-urgent updates. Cannot tolerate frequent interruptions during family time.
+| Gerardo | End User (Student/learning focus) | Wants learning-focused notifications—tips, tutorials, and feature suggestions. Prefers in-app messages over push notifications. Sees notifications as educational tools.
+| Adriana | End User (Occasional User) | Desires no notifications. Uses the app only 1-2 times per year for insurance purposes. Finds push notifications intrusive and will uninstall if bothered.
+|===
+
+=== 1.2 Why These Perspectives Are Incommensurate
+
+These perspectives are not merely different, they are fundamentally incompatible for three reasons:
+
+**First, notification frequency expectations conflict.** Mateo wants real-time updates; Adriana wants zero interruptions. A single frequency setting cannot satisfy both. If the system defaults to frequent notifications, Adriana uninstalls. If it defaults to minimal notifications, Mateo loses the coordination value he needs.
+
+**Second, the perceived purpose of notifications differs.** For Mateo, notifications are operational tools for household management. For Gerardo, they are educational resources. For Adriana, they are nuisances. These different purposes cannot be served by identical notification content.
+
+**Third, delivery channel preferences conflict.** Mateo wants push notifications for immediacy. Sofía wants a mix of push and email digests. Gerardo prefers in-app messages. Adriana wants email only (if anything). No single channel satisfies all.
+
+=== 1.3 Consequences of Prioritizing One Persona
+
+If the team prioritizes Mateo, Adriana will uninstall the app due to notification fatigue. If the team prioritizes Adriana, Mateo will abandon the app for alternative solutions like shared spreadsheets. If the team averages the perspectives, both are dissatisfied: Mateo receives insufficient notifications to be useful; Adriana receives more than she wants and still uninstalls.
+
+This incommensurability requires a configurable solution rather than a single uniform design.
+
+== 2. Onboarding Classification Specification
+
+During initial app setup, users will answer one question to establish appropriate defaults. This approach aligns with the stakeholder mapping principle of engaging end users during requirements engineering (Phase 2).
+
+=== 2.1 Onboarding Screen Text
+
+....
+How do you plan to use Home Inventory?
+
+Please select the option that best describes your primary use case:
+
+☐ Shared household with roommates
+   I'll track items shared with others and want to stay updated on
+   what everyone adds.
+
+☐ Family household management
+   I'll manage inventory for my family and want reliable reminders
+   for important dates like warranty expirations.
+
+☐ Learning and organizing
+   I'm new to inventory management and want tips on how to organize
+   effectively.
+
+☐ Simple personal inventory
+   I just want a basic list of my belongings for insurance purposes.
+   I don't want frequent notifications.
+....
+
+=== 2.2 Mapping to Personas and Default Profiles
+
+[options="header"]
+|===
+| User Selection | Persona | Default Notification Profile
+| Shared household with roommates | Mateo | Push-heavy, real-time updates for collaborative features
+| Family household management | Sofía | Mixed push/email, selective urgency for warranties and deadlines
+| Learning and organizing | Gerardo | In-app learning content, digest for non-educational updates
+| Simple personal inventory | Adriana | Minimal, email-only essential reminders (annual insurance review)
+|===
+
+== 3. Notification Categories and Defaults Matrix
+
+=== 3.1 Notification Categories Defined
+
+[options="header"]
+|===
+| Category | Description
+| Shared Item Activity | Alerts when a roommate adds, edits, or removes items in shared spaces
+| Inventory Review Reminders | Prompts to review and update inventory (quarterly/annual)
+| Collaborative Activity Feed | Summaries of activity in shared inventory spaces
+| Learning Tips & Tutorials | Suggestions for better organization, feature guides
+| App Updates & Announcements | New features, important notices, maintenance updates
+|===
+
+=== 3.2 Defaults Matrix
+
+[options="header"]
+|===
+| Category | Mateo Default | Sofía Default | Gerardo Default | Adriana Default
+| Shared Item Activity | Push (immediate) | Digest (daily) | Push (immediate) | Off
+| Inventory Review Reminders | Push (quarterly) | Push (quarterly) | Digest (quarterly) | Email (annually)
+| Collaborative Activity Feed | Push (real-time) | Digest (weekly) | Push (real-time) | Off
+| Learning Tips & Tutorials | Off | Off | In-app (on login) | Off
+| App Updates & Announcements | Digest (monthly) | Digest (monthly) | Digest (monthly) | Digest (monthly)
+|===
+
+=== 3.3 Channel Definitions
+
+[options="header"]
+|===
+| Channel | Description
+| Push | Mobile push notification, appears on lock screen and in notification center
+| Digest | Summary delivered via in-app notification center; optional email delivery
+| In-app | Visible only when user opens the application; no external alert
+| Email | Email-only delivery, no push notification
+| Off | No notifications for this category
+|===
+
+=== 3.4 Justification for Defaults
+
+**Mateo (Shared household with roommates):**
+- Shared Item Activity and Collaborative Activity Feed set to Push (immediate) because real-time awareness is critical for household coordination
+- Inventory Review Reminders set to Push (quarterly) to maintain organization without overwhelming
+- Learning Tips set to Off because Mateo is already experienced with organization
+
+**Sofía (Family household management):**
+- Shared Item Activity set to Digest (daily) to stay informed without constant interruptions during family time
+- Inventory Review Reminders set to Push (quarterly) to maintain accurate records for insurance
+
+**Gerardo (Learning and organizing):**
+- Learning Tips set to In-app (on login) to provide educational value when engaged
+- Shared Item Activity and Collaborative Activity Feed set to Push (immediate) to learn through observation of shared spaces
+
+**Adriana (Simple personal inventory):**
+- All push notifications Off by default
+- Only essential reminders via Email: Inventory Review Reminders (annually)
+- App Updates set to Digest to maintain awareness of important changes without intrusion
+
+== 4. Settings Interface Design
+
+=== 4.1 Progressive Disclosure Approach
+
+The settings interface follows progressive disclosure: all users see a simple view with profile-based defaults. Advanced settings are accessible but visually hidden behind an expandable section. This balances Mateo's need for granular control with Adriana's need for simplicity.
+
+=== 4.2 Simple View (Default for All Users)
+
+The simple view shows:
+- Current notification profile with option to change
+- Each notification category with a single selection (channel only)
+- "Show Advanced Settings" button to expand
+
+=== 4.3 Advanced View
+
+When users choose to expand advanced settings, additional controls appear:
+- Radio buttons for channel selection per category
+- Frequency/timing dropdowns where applicable
+- "Hide Advanced Settings" button to collapse
+
+=== 4.4 Design Justification
+
+- **Profile-based defaults** reduce configuration burden for all users
+- **Simple view** shows only essential controls, hiding complexity
+- **Advanced view** provides granular control for users like Mateo who want it
+- **Profile change** updates defaults but preserves manual overrides
+- **Consistent layout** across both views maintains usability
+
+== 5. User Stories
+
+The following user stories capture each persona's notification expectations, following the format established in the requirements engineering phase:
+
+[options="header"]
+|===
+| Persona | User Story
+| Mateo | As Mateo, I want to receive push notifications whenever a roommate adds or edits a shared item, so that I always know what belongs to whom without having to constantly check the app.
+| Sofía | As Sofía, I want to receive email digests for non-urgent updates but push notifications for warranty expirations, so that I stay informed without being interrupted during family time.
+| Gerardo | As Gerardo, I want to see in-app tips and tutorials about inventory organization when I log in, so that I can learn better ways to manage my belongings over time.
+| Adriana | As Adriana, I want to receive no push notifications and only get an annual email reminder to review my inventory, so that the app never bothers me when I'm not actively using it.
+|===
+
+== 6. Alignment with Stakeholder Mapping
+
+This notification system design aligns with the stakeholder mapping document by:
+
+- **Engaging end users during requirements engineering (Phase 2):** The onboarding classification captures user needs at the appropriate phase
+- **Excluding end users during implementation (Phase 3):** This design document provides the requirements so developers can implement without constant user input
+- **Completeness of concerns:** All four user stakeholder groups are explicitly addressed, following the stakeholder mapping principle
+
+== 7. Conclusion
+
+The four personas for the Home Inventory App hold incommensurate perspectives on notifications. Mateo requires frequent real-time updates; Adriana requires zero interruptions. These views cannot be reconciled through a single uniform solution.
+
+This document proposes a configurable notification system that resolves the conflict through:
+- Persona-based onboarding defaults that establish appropriate baselines
+- Granular notification categories with independent controls
+- Progressive disclosure in the settings interface
+
+By implementing this design, the project achieves completeness of concerns—all four stakeholder perspectives are explicitly addressed—and maintains transparency through clear user choices and visible settings.
+
+== References
+
+- Schütz-Schmuck, M. (2021, January 22). *Domain Stakeholders* [PowerPoint slides]. Department of Computer Science and Engineering, University of Puerto Rico at Mayagüez.
+- Hahn, D. (n.d.). *Stakeholder Mapping Across Development Phases: Home Inventory App* [Lecture topic task].
