@@ -1,5 +1,9 @@
 = Core Inventory - UI Wireframes Documentation
 
+== Wireframe Mockups
+
+image::core_inventory_mockups.png[Core Inventory Wireframes, align="center", width=900]
+
 
 == Core Inventory - Categories Page
 
