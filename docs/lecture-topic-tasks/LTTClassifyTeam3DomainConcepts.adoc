@@ -1,0 +1,77 @@
+= Sharing & Budget Domain Concept Attribute Classification
+
+== Overview
+This document classifies the core domain concepts of the Sharing & Budget feature using the attribute framework. Each concept is evaluated based on its continuity/discreteness and its statics/dynamics.
+
+== Domain Concept Classifications
+
+=== Budget Limit
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Dynamic Inert
+
+Justification: The budget limit is a specific numeric value (e.g., $500). It does not change continuously, it only changes to a new value when a household member updates it. Between these updates, it remains fixed.
+
+=== Spending Event
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Dynamic Inert
+
+Justification: A spending event is a transactional record occurring at a single point in time. It captures a snapshot (amount, date, category). It is inert because they are triggered by external user input.
+
+=== Budget Allocation
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Dynamic Inert
+
+Justification: Allocation assigns a portion of a spending event to a specific user. While the calculation determines the value, the resulting allocation is a discrete record. It is inert as it only changes if the parent spending event.
+
+=== Household Membership
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Dynamic Biddable
+
+Justification: Membership is a binary state (a user is either a member or they are not). It is classified as Biddable because it depends on human behavior. The user may ignore, decline, or accept the invite at their own discretion.
+
+=== Invite Token
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Dynamic Hybrid (Inert + Autonomous)
+
+Justification: A token is discrete (it exists or it doesn't). It is a Hybrid because it has two change vectors: it is Inert regarding user acceptance (requires a click) but Autonomous regarding expiration. The transition to an "Expired" state happens automatically based on the passage of time without any external stimulus.
+
+=== Budget Period
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Static
+
+Justification: Within the scope of a specific budget configuration, the "Period" (e.g., Monthly) is a fixed descriptor. While the dates inside the period advance, the definition of the period itself does not change. It serves as a static rule that governs how spending is aggregated.
+
+=== Household Summary
+
+Continuity/Discreteness: Discrete
+
+Statics/Dynamics: Dynamic Inert
+
+Justification: The summary is a computed snapshot of totals and balances. It is discrete because it represents specific financial figures at a point in time. It is inert because it only updates as a reaction to changes in underlying data (spending events or budget limits).
+
+== Summary Classification Table
+
+[cols="3,2,2,3", options="header"]
+|===
+| Domain Concept | Continuity | Dynamics | Justification Summary
+
+| Budget Limit | Discrete | Inert | Changes only via explicit user update.
+| Spending Event | Discrete | Inert | Triggered by external manual logging.
+| Budget Allocation | Discrete | Inert | Result of a split rule applied to an event.
+| Household Membership | Discrete | Biddable | Dependent on human response to invites.
+| Invite Token | Discrete | Hybrid | User-activated (Inert) but auto-expires (Autonomous).
+| Budget Period | Discrete | Static | Fixed structural configuration for the budget.
+| Household Summary | Discrete | Inert | Recalculates only when data is modified.
+|===
