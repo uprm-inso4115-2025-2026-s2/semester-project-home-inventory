@@ -1,0 +1,226 @@
+= Application of Course Topics, Tools, and Methods
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+
+*AI Disclosure*: This document was developed with the assistance of an AI tool for structural guidance and a better understanding of lecture concepts. All classifications, interpretations, and final decisions were reviewed, validated, and finalized by the author.
+
+This document identifies how concepts, tools, and practices covered in INSO 4115 were applied throughout the development of the Digital Home Inventory project. Each section maps a course topic to concrete artifacts, decisions, or processes in the repository.
+
+---
+
+== Domain Engineering
+
+=== Domain Analysis and Concept Formation
+
+The team applied domain engineering principles systematically by identifying and defining domain concepts directly from observations and interviews with real student users.
+
+*Artifacts:*
+
+* `docs/lecture-topic-tasks/domain_concept_formation.adoc` — Applies the concept formation method introduced in the Domain Engineering lectures. Raw domain description units (DDUs) were collected from students and then grouped and abstracted into three formal domain concepts: *Consumption Context*, *Distributed Stock*, and *Informal Household Role*. Each concept includes a formal definition and a domain narrative explaining how the concepts interact.
+* `docs/lecture-topic-tasks/domainAttributesLTT.adoc` — Applies the Domain Attributes framework (Continuity, Discreteness, Hybridicity, Statics, Dynamics, Tangibility, and Dimensionality) to analyze the home inventory domain and inform system design decisions.
+* `docs/lecture-topic-tasks/dimensionality_of_domain.adoc` — Identifies measurable dimensions for each domain phenomenon (e.g., item quantity, expiration time, location) to clarify the domain model.
+
+=== Domain Assumptions
+
+*Artifact:*
+
+* `docs/lecture-topic-tasks/domain_assumptions.adoc` — Applies the domain assumptions framework from the lectures. The document explicitly identifies assumptions about user behavior (e.g., users will manually update quantities), data reliability, and system environment, and discusses their implications for system design. The document explains how unverified assumptions introduce risk and must be validated or revised.
+
+=== Domain Inconsistency Detection
+
+*Artifact:*
+
+* `docs/lecture-topic-tasks/domain-inconsistency.adoc` — Applies inconsistency detection techniques. Two concrete inconsistencies were identified within the descriptive part: (1) the contradiction between spending records being labeled "immutable" and the presence of an `adjustSpending` function, and (2) the conflict between records persisting after item deletion and the requirement to avoid orphaned records. Each inconsistency includes a proposed resolution.
+* `docs/4-specific-topics/inconsistency-management/` — Documents the broader strategy for managing inconsistencies across the project.
+
+=== Static vs. Dynamic Classification
+
+*Artifact:*
+
+* `docs/lecture-topic-tasks/Static vs Dynamic Classification of Home Inventory Phenomena.adoc` — Classifies domain phenomena as static or dynamic (and dynamic subtypes: inert, reactive, programmable), directly applying the classification from the Domain Engineering module.
+
+=== Human Behavior in the Domain
+
+*Artifacts:*
+
+* `docs/lecture-topic-tasks/Facets of Human Behavior in Home Inventory Management.adoc` — Applies the domain facets framework to analyze psychological and behavioral patterns (e.g., present bias, cognitive load, social loafing) relevant to student users and proposes design mitigations.
+* `docs/lecture-topic-tasks/model_human_error_scenarios_ltt.adoc` — Applies the human error scenario modeling technique. Common error scenarios (duplicate entries, missed quantity updates, miscategorization, permission errors) are identified, their impact on the domain model is analyzed, and mitigation strategies are documented.
+
+---
+
+== Stakeholder Engineering
+
+=== Stakeholder Identification
+
+*Artifacts:*
+
+* `docs/4-specific-topics/stakeholder-identification/` — Documents the stakeholder identification process following the methodology from the Domain Stakeholders lecture. Stakeholders are identified broadly, including non-obvious ones.
+* `docs/lecture-topic-tasks/Non-obvious stakeholders.adoc` — Applies the non-obvious stakeholder technique from the lecture. Stakeholders such as former roommates, future roommates, property managers, and insurance agents are identified and analyzed for their interests and implications for requirements.
+
+=== Stakeholder Perspectives
+
+*Artifact:*
+
+* `docs/lecture-topic-tasks/stakeholder-perpective.adoc` — Applies the stakeholder perspectives framework from the lecture (Schütz-Schmuck, 2021). Five stakeholder groups are described in a structured table covering what they care about, what they need, and how they interact with the system.
+
+=== Stakeholder Mapping to Development Phases
+
+*Artifact:*
+
+* `docs/lecture-topic-tasks/mapping_stakeholders_to_dev_phases.adoc` — Maps each stakeholder group to the relevant development phases (Domain Engineering, Requirements Engineering, and Implementation), justifying inclusion or exclusion per phase. Applies the principle that different stakeholders are relevant at different points in the software lifecycle.
+
+---
+
+== Requirements Engineering
+
+=== Domain Requirements Acquisition
+
+*Artifacts:*
+
+* `docs/4-specific-topics/domain-requirements-acquisition/` — Documents the methodology used to gather domain knowledge, including interview plans, elicitation resources, and personas-informed requirements.
+* `docs/lecture-topic-tasks/domain-acquisition-ltt.adoc` — Applies the Literature Review and Elicitation Studies technique from the Requirements Acquisition lectures. Trade and professional associations (NAPO, I.I.I., NBER) are consulted, research note cards are written, and identified inconsistencies and abstractions are documented.
+
+=== Personas
+
+*Artifact:*
+
+* `docs/4-specific-topics/personas/` — Documents four fictional but research-grounded personas (Mateo, Sofia, Julian, Andrea), each representing a realistic student user type. Personas were used throughout requirements elicitation to ground user stories and needs in realistic contexts, consistent with the persona-based requirements technique from the course.
+
+=== Traceability
+
+*Artifact:*
+
+* `docs/4-specific-topics/traceability/traceability.adoc` — Applies the traceability approach from the Requirements Engineering lectures. A labeling system links persona goals, needs, requirements, user stories, and domain concepts. Example traceability links are provided (e.g., IR-01 → Needs: N1, N2 → Goals: MG1, JG1, AG3), demonstrating how a change in one artifact propagates to others.
+
+=== Duplicate Prevention and Domain Rules
+
+*Artifacts:*
+
+* `docs/4-specific-topics/document-duplicate-prevention-logic/` — Documents domain rules for preventing duplicate inventory entries, applying domain rule formalization techniques.
+* `docs/4-specific-topics/duplicate-handling-rules/` — Specifies how duplicates are detected and resolved.
+* `docs/4-specific-topics/edge-cases-duplicates-budget/` — Documents edge cases related to duplicates and budget, applying boundary condition analysis.
+
+---
+
+== Validation and Verification
+
+=== Validation Strategy
+
+*Artifact:*
+
+* `docs/3-analytic/validation-verification/validation/` — Applies core inventory data validation rules, distinguishing between validation (building the right thing) and verification (building it correctly), consistent with the V&V framework from the course.
+
+=== Scenarios and Walkthroughs
+
+*Artifacts:*
+
+* `docs/3-analytic/validation-verification/scenarios/` — Documents validation scenarios based on realistic student situations (e.g., a week in the life of a student managing a grocery budget). Scenarios are used to check whether planned features hold up against real student needs.
+* `docs/3-analytic/validation-verification/walkthroughs/` — Documents structured walkthroughs used as a peer-review verification technique to check consistency between terminology, requirements, and implementation.
+
+=== Testing Strategy
+
+*Artifact:*
+
+* `docs/3-analytic/validation-verification/testing/testing.adoc` — Applies the layered testing strategy from the course: unit tests for domain rules (quantity updates, threshold crossing, expiration state transitions), integration tests for persistence and retrieval, end-to-end tests for complete user workflows, and UI tests for critical screens. A code review process with defined pull request checklists is also documented. The testing strategy references specific user stories and requirements (e.g., US-INV-01, US-ALT-01) to link tests to requirements.
+
+---
+
+== Concept Analysis and Modeling
+
+*Artifacts:*
+
+* `docs/3-analytic/concept-analysis/` — Applies concept analysis techniques from the Domain Engineering lectures to clarify ambiguous or overloaded terms in the domain.
+* `docs/3-analytic/alert-system-states.adoc` — Models alert state transitions (Normal/In-Stock, Low Stock, Out of Stock, Expiring, Expired) as a formal state model, applying state-based modeling techniques.
+* `docs/3-analytic/tech-expiration-alert-system.adoc` — Documents the technical design for the expiration alert system, connecting domain requirements to architectural decisions.
+* `docs/lecture-topic-tasks/alert-delivery-sequence-diagram.adoc` — Applies sequence diagram notation to model the alert delivery flow, illustrating interactions between system components.
+
+---
+
+== Documentation Practices
+
+=== Structured Documentation in AsciiDoc
+
+The team applied the documentation practices emphasized in the course by writing all project documentation in *AsciiDoc* format, stored under `/docs` and organized into four parts:
+
+* *Informative* (`docs/1-informative/`) — Current situation, needs, scope, team, and derived goals.
+* *Descriptive* (`docs/2-descriptive/`) — Domain description, requirements, and implementation notes.
+* *Analytic* (`docs/3-analytic/`) — Concept analysis, validation, and verification.
+* *Specific Topics* (`docs/4-specific-topics/`) — Stakeholder identification, personas, traceability, domain requirements acquisition, and inconsistency management.
+
+Documentation is versioned alongside source code in Git, making it traceable to specific milestones and issues.
+
+=== Lecture Topic Tasks
+
+The team produced dedicated *Lecture Topic Task* documents (`docs/lecture-topic-tasks/`) for each major course concept applied. These documents explicitly connect the lecture material to the project and are required per milestone, as documented in `CONTRIBUTING.md`:
+
+> _"Minimum 1 lecture topic task per milestone."_
+
+=== Style Guide and Contributing Guide
+
+*Artifacts:*
+
+* `STYLE_GUIDE.md` — Documents coding conventions and documentation standards, applying the knowledge management and documentation engineering practices covered in the course.
+* `CONTRIBUTING.md` — Documents the full team workflow (issue creation → branch → PR → review → merge), applying Agile and collaborative software development practices discussed in class.
+
+---
+
+== Project Management and Tooling
+
+=== Agile Workflow with GitHub
+
+The team applied Agile development principles using GitHub as the project management platform:
+
+* *GitHub Issues* — Used for task tracking, with structured templates aligned to course rubrics. Each issue includes a title, objective, proposed solution, success criteria, urgency rating, and difficulty rating.
+* *GitHub Projects* — Used as a shared Kanban-style board to track work across feature teams.
+* *GitHub Discussions* — Used for team communication and decision-making.
+* *Pull Requests with mandatory review* — All changes to `main` require at least one reviewer who is not the author, implementing a peer review process consistent with quality assurance practices from the course.
+
+=== Branch Strategy
+
+The repository uses a structured branch strategy mapping to the team organization:
+
+----
+main (protected)
+├── documentation/
+├── design/
+├── team-1-core-inventory/
+├── team-2-alerts-restock/
+├── team-3-sharing-budget/
+└── team-4-reports-insights/
+----
+
+Each feature team works on their branch and creates PRs reviewed by team leads and managers before merging to `main`, applying separation of concerns and change management practices.
+
+=== Technology Stack as Course Application
+
+The technology choices reflect the architectural and engineering decisions studied in the course:
+
+[cols="1,2", options="header"]
+|===
+| Tool / Technology
+| Application to Course Topics
+
+| Flutter
+| Mobile-first frontend applying UI/UX considerations and human-computer interaction principles for the target student population.
+
+| Supabase (PostgreSQL + Auth + Storage)
+| Backend-as-a-service supporting shared inventory (multi-user data), authentication, and storage — directly supporting requirements for roommate coordination and data integrity.
+
+| Figma
+| Used by the design team to produce wireframes and UI mockups that were validated against persona needs and user stories before implementation.
+
+| AsciiDoc
+| Structured documentation format applied throughout the project to maintain consistency, versioning, and traceability of all documentation artifacts.
+
+| Git & GitHub
+| Version control and collaborative workflow platform, applying configuration management and team coordination practices.
+|===
+
+---
+
+== Generative AI Disclosure
+
+Portions of several lecture topic tasks and documentation sections were developed with the assistance of generative AI tools (Claude, ChatGPT, DeepSeek AI, and GitHub Copilot). In all cases, the core ideas, validation of content, and final decisions were reviewed and verified by the human authors. AI was used to assist with grammar, structure, formatting, and initial drafting — not to replace team judgment. Specific AI disclosures are included in individual documents where applicable.
