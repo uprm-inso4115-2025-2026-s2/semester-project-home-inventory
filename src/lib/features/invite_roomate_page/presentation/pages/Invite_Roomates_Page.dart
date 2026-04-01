@@ -2,9 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:src/config/router.dart';
-// import 'package:src/config/theme.dart';
+import 'package:src/config/theme.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+
 
 class InviteRoommateScreen extends StatefulWidget {
   const InviteRoommateScreen({super.key});
@@ -86,6 +91,7 @@ class _InviteRoommateScreenState extends State<InviteRoommateScreen> {
     setState(() {
       _inviteSent = true;
     });
+    
 
     _navigationTimer?.cancel();
     _navigationTimer = Timer(const Duration(seconds: 1), () {
