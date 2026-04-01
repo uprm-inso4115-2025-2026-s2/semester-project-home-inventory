@@ -33,8 +33,12 @@ class _InviteRoommateScreenState extends State<InviteRoommateScreen> {
   bool _submitted = false;
   bool _inviteSent = false;
   String? _selectedRole;
+  String _sentUsername = '';
+  String _sentPhone = '';
+  String _sentRole = '';
   Timer? _navigationTimer;
   bool isPressed = false;
+
   void handleViewInvitesPressed() {
     setState(() {
       isPressed = true;
@@ -46,10 +50,12 @@ class _InviteRoommateScreenState extends State<InviteRoommateScreen> {
       setState(() {
         isPressed = false;
       });
-      //Change to the View Invites Page when it is implemented
-      AppRouter.goTo(context, 'todos');
 
-      
+      final username = Uri.encodeComponent(_sentUsername);
+      final phone = Uri.encodeComponent(_sentPhone);
+      final role = Uri.encodeComponent(_sentRole);
+
+      context.go('/home/invite_roommate/view_invites?username=$username&phone=$phone&role=$role');
     });
   }
   @override
@@ -87,24 +93,23 @@ class _InviteRoommateScreenState extends State<InviteRoommateScreen> {
     }
 
     final String roleToSend = _selectedRole ?? 'Other';
+    _sentUsername = _usernameController.text.trim();
+    _sentPhone = _phoneController.text.trim();
+    _sentRole = roleToSend;
 
     setState(() {
       _inviteSent = true;
     });
-    
 
     _navigationTimer?.cancel();
     _navigationTimer = Timer(const Duration(seconds: 1), () {
       if (!mounted) return;
 
-      Navigator.of(context).pushNamed(
-        'ViewInvites',
-        arguments: <String, dynamic>{
-          'username': _usernameController.text.trim(),
-          'phoneNumber': _phoneController.text.trim(),
-          'role': roleToSend,
-        },
-      );
+      final username = Uri.encodeComponent(_sentUsername);
+      final phone = Uri.encodeComponent(_sentPhone);
+      final role = Uri.encodeComponent(_sentRole);
+
+      context.go('/home/invite_roommate/view_invites?username=$username&phone=$phone&role=$role');
     });
   }
 

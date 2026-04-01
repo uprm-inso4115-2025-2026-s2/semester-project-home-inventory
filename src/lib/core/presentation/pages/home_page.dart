@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
             ),
 
             buildButton(context, "Invite Roommate", () {
-              AppRouter.goTo(context, '/invite_roommate');
+              AppRouter.goTo(context, 'invite_roommate');
             }),
           ],
         ),
