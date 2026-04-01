@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:src/core/presentation/pages/home_page.dart';
+import 'package:src/features/core_inventory/presentation/routes.dart';
 import 'package:src/features/example_feature/presentation/routes.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
@@ -12,7 +13,8 @@ var mainRoutes = GoRoute(
   routes: [
     todosRoutes,
     reportsOverviewRoute,
-    groceryListRoutes
+    groceryListRoutes,
+    inventoryRoutes,
     //For testing Purposes
     //reportListRoute,
   ],
