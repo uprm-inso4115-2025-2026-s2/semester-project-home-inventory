@@ -1,4 +1,4 @@
-= Restock List / Planner Autogeneration System
+= Restock List Autogeneration System
 Solimar Cruz Hernandez
 Issue #30
 :toc:
@@ -8,7 +8,7 @@ Issue #30
 
 Goal of this section:
 
-Evaluate possible trigger strategies for autogenerating restock list / planner item types, then justify the chosen trigger set.
+Evaluate possible trigger strategies for autogenerating restock list item types, then justify the chosen trigger set.
 
 == 1. DESIGN OPTIONS CONSIDERED
 
@@ -158,7 +158,7 @@ Option B (Status Triggers + Frequent Pattern), with strict gates.
 
 == 1. PURPOSE
 
-Define the rule-based decision system that converts inventory alert / notification conditions (provided by the inventory subsystem) into automated restock list / planner actions.
+Define the rule-based decision system that converts inventory alert conditions (provided by the inventory subsystem) into automated restock list actions.
 
 NOTE:
 Definitions for OUT_OF_STOCK and EXPIRED are handled by the Inventory Team.
@@ -244,7 +244,7 @@ Frequent item types do NOT override well-stocked item types.
 
 == TIMING OF RESTOCK LIST AUTO-ADD
 
-Items are automatically added to the restock list / planner when a state transition occurs,
+Items are automatically added to the restock list when a state transition occurs,
 such as:
 - NORMAL → LOW_STOCK
 - LOW_STOCK → OUT_OF_STOCK
@@ -259,6 +259,6 @@ To balance automation with household member control, the following rules must be
 
 == GROCERY SYSTEM RESPONSIBILITIES
 
-The Grocery System is responsible for adding item types to the restock list / planner when qualifying state transitions occur.
+The Grocery System is responsible for adding item types to the restock list when qualifying state transitions occur.
 
 The Grocery System does not evaluate low-stock judgment or expiration conditions directly. It consumes state transition results produced by the Automation System.

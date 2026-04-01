@@ -21,7 +21,7 @@ This section analyzes requirement-level concepts: actors, goals, capabilities, c
 
 |Household member
 |Inventory management
-|Tracked inventory record, Item type, Item instance (package), Location, Category, Availability, Quantity, Consumption, Replenishment
+|Tracked inventory record, Item type, Item instance , Location, Category, Availability, Quantity, Consumption, Replenishment
 
 |Household member
 |Budget tracking and spending awareness
@@ -29,11 +29,11 @@ This section analyzes requirement-level concepts: actors, goals, capabilities, c
 
 |Household member
 |Shared household coordination
-|Household, Household member, Shared tracked inventory records, Low-stock judgment, Restock list / planner
+|Household, Household member, Shared tracked inventory records, Low-stock judgment, Restock list
 
 |Household member
 |Reporting and history review
-|Transaction (quantity change) history, Consumption patterns, Spending summaries, Availability history
+|Transaction history, Consumption patterns, Spending summaries, Availability history
 |===
 
 === Conflicts and tradeoffs

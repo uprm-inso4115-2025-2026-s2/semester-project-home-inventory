@@ -18,10 +18,10 @@ Define the core database structures:
 
 The schema:
 
-* Links alert / notification records to authenticated household member accounts (Supabase Auth)
-* Optionally links alert / notification records to relevant item instances (packages) or tracked inventory records
-* Supports alert / notification lifecycle state tracking
-* Allows extensibility for additional alert / notification types
+* Links alert records to authenticated household member accounts (Supabase Auth)
+* Optionally links alert records to relevant item instances or tracked inventory records
+* Supports alert lifecycle state tracking
+* Allows extensibility for additional alert types
 
 == Data Model
 
@@ -31,16 +31,16 @@ The schema:
 | Field | Type | Description
 | id | uuid (PK) | Unique alert / notification record identifier
 | recipient_user_id | uuid (FK → auth.users) | Household member account that receives the alert / notification
-| inventory_item_id | uuid (nullable) | Optional reference to the relevant item instance (package) or tracked inventory record (FK to be added once the inventory schema is finalized)
-| type | notification_type | Alert / notification type (LOW_STOCK, EXPIRING_SOON, etc.)
-| title | text | Short alert / notification title
-| message | text | Alert / notification message body
-| priority_level | notification_priority | Alert / notification priority level
-| status | notification_status | Alert / notification lifecycle state (UNREAD, READ, ARCHIVED, DISMISSED)
-| created_at | timestamptz | Timestamp when the alert / notification record was created
-| triggered_at | timestamptz | Timestamp when the underlying alert / notification condition was met
-| expires_at | timestamptz (nullable) | Optional timestamp after which the alert / notification record is no longer relevant
-| is_active | boolean | Indicates whether the alert / notification record remains active without deleting the row
+| inventory_item_id | uuid (nullable) | Optional reference to the relevant item instance or tracked inventory record (FK to be added once the inventory schema is finalized)
+| type | notification_type | Alert type (LOW_STOCK, EXPIRING_SOON, etc.)
+| title | text | Short alert title
+| message | text | Alert notification message body
+| priority_level | notification_priority | Alert priority level
+| status | notification_status | Alert lifecycle state (UNREAD, READ, ARCHIVED, DISMISSED)
+| created_at | timestamptz | Timestamp when the alert record was created
+| triggered_at | timestamptz | Timestamp when the underlying alert condition was met
+| expires_at | timestamptz (nullable) | Optional timestamp after which the alert record is no longer relevant
+| is_active | boolean | Indicates whether the alert record remains active without deleting the row
 |===
 
 === Enum Definitions
@@ -179,4 +179,4 @@ create index idx_notifications_inventory_item
 * Scalable: enum types enforce consistent alert categorization and allow adding new alert types without redesigning the table.
 * Minimal redundancy: notifications store display-ready content and optionally link to inventory items.
 * Lifecycle tracking: `status` supports transitions (UNREAD → READ → ARCHIVED/DISMISSED) without deleting data.
-* Performance: indexes support common queries such as “recent notifications for a user” and filtering by status/type.
+* Performance: indexes support common queries such as “recent notifications for a household member” and filtering by status/type.
