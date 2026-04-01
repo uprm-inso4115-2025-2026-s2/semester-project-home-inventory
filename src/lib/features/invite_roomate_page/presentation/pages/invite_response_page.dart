@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:src/config/router.dart';
-
+import 'package:go_router/go_router.dart';
 enum InvitationDecision { pending, accepted, declined, error }
 
 class InviteResponseScreen extends StatefulWidget {
@@ -57,12 +57,12 @@ class _InviteResponseScreenState extends State<InviteResponseScreen> {
             ),
             const SizedBox(height: 8),
             const Text('Please return to the sender and ask for a new invite.',textAlign: TextAlign.center),
-            // const SizedBox(height: 16),
-            // ElevatedButton(
-            //   onPressed: () => AppRouter.goTo(context, '/home'),
-            //   style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF3A5A40), foregroundColor: Colors.white),
-            //   child: const Text('Back Home'),
-            // ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => context.go('/home'),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF3A5A40), foregroundColor: Colors.white),
+              child: const Text('Back Home'),
+            ),
           ],
         ),
       );
@@ -87,12 +87,12 @@ class _InviteResponseScreenState extends State<InviteResponseScreen> {
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
-            // const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: () => AppRouter.goTo(context, 'home'),
-            //   style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF3A5A40), foregroundColor: Colors.white),
-            //   child: const Text('Back to Home'),
-            // ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () =>  context.go('/home'),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF3A5A40), foregroundColor: Colors.white),
+              child: const Text('Back to Home'),
+            ),
           ],
         ),
       );
