@@ -68,7 +68,7 @@ The following concepts are used to express requirements without committing to a 
 |Definition of “expiring soon” (within N days), including any timing/grace policy to avoid inconvenient alert timing.
 
 |Scheduled sweep (automation check)
-|A periodic background check that evaluates low-stock and expiration conditions without requiring the user to open the system.
+|A periodic background check that evaluates low-stock and expiration conditions without requiring the household member to open the system.
 
 |Notification record/event
 |A persisted representation of an alert (at least for in-app review), including type, time, and read/unread status.
@@ -79,8 +79,8 @@ The following concepts are used to express requirements without committing to a 
 |Deduplication / anti-spam
 |Rules preventing repeated alerts or repeated list additions when nothing meaningful changed.
 
-|Auto-add to restock list / planner
-|Rule-based conversion of actionable states into  restock list / planner entries, with guardrails against clutter.
+|Auto-add to restock list
+|Rule-based conversion of actionable states into restock list entries, with guardrails against clutter.
 
 |Transaction history
 |An append-only log of quantity changes with reason and timestamp, enabling traceability of how current quantity was reached.
@@ -110,7 +110,7 @@ The following concepts are used to express requirements without committing to a 
 
 |Roommate/cohabitant
 |Coordinate replenishment intent/responsibility to avoid duplicates
-|Low-stock judgment/Threshold, Replenishment intent/responsibility, Restock list / planner entry (if used)
+|Low-stock judgment/Threshold, Replenishment intent/responsibility, Restock list entry (if used)
 
 |Budget-focused member
 |Record/review spending summaries for essentials
@@ -242,6 +242,6 @@ This section establishes the vocabulary used for those links.
 * Ensure low-stock/out-of-stock/near-expiry/expired terms map consistently to actionable states and transition rules.
 
 *Feasibility (risks/unknowns)*
-* Deduplication rules are essential to prevent notification fatigue and repeated restock list / planner list additions.
+* Deduplication rules are essential to prevent notification fatigue and repeated restock list additions.
 * Automation sweeps must be testable deterministically with boundary cases (threshold equality, expiration boundaries, missing fields).
 * Offline/temporary connectivity gaps create reconciliation complexity; initial scope should define acceptable behavior and verification strategy.

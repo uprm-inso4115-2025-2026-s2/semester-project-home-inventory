@@ -1,7 +1,7 @@
 = Automated Check System — Scheduled Expiration & Low-Stock Sweep (Milestone 1)
 
 == 1. Executive Summary
-To support automated reminders for *low-stock* and *expired* items, the system needs a background process that periodically scans tracked inventory records and item instances (packages) and evaluates availability, expiration, and low-stock conditions without user interaction. This document evaluates multiple scheduling approaches and recommends a managed scheduler pattern due to reliability and observability benefits. It also defines objectively checkable requirements (with fit criteria), plus a verification/validation plan and key assumptions to resolve later.
+To support automated reminders for *low-stock* and *expired* items, the system needs a background process that periodically scans tracked inventory records and item instances and evaluates availability, expiration, and low-stock conditions without user interaction. This document evaluates multiple scheduling approaches and recommends a managed scheduler pattern due to reliability and observability benefits. It also defines objectively checkable requirements (with fit criteria), plus a verification/validation plan and key assumptions to resolve later.
 
 == 2. Purpose & Scope
 The purpose of the automation layer is to run a *scheduled sweep* (daily) that:
@@ -22,13 +22,13 @@ Out of scope (Milestone 1):
 
 == 4. Daily Sweep Definition
 === 4.1 Inputs
-For each tracked inventory record and associated item instances (packages):
+For each tracked inventory record and associated item instances:
 
 Tracked inventory record:
 * `quantity` (integer)
 * `low_stock_threshold` (integer)
 
-Item instance (package):
+Item instance:
 * `expiration_date` (date, optional)
 
 System preferences:
@@ -39,7 +39,7 @@ System preferences:
 ** `LOW_STOCK` (boolean)
 ** `EXPIRED` (boolean)
 ** `NEAR_EXPIRY` (boolean, optional)
-* Alert / Notification events (or records) generated for *new* actionable states
+* Notification events (or records) generated for *new* actionable states
 * Job run record:
 ** start time / end time
 ** items scanned count
@@ -57,26 +57,26 @@ System preferences:
 
 The scheduled sweep runs once per day and performs the following checks:
 
-1. Evaluate expiration and near-expiry for item instances (packages)
+1. Evaluate expiration and near-expiry for item instances
 2. Evaluate low-stock judgment for tracked inventory records
 3. Detect state transitions (e.g., NORMAL → LOW_STOCK, LOW_STOCK → OUT_OF_STOCK, NEAR_EXPIRY → EXPIRED)
-4. Generate alert / notification records for new state transitions
-5. Automatically add item types to the restock list / planner when appropriate (LOW_STOCK, OUT_OF_STOCK, EXPIRED)
+4. Generate alert records for new state transitions
+5. Automatically add item types to the restock list when appropriate (LOW_STOCK, OUT_OF_STOCK, EXPIRED)
 
 The scheduled sweep does not repeatedly generate alerts if the state has not changed.
 
 Low-stock judgment is evaluated using the current quantity stored in tracked inventory records.
-Transaction (quantity change) history is maintained for traceability and audit, but is not the primary source used during scheduled sweep evaluation.
+Transaction history is maintained for traceability and audit, but is not the primary source used during scheduled sweep evaluation.
 
 == 6.Automation Responsibilities
 
 The Automation System is responsible for:
 - evaluating low-stock judgment from tracked inventory records
-- evaluating near-expiry and expired states from item instance (package) expiration dates
+- evaluating near-expiry and expired states from item instance expiration dates
 - detecting state transitions
 - triggering downstream actions when a new state transition is detected
 
-The Automation System does not deliver notifications directly and does not own restock list / planner entries. Those responsibilities belong to the Notification Service and Grocery System respectively.
+The Automation System does not deliver notifications directly and does not own restock list entries. Those responsibilities belong to the Notification Service and Grocery System respectively.
 
 == 7. Scheduling Approaches Considered
 We consider three approaches to trigger the sweep on a daily schedule.
@@ -118,9 +118,9 @@ We consider three approaches to trigger the sweep on a daily schedule.
 * Minimal backend scheduling work
 
 *Cons:*
-* Not reliable: depends on user behavior/device power/network state
+* Not reliable: depends on household member behavior/device power/network state
 * Hard to monitor centrally
-* Does not satisfy “autonomous sweep without user interaction” well
+* Does not satisfy “autonomous sweep without household member interaction” well
 
 *Best fit when:* Only as a supplement to server-side scheduling, not a primary mechanism.
 
@@ -207,8 +207,8 @@ Stakeholder review items:
 * Confirm what “expired” means in practice (end-of-day vs start-of-day policy)
 
 == 12. Open Questions / Assumptions
-* *Timezone policy:* Are expiration comparisons in user-local time or UTC?
-* *Near-expiry definition:* What is default N and can users change it?
+* *Timezone policy:* Are expiration comparisons in household member-local time or UTC?
+* *Near-expiry definition:* What is default N and can household members change it?
 * *Notification deduplication:* When do we re-notify (e.g., daily reminder vs once)?
 * *Overlapping runs:* If a run takes longer than a day, do we skip overlaps or queue next run?
 * *Data model fields:* Where do we store status flags and job run records (tables/fields TBD)?
@@ -217,7 +217,7 @@ Stakeholder review items:
 
 The Automation System is responsible for evaluating low-stock, near-expiry, and expired conditions and detecting state transitions.
 When a new relevant state transition is detected, the Automation System triggers downstream notification handling.
-The Automation System does not own notification delivery. Creation of alert / notification records belongs to the Notification Service.
+The Automation System does not own notification delivery. Creation of notification records belongs to the Notification Service.
 
 == 14. Conceptual Flow
 [mermaid]

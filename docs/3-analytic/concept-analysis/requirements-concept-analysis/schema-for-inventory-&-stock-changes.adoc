@@ -34,7 +34,7 @@ Represents the current state of each inventory item type.
 |When the tracked inventory record was created.
 |===
 
-== Transaction (Quantity Change) Table
+== transaction Table
 
 This table represents changes made to an item’s quantity over time.
 
@@ -57,19 +57,19 @@ This table represents changes made to an item’s quantity over time.
 
 == Relationship Between Tables
 
-* One tracked inventory record can have multiple transaction (quantity change) records.
-* Transaction (quantity change) records explain how the current quantity of a tracked inventory record was reached.
+* One tracked inventory record can have multiple transaction records.
+* transaction records explain how the current quantity of a tracked inventory record was reached.
 
 == Quantity Ownership Rule
 
 Tracked inventory records store the current quantity for each item type.
-Transaction (quantity change) records are append-only historical records that explain how the current quantity was reached over time.
+transaction records are append-only historical records that explain how the current quantity was reached over time.
 When a transaction is recorded, the tracked inventory record quantity is updated accordingly.
 
 == Simple Replenishment Flow
 
 1. A household member replenishes an item type by adding quantity.
-2. A transaction (quantity change) is recorded with a positive quantity value.
+2. A transaction is recorded with a positive quantity value.
 3. The tracked inventory record quantity is updated.
 4. Low-stock judgment logic checks the updated quantity against the low-stock threshold.
 
@@ -81,5 +81,5 @@ The schema itself does not evaluate low-stock, near-expiry, expired, or out-of-s
 
 == Recommendation
 
-Using one table for tracked inventory records and one table for transaction (quantity change) records keeps the system simple and easy to extend.
+Using one table for tracked inventory records and one table for transaction records keeps the system simple and easy to extend.
 This structure supports low-stock judgment while allowing future features like transaction history and availability tracking.
