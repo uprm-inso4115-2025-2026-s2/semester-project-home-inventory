@@ -50,6 +50,7 @@ Main screen implementation:
 - View invitations path is in-flight / TODO in app router.
 
 ---
-
+### Notes
+- As a placeholder, the invites will currently be sent back to the user who requested invite. Once the communication between users is established this can be fully implemented. 
 
  
