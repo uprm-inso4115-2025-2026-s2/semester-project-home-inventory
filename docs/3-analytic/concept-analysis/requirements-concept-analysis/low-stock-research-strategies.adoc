@@ -44,6 +44,9 @@
 
 Based on the research, the recommended approach is a fixed quantity low-stock threshold with per item type configuration. This strategy offers a balance between simplicity and flexibility while remaining easy to implement within the project’s scope.
 
+A fixed low-stock threshold per item type is recommended because it balances simplicity and flexibility.
+More complex demand-based models were considered but are outside the scope of the system due to increased complexity.
+
 == Sources
 
 

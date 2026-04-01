@@ -12,7 +12,7 @@ The goal is to keep a clear and consistent history of how and when item quantiti
 
 == What Is a Transaction (Quantity Change)
 
-A transaction (quantity change) represents any action that changes the quantity of an item type (package) in the tracked inventory record.
+A transaction (quantity change) represents any action that changes the quantity of a tracked inventory record (item type).
 
 Examples of transactions (quantity changes) include:
 
@@ -54,6 +54,9 @@ This table describes the basic information each transaction should store.
 Transactions (quantity changes) are responsible for recording quantity changes and updating tracked inventory record quantity.
 
 Transactions may trigger immediate state evaluation after recording, but they do not directly own alert / notification creation or restock list / planner updates. Those actions occur only if the Automation System detects a state transition.
+
+The system assumes that tracked inventory records are an approximation of real household inventory.
+Transactions (quantity changes) allow adjustments over time to correct differences between tracked inventory and reality.
 
 == Relationship to Inventory Quantity
 

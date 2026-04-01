@@ -252,6 +252,11 @@ such as:
 
 Auto-add should not occur repeatedly if the state remains unchanged.
 
+To balance automation with household member control, the following rules must be made explicit:
+
+- Household members must be able to remove item types from the restock list / planner.
+- If a household member removes an item type from the restock list / planner, the system should not immediately re-add it unless a new state transition occurs.
+
 == GROCERY SYSTEM RESPONSIBILITIES
 
 The Grocery System is responsible for adding item types to the restock list / planner when qualifying state transitions occur.
