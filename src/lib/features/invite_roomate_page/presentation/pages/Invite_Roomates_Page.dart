@@ -109,7 +109,7 @@ class _InviteRoommateScreenState extends State<InviteRoommateScreen> {
       final phone = Uri.encodeComponent(_sentPhone);
       final role = Uri.encodeComponent(_sentRole);
 
-      context.go('/home/invite_roommate/view_invites?username=$username&phone=$phone&role=$role');
+      //context.go('/home/invite_roommate/view_invites?username=$username&phone=$phone&role=$role');
     });
   }
 
