@@ -197,7 +197,7 @@ e) Other: ______
 |Would cost splitting be valuable? _(Yes / No / Maybe)_
 
 |Q25
-|How important is privacy of personal items? _(1–5 scale)_
+|How important is privacy of personal items? _(1–5 scale, where 1 = Not important at all and 5 = Extremely important)_
 |===
 
 ---
@@ -261,7 +261,7 @@ f) Never
 |# |Question
 
 |Q32
-|Rank features (1–5):
+|Rank the following features from most to least important (1 = Most important, 5 = Least important):
 - Expiration tracking
 - Low-stock alerts
 - Shared inventory
