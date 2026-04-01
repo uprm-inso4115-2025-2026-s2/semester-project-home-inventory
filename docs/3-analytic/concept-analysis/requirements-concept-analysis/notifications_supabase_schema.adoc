@@ -3,12 +3,12 @@
 :toclevels: 2
 
 == Objective
-Design the relational schema needed to support in-app notifications for low-stock alerts, expiration monitoring, and shared inventory events in the Digital Home Inventory application.
+Design the relational schema needed to support in-app alert / notification records for low-stock judgments, expiration monitoring, and shared household inventory events in the Digital Home Inventory application.
 
 This document defines the database structures only. No triggers, scheduled jobs, or backend logic are implemented here.
 
 == Proposed Solution
-Define core database structures:
+Define the core database structures:
 
 * `notifications` table
 * Enum types:
@@ -18,10 +18,10 @@ Define core database structures:
 
 The schema:
 
-* Links notifications to authenticated users (Supabase Auth)
-* Optionally links notifications to inventory items
-* Supports lifecycle state tracking
-* Allows extensibility for additional alert types
+* Links alert / notification records to authenticated household member accounts (Supabase Auth)
+* Optionally links alert / notification records to relevant item instances (packages) or tracked inventory records
+* Supports alert / notification lifecycle state tracking
+* Allows extensibility for additional alert / notification types
 
 == Data Model
 
@@ -29,18 +29,18 @@ The schema:
 [cols="1,1,3",options="header"]
 |===
 | Field | Type | Description
-| id | uuid (PK) | Unique notification identifier
-| recipient_user_id | uuid (FK → auth.users) | Notification recipient user
-| inventory_item_id | uuid (nullable) | Optional reference to an inventory item (FK to be added once inventory schema is finalized)
-| type | notification_type | Alert type (LOW_STOCK, EXPIRING_SOON, etc.)
-| title | text | Short notification title
-| message | text | Notification message body
-| priority_level | notification_priority | Severity/priority level
-| status | notification_status | Lifecycle state (UNREAD, READ, ARCHIVED, DISMISSED)
-| created_at | timestamptz | Row creation timestamp
-| triggered_at | timestamptz | When the alert condition was met
-| expires_at | timestamptz (nullable) | Optional expiration timestamp
-| is_active | boolean | Soft enable/disable without deleting rows
+| id | uuid (PK) | Unique alert / notification record identifier
+| recipient_user_id | uuid (FK → auth.users) | Household member account that receives the alert / notification
+| inventory_item_id | uuid (nullable) | Optional reference to the relevant item instance (package) or tracked inventory record (FK to be added once the inventory schema is finalized)
+| type | notification_type | Alert / notification type (LOW_STOCK, EXPIRING_SOON, etc.)
+| title | text | Short alert / notification title
+| message | text | Alert / notification message body
+| priority_level | notification_priority | Alert / notification priority level
+| status | notification_status | Alert / notification lifecycle state (UNREAD, READ, ARCHIVED, DISMISSED)
+| created_at | timestamptz | Timestamp when the alert / notification record was created
+| triggered_at | timestamptz | Timestamp when the underlying alert / notification condition was met
+| expires_at | timestamptz (nullable) | Optional timestamp after which the alert / notification record is no longer relevant
+| is_active | boolean | Indicates whether the alert / notification record remains active without deleting the row
 |===
 
 === Enum Definitions
@@ -76,7 +76,7 @@ The schema:
 
 == Supported Alert Scenarios (Documentation Only)
 
-This section documents how the schema supports notification creation (no trigger implementation required here).
+This section documents how the schema supports alert / notification creation (no trigger implementation required here).
 
 * Low-stock alerts
 ** Trigger condition: `quantity <= threshold`
@@ -99,8 +99,8 @@ This section documents how the schema supports notification creation (no trigger
 *** `priority_level = HIGH` or `CRITICAL`
 *** `status = UNREAD`
 
-* Shared inventory alerts (roommates)
-** Examples: shared item updated/removed, duplicate detected
+* Shared inventory alerts / notifications (roommates)
+** Examples: shared item  instance updated/removed, duplicate detected
 ** Notification row:
 *** `type = SHARED_INVENTORY_UPDATE` or `DUPLICATE_WARNING`
 *** `inventory_item_id` optional depending on the event

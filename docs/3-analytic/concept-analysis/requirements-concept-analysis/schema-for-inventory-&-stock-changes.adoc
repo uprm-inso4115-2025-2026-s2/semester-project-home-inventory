@@ -7,34 +7,34 @@
 
 == Overview
 
-This document describes a simple data structure for storing inventory items and tracking stock changes over time.
-It focuses on the minimum data needed to support inventory tracking and low-stock logic.
+This document describes a simple data structure for storing tracked inventory records and tracking quantity change transactions over time.
+It focuses on the minimum data needed to support tracked inventory records and low-stock judgment logic
 
-== Inventory Items Table
+== Tracked Inventory Records Table
 
-Represents the current state of each inventory item.
+Represents the current state of each inventory item type.
 
 [cols="1,1"]
 |===
 |Field |Description
 
-|Item name
-|The name of the inventory item.
+|Item type name
+|The name of the item type represented by this tracked inventory record.
 
 |Category (optional)
-|Optional grouping for the item.
+|Optional grouping for the item type.
 
-|Current quantity
-|The current amount of the item in stock.
+|Quantity
+|The current quantity recorded in the tracked inventory record.
 
-|Low stock threshold
-|The quantity at which the item is considered low stock.
+|Low-stock threshold
+|The quantity at which the item type is considered low-stock.
 
-|Created time (Optional)
-|When the item was added to inventory.
+|Created time (optional)
+|When the tracked inventory record was created.
 |===
 
-== Stock Changes Table
+== Transaction (Quantity Change) Table
 
 This table represents changes made to an item’s quantity over time.
 
@@ -42,32 +42,44 @@ This table represents changes made to an item’s quantity over time.
 |===
 |Field |Description
 
-|Item reference
-|The item whose quantity was changed.
+|Tracked inventory record reference
+|The tracked inventory record whose quantity was changed.
 
 |Quantity change
-|A positive or negative number representing the change.
+|A positive or negative number representing the quantity change.
 
 |Reason
-|Why the quantity changed (restock, used, manual edit).
+|Why the quantity changed (replenishment, consumption, manual adjustment).
 
-|Time of change
+|Time of transaction
 |When the quantity change occurred.
 |===
 
 == Relationship Between Tables
 
-* One inventory item can have multiple stock changes.
-* Stock changes explain how the current quantity of an item was reached.
+* One tracked inventory record can have multiple transaction (quantity change) records.
+* Transaction (quantity change) records explain how the current quantity of a tracked inventory record was reached.
 
-== Simple Restock Flow
+== Quantity Ownership Rule
 
-1. A user restocks an item by adding a quantity.
-2. A stock change is recorded with a positive quantity value.
-3. The item’s current quantity is updated.
-4. Low-stock logic checks the updated quantity against the low stock threshold.
+Tracked inventory records store the current quantity for each item type.
+Transaction (quantity change) records are append-only historical records that explain how the current quantity was reached over time.
+When a transaction is recorded, the tracked inventory record quantity is updated accordingly.
+
+== Simple Replenishment Flow
+
+1. A household member replenishes an item type by adding quantity.
+2. A transaction (quantity change) is recorded with a positive quantity value.
+3. The tracked inventory record quantity is updated.
+4. Low-stock judgment logic checks the updated quantity against the low-stock threshold.
+
+== Schema Responsibility Boundary
+
+This schema stores alert / notification records after a qualifying state transition has already been detected.
+
+The schema itself does not evaluate low-stock, near-expiry, expired, or out-of-stock conditions. Those responsibilities belong to the Automation System.
 
 == Recommendation
 
-Using one table for inventory items and one table for stock changes keeps the system simple and easy to extend.
-This structure supports low-stock detection while allowing future features like history tracking.
+Using one table for tracked inventory records and one table for transaction (quantity change) records keeps the system simple and easy to extend.
+This structure supports low-stock judgment while allowing future features like transaction history and availability tracking.
