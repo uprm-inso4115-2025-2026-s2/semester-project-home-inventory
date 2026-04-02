@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
           "Home Page",
           style: Theme.of(context)
               .textTheme
-              .displayMedium, // Example of using the custom typography defined in the theme
+              .displayMedium,
         ),
       ),
       body: Center(
@@ -26,6 +26,10 @@ class HomePage extends StatelessWidget {
           children: [
             buildButton(context, "Grocery List", () {
               AppRouter.goTo(context, "grocery_home");
+            }),
+
+            buildButton(context, "Alerts", () {
+              AppRouter.goTo(context, "alerts_home");
             }),
             
             Text("This is the main page of the app"),
