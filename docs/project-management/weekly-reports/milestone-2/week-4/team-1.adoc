@@ -1,0 +1,41 @@
+:nofooter:
+:milestone: Milestone 2
+:team: Team 1
+:week: Week 4
+:repo-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/
+:issue-base-url: {repo-base-url}issues/
+:pr-base-url: {repo-base-url}pull/
+
+# {milestone} {week} — {team} Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+
+## What the Team Accomplished This Week
+- Very slow week, only reviewed one pull request which needs changes.
+- {pr-base-url}419[Updated Inventory Designs]
+
+
+## Tasks Completed / Issues Closed
+- None as of yet, will be pushing members for more completion
+
+
+## What Is Currently In Progress
+- {issue-base-url}288[Auth Feature Frontend]
+- {issue-base-url}277[Wireframes]
+- {issue-base-url}317[UI Designs]
+- {issue-base-url}409[Data Flow Diagram]
+
+## Blockers or Challenges
+- Lack of completion by members
+
+
+## Plans for Next Week
+- Finish auth frontend
+- Finish core inventory backend
+- Begin feature UI for demo
+
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above

@@ -1,5 +1,4 @@
 import 'package:src/features/core_inventory/domain/repositories/product_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/repositories/inventory_repositories.dart'; 
 import '../../domain/entities/inventory.dart';                  
 import '../../domain/entities/product.dart';                
@@ -7,9 +6,7 @@ import '../../domain/entities/stock.dart';
 import '../../domain/entities/enums.dart';                    
 import '../data_sources/inventory_supabase_datasource.dart';    
 import '../models/inventory.dart';                              
-import '../models/product.dart';                          
 import '../models/stock.dart';     
-import '/core/util/util.dart';
 
 //Implements the domain repository contract and bridges the domain layer with the data layer
 //Responsabilities:
@@ -53,7 +50,7 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       }
       
       stockEntities[productEntity] = entry.value
-          .map((model) => model.toEntity() as StockEntity)
+          .map((model) => model.toEntity())
           .toList();
     }
     
@@ -138,8 +135,16 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
 
     try {
       final stockModel = StockModel.fromEntity(stock);
-      final createdModel = await _dataSource.insertStock(inventoryId, productId, stockModel);
-      return createdModel.toEntity();
+      final updatedInventory = await _dataSource.addStockToInventory(
+        inventoryId,
+        productId,
+        stockModel,
+      );
+      final productStock = updatedInventory.stock[productId.toString()];
+      if (productStock == null || productStock.isEmpty) {
+        throw RepositoryException('Failed to add stock for product $productId');
+      }
+      return productStock.last.toEntity();
     } catch (e) {
       throw RepositoryException('Failed to add stock: $e');
     }
@@ -175,8 +180,25 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
 
    try {
       final stockModel = StockModel.fromEntity(stock);
-      final updatedModel = await _dataSource.updateStock(inventoryId, productId, stockModel);
-      return updatedModel.toEntity();
+      final updatedInventory = await _dataSource.updateStockInInventory(
+        inventoryId,
+        productId,
+        stockModel,
+      );
+      final productStock = updatedInventory.stock[productId.toString()];
+      if (productStock == null || productStock.isEmpty) {
+        throw RepositoryException('Product $productId not found in inventory');
+      }
+
+      final updatedStock = productStock
+          .cast<StockModel>()
+          .firstWhere((s) => s.id == stock.id, orElse: () => StockModel.initial());
+
+      if (updatedStock.id == -1) {
+        throw RepositoryException('Stock ${stock.id} was not found after update');
+      }
+
+      return updatedStock.toEntity();
     } catch (e) {
       throw RepositoryException('Failed to update stock: $e');
     }
@@ -199,7 +221,7 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
 
     try {
-      await _dataSource.deleteStock(stockId);
+      await _dataSource.deleteStockFromInventory(inventoryId, productId, stockId);
     } catch (e) {
       throw RepositoryException('Failed to delete stock: $e');
     }
@@ -218,7 +240,7 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     }
 
     try {
-      final stockModels = await _dataSource.fetchStockForProduct(inventoryId, productId);
+      final stockModels = await _dataSource.getStockForProduct(inventoryId, productId);
       return stockModels
           .map((model) => model.toEntity())
           .toList();

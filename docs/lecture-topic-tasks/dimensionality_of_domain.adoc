@@ -1,0 +1,199 @@
+= Dimensionality of Domain Phenomena in the Home Inventory System
+
+== Objective
+
+This report analyzes key domain phenomena within the Digital Home Inventory System and identifies the dimensions that describe them. 
+
+In domain engineering, phenomena are often characterized by measurable dimensions such as time, quantity, and location. Understanding these dimensions improves clarity in the domain model and supports better system design by making behavior and relationships explicit.
+
+---
+
+== Key Domain Phenomena and Their Dimensions
+
+=== 1. Inventory Item
+
+*Description:*  
+Represents a physical object stored within the home inventory system.
+
+*Dimensions:*
+- *Identity:* item_id, name
+- *Quantity:* quantity / count
+- *Time:* expiration_date, purchase_date
+- *Location:* room_id
+- *Ownership:* owner_user_id
+- *Categorization:* product category, priority
+
+*Impact on System Behavior:*  
+Inventory items are central to the system. Their quantity determines stock levels, while expiration dates trigger alerts. Location and ownership define how items are organized and accessed.
+
+---
+
+=== 2. Quantity / Stock Level
+
+*Description:*  
+Represents the measurable amount of a given inventory item.
+
+*Dimensions:*
+- *Numeric Value:* quantity
+- *Threshold:* minimum stock level
+- *Time (implicit):* changes over time through usage or restocking
+
+*Impact on System Behavior:*  
+Quantity is used to determine when an item is low in stock. When quantity falls below a threshold, it triggers alerts or restocking actions.
+
+---
+
+=== 3. Expiration
+
+*Description:*  
+Represents the temporal validity of an inventory item.
+
+*Dimensions:*
+- *Time:* expiration_date
+- *Derived State:* valid, near-expiry, expired
+
+*Impact on System Behavior:*  
+The system continuously evaluates expiration dates to generate notifications. This enables users to consume items before they expire and reduces waste.
+
+---
+
+=== 4. Notification / Alert
+
+*Description:*  
+Represents a system-generated message informing users about important conditions.
+
+*Dimensions:*
+- *Time:* created_at, triggered_at, expires_at
+- *Type:* notification_type (e.g., low stock, expiration)
+- *Priority:* priority_level
+- *State:* status, is_active
+- *Actor:* recipient_user_id
+
+*Impact on System Behavior:*  
+Notifications are triggered by changes in other dimensions such as time and quantity. They serve as the system’s feedback mechanism to inform users of important events.
+
+---
+
+=== 5. Location (Room)
+
+*Description:*  
+Represents the physical place where items are stored.
+
+*Dimensions:*
+- *Identity:* room_id, room_name
+- *Hierarchy:* associated home_id
+
+*Impact on System Behavior:*  
+Location enables organization of inventory items and supports contextual queries such as filtering items by room.
+
+---
+
+=== 6. Product
+
+*Description:*  
+Represents the general definition of an item independent of its presence in inventory.
+
+*Dimensions:*
+- *Identity:* product_id, product_name
+- *Category:* classification of the product
+- *Location (external):* selling_location
+
+*Impact on System Behavior:*  
+Products provide classification and reusable definitions for items, enabling grouping and categorization.
+
+---
+
+=== 7. User and Ownership
+
+*Description:*  
+Represents individuals interacting with the system and their relationship to inventory.
+
+*Dimensions:*
+- *Identity:* user_id, username
+- *Ownership:* owner_id, tracked relationships
+- *Role:* access permissions (owner, shared user)
+
+*Impact on System Behavior:*  
+Ownership determines access control, visibility, and who receives notifications. Shared ownership enables collaborative inventory management.
+
+---
+
+=== 8. Stock Transaction / Inventory Change
+
+*Description:*  
+Represents changes in item quantity due to usage, restocking, or updates.
+
+*Dimensions:*
+- *Quantity Change:* amount added or removed
+- *Time:* timestamp of change
+- *Type:* reason for change (restock, consumption, manual update)
+
+*Impact on System Behavior:*  
+These events update item quantities and may trigger notifications. They represent the dynamic behavior of the system.
+
+---
+
+== Static vs Dynamic Phenomena
+
+The domain includes two types of phenomena:
+
+=== Static Phenomena
+- Inventory Item
+- Product
+- Room
+- User
+
+These are defined by attributes and remain relatively stable.
+
+=== Dynamic Phenomena
+- Notifications
+- Stock Transactions
+- Expiration Events
+- Restocking Events
+
+These evolve over time and are driven by changes in dimensions such as time and quantity.
+
+---
+
+== Core Dimensions Identified
+
+The system relies on several key dimensions:
+
+- *Time:* expiration dates, timestamps, scheduling
+- *Quantity:* stock levels, thresholds
+- *Location:* rooms and homes
+- *Categorical:* item categories, notification types
+- *State:* status of items and notifications
+- *Actor:* users, ownership relationships
+- *Event-based Change:* inventory updates and system-triggered events
+
+---
+
+== Impact of Dimensionality on System Design
+
+Understanding dimensionality improves the system in several ways:
+
+- *Clarity:* Clearly defines domain concepts and avoids ambiguity.
+- *Data Modeling:* Directly maps to database schema (columns represent dimensions).
+- *Behavior Modeling:* Enables logic such as:
+  - triggering alerts when quantity < threshold
+  - generating expiration warnings based on time
+- *Scalability:* Facilitates extension of the system with new features.
+- *Consistency:* Ensures uniform interpretation of domain concepts across the system.
+
+---
+
+== Potential Risks and Challenges
+
+- Some phenomena involve multiple interacting dimensions, increasing complexity.
+- The domain model may evolve, requiring updates to dimensional definitions.
+- Certain dimensions (e.g., thresholds or categories) may lack standardization.
+- Misinterpretation of dimensions may lead to inconsistent implementation.
+
+---
+
+== Conclusion
+
+The Home Inventory System is composed of multiple domain phenomena that are defined and governed by measurable dimensions such as time, quantity, and location.
+
+By identifying and analyzing these dimensions, the system achieves greater clarity in its domain model, enabling accurate representation of behavior, improved data organization, and more effective system functionality. Dimensionality serves as a foundation for both system design and implementation, ensuring that domain concepts are both measurable and actionable.

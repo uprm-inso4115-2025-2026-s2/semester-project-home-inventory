@@ -14,19 +14,19 @@ This subsection documents how requirement-level concepts were derived from raw o
 
 | Shared coordination failures
 | "Sometimes we buy the same item twice" / No formal responsibility / Reliance on fridge note + chat
-| Shared visibility, State transition, Deduplication / anti-spam, Auto-add to grocery list
+| Shared visibility, State transition, Deduplication / anti-spam, Auto-add to restock list
 
 | Multiple storage locations
 | "We have rice in two places." (Shared apartment interview)
 | Tracked record vs reality (divergence between stored locations and system record)
 
-| Qualitative stock judgments
+| Qualitative availability judgments
 | "full", "almost empty", "backup"; "feels light" / "open the backup" (often not recorded)
 | Actionable states, Low-stock strategy, Availability representation
 
 | Expiration and waste
 | "I don't notice when things expire" / Yogurts expire; 3-5 thrown away per semester
-| Near-expiry window, Notification record/event, Delivery approach, State transition, Scheduled sweep
+| Near-expiry window, Alert / notification record/event, Delivery approach, State transition, Scheduled sweep
 
 | Variable consumption
 | Exam weeks / guest visits change usage rates / "toilet paper runs out unexpectedly when guests visit"
@@ -38,7 +38,7 @@ This subsection documents how requirement-level concepts were derived from raw o
 
 | Tracking reliability
 | "I check the fridge note before buying" — system used as reference point
-| Tracked record vs reality, Transaction history, Notification record/event
+| Tracked record vs reality, Transaction history, Alert / notification record/event
 |===
 
 ==== Concept Formation from Evidence and Artifacts
@@ -67,19 +67,19 @@ The 13 requirement-level concepts were formed by analyzing rough sketch statemen
 
 | *State transition*
 | Repeated mentions of duplicates and alerts / Need to avoid notification fatigue
-| Alerts should trigger on *changes* (transitions), not on static conditions remaining unchanged
+| Alert / notification events should trigger on *state transitions*, not on static conditions remaining unchanged
 
 | *Low-stock strategy*
 | Variable consumption / "runs out unexpectedly" / research in `low-stock-research-strategies.adoc`
-| Fixed per-item threshold selected for balance between simplicity and flexibility (recommended in artifact)
+| Fixed per item type low-stock threshold selected for balance between simplicity and flexibility (recommended in artifact)
 
 | *Near-expiry window*
 | "I don't notice when things expire" / research in `definition-expiration-alert-system.adoc`
 | Definition of "expiring soon" (N days) required to alert before waste occurs; grace periods needed
 
 | *Scheduled sweep (automation check)*
-| Expiration and stock concerns; need for monitoring beyond user interactions / `automation-check-system.adoc`
-| Daily background process evaluates low-stock and expiration conditions; generates state-transition notifications
+| Expiration and availability / low-stock concerns; need for monitoring beyond household member interactions / `automation-check-system.adoc`
+| Daily background process evaluates low-stock and expiration conditions and generates alert / notification records for new state transitions
 
 | *Notification record/event*
 | Alerts required for expiration and low-stock / `evaluationOfNotification.adoc`
@@ -93,13 +93,13 @@ The 13 requirement-level concepts were formed by analyzing rough sketch statemen
 | "Sometimes we buy the same item twice" (coordination failures) / need to avoid notification fatigue
 | Rules required to prevent repeated alerts when state unchanged; repeated list additions when already recorded
 
-| *Auto-add to grocery list*
+| *Auto-add to restock list*
 | Duplicate purchases + low-stock concerns; coordination through fridge note / `grocerylist_autoadd_decisionlogic.adoc`
-| Rule-based triggers (OUT_OF_STOCK, EXPIRED, LOW_STOCK) convert actionable states into grocery list entries
+| Rule-based triggers (OUT_OF_STOCK, EXPIRED, LOW_STOCK) convert actionable states into restock list entries
 
 | *Transaction history*
 | Tracking reliability / "I check the fridge note before buying" / `inventory-transaction-tracking.adoc`
-| Append-only log of quantity changes with reason and timestamp enables traceability and audit; current quantity derives from transactions
+| Append-only log of quantity changes with reason and timestamp enables traceability and audit; transaction history provides a traceable explanation for how the current quantity in the tracked inventory record was reached.
 |===
 
 ==== Requirement Formation Decisions
@@ -109,32 +109,32 @@ The following requirement concepts were selected because they directly address d
 - *Fast capture* — directly addresses "won't log if > few seconds" friction
 - *Tracked record vs reality* — acknowledges that households are dynamic; system is a representation, not ground truth
 - *Shared visibility* — necessary to reduce duplicate purchases and informal fridge-note coordination
-- *Actionable states* — enables decision-making without requiring users to interpret raw facts
-- *State transition* — critical to alert design; prevents notification fatigue
-- *Low-stock strategy* — balances simplicity (fixed threshold) with flexibility (per-item configuration)
+- *Actionable states* — enables decision-making without requiring household members to interpret raw facts
+- *State transition* — critical to alert / notification design; prevents notification fatigue
+- *Low-stock strategy* — balances simplicity (fixed threshold) with flexibility (per-item type configuration)
 - *Near-expiry window & scheduled sweep* — automate detection of waste risks
 - *Notification record/event & delivery approach* — provide a way to notify without requiring push infrastructure
-- *Deduplication / anti-spam* — protects against alert fatigue and repeated grocery list additions
-- *Auto-add to grocery list* — extends alerts into actionable purchasing recommendations
+- *Deduplication / anti-spam* — protects against alert fatigue and repeated restock list additions
+- *Auto-add to restock list* — extends alerts into actionable purchasing recommendations
 - *Transaction history* — provides evidence trail for shared accountability and consumption analysis
 
 ==== Alignment with Domain Concepts
 
 Requirement-level concepts align with domain concepts as follows:
 
-- Fast capture - operations on *Household Item*
-- Tracked record vs reality - gap between *real-world Household Item* and *Inventory system representation*
+- Fast capture — operations on tracked inventory records and item types / item instances
+- Tracked record vs reality - gap between *Inventory (reality)* and the *tracked inventory record (system representation)*
 - Shared visibility - *Household* (shared context) and interaction between *Household members*
 - Actionable states - *Availability* (qualitative state: full, almost empty, backup) and derived judgment states
-- State transition - triggering mechanism for *notifications*
+- State transition -triggering mechanism for *alert / notification* generation
 - Low-stock strategy - implementation of *low-stock judgment* concept
 - Near-expiry window - definition of *expiration-time concern*
 - Scheduled sweep - systematic evaluation of *Item Instance expiration* and *Availability*
 - Notification record/event - recording mechanism for system responses
-- Delivery approach - infrastructure choice for user communication
-- Deduplication / anti-spam - rules governing *notification* production
-- Auto-add to grocery list - connection between *Household Item state* and *purchasing intent*
-- Transaction history - evidence trail for *Household Item* state changes
+- Delivery approach - infrastructure choice for household member communication
+- Deduplication / anti-spam - rules governing *alert / notification* production
+- Auto-add to restock list - connection between *Actionable states* and *purchasing intent*
+- Transaction history - transaction history representing availability changes over time
 
 This ensures consistency between domain analysis (Section 3.1) and requirements.
 

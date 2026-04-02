@@ -40,6 +40,8 @@ class BudgetModel extends BudgetEntity {
     };
   }
 
+  Map<String, dynamic> toJson() => toMap();
+
   factory BudgetModel.fromMap(Map<String, dynamic> map) {
     return BudgetModel(
       id: map['id'] as int,
@@ -49,6 +51,9 @@ class BudgetModel extends BudgetEntity {
       startDate: DateTime.parse(map['start_date'] as String),
     );
   }
+
+  factory BudgetModel.fromJson(Map<String, dynamic> json) =>
+      BudgetModel.fromMap(json);
 
   factory BudgetModel.initial() {
     return BudgetModel(
