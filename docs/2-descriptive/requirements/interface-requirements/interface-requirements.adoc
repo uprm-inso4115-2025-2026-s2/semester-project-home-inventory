@@ -88,31 +88,31 @@ The following edge-case interface requirements (IR-EC-A through IR-EC-I) are rec
 
 ==== IR-EC-A: Near-Duplicate Variant Disambiguation
 
-When a stakeholder adds an item whose name matches an existing product but whose size, variant, or brand differs, the system must present the conflicting attribute (size, variant, flavor) highlighted and require the stakeholder to choose: "This is a different variant (create new product)" or "Use existing product." Same-name/different-size entries shall be treated as separate product definitions by default and must not be auto-merged.
+#When a user adds an item whose name matches an existing product but whose size, variant, or brand differs, the system must present the conflicting attribute (size, variant, flavor) highlighted and require the user to choose: "This is a different variant (create new product)" or "Use existing product." Same-name/different-size entries shall be treated as separate product definitions by default and must not be auto-merged.#
 
 ==== IR-EC-B: Stock Entry Separation by Expiration and Location
 
-When a stakeholder attempts to merge two stock entries for the same product that have different expiration dates or different storage locations, the system must warn that merging will lose expiration/location tracking. The default action must be "Keep separate"; merging must require explicit confirmation.
+#When a user attempts to merge two stock entries for the same product that have different expiration dates or different storage locations, the system must warn that merging will lose expiration/location tracking. The default action must be "Keep separate"; merging must require explicit confirmation.#
 
 ==== IR-EC-C: Import Idempotency and Duplicate Spend Prevention
 
-When a stakeholder uploads a CSV import file that was previously imported (detected by file hash), the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.
+#When a user uploads a CSV import file that was previously imported (detected by file hash), the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.#
 
 ==== IR-EC-D: Inventory Correction Without Budget Impact
 
-When a stakeholder deletes or merges an inventory entry that has associated spend events, the system must present two independent controls: "Remove from inventory" (default on) and "Also mark purchase as mistake — exclude from budget" (default off). Inventory correction must never delete spend events automatically. Both actions must be logged separately in the audit trail.
+#When a user deletes or merges an inventory entry that has associated spend events, the system must present two independent controls: "Remove from inventory" (default on) and "Also mark purchase as mistake — exclude from budget" (default off). Inventory correction must never delete spend events automatically. Both actions must be logged separately in the audit trail.#
 
 ==== IR-EC-E: Refund and Return Flow
 
-When a stakeholder returns a purchased item, the system must provide a refund flow that: decrements inventory quantity, creates a negative spend entry linked to the original where possible, and requires amount refunded, date, and an optional link to the original receipt or spend event.
+#When a user returns a purchased item, the system must provide a refund flow that: decrements inventory quantity, creates a negative spend entry linked to the original where possible, and requires amount refunded, date, and an optional link to the original receipt or spend event.#
 
 ==== IR-EC-F: Waste and Shrinkage Adjustment
 
-When a stakeholder removes expired, lost, or consumed items from inventory outside of a normal purchase/return flow, the system must: allow inventory adjustment without altering any spend event, require an adjustment reason (Consumed / Lost / Shared use / Unknown), and offer an optional "Add to waste report" checkbox (default on for expired removals). Waste metrics must be reported separately from spending.
+#When a user removes expired, lost, or consumed items from inventory outside of a normal purchase/return flow, the system must: allow inventory adjustment without altering any spend event, require an adjustment reason (Consumed / Lost / Shared use / Unknown), and offer an optional "Add to waste report" checkbox (default on for expired removals). Waste metrics must be reported separately from spending.#
 
 ==== IR-EC-G: Shared Household Budget Attribution Prompt
 
-When a stakeholder adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. If the stakeholder selects another household member, the system must require confirmation. Cross-user inventory merges are permitted for quantity counts, but each spend event must retain its original buyer attribution.
+#When a user adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. If the user selects another household member, the system must require confirmation. Cross-user inventory merges are permitted for quantity counts, but each spend event must retain its original buyer attribution.#
 
 ==== IR-EC-H: Undo for Auto-Merge Actions
 
