@@ -16,9 +16,9 @@ The risks selected for this analysis are those with:
 These risks require explicit handling to ensure system robustness.
 
 
-== Risk Countermeasure Cases
+== Risk Countermeasure Cases (Behavioral/System Interaction Risks)
 
-=== Case R1: Inaccurate inventory data due to low user engagement
+=== Case BR1: Inaccurate inventory data due to low user engagement
 
 Risk Description:
 Inventory data becomes unreliable when users fail to consistently update item usage or stock levels.
@@ -41,53 +41,55 @@ Implications:
 - improves data accuracy without enforcing strict user behavior
 - maintains usability while reducing reliance on manual updates
 
-=== Case R2: Notification fatigue leading to disabled alerts
+=== Case BR2: Notification fatigue leading to disabled alerts
 
 Risk Description:
 Users may disable notifications if alerts are too frequent or perceived as irrelevant.
 
 Countermeasure:
-Implement adaptive notification controls:
+Implement adaptive notification controls aligned with the system’s Notification Deduplication / Anti-Spam strategy:
 
-- user-configurable notification frequency
-- prioritization of critical alerts (e.g., expiration vs low stock)
-- batching or summarization of notifications
+- generate notifications only on actionable state transitions (e.g., NORMAL → LOW_STOCK)
+- apply deduplication rules to prevent repeated alerts for unchanged conditions
+- support user-configurable notification frequency and prioritization
+- batch or summarize lower-priority notifications where appropriate
 
 Applied Tactic:
 mitigation
 
 Rationale:
-Reducing unnecessary or repetitive notifications lowers the likelihood of user disengagement.
+This countermeasure operationalizes the requirement-level concept of deduplication / anti-spam by ensuring that notifications are only generated on meaningful state transitions. This reduces redundant alerts while preserving the relevance and actionability of notifications.
 
 Implications:
 
-- preserves effectiveness of alert system
-- balances system proactivity with user tolerance
+- preserves effectiveness of the alert system without overwhelming users
+- improves clarity and trust in notifications by ensuring each alert reflects a meaningful change
 
-=== Case R3: Conflicting updates in shared inventory environments
+=== Case BR3: Conflicting updates in shared inventory environments
 
 Risk Description:
 Multiple users updating the same item may result in inconsistent or conflicting inventory states.
 
 Countermeasure:
-Introduce system-level consistency controls:
+Introduce system-level consistency controls aligned with the transaction tracking model:
 
-- timestamp-based update ordering
-- optional ownership or responsibility assignment
-- visibility of recent changes to all members
+- enforce consistency through the append-only transaction history (each quantity change recorded with timestamp and reason)
+- resolve conflicting updates using transaction ordering based on recorded timestamps
+- provide visibility of recent transactions to all household members
+- support optional ownership or responsibility assignment
 
 Applied Tactic:
 mitigation
 
 Rationale:
-The system cannot prevent all conflicts, but it can control and resolve them consistently.
+This ensures that conflicting updates are resolved consistently and transparently, leveraging the established transaction history model to maintain a reliable system state.
 
 Implications:
 
 - improves reliability in collaborative environments
 - supports accountability and transparency
 
-=== Case R4: Missing or incomplete item data
+=== Case BR4: Missing or incomplete item data
 
 Risk Description:
 Users may omit important data such as expiration dates, limiting system functionality.
