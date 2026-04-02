@@ -4,9 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:src/features/core_inventory/presentation/widgets/item_form.dart';
 
 class AddItemPage extends StatelessWidget {
-  const AddItemPage({super.key, required this.categoryId});
-
-  final String categoryId;
+  const AddItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {

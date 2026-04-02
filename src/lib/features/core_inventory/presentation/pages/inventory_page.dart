@@ -12,11 +12,11 @@ class InventoryPage extends StatefulWidget {
 class _InventoryPageState extends State<InventoryPage> {
   final TextEditingController _searchController = TextEditingController();
 
-  final List<Map<String, String>> _categories = const [
-    {'id': 'in_stock', 'label': 'In Stock'},
-    {'id': 'low_stock', 'label': 'Low Stock'},
-    {'id': 'out_of_stock', 'label': 'Out of Stock'},
-    {'id': 'custom', 'label': 'Category'},
+  final List<String> _categoryIds = const [
+    'in_stock',
+    'low_stock',
+    'out_of_stock',
+    'custom',
   ];
 
   @override
@@ -28,49 +28,39 @@ class _InventoryPageState extends State<InventoryPage> {
   @override
   Widget build(BuildContext context) {
     final query = _searchController.text.toLowerCase();
-    final filteredCategories = _categories.where((category) {
-      return category['label']!.toLowerCase().contains(query);
+    final filteredCategoryIds = _categoryIds.where((categoryId) {
+      return _categoryLabel(categoryId).toLowerCase().contains(query);
     }).toList();
 
     return Scaffold(
+      appBar: AppBar(title: const Text('Inventory')),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 2.h),
-              Center(
-                child: Text(
-                  'Inventory',
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-              ),
-              SizedBox(height: 3.h),
               TextField(
                 controller: _searchController,
                 decoration: const InputDecoration(
-                  hintText: 'Search Item Category',
+                  hintText: 'Search categories or items',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.search),
                 ),
-                onChanged: (_) {
-                  setState(() {});
-                },
+                onChanged: (_) => setState(() {}),
               ),
               SizedBox(height: 3.h),
               Expanded(
                 child: ListView.separated(
-                  itemCount: filteredCategories.length,
+                  itemCount: filteredCategoryIds.length,
                   separatorBuilder: (_, __) => SizedBox(height: 2.h),
                   itemBuilder: (context, index) {
-                    final category = filteredCategories[index];
-                    return _InventoryCategoryCard(
-                      label: category['label']!,
+                    final categoryId = filteredCategoryIds[index];
+
+                    return _CategoryCard(
+                      label: _categoryLabel(categoryId),
                       onTap: () {
-                        context.go(
-                          '/home/inventory/category/${category['id']}',
-                        );
+                        context.go('/home/inventory/category/$categoryId');
                       },
                     );
                   },
@@ -82,10 +72,25 @@ class _InventoryPageState extends State<InventoryPage> {
       ),
     );
   }
+
+  String _categoryLabel(String categoryId) {
+    switch (categoryId) {
+      case 'in_stock':
+        return 'In Stock';
+      case 'low_stock':
+        return 'Low Stock';
+      case 'out_of_stock':
+        return 'Out of Stock';
+      case 'custom':
+        return 'Category';
+      default:
+        return 'Category';
+    }
+  }
 }
 
-class _InventoryCategoryCard extends StatelessWidget {
-  const _InventoryCategoryCard({required this.label, required this.onTap});
+class _CategoryCard extends StatelessWidget {
+  const _CategoryCard({required this.label, required this.onTap});
 
   final String label;
   final VoidCallback onTap;

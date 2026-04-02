@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/features/core_inventory/domain/entities/enums.dart';
+import 'package:src/features/core_inventory/domain/entities/product.dart';
+import 'package:src/features/core_inventory/domain/entities/stock.dart';
+import 'package:src/features/core_inventory/presentation/cubits/inventory_category_cubit.dart';
 
 class InventoryCategoryPage extends StatelessWidget {
-  const InventoryCategoryPage({super.key, required this.categoryId});
-
-  final String categoryId;
+  const InventoryCategoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final title = _categoryTitle(categoryId);
-    final items = _sampleItemsForCategory(categoryId);
+    final state = context.watch<InventoryCategoryCubit>().state;
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(state.title)),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
@@ -27,14 +29,16 @@ class InventoryCategoryPage extends StatelessWidget {
                   OutlinedButton(
                     onPressed: () {
                       context.push(
-                        '/home/inventory/category/$categoryId/labels',
+                        '/home/inventory/category/${state.categoryId}/labels',
                       );
                     },
                     child: const Text('Item Label Key'),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      context.push('/home/inventory/category/$categoryId/add');
+                      context.push(
+                        '/home/inventory/category/${state.categoryId}/add',
+                      );
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Item'),
@@ -44,20 +48,22 @@ class InventoryCategoryPage extends StatelessWidget {
               SizedBox(height: 2.h),
               Expanded(
                 child: ListView.separated(
-                  itemCount: items.length,
+                  itemCount: state.products.length,
                   separatorBuilder: (_, __) => SizedBox(height: 1.5.h),
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    final product = state.products[index];
+                    final stocks =
+                        state.inventory.stock[product] ?? const <StockEntity>[];
                     return _ItemCard(
-                      name: item['name']!,
-                      quantity: item['quantity']!,
-                      expirationDate: item['expirationDate']!,
-                      status: item['status']!,
-                      onEdit: () {
-                        context.push(
-                          '/home/inventory/category/$categoryId/edit/${item['id']}',
-                        );
-                      },
+                      product: product,
+                      stocks: stocks,
+                      onEdit: stocks.isEmpty
+                          ? null
+                          : () {
+                              context.push(
+                                '/home/inventory/category/${state.categoryId}/edit/${stocks.first.id}',
+                              );
+                            },
                     );
                   },
                 ),
@@ -68,110 +74,38 @@ class InventoryCategoryPage extends StatelessWidget {
       ),
     );
   }
-
-  String _categoryTitle(String id) {
-    switch (id) {
-      case 'in_stock':
-        return 'In Stock';
-      case 'low_stock':
-        return 'Low Stock';
-      case 'out_of_stock':
-        return 'Out of Stock';
-      case 'custom':
-        return 'Category';
-      default:
-        return 'Category';
-    }
-  }
-
-  List<Map<String, String>> _sampleItemsForCategory(String id) {
-    switch (id) {
-      case 'in_stock':
-        return const [
-          {
-            'id': '1',
-            'name': 'Rice',
-            'quantity': '5',
-            'expirationDate': '2026-08-15',
-            'status': 'FULL',
-          },
-          {
-            'id': '2',
-            'name': 'Beans',
-            'quantity': '3',
-            'expirationDate': '2026-07-01',
-            'status': 'HALFWAY',
-          },
-        ];
-      case 'low_stock':
-        return const [
-          {
-            'id': '3',
-            'name': 'Milk',
-            'quantity': '1',
-            'expirationDate': '2026-04-03',
-            'status': 'LOW',
-          },
-          {
-            'id': '4',
-            'name': 'Bread',
-            'quantity': '1',
-            'expirationDate': '2026-04-01',
-            'status': 'LOW',
-          },
-        ];
-      case 'out_of_stock':
-        return const [
-          {
-            'id': '5',
-            'name': 'Eggs',
-            'quantity': '0',
-            'expirationDate': 'N/A',
-            'status': 'EMPTY',
-          },
-        ];
-      default:
-        return const [
-          {
-            'id': '6',
-            'name': 'Soap',
-            'quantity': '2',
-            'expirationDate': 'N/A',
-            'status': 'UNKNOWN',
-          },
-        ];
-    }
-  }
 }
 
 class _ItemCard extends StatelessWidget {
   const _ItemCard({
-    required this.name,
-    required this.quantity,
-    required this.expirationDate,
-    required this.status,
+    required this.product,
+    required this.stocks,
     required this.onEdit,
   });
 
-  final String name;
-  final String quantity;
-  final String expirationDate;
-  final String status;
-  final VoidCallback onEdit;
+  final ProductEntity product;
+  final List<StockEntity> stocks;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {
+    final totalQuantity = _totalQuantity(stocks);
+    final earliestExpirationDate = _earliestExpirationDate(stocks);
+    final displayStatus = _displayStatus(stocks);
+
     return Card(
       child: Padding(
         padding: EdgeInsets.all(3.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name, style: Theme.of(context).textTheme.titleMedium),
+            Text(product.name, style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 1.h),
-            Text('Quantity: $quantity'),
-            Text('Earliest Expiration Date: $expirationDate'),
-            Text('Status: $status'),
+            Text('Quantity: $totalQuantity'),
+            Text(
+              'Earliest Expiration Date: ${_formatDate(earliestExpirationDate)}',
+            ),
+            Text('Status: ${_statusLabel(displayStatus)}'),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
@@ -183,5 +117,68 @@ class _ItemCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int _totalQuantity(List<StockEntity> stocks) {
+    return stocks.fold(0, (sum, stock) => sum + stock.quantity);
+  }
+
+  DateTime? _earliestExpirationDate(List<StockEntity> stocks) {
+    DateTime? earliest;
+
+    for (final stock in stocks) {
+      final expirationDate = stock.expirationDate;
+      if (expirationDate == null) continue;
+
+      if (earliest == null || expirationDate.isBefore(earliest)) {
+        earliest = expirationDate;
+      }
+    }
+
+    return earliest;
+  }
+
+  Status _displayStatus(List<StockEntity> stocks) {
+    if (stocks.any((stock) => stock.status == Status.EMPTY)) {
+      return Status.EMPTY;
+    } else if (stocks.any((stock) => stock.status == Status.LOW)) {
+      return Status.LOW;
+    } else if (stocks.any((stock) => stock.status == Status.EXPIRED)) {
+      return Status.EXPIRED;
+    } else if (stocks.any((stock) => stock.status == Status.DAMAGED)) {
+      return Status.DAMAGED;
+    } else if (stocks.any((stock) => stock.status == Status.HALFWAY)) {
+      return Status.HALFWAY;
+    } else if (stocks.any((stock) => stock.status == Status.FULL)) {
+      return Status.FULL;
+    } else {
+      return Status.UNKNOWN;
+    }
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return 'N/A';
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '${date.year}-$month-$day';
+  }
+
+  String _statusLabel(Status status) {
+    switch (status) {
+      case Status.FULL:
+        return 'Full';
+      case Status.HALFWAY:
+        return 'Halfway';
+      case Status.LOW:
+        return 'Low';
+      case Status.EMPTY:
+        return 'Empty';
+      case Status.EXPIRED:
+        return 'Expired';
+      case Status.DAMAGED:
+        return 'Damaged';
+      default:
+        return 'Unknown';
+    }
   }
 }
