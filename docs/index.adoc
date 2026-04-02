@@ -4,13 +4,6 @@
 :sectnums:
 :sectnumlevels: 4
 
-[NOTE]
-====
-*Milestone 2 Change Tracking:* To assist in the evaluation process, all new additions, features, and major revisions introduced during Milestone 2 are highlighted in yellow. 
-
-Example: #This indicates new or updated content for Milestone 2.#
-====
-
 include::1-informative/1.adoc[]
 include::2-descriptive/2.adoc[]
 include::3-analytic/3.adoc[]

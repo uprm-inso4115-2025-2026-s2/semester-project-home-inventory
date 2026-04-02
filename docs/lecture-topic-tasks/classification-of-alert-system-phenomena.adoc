@@ -1,0 +1,126 @@
+= Classification of Alert System Phenomena (Entity, Event, Behavior)
+
+== Purpose and framing
+
+In domain modeling, *entities* are things that exist and can be tracked over time, *events* are things that happen (often in reaction to something), and *behaviors* are things the domain or people in it do, in reaction to something or in certain conditions.
+
+Some phenomena are in a gray area, and some might argue they are best classified as either a *state* of an entity, the *moment* something happens, or the *act* of doing something. This document will place each in one of these categories and discuss the reasoning.
+
+The classification aligns with project sources listed in <<references,References>>.
+
+== Entities
+
+Things that *exist* in the household’s tracked world and typically have identity and a lifecycle in the model.
+
+[cols="2,4",options="header"]
+|===
+|Phenomenon |Justification
+
+|*Household*
+|The root context for inventory, lists, and policies; persists and scopes all other artifacts.
+
+|*Item type* / *item instance*
+|Represents what is stocked (type) and specific packages or lots (instance); quantities and expiration date belong here.
+
+|*Location*
+|Represents where an instance is; stable enough to be treated as a first-class thing in the domain.
+
+|*Low-stock threshold* (rule / property)
+|A boundary configuration used by the system to interpret quantity; stored and modified like other domain data.
+
+|*Alert* (alert record)
+|A persisted message or log entry about an actionable condition; it *is* an artifact, not the occurrence that caused it.
+
+|*Restock list* / *restock entry*
+|The planner artifact and each line (item and reason); exists until deferred, fulfilled, or removed.
+
+|*Grocery list item*
+|A planned purchase line linked (or linkable) to replenishment; same *thing in the model* rationale as restock entries.
+
+|*Availability* / *quantity* (as stored state)
+|The current quantity or qualitative state of stock for an instance or type; part of what entities *hold*, distinct from the instant something changes.
+
+|*Expiration date* (property)
+|A date related to an instance; the fact that it’s a date is modeled as data on an entity.
+
+|===
+
+== Events
+
+*Things that happen* or *transitions*: something becomes true, finishes, or crosses a boundary at a point in time (even if the system only observes it on a schedule).
+
+[cols="2,4",options="header"]
+|===
+|Phenomenon |Justification
+
+|*Threshold crossed* (e.g. quantity drops to at or below threshold, or reaches zero)
+|The movement into a low stock/out of stock status is a hard domain fact, instantaneous, and independent of the constant “being low” status. 
+
+|*Expiration boundary crossed* (near-expiry window entered; expiry date reached)
+|Moving into a `NearExpiry` or `Expired` status (i.e., `expiration_status`/`stock_status` style categorizations). 
+
+|*Consumption recorded*
+|An event causing a reduction in availability, possibly initiating threshold- or alert-related secondary actions. 
+
+|*Replenishment completed* / *restock recorded*
+|Availability increases as a result of newly acquired stock, which is entered into the system. 
+
+|*Alert generated* (as occurrence)
+|The instant when the alert record is generated is a domain event, even though the alert record itself becomes an entity. 
+
+|*Alert acknowledged* (dismiss, defer, snooze)
+|A member’s choice is a discrete domain event, which is recorded against the alert record. 
+
+|*Entry added to restock or grocery list*
+|The addition is a fact, and the line is an entity.
+
+|===
+
+== Behaviors
+
+*Processes and reactions*: what the domain *does*, including capabilities, evaluations, and multi-step or intentional activities (often parameterized by entities and triggered by events).
+
+[cols="2,4",options="header"]
+|===
+|Phenomenon |Justification
+
+|*Judge low-stock* (`isLowStock`-style evaluation)
+|Repeatable capability, given availability and threshold, to produce a classification; implemented in use cases such as `check_stock`.
+
+|*Determine expiration status* (`expirationStatus`-style evaluation)
+|Classification of an instance relative to "now" and policy windows is not a thing; it is an ongoing domain behavior.
+
+|*Scan / monitor inventory for alert conditions*
+|Background or scheduled checking is a system behavior to discover events; aligns with reliability and timeliness attributes in the Alerts & Restock attribute analysis.
+
+|*Generate alert* (as process)
+|Procedure to generate alert records when warranted, compared to the resulting alert entity and the "generated" instant under events.
+
+|*Notify user* (push, in-app)
+|Delivery is a behavior built on top of the domain intent "inform member"; "channel" is an implementation detail, "sending notification" is still an action.
+
+|*Add to restock list* / *defer or dismiss restock entry*
+|Domain functions to modify the planner; defined as capabilities in `functions.adoc`.
+
+|*Record consumption* / *record replenishment*
+|Intentional updates to inventory state; behaviors to change state, which can produce events.
+
+|===
+
+== Boundary notes (event vs behavior)
+
+* *Low-stock detection*: the *evaluation* is a *behavior*; the *outcome* “now low” is an *event* (transition); *being* low is *state* on an entity.
+* *Restocking*: *buying and logging* is a *behavior* from the household’s perspective; *“replenishment recorded”* is the *event* that updates the model.
+* *Alerts*: the *alert object* is an *entity*; *creation* is an *event*; *policy that decides when to create alerts* is expressed through *behaviors*.
+
+[[references]]
+== References
+
+. *Terminology* — Domain terms for alerts, restock, expiration, and related concepts. `docs/2-descriptive/domain-description/terminology/terminology.adoc`.
+. *Domain functions* — Illustrative capabilities (`restock`, `generateAlert`, `ackAlert`, etc.). `docs/2-descriptive/domain-description/functions/functions.adoc`.
+. *Alerts & Restock domain attributes* — Reliability, accuracy, timeliness, scalability, privacy. `docs/3-analytic/concept-analysis/domain-concept-analysis/alerts-restock-domain-attributes.adoc`.
+. *User interaction flows: alerts & notifications* — Alert types and user actions. `docs/2-descriptive/domain-description/behaviors/User-Interaction-Flows-for-Alerts-&-Notifications/User-Interaction-Flows-for-Alerts-&-Notifications.adoc`.
+. *Low-stock detection logic* — Implementation-oriented description of thresholds. `docs/2-descriptive/implementation/low-stock-detection-logic.adoc`.
+. *Stock status evaluation* — `check_stock` use case. `src/lib/features/alerts_restock/domain/usecases/check_stock.dart`.
+. *Expiration status evaluation* — `check_expiration` use case. `src/lib/features/alerts_restock/domain/usecases/check_expiration.dart`.
+. *Lecture topic task (issue #323)* — Objective and success criteria. link:https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/323[GitHub Issue #323].
