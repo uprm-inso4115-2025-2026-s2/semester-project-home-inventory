@@ -1,0 +1,136 @@
+= Expenditure Report Screen
+Author: Gerardo Ruiz
+:toc:
+:toc-title: Table of Contents
+
+== Overview
+
+The Expenditure Report screen provides a visual breakdown of household spending by category
+for a selected date range. It is accessible from the Reports Overview page via the
+*Expenditures* card.
+
+The screen is implemented at:
+`src/lib/features/reports/presentation/pages/expenditure_report_page.dart`
+
+Route path: `/home/reports/expenditures`
+
+== Design References
+
+* Wireframe: `docs/design-team/Wireframes/images/Report Screen Wireframes/Expenditures.png`
+* Report filters reference: `docs/design-team/Wireframes/images/Report Screen Wireframes/Report Filters.png`
+* Color palette: `docs/design-team/UI Style Guide Color Palette/color_palette.adoc`
+
+== Screen Layout
+
+=== App Bar
+
+* *Back arrow* — navigates to the Reports Overview page.
+* *Title* — "Expenditures" (Poppins SemiBold 18 sp, black).
+* *PDF export button* — captures the pie chart and exports the full report as a PDF using `PdfExportService.exportExpenditureReport`.
+* *Filters button* — sage-green pill (accent color `#8B9D7F`) with a dropdown arrow;
+  placeholder for future date-range and category filtering.
+
+=== Report Metadata Header
+
+Displayed beneath the app bar before the chart:
+
+[source]
+----
+March 9 – 15
+2026
+Total Spent: $221.00
+----
+
+* Date range derived from `ExpenditureState.startDate` / `endDate`.
+* Total computed as the sum of all category amounts.
+
+=== Pie Chart (donut style)
+
+* Drawn with a `CustomPainter` (`_PieChartPainter`) — no external charting library required.
+* Each slice corresponds to one `ExpenditureCategory`, sized proportionally to its amount.
+* A white hole at 50 % radius creates the donut effect and displays the total amount label
+  in the centre (`#3A5A40` green, bold).
+* A thin white stroke separates adjacent slices for visual clarity.
+* Below the chart a `Wrap` legend shows a colour dot + category name for every slice.
+
+=== Category Breakdown List
+
+A white card below the chart showing one row per category with:
+
+* Colour-coded dot matching the pie slice.
+* Category name.
+* Dollar amount (bold).
+* Percentage of total spend.
+* A linear progress bar indicating the share of total spend.
+
+== Static Sample Data
+
+The screen currently uses static sample data defined inside `ExpenditureState`:
+
+[cols="1,1,1", options="header"]
+|===
+| Category   | Amount ($) | Color
+| Food       | 85.50      | `#3A5A40` (primary green)
+| Bathroom   | 32.00      | `#A3B18A` (accent/sage)
+| Cleaning   | 47.75      | `#6B8F6B`
+| Medicine   | 28.00      | `#D4E6D4`
+| Utilities  | 15.25      | `#4B5563` (muted text)
+| Other      | 12.50      | `#E7E0D6` (border)
+|===
+
+Total: *$221.00*
+
+== Architecture
+
+The screen follows the same BLoC pattern as `InventoryStockReportPage`:
+
+[source]
+----
+ExpenditureReportPage (StatelessWidget)
+  └── BlocProvider<ExpenditureCubit>
+        └── _ExpenditureView (StatefulWidget)
+              ├── _DateRangeHeader
+              ├── RepaintBoundary (_PieChartCard)
+              │     ├── _PieChartPainter (CustomPainter)
+              │     └── _PieChartLegend
+              └── _CategoryBreakdownList
+                    └── _CategoryRow (per category)
+----
+
+* `ExpenditureCubit` extends `Cubit<ExpenditureState>` and holds category data.
+* `ExpenditureState` is immutable and exposes a `totalAmount` getter.
+* `PdfExportService.exportExpenditureReport` was added to the existing service to handle PDF generation.
+
+== PDF Export
+
+Tapping the PDF icon in the app bar:
+
+. Captures the pie-chart widget as a PNG via `RenderRepaintBoundary`.
+. Calls `PdfExportService.exportExpenditureReport` with the state data and the captured image.
+. Opens the system print/share dialog via the `printing` package.
+
+The generated PDF contains:
+
+* Report title and date range.
+* Generation timestamp.
+* Total spent amount.
+* Embedded pie-chart image (if capture succeeded).
+* A category breakdown table (Category | Amount | % of Total).
+
+== Success Criteria Verification
+
+[cols="2,1", options="header"]
+|===
+| Criterion                                              | Status
+| Pie chart showing expenditures per category            | ✅ Implemented
+| Report metadata (title, date range)                    | ✅ Implemented
+| Export button (PDF via `printing` package)             | ✅ Implemented
+| UI matches design guidelines (colors, typography)      | ✅ Implemented
+| Dark mode / light mode support                         | ⏳ Light mode only (dark mode pending design specs)
+|===
+
+== Future Work
+
+* Replace static data with live Supabase queries once the spending schema is finalised.
+* Connect the Filters button to a bottom sheet for date-range and category selection.
+* Add dark-mode colour variants following the design team's guidance.

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/features/reports/presentation/pages/reports_overview_page.dart';
 import 'package:src/features/reports/presentation/pages/inventory_stock_report_page.dart';
+import 'package:src/features/reports/presentation/pages/expenditure_report_page.dart';
 //only for testing purposes
 import 'package:src/features/reports/presentation/pages/report_list_page_not_official.dart';
 
@@ -15,17 +16,6 @@ class _ItemUsageRatesStubPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Item Usage Rates')),
       body: const Center(child: Text('TO DO: Implement Item Usage Rates screen')),
-    );
-  }
-}
-
-class _ExpendituresStubPage extends StatelessWidget {
-  const _ExpendituresStubPage();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Expenditures')),
-      body: const Center(child: Text('TO DO: Implement Expenditures screen')),
     );
   }
 }
@@ -52,8 +42,7 @@ var reportsOverviewRoute = GoRoute(
     GoRoute(
       path: 'expenditures',
       name: 'expenditures',
-//TO DO: Replace stub with real ExpendituresPage once implemented
-      builder: (context, state) => const _ExpendituresStubPage(),
+      builder: (context, state) => const ExpenditureReportPage(),
     ),
   ],
 );
