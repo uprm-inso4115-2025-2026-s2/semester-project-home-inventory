@@ -2,6 +2,8 @@
 
 Interface requirements describe how phenomena and concepts from the domain are represented inside the system-to-be, how they are initialized, and how they are kept in sync when the real world changes.
 
+These requirements were derived through elicitation techniques including semi-structured interviews with students and lightweight story mapping, which were used to identify important user interactions, edge cases, and system behaviors grounded in real household scenarios.
+
 === IR-01: Item Initialization
 When a household member acquires a new item in the real world, they must have a way to create a corresponding representation inside the system.
 
