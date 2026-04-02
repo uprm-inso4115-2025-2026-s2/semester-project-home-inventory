@@ -1,0 +1,323 @@
+= End-User Requirements Acquisition Questionnaire
+:toc:
+:sectnums:
+:project: Digital Home Inventory
+
+**AI Disclosure:** This document was developed with the assistance of AI tools for structure and clarity. All content was reviewed, refined, and validated by the author @aryamdiaz.
+
+== 1. Introduction
+
+This questionnaire is designed to gather structured information from potential end-users of the {project}. Its goal is to capture real household management behaviors, identify friction points, and inform system requirements.
+
+The questionnaire supports requirements acquisition by uncovering domain concepts, user needs, and potential functional and non-functional requirements.
+
+Questions are organized into thematic sections to guide a focused and efficient data collection process.
+
+*Estimated completion time:*
+- 10–15 minutes (written)
+- 15–25 minutes (facilitated interview)
+
+[NOTE]
+====
+Participants may skip any question they are not comfortable answering.
+
+Facilitators should encourage concrete, recent examples rather than general or idealized responses  
+(e.g., “Tell me about the last time…” instead of “Do you usually…”).
+====
+
+---
+
+== 2. Questionnaire Structure
+
+The questionnaire is divided into the following sections:
+
+- Participant Background
+- Item Tracking and Categorization
+- Expiration and Waste
+- Low-Stock Detection and Restocking
+- Shared Household Coordination
+- Data Entry and Usability
+- Priorities and Open Feedback
+
+---
+
+== 3. Questionnaire
+
+=== 3.1 Participant Background
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q1
+|How many people live in your household (including yourself)?
+
+|Q2
+|Which best describes your living situation? _(Select one)_
+a) Living alone
+b) Living with roommates (non-family)
+c) Living with family members
+d) Other: ______
+
+|Q3
+|How do you currently track household items? _(Select all that apply)_
+a) I rely on memory
+b) I use a physical list or whiteboard
+c) I use a notes/messaging app
+d) I use a dedicated app: ______
+e) I don’t actively track items
+
+|Q4
+|How often do you shop for household items?
+a) More than once a week
+b) Once a week
+c) Every two weeks
+d) Once a month or less
+|===
+
+---
+
+=== 3.2 Item Tracking and Categorization
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q5
+|Which categories are most important to track? _(Select all that apply)_
+a) Perishable food (produce, meat, dairy)
+b) Non-perishable food (canned goods, pasta, snacks)
+c) Beverages
+d) Cleaning supplies
+e) Personal hygiene / toiletries
+f) Medications or health supplies
+g) Other: ______
+
+|Q6
+|Do you distinguish personal vs shared items? _(Yes / No / N/A)_
+
+|Q7
+|If yes, how do you handle that distinction? _(Open answer)_
+
+|Q8
+|Would organizing items by storage location (fridge, pantry, etc.) be useful? _(Yes / No / Maybe)_
+
+|Q9
+|Describe the last time an item was missing or expired. _(Open answer)_
+|===
+
+---
+
+=== 3.3 Expiration and Waste
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q10
+|How often do you throw away items because they expired before you used them?
+a) Rarely
+b) Occasionally
+c) Frequently
+d) Never
+
+|Q11
+|Do you currently track expiration dates? _(Yes / No)_
+
+|Q12
+|If yes, how? If no, why not? _(Open answer)_
+
+|Q13
+|How far in advance would you want to be notified that an item is about to expire?
+a) Same day
+b) 1–2 days before
+c) 3–5 days before
+d) 1 week or more
+e) I would not want notifications
+
+|Q14
+|Estimate how many items you are not tracking expiration for. _(Open answer)_
+|===
+
+---
+
+=== 3.4 Low-Stock Detection and Restocking
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q15
+|How do you know when to restock items?
+a) I notice when it’s gone
+b) I write it down
+c) I follow a schedule
+d) Someone else tells me
+e) Other: ______
+
+|Q16
+|Describe a time you ran out of an essential item. _(Open answer)_
+
+|Q17
+|Would you want low-stock alerts? _(Yes / No / Maybe)_
+
+|Q18
+|How would you prefer to receive alerts? _(Select all that apply)_
+a) Push notification
+b) In-app indicator
+c) Email
+d) No alerts
+e) Other: ______
+
+|Q19
+|Are there items you would want stricter monitoring for? _(Yes / No — if yes, describe)_
+|===
+
+---
+
+=== 3.5 Shared Household Coordination
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q20
+|Describe a situation where duplicate purchases happened. _(Open answer)_
+
+|Q21
+|How do you coordinate purchases with others? _(Open answer)_
+
+|Q22
+|Would shared inventory reduce duplicates? _(Yes / No / Unsure)_
+
+|Q23
+|Have you had conflicts over shared items? _(Yes / No)_
+
+|Q24
+|Would cost splitting be valuable? _(Yes / No / Maybe)_
+
+|Q25
+|How important is privacy of personal items? _(1–5 scale, where 1 = Not important at all and 5 = Extremely important)_
+|===
+
+---
+
+=== 3.6 Data Entry and Usability
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q26
+|How much time would you spend adding an item?
+a) Under 10 seconds
+b) 10–30 seconds
+c) 30–60 seconds
+d) More than 1 minute
+e) Depends
+
+|Q27
+|Preferred ways to add items? _(Select all that apply)_
+a) Barcode scan
+b) Manual entry
+c) Receipt scan
+d) Voice input
+e) Predefined list
+f) Other: ______
+
+|Q28
+|Which fields are necessary? _(Select all that apply)_
+a) Name
+b) Quantity
+c) Category
+d) Expiration date
+e) Location
+f) Brand
+g) Cost
+h) Ownership
+
+|Q29
+|How often would you update inventory?
+a) Every use
+b) Daily
+c) Few times a week
+d) Weekly
+e) Only when prompted
+f) Never
+
+|Q30
+|Have you used similar apps? _(Yes / No)_
+
+|Q31
+|If yes, what worked or didn’t? _(Open answer)_
+|===
+
+---
+
+=== 3.7 Priorities and Open Feedback
+
+[cols="1,4", options="header"]
+|===
+|# |Question
+
+|Q32
+|Rank the following features from most to least important (1 = Most important, 5 = Least important):
+- Expiration tracking
+- Low-stock alerts
+- Shared inventory
+- Cost splitting
+- Reports
+
+|Q33
+|Any missing problems not covered? _(Open answer)_
+
+|Q34
+|What would make you use this app consistently? _(Open answer)_
+
+|Q35
+|What would you NOT want the app to do? _(Open answer)_
+|===
+
+---
+
+== 4. Facilitator Guidelines
+
+- Record responses verbatim when possible
+- Tag responses (P01, P02, etc.)
+- Store results in:
+  docs/4-specific-topics/domain-requirements-acquisition/resources/
+
+- Link findings to:
+  - Personas
+  - User stories
+  - Features
+
+---
+
+== 5. Usage of Collected Data
+
+The collected data will be used to:
+
+- Identify behavioral patterns
+- Detect common pain points
+- Validate domain assumptions
+
+The insights will be:
+
+- Translated into user stories
+- Mapped to system features
+- Used to refine requirements
+
+This ensures traceability between user needs and implementation.
+
+---
+
+== 6. Expected Outcomes
+
+This questionnaire is expected to:
+
+- Reveal real-world behaviors
+- Identify inefficiencies
+- Highlight automation opportunities
+- Support persona creation
+- Provide input for requirements
