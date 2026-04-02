@@ -147,6 +147,13 @@ int daysUntilExpiration(DateTime expirationDate, {DateTime? currentDate}) {
 - Store documentation in `/docs` folder
 - See `CONTRIBUTING.md` for documentation workflow
 
+### Milestone Change Tracking
+To highlight changes for milestone evaluations without breaking PDF/HTML compilation, the team must use standard AsciiDoc highlighting.
+- **Do not** use custom HTML `<mark>` tags or inline CSS, as they will fail in the PDF compilation step.
+- **Inline Text:** Wrap the new text in single hash marks: `#This is new Milestone 2 text.#`
+- **Entire Paragraphs:** Wrap the paragraph text directly: 
+  `#This entire paragraph represents a new feature added in Milestone 2. It will be highlighted with a yellow background in both the GitHub Pages HTML and the generated PDF.#`
+  
 ---
 
 ## 📚 Additional Resources

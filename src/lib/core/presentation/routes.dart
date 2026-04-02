@@ -11,9 +11,9 @@ var mainRoutes = GoRoute(
   },
   routes: [
     todosRoutes,
-    inventoryStockReportRoute,
-    groceryListRoutes,
+    reportsOverviewRoute,
+    groceryListRoutes
     //For testing Purposes
-    reportListRoute,
+    //reportListRoute,
   ],
 );

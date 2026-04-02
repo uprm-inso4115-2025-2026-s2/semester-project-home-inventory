@@ -5,44 +5,44 @@
 === Issue #23
 === Completed by: @Kemuel05
 
-== Low Stock Detection Strategies
+== Low-Stock Judgment Strategies
 
 [cols="1,1,1,1"]
 |===
 |Strategy |Description |Pros |Cons
 
 |Fixed Quantity Threshold
-|The system triggers a low-stock alert when the item quantity falls below a predefined fixed value.
+|The system performs a low-stock judgment when the quantity of an item type falls below a predefined low-stock threshold value.
 |Very simple to implement. Easy to understand. Requires no historical data.
-|Not adaptive to demand changes. Same threshold may not fit all items.
+|Not adaptive to demand changes. The same threshold may not fit all item types.
 
 |Percentage-Based Threshold
-|The system triggers an alert when the stock falls below a certain percentage of the item’s maximum quantity.
-|More flexible than fixed thresholds. Scales better across different item quantities.
-|Requires knowing the maximum stock level. Still not demand-aware.
+|The system performs a low-stock judgment when the quantity of an item type falls below a certain percentage of its maximum quantity.
+|More flexible than fixed thresholds. Scales better across different item types and quantities.
+|Requires knowing the maximum quantity. Still not demand-aware.
 
 |Reorder Point Model
-|The system calculates a reorder point based on average demand and lead time, triggering alerts when stock reaches that level.
-|More accurate for high-volume inventory. Reduces risk of stockouts.
-|Requires historical sales data and lead time tracking. More complex to implement.
+|The system calculates a reorder point based on average consumption and lead time, and performs a low-stock judgment when the quantity reaches that level.
+|More accurate for high-usage item types. Reduces risk of out-of-stock situations.
+|Requires historical consumption data and lead time tracking. More complex to implement.
 
 |Safety Stock Approach
-|The system maintains an extra buffer of stock to account for demand variability and delays.
+|The system maintains an additional buffer quantity to account for consumption variability and delays, and performs a low-stock judgment when quantity approaches the safety stock level.
 |Improves reliability. Handles uncertainty well.
-|Complex calculations. Overkill for small or simple systems.
+|More complex calculations. May be unnecessary for small or simple systems.
 |===
 
-== Best Practices for Low Stock Detection
+== Best Practices for Low-Stock Judgment
 
-* Choose a strategy that aligns with the system’s complexity and available data.
-* Avoid overly complex models.
-* Prevent repeated alerts by triggering notifications only when crossing the low-stock threshold.
-* Allow thresholds to be configurable to support different item behaviors.
+* Choose a low-stock judgment strategy that aligns with the system’s complexity and available tracked inventory records.
+* Avoid overly complex models that require precise consumption data if such data is not reliably available.
+* Prevent repeated alert / notification events by triggering them only when the quantity crosses the low-stock threshold.
+* Allow low-stock thresholds to be configurable per item type to support different consumption patterns and household behaviors.
 
 
 == Recommendation
 
-Based on the research, the recommended approach is a fixed quantity threshold with per-item configuration. This strategy offers a balance between simplicity and flexibility while remaining easy to implement within the project’s scope.
+Based on the research, the recommended approach is a fixed quantity low-stock threshold with per item type configuration. This strategy offers a balance between simplicity and flexibility while remaining easy to implement within the project’s scope.
 
 == Sources
 

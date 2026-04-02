@@ -1,7 +1,7 @@
 // This directory hold the pages and widgets, essentially all the parts of the application concerning the presentation layer
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
- import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/config/router.dart';
 import 'package:src/config/theme.dart';
@@ -27,9 +27,11 @@ class HomePage extends StatelessWidget {
             buildButton(context, "Grocery List", () {
               AppRouter.goTo(context, "grocery_home");
             }),
-            
+
             Text("This is the main page of the app"),
             SizedBox(height: 20),
+
+            //Navigates to the Reports Overview screen from which the user can access the individual detailed report screens
             CupertinoButton(
               child: Container(
                 alignment: Alignment.center,
@@ -37,18 +39,19 @@ class HomePage extends StatelessWidget {
                 height: 5.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFF8B9D7F),
+                  color: AppTheme.accentColor,
                 ),
                 child: Text(
-                  "Inventory Stock Report",
+                  "Reports",
                   style: TextStyle(color: CupertinoColors.white),
                 ),
               ),
               onPressed: () {
-                context.go('/home/inventory-stock-summary');
+                context.go('/home/reports');
               },
             ),
             SizedBox(height: 10),
+
             CupertinoButton(
               child: Container(
                 alignment: Alignment.center,
@@ -57,13 +60,13 @@ class HomePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: AppTheme
-                      .primaryColor, // Example of using the custom color defined in the theme
+                          .primaryColor, // Example of using the custom color defined in the theme
                 ),
                 child: Text(
                   "Go to TODOs page",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppTheme.surfaceColor,
-                  ), // Example of using the custom typography and color defined in the theme
+                        color: AppTheme.surfaceColor,
+                      ), // Example of using the custom typography and color defined in the theme
                 ),
               ),
               onPressed: () {
