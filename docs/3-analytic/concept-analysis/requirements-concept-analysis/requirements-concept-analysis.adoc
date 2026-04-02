@@ -216,6 +216,55 @@ For Milestone 1 scope, in-app notification records are an acceptable baseline; p
 * T5: *Simplicity vs “smartness”* — fixed thresholds and explainable triggers are robust; predictive forecasting is fragile under missing/noisy data and variable consumption.
 * T6: *Automation reliability vs user-device dependence* — scheduled sweeps improve reliability but require observability (run summaries/logs, idempotency, error handling).
 
+=== Candidate Resolutions for Resolving Requirement Inconsistencies
+
+Note: User names (Mateo, Sofia, Julian, Andrea) refer to the personas defined in Section 4.2.
+
+Two primary strategies are used to resolve inconsistencies:
+
+*Elicitation-Based Resolution:* relies on stakeholder input to clarify intent and preferences. +
+*Formal Resolution Tactics:* relies on structured rules and modeling to enforce consistency.
+
+==== Elicitation-Based Resolution Cases
+
+* *Case EBR1: Clarifying Item Ownership Responsibility* +
+Inconsistency: Andrea’s need for oversight of shared items (N4/N5) conflicts with Sofia’s expectation of autonomy (IR-03, US-INV-02). +
+Approach: Interviews and scenario walkthroughs to clarify ownership. +
+Outcome: Assign ownership per role and document alternative shared responsibility models based on stakeholder input. +
+Rationale: Aligns shared inventory behavior with stakeholder expectations.
+
+* *Case EBR2: Notification Frequency Expectations* +
+Inconsistency: Mateo wants timely alerts (N2) and Julian prefers fewer notifications (N2/N3, DR-4). +
+Approach: Gather preferences through surveys and scenario testing. +
+Outcome: Alert frequency is configurable and default behavior reflects common preferences. +
+Rationale: Grounds notifications in user preferences, reducing frustration.
+
+* *Case EBR3: Definition of “Low Stock”* +
+Inconsistency: Andrea prefers strict thresholds (N4), Sofia wants flexible thresholds (N5), and Julian requires precise specialty alerts (N5, DR-5, US-INV-04). +
+Approach: Define per-item or category thresholds via stakeholder input. +
+Outcome: Establish flexible persona-aligned thresholds and document conflicts and resolutions. +
+Rationale: Captures contextual differences and ensures usability.
+
+==== Formal Resolution Tactic Cases
+
+* *Case FRT1: Priority-Based Requirement Resolution* +
+Inconsistency: Minimizing effort vs maintaining accuracy. +
+Approach: Apply prioritization rules.  +
+Outcome: Prioritize reduced effort and support accuracy with automation. +
+Rationale: Resolves competing goals systematically.
+
+* *Case FRT2: Constraint Enforcement for Data Consistency* +
+Inconsistency: Conflicting updates in shared inventories. +
+Approach: Enforce domain constraints and validaition rules. +
+Outcome: Enforce rules such as non-negative quantities; implemented via **Supabase RLS** to ensure only authorized household members modify shared stock. +
+Rationale: Maintains consistent inventory independent of user behavior.
+
+* *Case FRT3: Abstraction of Item State Representation* +
+Inconsistency: Overly detailed/inconsistent item states. +
+Approach: Simplify and standardize item states. +
+Outcome: Define discrete states (In Stock/Low/Out of Stock) and broadcast to all roommates via **Supabase Realtime**. +
+Rationale: Reduces ambiguity and synchronizes UI across devices.
+
 === Engineering Derived Requirements from Competing Goals
 
 ==== Case 1: Low-Effort Use vs Inventory Accuracy
