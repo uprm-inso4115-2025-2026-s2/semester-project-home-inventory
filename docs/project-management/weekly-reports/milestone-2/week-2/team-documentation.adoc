@@ -1,0 +1,41 @@
+:nofooter:
+:milestone: Milestone 2
+:team: Documentation Team
+:week: Week 2
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# {milestone} {week} — {team} Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+## What the Team Accomplished This Week
+- Continued working on documentation issues for Milestone 2
+- Advanced section-based documentation work and lecture topic tasks
+- Continued reviewing pull requests and documentation updates
+- Maintained team progress across multiple parallel issues
+
+## Tasks Completed / Issues Closed
+- {issue-base-url}399[Identify & Document Competing Goals + Derived Requirements] was closed
+- {issue-base-url}398[Document Regular Weight Issues/Tasks] was closed
+- {issue-base-url}383[Document Core Inventory State Management Architecture (Cubit/Bloc)] was closed
+- {issue-base-url}345[Milestone 2 - Week 1: Documentation Team Weekly Report] was closed
+- {issue-base-url}340[Model Human Error Scenarios in Digital Home Inventory Management] was closed
+- {issue-base-url}324[Document Heavier Weight Issues/Tasks] was closed
+
+## What Is Currently In Progress
+- {issue-base-url}391[Evidence Concept Analysis (Section 3.1 - Concept Analysis)]
+- Continued refinement of documentation sections and milestone deliverables
+- Continued PR reviews and follow-up on open documentation work
+
+## Blockers or Challenges
+- Coordinating multiple documentation tasks at once required careful tracking
+- Some documentation tasks required additional review to ensure consistency across sections
+
+## Plans for Next Week
+- Continue working on open documentation issues
+- Continue section-level refinements and concept-analysis tasks
+- Review more pull requests and move additional issues toward completion
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above

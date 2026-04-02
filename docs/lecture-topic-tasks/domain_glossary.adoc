@@ -1,0 +1,112 @@
+= Domain Glossary for Project Terminology
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 3/29/2026
+// Issue #362
+
+
+== Role of a Domain Glossary
+
+A domain glossary serves as a shared reference for:
+
+- establishing consistent meaning of core concepts
+- reducing ambiguity across stakeholders
+- supporting accurate domain modeling and communication
+
+All terms defined here must align with the domain model and previously established concepts.
+
+
+== Glossary of Terms
+
+[cols="1,3"]
+|===
+|Term |Definition
+
+|Inventory
+|A shared or individual collection of items being tracked within the system. It provides the contextual scope in which items exist and are managed.
+
+|Item
+|A unit of inventory representing a physical object or consumable good tracked by the system. Items include attributes such as quantity, category, and optional metadata (e.g., expiration date).
+
+|Quantity
+|A numerical representation of how much of an item is currently available. It reflects the system’s best-known approximation of real-world stock.
+
+|Low Stock
+|A condition in which an item's quantity falls below a defined threshold, indicating that replenishment may be needed.
+
+|Threshold
+|A user-defined or system-defined value used to determine when an item is considered low in stock.
+
+|Expiration Date
+|An optional attribute representing the date after which an item is no longer considered usable or valid.
+
+|Notification
+|A system-generated message intended to inform users of relevant events, such as low stock or upcoming expiration.
+
+|Alert
+|A specific type of notification triggered by defined conditions (e.g., low stock, expiration proximity).
+
+|Restock
+|The action of replenishing an item’s quantity within the inventory.
+
+|User
+|An individual who interacts with the system and participates in one or more inventories.
+
+|Membership
+|The relationship between a user and an inventory, defining their participation within a shared context.
+
+|Ownership
+|The responsibility assigned to a user for managing or maintaining a specific item within an inventory.
+
+|Shared Inventory
+|An inventory accessed and managed by multiple users through membership relationships.
+
+|Automated Process
+|A system-driven action that occurs without direct user input, such as generating alerts or performing periodic checks.
+
+|Domain Event
+|A significant occurrence within the system that reflects a change in state (e.g., item updated, stock reduced, alert triggered).
+
+|Item State
+|The current condition of an item as represented in the system (e.g., in stock, low stock, out of stock).
+
+|Consistency
+|The property that ensures the system’s stored data accurately reflects intended rules and does not contain conflicting states.
+
+|===
+
+
+== Ambiguity and Terminology Risks
+
+Certain terms may be interpreted differently without clear definition:
+
+- “low stock” may vary depending on user expectations
+- “ownership” may be confused with access or permission
+- “inventory” may be interpreted as personal vs shared context
+
+Implications:
+
+- inconsistent interpretations may lead to incorrect system behavior
+- ambiguity may introduce requirement conflicts or modeling errors
+
+These risks are mitigated by enforcing standardized definitions.
+
+
+== Guidelines for Terminology Usage
+
+To maintain consistency across the project:
+
+- all documentation must use glossary-defined terms
+- new terms must be added to the glossary before widespread use
+- synonymous or conflicting terms should be avoided or explicitly mapped
+
+
+== Implications for Domain Modeling
+
+The glossary establishes a controlled vocabulary that supports:
+
+- consistent domain concept representation
+- clearer communication between stakeholders and developers
+- alignment between documentation and implementation
+
+By standardizing terminology, the project has reduced ambiguity and improved overall model coherence.

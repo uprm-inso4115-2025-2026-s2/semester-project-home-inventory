@@ -31,6 +31,8 @@ class HouseholdModel extends HouseholdEntity {
     };
   }
 
+  Map<String, dynamic> toJson() => toMap();
+
   factory HouseholdModel.fromMap(Map<String, dynamic> map) {
     return HouseholdModel(
       id: map['id'] as int,
@@ -38,6 +40,9 @@ class HouseholdModel extends HouseholdEntity {
       ownerId: map['owner_id'] as int,
     );
   }
+
+  factory HouseholdModel.fromJson(Map<String, dynamic> json) =>
+      HouseholdModel.fromMap(json);
 
   factory HouseholdModel.initial() {
     return const HouseholdModel(id: -1, name: '', ownerId: -1);
