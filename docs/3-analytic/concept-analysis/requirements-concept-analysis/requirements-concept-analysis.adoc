@@ -1,6 +1,6 @@
 == Requirements Concept Analysis
 
-This section analyzes requirement-related concepts (actors, goals, capabilities, and requirement-level vocabulary) and maps them to the domain concepts established in the Domain Concept Analysis. It is grounded in (a) the Domain Rough Sketch (interviews/observations) and (b) the project’s internal Milestone 1 notes located in the docs directory (automation checks, low-stock strategies, expiration alert definitions, notification evaluation, grocery-list auto-add logic, transaction tracking, and schema notes). The goal is to keep later requirements (Section 2.2) precise, consistent, and traceable.
+This section analyzes requirement-related concepts (actors, goals, capabilities, and requirement-level vocabulary) and maps them to the domain concepts established in the Domain Concept Analysis. It is grounded in (a) the Domain Rough Sketch (interviews/observations) and (b) the project’s internal Milestone 1 notes located in the docs directory (automation checks, low-stock strategies, expiration alert definitions, notification evaluation, restock-list auto-add logic, transaction tracking, and schema notes). The goal is to keep later requirements (Section 2.2) precise, consistent, and traceable.
 
 === Starting point: requirement drivers anchored in the rough sketch
 
@@ -68,7 +68,7 @@ The following concepts are used to express requirements without committing to a 
 |Definition of “expiring soon” (within N days), including any timing/grace policy to avoid inconvenient alert timing.
 
 |Scheduled sweep (automation check)
-|A periodic background check that evaluates low-stock and expiration conditions without requiring the user to open the system.
+|A periodic background check that evaluates low-stock and expiration conditions without requiring the household member to open the system.
 
 |Notification record/event
 |A persisted representation of an alert (at least for in-app review), including type, time, and read/unread status.
@@ -79,8 +79,8 @@ The following concepts are used to express requirements without committing to a 
 |Deduplication / anti-spam
 |Rules preventing repeated alerts or repeated list additions when nothing meaningful changed.
 
-|Auto-add to grocery list
-|Rule-based conversion of actionable states into grocery list entries, with guardrails against clutter.
+|Auto-add to restock list
+|Rule-based conversion of actionable states into restock list entries, with guardrails against clutter.
 
 |Transaction history
 |An append-only log of quantity changes with reason and timestamp, enabling traceability of how current quantity was reached.
@@ -110,7 +110,7 @@ The following concepts are used to express requirements without committing to a 
 
 |Roommate/cohabitant
 |Coordinate replenishment intent/responsibility to avoid duplicates
-|Low-stock judgment/Threshold, Replenishment intent/responsibility, Grocery list entry (if used)
+|Low-stock judgment/Threshold, Replenishment intent/responsibility, Restock list entry (if used)
 
 |Budget-focused member
 |Record/review spending summaries for essentials
@@ -151,7 +151,7 @@ These groupings organize later requirements (Section 2.2) and help keep coverage
 * Sweep produces persisted state flags and generates notification records/events for new actionable states.
 * Sweep is observable (run summaries/logs) and idempotent (safe retries without duplication).
 
-*RG6 — Grocery list auto-add (rule-based)*
+*RG6 — Restock list auto-add (rule-based)*
 * Auto-add triggers based on actionable states: OUT_OF_STOCK, EXPIRED, LOW_STOCK (optionally with “frequent pattern” gating).
 * Auto-add must not duplicate items already on the list.
 * Trigger priority and reason must be explainable (“why was this added?”).
@@ -168,7 +168,7 @@ The requirement-level concepts and decision-rule vocabulary above are anchored i
 * Scheduled sweep / automation checks: `automation-check-system.adoc`
 * Expiration alert definitions and near-expiry window: `definition-expiration-alert-system.adoc`
 * Notification fatigue concerns and evaluation criteria: `evaluationOfNotification.adoc`
-* Grocery list auto-add priority and de-duplication logic: `grocerylist_autoadd_decisionlogic.adoc`
+* Restock list auto-add priority and de-duplication logic: `restocklist_autoadd_decisionlogic.adoc`
 * Transaction history and append-only tracking of quantity changes: `inventory-transaction-tracking.adoc`
 * Low-stock determination alternatives: `low-stock-research-strategies.adoc`
 * Inventory/stock-change schema notes used to align terminology: `schema-for-inventory-&-stock-changes.adoc` (and related notification schema notes where applicable)
@@ -185,7 +185,7 @@ The following rules are expressed at the requirements level (not as implementati
 * Near-expiry (optional): NEAR_EXPIRY becomes true when expiration_date - today <= N days (when an expiration date exists).
 * Alerts should be produced on *new* actionable states (state transitions) to avoid repeated notifications for unchanged conditions.
 
-*Grocery list auto-add decision logic (priority + deduplication)*
+*Restock list auto-add decision logic (priority + deduplication)*
 * If OUT_OF_STOCK and not already on list → auto-add (reason OUT_OF_STOCK).
 * Else if EXPIRED and not already on list → auto-add (reason EXPIRED).
 * Else if LOW_STOCK and not already on list → auto-add (reason LOW_STOCK).
@@ -242,6 +242,6 @@ This section establishes the vocabulary used for those links.
 * Ensure low-stock/out-of-stock/near-expiry/expired terms map consistently to actionable states and transition rules.
 
 *Feasibility (risks/unknowns)*
-* Deduplication rules are essential to prevent notification fatigue and repeated grocery list additions.
+* Deduplication rules are essential to prevent notification fatigue and repeated restock list additions.
 * Automation sweeps must be testable deterministically with boundary cases (threshold equality, expiration boundaries, missing fields).
 * Offline/temporary connectivity gaps create reconciliation complexity; initial scope should define acceptable behavior and verification strategy.
