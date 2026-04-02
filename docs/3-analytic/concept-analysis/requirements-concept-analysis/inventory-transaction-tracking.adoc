@@ -78,6 +78,8 @@ an alert / notification record may be generated and the item type may be added t
 Record all tracked inventory record quantity changes as transactions with a clear reason and timestamp.
 This approach provides transparency and allows future features like history review and analytics.
 
+Because transactions depend on household members recording changes, there is a risk that missing or incorrect transactions may cause tracked inventory records to diverge from household inventory reality; therefore, the system must allow later adjustments and corrections.
+
 == Sources
 
 * https://10xerp.com/blog/5-steps-to-implement-an-effective-inventory-tracking-system/
