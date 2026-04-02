@@ -216,40 +216,6 @@ For Milestone 1 scope, in-app notification records are an acceptable baseline; p
 * T5: *Simplicity vs “smartness”* — fixed thresholds and explainable triggers are robust; predictive forecasting is fragile under missing/noisy data and variable consumption.
 * T6: *Automation reliability vs user-device dependence* — scheduled sweeps improve reliability but require observability (run summaries/logs, idempotency, error handling).
 
-<<<<<<< issue#389-countermeasures-for-identified-risks
-=== Risk Countermeasures (Concept-Level Integration)
-
-The following summarizes key risk countermeasures and how they integrate with requirement-level concepts defined in this section.
-
-[cols="2,3,3", options="header"]
-|===
-|Risk |Countermeasure Strategy |Related Requirement Concepts
-
-|BR1: Low user engagement
-|Reduce interaction effort and support incremental updates
-|Fast capture, Incremental data completion
-
-|BR2: Notification fatigue
-|Trigger alerts on state transitions and apply deduplication rules
-|State transition, Deduplication / anti-spam, Notification records/events
-
-|BR3: Conflicting updates
-|Resolve updates through append-only transaction history and timestamp ordering
-|Transaction history, Shared visibility
-
-|BR4: Missing item data
-|Allow partial data and enable incremental completion
-|Fast capture, Tracked record vs reality
-|===
-
-These countermeasures reinforce previously defined requirement-level concepts by ensuring that risk handling is embedded within core system behavior. In particular:
-
-- Notification-related risks are addressed through state transition-based alert generation and deduplication strategies.
-- Data consistency risks are managed through the transaction history model, ensuring all updates are traceable and consistently applied.
-- Usability-related risks are addressed through low-friction capture and incremental data completion strategies.
-
-This integration ensures that risk management is not treated as an isolated concern but as part of the system’s requirement design.
-=======
 === Engineering Derived Requirements from Competing Goals
 
 ==== Case 1: Low-Effort Use vs Inventory Accuracy
@@ -289,7 +255,39 @@ The system shall restrict access to item metadata based on user role or ownershi
 * DR-9: *Controlled Shared Visibility* —
 The system shall ensure that only information necessary for household coordination (e.g., item availability and status) is visible to all household members. +
 *Rationale:* Maintains transparency without exposing sensitive data.
->>>>>>> main
+
+=== Risk Countermeasures (Concept-Level Integration)
+
+The following summarizes key risk countermeasures and how they integrate with requirement-level concepts defined in this section.
+
+[cols="2,3,3", options="header"]
+|===
+|Risk |Countermeasure Strategy |Related Requirement Concepts
+
+|BR1: Low user engagement
+|Reduce interaction effort and support incremental updates
+|Fast capture, Incremental data completion
+
+|BR2: Notification fatigue
+|Trigger alerts on state transitions and apply deduplication rules
+|State transition, Deduplication / anti-spam, Notification records/events
+
+|BR3: Conflicting updates
+|Resolve updates through append-only transaction history and timestamp ordering
+|Transaction history, Shared visibility
+
+|BR4: Missing item data
+|Allow partial data and enable incremental completion
+|Fast capture, Tracked record vs reality
+|===
+
+These countermeasures reinforce previously defined requirement-level concepts by ensuring that risk handling is embedded within core system behavior. In particular:
+
+- Notification-related risks are addressed through state transition-based alert generation and deduplication strategies.
+- Data consistency risks are managed through the transaction history model, ensuring all updates are traceable and consistently applied.
+- Usability-related risks are addressed through low-friction capture and incremental data completion strategies.
+
+This integration ensures that risk management is not treated as an isolated concern but as part of the system’s requirement design.
 
 === Traceability hooks (how this supports later sections)
 
