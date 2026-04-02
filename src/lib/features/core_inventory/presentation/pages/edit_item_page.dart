@@ -1,16 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/features/core_inventory/domain/entities/enums.dart';
+import 'package:src/features/core_inventory/domain/entities/product.dart';
+import 'package:src/features/core_inventory/domain/entities/stock.dart';
+import 'package:src/features/core_inventory/presentation/mock_data/sample_data.dart';
 import 'package:src/features/core_inventory/presentation/widgets/item_form.dart';
-import 'package:src/features/core_inventory/presentation/cubits/edit_item_cubit.dart';
 
 class EditItemPage extends StatelessWidget {
   const EditItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<EditItemCubit>().state;
+    final itemId =
+        int.tryParse(
+          GoRouterState.of(context).pathParameters['itemId'] ?? '',
+        ) ??
+        0;
+
+    final inventory = buildSampleInventory();
+    final pair = findProductAndStockByStockId(inventory, itemId);
+
+    final product =
+        pair?.key ??
+        const ProductEntity(id: 0, name: 'Item', description: 'Item details');
+
+    final stock =
+        pair?.value ??
+        const StockEntity(
+          id: 0,
+          brand: 'Generic',
+          quantity: 1,
+          status: Status.UNKNOWN,
+        );
 
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Item')),
@@ -19,10 +41,10 @@ class EditItemPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
           child: ItemForm(
             submitLabel: 'Update Item',
-            initialName: state.product.name,
-            initialDetails: state.product.description,
-            initialQuantity: state.stock.quantity,
-            initialExpirationDate: _formatDate(state.stock.expirationDate),
+            initialName: product.name,
+            initialDetails: product.description,
+            initialQuantity: stock.quantity,
+            initialExpirationDate: _formatDate(stock.expirationDate),
             onSubmit: (name, details, quantity, expirationDate) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Updated item input captured')),

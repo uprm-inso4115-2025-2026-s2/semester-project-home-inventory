@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/features/core_inventory/domain/entities/enums.dart';
 import 'package:src/features/core_inventory/domain/entities/product.dart';
 import 'package:src/features/core_inventory/domain/entities/stock.dart';
-import 'package:src/features/core_inventory/presentation/cubits/inventory_category_cubit.dart';
+import 'package:src/features/core_inventory/presentation/mock_data/sample_data.dart';
 
 class InventoryCategoryPage extends StatelessWidget {
   const InventoryCategoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<InventoryCategoryCubit>().state;
+    final categoryId =
+        GoRouterState.of(context).pathParameters['categoryId'] ?? 'in_stock';
+    final inventory = buildSampleInventory();
+    final title = inventoryCategoryTitle(categoryId);
+    final products = filterProductsForCategory(inventory, categoryId);
 
     return Scaffold(
-      appBar: AppBar(title: Text(state.title)),
+      appBar: AppBar(title: Text(title)),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
@@ -29,16 +32,14 @@ class InventoryCategoryPage extends StatelessWidget {
                   OutlinedButton(
                     onPressed: () {
                       context.push(
-                        '/home/inventory/category/${state.categoryId}/labels',
+                        '/home/inventory/category/$categoryId/labels',
                       );
                     },
                     child: const Text('Item Label Key'),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      context.push(
-                        '/home/inventory/category/${state.categoryId}/add',
-                      );
+                      context.push('/home/inventory/category/$categoryId/add');
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Item'),
@@ -48,12 +49,12 @@ class InventoryCategoryPage extends StatelessWidget {
               SizedBox(height: 2.h),
               Expanded(
                 child: ListView.separated(
-                  itemCount: state.products.length,
+                  itemCount: products.length,
                   separatorBuilder: (_, __) => SizedBox(height: 1.5.h),
                   itemBuilder: (context, index) {
-                    final product = state.products[index];
+                    final product = products[index];
                     final stocks =
-                        state.inventory.stock[product] ?? const <StockEntity>[];
+                        inventory.stock[product] ?? const <StockEntity>[];
                     return _ItemCard(
                       product: product,
                       stocks: stocks,
@@ -61,7 +62,7 @@ class InventoryCategoryPage extends StatelessWidget {
                           ? null
                           : () {
                               context.push(
-                                '/home/inventory/category/${state.categoryId}/edit/${stocks.first.id}',
+                                '/home/inventory/category/$categoryId/edit/${stocks.first.id}',
                               );
                             },
                     );

@@ -1,7 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:src/features/core_inventory/presentation/cubits/edit_item_cubit.dart';
-import 'package:src/features/core_inventory/presentation/cubits/inventory_category_cubit.dart';
 import 'package:src/features/core_inventory/presentation/pages/add_item_page.dart';
 import 'package:src/features/core_inventory/presentation/pages/edit_item_page.dart';
 import 'package:src/features/core_inventory/presentation/pages/inventory_category_page.dart';
@@ -17,11 +14,8 @@ var inventoryRoutes = GoRoute(
       path: 'category/:categoryId',
       name: 'inventory_category',
       builder: (context, state) {
-        final categoryId = state.pathParameters['categoryId']!;
-        return BlocProvider(
-          create: (_) => InventoryCategoryCubit(categoryId),
-          child: const InventoryCategoryPage(),
-        );
+        // TODO: Provide a cubit to manage the selected inventory category.
+        return const InventoryCategoryPage();
       },
       routes: [
         GoRoute(
@@ -32,17 +26,17 @@ var inventoryRoutes = GoRoute(
         GoRoute(
           path: 'add',
           name: 'inventory_add_item',
-          builder: (context, state) => const AddItemPage(),
+          builder: (context, state) {
+            // TODO: Provide a cubit to manage Add Item page state.
+            return const AddItemPage();
+          },
         ),
         GoRoute(
           path: 'edit/:itemId',
           name: 'inventory_edit_item',
           builder: (context, state) {
-            final itemId = int.tryParse(state.pathParameters['itemId']!) ?? 0;
-            return BlocProvider(
-              create: (_) => EditItemCubit(itemId),
-              child: const EditItemPage(),
-            );
+            // TODO: Provide a cubit to manage Edit item page state.
+            return const EditItemPage();
           },
         ),
       ],
