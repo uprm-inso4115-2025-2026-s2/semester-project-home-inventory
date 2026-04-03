@@ -60,7 +60,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Entity / Rule
 | Domain
 | A financial limit defined for a period (household-level or category-level) used to evaluate spending.
-| Budget window and cycle are requirements-level decisions.
+| Budget window and cycle can vary.
 
 | Tracked inventory record
 | Artifact
@@ -78,12 +78,12 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Artifact / Event
 | Domain
 | A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed).
-| Delivery method is an implementation choice.
+| How the hosehold member is informed of an actionable condition.
 
 | Spending entry
 | Record
 | Domain
-| A record of a financial transaction in a household (purchase, refund, or adjustment), optionally linked to an item type and category.
+| A record of a financial transaction in a household (purchase, refund, or adjustment), optionally associated with an item type and spending category.
 | Supports budgeting and reporting.
 
 | Transaction (quantity change)
@@ -144,13 +144,13 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Action
 | Domain
 | A household member delays acting on an alert for a period of time.
-| Domain intent: "remind me later."
+| The hosehold member may recieve another alert of this actionable condition.
 
 | Dismiss / ignore
 | Action
 | Domain
-| A household member acknowledges an alert and chooses not to act on it, at least for now.
-| Should not cause repeated alerts without a meaningful state change.
+| A household member acknowledges an alert and chooses not to act on it.
+| —
 
 | Low-stock judgment
 | Event / Rule
@@ -168,7 +168,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | State / Event
 | Domain
 | An item instance approaching its expiration date within a defined window (e.g., N days).
-| Window definition belongs in requirements.
+| Window length can vary.
 
 | Expired
 | State / Event
@@ -180,7 +180,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Event
 | Domain
 | The moment when spending reaches or exceeds a defined threshold (e.g., 80%, 100% of the budget).
-| Can trigger alerts, subject to anti-spam rules.
+| Can trigger alerts, subject to anti-spam rules and the budget cycle.
 
 | Item acquired
 | Event
@@ -246,7 +246,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Event
 | Domain
 | A low-stock, out-of-stock, near-expiry, expired, or budget condition becomes actionable and is communicated to household members.
-| Delivery method is not part of the domain event.
+| —
 
 | Alert dismissed / deferred
 | Event
