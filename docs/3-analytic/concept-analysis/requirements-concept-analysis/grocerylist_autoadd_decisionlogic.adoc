@@ -1,4 +1,4 @@
-= Grocery List & Restock Autogeneration System
+= Restock List Autogeneration System
 Solimar Cruz Hernandez
 Issue #30
 :toc:
@@ -8,7 +8,7 @@ Issue #30
 
 Goal of this section:
 
-Evaluate possible trigger strategies for autogenerating grocery list items, then justify the chosen trigger set.
+Evaluate possible trigger strategies for autogenerating restock list item types, then justify the chosen trigger set.
 
 == 1. DESIGN OPTIONS CONSIDERED
 
@@ -20,7 +20,7 @@ Evaluate possible trigger strategies for autogenerating grocery list items, then
 - LOW_STOCK
 
 *Description:*
-Uses explicit inventory state flags (simple yes/no).
+Uses explicit inventory status judgments (simple yes/no).
 
 === Option B: Status Triggers + Frequent Pattern
 
@@ -28,7 +28,7 @@ Uses explicit inventory state flags (simple yes/no).
 - OUT_OF_STOCK
 - EXPIRED
 - LOW_STOCK
-- FREQUENT_PATTERN (based on list history)
+- FREQUENT_PATTERN (based on restock list history)
 
 *Description:*
 Adds a lightweight “usage pattern” via frequent purchases, without forecasting.
@@ -41,7 +41,7 @@ Adds a lightweight “usage pattern” via frequent purchases, without forecasti
 - Dynamic thresholds per household behavior
 
 *Description:*
-Uses models/estimates to add items before low-stock.
+Uses models/estimates to add item types before low-stock.
 
 === Option D: Recipe / Meal-Plan Driven
 
@@ -53,7 +53,7 @@ Uses models/estimates to add items before low-stock.
 *Description:*
 Adds ingredients based on planned meals rather than stock.
 
-=== Option E: User Favorites / Staples Always Add
+=== Option E: Household Member Favorites / Staples Always Add
 
 *Triggers:*
 - Always add "favorites" when list is created
@@ -65,14 +65,14 @@ Auto-populates a base list, independent of inventory.
 
 Criteria used to compare options:
 
-*C1. Predictability for users*
-- Can users easily understand why something was added?
+*C1. Predictability for household members*
+- Can household members easily understand why something was added?
 
 *C2. Low risk of spam / list clutter*
-- Does it avoid adding unnecessary items?
+- Does it avoid adding unnecessary item types?
 
 *C3. Minimal dependency on perfect data*
-- Does it still work if inventory data is incomplete?
+- Does it still work if tracked inventory records are incomplete?
 
 *C4. Implementation complexity*
 - How hard is it to build and maintain correctly?
@@ -88,10 +88,10 @@ Criteria used to compare options:
 - Very predictable (C1)
 - Low clutter risk (C2)
 - Simple implementation (C4)
-- Cleanly consumes inventory flags (C5)
+- Cleanly consumes inventory status judgments (C5)
 
 *Cons:*
-- Misses items users buy frequently unless they go low/out
+- Misses item types household members buy frequently unless they go low/out
 - Less helpful for routine staples before they run out
 
 === Option B: Status Triggers + Frequent Pattern
@@ -114,9 +114,9 @@ Criteria used to compare options:
 
 *Cons:*
 - High complexity (C4)
-- Harder to explain to users (C1)
+- Harder to explain to household members (C1)
 - Sensitive to noisy data or missing usage signals (C3)
-- Higher risk of wrong adds and user distrust (C2)
+- Higher risk of wrong adds and household members distrust (C2)
 
 === Option D: Recipe / Meal-Plan Driven
 
@@ -126,7 +126,7 @@ Criteria used to compare options:
 
 *Cons:*
 - Requires meal-planning feature adoption
-- Adds many items even if user will not cook
+- Adds many item types even if household members will not cook
 - More complex data model and UI (C4)
 
 === Option E: Favorites / Staples Always Add
@@ -137,7 +137,7 @@ Criteria used to compare options:
 
 *Cons:*
 - High clutter risk if inventory is ignored (C2)
-- Can add items user already has (C3)
+- Can add item type household member already has (C3)
 - Less inventory-aware and can feel unintelligent
 
 == 4. RESEARCH CONCLUSION / CHOSEN APPROACH
@@ -147,34 +147,34 @@ Option B (Status Triggers + Frequent Pattern), with strict gates.
 
 *Rationale:*
 
-- OUT_OF_STOCK, EXPIRED, and LOW_STOCK are high-confidence, easy-to-explain signals that users expect.
+- OUT_OF_STOCK, EXPIRED, and LOW_STOCK are high-confidence, easy-to-explain signals that household members expect.
 - FREQUENT_PATTERN satisfies usage-pattern requirements without heavy forecasting or fragile models.
-- Gating frequent items behind (LOW_STOCK OR OUT_OF_STOCK) prevents clutter and avoids adding well-stocked items.
+- Gating frequent item types behind (LOW_STOCK OR OUT_OF_STOCK) prevents clutter and avoids adding well-stocked item types.
 - This respects team boundaries because the system consumes inventory-defined flags for core status triggers.
 
 ---
 
-== GROCERY LIST & RESTOCK AUTOGENERATION SYSTEM: Decision Logic
+== RESTOCK LIST & RESTOCK AUTOGENERATION SYSTEM: Decision Logic
 
 == 1. PURPOSE
 
-Define the rule-based decision system that converts inventory alerts (provided by the inventory subsystem) into automated grocery list actions.
+Define the rule-based decision system that converts inventory alert conditions (provided by the inventory subsystem) into automated restock list actions.
 
 NOTE:
 Definitions for OUT_OF_STOCK and EXPIRED are handled by the Inventory Team.
 
-This system consumes those flags and decides when to auto-add items to the grocery list.
+This system consumes those flags and decides when to auto-add item types to the restock list.
 
-== 2. INPUT FLAGS (FROM INVENTORY SERVICE)
+== 2. INPUT FLAGS (FROM INVENTORY SUBSYSTEM)
 
-For each item, the system receives:
+For each item type, the system receives:
 
 ----
 isOutOfStock   : boolean
 isExpired      : boolean
 isLowStock     : boolean (either provided or computed)
-isFrequent     : boolean (computed from purchase history)
-alreadyOnList  : boolean (derived from grocery list state)
+isFrequent     : boolean (computed from spending event history)
+alreadyOnList  : boolean (derived from restock list state)
 ----
 
 == 3. AUTOMATION TRIGGERS
@@ -188,7 +188,7 @@ AND alreadyOnList == false
 ----
 
 Action:
-- Auto-add item to grocery list
+- Auto-add item type to restock list
 - Reason = "OUT_OF_STOCK"
 
 Priority Level: 1 (Highest)
@@ -202,7 +202,7 @@ AND alreadyOnList == false
 ----
 
 Action:
-- Auto-add item to grocery list
+- Auto-add item type to restock list
 - Reason = "EXPIRED"
 
 Priority Level: 2
@@ -216,28 +216,44 @@ AND alreadyOnList == false
 ----
 
 Action:
-- Auto-add item to grocery list
+- Auto-add item type to restock list
 - Reason = "LOW_STOCK"
 
 Priority Level: 3
 
 === Trigger 4: FREQUENT PATTERN
 
-Event: GroceryListCreated
+Event: RestockListCreated
 
 Condition:
 ----
-FOR each item where isFrequent == true:
+FOR each item type where isFrequent == true:
 
     IF (isOutOfStock == true OR isLowStock == true)
     AND alreadyOnList == false
 ----
 
 Action:
-- Auto-add item
+- Auto-add item type
 - Reason = "FREQUENT_PATTERN"
 
 Priority Level: 4 (Lowest)
 
 NOTE:
-Frequent items do NOT override well-stocked items.
+Frequent item types do NOT override well-stocked item types.
+
+== TIMING OF RESTOCK LIST AUTO-ADD
+
+Items are automatically added to the restock list when a state transition occurs,
+such as:
+- NORMAL → LOW_STOCK
+- LOW_STOCK → OUT_OF_STOCK
+- NEAR_EXPIRY → EXPIRED
+
+Auto-add should not occur repeatedly if the state remains unchanged.
+
+== GROCERY SYSTEM RESPONSIBILITIES
+
+The Grocery System is responsible for adding item types to the restock list when qualifying state transitions occur.
+
+The Grocery System does not evaluate low-stock judgment or expiration conditions directly. It consumes state transition results produced by the Automation System.

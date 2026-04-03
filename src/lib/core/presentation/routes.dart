@@ -4,6 +4,8 @@ import 'package:src/core/presentation/pages/main_nav_shell.dart';
 import 'package:src/core/presentation/pages/home_dashboard_page.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
+// TO DO: route InviteRoommatePage properly
+import 'package:src/features/invite_roomate_page/presentation/routes.dart';
 
 const List<MainNavTab> _mainTabs = [
   MainNavTab(label: 'Home', icon: Icons.home_filled, rootPath: '/home'),

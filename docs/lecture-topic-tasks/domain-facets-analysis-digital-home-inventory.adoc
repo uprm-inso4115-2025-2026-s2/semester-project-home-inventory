@@ -1,0 +1,288 @@
+= Lecture Topic Task: Domain Facets Analysis for Digital Home Inventory
+:toc:
+:sectnums:
+
+*AI Disclosure*: This document was developed with the assistance of an AI tool for structural guidance and a better understanding of lecture concepts. All classifications, interpretations, and final decisions were reviewed, validated, and finalized by the author.
+
+== 1. Introduction
+
+In this lecture topic task, I analyze the Digital Home Inventory domain using the concept of domain facets discussed in class.
+
+Domain facets provide different perspectives from which a domain can be studied. Instead of looking at the domain as a single flat description, facets help separate it into meaningful angles such as procedures, technology, rules, and human behavior. This makes the domain easier to understand and model.
+
+For the Digital Home Inventory project, this analysis is especially useful because the application is not only about storing item data. It also involves routines for updating inventory, reminders and notifications, spending awareness, coordination between roommates, and user habits that affect how accurate the inventory remains over time.
+
+The purpose of this document is to identify the most relevant domain facets for the Digital Home Inventory system, explain how each one appears in the domain, and describe how each facet influences the understanding and modeling of the application.
+
+== 2. Overview of the Digital Home Inventory Domain
+
+The Digital Home Inventory domain focuses on helping students or other independent household members keep track of essential items in their homes.
+
+Based on the project description, the domain includes concerns such as:
+
+- Maintaining a centralized digital inventory of household items
+- Organizing items by room, category, and priority
+- Tracking quantities and spending
+- Detecting low-stock and near-expiration situations
+- Notifying users when action is needed
+- Supporting shared visibility for roommates
+- Generating reports for planning and budgeting
+
+This means the domain is not limited to a list of products. It includes real-world household phenomena, user decisions, collaboration, and system-supported routines.
+
+== 3. Generic Perspective
+
+The generic perspective gives a broad overall understanding of what the domain is about before focusing on specialized sub-perspectives.
+
+From a generic perspective, the Digital Home Inventory domain can be described as a household resource management domain. Its central concern is helping users know what items they have, where those items are located, how much of each item remains, and when action should be taken.
+
+Examples from the domain include:
+
+- Food items in the pantry
+- Medicine with expiration dates
+- Cleaning supplies stored by room
+- Budget-related records of purchases
+- Shared household items used by roommates
+
+This perspective is useful because it defines the general purpose of the system: to reduce waste, avoid duplicate purchases, improve organization, and support better household planning.
+
+Modeling implication:
+
+- The system should first be understood as a management and decision-support domain, not only as a storage application.
+- Core concepts such as item, quantity, location, category, expiration status, and ownership become central abstractions.
+
+== 4. Business Procedures Facet
+
+The business procedures facet focuses on the recurring activities and workflows that take place in the domain.
+
+In the Digital Home Inventory domain, the main procedures are not “business” in the corporate sense, but they are still structured household procedures carried out by users.
+
+Examples of relevant procedures include:
+
+- Adding a newly purchased item into the inventory
+- Updating the quantity of an item after use
+- Checking whether an item is low in stock
+- Reviewing items that are near expiration
+- Searching or filtering inventory before shopping
+- Recording spending after a purchase
+- Reviewing reports before planning the next shopping trip
+- Coordinating shared items with a roommate
+
+These procedures show that the domain includes repeated workflows rather than isolated actions. For example, buying groceries is not just a purchase event; it connects to inventory updates, category assignment, spending tracking, and future restocking decisions.
+
+Modeling implication:
+
+- The domain should include workflows and event sequences, not only static entities.
+- Use cases and state changes should reflect everyday procedures such as consume item, restock item, dismiss notification, and review report.
+
+== 5. Intrinsics Facet
+
+The intrinsics facet concerns the essential properties and phenomena that belong to the domain itself, independent of any supporting software.
+
+In the Digital Home Inventory domain, intrinsic elements include the real-world household items and their naturally relevant properties.
+
+Examples include:
+
+- An item has a name
+- An item belongs to a category
+- An item may be stored in a specific room or area
+- An item has a quantity
+- An item may have an expiration date
+- An item may have a purchase cost
+- Some items are shared, while others belong to one person
+- Some items are essential and have higher urgency than others
+
+These are intrinsic because they exist as part of the household domain even if no application existed. The app does not invent the existence of food, stock levels, expiration dates, or ownership; it only represents them.
+
+Modeling implication:
+
+- These intrinsic concepts should form the domain model’s foundation.
+- Entities such as Item, Category, Room, User, Inventory Entry, and Purchase Record should be derived from these essential domain facts.
+- The model should avoid confusing intrinsic domain properties with purely technical fields.
+
+== 6. Support Technology Facet
+
+The support technology facet focuses on the tools and technologies that help carry out domain activities.
+
+For the Digital Home Inventory domain, the application itself is part of the support technology, but this facet also includes the specific technical mechanisms that make the domain easier to manage.
+
+Examples include:
+
+- A mobile or web application interface
+- Search and filter tools for finding items quickly
+- Notification mechanisms for low-stock and expiration alerts
+- Report generation tools
+- Shared synchronization for roommate visibility
+- Optional integrations with budgeting or productivity tools
+- Data storage and retrieval infrastructure
+
+This facet matters because the domain is strongly influenced by how technology supports user tasks. For instance, without notifications, users must remember everything manually. Without filtering and categorization, inventory searches become slower and less practical.
+
+Modeling implication:
+
+- Some domain behaviors are enabled or amplified by technology support.
+- The system design should distinguish between intrinsic household phenomena and the technological means used to observe, organize, or act on them.
+- Features like reminders, reports, and filters should be modeled as support functions around the core inventory domain.
+
+== 7. Management and Organization Facet
+
+The management and organization facet addresses how the domain is structured, coordinated, and governed by roles or organizational arrangements.
+
+In the Digital Home Inventory domain, this appears mainly in the way household responsibilities and item organization are arranged.
+
+Examples include:
+
+- Items organized by room
+- Items organized by category
+- Items organized by priority
+- Individual versus shared ownership of items
+- Coordination among roommates
+- Responsibility for restocking certain items
+- Use of standardized categories and report templates
+
+This facet becomes more visible in shared-living scenarios. A single student living alone may manage everything personally, while roommates may need coordination rules about who bought something, who consumed it, and who should restock it.
+
+Modeling implication:
+
+- The domain model should support structured organization instead of assuming a flat inventory list.
+- Relationships such as item-to-room, item-to-category, and item-to-user are necessary.
+- In shared settings, the model may need ownership, visibility, and responsibility concepts.
+
+== 8. Rules and Regulations Facet
+
+The rules and regulations facet covers explicit or implicit constraints that govern what is acceptable or expected in the domain.
+
+In the Digital Home Inventory system, these rules are mostly domain rules rather than legal regulations.
+
+Examples include:
+
+- A low-stock alert should trigger when quantity falls below a threshold
+- An expiration alert should trigger when the date is near or passed
+- An item should appear in its correct category or room
+- Shared inventory should remain consistent for all users involved
+- Spending summaries should match the actual purchase data
+- Standardized categories and report templates should be used consistently
+
+There are also informal household rules that may matter in shared settings, such as:
+
+- Do not buy duplicates of already shared items
+- Track who owns or purchased certain items
+- Restock commonly shared essentials when needed
+
+This facet is important because it turns a vague domain into one with constraints and expected behaviors.
+
+Modeling implication:
+
+- Business rules should be made explicit during analysis.
+- Thresholds, consistency conditions, category validity, and reporting correctness should be represented clearly in requirements and validation logic.
+- Domain rules should not remain as assumptions hidden in user expectations.
+
+== 9. Scripts Facet
+
+The scripts facet refers to typical scenarios or recurring patterns of action that stakeholders tend to follow.
+
+In the Digital Home Inventory domain, many user interactions follow recognizable scripts.
+
+Examples of domain scripts include:
+
+=== 9.1 Restocking Script
+
+- User notices an item is low
+- User checks inventory to confirm
+- User buys the item
+- User updates the quantity in the app
+- Inventory returns to normal state
+
+=== 9.2 Expiration Prevention Script
+
+- System identifies an item nearing expiration
+- User receives a notification
+- User checks the item
+- User decides to consume it soon, discard it, or replace it
+- Inventory record is updated accordingly
+
+=== 9.3 Shopping Planning Script
+
+- User searches or filters current inventory
+- User reviews what is missing or running low
+- User checks budget or spending history
+- User prepares the next shopping trip
+
+=== 9.4 Roommate Coordination Script
+
+- One roommate adds a shared item
+- Both users can see it in the shared inventory
+- Before shopping, one roommate checks the app
+- Duplicate purchase is avoided
+
+These scripts are useful because they expose domain expectations in a sequential and realistic way.
+
+Modeling implication:
+
+- Scripts help derive scenarios, use cases, and acceptance criteria.
+- The system should support smooth completion of common scripts with minimal friction.
+- Recurrent scripts can reveal which features are core for the MVP.
+
+== 10. Human Behavior Facet
+
+The human behavior facet examines how people actually behave in the domain, including habits, limitations, forgetfulness, preferences, and non-ideal actions.
+
+This is one of the most important facets for the Digital Home Inventory project because the main problem exists largely due to human behavior.
+
+Examples include:
+
+- Users rely on memory instead of systematic tracking
+- Busy students do not have enough time to manually check household stock often
+- Users may forget to log purchases or consumption
+- Roommates may fail to communicate about shared items
+- Users may ignore reminders unless they are timely and useful
+- Users may prefer quick searches and filters over manually browsing all items
+- Some users may only update inventory when something urgent happens
+
+This facet explains why a purely “correct” model is not enough. The system must fit real user behavior, including inconsistency, forgetfulness, and limited attention.
+
+Modeling implication:
+
+- The application should minimize manual effort.
+- The system should support reminders, defaults, and simple workflows.
+- The domain description should acknowledge that user behavior can reduce inventory accuracy unless the system is designed around realistic habits.
+
+== 11. Most Relevant Facets for This Domain
+
+Although all domain facets can contribute something, the most important ones for the Digital Home Inventory domain are:
+
+- Intrinsics
+- Business Procedures
+- Support Technology
+- Human Behavior
+- Rules and Regulations
+
+This is because the domain is built around real household items and their properties, repeated user workflows, technology-assisted management, behavioral limitations, and rule-based alerts.
+
+The management and organization facet is also highly relevant, especially when roommate scenarios are considered. The scripts facet is valuable because it captures everyday usage sequences in a concrete way.
+
+== 12. How Facet Analysis Improves Domain Understanding
+
+Analyzing the Digital Home Inventory domain through facets improves understanding in several ways:
+
+- It separates the essential domain concepts from the technology used to support them
+- It reveals that the domain includes workflows, not only data structures
+- It highlights the importance of user behavior in shaping the success of the system
+- It makes domain rules more explicit
+- It supports better modeling of shared-living and coordination scenarios
+
+Without facets, the domain might be described too narrowly as “an app for storing items.” With facets, it becomes clear that the project addresses a richer domain involving organization, reminders, planning, shared responsibility, and user decision-making.
+
+== 13. Conclusion
+
+The Digital Home Inventory domain can be understood more clearly when analyzed through domain facets.
+
+From a generic perspective, it is a household inventory and planning domain. Through the intrinsics facet, we see the essential properties of items, quantities, locations, expiration dates, and ownership. Through business procedures and scripts, we identify the recurring workflows users follow. Through support technology, we recognize the role of search, notifications, reports, and synchronization. Through management and organization, we see how items and responsibilities are structured. Through rules and regulations, we capture thresholds, consistency expectations, and standardization. Finally, through human behavior, we understand why the system is needed in the first place and why it must be designed around realistic user habits.
+
+Overall, the Domain Facets framework helps produce a richer and better-structured understanding of the Digital Home Inventory system, which supports stronger analysis and better future design decisions.
+
+== References
+
+- Schütz-Schmuck, M. *Domain Stakeholders*. University of Puerto Rico at Mayagüez.
+- Schütz-Schmuck, M. *Domain Attributes*. University of Puerto Rico at Mayagüez.
+- Schütz-Schmuck, M. *Domain Acquisition*. University of Puerto Rico at Mayagüez. :contentReference[oaicite:0]{index=0}

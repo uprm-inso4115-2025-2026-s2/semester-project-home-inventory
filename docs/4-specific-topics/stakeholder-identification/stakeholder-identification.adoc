@@ -2,5 +2,111 @@
 
 This section identifies stakeholders relevant to the domain and summarizes their goals, influence, and concerns.
 
-include::initial-stakeholders/initial-stakeholders.adoc[leveloffset=+1]
-include::additional-stakeholders/additional-stakeholders.adoc[leveloffset=+1]
+=== 1. Primary Stakeholders (Direct Users)
+
+These stakeholders interact with the system daily and their needs dictate the core functional requirements. They map directly to our defined user personas.
+
+==== The Unofficial Household Manager (Persona: Andrea)
+* **Who:** A frequent household supply buyer who naturally organizes the house and does bulk shopping.
+* **Why:** Needs to keep the house perfectly stocked without carrying the entire mental load and wants to get reimbursed quickly for shared purchases.
+* **How (Relationship):** Heavy, write-intensive usage. Creates shared inventories, logs bulk purchases, and sends reimbursement nudges.
+* **Functional Needs:** Shared digital ledger, rapid data entry for bulk items, verifiable records of consumption, and low-stock alerts.
+
+==== The Budget-Conscious Roommate (Persona: Sofia)
+* **Who:** A student living in a shared apartment on a strict financial budget.
+* **Why:** Needs to track shared groceries, split costs fairly, and completely avoid buying duplicate items due to limited funds and storage space.
+* **How (Relationship):** Read/Write usage. Checks the app while at the store to verify current stock and logs personal vs. shared expenses.
+* **Functional Needs:** Real-time inventory synchronization, duplicate purchase warnings, and distinct tracking of personal vs. shared household items.
+
+==== The Busy Solo Student (Persona: Mateo)
+* **Who:** A student living alone with severe time constraints and limited mental bandwidth for chores.
+* **Why:** Needs to minimize time spent grocery shopping and avoid throwing away expired perishable food.
+* **How (Relationship):** Notification-driven usage. Relies on the app to remind him of what he has before it goes bad.
+* **Functional Needs:** Automated expiration alerts, simple UI for quick checks, and grocery list auto-generation based on low stock.
+
+==== The Health-Conscious Student (Persona: Julian)
+* **Who:** A student with strict dietary or medical needs who keeps their inventory separate from roommates.
+* **Why:** Needs to maintain an uninterrupted supply of specialty items and track consumption rates of expensive supplements.
+* **How (Relationship):** Precision usage. Sets exact thresholds for reordering.
+* **Functional Needs:** Adjustable low-stock threshold alerts, strict permission/privacy boundaries for personal items within a shared household.
+
+=== 2. Secondary & Indirect Stakeholders
+
+These individuals affect or are affected by the system but use it sporadically or indirectly.
+
+==== Transient Household Members (Guests, Former/Future Roommates)
+* **Who:** People temporarily interacting with the household inventory.
+* **Why:** Guests consume items without tracking ("shrinkage"); former roommates leave orphaned items; future roommates need to see current stock before moving in.
+* **Relationship:** Cause inventory drift or require access modifications.
+* **Functional Needs:** Ownership transfer protocols, easy user removal/invitation, and inventory reconciliation mechanisms for untracked consumption.
+
+==== Parents / Family Contributors
+* **Who:** Family members helping fund the student's living expenses.
+* **Why:** Want to ensure the student has enough food and isn't wasting money on duplicates or expired goods.
+* **Relationship:** Read-only or indirect financial contributors.
+* **Functional Needs:** Shareable grocery lists or read-only access to household needs.
+
+==== Grocery / Retail Stores
+* **Who:** Supermarkets and wholesale clubs.
+* **Why:** Provide the products and barcode data the system relies on.
+* **Relationship:** Data originators.
+* **Functional Needs:** Accurate barcode scanning API integrations and manual entry fallbacks for unrecognized store brands.
+
+=== 3. External & Technical Stakeholders
+
+==== Development Team & Database Maintainers (INSO4115 Team)
+* **Who:** The software engineering students building and maintaining the app.
+* **Why:** Need clear requirements, reliable backend uptime (Supabase), and clean architecture.
+* **Functional Needs:** Well-documented APIs, robust database schema, automated backups, and CI/CD pipelines.
+
+==== Project Evaluators (Project Managers / Course Staff)
+* **Who:** Course instructors evaluating the software engineering process.
+* **Why:** Assess the project against syllabus requirements and domain problem resolution.
+* **Functional Needs:** End-to-end traceability, comprehensive AsciiDoc documentation, and functional completeness.
+
+==== Mobile Platform Reviewers (App Store / Google Play)
+* **Who:** Automated and manual reviewers for app stores.
+* **Why:** Ensure the app complies with privacy, data handling, and UI guidelines.
+* **Functional Needs:** Secure authentication, clear privacy policies, and crash-free navigation.
+
+=== 4. Stakeholder Matrix (Power / Interest Grid)
+
+[cols="1,1,1,2,1", options="header"]
+|===
+| Stakeholder | Interest | Influence | Management Strategy | System Module Mapping
+
+| **Household Manager** (Andrea)
+| High | High
+| **Manage Closely:** Prioritize their core needs (bulk entry, shared ledger) as their frustration causes household breakdown.
+| Shared Inventory, Ledgers
+
+| **Budget/Solo Users** (Sofia, Mateo)
+| High | Medium
+| **Keep Satisfied:** Ensure synchronization, duplicate warnings, and expiration alerts are highly reliable.
+| Expiration Alerts, Real-time Sync
+
+| **Project Evaluators** (Course Staff)
+| High | High
+| **Manage Closely:** Adhere strictly to project guidelines, milestone rubrics, and documentation traceability.
+| Documentation, Traceability
+
+| **DB Maintainers / Dev Team**
+| High | High
+| **Manage Closely:** Design robust architecture that prevents database bloating or security flaws.
+| DB Schema, Security Rules (RLS)
+
+| **Transient Members** (Guests, etc.)
+| Low | Medium
+| **Monitor:** Build robust error-handling and reconciliation tools to handle the inventory drift they cause.
+| Inventory Reconciliation, Invites
+
+| **Parents / Guardians**
+| Medium | Low
+| **Keep Informed:** Provide simple sharing features (like exporting a grocery list) without full app onboarding.
+| Grocery List Export
+
+| **Platform Reviewers**
+| Low | High
+| **Keep Satisfied:** Ensure strict adherence to platform UI and privacy guidelines to prevent launch blockers.
+| Authentication, App Settings
+|===

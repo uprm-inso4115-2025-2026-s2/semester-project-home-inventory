@@ -111,4 +111,90 @@ class PdfExportService {
       onLayout: (format) async => pdf.save(),
     );
   }
+
+  Future<void> exportExpenditureReport({
+    required DateTime startDate,
+    required DateTime endDate,
+    required List<Map<String, dynamic>> categories,
+    required double totalAmount,
+    Uint8List? chartImage,
+  }) async {
+    final pdf = pw.Document();
+
+    final generatedAt = DateTime.now();
+    final dateRange =
+        '${DateFormat('MMMM d').format(startDate)} - ${DateFormat('MMMM d, y').format(endDate)}';
+
+    pdf.addPage(
+      pw.MultiPage(
+        margin: const pw.EdgeInsets.all(24),
+        build: (context) => [
+          pw.Text(
+            'Expenditure Report',
+            style: pw.TextStyle(
+              fontSize: 24,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          pw.SizedBox(height: 8),
+          pw.Text('Report range: $dateRange'),
+          pw.Text('Generated: ${DateFormat('yyyy-MM-dd HH:mm').format(generatedAt)}'),
+          pw.Text('Total Spent: \$${totalAmount.toStringAsFixed(2)}'),
+          pw.SizedBox(height: 24),
+          if (chartImage != null) ...[
+            pw.Center(
+              child: pw.Text(
+                'Expenditures by Category',
+                style: pw.TextStyle(
+                  fontSize: 16,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+            ),
+            pw.SizedBox(height: 12),
+            pw.Center(
+              child: pw.Container(
+                constraints: const pw.BoxConstraints(
+                  maxWidth: 450,
+                  maxHeight: 260,
+                ),
+                child: pw.Image(
+                  pw.MemoryImage(chartImage),
+                  fit: pw.BoxFit.contain,
+                ),
+              ),
+            ),
+            pw.SizedBox(height: 24),
+          ],
+          pw.Text(
+            'Category Breakdown',
+            style: pw.TextStyle(
+              fontSize: 16,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          pw.SizedBox(height: 8),
+          pw.TableHelper.fromTextArray(
+            headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+            headerDecoration: const pw.BoxDecoration(),
+            cellAlignment: pw.Alignment.centerLeft,
+            headers: const ['Category', 'Amount (\$)', '% of Total'],
+            data: categories
+                .map((c) => [
+                      c['name'],
+                      (c['amount'] as double).toStringAsFixed(2),
+                      totalAmount > 0
+                          ? '${((c['amount'] as double) / totalAmount * 100).toStringAsFixed(1)}%'
+                          : '0%',
+                    ])
+                .toList(),
+          ),
+        ],
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (format) async => pdf.save(),
+    );
+  }
 }
