@@ -1,0 +1,95 @@
+= Acceptance and End-to-End (E2E) Testing
+
+To provide concrete evidence of our system's reliability, we conducted formal Acceptance and End-to-End (E2E) tests on our minimal viable feature set. These tests validate the user journey from the perspective of our core personas (**Andrea**, **Mateo**, and **Sofia**) and ensure the application handles not only the "happy path" but also boundary conditions and failure states.
+
+== Feature 1: Core Inventory & Barcode Scanning
+
+**Testing Objective:** Verify that a user can seamlessly digitize their physical pantry, and that the system safely handles unrecognized items and missing data.
+
+[cols="1,2,1,2,2,1", options="header"]
+|===
+| Test ID | Scenario | Type | Expected Outcome | Actual Outcome | Status
+
+| **TC-1.1**
+| Scan a globally recognized barcode (e.g., a standard Coca-Cola can).
+| Happy Path
+| The API retrieves the item. Name, brand, and image auto-populate. The item saves to Supabase.
+| Product data populated in 1.2s. Item appeared instantly in list via real-time sync.
+|  **PASS**
+
+| **TC-1.2**
+| Scan an unrecognized, local store-brand barcode.
+| Edge Case
+| System notifies the user item is unrecognized and transitions to Manual Entry fallback UI.
+| Alert displayed: "Item not found." Transitioned to manual form. User saved custom item.
+|  **PASS**
+
+| **TC-1.3**
+| Attempt to save an item with a blank expiration date or negative quantity.
+| Failure State
+| The UI prevents the transaction and displays inline validation errors.
+| Save button disabled. Red validation text appeared: "Expiration date is required."
+|  **PASS**
+|===
+
+
+== Feature 2: Automated Expiration Alerts & Notifications
+
+**Testing Objective:** Ensure Supabase Edge Functions correctly identify expiring items and deliver push notifications without spamming the user.
+
+[cols="1,2,1,2,2,1", options="header"]
+|===
+| Test ID | Scenario | Type | Expected Outcome | Actual Outcome | Status
+
+| **TC-2.1**
+| Item expiration date falls within the 3-day warning threshold.
+| Happy Path
+| The scheduled Cron job detects the item and delivers a push notification to the device.
+| Notification received: "Your Milk expires in 3 days!" Item correctly flagged in UI.
+|  **PASS**
+
+| **TC-2.2**
+| The Cron job runs again the following day for the same item from TC-2.1.
+| Edge Case
+| Deduplication logic prevents a second push notification from being sent to avoid fatigue.
+| System recognized the existing `alert_sent` flag and suppressed duplicate notification.
+|  **PASS**
+
+| **TC-2.3**
+| Item expiration date is exactly 4 days away.
+| Boundary
+| The Cron job scans the item but ignores it (outside strictly ≤ 3-day threshold).
+| Item scanned. No alert generated. Database state remained unchanged.
+|  **PASS**
+|===
+
+
+== Feature 3: Smart Grocery List Management
+
+**Testing Objective:** Validate the lifecycle loop between consuming an item and restocking it via the Grocery List.
+
+[cols="1,2,1,2,2,1", options="header"]
+|===
+| Test ID | Scenario | Type | Expected Outcome | Actual Outcome | Status
+
+| **TC-3.1**
+| User manually decreases an inventory item's quantity to exactly `0`.
+| Happy Path
+| System automatically flags the item and moves it to the "My Grocery List" view.
+| Quantity reached 0. Item immediately appeared in Grocery List UI.
+|  **PASS**
+
+| **TC-3.2**
+| User adds a "Custom Item" never previously in Core Inventory.
+| Edge Case
+| The item is added to the list successfully and behaves normally.
+| Custom item "Birthday Cake" added successfully and synced across roommate devices.
+|  **PASS**
+
+| **TC-3.3**
+| User checks off a pending item in the Grocery List after purchase.
+| Happy Path
+| Item is removed from List and returned to Core Inventory with updated quantity/expiry.
+| Item checked off. Transition modal appeared. Item returned to active stock.
+|  **PASS**
+|===
