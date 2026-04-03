@@ -5,7 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 class PdfExportService {
-  Future<void> exportInventoryStockReport({
+  Future<Uint8List> generateInventoryStockReportPdfBytes({
     required DateTime startDate,
     required int page,
     required List<Map<String, dynamic>> categories,
@@ -33,7 +33,9 @@ class PdfExportService {
           ),
           pw.SizedBox(height: 8),
           pw.Text('Report range: $dateRange'),
-          pw.Text('Generated: ${DateFormat('yyyy-MM-dd HH:mm').format(generatedAt)}'),
+          pw.Text(
+            'Generated: ${DateFormat('yyyy-MM-dd HH:mm').format(generatedAt)}',
+          ),
           pw.Text('Page: ${page + 1}'),
           pw.SizedBox(height: 24),
           if (chartImage != null) ...[
@@ -107,8 +109,26 @@ class PdfExportService {
       ),
     );
 
+    return pdf.save();
+  }
+
+  Future<void> exportInventoryStockReport({
+    required DateTime startDate,
+    required int page,
+    required List<Map<String, dynamic>> categories,
+    required List<Map<String, dynamic>> items,
+    Uint8List? chartImage,
+  }) async {
+    final pdfBytes = await generateInventoryStockReportPdfBytes(
+      startDate: startDate,
+      page: page,
+      categories: categories,
+      items: items,
+      chartImage: chartImage,
+    );
+
     await Printing.layoutPdf(
-      onLayout: (format) async => pdf.save(),
+      onLayout: (format) async => pdfBytes,
     );
   }
 
