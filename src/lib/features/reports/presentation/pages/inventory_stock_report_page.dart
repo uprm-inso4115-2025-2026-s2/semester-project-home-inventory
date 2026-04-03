@@ -4,8 +4,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart'; // <-- added for navigation
+import 'package:go_router/go_router.dart';
+
 import '../../../../core/data/services/pdf_export_service.dart';
+import '../../../../core/data/services/pdf_share_helper.dart';
 
 // ======================== Models ========================
 class CategoryData {
@@ -30,7 +32,6 @@ class ReportState {
   final String searchQuery;
   final List<CategoryData> categories;
 
-  // Constructor with nullable startDate to allow default
   ReportState({
     DateTime? startDate,
     this.page = 0,
@@ -57,7 +58,6 @@ class ReportState {
     ],
   }) : startDate = startDate ?? DateTime(2026, 3, 9);
 
-  // Derived: filtered items based on search query
   List<ItemData> get filteredItems {
     if (searchQuery.isEmpty) return allItems;
     final lowerQuery = searchQuery.toLowerCase();
@@ -68,7 +68,6 @@ class ReportState {
     }).toList();
   }
 
-  // Categories for the current page (pagination logic)
   List<CategoryData> get currentPageData {
     if (page == 0) {
       return const [
@@ -105,7 +104,7 @@ class ReportState {
 }
 
 class ReportCubit extends Cubit<ReportState> {
-  ReportCubit() : super(ReportState()); // no const needed now
+  ReportCubit() : super(ReportState());
 
   void search(String query) {
     emit(state.copyWith(searchQuery: query));
@@ -137,7 +136,8 @@ class _ReportViewState extends State<_ReportView> {
 
   Future<Uint8List?> _captureChart() async {
     try {
-      final boundary = _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      final boundary =
+      _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) return null;
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -152,23 +152,52 @@ class _ReportViewState extends State<_ReportView> {
 
     final categories = state.currentPageData
         .map((c) => {
-              'name': c.name,
-              'quantity': c.quantity,
-            })
+      'name': c.name,
+      'quantity': c.quantity,
+    })
         .toList();
 
     final items = state.filteredItems
         .map((i) => {
-              'name': i.name,
-              'category': i.category,
-              'quantity': i.quantity,
-              'status': i.status,
-            })
+      'name': i.name,
+      'category': i.category,
+      'quantity': i.quantity,
+      'status': i.status,
+    })
         .toList();
 
     final chartImage = await _captureChart();
 
     await pdfService.exportInventoryStockReport(
+      startDate: state.startDate,
+      page: state.page,
+      categories: categories,
+      items: items,
+      chartImage: chartImage,
+    );
+  }
+
+  Future<void> _sharePdf(BuildContext context, ReportState state) async {
+    final categories = state.currentPageData
+        .map((c) => {
+      'name': c.name,
+      'quantity': c.quantity,
+    })
+        .toList();
+
+    final items = state.filteredItems
+        .map((i) => {
+      'name': i.name,
+      'category': i.category,
+      'quantity': i.quantity,
+      'status': i.status,
+    })
+        .toList();
+
+    final chartImage = await _captureChart();
+
+    await PdfShareHelper.shareInventoryReport(
+      context: context,
       startDate: state.startDate,
       page: state.page,
       categories: categories,
@@ -200,10 +229,20 @@ class _ReportViewState extends State<_ReportView> {
         actions: [
           BlocBuilder<ReportCubit, ReportState>(
             builder: (context, state) {
-              return IconButton(
-                onPressed: () => _exportPdf(context, state),
-                icon: const Icon(Icons.picture_as_pdf, color: Colors.black87),
-                tooltip: 'Export to PDF',
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () => _exportPdf(context, state),
+                    icon: const Icon(Icons.picture_as_pdf, color: Colors.black87),
+                    tooltip: 'Export to PDF',
+                  ),
+                  IconButton(
+                    onPressed: () => _sharePdf(context, state),
+                    icon: const Icon(Icons.share, color: Colors.black87),
+                    tooltip: 'Share PDF',
+                  ),
+                ],
               );
             },
           ),
@@ -211,7 +250,8 @@ class _ReportViewState extends State<_ReportView> {
             padding: const EdgeInsets.only(right: 16),
             child: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: const Color(0xFF8B9D7F),
                   borderRadius: BorderRadius.circular(8),
@@ -219,7 +259,10 @@ class _ReportViewState extends State<_ReportView> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Text('Filters', style: TextStyle(color: Colors.white, fontSize: 14)),
+                    Text(
+                      'Filters',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
                     SizedBox(width: 4),
                     Icon(Icons.arrow_drop_down, color: Colors.white, size: 20),
                   ],
@@ -227,7 +270,6 @@ class _ReportViewState extends State<_ReportView> {
               ),
             ),
           ),
-          // Temporary navigation button to the reports list page
           IconButton(
             onPressed: () => context.push('/home/reports'),
             icon: const Icon(Icons.list, color: Colors.black87),
@@ -282,7 +324,9 @@ class _BarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxVal = data.isEmpty ? 100 : data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
+    final maxVal = data.isEmpty
+        ? 100
+        : data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -300,29 +344,45 @@ class _BarChart extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: data.map((cat) {
-                final height = (cat.quantity / maxVal * 150).clamp(20.0, 150.0);
+                final height =
+                (cat.quantity / maxVal * 150).clamp(20.0, 150.0);
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('${cat.quantity}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black)),
+                    Text(
+                      '${cat.quantity}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     Container(
                       width: 40,
                       height: height,
                       decoration: BoxDecoration(
                         color: const Color(0xFF8B9D7F),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(4),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('${cat.name}', style: const TextStyle(fontSize: 11, color: Colors.black)),
+                    Text(
+                      cat.name,
+                      style: const TextStyle(fontSize: 11, color: Colors.black),
+                    ),
                   ],
                 );
               }).toList(),
             ),
           ),
           const SizedBox(height: 8),
-          Text('< Page ${context.read<ReportCubit>().state.page + 1} >', style: const TextStyle(color: Colors.black)),
+          Text(
+            '< Page ${context.read<ReportCubit>().state.page + 1} >',
+            style: const TextStyle(color: Colors.black),
+          ),
         ],
       ),
     );
@@ -384,10 +444,50 @@ class _DataTable extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: const [
-          Expanded(flex: 3, child: Text('Items', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black))),
-          Expanded(flex: 2, child: Text('Category', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black))),
-          Expanded(flex: 1, child: Text('Quantity', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black))),
-          Expanded(flex: 2, child: Text('Status', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black))),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'Items',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Category',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Quantity',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Status',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -398,10 +498,31 @@ class _DataTable extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          Expanded(flex: 3, child: Text('${item.name}', style: const TextStyle(fontSize: 12, color: Colors.black))),
-          Expanded(flex: 2, child: Text('${item.category}', style: const TextStyle(fontSize: 12, color: Colors.black))),
-          Expanded(flex: 1, child: Text('${item.quantity}', style: const TextStyle(fontSize: 12, color: Colors.black))),
-          Expanded(flex: 2, child: _StatusBadge(status: item.status)),
+          Expanded(
+            flex: 3,
+            child: Text(
+              item.name,
+              style: const TextStyle(fontSize: 12, color: Colors.black),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              item.category,
+              style: const TextStyle(fontSize: 12, color: Colors.black),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              '${item.quantity}',
+              style: const TextStyle(fontSize: 12, color: Colors.black),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: _StatusBadge(status: item.status),
+          ),
         ],
       ),
     );
@@ -422,8 +543,19 @@ class _StatusBadge extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-      decoration: BoxDecoration(color: colors[0], borderRadius: BorderRadius.circular(4)),
-      child: Text('$status', style: TextStyle(color: colors[1], fontSize: 10, fontWeight: FontWeight.w600), textAlign: TextAlign.center),
+      decoration: BoxDecoration(
+        color: colors[0],
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        status,
+        style: TextStyle(
+          color: colors[1],
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
@@ -450,7 +582,13 @@ class _SearchBarState extends State<_SearchBar> {
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, -2),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -463,30 +601,38 @@ class _SearchBarState extends State<_SearchBar> {
                 hintStyle: const TextStyle(color: Colors.black54),
                 filled: true,
                 fillColor: Colors.grey[100],
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 suffixIcon: _controller.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.black54),
-                        onPressed: () {
-                          _controller.clear();
-                          context.read<ReportCubit>().search('');
-                        },
-                      )
+                  icon: const Icon(Icons.clear, color: Colors.black54),
+                  onPressed: () {
+                    _controller.clear();
+                    context.read<ReportCubit>().search('');
+                    setState(() {});
+                  },
+                )
                     : null,
               ),
               onChanged: (value) {
                 context.read<ReportCubit>().search(value);
+                setState(() {});
               },
             ),
           ),
           const SizedBox(width: 8),
           Container(
-            decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: IconButton(
               icon: const Icon(Icons.open_in_new, color: Colors.black),
               onPressed: () {
-                // Optional: open advanced search or other action
               },
             ),
           ),

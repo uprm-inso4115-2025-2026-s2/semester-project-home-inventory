@@ -7,6 +7,7 @@
 
 * Alerts & Notifications Screen: image:Alerts-&-Notifications-Screen/images/alerts-wireframes.png[]
 * Budget Spending Page: image:Budget-Spending-Screen/images/Budges_spending_wireframe.png[]
+* Expenditure Report Screen (pie chart): link:Expenditure-Report-Screen/expenditure_report_screen.adoc[Design & implementation notes]
 
 [NOTE]
 ====
