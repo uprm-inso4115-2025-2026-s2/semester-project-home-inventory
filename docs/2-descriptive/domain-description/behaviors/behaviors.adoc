@@ -10,17 +10,23 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 === Domain rules
 
-* One barcode corresponds to exactly one Product definition (DR-1, DR-14, DR-17).
-* A Stock duplicate entry submitted within 30 seconds triggers automatic quantity aggregation rather than a new entry (DR-7, IR-11).
-* Spend Events are immutable — inventory corrections must never overwrite financial history (DR-3, DR-9).
-* A Household must always have exactly one Owner (DR-4).
-* Ownership must be transferred before an Owner can leave a Household (DR-4).
+* One barcode corresponds to exactly one Product definition.
+* Spend Events are immutable — inventory corrections must never overwrite financial history.
+* A Household must always have exactly one Owner.
+* Ownership must be transferred before an Owner can leave a Household.
 
 === Edge cases
 
-* If a stock entry is submitted while offline and synced later, the 30-second duplicate window is evaluated against the server-received timestamp, not the client timestamp.
 * If an item has no expiration date, expiration monitoring is skipped for that stock entry.
 * If an Owner attempts to leave without transferring ownership, the action is blocked until a new Owner is designated.
 
-include::invite-roommate-sharing.adoc[leveloffset=+1]
-include::invites-logic-definition.adoc[leveloffset=+1]
+// Commented out the Inventory Sharing Flowchart document as it does not belong to the 
+// domain description. Should be moved to 2.3 Implementation
+
+// include::invite-roommate-sharing.adoc[leveloffset=+1]
+
+
+// Commented out the Invites Logic Definition document as it does not belong to the 
+// domain description. Should be moved to 2.2 Requirements
+
+// include::invites-logic-definition.adoc[leveloffset=+1]
