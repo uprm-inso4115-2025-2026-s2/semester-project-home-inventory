@@ -22,10 +22,10 @@ class DuplicateItem {
   });
 }
 
-// ─── RESULT ENUM ─────────────────────────────────────────────────────────────
+
 enum DuplicateAction { continueAdding, cancel, viewExisting }
 
-// ─── DUPLICATE ICON ───────────────────────────────────────────────────────────
+
 class DuplicateIcon extends StatelessWidget {
   final double size;
 
@@ -129,7 +129,7 @@ class DuplicateWarningDialog extends StatelessWidget {
               ),
             ),
 
-            // ── View existing link ─────────────────────────────────────────
+            
             TextButton.icon(
               onPressed: () =>
                   Navigator.of(context).pop(DuplicateAction.viewExisting),
@@ -147,7 +147,7 @@ class DuplicateWarningDialog extends StatelessWidget {
             const Divider(height: 1, color: Color(0xFFEEEEEE)),
             const SizedBox(height: 16),
 
-            // ── Action buttons ─────────────────────────────────────────────
+            
             Row(
               children: [
                 // Cancel
@@ -203,7 +203,7 @@ class DuplicateWarningDialog extends StatelessWidget {
   }
 }
 
-// ─── HELPER WIDGET ────────────────────────────────────────────────────────────
+
 class _DetailRow extends StatelessWidget {
   final String label;
   final String value;
