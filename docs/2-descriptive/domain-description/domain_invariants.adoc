@@ -4,30 +4,20 @@
 // Date: 2/22/2026
 // Issue #96
 
-=== Objective
-This document defines the fundamental domain invariants governing inventories, members, items, and ownership relationships in a collaborative inventory system.
-
-Domain invariants represent rules that must always hold true in the system. These rules establish the conceptual constraints necessary to support consistent ownership, sharing, and permission behavior.
-
-The invariants defined here provide guidance for conceptual schema design and ownership rule definition.
-
-
 === Definition of Domain Invariant
 A domain invariant is a rule that must always remain true for the system to be valid. Invariants describe required relationships between entities and define constraints on how resources can exist and interact.
 
 Invariants are independent of implementation and represent structural truths of the domain.
 
-
 === Core Domain Invariants
 
 ==== Invariant 1: Every item belongs to exactly one inventory
-Items exist only within a shared inventory context and cannot exist independently.
+Items exist only within an inventory context and cannot exist independently.
 
 Implications:
 
 - Item existence depends on Inventory.
 - Ownership is scoped to an inventory context.
-- Items cannot exist without a shared environment.
 
 Conceptual relationship impact:
 Item → Inventory (required association)
@@ -44,7 +34,7 @@ Conceptual relationship impact:
 Ownership depends on Item and Inventory.
 
 ==== Invariant 3: Only inventory members can own or manage items
-Users may only own or manage items if they are members of the inventory that contains the item.
+Household members may only own or manage items if they are members of the inventory that contains the item.
 
 Implications:
 
@@ -55,15 +45,15 @@ Conceptual relationship impact:
 Ownership depends on Membership.
 
 ==== Invariant 4: Membership defines participation in shared resources
-Users interact with items through their membership relationship with an inventory.
+Household members interact with items through their membership relationship with an inventory.
 
 Implications:
 
-- Users do not interact with items directly.
+- Household members do not interact with items directly.
 - Permissions derive from membership roles.
 
 Conceptual relationship impact:
-User → Membership → Inventory → Item interaction chain.
+Household member → Membership → Inventory → Item interaction chain.
 
 ==== Invariant 5: Every item must have a valid ownership state
 Each item must have a defined responsibility structure, whether individual, collective, or hybrid.
@@ -103,7 +93,7 @@ Membership connects User and Inventory.
 These invariants establish the structural constraints that the ownership model must satisfy. They define:
 
 - how items relate to inventories
-- how users participate in ownership
+- how household members participate in ownership
 - how responsibility is represented
 - how permissions can be enforced
 
