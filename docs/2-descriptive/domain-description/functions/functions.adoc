@@ -28,7 +28,7 @@ Major domain functions/capabilities (what can be done in the domain), described 
 
 |Determine expiration status
 |Classify an item instance’s expiration state when an expiration date exists.
-|expirationStatus : ItemInstance >< DateNow -> (Active | NearExpiry | Expired | Unknown)
+|expirationStatus : ItemInstance >< DateNow -> {Active, NearExpiry, Expired, Unknown}
 
 |Create restock entry
 |Add an item type to the restock list/planner with a reason.

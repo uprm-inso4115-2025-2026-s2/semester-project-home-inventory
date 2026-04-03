@@ -93,7 +93,7 @@ Spending records represent financial history and must preserve integrity.
 
 Implications:
 
-- Deleting an item does not delete associated spending.
+- Discarding an item does not delete associated spending.
 - Users leaving the inventory do not erase past spending.
 - Financial history must remain structurally consistent.
 
