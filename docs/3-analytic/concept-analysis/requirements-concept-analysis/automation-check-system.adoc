@@ -1,13 +1,13 @@
 = Automated Check System — Scheduled Expiration & Low-Stock Sweep (Milestone 1)
 
 == 1. Executive Summary
-To support automated reminders for *low-stock* and *expired* items, the system needs a background process that periodically scans inventory data and updates item status without user interaction. This document evaluates multiple scheduling approaches and recommends a managed scheduler pattern due to reliability and observability benefits. It also defines objectively checkable requirements (with fit criteria), plus a verification/validation plan and key assumptions to resolve later.
+To support automated reminders for *low-stock* and *expired* items, the system needs a background process that periodically scans tracked inventory records and item instances and evaluates availability, expiration, and low-stock conditions without user interaction. This document evaluates multiple scheduling approaches and recommends a managed scheduler pattern due to reliability and observability benefits. It also defines objectively checkable requirements (with fit criteria), plus a verification/validation plan and key assumptions to resolve later.
 
 == 2. Purpose & Scope
 The purpose of the automation layer is to run a *scheduled sweep* (daily) that:
-* Detects low-stock items (quantity at/below threshold)
-* Detects expired items (today at/after expiration date)
-* Optionally detects near-expiry items (expiration within N days)
+* Detects items judged low-stock (quantity at/below threshold)
+* Detects expired item instances (today at/after expiration date)
+* Optionally detects near-expiry item instances (expiration within N days)
 * Persists status updates and triggers notification events
 * Records run logs/metrics for monitoring
 
@@ -22,14 +22,20 @@ Out of scope (Milestone 1):
 
 == 4. Daily Sweep Definition
 === 4.1 Inputs
-For each inventory item:
+For each tracked inventory record and associated item instances:
+
+Tracked inventory record:
 * `quantity` (integer)
 * `low_stock_threshold` (integer)
+
+Item instance:
 * `expiration_date` (date, optional)
+
+System preferences:
 * `notification_preferences` (optional; e.g., enable/disable certain alerts)
 
 === 4.2 Outputs
-* Persisted flags/status for each item:
+* Persisted flags/status for each item instance:
 ** `LOW_STOCK` (boolean)
 ** `EXPIRED` (boolean)
 ** `NEAR_EXPIRY` (boolean, optional)
@@ -41,13 +47,38 @@ For each inventory item:
 ** errors (if any)
 
 === 4.3 Rules
-*Low stock:* `LOW_STOCK = (quantity <= low_stock_threshold)`
+*Low-stock judgment:* `LOW_STOCK = (quantity <= low_stock_threshold)`
 
 *Expired:* `EXPIRED = (today >= expiration_date)` when `expiration_date` exists
 
 *Near-expiry (optional):* `NEAR_EXPIRY = (expiration_date - today <= N days)` when `expiration_date` exists
 
-== 5. Scheduling Approaches Considered
+== 5. Scheduled Sweep Responsibilities
+
+The scheduled sweep runs once per day and performs the following checks:
+
+1. Evaluate expiration and near-expiry for item instances
+2. Evaluate low-stock judgment for tracked inventory records
+3. Detect state transitions (e.g., NORMAL → LOW_STOCK, LOW_STOCK → OUT_OF_STOCK, NEAR_EXPIRY → EXPIRED)
+4. Generate alert records for new state transitions
+5. Automatically add item types to the restock list when appropriate (LOW_STOCK, OUT_OF_STOCK, EXPIRED)
+
+The scheduled sweep does not repeatedly generate alerts if the state has not changed.
+
+Low-stock judgment is evaluated using the current quantity stored in tracked inventory records.
+Transaction history is maintained for traceability and audit, but is not the primary source used during scheduled sweep evaluation.
+
+== 6.Automation Responsibilities
+
+The Automation System is responsible for:
+- evaluating low-stock judgment from tracked inventory records
+- evaluating near-expiry and expired states from item instance expiration dates
+- detecting state transitions
+- triggering downstream actions when a new state transition is detected
+
+The Automation System does not deliver notifications directly and does not own restock list entries. Those responsibilities belong to the Notification Service and Grocery System respectively.
+
+== 7. Scheduling Approaches Considered
 We consider three approaches to trigger the sweep on a daily schedule.
 
 === Option A — Server-Side Cron / Dedicated Worker
@@ -87,13 +118,13 @@ We consider three approaches to trigger the sweep on a daily schedule.
 * Minimal backend scheduling work
 
 *Cons:*
-* Not reliable: depends on user behavior/device power/network state
+* Not reliable: depends on household member behavior/device power/network state
 * Hard to monitor centrally
-* Does not satisfy “autonomous sweep without user interaction” well
+* Does not satisfy “autonomous sweep without household member interaction” well
 
 *Best fit when:* Only as a supplement to server-side scheduling, not a primary mechanism.
 
-== 6. Tradeoff Summary
+== 8. Tradeoff Summary
 [cols="1,1,1,1,1,1,1", options="header"]
 |===
 |Option |Reliability |Complexity |Observability |Failure Handling |Scalability |Local Dev
@@ -123,12 +154,12 @@ We consider three approaches to trigger the sweep on a daily schedule.
 |Medium-High
 |===
 
-== 7. Recommendation
+== 9. Recommendation
 *Recommended:* Option B — *Managed Scheduler + Hosted Function*.
 
 *Rationale:* It best satisfies autonomy, reliability, and observability needs while minimizing maintenance burden. Option A is acceptable if a server is guaranteed to be up continuously, but adds operational risk. Option C does not meet the autonomy requirement reliably and should only be used as an auxiliary approach.
 
-== 8. Automation Requirements (Objective + Fit Criteria)
+== 10. Automation Requirements (Objective + Fit Criteria)
 The following requirements are written to be testable later (fit criteria included).
 
 *REQ-AUTO-001 — Frequency*
@@ -136,15 +167,15 @@ The system shall execute an automated sweep at least once every 24 hours.
 *Fit criterion:* A persisted “last_sweep_at” timestamp shows no gaps greater than 24 hours over a test period.
 
 *REQ-AUTO-002 — Low-Stock Correctness*
-For any item with `quantity <= low_stock_threshold`, the sweep shall mark the item as `LOW_STOCK`.
+For any item instance with `quantity <= low_stock_threshold`, the sweep shall mark the item type as `LOW_STOCK`.
 *Fit criterion:* Given a deterministic dataset, the set of flagged items exactly matches the rule.
 
 *REQ-AUTO-003 — Expiration Correctness*
-For any item with `expiration_date` and `today >= expiration_date`, the sweep shall mark the item as `EXPIRED`.
+For any item instance with `expiration_date` and `today >= expiration_date`, the sweep shall mark the item as `EXPIRED`.
 *Fit criterion:* Unit tests across boundary dates (day before, day of, day after) pass.
 
 *REQ-AUTO-004 — Optional Near-Expiry Correctness*
-If the near-expiry feature is enabled, for any item with `expiration_date - today <= N`, the sweep shall mark the item as `NEAR_EXPIRY`.
+If the near-expiry feature is enabled, for any item instance with `expiration_date - today <= N`, the sweep shall mark the item type as `NEAR_EXPIRY`.
 *Fit criterion:* With N defined, test dataset produces correct near-expiry set.
 
 *REQ-AUTO-005 — Persistence*
@@ -152,15 +183,15 @@ The sweep shall persist updated status flags and a per-item “last_checked_at�
 *Fit criterion:* After a sweep run, database records show updated flags and timestamps without manual UI intervention.
 
 *REQ-AUTO-006 — Observability*
-Each sweep execution shall record a run summary including start time, end time, items scanned, counts flagged, and errors.
+Each sweep execution shall record a run summary including start time, end time, item instances scanned, counts flagged, and errors.
 *Fit criterion:* A “job_runs” record (or log entry with structured fields) exists for each execution.
 
 *REQ-AUTO-007 — Failure Handling & Idempotency*
-If a sweep invocation fails or is retried, the system shall not create duplicate notification events for the same item state.
-*Fit criterion:* Simulate duplicate invocations; notification records remain unique per item per state transition.
+If a sweep invocation fails or is retried, the system shall not create duplicate alert / notification events for the same item state.
+*Fit criterion:* Simulate duplicate invocations; alert / notification records remain unique per item per state transition.
 
-== 9. Verification & Validation Plan (Milestone 1 Level)
-=== 9.1 Verification (Are we building it right?)
+== 11. Verification & Validation Plan (Milestone 1 Level)
+=== 11.1 Verification (Are we building it right?)
 Planned checks once implementation begins:
 * Unit tests for classification rules (REQ-AUTO-002/003/004)
 * Deterministic test dataset covering edge cases:
@@ -169,27 +200,33 @@ Planned checks once implementation begins:
 ** timezone boundary conditions (midnight)
 * Logging/metrics assertions for REQ-AUTO-006
 
-=== 9.2 Validation (Are we building the right thing?)
+=== 11.2 Validation (Are we building the right thing?)
 Stakeholder review items:
 * Confirm “near-expiry” window (N days) and whether it's configurable
 * Confirm notification frequency expectations (no spam)
 * Confirm what “expired” means in practice (end-of-day vs start-of-day policy)
 
-== 10. Open Questions / Assumptions
-* *Timezone policy:* Are expiration comparisons in user-local time or UTC?
-* *Near-expiry definition:* What is default N and can users change it?
+== 12. Open Questions / Assumptions
+* *Timezone policy:* Are expiration comparisons in household member-local time or UTC?
+* *Near-expiry definition:* What is default N and can household members change it?
 * *Notification deduplication:* When do we re-notify (e.g., daily reminder vs once)?
 * *Overlapping runs:* If a run takes longer than a day, do we skip overlaps or queue next run?
 * *Data model fields:* Where do we store status flags and job run records (tables/fields TBD)?
 
-== 11. Conceptual Flow
+== 13. Notification Responsibility Boundary
+
+The Automation System is responsible for evaluating low-stock, near-expiry, and expired conditions and detecting state transitions.
+When a new relevant state transition is detected, the Automation System triggers downstream notification handling.
+The Automation System does not own notification delivery. Creation of notification records belongs to the Notification Service.
+
+== 14. Conceptual Flow
 [mermaid]
 ----
 flowchart LR
   A[Scheduler Trigger] --> B[Run Sweep Function]
-  B --> C[Load Inventory Items]
-  C --> D[Evaluate Rules: Low Stock / Expired / Near-Expiry]
+  B --> C[Load Tracked Inventory Records]
+  C --> D[Evaluate Rules: Low-stock Judgment  / Expired / Near-Expiry]
   D --> E[Persist Flags + last_checked_at]
-  E --> F[Create Notification Events (dedup)]
+  E --> F[Create Alert / Notification Events (domain-level) (dedup)]
   F --> G[Record Run Summary Metrics/Logs]
 ----

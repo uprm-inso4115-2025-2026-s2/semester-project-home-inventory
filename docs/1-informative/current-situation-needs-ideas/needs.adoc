@@ -1,17 +1,17 @@
 == Needs
 
-The needs below describe what students living independently and their roommates must be able to accomplish to manage household essentials reliably. These needs are expressed as outcomes and capabilities (what stakeholders need to achieve), rather than specific app features or implementation details.
+The needs below describe what students living independently and their roommates must be able to accomplish to manage household essentials reliably. These needs are expressed as outcomes and capabilities (what stakeholders need to achieve), independent of any specific system-to-be.
 
 *Needs by actor group*
 
 === Actor group: Students and young adults
-* Need N1: Quickly record household items with minimal effort
-* Need N2: Maintain an accurate inventory without frequent manual updates
-* Need N3: Easily check what items are already available before making purchases
+* Need N1: Minimize the effort and time required to keep track of household items
+* Need N2: Maintain an accurate understanding of what items are available as they are consumed
+* Need N3: Determine whether an item is already available before making a purchase
 
 === Actor group: Roommates / Cohabitants
-* Need N4: View shared household inventory in real time
-* Need N5: Coordinate purchases to avoid duplicates across the household
+* Need N4: Maintain a shared understanding of what items are available to the household
+* Need N5: Coordinate responsibility for replenishing shared items to avoid duplicate or missed purchases
 
 === Prioritized needs
 [cols="1,4,2,3",options="header"]
@@ -34,16 +34,16 @@ The needs below describe what students living independently and their roommates 
 |Medium
 |Improves coordination in shared living environments
 
-|N5 |Users must minimize unnecessary or disruptive notifications
+|N5 |Household members must coordinate replenishment of shared items to avoid duplicate or missed purchases
 |Medium
-|Prevents notification fatigue and alert disabling
+|Reduces miscommunication and duplicate spending in shared living environments
 |===
 
 === Quality Needs (Non-Functional)
 
-* Usability: Item entry should require only a few user actions and be intuitive for first-time users.
-* Reliability: Inventory data must remain consistent across devices and users.
-* Performance: Inventory views should load within 2 seconds on typical mobile networks.
-* Availability: The system should support offline use with automatic synchronization when connectivity returns.
-* Security/Privacy: Household data must be access-controlled and securely stored.
-* Scalability: The system should support multiple households and concurrent users without performance degradation.
+* Usability: Household members need to update item tracking with minimal effort and without training.
+* Reliability: Household members need to trust that the tracked inventory matches what is actually available.
+* Performance: Household members need inventory information quickly enough to use it while shopping or planning.
+* Availability: Household members need tracking to remain usable even when connectivity is unreliable.
+* Security/Privacy: Household members need confidence that household data is only visible to intended people.
+* Scalability: Household members need the experience to remain smooth as more items, households, and members are added.

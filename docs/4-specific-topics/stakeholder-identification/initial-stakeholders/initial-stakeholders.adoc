@@ -1,6 +1,5 @@
 == Initial Stakeholders
 
-[abstract]
 Initial set of stakeholders identified at the start of the project.
 
 [cols="2,3,2,3",options="header"]
@@ -22,10 +21,10 @@ Initial set of stakeholders identified at the start of the project.
 |High 
 |Paying more than their fair share, or unexpectedly running out of essential shared items.
 
-|Budget-conscious student 
-|Track consumption rates to predict expenses and minimize spending on unnecessary or duplicate items. 
-|Medium 
-|Overspending due to poor inventory visibility; the app must provide clear insights into shopping habits.
+|Budget-conscious student
+|Track consumption rates to predict expenses and minimize spending on unnecessary or duplicate items.
+|Medium
+|Overspending due to poor inventory visibility and unclear tracking of shared household purchases.
 
 |Student with dietary/medical needs 
 |Strictly monitor specific food items or medications, ensuring continuous availability of safe and necessary options. 
@@ -56,3 +55,9 @@ Initial set of stakeholders identified at the start of the project.
 === Open questions
 * How will users handle the transition of a "personal" item becoming a "shared" item if roommate agreements change?
 * What is the threshold for a household supply to be considered "low stock" across different users' habits?
+
+=== Terminology recommendation
+
+The stakeholder audit of Section 2.2 (Requirements) discovered that all nine deferred edge-case interface requirements (IR-EC-A through IR-EC-I) use the word "stakeholder" to describe system actors who work with the system but not their active role in the project. The project roles create confusion because they make it difficult to track which requirements belong to which project roles.
+
+The future edge-case requirement revisions should substitute the term "stakeholder" with the specific system actor term which should be determined by the particular context between "household member" and "system user". The edge-case requirements must use Section 2.2 role vocabulary which exists throughout the section.

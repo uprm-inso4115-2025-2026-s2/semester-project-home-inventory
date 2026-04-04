@@ -1,8 +1,10 @@
 // This directory hold the pages and widgets, essentially all the parts of the application concerning the presentation layer
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/config/router.dart';
+import 'package:src/config/theme.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,12 +12,26 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Home Page")),
+      appBar: AppBar(
+        title: Text(
+          "Home Page",
+          style: Theme.of(context)
+              .textTheme
+              .displayMedium, // Example of using the custom typography defined in the theme
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            buildButton(context, "Grocery List", () {
+              AppRouter.goTo(context, "grocery_home");
+            }),
+
             Text("This is the main page of the app"),
+            SizedBox(height: 20),
+
+            //Navigates to the Reports Overview screen from which the user can access the individual detailed report screens
             CupertinoButton(
               child: Container(
                 alignment: Alignment.center,
@@ -23,20 +39,65 @@ class HomePage extends StatelessWidget {
                 height: 5.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.blueGrey,
+                  color: AppTheme.accentColor,
+                ),
+                child: Text(
+                  "Reports",
+                  style: TextStyle(color: CupertinoColors.white),
+                ),
+              ),
+              onPressed: () {
+                context.go('/home/reports');
+              },
+            ),
+            SizedBox(height: 10),
+
+            CupertinoButton(
+              child: Container(
+                alignment: Alignment.center,
+                width: 40.w,
+                height: 5.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppTheme
+                          .primaryColor, // Example of using the custom color defined in the theme
                 ),
                 child: Text(
                   "Go to TODOs page",
-                  style: TextStyle(color: CupertinoColors.white),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: AppTheme.surfaceColor,
+                      ), // Example of using the custom typography and color defined in the theme
                 ),
               ),
               onPressed: () {
                 AppRouter.goTo(context, 'todos');
               },
             ),
+
+            buildButton(context, "Invite Roommate", () {
+              AppRouter.goTo(context, 'invite_roommate');
+            }),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildButton(BuildContext context, String text, VoidCallback action) {
+    return CupertinoButton(
+      child: Container(
+        alignment: Alignment.center,
+        width: 40.w,
+        height: 5.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.blueGrey,
+        ),
+        child: Text(text, style: TextStyle(color: CupertinoColors.white)),
+      ),
+      onPressed: () {
+        action();
+      },
     );
   }
 }

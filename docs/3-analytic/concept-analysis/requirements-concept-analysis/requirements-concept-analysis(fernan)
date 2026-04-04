@@ -1,0 +1,45 @@
+== Requirements Concept Analysis
+
+This section analyzes requirement-level concepts: actors, goals, capabilities, conflicts, and requirement quality considerations. The purpose of this section is to describe what the system must support and how requirement concepts relate to the domain concepts defined in the Domain Concept Analysis.
+
+=== Actors and goals
+[cols="2,4",options="header"]
+|===
+|Actor |Primary goals
+
+|Household member (living independently)
+|Maintain an accurate understanding of availability with minimal effort, monitor spending and budget, receive alert / notification events for low-stock judgments and expiration, and reduce time spent planning replenishment.
+
+|Household member (shared household)
+|Maintain shared visibility of tracked inventory records, avoid duplicate purchases, coordinate replenishment responsibilities, and maintain a consistent shared understanding of availability and recent changes.
+|===
+
+=== Capability map
+[cols="2,3,3",options="header"]
+|===
+|Actor |Capability needed |Domain concepts involved
+
+|Household member
+|Inventory management
+|Tracked inventory record, Item type, Item instance , Location, Category, Availability, Quantity, Consumption, Replenishment
+
+|Household member
+|Budget tracking and spending awareness
+|Spending entry, Spending category, Budget, Budget cycle
+
+|Household member
+|Shared household coordination
+|Household, Household member, Shared tracked inventory records, Low-stock judgment, Restock list
+
+|Household member
+|Reporting and history review
+|Transaction history, Consumption patterns, Spending summaries, Availability history
+|===
+
+=== Conflicts and tradeoffs
+* Tradeoff 1: Rapid Development vs Infrastructure Control: By choosing Supabase as our backend-as-a-service (BaaS) database, we prioritize development speed and integrated authentication/database features over granular server-level control. We accept the connection pooling limits and edge function execution constraints as a reasonable trade-off for reduced DevOps overhead.
+* Tradeoff 2: Real-time Shared Visibility vs Message Throughput: We can use Supabase Realtime for low-latency updates to shared tracked inventory records and alert / notification records in the user interface. However, we accept a 256KB payload limit and a maximum of 200 concurrent connections in the Free Tier.
+
+=== Requirement quality checks (draft)
+* Feasibility: The project is feasible within the Free Tier limits of Supabase for a small-scale home inventory app. However, we should monitor usage to avoid unexpected costs if the household member base grows significantly.
+* Risks: The primary risks include vendor lock-in related to Auth logic and edge functions, and potential security misconfigurations (for example forgetting to enable RLS). We can mitigate these risks by using the Supabase CLI for schema management and regularly auditing RLS policies. Migrating to a different provider would require refactoring Deno-based logic.

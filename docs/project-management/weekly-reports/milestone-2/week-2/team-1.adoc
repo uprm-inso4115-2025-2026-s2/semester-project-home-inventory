@@ -1,0 +1,41 @@
+:nofooter:
+:milestone: Milestone 2
+:team: Team 1
+:week: Week 2
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# {milestone} {week} — {team} Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+
+## What the Team Accomplished This Week
+- Reviewed issues that were created
+- Discussed different aspects of the domain and how we would model them in the implementation
+- Planned changes in the documentation
+
+
+## Tasks Completed / Issues Closed
+- None this week, mainly issue reviewing and domain discussions
+
+
+## What Is Currently In Progress
+- {issue-base-url}372[Foreign Key Relationships]
+- {issue-base-url}319[Sequence Diagram for Item Stock Interactions]
+- {issue-base-url}280[Repositories and Datasources]
+- {issue-base-url}276[Auth Feature Backend]
+
+## Blockers or Challenges
+- Some domain misconceptions
+- Flutter clean architecture learning curve
+
+
+## Plans for Next Week
+- Complete auth feature
+- Finish issues that are underway
+- Begin creation of issues for next milestone
+
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above

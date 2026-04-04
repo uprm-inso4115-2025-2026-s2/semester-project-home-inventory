@@ -1,16 +1,112 @@
 == Machine Requirements
 
-Technical/system requirements and constraints (performance, security, data, integrations).
+Machine requirements #define# measurable quality properties #for Milestone 2 implementation. Since# the #prototype is under development, these requirements establish targets that will be verified upon completion. Where# specific #thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated.#
 
-=== Non-functional requirements
-* MR1 (Performance): TODO
-* MR2 (Reliability): TODO
-* MR3 (Security/Privacy): TODO
+#Each requirement includes traceability to relevant Domain Requirements (DR) where applicable.#
 
-=== Data requirements
-* TODO: Data stored/used
-* TODO: Data retention constraints
-* TODO: Data quality assumptions
+=== MR-01: Availability
 
-=== Integration requirements (if any)
-* TODO
+#The system shall remain operational during supervised usability testing. No unplanned downtime requiring restart shall occur during testing sessions.#
+
+#*Trace*: DR-12 (threshold-driven low-stock), DR-13 (expiration status)#
+
+#*Verification*: Session logs; test coordinator observation.#
+
+---
+
+=== MR-02: Response Time
+
+#The system shall respond quickly enough that household members can complete inventory tasks without waiting. During usability walkthroughs:#
+#- No participant shall abandon a task due to perceived slowness#
+#- All participants shall complete lookup tasks while simulating shopping (standing, holding phone)#
+#- Item creation shall be completable in under 1 minute (consistent with US-INV-01)#
+
+#Response time measurements will be collected during walkthroughs to establish baseline for future milestones.#
+
+#*Trace*: DR-7 (short-window duplicates), DR-12 (threshold-driven low-stock)#
+
+#*Verification*: Usability walkthrough observations; timing recorded for each task.#
+
+---
+
+=== MR-03: Offline Operation
+
+#The mobile client shall support viewing inventory while offline. Adding items and updating quantities while offline is deferred to post-Milestone 2.#
+
+#*Trace*: DR-14 (deduplicated alerting)#
+
+#*Verification*: Integration tests with connectivity simulation.#
+
+---
+
+=== MR-04: Synchronization
+
+#When multiple household members use the same inventory, changes shall be propagated to all members in real time via Supabase Realtime. Changes shall appear without requiring manual refresh.#
+
+#*Trace*: DR-4 (household administration), DR-5 (membership independence)#
+
+#*Verification*: Automated tests verifying real-time delivery; manual tests with 2-3 concurrent users confirming changes appear instantly.#
+
+---
+
+=== MR-05: Security and Privacy
+
+#Only household members shall have access to their respective household inventories. A user belonging to multiple households shall have access only to the household for which they are a member. Access revocation for a removed member shall take effect upon their next login attempt for that specific household.#
+
+#*Trace*: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention)#
+
+#*Verification*: Access control tests with test accounts spanning multiple households.#
+
+---
+
+=== MR-06: Auditability
+
+#Quantity changes shall be logged with timestamp, user ID, item, and previous value.#
+
+#*Trace*: DR-8 (ambiguity guard), DR-9 (auditability of corrections)#
+
+#*Verification*: Schema validation; manual log inspection.#
+
+---
+
+=== MR-07: Notification Quality
+
+#Repeated automated checks without state changes shall not generate duplicate alerts during testing.#
+
+#*Trace*: DR-14 (deduplicated alerting)#
+
+#*Verification*: Integration tests with repeated triggers.#
+
+---
+
+=== MR-08: Barcode Scanning and Fallback
+
+#When a barcode is scanned, the system shall attempt to match it to an existing item type. If no match is found, the system shall allow manual entry without blocking the workflow. If the barcode is unreadable or scanning is unavailable, manual entry shall remain the primary fallback.#
+
+#*Trace*: DR-1 (barcode uniqueness), DR-13 (expiration status fallback philosophy)#
+
+#*Verification*: Manual tests with valid barcode, invalid barcode, and scanning unavailable scenarios.#
+
+---
+
+=== Measurement Plan for Milestone 2 Completion
+
+#The following measurements will be collected during Milestone 2 validation activities to establish baseline for future milestones:#
+
+|===
+|#What to Measure# |#How# |#When#
+
+|#Response times# |#Record during usability walkthroughs# |#Post-prototype#
+|#Sync behavior#|#Verify real-time propagation via Supabase# |#During multi-user testing#
+|#Error occurrences# |#Log all exceptions during testing# |#Throughout testing#
+|#User perception# |#Participant feedback on speed/friction# |#During walkthroughs#
+|#Barcode scanning success rate# |#Track match vs manual entry ratio# |#During walkthroughs#
+|=== 
+
+#These measurements will inform quantitative machine requirements for subsequent milestones.#
+
+---
+
+=== Out of Scope for Milestone 2
+
+#Quantitative targets (specific response time percentiles, concurrent user capacity, uptime percentages) cannot be established without a prototype. These will be defined in Milestone 3 based on measurements collected during Milestone 2 validation.#

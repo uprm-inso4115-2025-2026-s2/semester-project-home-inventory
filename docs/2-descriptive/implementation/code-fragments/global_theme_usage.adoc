@@ -1,0 +1,104 @@
+= Global Theme & Typography Implementation Guide
+:toc: left
+:icons: font
+
+== Overview
+
+To maintain visual consistency across the Digital Home Inventory app and avoid "spaghetti code", we have implemented a centralized `AppTheme` in `src/lib/config/theme.dart`. 
+
+Developers **must not** hardcode colors or font sizes in their individual widgets. Instead, always reference the variables defined in this global theme.
+
+== 1. Using Colors
+
+All official brand colors and semantic accents are stored as static variables inside the `AppTheme` class. You can access them directly anywhere in the app.
+
+=== Available Colors
+* `AppTheme.primaryColor` (Dark Green)
+* `AppTheme.accentColor` (Light Green)
+* `AppTheme.backgroundColor` (Cream/Off-white)
+* `AppTheme.surfaceColor` (Pure White, for cards/modals)
+* `AppTheme.redAccent` (For destructive actions/expired items)
+* `AppTheme.greenAccent` (For success actions/add to list)
+* `AppTheme.primaryText` (Black text)
+* `AppTheme.mutedText` (Gray text)
+* `AppTheme.borderColor` (Light Gray for outlines)
+
+=== Code Example
+[source,dart]
+----
+// BAD PRACTICE (Hardcoded)
+Container(
+  color: Color(0xFF3A5A40), 
+)
+
+// GOOD PRACTICE (Themed)
+Container(
+  color: AppTheme.primaryColor, 
+)
+----
+
+== 2. Using Typography (The "No-Hardcoding" Rule)
+
+We use **Poppins** for headings and **Inter** for body text. These are already configured globally using the `google_fonts` package. 
+
+To use a text style, call it from the current context using `Theme.of(context).textTheme`.
+
+=== Typography Mapping
+Use this table to match the Figma designs with the Flutter code:
+
+|===
+| Figma Design | Flutter Theme Reference | Font Family & Size
+
+| **H1**
+| `displayLarge`
+| Poppins, 32px (Bold)
+
+| **H2**
+| `displayMedium`
+| Poppins, 24px (SemiBold)
+
+| **H3**
+| `titleLarge`
+| Poppins, 20px (Medium)
+
+| **Body L**
+| `bodyLarge`
+| Inter, 16px (Regular)
+
+| **Body M**
+| `bodyMedium`
+| Inter, 14px (Regular, Muted)
+
+| **Caption/Label**
+| `labelSmall`
+| Inter, 12px (Medium, Muted)
+|===
+
+=== Code Example
+[source,dart]
+----
+// BAD PRACTICE (Hardcoded)
+Text(
+  "Home Inventory",
+  style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.bold),
+)
+
+// GOOD PRACTICE (Themed)
+Text(
+  "Home Inventory",
+  style: Theme.of(context).textTheme.displayMedium,
+)
+----
+
+=== Overriding a Color in Typography
+If you need to use a specific text style but change its color (e.g., white text inside a dark button), use the `.copyWith()` method:
+
+[source,dart]
+----
+Text(
+  "Save",
+  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+    color: AppTheme.surfaceColor, // Overrides default text color
+  ),
+)
+----

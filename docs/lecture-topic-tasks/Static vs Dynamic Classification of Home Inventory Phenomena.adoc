@@ -1,0 +1,99 @@
+= Static vs Dynamic Classification of Home Inventory Phenomena
+
+*AI Disclosure*: This document was developed with the assistance of an AI tool for structural guidance and a better understanding of lecture concepts. All classifications, interpretations, and final decisions were reviewed, validated, and finalized by the author.
+
+This document applies the lecture concept of *static* and *dynamic* domain attributes to the Home Inventory system.  
+
+Each identified domain phenomenon is classified as:
+
+* *Static* - Does not change once defined.
+* *Dynamic* - Can change over time.
+
+Dynamic phenomena are further classified as:
+
+* *Inert* - Changes naturally without system intervention.
+* *Reactive* - Changes in response to external events.
+* *Programmable* - Changes due to explicit system logic or user commands.
+
+== Classification Table
+
+[cols="1,1,1,3"]
+|===
+| Domain Phenomenon | Static/Dynamic | Type (if Dynamic) | Justification
+
+| Item ID
+| Static
+| -
+| Once created, the unique identifier of an item does not change.
+
+| Item Name
+| Dynamic
+| Programmable
+| Users can edit the name at any time through the system interface.
+
+| Quantity
+| Dynamic
+| Reactive
+| Changes when the user consumes, adds, or removes items.
+
+| Expiration Date
+| Static
+| -
+| The expiration date itself does not change after being assigned.
+
+| Expiration Status (Expired/Not Expired)
+| Dynamic
+| Inert
+| Changes naturally as time progresses without user action.
+
+| Spending Total
+| Dynamic
+| Reactive
+| Updates automatically when purchases are recorded.
+
+| Category (e.g., Food, Electronics)
+| Dynamic
+| Programmable
+| Can be reassigned or edited by the user.
+
+| Low-Stock Notification
+| Dynamic
+| Programmable
+| Generated automatically by system rules when quantity reaches a threshold.
+
+| Last Updated Timestamp
+| Dynamic
+| Reactive
+| Automatically updates whenever item data is modified.
+
+|===
+
+== Explanation of Key Distinctions
+
+=== Static Attributes
+Static attributes represent properties that remain constant once defined. +
+Example: *Item ID* remains fixed for system integrity and traceability.
+
+=== Dynamic - Inert
+Inert attributes change due to the passage of time or physical processes. +
+Example: *Expiration Status* changes as time advances, even without user interaction.
+
+=== Dynamic - Reactive
+Reactive attributes change in response to external actions or system events. +
+Example: *Quantity* changes when a user consumes or adds inventory.
+
+=== Dynamic - Programmable
+Programmable attributes change according to system logic or user-controlled configuration. +
+Example: *Low-Stock Notification* is triggered based on programmed threshold rules.
+
+== Behavior Classification Summary
+
+This classification clarifies how different elements of the Home Inventory domain behave over time.  
+
+Understanding whether a phenomenon is static, inert, reactive, or programmable strengthens:
+
+* System modeling accuracy  
+* Requirements clarity  
+* Rule definition and automation design  
+
+This analysis ensures that domain behavior is explicitly defined and free from ambiguity.
