@@ -3,17 +3,17 @@ import '../entities/report_filters.dart';
 
 class FavoritesRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
+  
+  // Hardcoded valid UUID for testing (no need for users table)
+  // When user table and registration gets completed
+  // this file will change
+  static const String _testUserId = '11111111-1111-1111-1111-111111111111';
 
-  /// Get current user ID or throw if not logged in.
-  String _getUserId() {
-    final user = _supabase.auth.currentUser;
-    if (user == null) throw Exception('User not authenticated. Please log in.');
-    return user.id;
-  }
+  Future<String> _getUserId() async => _testUserId;
 
   Future<List<ReportFavorite>> getUserFavorites() async {
     try {
-      final userId = _getUserId();
+      final userId = await _getUserId();
       final response = await _supabase
           .from('user_report_favorites')
           .select()
@@ -27,17 +27,29 @@ class FavoritesRepository {
   }
 
   Future<void> saveFavorite(String name, ReportFilters filters) async {
-    final userId = _getUserId();
+    final userId = await _getUserId();
     try {
-      await _supabase.from('user_report_favorites').upsert(
-        {
+      final existing = await _supabase
+          .from('user_report_favorites')
+          .select()
+          .eq('user_id', userId)
+          .eq('name', name)
+          .maybeSingle();
+
+      if (existing != null) {
+        await _supabase.from('user_report_favorites').update({
+          'filters': filters.toJson(),
+          'updated_at': DateTime.now().toIso8601String(),
+        }).match({'id': existing['id']});
+      } else {
+        await _supabase.from('user_report_favorites').insert({
           'user_id': userId,
           'name': name,
           'filters': filters.toJson(),
+          'created_at': DateTime.now().toIso8601String(),
           'updated_at': DateTime.now().toIso8601String(),
-        },
-        onConflict: 'name',
-      ).select();
+        });
+      }
     } catch (e) {
       print('Error saving favorite: $e');
       rethrow;
@@ -45,7 +57,7 @@ class FavoritesRepository {
   }
 
   Future<void> updateFavorite(String id, String newName, ReportFilters filters) async {
-    final userId = _getUserId();
+    final userId = await _getUserId();
     await _supabase.from('user_report_favorites').update({
       'name': newName,
       'filters': filters.toJson(),
@@ -54,7 +66,7 @@ class FavoritesRepository {
   }
 
   Future<void> deleteFavorite(String id) async {
-    final userId = _getUserId();
+    final userId = await _getUserId();
     await _supabase.from('user_report_favorites').delete().match({'id': id, 'user_id': userId});
   }
 }
