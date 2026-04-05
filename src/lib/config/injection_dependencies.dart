@@ -25,6 +25,8 @@ import 'package:src/features/core_inventory/domain/usecases/add_inventory_item.d
 import 'package:src/features/core_inventory/domain/usecases/update_inventory_item.dart';
 import 'package:src/features/core_inventory/domain/usecases/delete_inventory_item.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
+import 'package:src/features/dashboard/domain/repositories/dashboard_repositories.dart';
+import 'package:src/features/dashboard/data/dashboard_repository_impl.dart';
 
 final sl = GetIt.instance;
 
@@ -78,7 +80,9 @@ Future<void> initializeDependencies() async {
 
   // Repositories
   sl.registerSingleton<ProductRepository>(ProductRepositoryImpl(sl()));
-
+  sl.registerLazySingleton<DashboardRepository>(
+    () => DashboardRepositoryImpl(),
+  );
   sl.registerSingleton<InventoryRepository>(
     InventoryRepositoryImpl(
       sl<InventorySupabaseDataSource>(),

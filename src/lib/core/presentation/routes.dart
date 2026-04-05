@@ -57,24 +57,28 @@ var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
     return MainNavShell(navigationShell: navigationShell, tabs: _mainTabs);
   },
-  routes: [
-    todosRoutes,
-
-    GoRoute(
-      path: 'dashboard',
-      builder: (context, state) {
-        return BlocProvider(
-          create: (_) => DashboardCubit(
-            // Temporary placeholder
-            DashboardRepositoryImpl(),
-          )..fetchInitialData(),
-          child: const DashboardPage(),
-        );
-      },
   branches: [
     StatefulShellBranch(
       routes: [
-        GoRoute(path: '/home', builder: (_, __) => const HomeDashboardPage()),
+        GoRoute(
+          path: '/home',
+          builder: (context, state) {
+            return const HomeDashboardPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'dashboard',
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) =>
+                      DashboardCubit(DashboardRepositoryImpl())
+                        ..fetchInitialData(),
+                  child: const DashboardPage(),
+                );
+              },
+            ),
+          ],
+        ),
       ],
     ),
     StatefulShellBranch(routes: [groceryListRoutes]),

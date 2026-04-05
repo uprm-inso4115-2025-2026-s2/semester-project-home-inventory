@@ -77,7 +77,7 @@ class DashboardPage extends StatelessWidget {
               .map((room) => DropdownMenuItem(value: room, child: Text(room)))
               .toList(),
           onChanged: (value) {
-            selectedCategory = value;
+            selectedRoom = value;
           },
         ),
 

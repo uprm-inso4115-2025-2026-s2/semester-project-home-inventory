@@ -45,7 +45,15 @@ class DashboardCubit extends Cubit<DashboardState> {
 
     try {
       final items = await repository.fetchAllItems();
-      emit(DashboardLoaded(items));
+      emit(
+        DashboardLoaded(
+          items,
+          selectedCategory: _category,
+          selectedRoom: _room,
+          startDate: _startDate,
+          endDate: _endDate,
+        ),
+      );
     } catch (e) {
       emit(DashboardError("Failed to load dashboard data"));
     }
@@ -79,7 +87,15 @@ class DashboardCubit extends Cubit<DashboardState> {
         endDate: _endDate,
       );
 
-      emit(DashboardLoaded(items));
+      emit(
+        DashboardLoaded(
+          items,
+          selectedCategory: _category,
+          selectedRoom: _room,
+          startDate: _startDate,
+          endDate: _endDate,
+        ),
+      );
     } catch (e) {
       emit(DashboardError("Failed to apply filters"));
     }
@@ -95,7 +111,15 @@ class DashboardCubit extends Cubit<DashboardState> {
 
     try {
       final items = await repository.fetchAllItems();
-      emit(DashboardLoaded(items));
+      emit(
+        DashboardLoaded(
+          items,
+          selectedCategory: _category,
+          selectedRoom: _room,
+          startDate: _startDate,
+          endDate: _endDate,
+        ),
+      );
     } catch (e) {
       emit(DashboardError("Failed to refresh dashboard"));
     }

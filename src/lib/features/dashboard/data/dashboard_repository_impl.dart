@@ -7,9 +7,22 @@ class DashboardRepositoryImpl implements DashboardRepository {
   Future<List<Item>> fetchAllItems() async {
     await Future.delayed(const Duration(milliseconds: 500));
     return [
-      Item(),
-      Item(),
-      Item(),
+      Item(
+        id: '1',
+        name: 'TV',
+        category: 'Electronics',
+        room: 'Living Room',
+        value: 500.0,
+        createdAt: DateTime.now(),
+      ),
+      Item(
+        id: '2',
+        name: 'Sofa',
+        category: 'Furniture',
+        room: 'Living Room',
+        value: 800.0,
+        createdAt: DateTime.now(),
+      ),
     ];
   }
 
@@ -22,7 +35,22 @@ class DashboardRepositoryImpl implements DashboardRepository {
   }) async {
     await Future.delayed(const Duration(milliseconds: 500));
     return [
-      Item(),
+      Item(
+        id: '1',
+        name: 'TV',
+        category: 'Electronics',
+        room: 'Living Room',
+        value: 500.0,
+        createdAt: DateTime.now(),
+      ),
+      Item(
+        id: '2',
+        name: 'Sofa',
+        category: 'Furniture',
+        room: 'Living Room',
+        value: 800.0,
+        createdAt: DateTime.now(),
+      ),
     ];
   }
 
