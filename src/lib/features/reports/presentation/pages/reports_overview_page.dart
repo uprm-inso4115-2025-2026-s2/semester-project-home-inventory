@@ -11,7 +11,7 @@ class ReportsOverviewPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(  
+        child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
             child: Column(
@@ -43,7 +43,7 @@ class ReportsOverviewPage extends StatelessWidget {
                   imagePath: 'assets/images/expenditures_icon.png',
                   onTap: () => context.go('/home/reports/expenditures'),
                 ),
-                SizedBox(height: 4.h), 
+                SizedBox(height: 4.h),
               ],
             ),
           ),
@@ -86,7 +86,7 @@ class _ReportCard extends StatelessWidget {
               color: AppTheme.primaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: ClipRRect(  
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Center(
                 child: Image.asset(
