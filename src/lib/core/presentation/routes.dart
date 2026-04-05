@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:src/core/presentation/pages/home_page.dart';
+import 'package:src/features/example_feature/presentation/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:src/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:src/features/dashboard/data/dashboard_repository_impl.dart';
 import 'package:src/core/presentation/pages/main_nav_shell.dart';
 import 'package:src/core/presentation/pages/home_dashboard_page.dart';
 import 'package:src/features/core_inventory/presentation/routes.dart';
@@ -45,7 +51,25 @@ var mainRoutes = StatefulShellRoute.indexedStack(
   branches: [
     StatefulShellBranch(
       routes: [
-        GoRoute(path: '/home', builder: (_, __) => const HomeDashboardPage()),
+        GoRoute(
+          path: '/home',
+          builder: (context, state) {
+            return const HomeDashboardPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'dashboard',
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) =>
+                      DashboardCubit(DashboardRepositoryImpl())
+                        ..fetchInitialData(),
+                  child: const DashboardPage(),
+                );
+              },
+            ),
+          ],
+        ),
       ],
     ),
     StatefulShellBranch(routes: [groceryListRoutes]),

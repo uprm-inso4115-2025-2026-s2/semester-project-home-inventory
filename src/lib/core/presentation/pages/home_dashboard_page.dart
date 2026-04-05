@@ -3,6 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/core/presentation/widgets/dashboard_card.dart';
 import 'package:src/core/presentation/widgets/stat_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:src/features/dashboard/domain/repositories/dashboard_repositories.dart';
+import 'package:src/config/injection_dependencies.dart';
 
 /// Home page displaying the inventory dashboard with charts and statistics
 class HomeDashboardPage extends StatelessWidget {
@@ -12,20 +16,48 @@ class HomeDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final now = DateTime.now();
-    final dateFormatter = _formatDate(now);
+    return BlocProvider(
+      create: (_) =>
+          DashboardCubit(sl<DashboardRepository>())..fetchInitialData(),
+      child: Builder(
+        builder: (context) {
+          final theme = Theme.of(context);
+          final now = DateTime.now();
+          final dateFormatter = _formatDate(now);
 
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: _buildAppBar(context, theme, dateFormatter),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.5.w),
-          child: isEmpty
-              ? _buildEmptyState(context)
-              : _buildDashboardContent(context),
-        ),
+          return Scaffold(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            appBar: _buildAppBar(context, theme, dateFormatter),
+            body: BlocBuilder<DashboardCubit, DashboardState>(
+              builder: (context, state) {
+                if (state is DashboardLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state is DashboardLoaded) {
+                  final items = state.items;
+
+                  final totalItems = items.length;
+                  final totalValue = items.fold<double>(
+                    0,
+                    (sum, item) => sum + item.value,
+                  );
+
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    child: _buildDashboardContent(
+                      context,
+                      totalItems,
+                      totalValue,
+                    ),
+                  );
+                }
+
+                return const SizedBox();
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -117,13 +149,26 @@ class HomeDashboardPage extends StatelessWidget {
   }
 
   /// Builds the main dashboard content with cards and statistics
-  Widget _buildDashboardContent(BuildContext context) {
+  Widget _buildDashboardContent(
+    BuildContext context,
+    int totalItems,
+    double totalValue,
+  ) {
     final reportsNavigate = () => context.go('/home/reports');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 2.h),
+        Container(
+          margin: EdgeInsets.only(bottom: 2.h),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: _buildFilters(context),
+        ),
         // Inventory Value Trend Card
         DashboardCard(
           title: 'Inventory Value Trend',
@@ -144,7 +189,7 @@ class HomeDashboardPage extends StatelessWidget {
             Expanded(
               child: StatCard(
                 label: 'Total Items',
-                value: '224',
+                value: '$totalItems',
                 onTap: reportsNavigate,
               ),
             ),
@@ -152,7 +197,7 @@ class HomeDashboardPage extends StatelessWidget {
             Expanded(
               child: StatCard(
                 label: 'Inventory Value',
-                value: '\$402.80',
+                value: '\$${totalValue.toStringAsFixed(2)}',
                 onTap: reportsNavigate,
               ),
             ),
@@ -264,6 +309,69 @@ class HomeDashboardPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFilters(BuildContext context) {
+    String? selectedCategory;
+    String? selectedRoom;
+    DateTime? startDate;
+    DateTime? endDate;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField<String>(
+          decoration: const InputDecoration(labelText: "Category"),
+          items: ["Electronics", "Furniture", "Clothing"]
+              .map(
+                (category) =>
+                    DropdownMenuItem(value: category, child: Text(category)),
+              )
+              .toList(),
+          onChanged: (value) {
+            selectedCategory = value;
+          },
+        ),
+
+        const SizedBox(height: 8),
+
+        DropdownButtonFormField<String>(
+          decoration: const InputDecoration(labelText: "Room"),
+          items: ["Living Room", "Bedroom", "Kitchen"]
+              .map((room) => DropdownMenuItem(value: room, child: Text(room)))
+              .toList(),
+          onChanged: (value) {
+            selectedRoom = value;
+          },
+        ),
+
+        const SizedBox(height: 12),
+
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                context.read<DashboardCubit>().applyFilters(
+                  category: selectedCategory,
+                  room: selectedRoom,
+                  startDate: startDate,
+                  endDate: endDate,
+                );
+              },
+              child: const Text("Apply Filters"),
+            ),
+
+            const SizedBox(width: 12),
+
+            OutlinedButton(
+              onPressed: () {
+                context.read<DashboardCubit>().clearFilters();
+              },
+              child: const Text("Clear"),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
