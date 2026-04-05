@@ -31,15 +31,13 @@ class InventoryCategoryPage extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      context.push(
-                        '/home/inventory/category/$categoryId/labels',
-                      );
+                      context.push('/inventory/category/$categoryId/labels');
                     },
                     child: const Text('Item Label Key'),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      context.push('/home/inventory/category/$categoryId/add');
+                      context.push('/inventory/category/$categoryId/add');
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Add Item'),
@@ -62,7 +60,7 @@ class InventoryCategoryPage extends StatelessWidget {
                           ? null
                           : () {
                               context.push(
-                                '/home/inventory/category/$categoryId/edit/${stocks.first.id}',
+                                '/inventory/category/$categoryId/edit/${stocks.first.id}',
                               );
                             },
                     );

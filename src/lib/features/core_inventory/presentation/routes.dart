@@ -6,7 +6,7 @@ import 'package:src/features/core_inventory/presentation/pages/inventory_page.da
 import 'package:src/features/core_inventory/presentation/pages/item_labels_page.dart';
 
 var inventoryRoutes = GoRoute(
-  path: 'inventory',
+  path: '/inventory',
   name: 'inventory_home',
   builder: (context, state) => const InventoryPage(),
   routes: [

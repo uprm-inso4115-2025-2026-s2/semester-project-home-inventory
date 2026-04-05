@@ -60,7 +60,7 @@ class _InventoryPageState extends State<InventoryPage> {
                     return _CategoryCard(
                       label: _categoryLabel(categoryId),
                       onTap: () {
-                        context.go('/home/inventory/category/$categoryId');
+                        context.go('/inventory/category/$categoryId');
                       },
                     );
                   },

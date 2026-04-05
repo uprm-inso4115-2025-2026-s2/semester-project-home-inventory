@@ -1,0 +1,82 @@
+= Core Inventory State Management (Cubit)
+
+== 1. Objective and Chosen Approach
+
+The Core Inventory feature utilizes the **Cubit** pattern (via the `flutter_bloc` package) for state management. 
+
+**Why Cubit instead of Bloc?**
+Cubit was selected over the full Bloc pattern to minimize repetitive setup code (boilerplate). Since the Core Inventory primarily handles CRUD operations, using direct function calls within a Cubit provides a more concise implementation while maintaining the strict unidirectional data flow required by Clean Architecture.
+
+== 2. State Definitions
+
+The `InventoryState` abstract class defines the possible conditions of the Core Inventory data at any given time. UI components should react to these specific types:
+
+* `InventoryInitial`: The default state before any logic has been triggered.
+* `InventoryLoading`: Indicates an asynchronous operation (fetching, adding, updating, or deleting) is in progress. The UI should typically display a circular progress loading indicator during this state.
+* `InventoryLoaded`: Indicates a successful operation. This state carries the `InventoryEntity` payload containing the current stock and product mappings.
+* `InventoryError`: Indicates a failure in the domain or data layer. It carries a `String` message intended for user-facing error displays (e.g., Snackbars).
+
+== 3. Domain Layer Connectivity
+
+The `InventoryCubit` serves as the intermediary between the UI and the Domain layer. It does not know about the database (Supabase) but instead calls abstract Use Cases.
+
+[source,dart]
+----
+class InventoryCubit extends Cubit<InventoryState> {
+  final GetInventoryItems _getInventoryItems;
+  final AddInventoryItem _addInventoryItem;
+  final UpdateInventoryItem _updateInventoryItem;
+  final DeleteInventoryItem _deleteInventoryItem;
+
+  // Caches the owner context to simplify subsequent calls
+  int? _currentOwnerId;
+  
+  // ... functions calling use cases
+}
+----
+
+Note: The Cubit is responsible for maintaining the `ownerId` context. Once `loadInventory(ownerId)` is called, the Cubit stores that ID so that functions like `addStock` can refresh the data automatically without the UI needing to provide the owner ID again.
+
+== 4. Dependency Injection (GetIt)
+
+The Cubit and its entire dependency chain are registered in `src/lib/config/injection_dependencies.dart`. To prevent initialization crashes when starting the flutter app, the Data layer must be registered before the Domain and Presentation layers.
+
+[source,dart]
+----
+// Data Sources
+sl.registerSingleton<ProductSupabaseDataSource>(ProductSupabaseDataSource(sl()));
+sl.registerSingleton<InventorySupabaseDataSource>(InventorySupabaseDataSource(sl()));
+
+// Repositories
+sl.registerSingleton<ProductRepository>(ProductRepositoryImpl(sl()));
+sl.registerSingleton<InventoryRepository>(
+  InventoryRepositoryImpl(
+    sl<InventorySupabaseDataSource>(),
+    sl<ProductRepository>(),
+  ),
+);
+
+// Use Cases
+sl.registerSingleton<GetInventoryItems>(GetInventoryItems(sl()));
+sl.registerSingleton<AddInventoryItem>(AddInventoryItem(sl()));
+sl.registerSingleton<UpdateInventoryItem>(UpdateInventoryItem(sl()));
+sl.registerSingleton<DeleteInventoryItem>(DeleteInventoryItem(sl()));
+
+// Cubit Registration
+sl.registerFactory<InventoryCubit>(
+  () => InventoryCubit(
+    getInventoryItems: sl(),
+    addInventoryItem: sl(),
+    updateInventoryItem: sl(),
+    deleteInventoryItem: sl(),
+  ),
+);
+----
+
+== 5. Implementation Notes for UI Integration
+
+While the UI is a separate task, this Cubit is built to support standard `flutter_bloc` widgets:
+
+1. `BlocProvider`: Should wrap the Inventory screen to provide the `InventoryCubit` instance.
+2. `BlocBuilder`: Should be used to switch between the loading spinner, the error view, and the actual inventory list based on the states defined in Section 2.
+3. Methods: The UI should call `addStock`, `updateStock`, or `deleteStock` directly on the Cubit instance. These methods are asynchronous and handle state transitions internally.
