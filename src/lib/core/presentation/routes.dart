@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/core/presentation/pages/main_nav_shell.dart';
 import 'package:src/core/presentation/pages/home_dashboard_page.dart';
+import 'package:src/features/core_inventory/presentation/routes.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
 // TO DO: route InviteRoommatePage properly
@@ -14,7 +15,9 @@ const List<MainNavTab> _mainTabs = [
     icon: Icons.checklist,
     rootPath: '/grocery_home',
   ),
-  MainNavTab(label: 'Add Item', icon: Icons.add_circle, rootPath: '/add-item'),
+  // Replaced /add-item route with the Add Item page in the Inventory section,
+  // since wireframes establish that as the proposed navigation.
+  MainNavTab(label: 'Inventory', icon: Icons.inventory, rootPath: '/inventory'),
   MainNavTab(
     label: 'Reports',
     icon: Icons.bar_chart,
@@ -35,18 +38,6 @@ class _AlertsPageStub extends StatelessWidget {
   }
 }
 
-// Placeholder page for the AddItemPage
-class _AddItemPageStub extends StatelessWidget {
-  const _AddItemPageStub();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('TO DO: Route Add Item screen')),
-    );
-  }
-}
-
 var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
     return MainNavShell(navigationShell: navigationShell, tabs: _mainTabs);
@@ -58,14 +49,9 @@ var mainRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(routes: [groceryListRoutes]),
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
-          path: '/add-item',
-          builder: (_, __) => const _AddItemPageStub(),
-        ),
-      ],
-    ),
+    // Replaced /add-item route with the Add Item page in the Inventory section,
+    // since wireframes establish that as the proposed navigation.
+    StatefulShellBranch(routes: [inventoryRoutes]),
     StatefulShellBranch(routes: [reportsOverviewRoute]),
     StatefulShellBranch(
       routes: [
