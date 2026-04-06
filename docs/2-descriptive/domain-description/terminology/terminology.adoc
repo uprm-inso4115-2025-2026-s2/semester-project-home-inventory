@@ -78,7 +78,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Artifact / Event
 | Domain
 | A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed).
-| How the hosehold member is informed of an actionable condition.
+| How the household member is informed of an actionable condition.
 
 | Spending entry
 | Record
@@ -144,7 +144,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Action
 | Domain
 | A household member delays acting on an alert for a period of time.
-| The hosehold member may recieve another alert of this actionable condition.
+| The hosehold member may receive another alert of this actionable condition.
 
 | Dismiss / ignore
 | Action
