@@ -77,39 +77,39 @@
 
 | Developer | Week #1 | Week #2 | Week #3 | Week #4 | Week #5 | Week #6 | Penalty |
 |---|---|---|---|---|---|---|---|
-| Solimar-Cruz | No | No | No | No | No | No | 27.0 |
-| JorgeDeLeonOrama | No | No | No | No | No | No | 27.0 |
-| Kay9876 | No | No | No | No | No | No | 27.0 |
-| andreasegarra | No | No | No | No | No | No | 27.0 |
-| Kemuel05 | No | No | No | No | No | No | 27.0 |
-| kian-robert | No | No | No | No | No | No | 27.0 |
-| reinaldo-martinez1 | No | No | No | No | No | No | 27.0 |
-| Gerardoruiz1 | No | No | No | No | No | No | 27.0 |
-| ernestosoto3 | No | No | No | No | No | No | 27.0 |
+| FabianVelezOcasio | No | No | No | No | No | No | 27.0 |
+| JorgeRivera94 | No | No | No | No | No | No | 27.0 |
+| ronaldoflores9 | No | No | No | No | No | No | 27.0 |
+| kevgom018 | No | No | No | No | No | No | 27.0 |
+| L-A-M-D | No | No | No | No | No | No | 27.0 |
+| nicolasrivera25 | No | No | No | No | No | No | 27.0 |
 | SamarysB | No | No | No | No | No | No | 27.0 |
 | daniellameleroo | No | No | No | No | No | No | 27.0 |
-| alondra-arce | No | No | No | No | No | No | 27.0 |
-| aryamdiaz | No | No | No | No | No | No | 27.0 |
-| yamilette-alemany | No | No | No | No | No | No | 27.0 |
-| jankii03 | No | No | No | No | No | No | 27.0 |
-| eliel-hernandez | No | No | No | No | No | No | 27.0 |
-| ronaldoflores9 | No | No | No | No | No | No | 27.0 |
-| FabiolaZTorres | No | No | No | No | No | No | 27.0 |
-| PeraltaJorge9128 | No | No | No | No | No | No | 27.0 |
-| kevgom018 | No | No | No | No | No | No | 27.0 |
-| JorgeRivera94 | No | No | No | No | No | No | 27.0 |
-| LuisJCruz | No | No | No | No | No | No | 27.0 |
-| nicolasrivera25 | No | No | No | No | No | No | 27.0 |
-| kevinlara1 | No | No | No | No | No | No | 27.0 |
-| nataliavera6 | No | No | No | No | No | No | 27.0 |
-| FabianVelezOcasio | No | No | No | No | No | No | 27.0 |
-| L-A-M-D | No | No | No | No | No | No | 27.0 |
-| fernan-castro | No | No | No | No | No | No | 27.0 |
 | devlin-hahn04 | No | No | No | No | No | No | 27.0 |
+| kian-robert | No | No | No | No | No | No | 27.0 |
+| aryamdiaz | No | No | No | No | No | No | 27.0 |
+| fernan-castro | No | No | No | No | No | No | 27.0 |
+| alondra-arce | No | No | No | No | No | No | 27.0 |
+| FabiolaZTorres | No | No | No | No | No | No | 27.0 |
+| yamilette-alemany | No | No | No | No | No | No | 27.0 |
+| nataliavera6 | No | No | No | No | No | No | 27.0 |
 | AdrianaFigueroa9 | No | No | No | No | No | No | 27.0 |
+| Solimar-Cruz | No | No | No | No | No | No | 27.0 |
+| andreasegarra | No | No | No | No | No | No | 27.0 |
+| Kay9876 | No | No | No | No | No | No | 27.0 |
+| PeraltaJorge9128 | No | No | No | No | No | No | 27.0 |
+| JorgeDeLeonOrama | No | No | No | No | No | No | 27.0 |
+| eliel-hernandez | No | No | No | No | No | No | 27.0 |
+| reinaldo-martinez1 | No | No | No | No | No | No | 27.0 |
+| ernestosoto3 | No | No | No | No | No | No | 27.0 |
+| kevinlara1 | No | No | No | No | No | No | 27.0 |
+| Kemuel05 | No | No | No | No | No | No | 27.0 |
+| LuisJCruz | No | No | No | No | No | No | 27.0 |
+| jaydensanchez12 | No | No | No | No | No | No | 27.0 |
+| Gerardoruiz1 | No | No | No | No | No | No | 27.0 |
+| jankii03 | No | No | No | No | No | No | 27.0 |
 | Programian | No | No | No | No | No | No | 27.0 |
 | alianasofiaaa | No | No | No | No | No | No | 27.0 |
-| jaydensanchez12 | No | No | No | No | No | No | 27.0 |
 
 ## Point Percent by Label
 
