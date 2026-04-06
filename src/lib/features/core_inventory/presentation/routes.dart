@@ -1,0 +1,45 @@
+import 'package:go_router/go_router.dart';
+import 'package:src/features/core_inventory/presentation/pages/add_item_page.dart';
+import 'package:src/features/core_inventory/presentation/pages/edit_item_page.dart';
+import 'package:src/features/core_inventory/presentation/pages/inventory_category_page.dart';
+import 'package:src/features/core_inventory/presentation/pages/inventory_page.dart';
+import 'package:src/features/core_inventory/presentation/pages/item_labels_page.dart';
+
+var inventoryRoutes = GoRoute(
+  path: '/inventory',
+  name: 'inventory_home',
+  builder: (context, state) => const InventoryPage(),
+  routes: [
+    GoRoute(
+      path: 'category/:categoryId',
+      name: 'inventory_category',
+      builder: (context, state) {
+        // TODO: Provide a cubit to manage the selected inventory category.
+        return const InventoryCategoryPage();
+      },
+      routes: [
+        GoRoute(
+          path: 'labels',
+          name: 'inventory_labels',
+          builder: (context, state) => const ItemLabelsPage(),
+        ),
+        GoRoute(
+          path: 'add',
+          name: 'inventory_add_item',
+          builder: (context, state) {
+            // TODO: Provide a cubit to manage Add Item page state.
+            return const AddItemPage();
+          },
+        ),
+        GoRoute(
+          path: 'edit/:itemId',
+          name: 'inventory_edit_item',
+          builder: (context, state) {
+            // TODO: Provide a cubit to manage Edit item page state.
+            return const EditItemPage();
+          },
+        ),
+      ],
+    ),
+  ],
+);

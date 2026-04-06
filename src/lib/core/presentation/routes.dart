@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:src/core/presentation/pages/home_page.dart';
+import 'package:src/features/example_feature/presentation/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:src/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:src/features/dashboard/data/dashboard_repository_impl.dart';
 import 'package:src/core/presentation/pages/main_nav_shell.dart';
 import 'package:src/core/presentation/pages/home_dashboard_page.dart';
+import 'package:src/features/core_inventory/presentation/routes.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
 // TO DO: route InviteRoommatePage properly
@@ -14,7 +21,9 @@ const List<MainNavTab> _mainTabs = [
     icon: Icons.checklist,
     rootPath: '/grocery_home',
   ),
-  MainNavTab(label: 'Add Item', icon: Icons.add_circle, rootPath: '/add-item'),
+  // Replaced /add-item route with the Add Item page in the Inventory section,
+  // since wireframes establish that as the proposed navigation.
+  MainNavTab(label: 'Inventory', icon: Icons.inventory, rootPath: '/inventory'),
   MainNavTab(
     label: 'Reports',
     icon: Icons.bar_chart,
@@ -35,18 +44,6 @@ class _AlertsPageStub extends StatelessWidget {
   }
 }
 
-// Placeholder page for the AddItemPage
-class _AddItemPageStub extends StatelessWidget {
-  const _AddItemPageStub();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('TO DO: Route Add Item screen')),
-    );
-  }
-}
-
 var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
     return MainNavShell(navigationShell: navigationShell, tabs: _mainTabs);
@@ -54,18 +51,31 @@ var mainRoutes = StatefulShellRoute.indexedStack(
   branches: [
     StatefulShellBranch(
       routes: [
-        GoRoute(path: '/home', builder: (_, __) => const HomeDashboardPage()),
-      ],
-    ),
-    StatefulShellBranch(routes: [groceryListRoutes]),
-    StatefulShellBranch(
-      routes: [
         GoRoute(
-          path: '/add-item',
-          builder: (_, __) => const _AddItemPageStub(),
+          path: '/home',
+          builder: (context, state) {
+            return const HomeDashboardPage();
+          },
+          routes: [
+            GoRoute(
+              path: 'dashboard',
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) =>
+                      DashboardCubit(DashboardRepositoryImpl())
+                        ..fetchInitialData(),
+                  child: const DashboardPage(),
+                );
+              },
+            ),
+          ],
         ),
       ],
     ),
+    StatefulShellBranch(routes: [groceryListRoutes]),
+    // Replaced /add-item route with the Add Item page in the Inventory section,
+    // since wireframes establish that as the proposed navigation.
+    StatefulShellBranch(routes: [inventoryRoutes]),
     StatefulShellBranch(routes: [reportsOverviewRoute]),
     StatefulShellBranch(
       routes: [

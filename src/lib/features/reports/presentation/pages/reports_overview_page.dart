@@ -11,7 +11,7 @@ class ReportsOverviewPage extends StatelessWidget {
     return Scaffold(
       //backgroundColor comes from AppTheme.lightTheme (backgroundColor = 0xFFFBF7EF)
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,24 +27,24 @@ class ReportsOverviewPage extends StatelessWidget {
               _ReportCard(
                 label: 'Inventory Stock Summary',
                 imagePath: 'assets/images/inventory_stock_icon.png',
-                onTap: () => context.go('/home/reports/inventory-stock-summary'),
+                onTap: () =>
+                    context.go('/home/reports/inventory-stock-summary'),
               ),
               SizedBox(height: 3.h),
-// TO DO: Navigate to Item Usage Rates screen once implemented
+              // TO DO: Navigate to Item Usage Rates screen once implemented
               _ReportCard(
                 label: 'Item Usage Rates',
                 imagePath: 'assets/images/item_usage_rates_icon.png',
                 onTap: () => context.go('/home/reports/item-usage-rates'),
               ),
               SizedBox(height: 3.h),
-// TO DO: Navigate to Expenditures screen once implemented
+              // TO DO: Navigate to Expenditures screen once implemented
               _ReportCard(
                 label: 'Expenditures',
                 imagePath: 'assets/images/expenditures_icon.png',
                 onTap: () => context.go('/home/reports/expenditures'),
               ),
               //Bottom bar space (for dashboard bar)
-              const Spacer(),
               SizedBox(height: 2.h),
             ],
           ),
@@ -72,10 +72,7 @@ class _ReportCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         //Label sits above the card, bold
-        Text(
-          label,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text(label, style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 1.h),
         //The green card itself
         GestureDetector(
