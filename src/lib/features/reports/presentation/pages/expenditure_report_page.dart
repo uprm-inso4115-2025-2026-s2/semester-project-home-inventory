@@ -7,6 +7,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
+import '../../domain/entities/report_filters.dart';
+import '../../domain/repositories/favorites_repository.dart';
 
 // ======================== Models ========================
 
@@ -28,6 +30,9 @@ class ExpenditureState {
   final DateTime startDate;
   final DateTime endDate;
   final List<ExpenditureCategory> categories;
+  final List<ReportFavorite> favorites;
+  final bool isLoadingFavorites;
+  final String? favoriteError;
 
   ExpenditureState({
     DateTime? startDate,
@@ -40,23 +45,84 @@ class ExpenditureState {
       ExpenditureCategory(name: 'Bathroom',  amount: 70.96, color: Color(0xFF7B68EE)),
       ExpenditureCategory(name: 'Utilities', amount: 61.67, color: Color(0xFFF08080)),
     ],
+    this.favorites = const [],
+    this.isLoadingFavorites = false,
+    this.favoriteError,
   })  : startDate = startDate ?? DateTime(2026, 3, 9),
         endDate   = endDate   ?? DateTime(2026, 3, 15);
 
   double get totalAmount =>
       categories.fold(0.0, (sum, c) => sum + c.amount);
 
-  ExpenditureState copyWith({DateTime? startDate, DateTime? endDate}) {
+  ExpenditureState copyWith({
+    DateTime? startDate,
+    DateTime? endDate,
+    List<ReportFavorite>? favorites,
+    bool? isLoadingFavorites,
+    String? favoriteError,
+  }) {
     return ExpenditureState(
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       categories: categories,
+      favorites: favorites ?? this.favorites,
+      isLoadingFavorites: isLoadingFavorites ?? this.isLoadingFavorites,
+      favoriteError: favoriteError ?? this.favoriteError,
     );
   }
 }
 
 class ExpenditureCubit extends Cubit<ExpenditureState> {
-  ExpenditureCubit() : super(ExpenditureState());
+  final FavoritesRepository _favoritesRepository = FavoritesRepository();
+  
+  ExpenditureCubit() : super(ExpenditureState()) {
+    loadFavorites();
+  }
+
+  void setStartDate(DateTime date) => emit(state.copyWith(startDate: date));
+  void setEndDate(DateTime date) => emit(state.copyWith(endDate: date));
+
+  Future<void> loadFavorites() async {
+    emit(state.copyWith(isLoadingFavorites: true, favoriteError: null));
+    try {
+      final favs = await _favoritesRepository.getUserFavorites();
+      emit(state.copyWith(favorites: favs, isLoadingFavorites: false));
+    } catch (e) {
+      emit(state.copyWith(isLoadingFavorites: false, favoriteError: e.toString()));
+    }
+  }
+
+  Future<void> saveCurrentAsFavorite(String name) async {
+    try {
+      final filters = ReportFilters(
+        startDate: state.startDate,
+        endDate: state.endDate,
+        page: 0,
+        searchQuery: '',
+      );
+      await _favoritesRepository.saveFavorite(name, filters);
+      await loadFavorites();
+    } catch (e) {
+      emit(state.copyWith(favoriteError: 'Failed to save: $e'));
+      rethrow;
+    }
+  }
+
+  Future<void> deleteFavorite(String id) async {
+    try {
+      await _favoritesRepository.deleteFavorite(id);
+      await loadFavorites();
+    } catch (e) {
+      emit(state.copyWith(favoriteError: 'Failed to delete: $e'));
+    }
+  }
+
+  void applyFavorite(ReportFavorite favorite) {
+    emit(state.copyWith(
+      startDate: favorite.filters.startDate,
+      endDate: favorite.filters.endDate,
+    ));
+  }
 }
 
 // ======================== Page ========================
@@ -85,10 +151,12 @@ class _ExpenditureView extends StatefulWidget {
 class _ExpenditureViewState extends State<_ExpenditureView> {
   final GlobalKey _chartKey = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _favoriteNameController = TextEditingController();
 
   @override
   void dispose() {
     _searchController.dispose();
+    _favoriteNameController.dispose();
     super.dispose();
   }
 
@@ -122,6 +190,70 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
     );
   }
 
+  void _showSaveFavoriteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Save Current Filters'),
+        content: TextField(
+          controller: _favoriteNameController,
+          decoration: const InputDecoration(hintText: 'Favorite name'),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final name = _favoriteNameController.text.trim();
+              if (name.isEmpty) return;
+              try {
+                await context.read<ExpenditureCubit>().saveCurrentAsFavorite(name);
+                _favoriteNameController.clear();
+                if (mounted) Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Favorite saved successfully')),
+                );
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+                  );
+                }
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmDeleteFavorite(BuildContext context, ReportFavorite favorite) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete Favorite'),
+        content: Text('Are you sure you want to delete "${favorite.name}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await context.read<ExpenditureCubit>().deleteFavorite(favorite.id);
+              Navigator.pop(ctx);
+            },
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,6 +274,51 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          // Favourites dropdown
+          BlocBuilder<ExpenditureCubit, ExpenditureState>(
+            builder: (context, state) {
+              return PopupMenuButton<ReportFavorite>(
+                icon: const Icon(Icons.star_border, color: Colors.black87),
+                tooltip: 'Saved filters',
+                onSelected: (fav) => context.read<ExpenditureCubit>().applyFavorite(fav),
+                itemBuilder: (ctx) {
+                  if (state.isLoadingFavorites) {
+                    return [const PopupMenuItem(child: Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator())))];
+                  }
+                  if (state.favorites.isEmpty) {
+                    return [const PopupMenuItem(child: Text('No saved filters'))];
+                  }
+                  return state.favorites.map((fav) {
+                    return PopupMenuItem(
+                      value: fav,
+                      child: Row(
+                        children: [
+                          Expanded(child: Text(fav.name)),
+                          IconButton(
+                            icon: const Icon(Icons.delete, size: 18, color: Colors.red),
+                            onPressed: () {
+                              Navigator.pop(ctx);
+                              _confirmDeleteFavorite(context, fav);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
+              );
+            },
+          ),
+          const SizedBox(width: 4),
+          // Save current filters button
+          IconButton(
+            onPressed: () => _showSaveFavoriteDialog(context),
+            icon: const Icon(Icons.save_alt, color: Colors.black87),
+            tooltip: 'Save current filters',
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: BlocBuilder<ExpenditureCubit, ExpenditureState>(
         builder: (context, state) {
@@ -154,54 +331,26 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Date range row + Filters button
+                      // Date range row with date pickers (Filters button removed)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'March ${state.startDate.day} - ${state.endDate.day}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                          // Date pickers
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _DatePickerField(
+                                  label: 'Start Date',
+                                  value: state.startDate,
+                                  onChanged: (d) => context.read<ExpenditureCubit>().setStartDate(d!),
                                 ),
-                              ),
-                              Text(
-                                '${state.startDate.year}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                                const SizedBox(height: 8),
+                                _DatePickerField(
+                                  label: 'End Date',
+                                  value: state.endDate,
+                                  onChanged: (d) => context.read<ExpenditureCubit>().setEndDate(d!),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          // Filters button
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF8B9D7F),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text(
-                                  'Filters',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(width: 4),
-                                Icon(Icons.arrow_drop_down,
-                                    color: Colors.white, size: 22),
                               ],
                             ),
                           ),
@@ -251,6 +400,40 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+// ======================== Date Picker Field ========================
+
+class _DatePickerField extends StatelessWidget {
+  final String label;
+  final DateTime value;
+  final ValueChanged<DateTime?> onChanged;
+  const _DatePickerField({required this.label, required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        final picked = await showDatePicker(
+          context: context,
+          initialDate: value,
+          firstDate: DateTime(2020),
+          lastDate: DateTime.now(),
+        );
+        if (picked != null) onChanged(picked);
+      },
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          filled: true,
+          fillColor: Colors.grey[100],
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        ),
+        child: Text('${value.toLocal()}'.split(' ')[0]),
       ),
     );
   }
