@@ -81,6 +81,8 @@ The Automation System does not deliver notifications directly and does not own r
 == 7. Scheduling Approaches Considered
 We consider three approaches to trigger the sweep on a daily schedule.
 
+Low-stock judgment may be evaluated immediately after transactions for responsiveness, while expiration and near-expiry are evaluated during scheduled sweeps to reduce system load and complexity.
+
 === Option A — Server-Side Cron / Dedicated Worker
 *Description:* Run a cron job (or worker process) on a VM/server to execute the sweep once per day.
 
@@ -167,7 +169,7 @@ The system shall execute an automated sweep at least once every 24 hours.
 *Fit criterion:* A persisted “last_sweep_at” timestamp shows no gaps greater than 24 hours over a test period.
 
 *REQ-AUTO-002 — Low-Stock Correctness*
-For any item instance with `quantity <= low_stock_threshold`, the sweep shall mark the item type as `LOW_STOCK`.
+For any tracked inventory record with quantity <= low_stock_threshold, the system shall mark the tracked inventory record as LOW_STOCK immediately after the transaction.
 *Fit criterion:* Given a deterministic dataset, the set of flagged items exactly matches the rule.
 
 *REQ-AUTO-003 — Expiration Correctness*
