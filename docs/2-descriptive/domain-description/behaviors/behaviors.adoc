@@ -24,9 +24,3 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 // domain description. Should be moved to 2.3 Implementation
 
 // include::invite-roommate-sharing.adoc[leveloffset=+1]
-
-
-// Commented out the Invites Logic Definition document as it does not belong to the 
-// domain description. Should be moved to 2.2 Requirements
-
-// include::invites-logic-definition.adoc[leveloffset=+1]
