@@ -20,8 +20,6 @@ Several groups working on different concerns of the same system-to-be need to st
 
 === Other Activities
 
-This section tracks major updates and documentation changes grouped by milestone submissions.
-
 This section tracks major updates and documentation changes since the Milestone 1 submission.
 
 ==== Milestone 2 Updates
