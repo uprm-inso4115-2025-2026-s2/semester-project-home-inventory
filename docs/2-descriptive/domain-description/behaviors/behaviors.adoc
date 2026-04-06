@@ -19,8 +19,3 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 * If an item has no expiration date, expiration monitoring is skipped for that stock entry.
 * If an Owner attempts to leave without transferring ownership, the action is blocked until a new Owner is designated.
-
-// Commented out the Inventory Sharing Flowchart document as it does not belong to the 
-// domain description. Should be moved to 2.3 Implementation
-
-// include::invite-roommate-sharing.adoc[leveloffset=+1]
