@@ -1,84 +1,84 @@
 == Events
 
-Domain events are things that happen in the domain that matter to stakeholders (often phrased as past-tense verbs). These events are independent of any particular system-to-be, even if a later system represents or reacts to them.
+Domain events represent instantaneous state changes in the domain that matter to stakeholders. Each event is phrased in the past tense to emphasize that a state change has just occurred. Events are independent of any particular system-to-be, even if a later system represents or reacts to them.
 
-[cols="2,4,4",options="header"]
+[cols=”2,4,4”,options=”header”]
 |===
 |Event |Description |Notes / examples
 
-|Item acquired
-|A household member obtains an item instance (possibly in bulk) and brings it into the household.
-|“Bought 24 yogurts from Costco.”
+|Item instance acquired
+|A household member has just obtained an item instance and it has become available in the household.
+|”24 yogurts have just arrived from Costco.” Two related state changes: the obtaining and the becoming-available-in-household may be distinct events in practice.
 
-|Item stored
-|An item instance is placed in a household location.
-|“Rice stored in kitchen cabinet; backup stored in hallway bin.”
+|Item instance stored
+|An item instance has just been placed in a household location.
+|”Rice has just been stored in kitchen cabinet; backup placed in hallway bin.”
 
-|Item consumed
-|A household member uses an item, decreasing its availability.
+|Item instance consumed
+|A household member has just used an item, and its availability has decreased.
 |Consumption rate may change during exams/guests.
 
 |Backup opened
-|A household member begins using the backup supply of an item.
+|A household member has just begun using the backup supply of an item.
 |Often used as a qualitative low-stock signal.
 
 |Low-stock judged
-|A household member judges an item as running low.
-|“Feels light” / “backup opened” / threshold-based.
+|An item has just been judged as running low.
+|”Feels light” / “backup opened” / threshold crossed.
 
-|Out-of-stock noticed
-|A household member discovers an item is gone when needed.
-|“Toilet paper runs out unexpectedly.”
+|Out-of-stock reached
+|An item's availability has just reached zero.
+|”Toilet paper has just run out unexpectedly.”
 
 |Replenishment decided
-|A household member decides the household should acquire more of an item type.
-|May be prompted by low/out/expiration.
+|A household member has just decided the household should acquire more of an item type.
+|May be prompted by low-stock, out-of-stock, or expiration.
 
-|Item replenished
-|New item instance(s) of an item type are acquired to restore availability.
+|Item instance replenished
+|New item instance of an item type have just been acquired, restoring availability.
 |Can be duplicated if coordination fails.
 
-|Duplicate purchase occurs
-|More of an item type is acquired unnecessarily because members acted on inconsistent information.
+|Duplicate purchase occurred
+|More of an item type has just been acquired unnecessarily because members acted on inconsistent information.
 |Common for milk/eggs/rice per rough sketch.
 
-|Item approaching expiration
-|An item instance is within a near-expiry window (window definition later).
-|Motivates timely decisions.
+|Item instance reached near-expiry
+|An item instance has just entered its near-expiry window.
+|Motivates timely use or discard decisions.
 
-|Item expired
-|An item instance passes its expiration date (if it has one).
+|Item instance expired
+|An item instance has just passed its expiration date.
 |Policy varies by item type/household.
 
-|Item discarded
-|A household member throws away an item instance (expired/spoiled/unwanted).
+|Item instance discarded
+|A household member has just thrown away an item instance.
 |Can occur even when another unopened instance exists.
 
-|Alert generated (domain-level)
-|A low/out/near-expiry/expired/budget condition becomes actionable and is communicated to household members.
+|Alert generated
+|A low/out/near-expiry/expired/budget condition has just become actionable and has been communicated to household members.
 |Delivery method is not part of the domain event.
 
 |Alert dismissed / deferred
-|A household member acknowledges an alert and chooses to ignore it or act later.
+|A household member has just acknowledged an alert and chosen to ignore it or act later.
 |Supports “snooze” and anti-spam behavior.
 
 |Restock entry created/updated
-|An item is added to (or updated on) a restock list/planner due to low/out/expired conditions.
+|An item has just been added to the restock list/planner due to low/out/expired conditions.
 |May be manual or derived from judgments.
 
 |Spending recorded
-|A household member logs a spending transaction (purchase/refund/adjustment).
+|A household member has just logged a spending transaction.
 |May be shared or personal.
 
 |Budget threshold crossed
-|Spending in a budget cycle reaches a warning level or exceeds the limit.
+|Spending in a budget cycle has just reached a warning level or exceeded the limit.
 |May trigger an alert.
 
 |Budget cycle started/ended
-|A new budget period begins or a period closes.
+|A new budget period has just begun, or a period has just closed.
 |Supports reset/rollover policies.
 
 |Household membership changed
-|A member moves in/out; household participation changes.
+|A member has just moved in or out; household participation has changed.
 |Motivates access removal expectations later.
 |===

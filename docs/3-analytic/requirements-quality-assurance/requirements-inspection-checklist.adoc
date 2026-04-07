@@ -1,0 +1,67 @@
+= Requirements Inspection Checklist (Defect-Driven)
+:toc:
+
+== Purpose
+This checklist standardizes requirement reviews to detect common defects early in the Home Inventory project.
+
+== How To Use
+. Select a target section from requirements documentation.
+. Review each requirement statement with the checklist questions below.
+. Record findings in a review log table.
+. Classify severity as Critical, Major, or Minor.
+. Propose a concrete fix and assign an owner.
+
+== Severity Guide
+* Critical: Blocks implementation/testing or can cause major incorrect behavior.
+* Major: Creates significant ambiguity, inconsistency, or traceability problems.
+* Minor: Style or structure issues that reduce clarity but do not block work.
+
+== Defect-Driven Checklist
+
+=== Omissions
+* Is every requirement precisely defined somewhere?
+* Are all expected inputs, outputs, and system responses covered?
+* Are edge cases (missing data, invalid values, timeout/no response) specified?
+
+=== Contradictions
+* Does this requirement conflict with any objective, constraint, or other requirement?
+* Are the same terms used with one meaning throughout documents?
+
+=== Inadequacies
+* Does this requirement actually reflect stakeholder need?
+* Is it testable in real usage scenarios for students/roommates?
+
+=== Ambiguities
+* Can this statement be interpreted in more than one way?
+* Are terms like "fast", "easy", "soon" replaced with measurable criteria?
+
+=== Unmeasurability
+* Does the requirement include fit criteria (time, threshold, count, accuracy)?
+* Is there a clear acceptance condition for pass/fail?
+
+=== Noise
+* Is this statement relevant to system goals and constraints?
+* Would removing this statement change system behavior or quality expectations?
+
+=== Overspecification
+* Does this requirement force a design choice too early?
+* Could the same objective be met with multiple implementation options?
+
+=== Poor Structuring
+* Is the requirement located in the correct section?
+* Is it mixed with assumptions, domain properties, or implementation details?
+
+=== Opacity and Modifiability
+* Are dependencies between requirements explicit?
+* Would changing this requirement force scattered edits across many documents?
+
+== Review Log Template
+[cols="1,2,2,1,2,2",options="header"]
+|===
+|ID |Requirement Ref |Defect Type |Severity |Proposed Fix |Owner
+|RQA-001 |REQ-XXX |Ambiguity |Major |Replace "quickly" with "under 2 seconds" |@username
+|===
+
+== Minimum Team Usage Rule
+* Each team should run this checklist at least once per sprint on active requirements.
+* Findings should be linked to GitHub issues or PR comments for traceability.
