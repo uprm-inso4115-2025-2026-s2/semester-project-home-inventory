@@ -53,6 +53,7 @@ var mainRoutes = StatefulShellRoute.indexedStack(
       routes: [
         GoRoute(
           path: '/home',
+          name: 'home',
           builder: (context, state) {
             return const HomeDashboardPage();
           },

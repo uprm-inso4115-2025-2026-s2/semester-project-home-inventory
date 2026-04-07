@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:src/config/theme.dart';
-import 'package:src/features/auth/presentation/pages/sign_in_page.dart';
-import 'package:src/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:src/features/auth/presentation/routes.dart';
 import 'package:src/features/auth/presentation/widgets/auth_primary_button.dart';
 
 class AuthLandingPage extends StatelessWidget {
@@ -47,9 +47,7 @@ class AuthLandingPage extends StatelessWidget {
               AuthPrimaryButton(
                 label: 'Sign In',
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(builder: (_) => const SignInPage()),
-                  );
+                  context.push(AuthRoutes.signInPath);
                 },
               ),
               const SizedBox(height: 30),
@@ -65,18 +63,14 @@ class AuthLandingPage extends StatelessWidget {
               AuthPrimaryButton(
                 label: 'Sign Up',
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(builder: (_) => const SignUpPage()),
-                  );
+                  context.push(AuthRoutes.signUpPath);
                 },
               ),
               const SizedBox(height: 10),
               AuthPrimaryButton(
                 label: 'Continue as Guest',
                 onPressed: () {
-                  if (Navigator.of(context).canPop()) {
-                    Navigator.of(context).pop();
-                  }
+                  context.go('/home');
                 },
               ),
             ],
