@@ -2,55 +2,68 @@
 
 Scenarios describe realistic end-to-end situations in the domain and how stakeholders expect things to work.
 
-[NOTE]
-====
-Expiration-related scenarios and tests refer to the expiration state vocabulary defined in `alert-system-states.adoc` (Active, Expiring, Expired, Renewed, Deleted) and its example alert intervals (e.g., 7/3/1 days). Delivery infrastructure details (summarized in `tech-expiration-alert-system.adoc`) are treated as implementation considerations and are not assumed in scenarios unless explicitly stated.
-====
-
-=== Scenario S1 — Low-Stock Trigger After Consumption
-* Persona/actor: Julian, the health-conscious student (primary); household member.
-* Context: Julian keeps a personal shelf of meal-prep items separate from roommates. He depends on specific brands that require advance ordering and wants to avoid unexpected shortages during the week.
-* Trigger: Julian records that he consumed the last units of a pantry item (e.g., gluten-free pasta), causing the tracked quantity to fall below its low-stock threshold.
-* Expected state transition: NORMAL → LOW_STOCK (and Restock list/planner entry created)
+=== Scenario S1a — Low-Stock Trigger After Partial Consumption
+* Persona/actor: Julian, the health-conscious student; household member.
+* Context: Julian keeps a personal shelf of meal-prep items separate from roommates. He depends on Barilla gluten-free elbows, which are not available locally and require online ordering with 3-day shipping. His low-stock threshold for this item is set to 2 boxes.
+* Trigger: Julian records consumption after Sunday meal prep, reducing his tracked quantity from 3 boxes to 1 box—below his low-stock threshold of 2.
+* Expected state transition: NORMAL → LOW_STOCK
 
 .Steps
-. Julian opens the system after meal prep and selects the item “Gluten-free pasta” from his inventory.
-. Julian records consumption by decreasing the item quantity (e.g., from 2 boxes to 0).
-. The system detects that the updated quantity is below the defined low-stock threshold and flags the item as low-stock.
-. The system adds the item to the restock list/planner with an initial status of “Needs restock”.
-. The system records and presents a low-stock alert to Julian (delivery method TBD), including the item name.
+. Julian opens the system after Sunday meal prep and selects “Barilla gluten-free elbows” from his personal inventory shelf.
+. In the app Julian sees that 3 boxes had remained before cooking this dinner. He used 2 boxes for the week's meal prep and decreases the count to 1.
+. The system compares the new count to the low-stock threshold and flags Barilla gluten-free elbows as low-stock.
+. The system adds “Barilla gluten-free elbows” to the restock list/planner with status “Needs restock” and reason “LOW_STOCK”.
+. The system records and presents a low-stock alert to Julian: “Barilla gluten-free elbows is low — 1 box remaining.”
 
 .Expected outcome
-* The inventory reflects the updated quantity and low-stock status for the item.
+* The inventory shows “Barilla gluten-free elbows: 1 box” with a LOW_STOCK flag.
 * The item appears in the restock list/planner as needing replenishment.
-* Julian becomes aware of the low-stock state in time to reorder before running out mid-week.
+* Julian has enough lead time to reorder before running out mid-week.
 
-.Related needs / stories
+=== Scenario S1b — Low-Stock and Out-of-Stock Simultaneously
+* Persona/actor: Julian, the health-conscious student; household member.
+* Context: Same as S1a, but Julian had only 2 boxes of Barilla gluten-free elbows remaining before preparing dinner. His low-stock threshold is set to 2 boxes.
+* Trigger: Julian uses both remaining boxes for meal prep and decreases the count from 2 to 0.
+* Expected state transition: NORMAL → OUT_OF_STOCK
+
+.Steps
+. Julian opens the system after meal prep and selects “Barilla gluten-free elbows.”
+. He had 2 boxes remaining. He used both and decreases the count to 0.
+. The system detects that the new count is both below the low-stock threshold and at zero. The system flags the item as OUT_OF_STOCK.
+. The system creates a single combined alert: “Barilla gluten-free elbows is out of stock.” The out-of-stock condition takes priority over low-stock to avoid redundant alerts.
+. The restock list/planner entry is created with reason “OUT_OF_STOCK.”
+
+.Expected outcome
+* Julian receives one alert, not two separate alerts.
+* The restock list/planner shows the item with the most urgent reason.
+* Julian's entire meal plan for the week is at risk; the alert conveys urgency.
+
+.Related needs / stories 
 * Needs: N1, N2
 * User stories:
-** US-ALT-01 (Receive low-stock warnings)
-** US-INV-01 (Add items to inventory)
+** US-ALT-01 
+** US-INV-01 
 
 
 === Scenario S2 — Shared Inventory Prevents Duplicate Purchase
-* Persona/actor: Sofia, the budget-conscious roommate (primary); Andrea, the unofficial household manager (secondary); household members.
-* Context: Sofia and her roommates share household essentials. Past issues include duplicate purchases due to out-of-date whiteboards and unclear responsibility for shared items.
-* Trigger: Sofia is about to purchase a shared essential (e.g., toilet paper) and checks the shared inventory before paying.
-* Expected state transition: No stock-state change for “toilet paper” (remains IN_STOCK); shared visibility converges after synchronization
+* Persona/actor: Sofia, the budget-conscious roommate; Andrea, the unofficial household manager; household members.
+* Context: Sofia and her roommates share household essentials. Past issues include duplicate purchases due to out-of-date whiteboards and unclear responsibility for shared items. Sofia has a strict $50 weekly grocery budget.
+* Trigger: Sofia is at the supermarket and is about to buy Charmin Ultra Soft toilet paper. She checks the shared inventory before paying.
+* Expected state transition: No state change for “Charmin Ultra Soft toilet paper”; shared visibility converges after synchronization
 
 .Steps
-. Sofia opens the shared inventory at the supermarket and searches for “toilet paper.”
-. The system displays the current shared quantity and stock status (e.g., “In stock: 24 rolls”).
-. Sofia sees the item is sufficiently stocked and decides not to buy it.
-. Later, Andrea records a purchase for dish soap; the shared inventory updates for household members once the change is recorded and synchronized.
+. Sofia opens the shared inventory on her phone at the supermarket and searches for “toilet paper.”
+. The system displays: “Charmin Ultra Soft toilet paper — In stock: 24 rolls.”
+. Sofia sees the item is sufficiently stocked and puts the 12-pack back on the shelf, saving $8.99 of her $50 weekly budget.
+. Later that afternoon, Andrea records a purchase of Dawn dish soap at the wholesale club. The shared inventory updates for all household members once the change is recorded and synchronized.
 
 .Expected outcome
-* Sofia avoids buying a duplicate shared item, staying within budget.
-* Household members converge on the same understanding of the shared inventory after changes are recorded.
+* Sofia avoids buying duplicate toilet paper, keeping $8.99 within her budget.
+* All household members see the updated shared inventory after synchronization.
 
 .Related needs / stories
 * Needs: N3, N4, N5
 * User stories:
-** US-INV-02 (See what belongs to whom)
-** US-SB-01 (Split shared purchase with roommates)
-** US-RPT-01 (See household dashboard with insights)
+** US-INV-02 
+** US-SB-01 
+** US-RPT-01

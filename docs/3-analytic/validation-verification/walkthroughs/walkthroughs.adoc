@@ -1,17 +1,17 @@
 == Walkthroughs
 
-Walkthroughs are a validation activity: they check whether the team’s understanding of the domain and scenarios matches stakeholder expectations. They do not verify implementation correctness (that is addressed by testing).
+Walkthroughs are a validation activity: they check whether the team’s understanding of the domain and scenarios matches stakeholder expectations. They do not verify implementation correctness.
 
 === Walkthrough plan
 * Participants:
-** Development team members (facilitators and note-takers).
-** 2–3 prospective users acting as domain informants (e.g., students managing shared living spaces).
+** Development team members.
+** 2–3 prospective users acting as domain informants.
 * Materials:
 ** Event table and Important Event Sequences from the domain description.
-** Scenario descriptions (e.g., low-stock detection, expiration handling).
-** Draft UI mockups or simple screen sketches (used only to anchor discussion, not evaluate design).
+** Scenario descriptions
+** Draft UI mockups or simple screen sketches.
 ** Terminology list defining key concepts such as household, inventory, item type/item instance, restock list/planner, and spending tracking.
-** Expiration state model summary (states and intervals) from `alert-system-states.adoc`.
+** Expiration state model summary from `alert-system-states.adoc`.
 ** Technical delivery considerations for expiration alerts from `tech-expiration-alert-system.adoc` (used only to sanity-check feasibility; not evaluated with stakeholders).
 * Method:
 ** Scenario-driven walkthrough using a think-aloud approach (participants verbalize what they expect and why at each step).
@@ -20,37 +20,37 @@ Walkthroughs are a validation activity: they check whether the team’s understa
 ** Clarifications and disagreements are documented as validation findings.
 ** No implementation details are discussed. The focus remains on domain correctness and stakeholder mental models.
 
-=== Walkthrough questions (draft)
+=== Walkthrough questions
 * What part of this process feels different from how you normally manage items at home?
 * Does this sequence of events reflect what actually happens when something runs out or runs low?
 * At this point in the scenario, what would you expect the system-to-be to do next?
-* Are any terms (e.g., restock list/planner, low-stock) unclear or unnatural?
+* Are any terms unclear or unnatural?
 * Would you ever ignore or bypass this step in real life? Why?
 * Is there information you would need that is not represented here?
 * Is this the order in which these things would normally occur?
-* When would this feature become annoying or unnecessary (e.g., too many prompts)?
+* When would this feature become annoying or unnecessary?
 
 These questions aim to validate mental models and domain assumptions, not measure satisfaction.
 
-=== Findings (examples / initial hypotheses)
+=== Hypotheses to validate
 
-[cols="2,4,3",options="header"]
+[cols=”2,4,3”,options=”header”]
 |===
-|Finding |Evidence (participant/session) |Impact / action
+|Hypothesis |What to observe / ask |Expected impact if confirmed
 
 |Low-stock should not trigger immediately after every quantity decrease.
-|Example hypothesis to validate: participants may not expect an alert unless quantity crosses a chosen threshold (or remains low). Record quotes with participant code and date (e.g., P1, 2026-02-xx).
+|Do participants expect an alert only when quantity crosses a chosen threshold? Record quotes with participant code and date.
 |Clarify low-stock meaning in terminology; specify threshold-based triggering and deduplication rules.
 
 |Expiration does not always imply unavailability.
-|Example hypothesis to validate: participants may treat expiration differently by item type (e.g., canned goods vs medicine). Record evidence with participant code and date.
-|Separate “expired” from “unavailable” states; require a policy for what happens on expiration (inform vs block vs manual confirmation).
+|Do participants treat expiration differently by item type? Record evidence with participant code and date.
+|Separate “expired” from “unavailable” states; require a policy for what happens on expiration.
 
 |Restock list/planner should allow manual override.
-|Example hypothesis to validate: participants may not want all low/expired items auto-added. Record evidence with participant code and date.
+|Do participants want all low/expired items auto-added, or do they prefer control? Record evidence with participant code and date.
 |Specify rules for manual remove/defer and for auto-add gating to reduce clutter.
 
 |Shared-household alerts may be excessive.
-|Example hypothesis to validate: multiple household members receiving redundant alerts may be perceived as noisy. Record evidence with participant code and date.
-|Add preferences or scoping (who gets alerted); emphasize grouping/deduplication and “transition-only” alerting.
+|Do multiple household members receiving redundant alerts perceive them as noisy? Record evidence with participant code and date.
+|Add preferences or scoping; emphasize grouping/deduplication and “transition-only” alerting.
 |===

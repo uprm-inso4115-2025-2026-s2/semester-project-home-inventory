@@ -30,25 +30,23 @@ Requirements expressed in domain language (capabilities/outcomes), independent o
 
 === Alerts and restock (Milestone 1 baseline)
 
-* DR-12 (Threshold-driven low-stock): Low-stock shall be defined by an item-specific threshold (or default threshold when configured); crossing the threshold defines the low-stock condition.
-* DR-13 (Expiration status): If an item instance has an expiration date, its expiration status shall be derivable (active/near-expiry/expired). If the expiration date is missing or unreadable, expiration status shall be treated as unknown (no false-expired condition).
-* DR-14 (Deduplicated alerting): Alerts shall be deduplicated and triggered primarily on actionable state transitions (e.g., NORMAL → LOW_STOCK), so repeated checks without state change do not generate repeated alerts.
+* DR-12 (Threshold-driven low-stock): The system shall evaluate whether an item type is low-stock by comparing its current quantity to an item-specific threshold. When quantity falls at or below the threshold, the system shall flag the item type as low-stock and make this status visible to household members.
++
+_Domain property behind this requirement:_ In the domain, low-stock is a judgment that an item is running low. This judgment may be qualitative or threshold-based. The requirement commits the system-to-be to threshold-based evaluation.
 
-=== Prevention and data integrity
+* DR-13 (Expiration status): The system shall derive the expiration status of an item instance when an expiration date is present. If the expiration date is missing or unreadable, the system shall treat expiration status as unknown and shall not generate false-expired conditions.
+* DR-14 (Deduplicated alerting): The system shall deduplicate alerts and trigger them primarily on actionable state transitions, so that repeated checks without state change do not generate repeated alerts.
 
-* DR-15 (Normalization before comparison): Product definitions (*Item type*) shall be normalized before duplicate comparison and before insert so that prevention logic is consistent and reproducible.
-* DR-16 (Deterministic spend attachment): *Spending entries* shall be created and attached to item or household records in a deterministic way; duplicate resolution must be finalized before any spending entry is created.
-* DR-17 (Single item type per barcode at persistence): At persistence, one barcode shall map to exactly one *Item type*; duplicate prevention must enforce this before insert (consistent with DR-1).
+=== Duplicate prevention and data integrity
+
+* DR-15 (Normalization before comparison): The system shall normalize *Item type* definitions before duplicate comparison and before insert, so that duplicate detection produces consistent and reproducible results.
+* DR-16 (Spend attachment after duplicate resolution): The system shall finalize duplicate resolution for an item before creating any associated *Spending entry*, so that each spending entry is attached to exactly one resolved item type or household record without ambiguity.
+* DR-17 (Single item type per barcode at persistence): At persistence, one barcode shall map to exactly one *Item type*; the system shall enforce this constraint before insert.
 === Rationale / trace (Milestone 1)
 
-* DR-1..DR-3 support reliability of tracked inventory and financial records (N2, and budgeting quality expectations if enabled).
-* DR-4..DR-6 support shared-household accountability and coordination (N4, N5).
-* DR-7..DR-9 support data quality and conflict reduction during entry/corrections (N1, N2, N3).
-* DR-10..DR-11 support clear reporting and budget reasoning (if spending/reporting is in scope).
-* DR-12..DR-14 support low-stock/expiry awareness with notification quality (N2, N3, and alert quality expectations).
-* DR-15..DR-17 support duplicate prevention and data integrity (normalization, deterministic spend attachment, barcode uniqueness at persistence).
-
-[NOTE]
-====
-Detailed policies and edge-case handling for sharing, permissions, and invitations are deferred for later milestones unless required by Milestone 1 deliverables. Keep the core domain requirements above stable and implementation-independent.
-====
+* DR-1..DR-3 support reliability of tracked inventory and financial records.
+* DR-4..DR-6 support shared-household accountability and coordination.
+* DR-7..DR-9 support data quality and conflict reduction during entry/corrections.
+* DR-10..DR-11 support clear reporting and budget reasoning.
+* DR-12..DR-14 support low-stock/expiry awareness with notification quality.
+* DR-15..DR-17 support duplicate prevention and data integrity.
