@@ -1,52 +1,99 @@
-== 2.3 Implemented End-to-End Features
+﻿== 2.3 Implemented End-to-End Features
 
-This section highlights the minimal viable set of high-value features that have been fully implemented in the current release. These features represent the core user journey from adding items to the inventory, receiving automated alerts, and managing restocking via the grocery list. By mapping these flows, reviewers can verify functionality without needing to compile the codebase.
+This section documents the current implementation status of the repo's core features based on the existing code. Each feature is verified against actual code paths and component wiring to show what is currently present, what is scaffolded, and what remains planned.
 
-=== 1. Core Inventory Management & Barcode Scanning
+**Status Legend:** Completed | In Progress | Planned
 
-**User Value:** Allows household managers (e.g., **Andrea**) to quickly digitize their physical pantry without tedious manual data entry, drastically reducing the friction of app onboarding.
+---
 
-**End-to-End User Flow:**
-1. The user navigates to the Core Inventory screen from the bottom navigation bar.
-2. The user taps the floating action button to "Add Item".
-3. The system opens the camera UI. The user scans a physical product's barcode.
-4. The app queries the database/API. If recognized, the item details (name, brand, image) auto-populate. If unrecognized, a seamless manual entry fallback is presented.
-5. The user sets the expiration date and quantity, then taps "Save".
-6. The item instantly appears in the real-time synced inventory list, utilizing Flutter state management (`Bloc`/`Cubit`) and Supabase streams.
+=== Feature 1: Core Inventory Management (F-INV)
 
-**Visual Evidence:**
-[cols="1a,1a"]
-|===
-| image::Barcode Scanning and Manual Entry/scanner.png[Barcode Scanner UI, width=100%]
-| image::screen-designs/Core-Inventory-Designs/core_inventory_mockups.png[Core Inventory List, width=100%]
-|===
+**User Value:** Supports manual item capture, inventory categorization, and item editing. This feature is the most complete part of the current repo.
 
-=== 2. Automated Expiration Alerts & Notifications
+**Primary Users:** Household managers, kitchen coordinators
 
-**User Value:** Prevents food waste by proactively notifying busy students (e.g., **Mateo**) before items spoil. It removes the mental burden of manually checking the fridge.
+**Current Implementation:**
+- `src/lib/features/core_inventory/presentation/pages/inventory_page.dart` provides the main inventory screen.
+- `src/lib/features/core_inventory/presentation/pages/add_item_page.dart` and `edit_item_page.dart` provide item entry/edit forms.
+- `src/lib/features/core_inventory/presentation/widgets/item_form.dart` captures item name, details, quantity, and expiration date.
+- `src/lib/config/injection_dependencies.dart` registers `InventoryCubit`, Supabase client, data sources, repositories, and use cases.
+- `src/lib/features/core_inventory/presentation/cubits/inventory_cubit.dart` implements loading, adding, updating, and deleting stock.
+- Data sources and repositories are defined in `src/lib/features/core_inventory/data/` for Supabase-backed inventory and product operations.
 
-**End-to-End User Flow:**
-1. A backend Supabase Edge Function (Cron Job) runs on a schedule to sweep the database for items expiring within user-defined thresholds (e.g., 3 days).
-2. The system applies deduplication logic to prevent notification spam.
-3. A push notification payload is delivered to the user's mobile device via Firebase Cloud Messaging (FCM) / APNs.
-4. Tapping the push notification deep-links the user directly to the "Alerts Center" tab, displaying the specific items requiring immediate consumption or disposal.
+**Actual Code Paths:**
+- Main route: `src/lib/core/presentation/routes.dart` connects `/inventory` to `InventoryPage`.
+- Inventory category navigation and add/edit routing are defined in `src/lib/features/core_inventory/presentation/routes.dart`.
+- Add / edit item flows are implemented as form-only pages with `ItemForm`.
 
-**Visual Evidence:**
-image::screen-designs/Alerts-&-Notifications-Screen/images/push-notifications-flow-ui.png[Push Notification Flow, width=75%, align="center"]
+**Implementation Notes:**
+- The inventory feature currently uses manual form entry only. There is no barcode scanning UI or barcode plugin integration in the current code.
+- The main inventory page currently displays category cards and navigates to category pages; it does not yet present a full item list with Supabase-backed data on the route shown.
+- `InventoryCubit` exists and is registered, but the current inventory pages do not yet wire the cubit into visible state management on screen.
 
-=== 3. Smart Grocery List Management
+**Completion Status:** In Progress — core UI flow scaffolding is present, and backend data layer wiring exists, but full inventory data rendering and barcode scanning are not fully implemented.
 
-**User Value:** Closes the inventory lifecycle loop. When items run out, users need a frictionless way to consolidate what they need to buy and subsequently restock it.
+---
 
-**End-to-End User Flow:**
-1. When an item's quantity is manually reduced to zero in the Core Inventory, the system automatically flags it for addition to the Grocery List.
-2. The user can navigate to the "My Grocery List" tab to view auto-generated items or manually input "Custom Items".
-3. While at the supermarket, the user checks off items as they place them in their physical cart.
-4. Upon completing the shopping trip, checked-off items are automatically transitioned back to the Core Inventory with updated quantities and fresh expiration dates.
+=== Feature 2: Automated Expiration Alerts & Notifications (F-ALERT + F-AUTOCHECK)
 
-**Visual Evidence:**
-[cols="1a,1a"]
-|===
-| image::../requirements/features/grocery-list/design/images/My Grocery list UI.png[My Grocery List UI, width=100%]
-| image::../requirements/features/grocery-list/design/images/Add Costume item UI.png[Add Custom Item UI, width=100%]
-|===
+**User Value:** Intended to notify users proactively about expiring items and reduce food waste.
+
+**Primary Users:** All household members, household admin
+
+**Current Implementation:**
+- Alert-related domain logic is present in `src/lib/features/alerts_restock/domain/usecases/`:
+  - `check_expiration.dart`
+  - `check_stock.dart`
+  - `automated_check_expiration.dart`
+  - `automated_check_stock.dart`
+- These files provide pure business logic for classifying expiration and stock status.
+
+**Actual Code Paths:**
+- There is an Alerts tab route in `src/lib/core/presentation/routes.dart`, but it currently serves a placeholder page only.
+- No alert center screen, deep link handling, or notification handler is wired into the active route set.
+- There is no evidence of Supabase cron edge functions, FCM/APNs push notification integration, or `alert_log` storage in the current repo.
+
+**Implementation Notes:**
+- The code contains domain models for expiration and stock checks, but this logic is not connected to a UI flow or backend notification pipeline.
+- Any completed alert generation and dispatch functionality is not present in the current workspace.
+
+**Completion Status:** Planned — domain use cases exist, but end-to-end alert delivery and UI integration are not implemented.
+
+---
+
+=== Feature 3: Grocery List Management (F-GL-AUTO + F-GL-USER)
+
+**User Value:** Provides a shopping list interface and supports manual grocery item creation.
+
+**Primary Users:** Shoppers, household managers
+
+**Current Implementation:**
+- `src/lib/features/grocery_list/presentation/pages/home_page.dart` implements the Grocery tab with tabs for `Collections` and `My Grocery List`.
+- `src/lib/features/grocery_list/presentation/pages/my_grocery_list_page.dart` shows a static list of grocery items using `ItemTile` widgets.
+- `src/lib/features/grocery_list/presentation/pages/add_item.dart` provides a manual add-item form for custom grocery items.
+- Routing is defined in `src/lib/features/grocery_list/presentation/routes.dart` for grocery home, categories, custom items, add item, and history.
+- The grocery feature currently uses `TodoCubit` from `src/lib/features/example_feature/presentation/cubits/todo_cubit.dart` as its active state provider.
+
+**Actual Code Paths:**
+- Grocery home route: `/grocery_home` in `src/lib/core/presentation/routes.dart`.
+- Add item route: `/grocery_home/add_item`.
+- Custom item route: `/grocery_home/categories/custom_items/edit_item`.
+
+**Implementation Notes:**
+- The current grocery list screen is mostly static and does not contain an auto-generated shopping list or restock workflow.
+- There is no evidence that `automated_check_stock` or `automated_check_expiration` is linked to grocery list generation.
+- Items are rendered via UI widgets, but the checked-off/restock dialog flow is not implemented in the current code.
+
+**Completion Status:** In Progress — grocery UI scaffolding exists, but automatic list generation and restock integration remain unimplemented.
+
+---
+
+=== Actual Repository Crosscheck Summary
+
+- `src/lib/core/presentation/routes.dart` confirms the main bottom navigation includes the Alerts tab, but the Alerts screen is a placeholder.
+- `src/lib/config/injection_dependencies.dart` confirms Supabase initialization and injection for inventory, product, report, and sample todo features.
+- `src/lib/features/core_inventory/presentation/cubits/inventory_cubit.dart` exists and contains inventory load/add/update/delete logic, but it is not fully wired into the current inventory UI.
+- `src/lib/features/alerts_restock/domain/usecases/` contains alert/check logic only; there is no active UI or notification backend in the current code.
+- `src/lib/features/grocery_list/presentation/` contains grocery list screens and routes, but the implementation is UI-driven and not yet connected to the expected auto-generation and restock domain flows.
+
+This crosscheck has been performed using actual code paths present in the workspace.
