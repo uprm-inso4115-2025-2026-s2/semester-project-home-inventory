@@ -142,3 +142,6 @@ Deferred items for later milestones:
 * Additional edge-case interface requirements captured under “Deferred edge cases (Milestone 2+)” will be traced once they are promoted into explicit IR IDs.
 * Domain requirements (DR-*) will be added to the traceability matrix once the DR list is finalized and terminology is normalized across all requirements.
 ====
+
+#|Andrea |Coordinate shared household stocking without carrying all the mental load; obtain accurate, verifiable records for roommate reimbursement; know what is needed before a bulk shopping trip
+|===#

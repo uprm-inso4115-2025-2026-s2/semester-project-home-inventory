@@ -1,29 +1,29 @@
-== Acquisition Plan
+== #Acquisition Plan#
 
-This section defines how raw domain knowledge and evidence are gathered before they are interpreted into stakeholder needs and system requirements.
+#This section defines how raw domain knowledge and evidence are gathered before they are interpreted into stakeholder needs and system requirements.#
 
-Requirements acquisition focuses on collecting raw observations, examples, and participant accounts. Elicitation happens later, when that material is interpreted into concepts, stories, and requirements.
+#Requirements acquisition focuses on collecting raw observations, examples, and participant accounts. Elicitation happens later, when that material is interpreted into concepts, stories, and requirements.#
 
 === Goals
-* Capture real household practices instead of idealized descriptions.
-* Understand shared-household coordination, including visibility, duplicates, ownership, and cost splitting.
-* Identify friction points that cause tracking methods to be abandoned.
-* Clarify important edge cases such as bulk purchases, multiple locations, and missing expiration information.
-* Build a traceable base of raw domain evidence for later elicitation.
+* #Capture real household practices instead of idealized descriptions.#
+* #Understand shared-household coordination, including visibility, duplicates, ownership, and cost splitting.#
+* #Identify friction points that cause tracking methods to be abandoned.#
+* #Clarify important edge cases such as bulk purchases, multiple locations, and missing expiration information.#
+* #Build a traceable base of raw domain evidence for later elicitation.#
 
 === Methods
 
-The following methods are part of requirements acquisition because they gather raw domain data before formal analysis or requirement extraction takes place:
+#The following methods are part of requirements acquisition because they gather raw domain data before formal analysis or requirement extraction takes place:#
 
-* *Questionnaire:* short set of questions used to collect recurring household practices and pain points across participants.
-* *Interviews (4–6):* semi-structured interviews with solo students and students in shared households, including at least one student athlete.
-* *Contextual walkthroughs:* participants demonstrate their current tracking methods and explain their shorthand and terminology.
-* *Item analysis:* review of receipts, pantry or fridge photos, and shared shopping messages to understand how items are tracked or forgotten in practice.
-* *Light competitive scan:* review a small set of existing apps to identify repeated friction points such as entry effort and notification fatigue.
+* #*Questionnaire:* short set of questions used to collect recurring household practices and pain points across participants.#
+* #*Interviews (4–6):* semi-structured interviews with solo students and students in shared households, including at least one student athlete.#
+* #*Contextual walkthroughs:* participants demonstrate their current tracking methods and explain their shorthand and terminology.#
+* #*Item analysis:* review of receipts, pantry or fridge photos, and shared shopping messages to understand how items are tracked or forgotten in practice.#
+* #*Light competitive scan:* review a small set of existing apps to identify repeated friction points such as entry effort and notification fatigue.#
 
 [NOTE]
 ====
-Broader surveys and larger quantitative validation may be deferred if time is limited. This milestone prioritizes qualitative evidence that supports domain understanding and early requirements work.
+#Broader surveys and larger quantitative validation may be deferred if time is limited. This milestone prioritizes qualitative evidence that supports domain understanding and early requirements work.#
 ====
 
 === Schedule
@@ -33,24 +33,24 @@ Broader surveys and larger quantitative validation may be deferred if time is li
 |Timeframe |Activities
 
 |Late Jan. – Early Feb.
-|Conduct questionnaires, initial interviews, and contextual walkthroughs; expand the rough sketch with concrete quotes and examples.
+|#Conduct questionnaires, initial interviews, and contextual walkthroughs; expand the rough sketch with concrete quotes and examples.#
 
 |Mid-Feb.
-|Review collected evidence, refine terminology, and record open questions and potential clashes.
+|#Review collected evidence, refine terminology, and record open questions and potential clashes.#
 
 |Late Feb.
-|Use follow-up questions to clarify gaps; transform acquired evidence into personas, scenarios, stories, and core requirements.
+|#Use follow-up questions to clarify gaps; transform acquired evidence into personas, scenarios, stories, and core requirements.#
 |===
 
 === Risks and Mitigations
 * *Risk:* Participants are too busy for long interviews.
-** *Mitigation:* Keep sessions short and allow asynchronous follow-up.
+** #*Mitigation:* Keep sessions short and allow asynchronous follow-up.#
 
 * *Risk:* Participants describe ideal behavior instead of actual behavior.
-** *Mitigation:* Ask for recent concrete examples and current artifacts such as notes, chats, or receipts.
+** #*Mitigation:* Ask for recent concrete examples and current artifacts such as notes, chats, or receipts.#
 
-* *Risk:* Manual-entry tolerance is very low.
-** *Mitigation:* Ask explicitly what minimum information participants are willing to record.
+* #*Risk:* Manual-entry tolerance is very low.#
+** #*Mitigation:* Ask explicitly what minimum information participants are willing to record.#
 
-* *Risk:* Acquisition and elicitation are mixed together too early.
-** *Mitigation:* Record raw evidence first, then interpret it later in a separate elicitation step.
+* #*Risk:* Acquisition and elicitation are mixed together too early.#
+** #*Mitigation:* Record raw evidence first, then interpret it later in a separate elicitation step.#

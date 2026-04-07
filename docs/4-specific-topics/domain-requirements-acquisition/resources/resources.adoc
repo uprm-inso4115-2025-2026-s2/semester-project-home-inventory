@@ -1,6 +1,6 @@
 == Resources
 
-This subsection lists supporting materials and evidence sources used during requirements acquisition. These resources support the acquisition process, but they are not a substitute for the questionnaire, interview protocol, or participant-coded raw evidence.
+#This subsection lists supporting materials and evidence sources used during requirements acquisition. These resources support the acquisition process, but they are not a substitute for the questionnaire, interview protocol, or participant-coded raw evidence.#
 
 === External Sources (selected)
 * Household food waste research: supports the importance of visibility and expiration awareness in student households.
@@ -13,10 +13,10 @@ Extended literature notes: `docs/lecture-topic-tasks/domain-acquisition-ltt.adoc
 * Domain rough sketch and narrative: `docs/2-descriptive/domain-description/rough-sketch/` and `docs/2-descriptive/domain-description/narrative/`
 * Terminology table: `docs/2-descriptive/domain-description/terminology/terminology.adoc`
 * Domain concept analysis: Section 3.1
-* Validation and verification artifacts: Section 3.4
-* Acceptance and E2E testing artifacts: Section 3.5
+* #Validation and verification artifacts: Section 3.4#
+* #Acceptance and E2E testing artifacts: Section 3.5#
 
-=== Notes for Completion
-* Participant-coded interview and walkthrough findings should be linked from this section once finalized.
-* Competitive scan results should be summarized here once completed.
-* Acquisition completeness should be reviewed by checking whether all major needs and requirement areas are supported by raw evidence.
+=== #Notes for Completion#
+* #Participant-coded interview and walkthrough findings should be linked from this section once finalized.#
+* #Competitive scan results should be summarized here once completed.#
+* #Acquisition completeness should be reviewed by checking whether all major needs and requirement areas are supported by raw evidence.#

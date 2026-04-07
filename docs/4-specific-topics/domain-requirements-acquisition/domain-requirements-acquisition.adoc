@@ -1,20 +1,20 @@
 == Domain Requirements Acquisition
 
-This section documents how raw domain evidence was gathered and how that evidence was later used during elicitation. To keep these activities distinct, this section separates requirements acquisition from requirements elicitation.
+#This section documents how raw domain evidence was gathered and how that evidence was later used during elicitation. To keep these activities distinct, this section separates requirements acquisition from requirements elicitation.#
 
-Requirements acquisition focuses on collecting raw domain material before it is interpreted. In this project, acquisition includes questionnaires, short interviews, contextual walkthroughs, and examples of current household tracking practices.
+#Requirements acquisition focuses on collecting raw domain material before it is interpreted. In this project, acquisition includes questionnaires, short interviews, contextual walkthroughs, and examples of current household tracking practices.#
 
-Requirements elicitation begins after acquisition. It includes grouping repeated problems, identifying needs and conflicts, and transforming collected evidence into stories and requirements.
+#Requirements elicitation begins after acquisition. It includes grouping repeated problems, identifying needs and conflicts, and transforming collected evidence into stories and requirements.#
 
-=== Questionnaire
+=== #Questionnaire#
 
-To support requirements acquisition, the team prepared a short questionnaire aimed at collecting recurring household practices, coordination problems, and tracking pain points before moving into deeper interviews.
+#To support requirements acquisition, the team prepared a short questionnaire aimed at collecting recurring household practices, coordination problems, and tracking pain points before moving into deeper interviews.#
 
-The questionnaire focuses on current behavior rather than desired features.
+#The questionnaire focuses on current behavior rather than desired features.#
 
-Sample questionnaire items:
+#Sample questionnaire items:#
 
-* What kinds of household items do you most often lose track of?
+#* What kinds of household items do you most often lose track of?
 * How do you currently keep track of what you have at home?
 * Can you describe a recent time when you bought something you already had?
 * How do you usually tell that an item is running low?
@@ -23,79 +23,79 @@ Sample questionnaire items:
 * Have you ever thrown something away because it expired or was forgotten?
 * If you live with others, how do you coordinate who buys shared items?
 * What kinds of reminders would be helpful, and what kinds would feel annoying?
-* What would make inventory tracking fast enough that you would actually keep using it?
+* What would make inventory tracking fast enough that you would actually keep using it?#
 
 
-=== Interview Protocol
+=== #Interview Protocol#
 
-The questionnaire is followed by short semi-structured interviews to obtain more specific stories and clarify ambiguous responses.
+#The questionnaire is followed by short semi-structured interviews to obtain more specific stories and clarify ambiguous responses.#
 
-The protocol used in these sessions is:
+#The protocol used in these sessions is:#
 
-. assign a participant code before taking notes
+#. assign a participant code before taking notes
 . begin with current tracking habits
 . ask for one or two recent concrete stories
 . probe for details such as item, location, what the participant believed, and what actually happened
 . ask about edge cases such as duplicate purchases, expired items, multiple locations, guests, and move-out situations
 . summarize the main points back to the participant to confirm understanding
 
-Example prompts include:
+#Example prompts include:#
 
-* “Tell me about the last time you bought something and later realized you already had it.”
+#* “Tell me about the last time you bought something and later realized you already had it.”
 * “Walk me through a specific time when you ran out of an item unexpectedly.”
 * “When you say an item was ‘almost empty’, what made you think that?”
-* “Can you describe a roommate situation that caused confusion about a shared item?”
+* “Can you describe a roommate situation that caused confusion about a shared item?”#
 
 
-=== Participant Coding
+=== #Participant Coding#
 
-To preserve anonymity while still allowing statements from the same participant to be traced consistently across the document, participants are identified using stable codes.
+#To preserve anonymity while still allowing statements from the same participant to be traced consistently across the document, participants are identified using stable codes.#
 
-Examples:
-* P01 — student living alone
+#Examples:#
+#* P01 — student living alone
 * P02 — student in shared apartment
 * P03 — student in shared apartment
 * P04 — student athlete
-* P05 — shared-household organizer
+* P05 — shared-household organizer#
 
-Quotes, notes, and walkthrough findings should refer to participant codes rather than real names.
+#Quotes, notes, and walkthrough findings should refer to participant codes rather than real names.#
 
 
-=== From Acquisition to Elicitation
+=== #From Acquisition to Elicitation#
 
-After acquisition, raw answers are reviewed and grouped into recurring domain problems and concepts. Those patterns are then used during elicitation to derive needs, stories, and requirements.
+#After acquisition, raw answers are reviewed and grouped into recurring domain problems and concepts. Those patterns are then used during elicitation to derive needs, stories, and requirements.#
 
-The transformation process used in this project is:
+#The transformation process used in this project is:#
 
-. collect raw questionnaire and interview evidence
+#. collect raw questionnaire and interview evidence
 . group repeated observations and pain points
 . identify the related domain concept or conflict
 . derive needs, candidate requirements, or open questions
 . link those results back to the source evidence
 
-For example:
+#For example:#
 
 [cols="1,3,3",options="header"]
 |===
-|Source evidence
-|Observed pattern
-|Used later in
+|#Source evidence#
+|#Observed pattern#
+|#Used later in#
 
-|“If it takes more than a few seconds to log, I won’t do it.”
-|High-friction entry discourages continued use
-|Need N1, fast-capture requirements, US-INV-01
+|#“If it takes more than a few seconds to log, I won’t do it.”#
+|#High-friction entry discourages continued use#
+|#Need N1, fast-capture requirements, US-INV-01#
 
-|“If it is not on our fridge note, we assume we are out.”
-|Tracked understanding may diverge from reality
-|Domain concept analysis, inventory requirements
+|#“If it is not on our fridge note, we assume we are out.”#
+|#Tracked understanding may diverge from reality#
+|#Domain concept analysis, inventory requirements#
 
-|“We have rice in two places.”
-|The same item type may exist in multiple locations
-|Location-related requirements and terminology
+|#“We have rice in two places.”#
+|#The same item type may exist in multiple locations#
+|#Location-related requirements and terminology#
 
-|“I want to remove access when someone moves out.”
-|Membership changes affect visibility and access
-|Shared-household requirements and stakeholder analysis
+|#“I want to remove access when someone moves out.”#
+|#Membership changes affect visibility and access#
+|#Shared-household requirements and stakeholder analysis#
 |===
 
 include::plan/plan.adoc[leveloffset=+1]
