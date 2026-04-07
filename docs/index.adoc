@@ -9,6 +9,13 @@ include::2-descriptive/2.adoc[]
 include::3-analytic/3.adoc[]
 include::4-specific-topics/4.adoc[]
 
+[NOTE]
+====
+*Milestone 2 Change Tracking:* To assist in the evaluation process, all new additions, features, and major revisions introduced during Milestone 2 are highlighted in yellow. 
+
+Example: #This indicates new or updated content for Milestone 2.#
+====
+
 [discrete]
 == Generative AI Disclosure
 In our Digital Home Inventory project, we utilized generative AI tools to enhance our workflow while maintaining ownership of the core ideas and decisions. The tools we used were Claude 4.5 (accessed via a free account), ChatGPT (free tier), and DeepSeek AI. These were primarily employed during the brainstorming and structuring phases, where they helped generate initial ideas for project features, such as inventory tracking, notifications for low stock or expirations, budget management, roommate sharing to avoid duplicates, and report generation. For documentation, we used AI to check grammar, suggest edits, and refine the structure to ensure it correlated correctly with rubric criteria, ensuring the documentation met the assignment criteria.
