@@ -77,39 +77,39 @@
 
 | Developer | Week #1 | Week #2 | Week #3 | Week #4 | Week #5 | Week #6 | Penalty |
 |---|---|---|---|---|---|---|---|
-| yamilette-alemany | No | No | No | No | No | No | 27.0 |
-| alondra-arce | No | No | No | No | No | No | 27.0 |
 | ernestosoto3 | No | No | No | No | No | No | 27.0 |
-| LuisJCruz | No | No | No | No | No | No | 27.0 |
-| devlin-hahn04 | No | No | No | No | No | No | 27.0 |
-| kian-robert | No | No | No | No | No | No | 27.0 |
-| fernan-castro | No | No | No | No | No | No | 27.0 |
-| JorgeDeLeonOrama | No | No | No | No | No | No | 27.0 |
-| Programian | No | No | No | No | No | No | 27.0 |
-| FabianVelezOcasio | No | No | No | No | No | No | 27.0 |
-| jaydensanchez12 | No | No | No | No | No | No | 27.0 |
-| SamarysB | No | No | No | No | No | No | 27.0 |
-| andreasegarra | No | No | No | No | No | No | 27.0 |
-| ronaldoflores9 | No | No | No | No | No | No | 27.0 |
-| FabiolaZTorres | No | No | No | No | No | No | 27.0 |
-| reinaldo-martinez1 | No | No | No | No | No | No | 27.0 |
-| Solimar-Cruz | No | No | No | No | No | No | 27.0 |
-| L-A-M-D | No | No | No | No | No | No | 27.0 |
-| AdrianaFigueroa9 | No | No | No | No | No | No | 27.0 |
-| kevgom018 | No | No | No | No | No | No | 27.0 |
-| daniellameleroo | No | No | No | No | No | No | 27.0 |
-| aryamdiaz | No | No | No | No | No | No | 27.0 |
-| nataliavera6 | No | No | No | No | No | No | 27.0 |
-| alianasofiaaa | No | No | No | No | No | No | 27.0 |
-| Gerardoruiz1 | No | No | No | No | No | No | 27.0 |
-| jankii03 | No | No | No | No | No | No | 27.0 |
 | nicolasrivera25 | No | No | No | No | No | No | 27.0 |
-| eliel-hernandez | No | No | No | No | No | No | 27.0 |
+| FabianVelezOcasio | No | No | No | No | No | No | 27.0 |
+| Programian | No | No | No | No | No | No | 27.0 |
 | Kay9876 | No | No | No | No | No | No | 27.0 |
-| Kemuel05 | No | No | No | No | No | No | 27.0 |
-| PeraltaJorge9128 | No | No | No | No | No | No | 27.0 |
-| JorgeRivera94 | No | No | No | No | No | No | 27.0 |
+| LuisJCruz | No | No | No | No | No | No | 27.0 |
+| eliel-hernandez | No | No | No | No | No | No | 27.0 |
+| JorgeDeLeonOrama | No | No | No | No | No | No | 27.0 |
+| Solimar-Cruz | No | No | No | No | No | No | 27.0 |
+| AdrianaFigueroa9 | No | No | No | No | No | No | 27.0 |
+| jankii03 | No | No | No | No | No | No | 27.0 |
+| daniellameleroo | No | No | No | No | No | No | 27.0 |
+| jaydensanchez12 | No | No | No | No | No | No | 27.0 |
+| alondra-arce | No | No | No | No | No | No | 27.0 |
+| andreasegarra | No | No | No | No | No | No | 27.0 |
+| FabiolaZTorres | No | No | No | No | No | No | 27.0 |
 | kevinlara1 | No | No | No | No | No | No | 27.0 |
+| devlin-hahn04 | No | No | No | No | No | No | 27.0 |
+| PeraltaJorge9128 | No | No | No | No | No | No | 27.0 |
+| kevgom018 | No | No | No | No | No | No | 27.0 |
+| ronaldoflores9 | No | No | No | No | No | No | 27.0 |
+| kian-robert | No | No | No | No | No | No | 27.0 |
+| Kemuel05 | No | No | No | No | No | No | 27.0 |
+| yamilette-alemany | No | No | No | No | No | No | 27.0 |
+| alianasofiaaa | No | No | No | No | No | No | 27.0 |
+| SamarysB | No | No | No | No | No | No | 27.0 |
+| aryamdiaz | No | No | No | No | No | No | 27.0 |
+| JorgeRivera94 | No | No | No | No | No | No | 27.0 |
+| reinaldo-martinez1 | No | No | No | No | No | No | 27.0 |
+| nataliavera6 | No | No | No | No | No | No | 27.0 |
+| Gerardoruiz1 | No | No | No | No | No | No | 27.0 |
+| fernan-castro | No | No | No | No | No | No | 27.0 |
+| L-A-M-D | No | No | No | No | No | No | 27.0 |
 
 ## Point Percent by Label
 
@@ -120,6 +120,8 @@ There are no labels assigned to any issue
 | ------- |
 | INFO: Found Project(name='home-inventory', number=6, url='https://github.com/orgs/uprm-inso4115-2025-2026-s2/projects/6', public=False) |
 | WARNING: Project visibility is set to private. This can lead to issues not being found if the Personal Access Token doesn't have permissions for viewing private projects. |
+| WARNING: [Issue #515](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/515) is not associated with a milestone. |
+| WARNING: [Issue #516](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/516) is not associated with a milestone. |
 | WARNING: reinaldo-martinez1 hasn't completed the minimum 1 task(s) required for sprint 2026/04/04-2026/04/21 |
 | WARNING: alianasofiaaa hasn't completed the minimum 1 task(s) required for sprint 2026/04/04-2026/04/21 |
 | WARNING: aryamdiaz hasn't completed the minimum 1 task(s) required for sprint 2026/04/04-2026/04/21 |
