@@ -2,10 +2,14 @@
 
 Interface requirements describe how phenomena and concepts from the domain are represented inside the system-to-be, how they are initialized, and how they are kept in sync when the real world changes.
 
+These requirements were derived through elicitation techniques including semi-structured interviews with students and lightweight story mapping, which were used to identify important user interactions, edge cases, and system behaviors grounded in real household scenarios.
+
 === IR-01: Item Initialization
 When a household member acquires a new item in the real world, they must have a way to create a corresponding representation inside the system.
 
 *The system shall provide a means for household members to add new items to their tracked inventory, including name, quantity/availability, category, location, ownership status (personal/shared), and optional expiration date.*
+
+Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Location
 
 **Questions this addresses:**
 - How does an item first appear in the system?
@@ -17,6 +21,8 @@ When a household member consumes part of an item in the real world, the tracked 
 
 *The system shall provide a means for household members to record consumption by decreasing recorded quantity/availability or marking an item as finished/out-of-stock.*
 
+Needs: N1, N2 | Goals: MG1, MG3, JG1 | Domain concepts: Item instance, Quantity, Consumption
+
 **Questions this addresses:**
 - How does the system learn an item was partially/fully consumed?
 - How is tracked availability kept aligned with physical reality?
@@ -27,15 +33,19 @@ In shared households, members need to know whether an item is personal or shared
 
 *The system shall provide a means to mark an item as personal or shared, and if personal, associate it with a household member.*
 
+Needs: N4 | Goals: SG3, JG3 | Domain concepts: Household member, Item instance, Membership
+
 **Questions this addresses:**
 - How does the system distinguish personal vs shared items?
 - Who can see/act on which items?
 - How are conflicts over personal items reduced?
 
 === IR-04: Low-Stock Threshold Definition
-Households use different “low” definitions depending on the item.
+Households use different “low” definitions depending on the item. This requirement addresses the interface aspect: providing a way to enter the threshold when creating an item, and a way to change the threshold when editing the item. The storage and evaluation of thresholds is addressed by DR-12.
 
-*The system shall provide a means to set low-stock thresholds for individual items (with sensible defaults when no threshold is set).*
+*The system shall provide a means to set low-stock thresholds for individual items. This includes: a threshold field on the item creation screen, a threshold field on the item edit screen, and optionally, a quick-edit affordance when an item is flagged as low-stock.*
+
+Needs: N2 | Goals: MG3, JG1, AG1 | Domain concepts: Low-stock threshold, Item type
 
 **Questions this addresses:**
 - How does the system know what “low” means for different items?
@@ -47,6 +57,8 @@ Some items have expiration dates that must be captured to support expiration awa
 
 *The system shall provide a means to enter and edit expiration dates for items that expire; items without expiration dates must be supported.*
 
+Needs: N2 | Goals: MG2, JG2 | Domain concepts: Item instance, Expiration date
+
 **Questions this addresses:**
 - How does the system learn when an item expires?
 - Is expiration required or optional?
@@ -57,6 +69,8 @@ When a household member spends money on household items, that transaction must b
 
 *The system shall provide a means to log purchases, including items bought (or categories), total cost, date of purchase, and whether the purchase was personal or shared.*
 
+Needs: N5 | Goals: SG1, AG2 | Domain concepts: Spending entry, Spending category
+
 **Questions this addresses:**
 - How does spending information enter the system?
 - How can purchases be linked to items or categories?
@@ -65,7 +79,9 @@ When a household member spends money on household items, that transaction must b
 === IR-07: Cost Splitting
 For shared purchases, costs may need to be divided among household members.
 
-*The system shall provide a means to split shared purchase costs among selected household members and track who owes what (according to household agreement).*
+*The system shall provide a means to split shared purchase costs among selected household members and track who owes what.*
+
+Needs: N5 | Goals: SG2, AG2 | Domain concepts: Spending entry, Household member, Membership
 
 **Questions this addresses:**
 - How are shared costs divided?
@@ -77,47 +93,49 @@ Household members need a high-level overview without searching through details.
 
 *The system shall provide a dashboard view summarizing key metrics such as total items, low-stock items, expiring/expired items, and current-period spending.*
 
+Needs: N1, N3 | Goals: MG1, AG1, AG3 | Domain concepts: Inventory, Budget status, Low-stock threshold, Expiration date
+
 **Questions this addresses:**
 - How does a member quickly assess what needs attention?
 - Which metrics matter most at a glance?
 - How are different tracked phenomena summarized consistently?
 
-=== Appendix A: Edge-Case Interface Requirements (Deferred)
+=== Appendix A: Edge-Case Interface Requirements
 
-The following edge-case interface requirements (IR-EC-A through IR-EC-I) are recognized but deferred for detailed specification in later milestones. They are captured in this appendix, separate from core IRs, to avoid losing scope awareness and to support future traceability.
+The following edge-case interface requirements are recognized but deferred for detailed specification in later milestones. They are captured in this appendix, separate from core IRs, to avoid losing scope awareness and to support future traceability.
 
 ==== IR-EC-A: Near-Duplicate Variant Disambiguation
 
-When a stakeholder adds an item whose name matches an existing product but whose size, variant, or brand differs, the system must present the conflicting attribute (size, variant, flavor) highlighted and require the stakeholder to choose: "This is a different variant (create new product)" or "Use existing product." Same-name/different-size entries shall be treated as separate product definitions by default and must not be auto-merged.
+When a user adds an item whose name matches an existing item type but whose size, variant, or brand differs, the system must present the conflicting attribute highlighted and require the user to choose: "This is a different variant" or "Use existing item type." Same-name/different-size entries shall be treated as separate item type definitions by default and must not be auto-merged.
 
 ==== IR-EC-B: Stock Entry Separation by Expiration and Location
 
-When a stakeholder attempts to merge two stock entries for the same product that have different expiration dates or different storage locations, the system must warn that merging will lose expiration/location tracking. The default action must be "Keep separate"; merging must require explicit confirmation.
+When a user attempts to merge two item instances for the same item type that have different expiration dates or different storage locations, the system must warn that merging will lose expiration/location tracking. The default action must be "Keep separate"; merging must require explicit confirmation.
 
 ==== IR-EC-C: Import Idempotency and Duplicate Spend Prevention
 
-When a stakeholder uploads a CSV import file that was previously imported (detected by file hash), the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.
+When a user uploads a CSV import file that was previously imported, the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.
 
 ==== IR-EC-D: Inventory Correction Without Budget Impact
 
-When a stakeholder deletes or merges an inventory entry that has associated spend events, the system must present two independent controls: "Remove from inventory" (default on) and "Also mark purchase as mistake — exclude from budget" (default off). Inventory correction must never delete spend events automatically. Both actions must be logged separately in the audit trail.
+When a user deletes or merges an inventory entry that has associated spend events, the system must present two independent controls: "Remove from inventory" and "Also mark purchase as mistake — exclude from budget". Inventory correction must never delete spend events automatically. Both actions must be logged separately in the audit trail.
 
 ==== IR-EC-E: Refund and Return Flow
 
-When a stakeholder returns a purchased item, the system must provide a refund flow that: decrements inventory quantity, creates a negative spend entry linked to the original where possible, and requires amount refunded, date, and an optional link to the original receipt or spend event.
+When a user returns a purchased item, the system must provide a refund flow that: decrements inventory quantity, creates a negative spend entry linked to the original where possible, and requires amount refunded, date, and an optional link to the original receipt or spend event.
 
 ==== IR-EC-F: Waste and Shrinkage Adjustment
 
-When a stakeholder removes expired, lost, or consumed items from inventory outside of a normal purchase/return flow, the system must: allow inventory adjustment without altering any spend event, require an adjustment reason (Consumed / Lost / Shared use / Unknown), and offer an optional "Add to waste report" checkbox (default on for expired removals). Waste metrics must be reported separately from spending.
+When a user removes expired, lost, or consumed items from inventory outside of a normal purchase/return flow, the system must: allow inventory adjustment without altering any spend event, require an adjustment reason, and offer an optional "Add to waste report" checkbox. Waste metrics must be reported separately from spending.
 
 ==== IR-EC-G: Shared Household Budget Attribution Prompt
 
-When a stakeholder adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. If the stakeholder selects another household member, the system must require confirmation. Cross-user inventory merges are permitted for quantity counts, but each spend event must retain its original buyer attribution.
+When a user adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. If the user selects another household member, the system must require confirmation. Cross-user inventory merges are permitted for quantity counts, but each spend event must retain its original buyer attribution.
 
 ==== IR-EC-H: Undo for Auto-Merge Actions
 
-Every auto-merge of inventory quantities (e.g., stock duplicate within 30-second window) must be reversible within 10 seconds via an undo control. Undo must revert quantity changes and record the undo in the audit log.
+Every auto-merge of inventory quantities must be reversible within 10 seconds via an undo control. Undo must revert quantity changes and record the undo in the audit log.
 
 ==== IR-EC-I: Audit Trail for Edge-Case Resolutions
 
-Every edge-case resolution that modifies inventory state must generate a log entry containing at minimum: timestamp, user, household, source (manual / scan / import / adjustment / refund), action type, product reference, stock entry reference (if applicable), spend event reference (if applicable), reason (if user-selected), and a reference to the previous state. This log must be accessible to the household admin.
+Every edge-case resolution that modifies inventory state must generate a log entry containing at minimum: timestamp, user, household, source, action type, item type reference, item instance reference, spending entry reference, reason, and a reference to the previous state. This log must be accessible to the household admin.

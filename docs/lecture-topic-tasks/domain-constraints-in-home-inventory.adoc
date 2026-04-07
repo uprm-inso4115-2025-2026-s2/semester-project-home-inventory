@@ -1,0 +1,75 @@
+= Domain Constraints in the Home Inventory System
+
+This document applies the lecture concept of *domain constraints* to the Home Inventory system.
+
+Domain constraints represent rules and limitations that restrict how data and operations behave within the system.  
+They ensure consistency, validity, and correct system behavior across all features.
+
+== Domain Constraints Table
+
+[cols="1,3"]
+|===
+| Domain Constraint | Explanation / Impact
+
+| Item quantity cannot be negative
+| Prevents invalid inventory states and ensures consistency when items are consumed or removed.
+
+| Expiration date must be after purchase date
+| Enforces logical temporal relationships and prevents incorrect expiration tracking.
+
+| Item must belong to a valid category
+| Ensures proper organization and enables accurate filtering and grouping in the inventory view.
+
+| Each item must have a unique identifier (ID)
+| Guarantees traceability and prevents duplication conflicts within the system.
+
+| Price must be a non-negative value
+| Maintains correct spending calculations and avoids invalid budgeting data.
+
+| Owner must be defined for shared items
+| Supports roommate coordination and prevents ambiguity in shared inventory.
+
+| Low-stock threshold must be a valid positive value
+| Ensures accurate triggering of notifications and avoids false or missed alerts.
+
+| Expired items cannot be marked as usable
+| Prevents inconsistent system states and ensures reliability of expiration tracking.
+
+| Reports depend on valid and complete item data
+| Ensures that summaries such as inventory value and spending reports reflect accurate information.
+
+|===
+
+== Explanation of Constraint Types
+
+=== Data Integrity Constraints
+These constraints ensure that stored data remains valid and consistent.  
+Example: *Item quantity cannot be negative* prevents invalid system states.
+
+=== Temporal Constraints
+These constraints enforce time-based relationships between attributes.  
+Example: *Expiration date must be after purchase date* ensures proper lifecycle tracking of items.
+
+=== Uniqueness Constraints
+These constraints guarantee that certain attributes remain distinct across the system.  
+Example: *Item ID must be unique* ensures reliable identification and traceability.
+
+=== Functional Constraints
+These constraints directly affect how features behave within the system.  
+Example: *Low-stock threshold must be valid* ensures correct notification behavior.
+
+=== Dependency Constraints
+These constraints define relationships between different system elements.  
+Example: *Reports depend on valid item data* ensures accurate analytics and summaries.
+
+== Constraints Impact and Enforcement
+
+Domain constraints define the system's boundaries and keep inventory data accurate and behavior predictable. They prevent invalid states (e.g., negative quantities), ensure unique identification of items, and enable reliable reporting and notifications. Well-defined constraints also clarify user expectations (ownership, categories, thresholds) and reduce debugging and support effort.
+
+To ensure correct system behavior, these constraints must be enforced at multiple levels:
+
+* UI input validation to prevent invalid user entries  
+* Application business logic to enforce rules such as notifications and thresholds  
+* Database constraints to guarantee data integrity and relationships  
+
+Early validation reduces the propagation of erroneous states and ensures that analytics and system outputs remain reliable.

@@ -14,13 +14,13 @@ Some households also keep an informal understanding of spending on essentials. P
 
 === Actors and artifacts
 
-*Actors (domain roles):*
+==== Actors (domain roles):
 * Students living alone (single-member household)
 * Students living with roommates/cohabitants (multi-member household)
 * Household members who often coordinate replenishment (informal “household manager” role)
 * Household members who focus on budget awareness (budget-conscious role)
 
-*Artifacts used today (domain-visible):*
+==== Artifacts used today (domain-visible):
 * Fridge notes / whiteboards
 * Chat messages (e.g., group chat)
 * Notes app lists

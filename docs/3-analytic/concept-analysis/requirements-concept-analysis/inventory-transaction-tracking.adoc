@@ -7,18 +7,18 @@
 
 == Overview
 
-This document defines how inventory quantity changes should be recorded as transactions.
+This document defines how tracked inventory quantity changes should be recorded as transactions.
 The goal is to keep a clear and consistent history of how and when item quantities change.
 
-== What Is a Stock Transaction
+== What Is a Transaction
 
-A stock transaction represents any action that changes the quantity of an inventory item.
+A transaction represents any action that changes the quantity of an item type in the tracked inventory record.
 
-Examples of stock transactions include:
+Examples of transactions (quantity changes) include:
 
-* Restocking an item (quantity increases).
-* Using or consuming an item (quantity decreases).
-* Manual quantity adjustments.
+* Replenishment (restock) of an item type (quantity increases).
+* Consumption of an item type (quantity decreases).
+* Manual quantity adjustment of an item type.
 
 If an action changes quantity, it should be considered a transaction.
 
@@ -31,7 +31,7 @@ This table describes the basic information each transaction should store.
 |Field |Description
 
 |Item reference
-|The inventory item affected by the change.
+|The item instance affected by the change.
 
 |Quantity change
 |The amount added or removed from the item’s quantity.
@@ -49,16 +49,36 @@ This table describes the basic information each transaction should store.
 * Transactions should never change quantity without a clear reason.
 * Transaction history should be read-only after creation.
 
+== Transaction Responsibility Boundary
+
+Transactions (quantity changes) are responsible for recording quantity changes and updating tracked inventory record quantity.
+
+Transactions may trigger immediate state evaluation after recording, but they do not directly own alert / notification creation or restock list updates. Those actions occur only if the Automation System detects a state transition.
+
+The system assumes that tracked inventory records are an approximation of real household inventory.
+Transactions (quantity changes) allow adjustments over time to correct differences between tracked inventory and reality.
+
 == Relationship to Inventory Quantity
 
-* Inventory items store the current quantity.
-* Transactions explain how that quantity was reached over time.
-* The current quantity should always match the result of applied transactions.
+* Tracked inventory records store the current quantity.
+* Transaction records explain how that quantity was reached over time.
+* Current quantity is updated when a transaction is recorded.
+* Transactions are append-only historical records and are not the primary source used to compute current quantity during normal operation.
+
+== Relationship Between Transactions and Low-Stock Judgment
+
+After a transaction is recorded, the system may immediately evaluate low-stock judgment.
+Low-stock judgment may also be evaluated during the scheduled sweep to ensure conditions are detected even when no recent transactions occurred.
+If the transaction causes a state transition (e.g., NORMAL → LOW_STOCK or LOW_STOCK → OUT_OF_STOCK),
+an alert / notification record may be generated and the item type may be added to the restock list.
+
 
 == Recommendation
 
-Record all inventory quantity changes as transactions with a clear reason and timestamp.
+Record all tracked inventory record quantity changes as transactions with a clear reason and timestamp.
 This approach provides transparency and allows future features like history review and analytics.
+
+Because transactions depend on household members recording changes, there is a risk that missing or incorrect transactions may cause tracked inventory records to diverge from household inventory reality; therefore, the system must allow later adjustments and corrections.
 
 == Sources
 

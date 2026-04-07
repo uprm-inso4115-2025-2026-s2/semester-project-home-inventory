@@ -4,23 +4,33 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 === Behavior patterns
 
-* **Restock cycle:** A stakeholder consumes stock → quantity decreases → low-stock threshold is crossed → alert issued → purchase is made → quantity replenished.
-* **Shared purchase flow:** A stakeholder buys a shared item → logs the purchase → the system splits cost across household members → each member sees their share.
-* **Expiration monitoring:** Stock nears its expiration date → the system transitions the item to an _Expiring_ state → alert issued → stakeholder removes or discards the item → a waste event is logged.
+* *Restock cycle:* A household member consumes an item instance -> availability decreases -> low-stock is judged or quantity crosses a threshold -> a replenishment decision is made -> more of the item type is acquired.
+* *Shared purchase flow:* A household member buys a shared item -> the purchase is recorded -> the shared household understands that the cost belongs to the shared context rather than only one person.
+* *Expiration monitoring:* An item instance approaches its expiration date -> the household notices or is informed -> the item is used, discarded, or left in place depending on household practice.
 
 === Domain rules
 
-* One barcode corresponds to exactly one Product definition (DR-1, DR-14, DR-17).
-* A Stock duplicate entry submitted within 30 seconds triggers automatic quantity aggregation rather than a new entry (DR-7, IR-11).
-* Spend Events are immutable — inventory corrections must never overwrite financial history (DR-3, DR-9).
-* A Household must always have exactly one Owner (DR-4).
-* Ownership must be transferred before an Owner can leave a Household (DR-4).
+* One barcode corresponds to exactly one *Item type* definition.
+* A duplicate *Item instance* entry submitted within a short window may be treated as an addition to an existing tracked record rather than as a separate new record, unless household members explicitly keep them separate.
+* *Spending entries* are historical records; inventory corrections should not silently overwrite financial history.
+* A *Household* has one administrative responsibility at a time when that role is formally represented.
+* If that administrative responsibility is transferred, the new responsibility must be established before the previous admin leaves the household context.
 
 === Edge cases
 
-* If a stock entry is submitted while offline and synced later, the 30-second duplicate window is evaluated against the server-received timestamp, not the client timestamp.
-* If an item has no expiration date, expiration monitoring is skipped for that stock entry.
-* If an Owner attempts to leave without transferring ownership, the action is blocked until a new Owner is designated.
+* If an item instance has no expiration date, expiration-based behavior cannot be derived from date information alone.
+* If a household admin attempts to leave without transferring that responsibility, shared-household administration becomes unresolved until another member takes over.
 
-include::invite-roommate-sharing.adoc[leveloffset=+1]
-include::invites-logic-definition.adoc[leveloffset=+1]
+=== Shared-Household Invitation and Membership Changes
+
+In shared households, participation may change over time as new members are invited, current members leave, or access is revoked. Invitation is therefore part of how household membership changes, even though the exact delivery and security mechanism belong to later requirements and implementation sections.
+
+A household invitation is a temporary request that allows a participant to join a household context. At the domain level, the important states are:
+
+* sent
+* accepted
+* declined
+* expired
+* revoked
+
+These states matter because they affect who participates in household coordination and who should continue to receive shared information.

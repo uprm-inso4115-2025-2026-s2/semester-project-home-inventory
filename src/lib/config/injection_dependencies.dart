@@ -14,6 +14,19 @@ import 'package:src/features/reports/domain/repositories/supabase_report_reposit
 import 'package:src/features/reports/domain/repositories/report_repositories.dart';
 import 'package:src/features/reports/presentation/cubit/report_list_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:src/features/core_inventory/data/data_sources/inventory_supabase_datasource.dart';
+import 'package:src/features/core_inventory/data/data_sources/product_supabase_datasource.dart';
+import 'package:src/features/core_inventory/data/repositories/inventory_repository_impl.dart';
+import 'package:src/features/core_inventory/data/repositories/product_repository_impl.dart';
+import 'package:src/features/core_inventory/domain/repositories/inventory_repositories.dart';
+import 'package:src/features/core_inventory/domain/repositories/product_repository.dart';
+import 'package:src/features/core_inventory/domain/usecases/get_inventory_items.dart';
+import 'package:src/features/core_inventory/domain/usecases/add_inventory_item.dart';
+import 'package:src/features/core_inventory/domain/usecases/update_inventory_item.dart';
+import 'package:src/features/core_inventory/domain/usecases/delete_inventory_item.dart';
+import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
+import 'package:src/features/dashboard/domain/repositories/dashboard_repositories.dart';
+import 'package:src/features/dashboard/data/dashboard_repository_impl.dart';
 
 final sl = GetIt.instance;
 
@@ -57,7 +70,41 @@ Future<void> initializeDependencies() async {
   /// they're not 100% standalone.
 
   /// Core Inventory
-  // ...
+  // Data Sources
+  sl.registerSingleton<ProductSupabaseDataSource>(
+    ProductSupabaseDataSource(sl()),
+  );
+  sl.registerSingleton<InventorySupabaseDataSource>(
+    InventorySupabaseDataSource(sl()),
+  );
+
+  // Repositories
+  sl.registerSingleton<ProductRepository>(ProductRepositoryImpl(sl()));
+  sl.registerLazySingleton<DashboardRepository>(
+    () => DashboardRepositoryImpl(),
+  );
+  sl.registerSingleton<InventoryRepository>(
+    InventoryRepositoryImpl(
+      sl<InventorySupabaseDataSource>(),
+      sl<ProductRepository>(),
+    ),
+  );
+
+  // Usecases
+  sl.registerSingleton<GetInventoryItems>(GetInventoryItems(sl()));
+  sl.registerSingleton<AddInventoryItem>(AddInventoryItem(sl()));
+  sl.registerSingleton<UpdateInventoryItem>(UpdateInventoryItem(sl()));
+  sl.registerSingleton<DeleteInventoryItem>(DeleteInventoryItem(sl()));
+
+  // Cubit
+  sl.registerFactory<InventoryCubit>(
+    () => InventoryCubit(
+      getInventoryItems: sl(),
+      addInventoryItem: sl(),
+      updateInventoryItem: sl(),
+      deleteInventoryItem: sl(),
+    ),
+  );
 
   /// Alerts and Restock
   // ...

@@ -1,0 +1,272 @@
+= Roommate Invitation — User Flow Design Documentation
+Home Inventory System — UI Design
+@username
+:doctype: article
+:toc: left
+:toc-title: Table of Contents
+:sectnums:
+:icons: font
+
+---
+
+== Overview
+
+This document describes the design process and user flow specifications for the *Roommate Invitation* feature of the Home Inventory System. The flow allows a household owner to invite a new roommate to join their household and gain access to the shared inventory.
+
+---
+
+== Task context
+
+As part of the Design User Flow for Roommate Invitation issue, the following was designed:
+
+* A complete *user flow diagram* covering all steps from opening the invitation interface to the household members list updating after acceptance.
+* All *interaction states* — sending, confirmation, acceptance, decline, expired, and error.
+* *Edge cases* — invalid input, already a member, expired invitation.
+
+---
+
+== Design process
+
+=== Step 1 — Define the flow entry point
+
+The invitation flow is triggered from the *Household Members* section of the app. The homeowner taps an "Invite roommate" button which opens the invitation interface. This placement was chosen because:
+
+* It is contextually relevant — the user is already viewing members when they decide to add one.
+* It keeps the flow close to where the result (new member appearing) will be visible.
+
+=== Step 2 — Map the full happy path
+
+The primary success path of the flow was mapped first before edge cases:
+
+----
+Open invitation interface
+        ↓
+Enter roommate info (email or username)
+        ↓
+Validate input
+        ↓
+Preview & send invitation
+        ↓
+Invitation sent — success screen shown to sender
+        ↓
+Invitee receives invitation (email or in-app)
+        ↓
+Invitee accepts
+        ↓
+Members list updated — roommate shown as active
+        ↓
+Roommate has shared inventory access
+----
+
+=== Step 3 — Identify decision points
+
+Three decision points were identified in the flow:
+
+[cols="1,2,2", options="header"]
+|===
+| Decision point
+| Yes path
+| No / alternate path
+
+| Valid input?
+| Proceed to preview & send
+| Show error — loop back to form
+
+| Invitation expired?
+| Show expired state — option to resend
+| Proceed to accept/decline decision
+
+| Accept or decline?
+| Invitation accepted → update members list
+| Invitation declined → notify sender
+|===
+
+=== Step 4 — Define edge cases
+
+The following edge cases were identified and included in the flow:
+
+[cols="1,2", options="header"]
+|===
+| Edge case
+| Behavior
+
+| Invalid email or username
+| Red error state shown on input field. User must correct before proceeding.
+
+| Invitee is already a member
+| Error shown before sending — "This person is already in your household."
+
+| Invitation expires before response
+| Expired badge shown in sender's pending list. "Resend" option available.
+
+| Invitee declines
+| Invitation removed from pending. Sender receives an in-app notification.
+
+| Connection error during acceptance
+| Error state shown to invitee with a retry option.
+|===
+
+=== Step 5 — Define the pending state
+
+Between sending and the invitee responding, the household members list shows the invitee in a *pending* state:
+
+* Name and email visible but grayed out or marked with a "Pending" badge.
+* No shared inventory access granted until acceptance is confirmed.
+* Sender can cancel the invitation from the pending view.
+
+=== Step 6 — Define the members list update
+
+Once the invitee accepts, the members list updates as follows:
+
+* Pending badge is removed.
+* Roommate's name and avatar (or initials) appear as an active member.
+* Their role is shown as "Member" (vs. the homeowner's "Owner" role).
+* Items they add going forward will show their ownership indicator.
+* Shared inventory items become visible to them immediately.
+
+---
+
+== Full user flow description
+
+=== Sender side (homeowner)
+
+. Homeowner opens the *Household Members* section.
+. Taps *Invite roommate* to open the invitation interface.
+. Enters the invitee's *email or username* in the input field.
+. System validates the input:
+** If invalid or already a member → error shown, user corrects and retries.
+** If valid → proceeds to preview screen.
+. Homeowner reviews the invitation preview and taps *Send*.
+. *Success screen* confirms the invitation was sent.
+. Members list now shows the invitee as *Pending*.
+. Homeowner waits for the invitee to respond.
+** If the invitation expires → expired badge shown, resend option available.
+** If the invitee declines → homeowner receives a notification, invitee removed from pending.
+** If the invitee accepts → members list updates to show them as active.
+
+=== Invitee side (incoming roommate)
+
+. Invitee receives an *email or in-app notification* with the invitation.
+. System checks if the invitation is still valid:
+** If expired → expired message shown with option to contact the sender.
+** If valid → invitation detail screen shown.
+. Invitee reviews the household details and taps *Accept* or *Decline*.
+** If declined → sender is notified, flow ends.
+** If accepted → invitee is added as an active household member.
+. Invitee now has access to the *shared inventory*.
+
+---
+
+== Screen specifications
+
+=== Invitation entry screen
+
+[cols="1,2", options="header"]
+|===
+| Element
+| Specification
+
+| Screen title
+| "Invite roommate" — 14px medium, centered in nav bar
+
+| Input field
+| Single text input — "Email or username" placeholder — full width with 0.5px bottom border
+
+| Send button
+| Primary style — disabled until valid input entered
+
+| Error state
+| Red border on input + error message below — "Invalid email" or "Already a member"
+|===
+
+=== Preview & send screen
+
+[cols="1,2", options="header"]
+|===
+| Element
+| Specification
+
+| Invitation summary card
+| Shows invitee email/username + household name
+
+| Confirm send button
+| Primary style — "Send invitation"
+
+| Cancel link
+| Secondary — "Cancel" — returns to entry screen
+|===
+
+=== Invitation sent screen (sender)
+
+[cols="1,2", options="header"]
+|===
+| Element
+| Specification
+
+| Success indicator
+| Checkmark icon + "Invitation sent" heading
+
+| Sub-message
+| "We notified [name/email]. They will appear here once they accept."
+
+| Back to members button
+| Returns to household members list
+|===
+
+=== Pending state (members list)
+
+[cols="1,2", options="header"]
+|===
+| Element
+| Specification
+
+| Member row appearance
+| Grayed out name + email + "Pending" badge on right
+
+| Cancel option
+| Swipe or long-press to reveal "Cancel invitation"
+
+| Expired badge
+| Amber pill — "Expired" + "Resend" text button
+|===
+
+=== Invitee invitation screen
+
+[cols="1,2", options="header"]
+|===
+| Element
+| Specification
+
+| Household name
+| Displayed prominently at top
+
+| Sender name
+| "Invited by [name]"
+
+| Accept button
+| Primary style — green fill
+
+| Decline button
+| Secondary style — outlined
+
+| Expired state
+| Shows "This invitation has expired" message — no action buttons
+|===
+
+=== Members list — after acceptance
+
+[cols="1,2", options="header"]
+|===
+| Element
+| Specification
+
+| New member row
+| Full name + avatar initials dot (color assigned) + "Member" role label
+
+| Transition
+| Pending badge replaced by active member row — no page reload required
+
+| Shared inventory access
+| Granted immediately on acceptance
+|===
+

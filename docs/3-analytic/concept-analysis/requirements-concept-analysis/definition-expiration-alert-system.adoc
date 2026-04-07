@@ -10,21 +10,37 @@
 [cols="1,1,1,1"]
 |===
 |Strategy |Description |Pros |Cons
-|Polling  |The system polls for expired items periodically. |Low latency detection. Simple to implement. |High resource usage and only works if app is open or using background tasks.
-|Database Cron Jobs | The system uses database cron jobs to detect expired items. The scripts may run daily and identify and send push notifications. |Efficient, scalable, and automated. It works when app is closed. |Requires setting up Edge Functions and a scheduling extension.
+|Polling  |The system periodically evaluates expiration dates for item instances. |Low latency detection. Simple to implement. |High resource usage and only works if app is open or using background tasks.
+|Database Cron Jobs | The system uses database cron jobs to detect expired item instances and generate alert events. The scripts may run daily and identify and send push notifications. |Efficient, scalable, and automated. It works when app is closed. |Requires setting up Edge Functions and a scheduling extension.
 |===
 
 == Best Practices for Expiration Detection
 
 * Use a combination of strategies for optimal performance and reliability.
 * Ensure that the system can handle edge cases, such as items that expire while the app is closed.
-* Multi-tier notifications can be implemented to alert users at different stages of expiration (e.g., 24 hours before, 1 hour before, and at the time of expiration).
-* Allow grace periods so useres are not notified at midnight or during inconvenient times.
-* Actionable notifications can be implemented to allow users to take immediate action (e.g., renew subscription, clear expired items).
+* Multi-tier notifications events can be implemented to alert household members at different stages of expiration (e.g., 24 hours before, 1 hour before, and at the time of expiration).
+* Allow grace periods so household members are not notified at midnight or during inconvenient times.
+* Actionable notifications can be implemented to allow household members to take immediate action (e.g., renew subscription, clear expired items).
+
+== Expiration Evaluation Timing
+
+Expiration and near-expiry conditions are evaluated during the scheduled sweep.
+The scheduled sweep runs once per day and generates notification records for new expiration-related state transitions.
+
+Expiration alerts should only be generated when a state transition occurs
+(e.g., NORMAL → NEAR_EXPIRY or NEAR_EXPIRY → EXPIRED), and should not be repeatedly generated if the state remains unchanged.
+
+== Responsibility Boundary
+
+This document defines expiration and near-expiry detection strategy.
+
+Expiration-related conditions are evaluated by the Automation System.
+Creation of notification records based on those conditions belongs to the Notification Service.
+Push delivery, if enabled later, belongs to the Push Service.
 
 == Recommendation
 
-My recommendation is to implement the Database Cron Jobs (edge function) strategy for expiration detection. It allows for automated detection of expired items even when the app is closed, and is more efficient than polling. 
+My recommendation is to implement the Database Cron Jobs (edge function) strategy for expiration detection. It allows for automated detection of expired item instances even when the app is closed, and is more efficient than polling. 
 
 == Sources
 

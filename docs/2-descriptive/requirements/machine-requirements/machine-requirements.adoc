@@ -81,9 +81,11 @@ Machine requirements #define# measurable quality properties #for Milestone 2 imp
 
 === MR-08: Barcode Scanning and Fallback
 
-#When a barcode is scanned, the system shall attempt to match it to an existing item type. If no match is found, the system shall allow manual entry without blocking the workflow. If the barcode is unreadable or scanning is unavailable, manual entry shall remain the primary fallback.#
+#The mobile client shall use the device camera to scan barcodes for item identification. When a barcode is scanned, the system shall attempt to match it to an existing item type. If no match is found, the system shall allow manual entry without blocking the workflow. If the barcode is unreadable or scanning is unavailable, manual entry shall remain the primary fallback.#
 
-#*Trace*: DR-1 (barcode uniqueness), DR-13 (expiration status fallback philosophy)#
+NOTE: Barcode uniqueness is a domain requirement, not a machine requirement. This MR addresses the interface/device aspect: using the camera to capture barcodes and falling back gracefully when scanning fails.
+
+#*Trace*: DR-1, DR-13#
 
 #*Verification*: Manual tests with valid barcode, invalid barcode, and scanning unavailable scenarios.#
 
@@ -109,4 +111,4 @@ Machine requirements #define# measurable quality properties #for Milestone 2 imp
 
 === Out of Scope for Milestone 2
 
-#Quantitative targets (specific response time percentiles, concurrent user capacity, uptime percentages) cannot be established without a prototype. These will be defined in Milestone 3 based on measurements collected during Milestone 2 validation.#
+#Quantitative targets cannot be established without a prototype. These will be defined in Milestone 3 based on measurements collected during Milestone 2 validation.#

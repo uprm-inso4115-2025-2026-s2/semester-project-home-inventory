@@ -17,3 +17,32 @@ An application that surprises users or fails when they need it will not become p
 === Project Management and Coordination
 
 Several groups working on different concerns of the same system-to-be need to stay connected. Regular conversations between teams working on inventory, alerts, budgeting, and reports help spot potential trouble before it slows everyone down. A shared work-tracking board will make ownership and progress visible and help the team manage dependencies between features. Looking over each other's work before it becomes part of the main application catches small issues early. When the team working on reports needs information about spending, checking in with the budgeting team early saves redoing work later. These habits of talking and coordinating mean that when it comes time to bring everything together, the pieces fit without surprises.
+
+=== Other Activities
+
+This section tracks major updates and documentation changes since the Milestone 1 submission.
+
+==== Milestone 2 Updates
+
+[cols="1,3,2", options="header"]
+|===
+| Section | Description of Changes | New/Updated Files
+
+| **2. Descriptive** | Established a comprehensive visual identity and UI system including color theory and typography standards. | `color_palette.adoc`, `Typography-Style-Guide.adoc`, `UI_card_layout_strategy.adoc`
+
+| **2. Descriptive** | Defined technical implementation for automated background processes, including expiration checks and stock tracking logic. | `automated-stock-check-logic.adoc`, `automated-expiration-check-logic.adoc`, `barcode_scanning_manual_entry.adoc`
+
+| **2. Descriptive** | Finalized high-fidelity interactive screen designs for the three core modules: Inventory, Alerts, and Budget. | `core-inventory-wireframes.adoc`, `Alerts-&-Notifications-Screen.adoc`, `Budget-spending.adoc`
+
+| **2. Descriptive** | Detailed the software architecture for "Sweep" operations and created a robust notification deduplication strategy. | `design-and-document-sweep-architecture.adoc`, `notification-deduplication-strategy.adoc`, `sweep-failure-detection-recovery.adoc`
+
+| **3. Analytic** | Conducted concept analysis on inventory state changes, ownership permissions, and risk mitigation for automation. | `inventory_quantity_change_model.adoc`, `ownership_model_research.adoc`, `alerts-restock-automation-risk-analysis.adoc`
+
+| **3. Analytic** | Formulated state machines for the alert system and defined the decision logic for the grocery list auto-generator. | `alert-system-states.adoc`, `grocerylist_autoadd_decisionlogic.adoc`
+
+| **3. Analytic** | Developed data validation protocols and a comprehensive End-to-End (E2E) testing plan for the application. | `core-inventory-data-validation-rules.adoc`, `acceptance-e2e-tests.adoc`
+
+| **4. Specific Topics** | Expanded stakeholder analysis to include "non-obvious" users and drafted a plan for broad domain requirements acquisition. | `domain-requirements-acquisition.adoc`, `additional-stakeholders.adoc`, `stakeholder-perpective.adoc`
+
+| **4. Specific Topics** | Established inconsistency management standards for document versioning and household item hierarchies. | `inconsistency-management.adoc`, `consistency_hierachy_standards.adoc`, `document-duplicate-prevention-logic.adoc`
+|===

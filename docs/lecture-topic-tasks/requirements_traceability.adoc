@@ -1,0 +1,176 @@
+= Requirements Traceability in the Digital Home Inventory System
+:toc:
+:sectnums:
+:project: Digital Home Inventory
+
+*AI Disclosure*: This document was developed with the assistance of an AI tool for structural guidance and a better understanding of lecture concepts. All classifications, interpretations, and final decisions were reviewed, validated, and finalized by the author.
+
+== 1. Introduction
+
+Requirements traceability is the ability to track and link requirements across different stages of the software development lifecycle. It ensures that every requirement defined in the system is properly implemented, tested, and maintained.
+
+In the {project}, traceability is especially important because the system integrates multiple features such as inventory tracking, notifications, reporting, and shared access between users. Maintaining clear relationships between requirements and system components helps ensure consistency and correctness throughout development.
+
+== 2. Concept of Requirements Traceability
+
+Requirements traceability refers to the practice of establishing relationships between:
+
+- Requirements
+- System features
+- Implementation components (code, database)
+- Test cases
+
+Traceability can be divided into two main types:
+
+=== 2.1 Forward Traceability
+Tracks requirements from their origin to implementation and testing.
+
+Example:
+A requirement → implemented feature → test case
+
+=== 2.2 Backward Traceability
+Tracks implemented components back to their original requirement.
+
+Example:
+A function or database table → linked requirement
+
+This ensures that no unnecessary or undocumented features are added.
+
+== 3. Traceability Across Development Stages
+
+Requirements can be traced across the following stages:
+
+[cols="1,3"]
+|===
+| Stage | Description
+
+| Requirements
+| Define what the system should do (e.g., notify users of low stock items)
+
+| Design
+| Translate requirements into system architecture (e.g., notification module)
+
+| Implementation
+| Code and database structures (e.g., notifications table in Supabase)
+
+| Testing
+| Validate requirements through test cases (e.g., trigger notification when stock is low)
+|===
+
+This alignment ensures that all parts of the system are connected and consistent.
+
+== 4. Traceability in the Digital Home Inventory System
+
+Based on the system description, several key requirements can be traced:
+
+=== 4.1 Example 1: Low Stock Notification
+
+[cols="1,3"]
+|===
+| Element | Description
+
+| Requirement
+| Notify users when an item is low in stock
+
+| Feature
+| Alerts & Notifications System
+
+| Implementation
+| Low stock detection logic + notifications table
+
+| Test Case
+| Verify notification triggers when item quantity reaches threshold
+|===
+
+=== 4.2 Example 2: Expiration Tracking
+
+[cols="1,3"]
+|===
+| Element | Description
+
+| Requirement
+| Alert users when items are near expiration
+
+| Feature
+| Expiration Tracking System
+
+| Implementation
+| Expiration check function (status: OK, NEAR, EXPIRED)
+
+| Test Case
+| Validate correct status based on expiration date
+|===
+
+=== 4.3 Example 3: Inventory Organization
+
+[cols="1,3"]
+|===
+| Element | Description
+
+| Requirement
+| Organize items by category or room
+
+| Feature
+| Inventory Management System
+
+| Implementation
+| Database fields for category/location
+
+| Test Case
+| Verify items appear correctly in selected filters
+|===
+
+=== 4.4 Example 4: Shared Inventory
+
+[cols="1,3"]
+|===
+| Element | Description
+
+| Requirement
+| Prevent duplicate purchases between roommates
+
+| Feature
+| Shared Inventory System
+
+| Implementation
+| Shared user access + synchronized inventory
+
+| Test Case
+| Verify both users see the same inventory and duplicate warnings
+|===
+
+== 5. Benefits of Requirements Traceability
+
+Traceability provides several key benefits:
+
+- Ensures all requirements are implemented
+- Helps identify missing or incomplete features
+- Prevents unnecessary functionality
+- Facilitates debugging and impact analysis
+- Improves test coverage and validation
+
+For example, if a notification is not working, traceability allows developers to quickly identify:
+- The requirement it belongs to
+- The implementation responsible
+- The test case that failed
+
+== 6. Risks and Challenges
+
+Some challenges when applying traceability include:
+
+- Requirements evolving during development
+- Maintaining trace links manually can be time-consuming
+- Overhead in documentation if not managed properly
+
+However, these risks can be mitigated with structured documentation and consistent updates.
+
+== 7. Conclusion
+
+Requirements traceability is essential for maintaining consistency between system requirements and implementation. In the {project}, it ensures that features such as notifications, expiration tracking, and inventory management are correctly implemented and validated.
+
+By linking requirements to features, code, and tests, the system becomes more reliable, maintainable, and easier to evolve over time.
+
+== References
+
+- Webinar on Application Lifecycle Management (ALM) and traceability concepts
+- https://www.youtube.com/watch?v=VoCptD9BRVI

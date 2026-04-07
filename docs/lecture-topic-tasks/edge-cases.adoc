@@ -1,0 +1,141 @@
+= Edge Case Analysis Across Core Features
+:toc:
+
+== Core Inventory
+
+=== Edge Case 1: Item Quantity Drops Below Zero
+
+*Scenario:*  
+A user updates an item quantity multiple times and the value becomes negative due to rapid updates or incorrect input.
+
+*Expected Behavior:*  
+
+The system must prevent quantities below 0 at both in UI and in the database. 
+
+- UI should block submission or show a validation error  
+- Backend should enforce constraint (for example: CHECK quantity >= 0)  
+- If concurrent updates occur, the final value must still respect constraints
+
+=== Edge Case 2: Duplicate Items Representing Same Object
+
+*Scenario:*  
+A user adds an item twice (for example: adding “Milk” twice) instead of updating the existing item, creating two separate entries.
+
+*Expected Behavior:*  
+
+The system should not just merge items. Instead:  
+
+- Allow duplicates, but differentiate using category, location, notes, etc. 
+- Warn the user: “Similar item already exists”  
+
+=== Edge Case 3: Missing Required Fields on Item Creation
+
+*Scenario:*  
+User attempts to create an item without required fields (for example: name or category).
+
+*Expected Behavior:*  
+
+- UI prevents submission with feedback for missing fields
+- Backend enforces NOT NULL constraints  
+- No partial or corrupted item records should be saved
+
+== Sharing & Budget
+
+=== Edge Case 1: Concurrent Updates by Multiple Users
+
+*Scenario:*  
+Two users edit the same item (for example: quantity or cost) at nearly or the same time.
+
+*Expected Behavior:*  
+
+- System applies a consistent update strategy (for example: the last to write is saved)
+- Prevent overwrites where possible (timestamp comparison or versioning)  
+- Notify user if their view was outdated before saving
+
+
+=== Edge Case 2: Budget Exceeded Due to Parallel Additions
+
+*Scenario:*  
+Multiple users add items simultaneously, causing total budget to exceed limit without immediate awareness.
+
+*Expected Behavior:*  
+
+- Budget validation must be done at the backend level  
+- Prevent saving if new total exceeds limit or allow but flag as exceeded  
+- Immediate recalculation based on latest data
+
+=== Edge Case 3: Missing or Invalid Cost Values
+
+*Scenario:*  
+Items are added without cost, or with inconsistent formats (for example: text instead of number).
+
+*Expected Behavior:*  
+
+- Enforce numeric validation in the UI and backend  
+- Handle missing cost as 0 or as “unknown”  
+- Reports must not break due to null or invalid values
+
+== Alerts & Restock
+
+=== Edge Case 1: Duplicate Alerts for Same Item
+
+*Scenario:*  
+System triggers multiple alerts for the same low stock item due to repeated checks.
+
+*Expected Behavior:*
+
+- Alerts should not be duplicated  
+- Only one active alert per item per condition  
+- System should track alert state (active/resolved) and avoid redundant notifications
+
+=== Edge Case 2: Alert Not Cleared After Restock
+
+*Scenario:*  
+User restocks an item, but alert remains active.
+
+*Expected Behavior:*
+
+- System automatically resolves alert when quantity exceeds the limit  
+- UI reflects updated status immediately  
+
+=== Edge Case 3: Alert Triggered Incorrectly
+
+*Scenario:*  
+Alert is triggered even though quantity is above limit due to outdated or cached data.
+
+*Expected Behavior:*
+
+- Alerts must be based on latest database state  
+- Revalidate before triggering alert
+
+== Reports & Insights
+
+=== Edge Case 1: Empty Dataset for Reports
+
+*Scenario:*  
+User generates a report when no items or transactions exist.
+
+*Expected Behavior:*
+
+- Display clear empty state (not errors or broken a UI)  
+- Show message like “No data available” or “Add items to see insights”
+- Avoid null pointer or rendering issues
+
+=== Edge Case 2: Large Dataset Affecting Performance
+
+*Scenario:*  
+User has a large number of items, causing slow calculations or UI lag in reports.
+
+*Expected Behavior:*
+
+- Use pagination or aggregation at backend  
+- Avoid loading entire dataset into UI at once  
+
+=== Edge Case 3: Inconsistent Aggregations Due to Missing Data
+
+*Scenario:*  
+Some items lack cost or category, leading to incorrect totals in reports.
+
+*Expected Behavior:*
+
+- Define clear rules for handling missing data (for example: ignore, default to 0, or flag incomplete data)
