@@ -1,0 +1,155 @@
+= Fit Criteria for Key Sharing & Budget Requirements
+:toc:
+:toclevels: 2
+:sectnums:
+
+== Objective
+
+Improve the measurability of selected Team 3 Sharing & Budget requirements by attaching fit criteria to important documented behaviors.
+
+These fit criteria are intended to make the selected requirements easier to verify, test, and review during future documentation, design, and implementation work.
+
+== Scope
+
+This document focuses on key requirements related to:
+
+- duplicate purchase warning
+- duplicate prevention behavior
+- spending total accuracy
+- budget threshold behavior
+- shared inventory synchronization
+- ownership and visibility behavior
+
+== Notes
+
+- The requirement identifiers in this document are derived identifiers for fit-criteria tracking.
+- If the team later defines official requirement IDs, these identifiers can be replaced.
+- The fit criteria below are written to stay consistent with the current Team 3 documentation style and logic.
+
+== Selected Requirements and Fit Criteria
+
+=== FC-SB-01 Duplicate Purchase Warning Behavior
+
+*Requirement Statement:*  
+The system shall warn a user before completing an item addition when the item appears to duplicate an existing relevant item in the same household inventory.
+
+*Fit Criterion:*  
+When a user attempts to add an item whose identifying fields match the system’s duplicate criteria for an existing item in the same household, the system shall display a duplicate warning before the item is finalized in 100% of tested duplicate cases.
+
+*Verification Method:*  
+Test at least 15 item-addition cases, including:
+- exact duplicate name cases
+- same item with minor text variation cases
+- clearly different item cases
+
+The warning must appear in all cases classified as duplicates by the documented duplicate logic and must not appear in cases classified as non-duplicates.
+
+=== FC-SB-02 Duplicate Prevention Resolution Behavior
+
+*Requirement Statement:*  
+The system shall apply a consistent duplicate-prevention decision process when a possible duplicate is detected.
+
+*Fit Criterion:*  
+For every tested duplicate-detection event, the system shall either:
+- block the conflicting add action, or
+- require explicit user confirmation before continuing,
+
+according to the documented duplicate-prevention logic, in 100% of tested cases.
+
+*Verification Method:*  
+Test at least 12 duplicate-prevention scenarios, including:
+- add attempts for an already existing shared item
+- borderline duplicate cases
+- non-duplicate cases close to the boundary
+
+The observed system response must match the documented rule for that case.
+
+=== FC-SB-03 Spending Total Accuracy
+
+*Requirement Statement:*  
+The system shall calculate household spending totals accurately from recorded spending entries.
+
+*Fit Criterion:*  
+For any displayed spending total, the value shown by the system shall equal the sum of all included spending entries for the selected scope and period, with an allowed difference of no more than 0.01 after rounding to two decimal places.
+
+*Verification Method:*  
+Test at least 15 datasets containing:
+- whole-number amounts
+- decimal amounts
+- mixed categories
+- multiple entries on the same day
+- entries across different budget periods
+
+For each dataset, compare the displayed total against a manually computed expected total.
+
+=== FC-SB-04 Budget Threshold Alert Behavior
+
+*Requirement Statement:*  
+The system shall notify users when spending reaches defined budget thresholds.
+
+*Fit Criterion:*  
+If a budget includes configured threshold levels such as warning, soft limit, or hard limit, the system shall trigger the corresponding threshold state when recorded spending reaches or exceeds the configured amount in 100% of tested threshold-crossing cases.
+
+*Verification Method:*  
+Test at least 12 budget scenarios including:
+- spending below the threshold
+- spending exactly at the threshold
+- spending just above the threshold
+- spending that crosses multiple thresholds
+
+The alert or threshold state shown by the system must match the configured budget logic for each case.
+
+=== FC-SB-05 Shared Inventory Synchronization
+
+*Requirement Statement:*  
+The system shall keep shared inventory data consistent for authorized household members.
+
+*Fit Criterion:*  
+When one active household member successfully creates, updates, or deletes a shared inventory item, the resulting shared inventory state shall be visible to other authorized active members of the same household within 5 seconds in at least 95% of tested cases under normal connectivity conditions.
+
+*Verification Method:*  
+Test at least 20 synchronization cases across two or more active household members in the same household, including:
+- create item
+- update item
+- delete item
+
+Measure whether the resulting state becomes visible to the other authorized member within the expected time.
+
+=== FC-SB-06 Ownership and Visibility Behavior
+
+*Requirement Statement:*  
+The system shall enforce ownership and role-based visibility rules for shared inventory actions.
+
+*Fit Criterion:*  
+In 100% of tested cases:
+- active Owners shall be able to view and manage shared household inventory,
+- active Members shall be able to view shared household inventory and perform allowed inventory actions,
+- Viewers shall be able to view shared inventory but shall not be able to modify inventory or send invites,
+- users outside the household or users with removed membership status shall not be able to view or modify that household’s shared inventory.
+
+If the User-Owned Within Group model applies, only the creator of an item shall be allowed to edit that item in 100% of tested exception cases.
+
+*Verification Method:*  
+Test at least 16 access-control scenarios covering:
+- Owner access
+- Member access
+- Viewer access
+- removed member access
+- non-member access
+- User-Owned Within Group edit exceptions
+- Group-Owned item editing cases
+
+Each observed result must match the documented permission and ownership rules.
+
+== Summary
+
+This document adds measurable fit criteria to six important Team 3 requirements:
+
+- duplicate purchase warning behavior
+- duplicate prevention resolution behavior
+- spending total accuracy
+- budget threshold alert behavior
+- shared inventory synchronization
+- ownership and visibility behavior
+
+These fit criteria improve requirement testability by defining expected results in measurable or clearly verifiable terms.

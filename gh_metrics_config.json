@@ -10,12 +10,12 @@
     },
     "Milestone #2": {
       "startDate": "2026-03-03T08:00:00-04:00",
-      "endDate": "2026-04-08T04:00:00-04:00",
+      "endDate": "2026-04-07T23:59:00-04:00",
       "projectedGroupGrade": 100.0
     },
     "Milestone #3": {
-      "startDate": "2026-04-08T04:00:01-04:00",
-      "endDate": "2026-05-08",
+      "startDate": "2026-04-08T08:00:00-04:00",
+      "endDate": "2026-05-08T23:59:00-04:00",
       "projectedGroupGrade": 100.0
     }
   },

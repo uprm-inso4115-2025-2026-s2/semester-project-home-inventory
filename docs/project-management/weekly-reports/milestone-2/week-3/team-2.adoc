@@ -1,0 +1,67 @@
+= Milestone 2 - Week 3: Alerts & Restock Weekly Report
+:toc:
+
+== What the team accomplished this week
+
+This week Team 2 focused on validating and refining the domain model for the Home Inventory system as it relates to Alerts & Restock.
+
+The team completed lecture topic work centered on dimensionality, validation, and verification of the domain model. These tasks helped strengthen the conceptual accuracy of the feature and improved confidence that the system behavior is being modeled correctly.
+
+At the same time, work continued on ongoing development tasks related to the schema, stock tracking, and alerts UI. Documentation was also updated to reflect the completed work.
+
+== Tasks completed / Issues closed
+
+The following tasks were completed and approved this week:
+
+* *Dimensionality of Domain Phenomena in the Home Inventory System*  
+  Completed documentation and analysis of the relevant domain phenomena for the system.
+
+* *Domain Validation and Verification of the Home Inventory Model*  
+  Completed validation and verification work to ensure the domain model is consistent and meaningful.
+
+* *Alerts & Restock System Documentation Updates*  
+  Documentation updates were added along with the completed tasks to improve clarity and maintain alignment across the feature.
+
+== What is currently in progress
+
+The team is currently working on the following tasks:
+
+* *Merge & Normalize Supabase Database Schemas Team 2*  
+  Continuing the process of unifying and refining the database structure.
+
+* *Implement Inventory Stock Movement Tracking*  
+  Continuing implementation of quantity movement tracking for inventory items.
+
+* *Modeling User UI Interactions as "Biddable" Domain Behaviors*  
+  Continuing domain behavior modeling related to the user interface.
+
+* *Develop Alerts Feed UI with Swipe Actions & Empty States*  
+  Continuing development of the alerts feed user experience.
+
+== Blockers or challenges
+
+The main challenge this week was maintaining consistency between the domain modeling work and the implementation tasks that are still ongoing.
+
+Since schema design, stock tracking, and alerts UI all depend on a clear understanding of the domain, the team needed to ensure that newly completed conceptual work remained aligned with current development efforts.
+
+== Plans for next week
+
+Next week the team plans to:
+
+* Continue open development tasks for Alerts & Restock
+* Apply domain modeling insights to the ongoing schema and tracking work
+* Continue improving the alerts feed UI
+* Maintain documentation updates alongside implementation progress
+* Prepare the system for further integration work
+
+== Documentation Links
+
+Related issues:
+
+* #352 - Dimensionality of Domain Phenomena in the Home Inventory System
+* #351 - Domain Validation and Verification of the Home Inventory Model
+* #297 - Merge & Normalize Supabase Database Schemas Team 2
+* #313 - Implement Inventory Stock Movement Tracking
+* #306 - Modeling User UI Interactions as "Biddable" Domain Behaviors
+* #304 - Develop Alerts Feed UI with Swipe Actions & Empty States
+

@@ -11,6 +11,7 @@ import 'package:src/core/presentation/pages/home_dashboard_page.dart';
 import 'package:src/features/core_inventory/presentation/routes.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
+import 'package:src/features/alerts_feed/presentation/routes.dart';
 // TO DO: route InviteRoommatePage properly
 import 'package:src/features/invite_roomate_page/presentation/routes.dart';
 
@@ -48,6 +49,15 @@ var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
     return MainNavShell(navigationShell: navigationShell, tabs: _mainTabs);
   },
+  routes: [
+    todosRoutes,
+    inventoryStockReportRoute,
+    groceryListRoutes,
+    alertsFeedRoutes,
+    reportsOverviewRoute,
+    groceryListRoutes
+    //For testing Purposes
+    //reportListRoute,
   branches: [
     StatefulShellBranch(
       routes: [
