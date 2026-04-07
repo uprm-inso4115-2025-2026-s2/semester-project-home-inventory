@@ -1,0 +1,41 @@
+= Lecture Topic Task: Managing "Biddable" Domains in Alerts UI
+:toc: left
+:icons: font
+
+== 1. Introduction: The Biddable Domain
+
+In software engineering domain modeling, a **Biddable Domain** refers to entities that are usually people. Unlike causal domains (predictable machines) or lexical domains (static data), biddable entities can be instructed or requested to perform actions, but they are not strictly deterministic. They can misunderstand instructions, make data-entry errors, or choose not to comply if a task is too tedious.
+
+This document analyzes how the frontend implementation of the **Alerts & Notifications Screen** explicitly treats our users (roommates) as Biddable domains, employing specific UI/UX constraints to prevent human error and encourage system compliance.
+
+== 2. The User as a Biddable Entity
+
+In the Home Inventory App, users are expected to update stock counts, monitor expiration dates, and add items to grocery lists. However, because they are biddable:
+
+* They might try to save an expiration date without actually selecting one.
+* They might avoid updating their inventory if the process requires typing and multiple menu navigations.
+* They might input invalid data if given a free-text field.
+
+== 3. UI/UX Strategies for Biddable Behavior
+
+To protect the integrity of our Lexical domain (the Supabase database), the Alerts UI implements three major defensive strategies against unpredictable human behavior:
+
+=== 3.1. Constrained Input Mechanics (Error Prevention)
+Instead of providing the user with a standard text `TextField` to update the item count (where a biddable user might mistakenly type "-5", "ten", or leave it blank) the `AlertModal` uses constrained `+` and `-` `IconButton` widgets. 
+
+* **Result:** The user is physically prevented from entering non-integer or negative values. The UI logically restricts the `_itemCount` variable, ensuring only clean data is sent to the backend.
+
+=== 3.2. Inline Error Validation (Error Recovery)
+When updating an expiration date, a user might intuitively press "Save" before interacting with the `DatePicker`. 
+
+* **Implementation:** Instead of failing silently or using a disconnected `SnackBar` that the user might miss, the UI intercepts this biddable error and triggers an immediate **Inline Error Validation**. 
+* **Result:** The text turns to `AppTheme.redAccent` and clearly states: _"Please select a valid date before saving."_ directly above the action button. This immediately corrects the user's behavior within their exact line of sight.
+
+=== 3.3. Frictionless Compliance (Slidable Actions)
+Biddable domains resist tasks with high friction. To encourage users to actively maintain the shared inventory, we implemented the `flutter_slidable` package.
+
+* **Result:** Instead of navigating through multiple screens to add a low-stock item to the grocery list, the user only needs to perform a single, natural swipe gesture. By making compliance physically effortless, we dramatically increase the probability that the biddable user will keep the inventory accurate.
+
+== 4. Conclusion
+
+By recognizing our users not as perfect, predictable machines, but as "Biddable" domains prone to friction and error, the Alerts UI proactively guides their behavior. Through constrained inputs, inline validations, and frictionless swipe gestures, the frontend ensures high usability while simultaneously protecting the backend data integrity.
