@@ -1,3 +1,5 @@
+== Derived Goals
+
 === Primary Derived Goals
 
 #In addition to the primary goal already established by the current situation and needs, this project pursues several secondary outcomes that guide decision-making across milestones. A key derived goal is to encourage more sustainable household routines among students by reducing avoidable waste over time—such as items expiring unused or being repurchased unnecessarily—through better day-to-day awareness of what is already on hand. Another derived goal is to improve adoption and continued use: the project should support habits that remain realistic under busy student schedules, so the practice of keeping track of essentials does not collapse after an initial setup period.#
