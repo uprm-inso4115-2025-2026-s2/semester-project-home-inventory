@@ -1,0 +1,63 @@
+= Milestone 2 - Week 2: Alerts & Restock Weekly Report
+:toc:
+
+== What the team accomplished this week
+
+This week Team 2 focused on strengthening the conceptual and structural foundation of the Alerts & Restock system.
+
+The team worked on documenting important domain-level concerns that affect the design of the feature, especially around competing goals and derived requirements. In parallel, implementation planning continued through schema design, stock movement tracking, and UI-related tasks that support future integration of alerts and notifications.
+
+Documentation was also expanded to better reflect the work completed and to keep the system design aligned across tasks.
+
+== Tasks completed / Issues closed
+
+The following tasks were completed and approved this week:
+
+* *Identify & Document Competing Goals + Derived Requirements*  
+  Completed documentation analyzing important tradeoffs and requirements that shape the Alerts & Restock system.
+
+* *Alerts & Restock System Documentation Updates*  
+  Documentation updates were added along with the completed tasks to improve clarity and maintain alignment across the feature.
+
+== What is currently in progress
+
+The team is currently working on the following tasks:
+
+* *Merge & Normalize Supabase Database Schemas Team 2*  
+  Consolidating previous schema work into one consistent database structure for the feature.
+
+* *Implement Inventory Stock Movement Tracking*  
+  Developing support for tracking inventory quantity changes over time.
+
+* *Modeling User UI Interactions as "Biddable" Domain Behaviors*  
+  Continuing domain modeling work related to user interactions in the Alerts interface.
+
+* *Develop Alerts Feed UI with Swipe Actions & Empty States*  
+  Continuing UI development for the alerts feed experience.
+
+== Blockers or challenges
+
+Some challenges involved coordinating multiple efforts at the same time, especially across documentation, schema design, and implementation planning.
+
+Because several tasks are closely related, care was needed to keep terminology, structure, and design decisions consistent across the system.
+
+== Plans for next week
+
+Next week the team plans to:
+
+* Continue progressing the open development and lecture topic tasks
+* Advance the Supabase schema consolidation work
+* Continue work on stock movement tracking
+* Refine the alerts feed UI
+* Keep documentation updated alongside implementation progress
+
+== Documentation Links
+
+Related issues:
+
+* #399 - Identify & Document Competing Goals + Derived Requirements
+* #297 - Merge & Normalize Supabase Database Schemas Team 2
+* #313 - Implement Inventory Stock Movement Tracking
+* #306 - Modeling User UI Interactions as "Biddable" Domain Behaviors
+* #304 - Develop Alerts Feed UI with Swipe Actions & Empty States
+
