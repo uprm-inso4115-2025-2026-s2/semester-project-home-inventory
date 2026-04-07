@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/expense_model.dart';
+import '../models/spend_event_model.dart';
 
 class ExpenseRemoteDataSource {
   final SupabaseClient _client;
@@ -52,4 +53,49 @@ class ExpenseRemoteDataSource {
         .delete()
         .eq('id', id);
   }
+
+  Future<List<SpendEventModel>> fetchSpendEventsByHousehold(
+    int householdId,
+  ) async {
+    final response = await _client
+        .from('spend_events')
+        .select()
+        .eq('household_id', householdId);
+
+    return (response as List<dynamic>)
+        .map((e) => SpendEventModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<SpendEventModel>> fetchSpendEventsByUser(int userId) async {
+    final response = await _client
+        .from('spend_events')
+        .select()
+        .eq('user_id', userId);
+
+    return (response as List<dynamic>)
+        .map((e) => SpendEventModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<SpendEventModel> createSpendEvent(SpendEventModel event) async {
+    final data = event.toJson();
+    if (event.id == -1) data.remove('id');
+
+    final response = await _client
+        .from('spend_events')
+        .insert(data)
+        .select()
+        .single();
+
+    return SpendEventModel.fromJson(response);
+  }
+
+  Future<void> deleteSpendEvent(int id) async {
+    await _client
+        .from('spend_events')
+        .delete()
+        .eq('id', id);
+  }
+
 }
