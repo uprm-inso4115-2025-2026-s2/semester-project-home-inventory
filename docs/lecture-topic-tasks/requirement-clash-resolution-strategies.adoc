@@ -1,0 +1,241 @@
+= Candidate Resolution Strategies for Requirement Clashes
+:toc:
+:toclevels: 3
+
+#This lecture topic task analyzes requirement clashes already present in the Home Inventory project and documents candidate ways to resolve them. The goal is not only to identify that two requirements or goals compete, but also to show how the team can choose between multiple defensible resolution strategies while keeping the system coherent, usable, and feasible within project constraints.#
+
+== Purpose
+
+#The purpose of this document is to examine requirement clashes that arise when different desirable system properties cannot be fully optimized at the same time. In this project, these clashes are not errors in isolation; they are tensions created by the need to balance low-friction use, reliable tracking, timely automation, household coordination, and privacy.#
+
+#This analysis complements the existing requirement inconsistency and weak inconsistency work by focusing specifically on candidate resolution strategies. For each clash, the document identifies the competing requirements, explains why they conflict, presents multiple candidate strategies, evaluates the trade-offs, and recommends a resolution direction that best fits the current project scope.#
+
+== Method
+
+#The analysis in this document uses the following method:#
+
+* #identify a requirement clash already grounded in the project documentation#
+* #trace the clash to existing needs, derived goals, and requirement concepts#
+* #formulate at least two candidate resolution strategies#
+* #compare the strategies in terms of usability, consistency, feasibility, and alignment with project goals#
+* #recommend the strategy that best fits the current milestone and system direction#
+
+#The clashes selected here are grounded in existing project artifacts, especially `N1` through `N5`, the requirement concept analysis, the weak inconsistency analysis, the derived goals section, and the terminology and automation documents.#
+
+== Candidate Resolution Strategies
+
+=== Clash 1: Fast capture vs. inventory accuracy
+
+==== Conflict description
+
+#The project strongly emphasizes low-friction interaction. Need `N1` states that users must be able to record items in seconds, and the requirement concept analysis repeatedly stresses “fast capture” as essential for continued adoption. At the same time, the system also depends on sufficiently accurate and stable tracked inventory data in order to support low-stock judgments, expiration awareness, shared coordination, and reliable automation.#
+
+#This creates a requirement clash: if the system requires too much information at entry time, users may abandon the workflow; if it requires too little, the tracked inventory record may become incomplete, stale, or too unreliable to support higher-value features.#
+
+==== Relevant sources
+
+* #`N1`, `N2`, `N3`#
+* #`DG-REQ-01` through `DG-REQ-04`#
+* #Requirements concept analysis: “Fast capture,” “Tracked record vs reality,” and Tradeoff `T1: Speed vs accuracy`#
+* #Weak inconsistency 1 — Fast Capture vs Inventory Accuracy#
+
+==== Candidate strategy A — Minimal required fields with progressive completion
+
+#Under this strategy, the system would require only a minimal initial record at the moment of capture, such as item type and quantity or approximate availability. Optional metadata such as expiration date, spending category, or location would be added later if and when needed.#
+
+*Advantages:*
+* #strongly supports low-friction capture and user adoption#
+* #fits student workflows where users are busy and may log items quickly#
+* #aligns with `DG-REQ-01` and `DG-REQ-04`#
+
+*Disadvantages:*
+* #advanced features may be unavailable for partially described items#
+* #users may never return to complete missing metadata#
+* #tracked inventory quality may remain uneven across households#
+
+==== Candidate strategy B — Require complete item data at entry time
+
+#Under this strategy, the system would require household members to provide enough information at creation time to support downstream features immediately, including precise quantity, category, and expiration date when applicable.#
+
+*Advantages:*
+* #improves consistency and downstream feature reliability#
+* #supports better alert generation and more complete inventory behavior from the beginning#
+* #reduces later ambiguity in automation and reporting#
+
+*Disadvantages:*
+* #increases entry friction and time cost#
+* #conflicts directly with the project's strong low-effort objective#
+* #creates a higher abandonment risk for casual or time-constrained users#
+
+==== Candidate strategy C — Hybrid capture with feature gating
+
+#Under this strategy, the system would allow minimal capture first, but features that depend on missing information would remain disabled until that information is present. For example, an item without an expiration date could still be tracked, but expiration alerts would not activate until the date is provided.#
+
+*Advantages:*
+* #balances usability and reliability better than either extreme#
+* #preserves adoption while keeping system behavior honest#
+* #aligns closely with `DG-REQ-02` and `DG-REQ-03`#
+
+*Disadvantages:*
+* #requires the UI to communicate clearly why some features are unavailable#
+* #may introduce uneven feature availability across records#
+* #depends on users understanding the consequences of incomplete data#
+
+==== Recommended resolution
+
+#The recommended resolution is *Candidate strategy C — Hybrid capture with feature gating*. It best matches the current project goals because it preserves low-friction use while preventing the system from pretending it can safely evaluate conditions without sufficient data. This strategy also fits the project's existing derived requirements, especially `DG-REQ-01` through `DG-REQ-04`, and is more realistic than forcing complete data entry for every interaction.#
+
+==== Recommended direction for requirements
+
+#The system should allow lightweight item creation with minimal required fields, but condition-dependent features such as expiration alerts and some forms of automation should activate only when the relevant metadata is present and valid. This preserves usability while maintaining requirement honesty and system trustworthiness.#
+
+=== Clash 2: Timely reminders vs. avoiding notification fatigue
+
+==== Conflict description
+
+#The project wants reminders to be timely enough to help household members avoid shortages and expiration waste. At the same time, the documentation explicitly recognizes that excessive or repeated alerts can frustrate users and cause them to disable notifications entirely. Need `N2` supports accurate awareness, while the requirement concept analysis, weak inconsistency work, risk countermeasures, and derived goals all stress deduplication and anti-spam behavior.#
+
+#This creates a requirement clash: the more aggressively the system notifies household members, the less likely it is that they will miss important situations; however, aggressive notification behavior increases alert fatigue, noise, and distrust.#
+
+==== Relevant sources
+
+* #`N2`, `N3`#
+* #`DG-REQ-05` through `DG-REQ-08`#
+* #Requirements concept analysis: “Deduplication / anti-spam,” “State transition,” and Tradeoff `T4: Reminders vs notification fatigue`#
+* #Weak inconsistency 5 — Immediate Detection vs Scheduled Automation#
+* #Risk countermeasure BR2 — Notification fatigue leading to disabled alerts#
+* #`REQ-AUTO-007`#
+
+==== Candidate strategy A — Notify on every sweep while a condition remains true
+
+#Under this strategy, the system would generate alerts each time the scheduled sweep finds a low-stock, expired, or near-expiry condition, even when that condition has not changed since the previous run.#
+
+*Advantages:*
+* #simple to reason about from an implementation perspective#
+* #ensures persistent conditions remain visible#
+* #reduces the chance that an unresolved condition is forgotten#
+
+*Disadvantages:*
+* #high risk of repeated identical notifications#
+* #directly conflicts with anti-spam expectations#
+* #likely to create alert fatigue and reduce trust in the system#
+
+==== Candidate strategy B — Notify only on actionable state transitions
+
+#Under this strategy, the system would generate alerts only when an item enters a new actionable state, such as NORMAL to LOW_STOCK, LOW_STOCK to OUT_OF_STOCK, or NEAR_EXPIRY to EXPIRED. If the condition remains unchanged, the system would suppress repeated notifications.#
+
+*Advantages:*
+* #strongly reduces repeated alerts#
+* #aligns with the requirement concept analysis and automation requirements#
+* #supports meaningful, explainable notifications#
+
+*Disadvantages:*
+* #persistent conditions may become less visible over time#
+* #users may still want occasional reminders for unresolved situations#
+* #requires clear state-transition logic and deduplication support#
+
+==== Candidate strategy C — State-transition alerts plus bounded re-notification
+
+#Under this strategy, the system would primarily notify on actionable state transitions, but would allow controlled re-notification after a defined interval if the condition remains unresolved. This interval could be daily, weekly, or policy-based depending on the condition and design decision.#
+
+*Advantages:*
+* #balances timeliness with anti-spam goals#
+* #keeps persistent conditions visible without constant repetition#
+* #works well with scheduled sweep logic and notification deduplication rules#
+
+*Disadvantages:*
+* #more complex than pure transition-only logic#
+* #requires explicit re-notification policy decisions#
+* #can still be noisy if the interval is poorly chosen#
+
+==== Recommended resolution
+
+#The recommended resolution is *Candidate strategy C — State-transition alerts plus bounded re-notification*. It preserves the core principle that alerts should be triggered by meaningful state changes, while also acknowledging that persistent unresolved conditions may need occasional visibility. This approach fits the current direction of the project better than sweep-by-sweep alerting and is more practical than a pure one-time alert model.#
+
+==== Recommended direction for requirements
+
+#The system should generate alerts when an item enters a new actionable state and should suppress duplicates while the state remains unchanged. If the team decides persistent conditions require repeated visibility, the system should apply a bounded re-notification policy governed by explicit anti-spam rules rather than emitting alerts on every sweep.#
+
+=== Clash 3: Shared household visibility vs. privacy and least privilege
+
+==== Conflict description
+
+#The project seeks to improve shared coordination in roommate households by giving household members a consistent understanding of what is available and what needs replenishment. This is reflected in `N4` and `N5`, the domain concept analysis of shared households, and the derived goals for coordination and trust. At the same time, the project also recognizes privacy and least-privilege concerns: some inventory details, spending details, and ownership or responsibility information should not be visible to every participant by default.#
+
+#This creates a requirement clash: increasing shared visibility improves coordination and reduces duplicate purchases, but broader visibility can expose personal or sensitive item information and weaken privacy boundaries.#
+
+==== Relevant sources
+
+* #`N4`, `N5`#
+* #`DG-REQ-09` through `DG-REQ-12`#
+* #Requirements concept analysis: Tradeoff `T3: Shared visibility vs privacy`#
+* #Ownership and permission analysis documents#
+* #Terminology: “Household member,” “Membership,” “Household admin,” and “Row Level Security (RLS)”#
+
+==== Candidate strategy A — Full shared visibility for all household data
+
+#Under this strategy, all household members would be allowed to see all inventory-related information in the shared context, including availability, ownership, responsibility, and related item details.#
+
+*Advantages:*
+* #maximizes transparency and coordination#
+* #reduces ambiguity about who owns or updates items#
+* #simplifies collaboration behavior conceptually#
+
+*Disadvantages:*
+* #creates privacy risk for personal or sensitive items#
+* #may expose user-specific information unnecessarily#
+* #conflicts with least-privilege expectations and role-based control#
+
+==== Candidate strategy B — Strict personal ownership model with limited sharing
+
+#Under this strategy, most data would remain scoped to the individual who created or owns it, and only explicitly shared items would become visible to other household members.#
+
+*Advantages:*
+* #strong privacy protection#
+* #clear authority boundaries#
+* #fits personal-item scenarios well#
+
+*Disadvantages:*
+* #weakens shared-household coordination#
+* #increases the risk of fragmented household understanding#
+* #does not align well with the project's strong emphasis on shared visibility#
+
+==== Candidate strategy C — Shared status visibility with restricted sensitive metadata
+
+#Under this strategy, all household members would be able to see the information necessary for coordination, such as item availability, low-stock state, out-of-stock state, and replenishment relevance, while more sensitive information such as spending attribution, personal ownership details, or privileged administration data would remain restricted based on membership role or permissions.#
+
+*Advantages:*
+* #directly supports `N4` and `N5` without exposing unnecessary personal details#
+* #aligns well with `DG-REQ-09` through `DG-REQ-12`#
+* #fits the hybrid ownership and permission direction already documented#
+
+*Disadvantages:*
+* #requires careful separation between shared and user-specific data#
+* #demands clear permission rules and role definitions#
+* #may still require edge-case decisions for mixed shared/personal items#
+
+==== Recommended resolution
+
+#The recommended resolution is *Candidate strategy C — Shared status visibility with restricted sensitive metadata*. It best reflects the current project direction, especially the hybrid ownership approach and the requirement that only coordination-relevant information should be visible broadly. This preserves the collaboration value of a shared inventory system without sacrificing privacy and least-privilege control.#
+
+==== Recommended direction for requirements
+
+#The system should make shared item availability and replenishment-relevant status visible to household members, while restricting ownership, spending, and other user-specific details according to membership role, responsibility, and permission rules. This allows the project to support both household coordination and privacy in a coherent way.#
+
+== Comparative Summary
+
+#Across all three clashes, the strongest resolution pattern is neither “maximize one side completely” nor “leave the conflict vague.” Instead, the project benefits most from hybrid strategies that preserve the primary user value while introducing explicit constraints, gating rules, or permission boundaries to prevent harm.#
+
+#For fast capture versus accuracy, the strongest strategy is lightweight capture with feature gating. For reminders versus alert fatigue, the strongest strategy is transition-based alerts with bounded re-notification. For shared visibility versus privacy, the strongest strategy is broad visibility of coordination-relevant status combined with restricted access to sensitive metadata.#
+
+#These recommendations are consistent with the project's documented needs, derived goals, requirement concept analysis, automation strategy, and ownership model. They also provide a more defensible basis for later system requirements than leaving the clashes implicit.#
+
+== Implications for the Project
+
+#This analysis has three important implications for the Home Inventory project.#
+
+* #First, requirement clashes should be treated as a normal design condition rather than as documentation mistakes. Many of the project's most important goals are all desirable but cannot be optimized at the same time.#
+* #Second, the system should favor explicit resolution policies over vague compromise language. When the project chooses a side of a trade-off, that choice should be documented in a way that can later guide implementation and validation.#
+* #Third, hybrid resolution strategies are especially valuable in this domain because student households need the system to remain lightweight, practical, and trustworthy under real-world use.#
+
+#For this reason, future requirements and design decisions should continue to document not only what the system should do, but also what competing goal or requirement clash that decision is meant to resolve.#
