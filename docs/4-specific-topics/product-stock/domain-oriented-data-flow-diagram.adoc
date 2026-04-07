@@ -3,9 +3,6 @@ Author: Jorge L. De León Orama
 :toc:
 :sectnums:
 
-== Purpose
-Present the domain-oriented Data Flow Diagram (DFD) for the Product Stock feature of the Cafeteria Ordering System. The diagram represents how product stock data flows between external actors, processes, and data stores, supporting a shared team understanding, validation of requirements, and consistent implementation of the feature.
-
 == Diagram
 
 image::images/product-stock-dfd.png[]
