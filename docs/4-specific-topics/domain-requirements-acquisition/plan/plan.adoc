@@ -1,62 +1,56 @@
-== Requirements Acquisition Plan
+== Acquisition Plan
 
-This section explicitly defines the requirements acquisition process, separating it from elicitation by focusing on how raw domain knowledge and evidence are initially gathered before being interpreted into stakeholder needs and system requirements.
+This section defines how raw domain knowledge and evidence are gathered before they are interpreted into stakeholder needs and system requirements.
 
-Plan for how we will gather and validate requirements from stakeholders and domain evidence. For Milestone 1, this plan is intentionally lightweight and focuses on collecting concrete examples that can be traced to needs, scenarios, and requirements. For Milestone 2, this plan is refined to clearly distinguish acquisition activities from elicitation activities.
+Requirements acquisition focuses on collecting raw observations, examples, and participant accounts. Elicitation happens later, when that material is interpreted into concepts, stories, and requirements.
 
-=== Goals (Milestone 1)
-* Capture real (“messy”) household practices instead of idealized descriptions.
-* Understand shared-household coordination (visibility, duplicates, ownership/personal vs shared, and cost splitting).
-* Identify the main friction points that cause tracking methods to be abandoned.
-* Clarify key domain edge cases (bulk purchases, multiple locations, missing/unclear expiration dates).
-* Establish a clear foundation of raw domain evidence that can later be used during elicitation without introducing interpretation bias.
+=== Goals
+* Capture real household practices instead of idealized descriptions.
+* Understand shared-household coordination, including visibility, duplicates, ownership, and cost splitting.
+* Identify friction points that cause tracking methods to be abandoned.
+* Clarify important edge cases such as bulk purchases, multiple locations, and missing expiration information.
+* Build a traceable base of raw domain evidence for later elicitation.
 
-=== Methods (Milestone 1)
+=== Methods
 
-The following methods are strictly part of requirements acquisition, meaning they are used to collect raw observations, items, and experiences directly from the domain before formal analysis or requirement extraction takes place.
+The following methods are part of requirements acquisition because they gather raw domain data before formal analysis or requirement extraction takes place:
 
-* *Interviews (4–6):* Semi-structured interviews with solo students and students in shared households (including at least one student athlete). Focus on recent, specific incidents (waste, duplicates, shortages, roommate friction).
-
-* *Contextual walkthroughs:* Participants demonstrate their current tracking methods (e.g., fridge notes, whiteboards) and explain their shorthand and terminology.
-
-* *Item analysis:* Review of real-world household items such as grocery receipts, pantry/fridge photos, and shared shopping messages to understand how items are tracked, forgotten, or duplicated in practice.
-
-* *Light competitive scan:* Review a small set of existing inventory/list apps to identify recurring friction patterns (especially entry effort and notification fatigue).
-
-These methods are designed to gather raw domain data without prematurely structuring them into requirements.
+* *Questionnaire:* short set of questions used to collect recurring household practices and pain points across participants.
+* *Interviews (4–6):* semi-structured interviews with solo students and students in shared households, including at least one student athlete.
+* *Contextual walkthroughs:* participants demonstrate their current tracking methods and explain their shorthand and terminology.
+* *Item analysis:* review of receipts, pantry or fridge photos, and shared shopping messages to understand how items are tracked or forgotten in practice.
+* *Light competitive scan:* review a small set of existing apps to identify repeated friction points such as entry effort and notification fatigue.
 
 [NOTE]
 ====
-Surveys and broader quantitative validation are considered useful but may be deferred if time is limited; Milestone 1 prioritizes rich qualitative evidence suitable for domain description and initial requirements.
+Broader surveys and larger quantitative validation may be deferred if time is limited. This milestone prioritizes qualitative evidence that supports domain understanding and early requirements work.
 ====
 
-=== Schedule (Milestone 1)
+=== Schedule
 
 [cols="2,4",options="header"]
 |===
 |Timeframe |Activities
 
 |Late Jan. – Early Feb.
-|Conduct initial interviews and contextual walkthroughs; expand the rough sketch with concrete quotes/examples; begin light competitive scan.
+|Conduct questionnaires, initial interviews, and contextual walkthroughs; expand the rough sketch with concrete quotes and examples.
 
 |Mid-Feb.
-|Synthesize findings into personas/scenarios; refine terminology and concept analysis; record open questions and clashes.
+|Review collected evidence, refine terminology, and record open questions and potential clashes.
 
 |Late Feb.
-|Validate assumptions with follow-up questions (short check-ins); finalize initial user stories and core interface requirements; mark deferred edge cases explicitly.
+|Use follow-up questions to clarify gaps; transform acquired evidence into personas, scenarios, stories, and core requirements.
 |===
 
-The schedule includes both acquisition and early elicitation activities; however, only the initial data-gathering steps are considered part of the acquisition phase.
-
-=== Risks and mitigations (Milestone 1)
+=== Risks and Mitigations
 * *Risk:* Participants are too busy for long interviews.
-** *Mitigation:* Keep sessions short (15–25 minutes) and allow asynchronous voice-note follow-ups.
+** *Mitigation:* Keep sessions short and allow asynchronous follow-up.
 
-* *Risk:* Participants describe ideal behavior rather than actual behavior.
-** *Mitigation:* Ask for recent concrete examples (“last time you threw out food”, “last duplicate purchase”, “show your last note/chat”).
+* *Risk:* Participants describe ideal behavior instead of actual behavior.
+** *Mitigation:* Ask for recent concrete examples and current artifacts such as notes, chats, or receipts.
 
-* *Risk:* Manual entry tolerance is near zero, making tracking unsustainable.
-** *Mitigation:* Explicitly measure “effort tolerance” (seconds/taps) and capture what minimum information participants are willing to record.
+* *Risk:* Manual-entry tolerance is very low.
+** *Mitigation:* Ask explicitly what minimum information participants are willing to record.
 
-* *Risk:* Confusion between acquisition and elicitation activities.
-** *Mitigation:* Clearly document that acquisition focuses only on gathering raw domain evidence, while elicitation focuses on interpreting that evidence into requirements.
+* *Risk:* Acquisition and elicitation are mixed together too early.
+** *Mitigation:* Record raw evidence first, then interpret it later in a separate elicitation step.

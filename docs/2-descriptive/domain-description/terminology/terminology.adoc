@@ -26,6 +26,18 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | A person who belongs to a household and participates in consuming, replenishing, or coordinating around items.
 | Previously "Owner" or "Occupant."
 
+| Invitation
+| Entity / Event
+| Domain
+| A temporary request that allows a participant to join a shared household context.
+| Important states may include sent, accepted, declined, expired, or revoked.
+
+| Membership
+| Relationship / Concept
+| Domain
+| The relationship connecting a participant to a household for shared coordination and participation.
+| Changes over time through joining, leaving, removal, or invitation acceptance.
+
 | Location
 | Entity
 | Domain

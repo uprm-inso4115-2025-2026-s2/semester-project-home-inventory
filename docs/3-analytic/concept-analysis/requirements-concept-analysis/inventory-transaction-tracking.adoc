@@ -55,6 +55,9 @@ Transactions (quantity changes) are responsible for recording quantity changes a
 
 Transactions may trigger immediate state evaluation after recording, but they do not directly own alert / notification creation or restock list updates. Those actions occur only if the Automation System detects a state transition.
 
+The system assumes that tracked inventory records are an approximation of real household inventory.
+Transactions (quantity changes) allow adjustments over time to correct differences between tracked inventory and reality.
+
 == Relationship to Inventory Quantity
 
 * Tracked inventory records store the current quantity.
@@ -74,6 +77,8 @@ an alert / notification record may be generated and the item type may be added t
 
 Record all tracked inventory record quantity changes as transactions with a clear reason and timestamp.
 This approach provides transparency and allows future features like history review and analytics.
+
+Because transactions depend on household members recording changes, there is a risk that missing or incorrect transactions may cause tracked inventory records to diverge from household inventory reality; therefore, the system must allow later adjustments and corrections.
 
 == Sources
 

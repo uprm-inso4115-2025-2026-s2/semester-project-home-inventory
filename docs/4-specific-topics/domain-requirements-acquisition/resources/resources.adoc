@@ -1,23 +1,22 @@
 == Resources
 
-Evidence sources and supporting materials used to understand the domain and justify requirements. For Milestone 1, we list only the most important sources; extended notes are linked.
+This subsection lists supporting materials and evidence sources used during requirements acquisition. These resources support the acquisition process, but they are not a substitute for the questionnaire, interview protocol, or participant-coded raw evidence.
 
-These resources represent inputs to the acquisition process, serving as raw domain evidence before being analyzed during elicitation and requirements definition.
-
-=== External sources (selected)
-* Household food waste research: supports the need for better visibility and expiration awareness in student households.
-* Personal Information Management (PIM) research: supports the risk that high-effort or overly frequent updates lead to abandonment and notification fatigue.
-* Household finance / budgeting research (general): supports the importance of spending awareness for budget-constrained students.
+=== External Sources (selected)
+* Household food waste research: supports the importance of visibility and expiration awareness in student households.
+* Personal Information Management (PIM) research: supports the risk that high-effort updates and excessive reminders lead to abandonment.
+* Household finance and budgeting research: supports the importance of spending awareness for budget-constrained students.
 
 Extended literature notes: `docs/lecture-topic-tasks/domain-acquisition-ltt.adoc`
 
-=== Internal artifacts (project)
+=== Internal Artifacts
 * Domain rough sketch and narrative: `docs/2-descriptive/domain-description/rough-sketch/` and `docs/2-descriptive/domain-description/narrative/`
 * Terminology table: `docs/2-descriptive/domain-description/terminology/terminology.adoc`
-* Domain concept analysis: Section 3.1 (including invariants and term clashes)
-* Validation and verification artifacts: Section 3.2 (scenarios, walkthrough plan, testing)
+* Domain concept analysis: Section 3.1
+* Validation and verification artifacts: Section 3.4
+* Acceptance and E2E testing artifacts: Section 3.5
 
-=== Open questions (Milestone 1)
-* Interview and walkthrough findings should be summarized and linked here once sessions are completed (participant codes + dates + key quotes).
-* Competitive scan results should be summarized (top friction points and why) once completed.
-* Acquisition completeness: Have sufficient raw examples and domain evidence been collected to support all identified needs and requirements?
+=== Notes for Completion
+* Participant-coded interview and walkthrough findings should be linked from this section once finalized.
+* Competitive scan results should be summarized here once completed.
+* Acquisition completeness should be reviewed by checking whether all major needs and requirement areas are supported by raw evidence.

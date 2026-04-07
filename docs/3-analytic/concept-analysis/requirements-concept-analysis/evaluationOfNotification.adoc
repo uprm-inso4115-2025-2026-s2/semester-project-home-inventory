@@ -176,6 +176,8 @@ State transitions may be detected:
 
 Notifications should not be generated repeatedly if the state remains unchanged.
 
+There is a risk of duplicate alert / notification records if alerts are generated repeatedly without checking for state transitions; therefore, notifications should only be created when a relevant state transition occurs.
+
 == 9. Notification Service Responsibility
 
 The Notification Service is responsible for creating and storing notification records after a state transition has been detected.

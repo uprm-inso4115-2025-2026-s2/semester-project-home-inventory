@@ -4,11 +4,9 @@ Major domain functions/capabilities (what can be done in the domain), described 
 
 [cols="2,4,4",options="header"]
 |===
-|Function |Description |Signature (illustrative)
-
-|Add item instance
-|Introduce a new item instance/package into a household’s tracked representation.
-|addItemInstance : Household >< ItemType >< Location >< Quantity? >< ExpirationDate? -> Household
+|Stock item instance
+|Introduce new item instance(s) of an item type into a household location, whether as a first stocking action or as replenishment.
+|stockItem : Household >< ItemType >< Location >< QuantityDelta >< ExpirationDate? -> Household
 
 |Move item instance
 |Change where an item instance is stored.
@@ -18,9 +16,9 @@ Major domain functions/capabilities (what can be done in the domain), described 
 |Decrease availability of an item instance (or item type record) due to use.
 |consume : Household >< ItemInstance >< QuantityDelta -> Household
 
-|Record replenishment
-|Increase availability by adding new item instance(s) or increasing quantity.
-|restock : Household >< ItemType >< Location >< QuantityDelta >< ExpirationDate? -> Household
+// |Record replenishment
+// |Increase availability by adding new item instance(s) or increasing quantity.
+// |restock : Household >< ItemType >< Location >< QuantityDelta >< ExpirationDate? -> Household
 
 |Judge low-stock
 |Determine whether an item type is considered low based on household strategy/threshold.

@@ -228,7 +228,7 @@ Two primary strategies are used to resolve inconsistencies:
 ==== Elicitation-Based Resolution Cases
 
 * *Case EBR1: Clarifying Item Ownership Responsibility* +
-Inconsistency: Andrea’s need for oversight of shared items (N4/N5) conflicts with Sofia’s expectation of autonomy (IR-03, US-INV-02). +
+Inconsistency: Andrea's need for oversight of shared items (N4/N5) conflicts with Sofia's expectation of autonomy (IR-03, US-INV-02). +
 Approach: Interviews and scenario walkthroughs to clarify ownership. +
 Outcome: Assign ownership per role and document alternative shared responsibility models based on stakeholder input. +
 Rationale: Aligns shared inventory behavior with stakeholder expectations.
@@ -262,8 +262,7 @@ Rationale: Maintains consistent inventory independent of user behavior.
 * *Case FRT3: Abstraction of Item State Representation* +
 Inconsistency: Overly detailed/inconsistent item states. +
 Approach: Simplify and standardize item states. +
-Outcome: Define discrete states (In Stock/Low/Out of Stock) and broadcast to all roommates via **Supabase Realtime**. +
-Rationale: Reduces ambiguity and synchronizes UI across devices.
+Outcome: Define discrete states (In Stock/Low/Out of Stock) and broadcast to all roommates via **Supabase Realtime**. + Rationale: Reduces ambiguity and synchronizes UI across devices.
 
 === Engineering Derived Requirements from Competing Goals
 
@@ -383,3 +382,63 @@ This section evaluates the logical alignment and technical viability of three hi
 ==== 3. Multi-User Inventory Synchronization
 * **Logical Satisfiability:** For shared households, the system must maintain a "Single Source of Truth" to prevent coordination failures. This is satisfied by a centralized cloud database that broadcasts changes to all authenticated members of a household ID. This ensures that if Roommate A consumes an item, Roommate B’s view is updated immediately, logically preventing duplicate purchases.
 * **Technical Feasibility:** **High.** This is a native capability of **Supabase Realtime**. By utilizing Row Level Security (RLS) and Realtime subscriptions in the Flutter app, the team can synchronize state across devices without building a complex polling engine, fitting well within the three-month development window.
+
+=== AHP-Based Requirement Prioritization
+
+This section documents an AHP-based method for Section 3.1 requirement prioritization and provides a reproducible R script for the team.
+
+==== Evaluation Criteria
+
+The AHP process compares requirements across a consistent set of evaluation criteria.
+
+* User value — How strongly a requirement supports waste reduction, coordination, or capture speed.
+* Feasibility — How easily the requirement can be implemented with the current Supabase + Flutter architecture.
+* Impact — How much the requirement improves the household inventory experience and overall system behavior.
+* Implementation complexity — How difficult the requirement is to build; this favors lower-complexity features in the ranking.
+
+==== Team Input Aggregation Method
+
+Each team member supplies pairwise comparison judgments for the criteria and for the requirements under each criterion.
+The team input is aggregated by averaging the corresponding entries in each member's pairwise comparison matrices, ensuring that the resulting matrix preserves the original relative preferences while smoothing individual variance.
+
+[source,rest]
+----
+aggregate_matrix <- function(matrices) {
+  Reduce("+", matrices) / length(matrices)
+}
+----
+
+This aggregated matrix is the basis for the shared AHP computation, and it should be generated before computing criterion and requirement weights.
+
+==== AHP Process Steps
+
+1. Collect pairwise comparisons from all team members for the evaluation criteria.
+2. Create an aggregated criteria comparison matrix by averaging all individual criteria matrices.
+3. Collect pairwise comparisons from all team members for each requirement under each criterion.
+4. Create an aggregated requirement comparison matrix for each criterion.
+5. Compute criterion weights and local requirement weights using the principal eigenvector method.
+6. Multiply local requirement weights by the criterion weights to compute global requirement scores.
+7. Rank the requirements by global score to derive the final prioritized list.
+
+==== Sample Aggregated AHP Result
+
+The attached script `docs/3-analytic/concept-analysis/requirements-concept-analysis/ahp-prioritization.R` demonstrates this process with sample input values and provides a transparent, reproducible calculation path.
+
+The example final ranking produced by the sample aggregation is:
+
+[cols="1,3",options="header"]
+|===
+|Rank|Requirement
+
+|1|Core inventory capture and low-friction item entry
+|2|Shared visibility and household coordination
+|3|Low-stock and out-of-stock awareness
+|4|Expiration awareness and alerting
+|5|Restock list auto-add behavior
+|6|Transaction history and traceability
+|===
+
+==== Documentation and Traceability
+
+The AHP script and the sample matrices are documented so the team can replace placeholder values with actual member judgments without changing the calculation method.
+This ensures that Section 3.1 remains traceable, repeatable, and defensible when the team presents the prioritized requirements.
