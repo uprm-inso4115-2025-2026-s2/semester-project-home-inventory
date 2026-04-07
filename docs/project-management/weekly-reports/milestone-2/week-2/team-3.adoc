@@ -1,0 +1,56 @@
+:nofooter:
+:milestone: Milestone 2
+:team: Team 3
+:week: Week 2
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+== Objective
+
+Provide a summary of the work completed by the Sharing & Budget team during Week 2, including progress, challenges, and next steps.
+
+
+== What the team accomplished this week
+
+- Defined and refined core domain concepts for the Sharing & Budget feature  
+- Started implementation of entities and models based on the domain design  
+- Began setting up data sources connected to Supabase  
+- Worked on initial Lecture Topic Tasks (LTTs) related to domain analysis  
+- Reviewed early pull requests to ensure alignment with project structure  
+
+
+== Tasks completed / Issues closed
+
+- Initial domain modeling for Sharing & Budget  
+- Partial implementation of entities and models  
+- Early LTT submissions related to domain concepts  
+- Initial PR reviews completed  
+
+
+== What is currently in progress
+
+- Completion of entities and models  
+- Implementation of data sources for Supabase integration  
+- Continued work on LTT documentation  
+- UI design planning for Shared Inventory screens  
+
+
+== Blockers or challenges
+
+- Understanding how to properly structure domain vs data layers  
+- Initial setup issues with Supabase integration  
+- Coordination between team members working on related components  
+
+
+== Plans for next week
+
+- Finalize entities, models, and data sources  
+- Begin UI design and documentation for Shared Inventory  
+- Continue submitting LTTs  
+- Start implementing user flows  
+
+
+== Documentation Links
+
+All related AsciiDoc files are located in:
+
+/docs/project-management/weekly-reports/week2
