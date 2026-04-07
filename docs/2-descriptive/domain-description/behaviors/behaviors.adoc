@@ -18,7 +18,6 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 === Edge cases
 
-* If an item instance is recorded while offline and synchronized later, duplicate handling may depend on the server-received time rather than only the local device time.
 * If an item instance has no expiration date, expiration-based behavior cannot be derived from date information alone.
 * If a household admin attempts to leave without transferring that responsibility, shared-household administration becomes unresolved until another member takes over.
 
