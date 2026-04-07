@@ -1,6 +1,6 @@
 == Team
 
-For Milestone 1, the Digital Home Inventory team is organized into feature-based groups to support parallel development: Core Inventory, Alerts & Restock, Sharing & Budget, and Reports & Insights; plus a cross-functional Design Team, a Documentation Team, and two Project Managers. In this documentation, all team members are considered partners because they have a direct stake in and responsibility for Milestone 1 outcomes (planning, design, implementation, testing, and documentation), not merely being end users of the system-to-be. No external partners have been identified for this milestone; if any arise, their roles and responsibilities will be documented in this section. Potential external partners may include a faculty mentor, domain informants (students interviewed), or external technical advisors; if involved beyond feedback (e.g., providing recurring reviews, requirements validation, or architectural guidance), their responsibilities and contributions will be recorded here. The lists are presented in alphabetical order and indicate each group’s Team Lead. The Tasks column lists associated GitHub issue numbers (and may later include short notes about responsibilities as work completes).
+For Milestone 2, the Digital Home Inventory team is organized into two project managers, a cross-functional Documentation Team, and four feature teams: Core Inventory, Alerts & Restock, Sharing & Budget, and Reports & Insights. This structure reflects how the milestone work is actually distributed in the tables below: each feature team is responsible for advancing its area through coordinated design, backend, documentation, testing, and implementation work, while the Documentation Team supports milestone-wide consistency, integration of changes, and delivery of the official project documentation. All listed team members are considered partners because they have direct responsibility for shaping Milestone 2 outcomes, including analysis, requirements refinement, implementation, validation and verification, and documentation. They therefore contribute to project decisions and deliverables rather than participating only as future end users of the system-to-be. No external participants are treated as formal partners for this milestone, since interviewed students and other domain informants mainly provide evidence and feedback, but do not hold recurring responsibility for project decisions, implementation, or milestone deliverables. If an external participant later takes on an ongoing role such as recurring requirements validation, architectural review, or milestone-level approval support, that role and its responsibilities will be documented here. The tables below identify each group and team lead, and the Tasks column records the associated GitHub issues used to trace each member’s contributions.
 
 
 
@@ -11,6 +11,7 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 |Student |GitHub username |Tasks
 
 |Kaysha L Pagan-Lopez |@Kay9876 |
+
 |Luis J Cruz-Cruz |@LuisJCruz |
 |===
 
@@ -24,34 +25,7 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 
 |Alondra S. Arce Perea (Team Lead) |@alondra-arce | #13, #113, #150, #177 #233, #238, #244, #250
 
-|TBD (unassigned seat) | |
-|===
-
-
-
-*Design:*
-
-[cols="3,3,6",options="header"]
-|===
-|Student |GitHub username |Tasks
-
-|Adriana Figueroa (Team Lead) |@AdrianaFigueroa9 | #19, #22, #34, #51, #93, #94, #107, #176
-
-|Devlin Hahn |@devlin-hahn04 | #38, #39, #41, #145
-
-|Jorge De León |@JorgeDeLeonOrama | #17, #116, #126, #127
-
-|Ronaldo Flores Nazario |@ronaldoflores9 | #20, #42, #84
-
-|Eliel Hernandez Gonzalez |@eliel-hernandez | #25, #26, #153
-
-|Daniella Melero |@daniellameleroo | #40, #44, #45, #48
-
-|Natalia S Vera Rivera |@nataliavera6 | #21, #102, #103, #104, #106
-
-|Ian Rivera |@Programian | #29, #115, #118, #141
-
-|Jayden Sánchez |@jaydensanchez12 | #56, #129, #130
+|Januel E. Torres Marquez (Team Lead) |@jankii03 |#52, #135, #136, #137
 |===
 
 
@@ -64,17 +38,17 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 
 |Kevin Gómez (Team Lead) |@kevgom018 |#11, #12, #14, #22, #34, #107, #166
 
-|Devlin Hahn |@devlin-hahn04 |#38, #39, #41, #145
+|Adriana Figueroa (Designer) |@AdrianaFigueroa9 | #19, #22, #34, #51, #93, #94, #107, #176
 
-|Jorge De León |@JorgeDeLeonOrama |#17, #116, #126, #127
+|Devlin Hahn (Designer) |@devlin-hahn04 |#38, #39, #41, #145
 
-|Januel E. Torres Marquez |@jankii03 |#52, #135, #136, #137
+|Jorge De León (Designer) |@JorgeDeLeonOrama |#17, #116, #126, #127
 
-|Kian-Robert Ramos Vega |@kian-robert |#67, #108, #109, #131
+|Kian-Robert Ramos Vega (Backend) |@kian-robert |#67, #108, #109, #131
 
-|Jorge Rivera |@JorgeRivera94 |#15, #122
+|Lucas Matos Datiz (Backend) |@L-A-M-D |#82, #231, #249, #267
 
-|Lucas Matos Datiz |@L-A-M-D |#82, #231, #249, #267
+|Jorge Rivera (Documentation) |@JorgeRivera94 |#15, #122
 |===
 
 
@@ -87,17 +61,17 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 
 |Solimar Cruz Hernandez (Team Lead) |@Solimar-Cruz |#22, #30, #32, #33, #34, #107
 
-|Ronaldo Flores Nazario |@ronaldoflores9 |#20, #42, #84
+|Ronaldo E. Flores Nazario (Designer) |@ronaldoflores9 |#20, #42, #84
 
-|Eliel Hernandez Gonzalez |@eliel-hernandez |#25, #26, #153
+|Eliel Hernandez Gonzalez (Designer) |@eliel-hernandez |#25, #26, #153
 
-|Kemuel Cubero Rosario |@Kemuel05 |#23, #146, #147, #148
+|Kemuel Cubero Rosario  (Backend) |@Kemuel05 |#23, #146, #147, #148
 
-|Kevin Lara Rodríguez |@kevinlara1 |#87, #205, #206, #207
+|Aryam Z Diaz Torres  (Backend) |@aryamdiaz |#24, #112, #180, #181
 
-|Aryam Z Diaz Torres |@aryamdiaz |#24, #112, #180, #181
+|Kevin Lara Rodríguez (Documentation) |@kevinlara1 |#87, #205, #206, #207
 
-|Reinaldo J. Martinez Morales |@reinaldo-martinez1 |#27, #28, #119, #199
+|Reinaldo J. Martinez Morales (Documentation) |@reinaldo-martinez1 |#27, #28, #119, #199
 |===
 
 
@@ -110,17 +84,17 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 
 |Andrea Segarra (Team Lead) |@andreasegarra |#22, #34, #35, #107, #132, #134, #179
 
-|Daniella Melero |@daniellameleroo |#40, #44, #45, #48
+|Daniella Melero (Designer) |@daniellameleroo |#40, #44, #45, #48
 
-|Natalia S Vera Rivera |@nataliavera6 |#21, #102, #103, #104, #106
+|Natalia S Vera Rivera (Designer) |@nataliavera6 |#21, #102, #103, #104, #106
 
-|Fabiola Torres |@FabiolaZTorres |#46, #95, #96, #101
-
-|Fernando Castro |@fernan-castro |#71, #168, #173, #198
-
-|Yamilette Alemany |@yamilette-alemany |#18, #58, #59, #60
+|Fernando Castro (Backend) |@fernan-castro |#71, #168, #173, #198
 
 |Ernesto S. Soto Rivera |@ernestosoto3 |#31, #98, #99, #100
+
+|Fabiola Torres (Documentation) |@FabiolaZTorres |#46, #95, #96, #101
+
+|Yamilette Alemany (Documentation) |@yamilette-alemany |#18, #58, #59, #60
 |===
 
 
@@ -133,17 +107,17 @@ For Milestone 1, the Digital Home Inventory team is organized into feature-based
 
 |Fabian Velez (Team Lead) |@FabianVelezOcasio |#22, #34, #107, #138, #139, #157, #178
 
-|Ian Rivera |@Programian |#29, #115, #118, #141
+|Ian Rivera (Designer) |@Programian |#29, #115, #118, #141
 
-|Jayden Sánchez |@jaydensanchez12 |#56, #129, #130
+|Jayden Sánchez (Designer) |@jaydensanchez12 |#56, #129, #130
 
-|Nicolás Rivera Batista |@nicolasrivera25 |#16, #193, #196
+|Jorge Peralta (Backend) |@PeraltaJorge9128 | #43, #143, #159
 
-|Samarys Barreiro Melendez |@SamarysB |#36, #111, #113, #155, #156
+|Samarys Barreiro Melendez (Backend) |@SamarysB |#36, #111, #113, #155, #156
 
-|Jorge Peralta  |@PeraltaJorge9128 | #43, #143, #159
+|Gerardo Ruiz (Backend) |@Gerardoruiz1 | #55, #201, #261, #263
 
-|Gerardo Ruiz |@Gerardoruiz1 | #55, #201, #261, #263
+|Nicolás Rivera Batista (Documentation) |@nicolasrivera25 |#16, #193, #196
 
-|Aliana Figueroa |@alianasofiaaa | 
+|Aliana Figueroa (Documentation) |@alianasofiaaa | 
 |===

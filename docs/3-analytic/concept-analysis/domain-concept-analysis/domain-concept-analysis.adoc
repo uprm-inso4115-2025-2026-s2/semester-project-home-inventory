@@ -184,8 +184,101 @@ These invariants describe stable properties of the domain:
 * E5: Expiration date unreadable/missing -> household cannot reliably judge expiration status.
 * E6: Membership change (move-out) -> household needs to update who participates and who is informed.
 
-include::ownership_model_research.adoc[leveloffset=+1]
-include::group-owned_vs_user-owned_item_structures.adoc[leveloffset=+1]
+=== Ownership structures for shared inventory items
+
+The rough sketch suggests that household items do not all behave the same way in shared environments. Some are treated as clearly shared essentials, while others are managed more personally even within the same household. For that reason, ownership must be analyzed as a domain concept rather than assumed to have only one structure.
+
+Ownership structures are evaluated here based on their ability to:
+
+- support collaborative interaction within a shared household context
+- preserve clear responsibility attribution where needed
+- align with domain invariants governing households, items, and membership
+- support enforceable permission logic
+- represent domain relationships coherently without unnecessary complexity
+
+==== User-owned structure
+
+In a user-owned structure, an item belongs primarily to an individual participant. Shared use is possible, but it must be added on top of individual ownership.
+
+Relationship idea:
+
+Item -> User +
+Item associated with Household context
+
+This structure provides strong individual accountability and clear ownership-based authority, but it does not fit shared-household semantics naturally. Collaboration becomes secondary, because the item is conceptually owned first by a person rather than by the shared household context.
+
+This structure is most suitable when items are primarily personal contributions that only occasionally appear in a shared environment.
+
+==== Group-owned structure
+
+In a group-owned structure, an item belongs to the shared household context rather than to a specific person. Household members interact with the item through membership.
+
+Relationship idea:
+
+Household -> Item +
+Household member -> Membership -> Household
+
+This structure supports shared use naturally and aligns well with communal resources. However, it does not provide inherent responsibility attribution. If the domain needs to represent who is primarily responsible for a shared item, that information must be added separately.
+
+This structure is most suitable when items are treated as collective household resources.
+
+==== Hybrid structure
+
+In a hybrid structure, an item exists within the shared household context but may also be associated with a responsible household member when needed.
+
+Relationship idea:
+
+Household -> Item +
+Household member -> Membership -> Household +
+Membership or responsibility relation -> Item
+
+This structure preserves the shared household context while still allowing responsibility attribution. It supports both collaboration and accountability, though it is conceptually more complex than the other two structures.
+
+This structure is most suitable when the domain must represent both shared items and items with a clearer responsible participant.
+
+==== Comparative evaluation
+
+[cols="1,1,1,1,1",options="header"]
+|===
+|Structure
+|Collaboration Support
+|Accountability
+|Alignment with Domain Invariants
+|Conceptual Fit
+
+|User-Owned
+|Indirect
+|Strong
+|Partial
+|Moderate
+
+|Group-Owned
+|Native
+|Weak
+|Strong
+|Strong
+
+|Hybrid
+|Native
+|Strong
+|Strong
+|Strong
+|===
+
+==== Recommendation
+
+The hybrid structure provides the strongest overall conceptual fit for the current domain model.
+
+It should be preferred because it:
+
+- preserves the shared household context
+- supports collaborative interaction naturally
+- allows responsibility attribution when needed
+- aligns with membership-based participation
+- provides a flexible basis for later permission and ownership rules
+
+This recommendation does not require every item to behave the same way. Instead, it provides a conceptual basis for representing both shared and personal responsibility inside one coherent household model.
+
 include::ownership_effects_on_permissions_and_spending_attribution.adoc[leveloffset=+1]
 include::core-inventory-domain-attribute-classification.adoc[leveloffset=+1]
 include::domain-evidence-concept-analysis.adoc[leveloffset=+1]
