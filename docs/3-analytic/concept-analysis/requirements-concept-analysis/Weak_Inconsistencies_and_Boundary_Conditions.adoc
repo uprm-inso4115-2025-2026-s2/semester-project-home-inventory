@@ -1,107 +1,107 @@
-= Identifying and Resolving Weak Inconsistencies and Boundary Conditions in System Requirements
+= #Identifying and Resolving Weak Inconsistencies and Boundary Conditions in System Requirements#
 :toc:
 :toclevels: 2
 
-== Purpose
+== #Purpose#
 
-Systematically identify and analyze weak inconsistencies and boundary conditions within the current system requirements. This includes situations where two or more system goals both make sense but cannot be fully optimized at the same time, requiring a balance or introduction of rules/constraints.
+#Systematically identify and analyze weak inconsistencies and boundary conditions within the current system requirements. This includes situations where two or more system goals both make sense but cannot be fully optimized at the same time, requiring a balance or introduction of rules/constraints.#
 
-== Weak Inconsistencies and Boundary Conditions
+== #Weak Inconsistencies and Boundary Conditions#
 
-=== Weak Inconsistency 1 — Fast Capture vs Inventory Accuracy
+=== #Weak Inconsistency 1 — Fast Capture vs Inventory Accuracy#
 
-*Competing goals:*
+#*Competing goals:*
 - Fast capture (low friction logging)
-- Accurate tracked inventory records
+- Accurate tracked inventory records#
 
-*Description:*
-The system should allow household members to quickly log consumption or replenishment with minimal effort. However, reducing the amount of required input increases the risk of inaccurate quantities, missing expiration dates, or incorrect item types.
+#*Description:*
+The system should allow household members to quickly log consumption or replenishment with minimal effort. However, reducing the amount of required input increases the risk of inaccurate quantities, missing expiration dates, or incorrect item types.#
 
-*Trigger / Boundary condition:*
-This inconsistency appears when users log items quickly with minimal information, skip optional fields like expiration dates, or approximate quantities instead of recording exact values.
+#*Trigger / Boundary condition:*
+This inconsistency appears when users log items quickly with minimal information, skip optional fields like expiration dates, or approximate quantities instead of recording exact values.#
 
-*Potential impact on system design:*
-The system should allow quick logging with minimal required fields while supporting later corrections through transaction (quantity change) adjustments. The system must accept approximate availability rather than requiring perfect precision.
+#*Potential impact on system design:*
+The system should allow quick logging with minimal required fields while supporting later corrections through transaction (quantity change) adjustments. The system must accept approximate availability rather than requiring perfect precision.#
 
-*Why this is a weak inconsistency:*
-Both goals are desirable, but improving speed reduces accuracy. The system must balance fast data entry with reasonable inventory accuracy.
+#*Why this is a weak inconsistency:*
+Both goals are desirable, but improving speed reduces accuracy. The system must balance fast data entry with reasonable inventory accuracy.#
 
 ---
 
-=== Weak Inconsistency 2 — Automation vs User Control
+=== #Weak Inconsistency 2 — Automation vs User Control#
 
-*Competing goals:*
+#*Competing goals:*
 - Automation (automatic alerts and restock list / planner auto-add)
-- Household member control (household members decide what to buy and when)
+- Household member control (household members decide what to buy and when)#
 
-*Description:*
-The system automatically generates alert / notification records and may automatically add item types to the restock list / planner when certain state transitions occur. However, household members may not want the system to automatically decide what should be purchased.
+#*Description:*
+The system automatically generates alert / notification records and may automatically add item types to the restock list / planner when certain state transitions occur. However, household members may not want the system to automatically decide what should be purchased.#
 
-*Trigger / Boundary condition:*
-This inconsistency appears when items are automatically added to the restock list, when household members dismiss alerts, or when household members intentionally keep items out-of-stock.
+#*Trigger / Boundary condition:*
+This inconsistency appears when items are automatically added to the restock list, when household members dismiss alerts, or when household members intentionally keep items out-of-stock.#
 
-*Potential impact on system design:*
-The system should allow household members to dismiss alerts, remove items from the restock list, and prevent repeated auto-add if the household member intentionally removed the item.
+#*Potential impact on system design:*
+The system should allow household members to dismiss alerts, remove items from the restock list, and prevent repeated auto-add if the household member intentionally removed the item.#
 
-*Why this is a weak inconsistency:*
-Automation improves convenience but reduces household member control. The system must balance automation with household member override mechanisms.
+#*Why this is a weak inconsistency:*
+Automation improves convenience but reduces household member control. The system must balance automation with household member override mechanisms.#
 
 ---
 
-=== Weak Inconsistency 3 — Simplicity vs Flexibility
+=== #Weak Inconsistency 3 — Simplicity vs Flexibility#
 
-*Competing goals:*
+#*Competing goals:*
 - Simple system (fixed thresholds and simple rules)
-- Flexible system (different rules per item type and configurable thresholds)
+- Flexible system (different rules per item type and configurable thresholds)#
 
-*Description:*
-A simple system is easier to implement and understand, but different item types have different consumption patterns, expiration behaviors, and restocking needs.
+#*Description:*
+A simple system is easier to implement and understand, but different item types have different consumption patterns, expiration behaviors, and restocking needs.#
 
-*Trigger / Boundary condition:*
-This inconsistency appears when some item types require different low-stock thresholds, some item types do not expire, or some item types are consumed at very different rates.
+#*Trigger / Boundary condition:*
+This inconsistency appears when some item types require different low-stock thresholds, some item types do not expire, or some item types are consumed at very different rates.#
 
-*Potential impact on system design:*
-The system should use simple rules initially but allow per item type configuration where necessary, without introducing overly complex models.
+#*Potential impact on system design:*
+The system should use simple rules initially but allow per item type configuration where necessary, without introducing overly complex models.#
 
-*Why this is a weak inconsistency:*
-A simple system reduces complexity, while flexibility improves usefulness and realism. The system must balance simplicity and flexibility.
+#*Why this is a weak inconsistency:*
+A simple system reduces complexity, while flexibility improves usefulness and realism. The system must balance simplicity and flexibility.#
 
 ---
 
-=== Weak Inconsistency 4 — Real Inventory vs Tracked Inventory Record
+=== #Weak Inconsistency 4 — Real Inventory vs Tracked Inventory Record#
 
-*Competing goals:*
+#*Competing goals:*
 - Represent real-world inventory accurately
-- Keep the system easy to use and maintain
+- Keep the system easy to use and maintain#
 
-*Description:*
-Physical inventory in a household changes continuously and may exist in multiple locations. The tracked inventory record is only an approximation and may diverge from reality.
+#*Description:*
+Physical inventory in a household changes continuously and may exist in multiple locations. The tracked inventory record is only an approximation and may diverge from reality.#
 
-*Trigger / Boundary condition:*
-This inconsistency appears when items are consumed without being logged, multiple storage locations exist, or multiple household members use items without updating the system.
+#*Trigger / Boundary condition:*
+This inconsistency appears when items are consumed without being logged, multiple storage locations exist, or multiple household members use items without updating the system.#
 
-*Potential impact on system design:*
-The system should accept that tracked inventory records may diverge from reality, provide transaction history and alerts to reduce divergence, and avoid requiring perfect synchronization with physical inventory.
+#*Potential impact on system design:*
+The system should accept that tracked inventory records may diverge from reality, provide transaction history and alerts to reduce divergence, and avoid requiring perfect synchronization with physical inventory.#
 
-*Why this is a weak inconsistency:*
-The system cannot perfectly represent reality without becoming too complex or burdensome, so some divergence between tracked inventory and reality must be accepted.
+#*Why this is a weak inconsistency:*
+The system cannot perfectly represent reality without becoming too complex or burdensome, so some divergence between tracked inventory and reality must be accepted.#
 
 ---
 
-=== Weak Inconsistency 5 — Immediate Detection vs Scheduled Automation
+=== #Weak Inconsistency 5 — Immediate Detection vs Scheduled Automation#
 
-*Competing goals:*
+#*Competing goals:*
 - Immediate detection of state changes after transactions
-- Scheduled automated checks for expiration and low-stock
+- Scheduled automated checks for expiration and low-stock#
 
-*Description:*
-Some state transitions should be detected immediately after a transaction (quantity change), while others are detected during scheduled sweeps. Running checks continuously improves responsiveness but increases system complexity and resource usage.
+#*Description:*
+Some state transitions should be detected immediately after a transaction (quantity change), while others are detected during scheduled sweeps. Running checks continuously improves responsiveness but increases system complexity and resource usage.#
 
-*Trigger / Boundary condition:*
-This inconsistency appears when a transaction immediately changes quantity, when expiration dates pass without user interaction, or when scheduled sweeps run daily instead of continuously.
+#*Trigger / Boundary condition:*
+This inconsistency appears when a transaction immediately changes quantity, when expiration dates pass without user interaction, or when scheduled sweeps run daily instead of continuously.#
 
-*Potential impact on system design:*
-The system should evaluate low-stock judgment immediately after transactions and evaluate expiration and near-expiry during scheduled sweeps. Alert / notification records should only be generated on state transitions.
+#*Potential impact on system design:*
+The system should evaluate low-stock judgment immediately after transactions and evaluate expiration and near-expiry during scheduled sweeps. Alert / notification records should only be generated on state transitions.#
 
-*Why this is a weak inconsistency:*
-Immediate detection improves responsiveness, while scheduled automation reduces system load and complexity. The system must balance responsiveness and efficiency.
+#*Why this is a weak inconsistency:*
+Immediate detection improves responsiveness, while scheduled automation reduces system load and complexity. The system must balance responsiveness and efficiency.#

@@ -1,17 +1,17 @@
-= Domain Analysis and Concept Formation Pipeline
+= #Domain Analysis and Concept Formation Pipeline#
 :toc:
 :toc-title: Table of Contents
 :toclevels: 3
 
-== Overview
+== #Overview#
 
-This document describes the structured pipeline used to process raw domain description units
+#This document describes the structured pipeline used to process raw domain description units
 into higher-level abstractions for the Home Inventory Management System. The pipeline moves
 from unstructured observations and low-level entity lists toward a coherent set of named
 domain concepts and a unified narrative, while surfacing inconsistencies and gaps for
-analyst review.
+analyst review.#
 
-The pipeline consists of four sequential stages:
+#The pipeline consists of four sequential stages:#
 
 [source]
 ----
@@ -33,17 +33,17 @@ The pipeline consists of four sequential stages:
 
 ---
 
-== Stage 1 — Ingest: Raw Domain Description Units
+== #Stage 1 — Ingest: Raw Domain Description Units#
 
-Raw domain description units (DDUs) are the unprocessed observations, interviews, and
+#Raw domain description units (DDUs) are the unprocessed observations, interviews, and
 artifacts collected during domain acquisition. For this project the raw DDUs were gathered
-from student surveys, informal household practices, and course domain analysis exercises.
+from student surveys, informal household practices, and course domain analysis exercises.#
 
-=== Collected DDUs
+=== #Collected DDUs#
 
-The following table lists every raw DDU ingested, organized by source section:
+#The following table lists every raw DDU ingested, organized by source section:#
 
-[cols="1,2,3", options="header"]
+#[cols="1,2,3", options="header"]
 |===
 | DDU ID | Source Section | Raw Description
 
@@ -69,19 +69,19 @@ The following table lists every raw DDU ingested, organized by source section:
 | DDU-20 | Functions | Low-stock detection: threshold logic, qualitative vs. quantitative judgments.
 | DDU-21 | Functions | Budget management: cycle-based limits, threshold crossing alerts, spending attribution.
 | DDU-22 | Artifacts | Fridge notes, whiteboards, group chat messages, notes apps, pantry photos, receipts.
-|===
+|===#
 
 ---
 
-== Stage 2 — Concept Formation: Abstraction Mapping
+== #Stage 2 — Concept Formation: Abstraction Mapping#
 
-In this stage, low-level entity lists from the raw DDUs are grouped into named domain
+#In this stage, low-level entity lists from the raw DDUs are grouped into named domain
 concepts at a higher abstraction level. The goal is to identify the *kinds of things*
-the domain talks about, independent of any specific implementation.
+the domain talks about, independent of any specific implementation.#
 
-=== Concept Abstraction Table
+=== #Concept Abstraction Table#
 
-[cols="2,3,2", options="header"]
+#[cols="2,3,2", options="header"]
 |===
 | Domain Concept | Raw DDU Entities Grouped Under This Concept | Source DDUs
 
@@ -133,11 +133,11 @@ the domain talks about, independent of any specific implementation.
 | duplicate purchase, missing update, stale information, ownership dispute, inconsistent records
 | DDU-04, DDU-05, DDU-09, DDU-19
 
-|===
+|===#
 
-=== Concept Hierarchy
+=== #Concept Hierarchy#
 
-The following hierarchy shows how concepts relate to one another:
+#The following hierarchy shows how concepts relate to one another:#
 
 [source]
 ----
@@ -161,35 +161,35 @@ Coordination Failure ← arises from → Tracked Inventory Record diverging from
 
 ---
 
-== Stage 3 — Narrative Rewrite
+== #Stage 3 — Narrative Rewrite#
 
-See: link:unified-domain-narrative.adoc[Unified Domain Narrative]
+#See: link:unified-domain-narrative.adoc[Unified Domain Narrative]#
 
-The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with their
+#The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with their
 corresponding concept names from Stage 2. All terminology is drawn exclusively from the
 project's Ubiquitous Language dictionary
-(`docs/2-descriptive/domain-description/terminology/terminology.adoc`).
+(`docs/2-descriptive/domain-description/terminology/terminology.adoc`).#
 
 ---
 
-== Stage 4 — Inconsistency Detection
+== #Stage 4 — Inconsistency Detection#
 
-See: link:inconsistency-detection.adoc[Inconsistency Detection Report]
+#See: link:inconsistency-detection.adoc[Inconsistency Detection Report]#
 
-The inconsistency detector scans all DDUs and existing domain documents for:
+#The inconsistency detector scans all DDUs and existing domain documents for:#
 
-* *Direct P / not-P conflicts* — one unit asserts a property that another directly negates.
+#* *Direct P / not-P conflicts* — one unit asserts a property that another directly negates.
 * *Scope conflicts* — a rule applies a constraint that another rule exempts.
 * *Completeness gaps* — a concept is referenced but never fully defined.
-* *Terminology drift* — the same real-world phenomenon described under two different names.
+* *Terminology drift* — the same real-world phenomenon described under two different names.#
 
 ---
 
-== Output: Analyst Review Package
+== #Output: Analyst Review Package#
 
-The full analyst review package produced by this pipeline consists of:
+#The full analyst review package produced by this pipeline consists of:#
 
-[cols="1,3", options="header"]
+#[cols="1,3", options="header"]
 |===
 | Artifact | Location
 
@@ -198,4 +198,4 @@ The full analyst review package produced by this pipeline consists of:
 | Inconsistency Detection Report | link:inconsistency-detection.adoc[inconsistency-detection.adoc]
 | Existing Terminology Dictionary | `docs/2-descriptive/domain-description/terminology/terminology.adoc`
 | Existing Domain Concept Analysis | `docs/3-analytic/concept-analysis/domain-concept-analysis/domain-concept-analysis.adoc`
-|===
+|===#

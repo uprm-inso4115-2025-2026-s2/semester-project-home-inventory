@@ -1,15 +1,15 @@
-= Risk Analysis: Alerts & Restock Automation Feature
+= #Risk Analysis: Alerts & Restock Automation Feature#
 :toc:
 
-== Overview
+== #Overview#
 
-The Alerts & Restock system will include automation that monitors inventory conditions and generates alerts when items are expired, near expiration, low in stock, or out of stock. While automation improves efficiency, it can also introduce system risks that may affect reliability and data accuracy.
+#The Alerts & Restock system will include automation that monitors inventory conditions and generates alerts when items are expired, near expiration, low in stock, or out of stock. While automation improves efficiency, it can also introduce system risks that may affect reliability and data accuracy.#
 
-This document identifies some potential risks in the Alerts & Restock automation process and suggests possible ways to reduce those risks.
+#This document identifies some potential risks in the Alerts & Restock automation process and suggests possible ways to reduce those risks.#
 
-== Risk Analysis Table
+== #Risk Analysis Table#
 
-[cols="1,3,3,3"]
+#[cols="1,3,3,3"]
 |===
 |Risk ID |Risk Description |Potential Impact |Mitigation Strategy
 
@@ -38,15 +38,15 @@ This document identifies some potential risks in the Alerts & Restock automation
 |If the automation scans a large number of items frequently, it could slow down the application or backend services.
 |Optimize inventory scans by running checks asynchronously or scheduling them at specific intervals instead of constant scanning.
 
-|===
+|===#
 
-== Recommendations
+== #Recommendations#
 
-To further improve reliability, the following monitoring strategies are recommended:
+#To further improve reliability, the following monitoring strategies are recommended:#
 
-* Implement logging for automated checks to track when scans occur and which items trigger alerts.
+#* Implement logging for automated checks to track when scans occur and which items trigger alerts.
 * Monitor notification delivery success rates.
 * Track system errors related to inventory processing or alert generation.
-* Add automated tests to verify expiration and stock detection logic.
+* Add automated tests to verify expiration and stock detection logic.#
 
-These practices will help the team detect issues early and maintain system reliability as the Alerts & Restock feature continues to develop.
+#These practices will help the team detect issues early and maintain system reliability as the Alerts & Restock feature continues to develop.#
