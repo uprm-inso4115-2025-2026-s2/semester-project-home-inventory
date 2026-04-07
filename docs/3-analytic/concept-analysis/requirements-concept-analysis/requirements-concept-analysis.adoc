@@ -1,22 +1,22 @@
 == Requirements Concept Analysis
 
-This section analyzes requirement-related concepts (actors, goals, capabilities, and requirement-level vocabulary) and maps them to the domain concepts established in the Domain Concept Analysis. It is grounded in (a) the Domain Rough Sketch (interviews/observations) and (b) the project’s internal Milestone 1 notes located in the docs directory (automation checks, low-stock strategies, expiration alert definitions, notification evaluation, restock-list auto-add logic, transaction tracking, and schema notes). The goal is to keep later requirements (Section 2.2) precise, consistent, and traceable.
+This section analyzes requirement-level concepts derived from the domain rough sketch and relates them to the domain concepts established earlier in the document. Its purpose is to define the vocabulary and tradeoffs that later requirements must use consistently.
 
-=== Starting point: requirement drivers anchored in the rough sketch
+=== Starting Point: Requirement Drivers Anchored in the Rough Sketch
 
-The rough sketch motivates these requirement drivers:
+The rough sketch motivates the following requirement drivers:
 
-* *Low friction capture:* “If it takes more than a few seconds to log, I won't do it.”
-* *Shared coordination failures:* milk bought twice; no formal responsibility; reliance on fridge note + chat.
-* *Multiple storage locations:* rice stored in two places.
-* *Qualitative stock judgments:* “full”, “almost empty”, “backup”; low = “feels light” / “open the backup” (and backup-opening often not recorded).
-* *Expiration and waste:* food/medicine expires unnoticed; unopened duplicates exist; unreadable/missing expiration; multiple expirations in bulk packs.
-* *Variable consumption:* exam weeks/guests change usage rates.
-* *Membership change:* desire to remove access when someone moves out.
+* *Low-friction capture:* "If it takes more than a few seconds to log, I won't do it."
+* *Shared coordination failures:* duplicate purchases, no clear replenishment responsibility, and reliance on fridge notes or chat.
+* *Multiple storage locations:* the same item type may exist in more than one place.
+* *Qualitative stock judgments:* households often use expressions such as "full", "almost empty", or "backup" instead of exact counts.
+* *Expiration and waste:* food and medicine may expire unnoticed, and some items may exist in unopened duplicates.
+* *Variable consumption:* exam weeks and guests can change usage rates.
+* *Membership change:* households need a clear way to handle move-out and access removal.
 
 These drivers shape the requirement-level concepts and tradeoffs below.
 
-=== Actors and goals
+=== Actors and Goals
 
 [cols="2,4",options="header"]
 |===
@@ -26,419 +26,135 @@ These drivers shape the requirement-level concepts and tradeoffs below.
 |Maintain a reliable understanding of what is available with minimal effort; avoid duplicate purchases; avoid unexpected shortages; reduce waste from expired items.
 
 |Student living with roommates/cohabitants
-|Maintain a shared understanding of availability; coordinate replenishment to avoid duplicates/missed purchases; distinguish shared vs personal items without conflict.
+|Maintain a shared understanding of availability; coordinate replenishment to avoid duplicate or missed purchases; distinguish shared vs personal items without conflict.
 
-|Household member with budget-awareness focus (persona trait)
+|Household member with budget-awareness focus
 |Understand spending patterns for essentials; avoid overspending; plan purchases using summaries rather than memory.
 
-|Household organizer (persona trait)
+|Household organizer
 |Reduce confusion about where items are stored and how they are grouped; keep organization stable enough that others can follow it.
 
-|Operations/monitoring stakeholder (class-topic persona)
+|Operations / monitoring stakeholder
 |Ensure automated checks and alert generation are reliable, observable, and do not produce duplicates or noisy output.
 |===
 
-=== Requirement-level concepts (definitions and clarifications)
+=== Requirement-Level Concepts
 
-The following concepts are used to express requirements without committing to a specific implementation:
+The following concepts are used to express later requirements without prematurely committing to a specific implementation.
 
 [cols="2,4",options="header"]
 |===
 |Concept |Meaning in requirements
 
 |Fast capture
-|A tracking/update interaction that fits within a few seconds and does not require perfect detail at entry time.
+|A tracking or update interaction that fits within a few seconds and does not require perfect detail at entry time.
 
 |Tracked record vs reality
-|The system-to-be represents availability, but real household inventory changes continuously; divergence is expected and must be managed.
+|The system represents availability, but real household inventory changes continuously. Divergence is expected and must be managed.
 
 |Shared visibility
-|Household members can converge on the same understanding of availability and recent changes. “Real-time” is treated as a quality expectation, not a domain concept.
+|Household members can converge on the same understanding of availability and recent changes.
 
 |Actionable states
-|States that drive decisions: e.g., NORMAL, LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, EXPIRED.
+|States that directly support decisions, such as `LOW_STOCK`, `OUT_OF_STOCK`, `NEAR_EXPIRY`, and `EXPIRED`.
 
 |State transition
-|A change from one actionable state to another. Transitions are a primary trigger for alerts to reduce repeated notifications.
+|A change from one actionable state to another. Transitions are the main trigger for alerts in order to reduce repetition.
 
 |Low-stock strategy
-|How “low” is determined (fixed threshold, percentage-based, reorder point). Initial requirements may accept a fixed per-item threshold.
+|The rule by which "low" is determined, such as a fixed threshold or reorder point.
 
 |Near-expiry window
-|Definition of “expiring soon” (within N days), including any timing/grace policy to avoid inconvenient alert timing.
+|The definition of "expiring soon", expressed as a time window before expiration.
 
-|Scheduled sweep (automation check)
+|Scheduled sweep
 |A periodic background check that evaluates low-stock and expiration conditions without requiring the household member to open the system.
 
-|Notification record/event
-|A persisted representation of an alert (at least for in-app review), including type, time, and read/unread status.
-
-|Delivery approach
-|In-app notification list vs device-level push. Choice affects complexity, reliability, and verification approach.
+|Notification record
+|A persisted representation of an alert, including type, time, and read/unread status.
 
 |Deduplication / anti-spam
-|Rules preventing repeated alerts or repeated list additions when nothing meaningful changed.
+|Rules that prevent repeated alerts or repeated list additions when nothing meaningful changed.
 
 |Auto-add to restock list
-|Rule-based conversion of actionable states into restock list entries, with guardrails against clutter.
+|Rule-based conversion of actionable states into restock-list entries.
 
 |Transaction history
-|An append-only log of quantity changes with reason and timestamp, enabling traceability of how current quantity was reached.
+|An append-only log of quantity changes with reason and timestamp, allowing the current tracked state to be explained.
 |===
 
-=== Capability map (actors → capabilities → domain concepts)
+=== Conflicts and Tradeoffs
 
-[cols="2,3,3",options="header"]
-|===
-|Actor |Capability needed |Domain concepts involved
+The requirement-level concepts above introduce several tensions that later requirements must resolve explicitly:
 
-|Solo student
-|Capture/update items quickly (create, adjust availability, mark used/restocked)
-|Tracked inventory record, Item type/instance, Availability/Quantity, Consumption, Replenishment, Location, Category
+* *Speed vs accuracy* — requiring too much detail slows capture, but requiring too little may reduce trust in the tracked record.
+* *Flexibility vs consistency* — household-specific practices are realistic, but too much freedom increases terminology drift and inconsistent usage.
+* *Shared visibility vs privacy* — shared coordination improves when more information is visible, but some items and spending records remain personal.
+* *Timely reminders vs notification fatigue* — reminders reduce shortages and waste, but repeated alerts reduce trust and may be disabled.
+* *Simplicity vs “smartness”* — fixed thresholds and explainable triggers are robust, while predictive or highly adaptive behavior is harder to justify and verify.
+* *Automation reliability vs user-device dependence* — background checks improve consistency, but they require clear observability, repeatability, and error handling.
 
-|Solo student
-|Check availability before shopping (search/filter; see current status)
-|Tracked inventory record, Availability/Quantity, Location, Category, Actionable states
-
-|Solo student
-|Reduce expiration waste (see expiring/expired items; decide actions)
-|Item instance/package, Expiration date, (optional) Batch, Expiration states
-
-|Roommate/cohabitant
-|Maintain shared visibility (see the same inventory state and recent changes)
-|Household, Household member, Tracked records, Coordination failure
-
-|Roommate/cohabitant
-|Coordinate replenishment intent/responsibility to avoid duplicates
-|Low-stock judgment/Threshold, Replenishment intent/responsibility, Restock list entry (if used)
-
-|Budget-focused member
-|Record/review spending summaries for essentials
-|Spending entry (optional), Category, Household
-
-|Operations/monitoring stakeholder
-|Reliable automated checks with observability and deduplication
-|Scheduled sweep, Run results/logs, State transitions, Notification records/events
-|===
-
-=== Requirement groupings (what must be specified later)
-
-These groupings organize later requirements (Section 2.2) and help keep coverage balanced.
-
-*RG1 — Inventory maintenance (core)*
-* Add items with minimal burden.
-* Update availability through common actions (used/consumed, restocked, manual adjustment).
-* Organize items by category and optionally by location.
-* Support multiple storage locations for the same item type (either separate records or multi-location representation).
-
-*RG2 — Shared-household coordination*
-* Shared visibility of inventory and recent changes.
-* Distinguish shared vs personal items.
-* Represent replenishment intent/responsibility to reduce duplicate buying and missed purchases.
-
-*RG3 — Low-stock and out-of-stock awareness*
-* Low-stock determination based on a simple, explainable strategy initially (fixed per-item threshold acceptable).
-* Out-of-stock as a distinct actionable state.
-* Alert generation tied to state transitions and deduplication rules.
-
-*RG4 — Expiration awareness*
-* Expiration applies to some items; others have no expiration date.
-* “Expiring soon” concept defined via near-expiry window (+ optional grace policy).
-* Handle missing/unreadable expiration dates without creating false confidence.
-
-*RG5 — Automation layer (scheduled sweep)*
-* Periodic sweep evaluates low-stock and expiration conditions.
-* Sweep produces persisted state flags and generates notification records/events for new actionable states.
-* Sweep is observable (run summaries/logs) and idempotent (safe retries without duplication).
-
-*RG6 — Restock list auto-add (rule-based)*
-* Auto-add triggers based on actionable states: OUT_OF_STOCK, EXPIRED, LOW_STOCK (optionally with “frequent pattern” gating).
-* Auto-add must not duplicate items already on the list.
-* Trigger priority and reason must be explainable (“why was this added?”).
-
-*RG7 — Transaction traceability*
-* Every availability change is recorded as a transaction with reason and timestamp.
-* Transaction history is append-only (read-only after creation).
-* Current quantity remains consistent with applied transactions.
-
-=== Evidence for requirement concepts (artifact anchors)
-
-The requirement-level concepts and decision-rule vocabulary above are anchored in project notes located in the docs directory (filenames shown below). These artifacts serve as the retraceable basis for later requirements and tests.
-
-* Scheduled sweep / automation checks: `automation-check-system.adoc`
-* Expiration alert definitions and near-expiry window: `definition-expiration-alert-system.adoc`
-* Notification fatigue concerns and evaluation criteria: `evaluationOfNotification.adoc`
-* Restock list auto-add priority and de-duplication logic: `restocklist_autoadd_decisionlogic.adoc`
-* Transaction history and append-only tracking of quantity changes: `inventory-transaction-tracking.adoc`
-* Low-stock determination alternatives: `low-stock-research-strategies.adoc`
-* Inventory/stock-change schema notes used to align terminology: `schema-for-inventory-&-stock-changes.adoc` (and related notification schema notes where applicable)
-
-include::requirements-evidence-concept-analysis.adoc[leveloffset=+1]
-
-=== Known decision logic (expressed as requirement-level rules)
-
-The following rules are expressed at the requirements level (not as implementation details). They should later become explicit requirements with fit criteria.
-
-*Scheduled sweep evaluation rules*
-* Low stock: LOW_STOCK becomes true when availability indicates quantity <= low_stock_threshold (when a threshold exists).
-* Expired: EXPIRED becomes true when today >= expiration_date (when an expiration date exists).
-* Near-expiry (optional): NEAR_EXPIRY becomes true when expiration_date - today <= N days (when an expiration date exists).
-* Alerts should be produced on *new* actionable states (state transitions) to avoid repeated notifications for unchanged conditions.
-
-*Restock list auto-add decision logic (priority + deduplication)*
-* If OUT_OF_STOCK and not already on list → auto-add (reason OUT_OF_STOCK).
-* Else if EXPIRED and not already on list → auto-add (reason EXPIRED).
-* Else if LOW_STOCK and not already on list → auto-add (reason LOW_STOCK).
-* “Frequent pattern” signals (if used) must be gated behind low/out conditions and must not override stock reality.
-
-*Transaction tracking rule*
-* Any action that changes quantity is recorded as a transaction (restock, used/consumed, manual adjustment), with reason and timestamp.
-
-=== Notification delivery: requirement implications of approach options
-
-Two delivery approaches have different requirement implications:
-
-* In-app notification records:
-  - Requires storing notification records and supporting read/unread state.
-  - Easier to validate/verify early because behavior is visible and testable within the system.
-
-* Push notifications:
-  - Adds device registration/token lifecycle, retries, platform-specific delivery behavior, and higher verification burden.
-
-For Milestone 1 scope, in-app notification records are an acceptable baseline; push delivery remains an optional extension.
-
-=== Conflicts and tradeoffs (requirement-level)
-
-* T1: *Speed vs accuracy* — demanding full detail slows capture; minimal capture risks missing expiration/location details.
-* T2: *Flexibility vs consistency* — free-form categories/labels match households but increase terminology drift, especially with roommates.
-* T3: *Shared visibility vs privacy* — shared inventory improves coordination, but some items/spending can be personal; membership change increases access-control expectations.
-* T4: *Reminders vs notification fatigue* — alerts reduce shortages/expiration waste but increase disabling risk; transition-based alerts and deduplication are required.
-* T5: *Simplicity vs “smartness”* — fixed thresholds and explainable triggers are robust; predictive forecasting is fragile under missing/noisy data and variable consumption.
-* T6: *Automation reliability vs user-device dependence* — scheduled sweeps improve reliability but require observability (run summaries/logs, idempotency, error handling).
-
-=== Candidate Resolutions for Resolving Requirement Inconsistencies
-
-Note: User names (Mateo, Sofia, Julian, Andrea) refer to the personas defined in Section 4.2.
-
-Two primary strategies are used to resolve inconsistencies:
-
-*Elicitation-Based Resolution:* relies on stakeholder input to clarify intent and preferences. +
-*Formal Resolution Tactics:* relies on structured rules and modeling to enforce consistency.
-
-==== Elicitation-Based Resolution Cases
-
-* *Case EBR1: Clarifying Item Ownership Responsibility* +
-Inconsistency: Andrea's need for oversight of shared items (N4/N5) conflicts with Sofia's expectation of autonomy (IR-03, US-INV-02). +
-Approach: Interviews and scenario walkthroughs to clarify ownership. +
-Outcome: Assign ownership per role and document alternative shared responsibility models based on stakeholder input. +
-Rationale: Aligns shared inventory behavior with stakeholder expectations.
-
-* *Case EBR2: Notification Frequency Expectations* +
-Inconsistency: Mateo wants timely alerts (N2) and Julian prefers fewer notifications (N2/N3, DR-4). +
-Approach: Gather preferences through surveys and scenario testing. +
-Outcome: Alert frequency is configurable and default behavior reflects common preferences. +
-Rationale: Grounds notifications in user preferences, reducing frustration.
-
-* *Case EBR3: Definition of “Low Stock”* +
-Inconsistency: Andrea prefers strict thresholds (N4), Sofia wants flexible thresholds (N5), and Julian requires precise specialty alerts (N5, DR-5, US-INV-04). +
-Approach: Define per-item or category thresholds via stakeholder input. +
-Outcome: Establish flexible persona-aligned thresholds and document conflicts and resolutions. +
-Rationale: Captures contextual differences and ensures usability.
-
-==== Formal Resolution Tactic Cases
-
-* *Case FRT1: Priority-Based Requirement Resolution* +
-Inconsistency: Minimizing effort vs maintaining accuracy. +
-Approach: Apply prioritization rules.  +
-Outcome: Prioritize reduced effort and support accuracy with automation. +
-Rationale: Resolves competing goals systematically.
-
-* *Case FRT2: Constraint Enforcement for Data Consistency* +
-Inconsistency: Conflicting updates in shared inventories. +
-Approach: Enforce domain constraints and validaition rules. +
-Outcome: Enforce rules such as non-negative quantities; implemented via **Supabase RLS** to ensure only authorized household members modify shared stock. +
-Rationale: Maintains consistent inventory independent of user behavior.
-
-* *Case FRT3: Abstraction of Item State Representation* +
-Inconsistency: Overly detailed/inconsistent item states. +
-Approach: Simplify and standardize item states. +
-Outcome: Define discrete states (In Stock/Low/Out of Stock) and broadcast to all roommates via **Supabase Realtime**. + Rationale: Reduces ambiguity and synchronizes UI across devices.
-
-=== Engineering Derived Requirements from Competing Goals
-
-==== Case 1: Low-Effort Use vs Inventory Accuracy
-
-The following concrete derived requirements resolve the competing goals identified in section 1.5. Each requirement encodes a specific tradeoff decision and is expressed in a way that supports validation and verification.
-
-* DR-1: *Minimal Required Data for Item Creation* —
-The system shall allow users to create an item record using only a minimal set of required fields (e.g., item name and quantity). +
-*Rationale:* Reduces user effort (supports low friction) while ensuring a usable baseline for tracking.
-* DR-2: *Incremental Data Completion* —
-The system shall allow users to add or update optional item details (e.g., expiration date, location, category) after initial creation. +
-*Rationale:* Preserves usability while enabling improved accuracy over time.
-* DR-3: *Conditional Feature Availability Based on Data Completeness* —
-The system shall only enable features that depend on specific data (e.g., expiration alerts require an expiration date). +
-*Rationale:* Prevents unreliable system behavior while avoiding unnecessary input burden.
-
-==== Case 2: Timely Reminders vs Notification Fatigue
-
-* DR-4: *Notification Trigger on State Transition* —
-The system shall generate notifications only when an item transitions into a new actionable state (e.g., NORMAL → LOW_STOCK, LOW_STOCK → OUT_OF_STOCK). +
-*Rationale:* Ensures alerts are meaningful and avoids repeated notifications.
-* DR-5: *Notification Deduplication* —
-The system shall prevent duplicate notifications for the same condition if no relevant state change has occurred. +
-*Rationale:* Reduces notification noise and prevents user frustration.
-* DR-6: *Notification Frequency Limiting* —
-The system shall enforce limits on how frequently notifications can be generated for the same item and condition within a defined time window. +
-*Rationale:* Balances timeliness with long-term user engagement.
-
-==== Case 3: Shared Visibility vs Privacy and Least Privilege
-
-* DR-7: *Shared vs Personal Data Separation* —
-The system shall distinguish between shared household data and user-specific data. +
-*Rationale:* Enables coordination while respecting individual boundaries.
-* DR-8: *Role-Based Access Control* —
-The system shall restrict access to item metadata based on user role or ownership (e.g., only authorized users can view or modify personal item details). +
-*Rationale:* Enforces privacy and least privilege principles.
-* DR-9: *Controlled Shared Visibility* —
-The system shall ensure that only information necessary for household coordination (e.g., item availability and status) is visible to all household members. +
-*Rationale:* Maintains transparency without exposing sensitive data.
-
-=== Risk Countermeasures (Concept-Level Integration)
-
-The following summarizes key risk countermeasures and how they integrate with requirement-level concepts defined in this section.
-
-[cols="2,3,3", options="header"]
-|===
-|Risk |Countermeasure Strategy |Related Requirement Concepts
-
-|BR1: Low user engagement
-|Reduce interaction effort and support incremental updates
-|Fast capture, Incremental data completion
-
-|BR2: Notification fatigue
-|Trigger alerts on state transitions and apply deduplication rules
-|State transition, Deduplication / anti-spam, Notification records/events
-
-|BR3: Conflicting updates
-|Resolve updates through append-only transaction history and timestamp ordering
-|Transaction history, Shared visibility
-
-|BR4: Missing item data
-|Allow partial data and enable incremental completion
-|Fast capture, Tracked record vs reality
-|===
-
-These countermeasures reinforce previously defined requirement-level concepts by ensuring that risk handling is embedded within core system behavior. In particular:
-
-- Notification-related risks are addressed through state transition-based alert generation and deduplication strategies.
-- Data consistency risks are managed through the transaction history model, ensuring all updates are traceable and consistently applied.
-- Usability-related risks are addressed through low-friction capture and incremental data completion strategies.
-
-This integration ensures that risk management is not treated as an isolated concern but as part of the system’s requirement design.
-
-=== Traceability hooks (how this supports later sections)
-
-To support traceability (class topic 4.4), later requirements should link to:
-
-* Needs IDs (N1–N5)
-* Domain concepts (from 3.1.1)
-* Scenarios (3.2.1) and walkthrough findings (3.2.2)
-* Verification artifacts (test cases in 3.2.3)
-* Optional: related issue IDs once user stories/epics are stabilized
-
-This section establishes the vocabulary used for those links.
-
-=== Requirement quality checks (initial)
-
-*Completeness (under-specified)*
-* Define a concrete near-expiry window (N days) and any grace period policy.
-* Decide initial scope for batch handling (multiple expirations in bulk packs).
-* Specify shared-household coordination semantics: what “intent/responsibility” means (claim vs assign vs unassigned) and how conflicts are handled.
-* Define policy for missing/unreadable expiration dates (no alerts vs prompt vs “unknown expiry” status).
-
-*Consistency (avoid ambiguous terms)*
-* Avoid “real-time” as a hard requirement unless measurable criteria are provided; prefer “shared visibility” + later quality requirements.
-* Keep terminology consistent: item type vs item instance/package; inventory (reality) vs tracked record (representation); backup as practice vs state.
-* Ensure low-stock/out-of-stock/near-expiry/expired terms map consistently to actionable states and transition rules.
-
-*Feasibility (risks/unknowns)*
-* Deduplication rules are essential to prevent notification fatigue and repeated restock list additions.
-* Automation sweeps must be testable deterministically with boundary cases (threshold equality, expiration boundaries, missing fields).
-* Offline/temporary connectivity gaps create reconciliation complexity; initial scope should define acceptable behavior and verification strategy.
-
-=== Satisfiability and Feasibility Analysis for Core Requirements
-
-This section evaluates the logical alignment and technical viability of three high-impact requirements to ensure the project goals are attainable within current constraints.
-
-==== 1. Automated Low-Stock Detection and Alerting
-* **Logical Satisfiability:** This requirement addresses the user goal of "avoiding unexpected shortages." It is logically satisfiable through a comparison function where `Current_Quantity <= Minimum_Threshold`. By allowing users to define a custom `Minimum_Threshold` per item, the system mathematically ensures an alert is generated before the quantity reaches zero, directly fulfilling the need for proactive replenishment.
-* **Technical Feasibility:** **High.** Implementation is feasible using **Supabase Edge Functions** or Database Webhooks. These triggers can evaluate the condition whenever a stock transaction occurs. Since the team is already using Supabase for data persistence, the infrastructure is already in place.
-
-==== 2. Barcode Scanning for Item Entry
-* **Logical Satisfiability:** The goal is to "reduce the friction of manual data entry" (Low Friction Capture). Barcode scanning satisfies this by replacing multiple text-entry fields (Name, Category, Brand) with a single hardware scan. By linking a scanned UPC to a digital record, the system logically maps a physical object to a digital entity with minimal human error.
-* **Technical Feasibility:** **Medium.** Feasibility is supported by Flutter's ecosystem (e.g., `mobile_scanner` package). While fetching precise product names from a global database requires an external API (like OpenFoodFacts), the team can implement a "Scan-to-Match" logic for previously entered items to stay within the project's no-cost budget.
-
-==== 3. Multi-User Inventory Synchronization
-* **Logical Satisfiability:** For shared households, the system must maintain a "Single Source of Truth" to prevent coordination failures. This is satisfied by a centralized cloud database that broadcasts changes to all authenticated members of a household ID. This ensures that if Roommate A consumes an item, Roommate B’s view is updated immediately, logically preventing duplicate purchases.
-* **Technical Feasibility:** **High.** This is a native capability of **Supabase Realtime**. By utilizing Row Level Security (RLS) and Realtime subscriptions in the Flutter app, the team can synchronize state across devices without building a complex polling engine, fitting well within the three-month development window.
+These tradeoffs explain why later requirements must emphasize low-friction entry, explainable alerting, deduplication, shared-versus-personal separation, and traceable quantity history.
 
 === AHP-Based Requirement Prioritization
 
-This section documents an AHP-based method for Section 3.1 requirement prioritization and provides a reproducible R script for the team.
+This section documents an AHP-based method for requirement prioritization and provides a reproducible calculation path for the team.
 
 ==== Evaluation Criteria
 
-The AHP process compares requirements across a consistent set of evaluation criteria.
+The prioritization compares requirements using the following criteria:
 
-* User value — How strongly a requirement supports waste reduction, coordination, or capture speed.
-* Feasibility — How easily the requirement can be implemented with the current Supabase + Flutter architecture.
-* Impact — How much the requirement improves the household inventory experience and overall system behavior.
-* Implementation complexity — How difficult the requirement is to build; this favors lower-complexity features in the ranking.
+* *User value* — how strongly the requirement supports waste reduction, coordination, or low-friction capture.
+* *Feasibility* — how practical the requirement is under the current architecture and project constraints.
+* *Impact* — how much the requirement improves overall household inventory behavior.
+* *Implementation complexity* — how difficult the requirement is to build; lower complexity is preferred when value is similar.
 
 ==== Team Input Aggregation Method
 
-Each team member supplies pairwise comparison judgments for the criteria and for the requirements under each criterion.
-The team input is aggregated by averaging the corresponding entries in each member's pairwise comparison matrices, ensuring that the resulting matrix preserves the original relative preferences while smoothing individual variance.
+Each team member supplies pairwise comparisons for the criteria and for the requirements under each criterion. The shared matrices are produced by averaging the corresponding matrix entries across team members.
 
-[source,rest]
+[source,r]
 ----
 aggregate_matrix <- function(matrices) {
   Reduce("+", matrices) / length(matrices)
 }
 ----
 
-This aggregated matrix is the basis for the shared AHP computation, and it should be generated before computing criterion and requirement weights.
-
 ==== AHP Process Steps
 
-1. Collect pairwise comparisons from all team members for the evaluation criteria.
-2. Create an aggregated criteria comparison matrix by averaging all individual criteria matrices.
-3. Collect pairwise comparisons from all team members for each requirement under each criterion.
-4. Create an aggregated requirement comparison matrix for each criterion.
-5. Compute criterion weights and local requirement weights using the principal eigenvector method.
-6. Multiply local requirement weights by the criterion weights to compute global requirement scores.
-7. Rank the requirements by global score to derive the final prioritized list.
+. Collect pairwise comparisons from all team members for the evaluation criteria.
+. Aggregate the criteria matrices.
+. Collect pairwise comparisons for the requirements under each criterion.
+. Aggregate the requirement matrices for each criterion.
+. Compute criterion weights and local requirement weights.
+. Compute global scores from local weights and criterion weights.
+. Rank requirements by final score.
 
 ==== Sample Aggregated AHP Result
 
-The attached script `docs/3-analytic/concept-analysis/requirements-concept-analysis/ahp-prioritization.R` demonstrates this process with sample input values and provides a transparent, reproducible calculation path.
-
-The example final ranking produced by the sample aggregation is:
+The script `docs/3-analytic/concept-analysis/requirements-concept-analysis/ahp-prioritization.R` demonstrates the method and can be updated with real team input.
 
 [cols="1,3",options="header"]
 |===
-|Rank|Requirement
+|Rank |Requirement
 
-|1|Core inventory capture and low-friction item entry
-|2|Shared visibility and household coordination
-|3|Low-stock and out-of-stock awareness
-|4|Expiration awareness and alerting
-|5|Restock list auto-add behavior
-|6|Transaction history and traceability
+|1
+|Core inventory capture and low-friction item entry
+
+|2
+|Shared visibility and household coordination
+
+|3
+|Low-stock and out-of-stock awareness
+
+|4
+|Expiration awareness and alerting
+
+|5
+|Restock list auto-add behavior
+
+|6
+|Transaction history and traceability
 |===
 
-==== Documentation and Traceability
-
-The AHP script and the sample matrices are documented so the team can replace placeholder values with actual member judgments without changing the calculation method.
-This ensures that Section 3.1 remains traceable, repeatable, and defensible when the team presents the prioritized requirements.
+The AHP method makes the prioritization process transparent, repeatable, and easier to defend during review.

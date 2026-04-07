@@ -1,0 +1,35 @@
+== Shared-Household Invitations and Access Changes
+
+In shared households, invitations are the mechanism by which participation is extended, updated, or removed. This section defines the requirement-level behavior needed to support household access changes without introducing implementation-specific onboarding details.
+
+A household invitation is a temporary request that allows a user to join a household context. Each invitation identifies a sender, a recipient, a target household, a status, and an expiration time.
+
+=== Invitation permissions
+
+Invitation permissions determine which household members may invite others into a household. By default, invitation authority belongs to the household admin role, though later requirements may allow additional role-based permissions.
+
+=== Invitation lifecycle
+
+An invitation may move through the following states:
+
+* *Sent* — the invitation has been created and is awaiting a response.
+* *Accepted* — the recipient joins the household and the invitation becomes inactive.
+* *Declined* — the recipient rejects the invitation and the invitation becomes inactive.
+* *Expired* — the invitation is no longer valid because its time window has passed.
+* *Revoked* — the sender or household admin invalidates the invitation before acceptance.
+
+These states matter because they determine whether household participation becomes active and whether access to shared information should be granted or removed.
+
+=== Core rules
+
+* Invitations to the same recipient for the same household should not remain duplicated in an active state.
+* Expired or revoked invitations cannot be reused.
+* Accepting an invitation grants household access according to the assigned role.
+* Declining or revoking an invitation does not grant access.
+* When a household member is removed, their access to shared household information must no longer remain active.
+
+=== Shared access behavior
+
+Once access is granted, the shared household inventory becomes visible according to the member’s assigned role. Depending on the role definition in later requirements, a member may have view-only access, update privileges, or administrative responsibility.
+
+Household administration may also include viewing current members, resending invitations, changing roles where supported, and revoking access when participation changes.

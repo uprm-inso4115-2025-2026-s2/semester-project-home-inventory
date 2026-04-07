@@ -1,4 +1,4 @@
-== 2.3 Implemented End-to-End Features
+== Implemented End-to-End Features
 
 This section documents the minimal viable set of high-value features that have been fully implemented in the current release. For each feature, the end-to-end user flow is mapped from initial input through processing to final output. This enables reviewers to verify functionality and understand the core system behavior without needing to compile or run the application.
 

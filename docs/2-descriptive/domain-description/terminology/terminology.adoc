@@ -4,7 +4,6 @@ This section consolidates the domain's ubiquitous language into a single annotat
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)
 * *Requirements* — introduced when specifying capabilities of the system-to-be
-* *Implementation* — introduced during architectural or technical design
 
 [cols="2,1,1,4,3", options="header"]
 |===
@@ -90,7 +89,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Artifact / Event
 | Domain
 | A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed).
-| How the household member is informed of an actionable condition.
+| Represents that an actionable condition has been communicated.
 
 | Spending entry
 | Record
@@ -156,7 +155,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Action
 | Domain
 | A household member delays acting on an alert for a period of time.
-| The hosehold member may receive another alert of this actionable condition.
+| The household member may receive another alert for the same actionable condition later.
 
 | Dismiss / ignore
 | Action
@@ -299,7 +298,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Household admin
 | Role
 | Requirements
-| The single household member with administrative responsibility at a given time. Transferable before the admin leaves (DR-4).
+| The single household member with administrative responsibility at a given time. Transferable before the admin leaves.
 | Domain equivalent: informal "household manager" role.
 
 | Membership state
@@ -349,53 +348,4 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Requirements
 | A persisted representation of an alert, including type, timestamp, and read/unread status, available at minimum for in-app review.
 | Refines the domain-level "alert"; adds persistence and status tracking.
-
-| Auth (authentication)
-| Component
-| Implementation
-| The subsystem handling user registration, login, session management, password reset, and identity for authorization checks (Supabase Auth / JWT).
-| —
-
-| Session
-| Concept
-| Implementation
-| A JWT-based authenticated context for a user interacting with the system.
-| —
-
-| Row Level Security (RLS)
-| Mechanism
-| Implementation
-| A database-layer policy (Supabase/Postgres) ensuring users can only access data belonging to their household(s).
-| —
-
-| PostgREST / API layer
-| Component
-| Implementation
-| The middleware that exposes database tables and views as REST endpoints and enforces database constraints (Supabase PostgREST).
-| —
-
-| Supabase Realtime
-| Component
-| Implementation
-| The mechanism by which the mobile app subscribes to live household data changes (e.g., shared inventory updates) without manual refresh.
-| —
-
-| Dashboard
-| UI Surface
-| Implementation
-| A screen in the Flutter mobile app that presents key inventory and spending metrics at a glance (IR-08).
-| —
-
-| Push notification
-| Delivery Mechanism
-| Implementation
-| A device-level notification delivered by the platform push provider; one possible delivery method for domain-level alerts.
-| Contrast with in-app notification list.
-
-| In-app notification list
-| UI Surface
-| Implementation
-| A screen or panel within the app listing persisted notification records; the other possible delivery method for domain-level alerts.
-| Contrast with push notification.
-
 |===
