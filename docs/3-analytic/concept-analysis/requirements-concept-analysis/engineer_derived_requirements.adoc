@@ -1,49 +1,49 @@
-= Engineering Derived Requirements from Competing Goals
+= #Engineering Derived Requirements from Competing Goals#
 // Author: Fabiola Z. Torres Maldonado
 // GitHub user: @FabiolaZTorres
 // Date: 3/29/2026
 // Issue #429
 
 
-== Role of Derived Requirements in Conflict Resolution
+== #Role of Derived Requirements in Conflict Resolution#
 
-Derived requirements act as the bridge between high-level goals and implementable system behavior. When goals conflict, they cannot be satisfied independently without creating inconsistencies in the system. Instead, they must be reconciled through carefully defined requirements that encode how trade-offs are handled. In this sense, derived requirements are not only functional specifications, but also expressions of prioritized design decisions that ensure consistency across the system.
-
-
-== Engineering Strategy
-
-The engineering process begins by identifying the tension between two or more competing goals. From this tension, a resolution policy is defined that determines how the system should behave when those goals cannot be fully satisfied at the same time. This policy is then translated into concrete requirements that constrain system behavior in a way that preserves the most critical aspects of each goal. This structured approach ensures that all derived requirements remain traceable to their originating conflicts and can be justified during validation and verification.
+#Derived requirements act as the bridge between high-level goals and implementable system behavior. When goals conflict, they cannot be satisfied independently without creating inconsistencies in the system. Instead, they must be reconciled through carefully defined requirements that encode how trade-offs are handled. In this sense, derived requirements are not only functional specifications, but also expressions of prioritized design decisions that ensure consistency across the system.#
 
 
-== Case Analysis of Engineered Requirements
+== #Engineering Strategy#
 
-=== Low-Effort Use vs Inventory Accuracy
-
-The conflict between low-effort usage and inventory accuracy arises from the need to balance usability with data reliability. Reducing the amount of effort required from users encourages continued engagement, but it also increases the likelihood of incomplete or outdated information. Conversely, enforcing strict data requirements improves accuracy but risks discouraging use.
-
-To resolve this tension, the system adopts a policy that minimizes required user effort while still enforcing the minimum data necessary for reliable behavior. This leads to a design in which users can initially provide only essential information, while additional details can be added incrementally over time. At the same time, system features that depend on specific data like alerts are conditioned on the presence and validity of that data.
-
-This approach ensures that the system remains accessible and easy to maintain, while still preserving the integrity of behaviors that depend on accurate information. As a result, usability and reliability are not treated as mutually exclusive, but as interdependent concerns managed through conditional system behavior.
-
-=== Timely Reminders vs Notification Fatigue
-
-The need to provide timely reminders introduces a competing concern: excessive notifications can overwhelm users and reduce the perceived value of the system. A highly proactive notification strategy may ensure that important conditions are not missed, but it can also lead to frustration and eventual disengagement.
-
-The resolution to this conflict is based on controlling the frequency and redundancy of notifications rather than reducing their importance. The system enforces limits on how often reminders can be generated for the same condition, while also preventing duplicate notifications when no meaningful state change has occurred. In this way, reminders remain timely and relevant without becoming repetitive.
-
-This design preserves the usefulness of alerts by ensuring that they communicate meaningful information at appropriate intervals. It also protects long-term user engagement by preventing notification overload, thereby maintaining trust in the system’s automated behaviors.
-
-=== Shared Visibility vs Privacy and Least Privilege
-
-In shared household environments, increased visibility of inventory data improves coordination and reduces misunderstandings. However, unrestricted visibility may expose user-specific or sensitive information that should not be shared broadly. This creates a conflict between transparency and privacy.
-
-The system resolves this tension by distinguishing between shared and user-specific data, and by applying access controls that limit visibility based on context and permission. Information necessary for coordination, such as item availability, is made accessible to all relevant members, while sensitive metadata (such as ownership details or personal usage patterns) is restricted to authorized users.
-
-Through this separation, the system supports effective collaboration without compromising privacy. This way visibility is not treated as an absolute property, but as a controlled aspect of the system that depends on the nature of the data and the role of the user.
+#The engineering process begins by identifying the tension between two or more competing goals. From this tension, a resolution policy is defined that determines how the system should behave when those goals cannot be fully satisfied at the same time. This policy is then translated into concrete requirements that constrain system behavior in a way that preserves the most critical aspects of each goal. This structured approach ensures that all derived requirements remain traceable to their originating conflicts and can be justified during validation and verification.#
 
 
-== Cross-Case Observations
+== #Case Analysis of Engineered Requirements#
 
-Across these cases, a consistent pattern emerges in how conflicts are resolved. Instead of eliminating one side of a competing goal, the system introduces constraints and conditions that allow both sides to coexist in a controlled manner. This often involves limiting when certain behaviors occur, separating different types of data or interactions, or conditioning system functionality on the availability of reliable information.
+=== #Low-Effort Use vs Inventory Accuracy#
 
-These strategies demonstrate that resolving competing goals is less about choosing a single priority and more about structuring system behavior so that multiple priorities can be satisfied within defined boundaries.
+#The conflict between low-effort usage and inventory accuracy arises from the need to balance usability with data reliability. Reducing the amount of effort required from users encourages continued engagement, but it also increases the likelihood of incomplete or outdated information. Conversely, enforcing strict data requirements improves accuracy but risks discouraging use.#
+
+#To resolve this tension, the system adopts a policy that minimizes required user effort while still enforcing the minimum data necessary for reliable behavior. This leads to a design in which users can initially provide only essential information, while additional details can be added incrementally over time. At the same time, system features that depend on specific data like alerts are conditioned on the presence and validity of that data.#
+
+#This approach ensures that the system remains accessible and easy to maintain, while still preserving the integrity of behaviors that depend on accurate information. As a result, usability and reliability are not treated as mutually exclusive, but as interdependent concerns managed through conditional system behavior.#
+
+=== #Timely Reminders vs Notification Fatigue#
+
+#The need to provide timely reminders introduces a competing concern: excessive notifications can overwhelm users and reduce the perceived value of the system. A highly proactive notification strategy may ensure that important conditions are not missed, but it can also lead to frustration and eventual disengagement.#
+
+#The resolution to this conflict is based on controlling the frequency and redundancy of notifications rather than reducing their importance. The system enforces limits on how often reminders can be generated for the same condition, while also preventing duplicate notifications when no meaningful state change has occurred. In this way, reminders remain timely and relevant without becoming repetitive.#
+
+#This design preserves the usefulness of alerts by ensuring that they communicate meaningful information at appropriate intervals. It also protects long-term user engagement by preventing notification overload, thereby maintaining trust in the system's automated behaviors.#
+
+=== #Shared Visibility vs Privacy and Least Privilege#
+
+#In shared household environments, increased visibility of inventory data improves coordination and reduces misunderstandings. However, unrestricted visibility may expose user-specific or sensitive information that should not be shared broadly. This creates a conflict between transparency and privacy.#
+
+#The system resolves this tension by distinguishing between shared and user-specific data, and by applying access controls that limit visibility based on context and permission. Information necessary for coordination, such as item availability, is made accessible to all relevant members, while sensitive metadata (such as ownership details or personal usage patterns) is restricted to authorized users.#
+
+#Through this separation, the system supports effective collaboration without compromising privacy. This way visibility is not treated as an absolute property, but as a controlled aspect of the system that depends on the nature of the data and the role of the user.#
+
+
+== #Cross-Case Observations#
+
+#Across these cases, a consistent pattern emerges in how conflicts are resolved. Instead of eliminating one side of a competing goal, the system introduces constraints and conditions that allow both sides to coexist in a controlled manner. This often involves limiting when certain behaviors occur, separating different types of data or interactions, or conditioning system functionality on the availability of reliable information.#
+
+#These strategies demonstrate that resolving competing goals is less about choosing a single priority and more about structuring system behavior so that multiple priorities can be satisfied within defined boundaries.#

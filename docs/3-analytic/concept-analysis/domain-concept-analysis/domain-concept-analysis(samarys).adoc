@@ -1,37 +1,37 @@
-== Domain Concept Analysis
+== #Domain Concept Analysis#
 
-This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants. The goal is to identify recurring ideas and abstract shared concepts that describe how household items are managed in shared and individual living spaces, without the use of any specific software solution.
+#This section derives domain concepts from the rough sketches and terminology. It defines concepts, attributes, relationships, and invariants. The goal is to identify recurring ideas and abstract shared concepts that describe how household items are managed in shared and individual living spaces, without the use of any specific software solution.#
 
-=== Core concepts
+=== #Core concepts#
 
-* *Household Item*  
-  A physical object kept in a residence for everyday use. This includes food, medicine, or cleaning supplies.
+#* *Household Item*
+  A physical object kept in a residence for everyday use. This includes food, medicine, or cleaning supplies.#
 
-* *Inventory*  
-  The collection of household items associated with a residence.
+#* *Inventory*
+  The collection of household items associated with a residence.#
 
-* *Category*  
-  A grouping of household items based on purpose or type, such as bathroom supplies or cleaning supplies.
+#* *Category*
+  A grouping of household items based on purpose or type, such as bathroom supplies or cleaning supplies.#
 
-* *Location*  
-  A physical area where household items are stored.
+#* *Location*
+  A physical area where household items are stored.#
 
-* *Quantity*  
-  An indication or approximation of how much of a household item remains available.
+#* *Quantity*
+  An indication or approximation of how much of a household item remains available.#
 
-* *Expiration*  
-  A time-related constraint after which a household item is no longer usable or safe.
+#* *Expiration*
+  A time-related constraint after which a household item is no longer usable or safe.#
 
-* *Spending*  
-  Money spent to acquire household items over time.
+#* *Spending*
+  Money spent to acquire household items over time.#
 
-* *Resident*  
-  A person living in a residence who uses, manages, or shares household items.
+#* *Resident*
+  A person living in a residence who uses, manages, or shares household items.#
 
-=== Concept details
+=== #Concept details#
 
-==== Concept: Household Item
-* Definition:  
+==== #Concept: Household Item#
+#* Definition:
   A physical object maintained within a household for daily living needs.
 * Key attributes:
 ** Name: Identifier of the item
@@ -45,10 +45,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 ** A household item must belong to an inventory
 ** A household item cannot have a negative quantity
 * Examples:
-** Milk, rice, yogurt, toilet paper, medicine
+** Milk, rice, yogurt, toilet paper, medicine#
 
-==== Concept: Inventory
-* Definition:  
+==== #Concept: Inventory#
+#* Definition:
   The complete set of household items associated with a residence.
 * Key attributes:
 ** Items: Collection of household items
@@ -59,10 +59,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 ** An inventory must be associated with at least one resident
 * Examples:
 ** Fridge notes used to infer what is available
-** Shared grocery lists or chat messages
+** Shared grocery lists or chat messages#
 
-==== Concept: Category
-* Definition:  
+==== #Concept: Category#
+#* Definition:
   A classification that groups household items by purpose or use.
 * Key attributes:
 ** Name: Category label
@@ -73,10 +73,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 * Examples:
 ** Pantry items
 ** Bathroom supplies
-** Cleaning supplies
+** Cleaning supplies#
 
-==== Concept: Location
-* Definition:  
+==== #Concept: Location#
+#* Definition:
   A physical space where household items are stored.
 * Key attributes:
 ** Name: Room or storage area
@@ -88,10 +88,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 ** Kitchen cabinet
 ** Bathroom closet
 ** Hallway storage bin
-** Car trunk
+** Car trunk#
 
-==== Concept: Quantity
-* Definition:  
+==== #Concept: Quantity#
+#* Definition:
   An estimate or measurement of how much of a household item remains.
 * Key attributes:
 ** Value: Numeric amount
@@ -102,10 +102,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 * Examples:
 ** “Feels light”
 ** “Backup opened”
-** Bulk packages partially consumed
+** Bulk packages partially consumed#
 
-==== Concept: Expiration
-* Definition:  
+==== #Concept: Expiration#
+#* Definition:
   A time-based constraint indicating when a household item is no longer safe or useful.
 * Key attributes:
 ** Expiration Date: Time after which the item should not be used
@@ -115,10 +115,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 ** Expiration information may be missing or unreadable
 * Examples:
 ** Yogurt expiring before consumption
-** Medicine discarded after expiration
+** Medicine discarded after expiration#
 
-==== Concept: Spending
-* Definition:  
+==== #Concept: Spending#
+#* Definition:
   Money spent acquiring household items over time.
 * Key attributes:
 ** Amount: Monetary value
@@ -128,10 +128,10 @@ This section derives domain concepts from the rough sketches and terminology. It
 ** Spending values must be non-negative
 * Examples:
 ** Bulk buying to reduce unit cost
-** Duplicate purchases of essentials
+** Duplicate purchases of essentials#
 
-==== Concept: Resident
-* Definition:  
+==== #Concept: Resident#
+#* Definition:
   A person living in a residence who uses or manages household items.
 * Key attributes:
 ** Role: Participant in the household
@@ -143,33 +143,33 @@ This section derives domain concepts from the rough sketches and terminology. It
 * Examples:
 ** Student living alone
 ** Shared apartment residents
-** Family household members
+** Family household members#
 
-=== Relationship overview
+=== #Relationship overview#
 
-* An inventory contains multiple household items.
+#* An inventory contains multiple household items.
 * Household items may be grouped into one or more categories.
 * Household items are stored in physical locations.
 * Household items have quantities that change over time.
 * Some household items are subject to expiration constraints.
 * Acquiring household items contributes to household spending.
 * One or more residents may interact with the same inventory.
-* Shared inventories can lead to coordination issues such as duplicate purchases.
+* Shared inventories can lead to coordination issues such as duplicate purchases.#
 
-=== Constraints and edge cases
+=== #Constraints and edge cases#
 
-* Household items are often described by quality rather than by quantity.
+#* Household items are often described by quality rather than by quantity.
 * Items purchased in bulk may have multiple expiration dates within one package.
 * Expiration dates may be unreadable or missing.
 * Items may be consumed faster during unique situations.
 * Items may be stored in secondary or forgotten locations.
-* Residents may move out while still associated with the shared inventory.
+* Residents may move out while still associated with the shared inventory.#
 
-=== Trace to evidence
+=== #Trace to evidence#
 
-* *Household Item, Quantity*: Items described as almost empty, backup, or forgotten.
+#* *Household Item, Quantity*: Items described as almost empty, backup, or forgotten.
 * *Inventory*: Reliance on memory, fridge notes, and shared lists.
 * *Category and Location*: Separation of items by room or purpose.
 * *Expiration*: Food and medicine expiring unnoticed.
 * *Spending*: Duplicate buying and bulk purchasing behavior.
-* *Resident*: Students, families, and shared living situations.
+* *Resident*: Students, families, and shared living situations.#

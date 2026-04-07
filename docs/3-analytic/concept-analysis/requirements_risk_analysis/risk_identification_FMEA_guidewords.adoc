@@ -1,26 +1,24 @@
-=== Risk Identification using FMEA and Guidewords
+=== #Risk Identification using FMEA and Guidewords#
 
-This section identifies requirement-level risks using two structured techniques:
-Failure Mode and Effects Analysis (FMEA) and Guideword analysis.
+#This section identifies requirement-level risks using two structured techniques:
+Failure Mode and Effects Analysis (FMEA) and Guideword analysis.#
 
-The purpose of this subsection is to identify realistic failure situations and edge cases
-related to the home inventory system’s core functionality. These risks are equirement-level concerns that may affect reliability, usability, correctness, and trust.
+#The purpose of this subsection is to identify realistic failure situations and edge cases
+related to the home inventory system's core functionality.
+These risks are equirement-level concerns that may affect reliability, usability, correctness, and trust.#
 
-==== FMEA Risk Case 1 — Incorrect Quantity After Transaction
+==== #FMEA Risk Case 1 — Incorrect Quantity After Transaction#
 
-[cols="1,4",options="header"]
+#[cols="1,4",options="header"]
 |===
 |Field |Description
 
 |Failure mode
 |The quantity in a tracked inventory record becomes incorrect after a transaction is recorded.
-
 |Cause
 |A transaction is recorded with the wrong quantity, multiple household members update the same tracked inventory record close together, or a manual adjustment is entered incorrectly.
-
 |Effect on the system
 |Low-stock judgment may become incorrect, alert / notification records may be triggered unnecessarily or not triggered when needed, and the restock list / planner may contain incorrect item types.
-
 |Severity
 |8
 
@@ -34,24 +32,22 @@ related to the home inventory system’s core functionality. These risks are equ
 |200
 
 |Scenario
-|One household member records replenishment while another records consumption for the same tracked inventory record. The final recorded quantity does not reflect the actual household inventory, causing an incorrect low-stock judgment.
-|===
+|One household member records replenishment while another records consumption for the same tracked inventory record.
+The final recorded quantity does not reflect the actual household inventory, causing an incorrect low-stock judgment.
+|===#
 
-==== FMEA Risk Case 2 — Scheduled Sweep Does Not Run
+==== #FMEA Risk Case 2 — Scheduled Sweep Does Not Run#
 
-[cols="1,4",options="header"]
+#[cols="1,4",options="header"]
 |===
 |Field |Description
 
 |Failure mode
 |The scheduled sweep does not execute at the expected time.
-
 |Cause
 |Scheduler failure, missed cron execution, service downtime, or configuration errors in the automation process.
-
 |Effect on the system
 |Near-expiry and expired item instances are not evaluated on time, low-stock conditions may remain undetected, and alert / notification records may be delayed or not created.
-
 |Severity
 |9
 
@@ -65,24 +61,22 @@ related to the home inventory system’s core functionality. These risks are equ
 |108
 
 |Scenario
-|The scheduled sweep is expected to run once per day, but an automation failure prevents the run from occurring. Expired item instances remain undetected until a later run or manual review.
-|===
+|The scheduled sweep is expected to run once per day, but an automation failure prevents the run from occurring.
+Expired item instances remain undetected until a later run or manual review.
+|===#
 
-==== FMEA Risk Case 3 — Duplicate Alert / Notification Records
+==== #FMEA Risk Case 3 — Duplicate Alert / Notification Records#
 
-[cols="1,4",options="header"]
+#[cols="1,4",options="header"]
 |===
 |Field |Description
 
 |Failure mode
 |The system creates duplicate alert / notification records for the same unchanged condition.
-
 |Cause
 |State transitions are not checked correctly, deduplication rules are incomplete, or retries reinsert the same alert / notification record.
-
 |Effect on the system
-|Household members may experience notification fatigue, ignore future alerts, or lose trust in the system’s automation.
-
+|Household members may experience notification fatigue, ignore future alerts, or lose trust in the system's automation.
 |Severity
 |7
 
@@ -96,56 +90,59 @@ related to the home inventory system’s core functionality. These risks are equ
 |112
 
 |Scenario
-|A tracked inventory record remains LOW_STOCK across several evaluations. If the system creates a new alert / notification record each time without checking whether the state changed, duplicate records accumulate.
-|===
+|A tracked inventory record remains LOW_STOCK across several evaluations.
+If the system creates a new alert / notification record each time without checking whether the state changed, duplicate records accumulate.
+|===#
 
-==== Guideword Case 1 — Missing
+==== #Guideword Case 1 — Missing#
 
-*Guideword:* Missing
+#*Guideword:* Missing#
 
-*Scenario:*
-A household member consumes or replenishes an item type but does not record the transaction.
+#*Scenario:*
+A household member consumes or replenishes an item type but does not record the transaction.#
 
-*System impact:*
-The tracked inventory record diverges from household inventory reality, low-stock judgment becomes less reliable, and later automation decisions may be incorrect.
+#*System impact:*
+The tracked inventory record diverges from household inventory reality, low-stock judgment becomes less reliable, and later automation decisions may be incorrect.#
 
-*Possible mitigation:*
-Support low-friction logging, allow quick manual adjustments, and use transaction history to correct tracked inventory records over time.
+#*Possible mitigation:*
+Support low-friction logging, allow quick manual adjustments, and use transaction history to correct tracked inventory records over time.#
 
-==== Guideword Case 2 — Delayed
+==== #Guideword Case 2 — Delayed#
 
-*Guideword:* Delayed
+#*Guideword:* Delayed#
 
-*Scenario:*
-The scheduled sweep runs later than expected, so near-expiry or expired item instances are detected after the intended time.
+#*Scenario:*
+The scheduled sweep runs later than expected, so near-expiry or expired item instances are detected after the intended time.#
 
-*System impact:*
-Alert / notification records are generated late, household members may not act in time, and expired item instances may remain in use longer than expected.
+#*System impact:*
+Alert / notification records are generated late, household members may not act in time, and expired 
+item instances may remain in use longer than expected.#
 
-*Possible mitigation:*
-Record the last successful scheduled sweep run, detect missed runs, and execute a catch-up sweep when necessary.
+#*Possible mitigation:*
+Record the last successful scheduled sweep run, detect missed runs, and execute a catch-up sweep when necessary.#
 
-==== Guideword Case 3 — Duplicate
+==== #Guideword Case 3 — Duplicate#
 
-*Guideword:* Duplicate
+#*Guideword:* Duplicate#
 
-*Scenario:*
-The same item type is repeatedly added to the restock list / planner even though it is already present.
+#*Scenario:*
+The same item type is repeatedly added to the restock list / planner even though it is already present.#
 
-*System impact:*
-The restock list / planner becomes cluttered, household members may become confused, and the system may appear unreliable or overly aggressive.
+#*System impact:*
+The restock list / planner becomes cluttered, household members may become confused, and the system may appear unreliable or overly aggressive.#
 
-*Possible mitigation:*
-Require deduplication before auto-add, allow household members to remove item types manually, and re-add only when a new qualifying state transition occurs.
+#*Possible mitigation:*
+Require deduplication before auto-add, allow household members to remove item types manually, and re-add only when a new qualifying state transition occurs.#
 
-==== Relationship to Requirement Concepts
+==== #Relationship to Requirement Concepts#
 
-These risks are directly related to the requirement-level concepts already identified in this section:
+#These risks are directly 
+related to the requirement-level concepts already identified in this section:#
 
-- *Fast capture* relates to the risk of missing transactions.
+#- *Fast capture* relates to the risk of missing transactions.
 - *Tracked record vs reality* relates to quantity drift and inaccurate tracked inventory records.
 - *Scheduled sweep* relates to delayed or missing automation runs.
 - *State transition* relates to duplicate alert / notification records.
-- *Auto-add to restock list / planner* relates to duplicate restock entries and user-control concerns.
+- *Auto-add to restock list / planner* relates to duplicate restock entries and user-control concerns.#
 
-This risk analysis supports later design decisions, validation activities, and reliability considerations.
+#This risk analysis supports later design decisions, validation activities, and reliability considerations.#
