@@ -13,7 +13,7 @@ Home Inventory System — UI Design
 
 == Overview
 
-This document describes the design process and screen specifications for the *Shared Inventory* feature of the Home Inventory System. The feature allows household members to view items that belong to the shared household, see item ownership, and access detailed item information by tapping on any item in the list.
+This section details the design process and screen specifications for the *Shared Inventory* feature of the Home Inventory System. The feature allows household members to view items that belong to the shared household, see item ownership, and access detailed item information by tapping on any item in the list.
 
 ---
 Shared screens include:

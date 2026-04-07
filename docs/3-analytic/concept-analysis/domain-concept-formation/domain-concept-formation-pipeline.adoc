@@ -5,7 +5,7 @@
 
 == Overview
 
-This document describes the structured pipeline used to process raw domain description units
+This section details the structured pipeline used to process raw domain description units
 into higher-level abstractions for the Home Inventory Management System. The pipeline moves
 from unstructured observations and low-level entity lists toward a coherent set of named
 domain concepts and a unified narrative, while surfacing inconsistencies and gaps for

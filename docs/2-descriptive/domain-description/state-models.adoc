@@ -1,0 +1,55 @@
+== State Models
+
+This section defines the states that item types and item instances can be in, and the transitions between those states. States are conditions that are currently true of an entity. Transitions are events — instantaneous state changes.
+
+=== Item type stock state
+
+An item type within a household is always in exactly one of three stock states:
+
+* *NORMAL* — quantity is above the low-stock threshold (or no threshold is set)
+* *LOW_STOCK* — quantity is greater than zero but at or below the low-stock threshold
+* *OUT_OF_STOCK* — quantity is zero
+
+==== Transitions
+
+....
+                 quantity <= threshold
+    NORMAL  ──────────────────────────────►  LOW_STOCK
+      ▲                                         │
+      │  quantity > threshold                   │ quantity reaches 0
+      │                                         ▼
+      │◄──── quantity > 0 ────────────────  OUT_OF_STOCK
+      │      (via restocking)
+      │◄──── quantity > threshold ────────  OUT_OF_STOCK
+             (via restocking past threshold)
+....
+
+* *NORMAL -> LOW_STOCK*: occurs when a consumption or adjustment causes quantity to fall at or below the threshold while remaining above zero.
+* *LOW_STOCK -> OUT_OF_STOCK*: occurs when quantity reaches zero.
+* *NORMAL -> OUT_OF_STOCK*: occurs when quantity drops from above threshold directly to zero (e.g., consuming all remaining units at once). When this happens, OUT_OF_STOCK takes priority over LOW_STOCK — a single alert is generated for OUT_OF_STOCK, not both.
+* *OUT_OF_STOCK -> NORMAL*: occurs when restocking brings quantity above the threshold.
+* *OUT_OF_STOCK -> LOW_STOCK*: occurs when restocking brings quantity above zero but not above the threshold.
+* *LOW_STOCK -> NORMAL*: occurs when restocking or adjustment raises quantity above the threshold.
+
+If no low-stock threshold is set for an item type, the item type transitions directly between NORMAL and OUT_OF_STOCK; the LOW_STOCK state is unreachable.
+
+=== Item instance expiration state
+
+An item instance with an expiration date is always in exactly one of these states:
+
+* *ACTIVE* — expiration date is more than N days away (N = near-expiry window)
+* *NEAR_EXPIRY* — expiration date is within N days
+* *EXPIRED* — current date has passed the expiration date
+* *UNKNOWN* — no expiration date is set or the date is unreadable
+
+==== Transitions
+
+....
+    ACTIVE  ───── enters near-expiry window ─────►  NEAR_EXPIRY  ───── passes expiration date ─────►  EXPIRED
+....
+
+* *ACTIVE -> NEAR_EXPIRY*: occurs when the current date enters the near-expiry window.
+* *NEAR_EXPIRY -> EXPIRED*: occurs when the current date passes the expiration date.
+* *ACTIVE -> EXPIRED*: can occur if the near-expiry window is zero or if the item was not checked during the window.
+
+An item instance without an expiration date remains in *UNKNOWN* and never transitions to NEAR_EXPIRY or EXPIRED. The system shall not generate false-expired conditions for items in UNKNOWN state (DR-13).

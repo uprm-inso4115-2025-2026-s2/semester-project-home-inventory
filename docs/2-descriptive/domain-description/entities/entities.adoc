@@ -10,11 +10,11 @@ Key domain entities and artifacts. The entities below follow the terminology est
 
 |Household
 |A living unit where household essentials and spending are managed.
-|name (optional label), members, locations, inventory (reality), optional budgets
+|name, members, locations, inventory, optional budgets
 
 |Household member
 |A person who belongs to a household and consumes, replenishes, or coordinates around household items.
-|name/identifier (domain-level), household reference, informal role
+|name/identifier, household reference, informal role
 
 |Location
 |A storage place within a household where items are kept.
@@ -24,29 +24,29 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |A definition of an item independent of a specific package or purchase.
 |name, optional category, optional brand/size/variant, optional barcode
 
-|Item instance (package)
+|Item instance 
 |A concrete package or unit of an item type that exists in the household.
-|item type reference, location reference, ownership (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
+|item type reference, location reference, ownership , quantity/availability, optional purchase date, optional expiration date, optional notes
 
-|Inventory (reality)
+|Inventory
 |The set of item instances that physically exist in the household at a given time.
 |household reference, item instances
 
 |Tracked inventory record
 |A representation households use to reason about availability. It may diverge from reality.
-|artifact type (note/chat/list/memory), item reference (explicit or implicit), last-updated (if recorded)
+|artifact type, item reference, last-updated 
 
 |Restock list / planner
 |A list of items judged to need replenishment soon.
-|entries (item types), reason (low/out/expired), optional responsibility marker, status (active/deferred)
+|entries, reason, optional responsibility marker, status 
 
 |Alert / notification record
 |A record of an alert-worthy condition presented to household members.
-|type (low/out/near-expiry/expired/budget), target (item type/instance or budget), created time, read/unread, dismissed/deferred
+|type, target, created time, read/unread, dismissed/deferred
 
 |Spending entry
 |A logged financial transaction event within a household.
-|amount, date/time, payer (household member), scope (shared/personal), optional item type reference, category, notes, transaction type (purchase/refund/adjustment)
+|amount, date/time, payer, scope, optional item type reference, category, notes, transaction type
 
 |Spending category
 |A grouping label used to organize spending by type or purpose.
@@ -54,9 +54,9 @@ Key domain entities and artifacts. The entities below follow the terminology est
 
 |Budget
 |A spending limit defined for a period.
-|scope (household/category), limit amount, cycle (period), thresholds (warning levels), visibility rules
+|scope, limit amount, cycle, thresholds, visibility rules
 
-|Budget status (derived)
+|Budget status
 |A derived view of spending versus budget within a cycle.
 |spent-to-date, remaining, percent used, threshold-crossed flags
 
@@ -71,11 +71,42 @@ Key domain entities and artifacts. The entities below follow the terminology est
 
 [NOTE]
 ====
-Earlier drafts used terms such as *Home*, *Room*, *Product*, *Stock*, *Owner*, and *Member*. In this document, those terms are replaced by the unified vocabulary defined in the terminology section:
+Earlier drafts used terms such as *Home*, *Room*, *Product*, *Stock*, *Owner*, and *Member*. This section details, those terms are replaced by the unified vocabulary defined in the terminology section:
 
 * Home -> Household
 * Room -> Location
 * Product -> Item type
-* Stock -> Item instance (package)
+* Stock -> Item instance
 * Owner / Member -> Household member, with more specific role language used only where needed
 ====
+
+=== Stock State Model
+
+The inventory system tracks the availability of items using a continuous state model based on the `current_quantity` relative to the `low_stock_threshold`.
+
+[plantuml, stock-states, png]
+----
+@startuml
+[*] --> NORMAL : item created
+
+NORMAL --> LOW_STOCK : consume() [quantity <= low_stock_threshold]
+LOW_STOCK --> OUT_OF_STOCK : consume() [quantity == 0]
+OUT_OF_STOCK --> NORMAL : restock() [quantity > low_stock_threshold]
+LOW_STOCK --> NORMAL : restock() [quantity > low_stock_threshold]
+NORMAL --> OUT_OF_STOCK : consume() [quantity == 0]
+
+state NORMAL {
+  :quantity > low_stock_threshold;
+}
+state LOW_STOCK {
+  :0 < quantity <= low_stock_threshold;
+}
+state OUT_OF_STOCK {
+  :quantity == 0;
+}
+@enduml
+----
+
+* **Transitions:**
+** `consume()`: Triggered when a user logs the usage of an item or automated tracking deduces consumption.
+** `restock()`: Triggered when a user manually adds newly purchased quantity to the existing stock.

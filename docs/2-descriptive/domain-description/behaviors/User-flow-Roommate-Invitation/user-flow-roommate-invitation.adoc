@@ -11,7 +11,7 @@ Home Inventory System — UI Design
 
 == Overview
 
-This document describes the design process and user flow specifications for the *Roommate Invitation* feature of the Home Inventory System. The flow allows a household owner to invite a new roommate to join their household and gain access to the shared inventory.
+This section details the design process and user flow specifications for the *Roommate Invitation* feature of the Home Inventory System. The flow allows a household owner to invite a new roommate to join their household and gain access to the shared inventory.
 
 ---
 

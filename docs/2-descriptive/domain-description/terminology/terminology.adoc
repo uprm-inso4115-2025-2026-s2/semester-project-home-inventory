@@ -6,6 +6,18 @@ This section consolidates the domain's ubiquitous language into a single annotat
 * *Requirements* — introduced when specifying capabilities of the system-to-be
 * *Implementation* — introduced during architectural or technical design
 
+Each term is classified by *type* (the kind of concept it represents):
+
+* *Entity* — a distinguishable thing with identity and attributes (e.g., Household, Item type)
+* *Artifact* — a human-created representation used for coordination (e.g., a fridge note, a tracked record)
+* *Record* — a persisted data entry that captures a past occurrence or state (e.g., Spending entry, Transaction)
+* *Relationship* — a named association between entities (e.g., Membership)
+* *Property* — an observable attribute of an entity (e.g., Quantity, Expiration date)
+* *State* — a condition an entity can be in at a given time (e.g., Out-of-stock, Expired)
+* *Event* — an instantaneous state change that has just occurred (e.g., Item acquired, Budget threshold crossed)
+* *Action* — a domain operation that changes state (e.g., Consumption, Replenishment)
+* *Rule* — a constraint or policy that governs behavior (e.g., Low-stock threshold, Deduplication rule)
+
 [cols="2,1,1,4,3", options="header"]
 |===
 | Term
@@ -87,16 +99,22 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Delivery method is not part of the domain.
 
 | Alert / notification (domain-level)
-| Artifact / Event
+| Artifact
 | Domain
-| A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed).
-| Delivery method is an implementation choice.
+| A message artifact that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed). As an artifact, it has identity (type, target, timestamp) and can be dismissed or deferred.
+| The event "alert generated" (see Events) captures the moment the alert comes into existence. Delivery method is an implementation choice.
+
+| Spending event
+| Event
+| Domain
+| The state change that occurs when money is spent on a household item — the actual reduction of funds. A spending event is characterized by the fact that an amount has just been spent.
+| Distinct from spending entry; the event is the occurrence, the entry is the record.
 
 | Spending entry
 | Record
 | Domain
-| A record of a financial transaction in a household (purchase, refund, or adjustment), optionally linked to an item type and category.
-| Supports budgeting and reporting.
+| A persisted record of a financial transaction in a household (purchase, refund, or adjustment), optionally linked to an item type and category. The entry captures the data: who paid, how much, when, and for what.
+| The entry records the spending event; the two may diverge if recording is imperfect.
 
 | Transaction (quantity change)
 | Record
@@ -177,10 +195,10 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Distinct from low-stock.
 
 | Near-expiry
-| State / Event
+| State
 | Domain
-| An item instance approaching its expiration date within a defined window (e.g., N days).
-| Window definition belongs in requirements.
+| The condition where an item instance is approaching its expiration date within a defined window (e.g., N days). As a state, it describes what is currently true of the item.
+| The corresponding event is the transition into this state: "item instance has just reached near-expiry." Window definition belongs in requirements.
 
 | Expired
 | State / Event

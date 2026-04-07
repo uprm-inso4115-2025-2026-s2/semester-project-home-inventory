@@ -22,14 +22,14 @@ Some households also keep an informal understanding of spending on essentials. P
 
 *Artifacts used today (domain-visible):*
 * Fridge notes / whiteboards
-* Chat messages (e.g., group chat)
+* Chat messages
 * Notes app lists
 * Pantry photos
 * Receipts or memory-based estimates
 
-=== Typical domain flow (as observed)
+=== Typical domain flow
 
-. Household members acquire items (sometimes in bulk) and store them in household locations.
+. Household members acquire items and store them in household locations.
 . Items are consumed over time; availability decreases.
 . A household member checks availability using informal artifacts (note, memory, pantry check).
 . If the member judges an item to be low or out (often using qualitative strategies like “feels light” or “opened backup”), replenishment is triggered.
@@ -37,3 +37,8 @@ Some households also keep an informal understanding of spending on essentials. P
 . Some items expire before use; households may discover this late and discard them.
 . Household members may keep informal awareness of spending; when tracked, spending influences replenishment choices and can create shared-vs-personal disputes.
 . Membership changes (move-out) require the household to update who participates and who is informed.
+
+=== Budget and Spending Tracking Context
+
+**Clarification on Fund Reductions vs. Expenditure Recording:**
+It is important to distinguish that the system performs *expenditure recording* rather than *actual fund reduction*. When a user purchases an item or restocks inventory, the system logs the monetary value of that transaction against a self-defined soft budget. It **does not** integrate with external financial institutions to deduct real money from a bank account. The "Budget" represents a tracking threshold for household awareness, and "Spending" represents a historical log of receipts and item costs, ensuring users understand their financial velocity without needing rigorous accounting compliance.

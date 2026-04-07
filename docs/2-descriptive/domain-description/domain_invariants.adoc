@@ -2,21 +2,25 @@
 
 == Domain Invariants
 
-This section states a small set of stable domain rules that must remain true across the household inventory domain.
+Stable domain rules that hold across the household inventory domain.
 
 === Core invariants
 
 * A household has one or more household members while it is active.
-* An item instance belongs to exactly one household context.
+* An item instance belongs to exactly one household.
 * An item instance is stored in some location, even if that location is forgotten or described informally.
 * A household may contain multiple item instances of the same item type at the same time.
 * A household member’s participation in a household may change over time.
-* Shared-household coordination depends on knowing which items are shared, which are personal, and who is allowed to view or manage them.
-* If spending is recorded, it remains associated with the household context in which it occurred.
+* If a spending entry is recorded, it remains associated with the household in which the spending event occurred.
 * If an item instance has an expiration date, it may become expired without being consumed.
 
-=== Ownership and participation notes
+=== Ownership
 
-Ownership and responsibility may vary by household practice. Some item instances are treated as personal, while others are treated as shared. For that reason, the domain must support both personal and shared responsibility without redefining the core concepts of household, household member, item type, and item instance.
+An item instance has exactly one owner. The owner is either:
 
-Rather than introducing a separate set of competing ownership entities, the document keeps the shared-household context in the concepts of household membership, personal/shared item status, and household coordination.
+* a *household member* (personal item — e.g., "my pasta sauce in the fridge"), or
+* the *household itself* (shared item — e.g., "our kitchen towels").
+
+One owner can own many items; one item has exactly one owner. When ownership is the household, every member of that household has access to the item through their membership.
+
+When a household member is removed, their personal items may need to be reassigned or removed, but items owned by the household are unaffected. Spending entries remain attributed to the original payer regardless of ownership changes (DR-6).

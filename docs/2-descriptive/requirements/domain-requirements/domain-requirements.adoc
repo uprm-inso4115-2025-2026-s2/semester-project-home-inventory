@@ -1,46 +1,67 @@
+[[domain-requirements]]
 == Domain Requirements
 
-Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology. Terminology follows the domain description: *Household*, *Household member*, *Location*, *Item type*, *Item instance*, and *Spending entry*.
+Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology. Terminology follows the domain description: *<<terminology,Household>>*, *<<terminology,Household member>>*, *<<terminology,Location>>*, *<<terminology,Item type>>*, *<<terminology,Item instance>>*, and *<<terminology,Spending entry>>*.
 
 === Inventory integrity
 
+[[DR-1]]
 * DR-1 (Barcode uniqueness): A single barcode shall map to exactly one *Item type*. The system shall not create a second item-type definition for an already-known barcode.
+[[DR-2]]
 * DR-2 (Item instance validity): Every *Item instance* shall reference an existing *Item type* at the time it is recorded.
+[[DR-3]]
 * DR-3 (Financial immutability): Removing an item from the tracked inventory (delete/archive/merge/split/adjust) shall not rewrite or delete associated *Spending entries*; financial history is immutable.
 
 === Shared-household rules
 
+[[DR-4]]
 * DR-4 (Household administration): Each *Household* shall have exactly one household admin role at a time. Administrative responsibility shall be transferable before the current admin leaves.
+[[DR-4A]]
 * DR-4A (Invitation control): The system shall allow household participation to be extended through invitations governed by household permissions.
+[[DR-4B]]
 * DR-4B (Invitation lifecycle): An invitation shall have a defined lifecycle state such as active, accepted, declined, expired, or revoked.
+[[DR-4C]]
 * DR-4C (Revoked access): When a household member is removed from a household, their participation state shall change accordingly and access to that household's shared information shall no longer remain active.
+[[DR-5]]
 * DR-5 (Membership independence): A system user may belong to multiple households, each with an independent membership role and membership state.
+[[DR-6]]
 * DR-6 (Attribution retention): Spending entries shall remain attributed to the household member who made the purchase, even when inventory quantities are reorganized (merge/split) or when items are marked shared/personal.
 
 === Duplicate handling and intent preservation
 
+[[DR-7]]
 * DR-7 (Short-window duplicates): If a duplicate item instance entry is detected within a short window (initially 30 seconds) with matching identity-relevant attributes, the tracked record shall aggregate quantity rather than create a separate entry (unless the user explicitly chooses to keep them separate).
+[[DR-8]]
 * DR-8 (Ambiguity guard): If item identity is ambiguous (near-duplicate name/brand/variant without authoritative identifier), the system shall not auto-merge without explicit confirmation.
+[[DR-9]]
 * DR-9 (Auditability of corrections): Inventory corrections (merge/split/adjust) shall be auditable and reversible at the record level; the system shall preserve what changed, when, and why.
 
 === Reporting integrity (if reporting is in scope)
 
+[[DR-10]]
 * DR-10 (Separation of concerns): Reports shall distinguish between inventory state (availability, locations, expiry) and spending history (amounts, dates, attribution); these shall not be conflated.
+[[DR-11]]
 * DR-11 (Budget derivation): Budget/spending summaries shall be derived from spending entries within a defined budget period and shall not be altered by non-financial inventory corrections (e.g., discarding expired items).
 
 === Alerts and restock (Milestone 1 baseline)
 
-* DR-12 (Threshold-driven low-stock): The system shall evaluate whether an item type is low-stock by comparing its current quantity to an item-specific threshold. When quantity falls at or below the threshold, the system shall flag the item type as low-stock and make this status visible to household members.
+[[DR-12]]
+* DR-12 (Threshold-driven low-stock): The system shall evaluate whether an item type is low-stock by comparing its current quantity to an item-specific threshold. When quantity falls at or below the threshold, the system shall flag the item type as low-stock and make this status visible to household members. State transitions follow the <<state-models,stock state model>>: NORMAL -> LOW_STOCK -> OUT_OF_STOCK.
 +
 _Domain property behind this requirement:_ In the domain, low-stock is a judgment that an item is running low. This judgment may be qualitative or threshold-based. The requirement commits the system-to-be to threshold-based evaluation.
 
-* DR-13 (Expiration status): The system shall derive the expiration status of an item instance when an expiration date is present. If the expiration date is missing or unreadable, the system shall treat expiration status as unknown and shall not generate false-expired conditions.
-* DR-14 (Deduplicated alerting): The system shall deduplicate alerts and trigger them primarily on actionable state transitions, so that repeated checks without state change do not generate repeated alerts.
+[[DR-13]]
+* DR-13 (Expiration status): The system shall derive the expiration status of an item instance when an expiration date is present, following the <<state-models,expiration state model>>. If the expiration date is missing or unreadable, the system shall treat expiration status as unknown and shall not generate false-expired conditions.
+[[DR-14]]
+* DR-14 (Deduplicated alerting): The system shall deduplicate alerts — meaning that when a state transition (e.g., NORMAL -> LOW_STOCK) has already triggered an alert, repeated checks that find the same state shall not generate additional alerts. A new alert is generated only when a new state transition occurs.
 
 === Duplicate prevention and data integrity
 
-* DR-15 (Normalization before comparison): The system shall normalize *Item type* definitions before duplicate comparison and before insert, so that duplicate detection produces consistent and reproducible results.
+[[DR-15]]
+* DR-15 (Normalization before comparison): The system shall normalize *Item type* definitions before duplicate comparison and before insert (e.g., trimming whitespace, standardizing casing), so that duplicate detection produces consistent and reproducible results.
+[[DR-16]]
 * DR-16 (Spend attachment after duplicate resolution): The system shall finalize duplicate resolution for an item before creating any associated *Spending entry*, so that each spending entry is attached to exactly one resolved item type or household record without ambiguity.
+[[DR-17]]
 * DR-17 (Single item type per barcode at persistence): At persistence, one barcode shall map to exactly one *Item type*; the system shall enforce this constraint before insert.
 === Rationale / trace (Milestone 1)
 

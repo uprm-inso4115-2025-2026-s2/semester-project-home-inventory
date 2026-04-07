@@ -7,7 +7,7 @@
 
 == Overview
 
-This document describes a simple data structure for storing tracked inventory records and tracking quantity change transactions over time.
+This section details a simple data structure for storing tracked inventory records and tracking quantity change transactions over time.
 It focuses on the minimum data needed to support tracked inventory records and low-stock judgment logic
 
 == Tracked Inventory Records Table

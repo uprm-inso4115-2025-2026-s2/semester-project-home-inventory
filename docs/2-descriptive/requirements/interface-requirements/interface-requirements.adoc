@@ -1,9 +1,11 @@
+[[interface-requirements]]
 == Interface Requirements
 
 Interface requirements describe how phenomena and concepts from the domain are represented inside the system-to-be, how they are initialized, and how they are kept in sync when the real world changes.
 
 These requirements were derived through elicitation techniques including semi-structured interviews with students and lightweight story mapping, which were used to identify important user interactions, edge cases, and system behaviors grounded in real household scenarios.
 
+[[IR-01]]
 === IR-01: Item Initialization
 When a household member acquires a new item in the real world, they must have a way to create a corresponding representation inside the system.
 
@@ -16,6 +18,7 @@ Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance
 - What information is needed to represent what was acquired?
 - How does the system learn an item exists?
 
+[[IR-02]]
 === IR-02: Item Update on Consumption
 When a household member consumes part of an item in the real world, the tracked representation must be updated to reflect new availability.
 
