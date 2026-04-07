@@ -20,9 +20,24 @@ Supabase Edge Functions will handle operations that require transactional guaran
 
 === Domain model notes
 
-The following mappings describe how domain concepts translate into system components:
+The following mappings describe how domain concepts translate into system components. Where the database table name differs from the domain term, both are shown.
 
-* **User**
+[cols="2,2",options="header"]
+|===
+|Domain term |Implementation table name
+|Household member |`users`
+|Household |`households`
+|Membership |`household_members`
+|Location |`rooms` 
+|Item type |`products` 
+|Item instance  |`stock` 
+|Restock list / planner |`shopping_lists` + `shopping_list_entries`
+|Spending entry |`expenses`
+|Budget |`budgets`
+|Invitation |`invite_tokens`
+|===
+
+* **User (Household member)**
   - Source: Supabase Auth
   - Key field: `auth.uid()`
   - Related table: `users`
@@ -33,64 +48,52 @@ The following mappings describe how domain concepts translate into system compon
   - Represents a shared living group
   - Links multiple users together
 
-* **HouseholdMembership**
+* **HouseholdMembership (Membership)**
   - Table: `household_members`
   - Fields: `user_id`, `household_id`, `role`
   - Used by RLS policies to authorize access
   - Supports admin vs member roles
 
-* **Home**
-  - Table: `homes`
-  - Represents the physical household environment where inventory is managed
-  - Provides the structural context for rooms and stored items
+* **Location** 
+  - Represents a storage place within a household where inventory items may be stored
+  - Associated with a Household through the `home_id` field
+  - Examples include kitchen cabinet, pantry, fridge, and bathroom closet
 
-* **Room**
-  - Table: `rooms`
-  - Represents a location within a home where inventory items may be stored
-  - Associated with a Home through the `home_id` field
-  - Examples include kitchen, pantry, and bathroom
-
-* **Product**
-  - Table: `products`
-  - Represents a reusable product definition independent of a specific purchase
+* **Item type** 
+  - Represents a reusable item type definition independent of a specific purchase
   - Used to normalize item metadata such as brand, size, and unit
 
-* **Stock (Inventory Item Instance)**
-  - Table: `stock`
-  - Represents a purchased instance of a product tracked within the inventory
+* **Item instance / package** 
+  - Represents a concrete unit of an item type tracked within the inventory
   - Includes quantity, status, purchase details, and expiration data
   - Real-time updates enabled via Supabase Realtime
   - Protected by RLS household policies
 
-* **StockLocation**
-  - Table: `stock_locations`
-  - Represents the placement or movement of stock within rooms
+* **Item instance location** 
+  - Represents the placement or movement of item instances within locations
   - Supports tracking of current location and location history
 
 * **Inventory**
   - Table: `inventories`
-  - Represents the collection of stock associated with a home
+  - Represents the collection of item instances associated with a household
 
-* **ShoppingList**
-  - Table: `shopping_lists`
+* **Restock list / planner** 
   - Represents planned purchases for restocking household inventory
-  - Associated with a ShoppingListEntry through the `shopping_list_entries_id` field
+  - Associated with a restock list entry through the `shopping_list_entries_id` field
 
-* **ShoppingListEntry**
-  - Table: `shopping_list_entries`
-  - Represents individual items within a shopping list including quantity and priority
+* **Restock list entry** 
+  - Represents individual items within a restock list including quantity and priority
 
 * **Category / Supplier**
   - Tables: `categories`, `suppliers`
-  - Provide organizational and sourcing metadata for products
+  - Provide organizational and sourcing metadata for item types
 
-* **Budget / Expense**
+* **Budget / Spending entry**
   - Tables: `budgets`, `expenses`, `household_summary`
   - Validated through Edge Functions before writes
   - Updated automatically via database webhooks
 
-* **InviteToken**
-  - Table: `invite_tokens`
+* **Invitation** 
   - Generated via Edge Function
   - Short-lived signed token
   - Used by `/accept-invite` endpoint

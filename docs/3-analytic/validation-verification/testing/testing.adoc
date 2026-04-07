@@ -1,143 +1,107 @@
 == Testing
 
-[abstract]
-Testing is the primary verification mechanism. For Milestone 1, describe the test strategy and initial test ideas.
+Testing is the main verification mechanism for this project. For Milestone 1, this section defines the verification approach, the main test types, and an initial set of representative test cases.
 
-=== Verification strategy (draft)
-* Code review:
-** All changes to main must go through a pull request reviewed by at least 1 teammate not authoring the change.
-** Review focuses on: correctness against requirements/events, edge cases (threshold/expiration boundaries), naming consistency with terminology, and avoiding breaking shared inventory behavior.
-** Review checklist includes: “Does this change preserve event sequence expectations?”, “Does it introduce ambiguous terms?”, and “Are tests added/updated?”
+=== Verification Strategy
 
-* Automated tests:
-** Run on every pull request and on main branch merges.
-** Start with unit tests for domain rules (quantity updates, low-stock detection, expiration state transitions).
-** Add integration tests for persistence and retrieval (create item → inventory reflects it; remove item → updated totals; shared inventory sync).
-** Add verification tests for automation and deduplication rules (scheduled checks do not create duplicate alerts/list additions).
-** Enforce a minimum baseline: tests must be green before merge.
+* *Code review:* all changes to `main` must go through a pull request reviewed by at least one teammate who did not author the change. Reviews check correctness against requirements, edge cases, terminology consistency, and whether tests were added or updated.
+* *Automated tests:* unit, integration, and verification tests run on pull requests and before merge. At minimum, affected tests must pass before changes are merged.
+* *Manual checks:* short repeatable smoke checks are performed after merges for stakeholder-visible behaviors such as item updates, alerts, and shared inventory consistency.
 
-* Manual checks:
-** Short, repeatable “smoke checks” for milestone features after merging to main.
-** Manual checks prioritize stakeholder-visible behavior: adding/removing items updates inventory, alerts appear under correct conditions, shared inventory reflects changes across accounts.
-** Manual checks are documented as a small checklist so results are reproducible.
+=== Test Types
 
-=== Test types
-* Unit tests:
-** Validate isolated business rules and computations:
-*** Handling of missing/unreadable expiration dates (expiry treated as unknown; no false-expired alerts) (US-INV-01 / expiration behavior).
-*** Threshold crossing logic and custom thresholds per item (US-ALT-01).
-*** Ownership state transitions personal <-> shared (US-INV-02).
-*** State transition logic for LOW_STOCK / OUT_OF_STOCK / NEAR_EXPIRY / EXPIRED where applicable (US-ALT-01 / expiration behavior).
-*** Transaction creation for quantity changes (restock/consume/adjust) with reason + timestamp (transaction tracking).
+* *Unit tests:* verify isolated rules such as threshold crossing, expiration handling, ownership changes, state transitions, and transaction creation.
+* *Integration tests:* verify persistence, retrieval, synchronization, and automation behavior across connected components.
+* *End-to-end tests:* verify complete workflows such as adding/editing items, triggering low-stock conditions, and generating alerts without duplication.
+* *UI tests:* verify that key screens present the correct state and controls for milestone features.
 
-* Integration tests:
-** Validate storage + retrieval + computed fields:
-*** Item creation persists and appears in inventory query (US-INV-01).
-*** Editing an item updates dependent fields and is visible without re-adding (US-INV-01).
-*** Inventory view includes ownership indicator and details (US-INV-02).
-*** Shared inventory consistency across household members after synchronization (US-INV-02 / shared behavior).
-*** Scheduled sweep persists new actionable states and creates notification records/events once per transition (automation behavior).
+=== State Model Coverage
 
-* End-to-end tests:
-** Validate complete user workflows through API/UI boundaries:
-*** Add items -> inventory updates -> edit item -> inventory reflects changes (US-INV-01).
-*** Reduce quantity below threshold -> low-stock indicator appears and stays consistent (US-ALT-01).
-*** Run scheduled check -> items with low/expired status generate exactly one new alert per transition (automation + deduplication).
+Verification uses the same alert and state vocabulary defined elsewhere in the project:
 
-* UI tests:
-** Verify critical screens show correct state (not pixel-perfect):
-*** Main screen contains “Add Item” entry point (US-INV-01).
-*** Inventory list shows ownership indicator (US-INV-02).
-*** Low-stock indicator shown when low (US-ALT-01).
-*** Dashboard cards (later milestone) reflect computed totals (US-RPT-01).
+* Stock-related states: `NORMAL` / `IN_STOCK`, `LOW_STOCK`, `OUT_OF_STOCK`
+* Expiration-related states: `Active`, `Expiring`, `Expired`, `Renewed`, `Deleted`
 
-=== State model coverage (verification support)
+Verification focuses on state transitions and deduplication behavior regardless of delivery mechanism.
 
-The alert/state vocabulary used in verification is aligned with the project design notes:
-
-* Stock-related actionable states: NORMAL/IN_STOCK, LOW_STOCK, OUT_OF_STOCK (as used by threshold logic).
-* Expiration-related states: Active, Expiring, Expired, Renewed, Deleted (from `alert-system-states.adoc`), with configurable alert intervals (e.g., 7/3/1 days) and transition-based alerting to avoid repeated notifications.
-
-Implementation and infrastructure options for delivering expiration alerts (scheduler, background jobs, push delivery) are discussed in `tech-expiration-alert-system.adoc`. Verification focuses on state transitions and deduplication behavior regardless of delivery mechanism.
-
-=== Initial test cases (draft)
+=== Initial Test Cases
 
 [cols="2,3,3",options="header"]
 |===
 |Test case |What it verifies |Related requirement/story
 
-|TC-INV-01 Add Item entry point exists
-|Main screen exposes an “Add Item” action as a primary control reachable immediately after opening the app.
-|US-INV-01 (AC: “Add Item button right on the main screen…”)
+|TC-INV-01
+|Add Item entry point exists on the main screen.
+|US-INV-01
 
-|TC-INV-02 Create item appears immediately
-|After saving an item, it is returned in the inventory list without requiring a manual refresh, including created/added date.
-|US-INV-01 (AC: “appears in his inventory immediately”; “shows up with the date he added it”)
+|TC-INV-02
+|Saved item appears immediately in inventory without manual refresh.
+|US-INV-01
 
-|TC-INV-03 Expiration date optional + unknown handling
-|If expiration date is blank or unreadable, the system treats expiration as unknown (no false-expired alerts); if provided, it persists exactly.
-|US-INV-01 (expiration behavior)
+|TC-INV-03
+|Missing or unreadable expiration dates are treated as unknown; valid dates persist correctly.
+|US-INV-01
 
-|TC-INV-04 Edit item from inventory list updates dependencies
-|Editing an item directly from the list updates stored name/metadata and any dependent computed fields that rely on it.
-|US-INV-01 (AC: “can edit the item right from the inventory list… updates anything else that depends…”)
+|TC-INV-04
+|Editing an item updates stored metadata and dependent values.
+|US-INV-01
 
-|TC-INV-05 Ownership indicator visible for each item
-|Inventory list returns an ownership marker for every item (personal owner identifier vs “Shared”).
-|US-INV-02 (AC: “every item shows a small indicator of who it belongs to…”)
+|TC-INV-05
+|Each item shows its ownership indicator.
+|US-INV-02
 
-|TC-INV-06 Item detail shows ownership + purchase info
-|Item detail view contains ownership, purchase date, and cost fields when available; shared vs personal status is explicit.
-|US-INV-02 (AC: detail includes “bought it on… cost… marked as personal/shared”)
+|TC-INV-06
+|Ownership and purchase information appear in item details when available.
+|US-INV-02
 
-|TC-INV-07 Change item from personal to shared propagates consistently
-|Changing an item ownership from personal→shared updates the record and becomes visible consistently wherever the item appears after synchronization.
-|US-INV-02 (AC: “change it from personal to shared… updates it for everyone…”)
+|TC-INV-07
+|Changing an item from personal to shared propagates consistently after synchronization.
+|US-INV-02
 
-|TC-ALT-01 Low-stock indicator triggers on threshold crossing
-|When quantity drops below the item’s threshold, the low-stock state is set and a low indicator is shown on next app open/view.
-|US-ALT-01 (AC: “drops below a level he set… next time he opens the app… indicator”)
+|TC-ALT-01
+|Low-stock state appears when quantity crosses the threshold.
+|US-ALT-01
 
-|TC-ALT-02 Custom thresholds persist per item
-|User-defined thresholds override defaults and persist across sessions; threshold logic uses the custom value.
-|US-ALT-01 (AC: “he can set custom thresholds… system remembers”)
+|TC-ALT-02
+|Custom thresholds persist and are used in later checks.
+|US-ALT-01
 
-|TC-ALT-03 Low-stock notifications are not spammy (deduplication/grouping)
-|When multiple items are low, the system avoids repeated alerts without state transitions and may group summaries rather than generating separate alerts per item.
-|US-ALT-01 (AC: “doesn’t overwhelm… might group them into one message”)
+|TC-ALT-03
+|Repeated low-stock conditions do not generate spammy duplicate alerts.
+|US-ALT-01
 
-|TC-AUTO-01 Scheduled sweep sets LOW_STOCK / EXPIRED correctly
-|A scheduled check evaluates threshold and expiration boundaries correctly (quantity == threshold; expiration date == today).
-|Automation behavior (scheduled sweep)
+|TC-AUTO-01
+|Scheduled sweep evaluates threshold and expiration boundaries correctly.
+|Automation behavior
 
-|TC-AUTO-02 Alert deduplication on unchanged state
-|Running the scheduled check repeatedly without any item state transitions does not create duplicate alerts or duplicate list additions.
+|TC-AUTO-02
+|Repeated scheduled checks without state change do not create duplicate alerts or list additions.
 |Automation behavior + deduplication
 
-|TC-EXP-01 Expiration state transitions (Active → Expiring → Expired)
-|Given an item instance with an expiration date, the system assigns Active by default, transitions to Expiring when within the configured near-expiry window/intervals, and transitions to Expired on/after the expiration date boundary.
-|Expiration behavior (state model)
+|TC-EXP-01
+|Expiration states transition correctly from Active to Expiring to Expired.
+|Expiration behavior
 
-|TC-EXP-02 Renewed/Deleted behavior disables prior expiration alerts
-|When an item’s expiration date is updated (renewed) or the item is removed (deleted), prior pending expiration alerts are not re-emitted, and future alerts follow the new state/interval rules (transition-based, deduplicated).
+|TC-EXP-02
+|Renewed or deleted items do not keep emitting outdated expiration alerts.
 |Expiration behavior + deduplication
 
-|TC-TXN-01 Quantity change creates a transaction record
-|Any quantity change (consume/restock/adjust) creates an append-only transaction record with reason + timestamp; current quantity remains consistent with the transaction history.
-|Transaction tracking (traceability)
+|TC-TXN-01
+|Every quantity change creates an append-only transaction record with reason and timestamp.
+|Transaction tracking
 
-|TC-SB-01 Shared vs personal spending separation (data-level)
-|Purchases tagged shared vs personal are stored distinctly so later splits and spending summaries can be computed correctly.
-|US-SB-01, US-INV-02 (AC: “separates her personal purchases from shared ones”)
+|TC-SB-01
+|Shared and personal spending data remain distinct for later summaries and splits.
+|US-SB-01, US-INV-02
 
-|TC-RPT-01 Dashboard aggregates update after changes (future milestone)
-|Dashboard counters update after items/purchases change (no stale computed totals shown once changes are recorded and synchronized).
-|US-RPT-01 (AC: dashboard reflects updates after changes)
-
+|TC-RPT-01
+|Dashboard aggregates update after synchronized changes.
+|US-RPT-01
 |===
 
 === Definition of Done
-* Code meets the acceptance criteria for the targeted user story (explicit AC mapping is documented in the PR).
-* Automated tests added/updated for the acceptance criteria affected; CI passes.
-* Any domain terminology or rule changes (ownership, low-stock thresholds, expiration handling, transaction rules) are reflected in documentation.
-* No unresolved review issues related to correctness, edge cases, or traceability to US-INV/US-ALT/US-SB/US-RPT stories.
+
+* The feature meets the mapped acceptance criteria for the target user story.
+* Relevant automated tests are added or updated and pass before merge.
+* Documentation is updated when terminology, rules, or domain behavior changes.
+* No unresolved review issues remain for correctness, edge cases, or traceability.

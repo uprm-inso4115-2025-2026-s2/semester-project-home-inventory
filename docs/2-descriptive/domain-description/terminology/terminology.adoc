@@ -4,7 +4,6 @@ This section consolidates the domain's ubiquitous language into a single annotat
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)
 * *Requirements* — introduced when specifying capabilities of the system-to-be
-* *Implementation* — introduced during architectural or technical design
 
 [cols="2,1,1,4,3", options="header"]
 |===
@@ -25,6 +24,18 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Domain
 | A person who belongs to a household and participates in consuming, replenishing, or coordinating around items.
 | Previously "Owner" or "Occupant."
+
+| Invitation
+| Entity / Event
+| Domain
+| A temporary request that allows a participant to join a shared household context.
+| Important states may include sent, accepted, declined, expired, or revoked.
+
+| Membership
+| Relationship / Concept
+| Domain
+| The relationship connecting a participant to a household for shared coordination and participation.
+| Changes over time through joining, leaving, removal, or invitation acceptance.
 
 | Location
 | Entity
@@ -60,7 +71,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Entity / Rule
 | Domain
 | A financial limit defined for a period (household-level or category-level) used to evaluate spending.
-| Budget window and cycle are requirements-level decisions.
+| Budget window and cycle can vary.
 
 | Tracked inventory record
 | Artifact
@@ -78,12 +89,12 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Artifact / Event
 | Domain
 | A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed).
-| Delivery method is an implementation choice.
+| Represents that an actionable condition has been communicated.
 
 | Spending entry
 | Record
 | Domain
-| A record of a financial transaction in a household (purchase, refund, or adjustment), optionally linked to an item type and category.
+| A record of a financial transaction in a household (purchase, refund, or adjustment), optionally associated with an item type and spending category.
 | Supports budgeting and reporting.
 
 | Transaction (quantity change)
@@ -144,13 +155,13 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Action
 | Domain
 | A household member delays acting on an alert for a period of time.
-| Domain intent: "remind me later."
+| The household member may receive another alert for the same actionable condition later.
 
 | Dismiss / ignore
 | Action
 | Domain
-| A household member acknowledges an alert and chooses not to act on it, at least for now.
-| Should not cause repeated alerts without a meaningful state change.
+| A household member acknowledges an alert and chooses not to act on it.
+| —
 
 | Low-stock judgment
 | Event / Rule
@@ -168,7 +179,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | State / Event
 | Domain
 | An item instance approaching its expiration date within a defined window (e.g., N days).
-| Window definition belongs in requirements.
+| Window length can vary.
 
 | Expired
 | State / Event
@@ -180,7 +191,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Event
 | Domain
 | The moment when spending reaches or exceeds a defined threshold (e.g., 80%, 100% of the budget).
-| Can trigger alerts, subject to anti-spam rules.
+| Can trigger alerts, subject to anti-spam rules and the budget cycle.
 
 | Item acquired
 | Event
@@ -246,7 +257,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Event
 | Domain
 | A low-stock, out-of-stock, near-expiry, expired, or budget condition becomes actionable and is communicated to household members.
-| Delivery method is not part of the domain event.
+| —
 
 | Alert dismissed / deferred
 | Event
@@ -287,7 +298,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Household admin
 | Role
 | Requirements
-| The single household member with administrative responsibility at a given time. Transferable before the admin leaves (DR-4).
+| The single household member with administrative responsibility at a given time. Transferable before the admin leaves.
 | Domain equivalent: informal "household manager" role.
 
 | Membership state
@@ -337,53 +348,4 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Requirements
 | A persisted representation of an alert, including type, timestamp, and read/unread status, available at minimum for in-app review.
 | Refines the domain-level "alert"; adds persistence and status tracking.
-
-| Auth (authentication)
-| Component
-| Implementation
-| The subsystem handling user registration, login, session management, password reset, and identity for authorization checks (Supabase Auth / JWT).
-| —
-
-| Session
-| Concept
-| Implementation
-| A JWT-based authenticated context for a user interacting with the system.
-| —
-
-| Row Level Security (RLS)
-| Mechanism
-| Implementation
-| A database-layer policy (Supabase/Postgres) ensuring users can only access data belonging to their household(s).
-| —
-
-| PostgREST / API layer
-| Component
-| Implementation
-| The middleware that exposes database tables and views as REST endpoints and enforces database constraints (Supabase PostgREST).
-| —
-
-| Supabase Realtime
-| Component
-| Implementation
-| The mechanism by which the mobile app subscribes to live household data changes (e.g., shared inventory updates) without manual refresh.
-| —
-
-| Dashboard
-| UI Surface
-| Implementation
-| A screen in the Flutter mobile app that presents key inventory and spending metrics at a glance (IR-08).
-| —
-
-| Push notification
-| Delivery Mechanism
-| Implementation
-| A device-level notification delivered by the platform push provider; one possible delivery method for domain-level alerts.
-| Contrast with in-app notification list.
-
-| In-app notification list
-| UI Surface
-| Implementation
-| A screen or panel within the app listing persisted notification records; the other possible delivery method for domain-level alerts.
-| Contrast with push notification.
-
 |===

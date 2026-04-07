@@ -10,4 +10,9 @@ include::domain-requirements/domain-requirements.adoc[leveloffset=+1]
 include::interface-requirements/interface-requirements.adoc[leveloffset=+1]
 include::machine-requirements/machine-requirements.adoc[leveloffset=+1]
 
+// Invites Logic
+// include::invites-logic/invites-logic-definition.adoc[leveloffset=+1]
+// include::invite-roommates/invite-roommate-sharing.adoc[leveloffset=+1]
+include::logic-def-and-workflow-summary.adoc[leveloffset=+1]
+
 // Personas are defined in Section 4 (Specific Topics) to keep a single source of truth.

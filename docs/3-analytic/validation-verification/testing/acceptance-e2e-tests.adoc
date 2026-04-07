@@ -1,4 +1,4 @@
-= Acceptance and End-to-End (E2E) Testing
+== Acceptance and End-to-End (E2E) Testing
 
 To provide concrete evidence of our system's reliability, we conducted formal Acceptance and End-to-End (E2E) tests on our minimal viable feature set. These tests validate the user journey from the perspective of our core personas (**Andrea**, **Mateo**, and **Sofia**) and ensure the application handles not only the "happy path" but also boundary conditions and failure states.
 

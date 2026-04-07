@@ -1,0 +1,77 @@
+= Alerts & Notifications UI: Backend Integration Guide
+:toc: left
+:icons: font
+
+== 1. Overview
+
+The frontend UI for the Alerts & Notifications screen is fully implemented using Flutter, `flutter_bloc` (Cubit), and `flutter_slidable`. Currently, the screen operates entirely on **mock data** (`_mockAlerts`). 
+
+The goal of this guide is to map the UI interactions to the required backend operations so the Data/Backend team can seamlessly integrate the Supabase endpoints.
+
+== 2. Primary Integration Point: `AlertsCubit`
+
+All backend interactions must go through the `AlertsCubit` (`src/features/alerts_feed/presentation/cubit/alerts_cubit.dart`). The UI is completely decoupled from the logic; it only listens to state changes emitted by this Cubit.
+
+=== 2.1 Fetching Alerts (Initialization)
+* **Current State:** The Cubit initializes with a hardcoded list of `AlertItem`.
+* **Backend Task:** 
+  1. Create an `AlertsRepository` to fetch alerts from Supabase.
+  2. Implement a `fetchAlerts()` method in the Cubit.
+  3. Map the database schema to the `AlertItem` model, specifically mapping the backend categories to the `AlertCategory.lowStock` and `AlertCategory.expiration` enums.
+
+=== 2.2 Updating the Model
+The current `AlertItem` model is a simplified mockup:
+[source,dart]
+----
+class AlertItem {
+  final String id;
+  final String title;
+  final String message;
+  final AlertCategory category;
+  // TODO (Backend): Add necessary fields like 'productId', 'expirationDate', 'currentStock', etc., to perform updates.
+}
+----
+
+== 3. Required Backend Operations (Mapped to UI Actions)
+
+The UI allows the user to interact with the alerts through swipes and a dynamic modal. Below are the actions that trigger a state change and require backend implementation.
+
+=== Action A: Dismiss Alert
+* **Triggered by:** Swiping Left on the `AlertCard` OR tapping the "Dismiss" button inside the modal.
+* **Frontend Method:** `removeAlert(String id)` inside `AlertsCubit`.
+* **Backend Requirement:** Make a Supabase call to mark the notification/alert as "read" or "dismissed" in the database so it doesn't appear on the next fetch.
+
+=== Action B: Add to Grocery List
+* **Triggered by:** Swiping Right on the `AlertCard` OR tapping "Add to Grocery List" in the modal.
+* **Frontend State:** Currently just prints to console and removes the alert.
+* **Backend Requirement:** 
+  1. Create a method in the Cubit (e.g., `addAlertToGroceryList(AlertItem item)`).
+  2. Call the Grocery List repository to insert the item into the shared grocery list.
+  3. Call `removeAlert()` to dismiss the alert after successful insertion.
+
+=== Action C: Update Item Count (Low Stock)
+* **Triggered by:** The "Save" button in the modal when editing the count of a `lowStock` alert.
+* **Frontend State:** Captures an integer (`_itemCount`).
+* **Backend Requirement:**
+  1. Create a method `updateItemStock(String productId, int newCount)`.
+  2. Update the specific item's quantity in the `Inventory/Stock` database table.
+  3. Call `removeAlert()` upon success.
+
+=== Action D: Update Expiration Date
+* **Triggered by:** The "Save" button in the modal when editing the date of an `expiration` alert.
+* **Frontend State:** Captures a String (`_selectedDate` formatted as "MM/DD/YYYY").
+* **Backend Requirement:**
+  1. Parse the String back to a DateTime object (or modify the frontend to pass the DateTime object directly).
+  2. Create a method `updateItemExpiration(String productId, DateTime newDate)`.
+  3. Update the specific item's expiration date in the `Inventory` database table.
+  4. Call `removeAlert()` upon success.
+
+=== Action E: Mark as Consumed
+* **Triggered by:** Tapping "Mark as Consumed" inside the modal.
+* **Backend Requirement:**
+  1. Similar to Action C, update the item's stock to `0` or update its status to "Consumed" in the database.
+  2. Log the consumption for reporting purposes (if required by the Reports feature).
+  3. Call `removeAlert()` upon success.
+
+== 4. Error Handling
+If any Supabase operation fails (e.g., no internet connection), the Cubit should **not** call `removeAlert()`. Instead, it should emit an error state or display a `CustomSnackBar` notifying the user that the action could not be completed.

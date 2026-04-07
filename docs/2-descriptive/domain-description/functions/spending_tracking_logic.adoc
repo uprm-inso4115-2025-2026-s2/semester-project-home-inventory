@@ -1,144 +1,24 @@
-= Domain Logic for Spending Tracking
-// GitHub user: @andreasegarra
-// Issue #35
+== Domain Logic for Spending Tracking
 
-== Objective
-
-This document defines the domain logic governing how spending events are recorded, attributed, and maintained within a shared household inventory system.
-
-The purpose of this document is to establish consistent behavioral rules for financial tracking within shared environments. These rules provide the conceptual foundation necessary to support budgeting, reporting, and financial accountability features.
-
-The logic defined here is independent of implementation and serves as guidance for schema design and future budgeting mechanisms.
-
-
-== Definition of Spending Event
-
-A Spending Event represents a financial action associated with an inventory item within a shared household context.
+Spending tracking in this domain represents how household purchases are recorded, attributed, and preserved over time. A spending event exists only when a financial transaction occurs within a household context, and it supports later budgeting, reporting, and accountability without depending on any specific implementation.
 
 A spending event captures:
+* who paid
+* what was purchased
+* the monetary amount
+* when the transaction occurred
+* whether the cost is personal or shared
 
-- who paid
-- what item was purchased
-- the monetary amount
-- when the transaction occurred
-- whether the cost is individual or shared
+=== Core rules
 
-Spending events represent historical financial records and must preserve traceability.
+* Spending is recorded only when a purchase with a defined cost exists. Creating or editing non-financial item information does not by itself create spending.
+* Spending is always associated with a household context. It does not exist independently of the shared environment in which the purchase occurred.
+* Every spending event must identify a payer. Anonymous financial records are not allowed.
+* Spending must distinguish between personal and shared attribution. Shared attribution does not remove payer identification.
+* Spending records are historical and must remain traceable. Deleting or changing inventory items does not erase past spending.
+* Spending depends on a valid purchased item or recorded purchase context. Orphaned financial records are not valid.
+* If cost information is corrected, the correction must preserve traceability through a new entry or other explicit record of change rather than silently overwriting history.
 
+=== Implications
 
-== Core Spending Logic Rules
-
-=== Rule 1: Spending is recorded only when a financial transaction occurs
-
-Spending is created when a purchase is logged with a defined cost.
-
-Implications:
-
-- Creating an item without a cost does not generate spending.
-- Updating an item to include cost generates a spending event.
-- Editing non financial item attributes does not affect spending.
-
-Conceptual relationship impact:
-Spending depends on a financial attribute of an Item.
-
-
-=== Rule 2: Spending is attributed within an inventory context
-
-All spending must be scoped to a specific inventory (household).
-
-Implications:
-
-- Spending cannot exist outside an inventory.
-- Financial accountability is contextual to a shared environment.
-- Spending must reference both Item and Inventory.
-
-Conceptual relationship impact:
-Spending → Inventory (required association)
-
-
-=== Rule 3: Spending must identify a payer
-
-Every spending event must define the user responsible for the payment.
-
-Implications:
-
-- Anonymous financial records are not allowed.
-- The payer must be a valid member of the inventory.
-- Financial accountability is traceable to a participant.
-
-Conceptual relationship impact:
-Spending depends on Membership.
-
-
-=== Rule 4: Spending attribution may be individual or shared
-
-Spending must define whether the cost applies:
-
-- exclusively to the payer (individual spending), or
-- to the shared household (shared spending)
-
-Implications:
-
-- Shared cost does not remove payer identification.
-- Cost distribution logic is separate from spending creation.
-- Attribution model must be explicit.
-
-Conceptual relationship impact:
-Spending contains attribution state.
-
-
-=== Rule 5: Spending events are historical and immutable
-
-Spending records represent financial history and must preserve integrity.
-
-Implications:
-
-- Deleting an item does not delete associated spending.
-- Users leaving the inventory do not erase past spending.
-- Financial history must remain structurally consistent.
-
-Conceptual relationship impact:
-Spending persists independently of Item lifecycle changes.
-
-
-=== Rule 6: Spending cannot exist without a valid item reference
-
-Spending is a dependent domain concept.
-
-Implications:
-
-- A spending event must reference an item that existed at the time of the transaction.
-- Invalid or orphaned financial records are not allowed.
-- If an item is soft-deleted, the relationship must remain traceable.
-
-Conceptual relationship impact:
-Spending depends on Item existence.
-
-
-=== Rule 7: Spending modification must preserve traceability
-
-If a cost is corrected or updated, the system must preserve financial traceability.
-
-Implications:
-
-- Either a new spending event is created, or
-- A modification log must exist.
-
-Financial records must never silently overwrite historical values.
-
-
-== Role of Spending Logic in Budget Design
-
-These rules establish the conceptual constraints that the budgeting model must satisfy. They define:
-
-- how financial activity enters the system
-- how spending relates to inventory structure
-- how accountability is enforced
-- how financial history is preserved
-
-The logic defined here provides the foundation for:
-
-- Budget Rules
-- Spending Schema Fields
-- Cost allocation models
-- Reporting and analytics systems
+These rules ensure that spending remains tied to household activity, preserves accountability, and can later support budgeting, reporting, and reimbursement logic without redefining the core domain concepts.

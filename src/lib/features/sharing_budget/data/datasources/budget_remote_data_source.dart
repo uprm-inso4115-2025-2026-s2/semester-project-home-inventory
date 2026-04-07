@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/budget_model.dart';
+import '../models/budget_allocation_model.dart';
 
 class BudgetRemoteDataSource {
   final SupabaseClient _client;
@@ -53,4 +54,33 @@ class BudgetRemoteDataSource {
         .delete()
         .eq('id', id);
   }
+
+  Future<BudgetAllocationModel> createAllocation(
+    BudgetAllocationModel allocation,
+  ) async {
+    final data = allocation.toJson();
+    if (allocation.id == -1) data.remove('id');
+
+    final response = await _client
+        .from('budget_allocations')
+        .insert(data)
+        .select()
+        .single();
+
+    return BudgetAllocationModel.fromJson(response);
+  }
+
+  Future<List<BudgetAllocationModel>> fetchAllocationsBySpendEvent(
+    int spendEventId,
+  ) async {
+    final response = await _client
+        .from('budget_allocations')
+        .select()
+        .eq('spend_event_id', spendEventId);
+
+    return (response as List<dynamic>)
+        .map((e) => BudgetAllocationModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
 }

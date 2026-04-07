@@ -1,47 +1,20 @@
 == Invites Logic Definition
 
-== Objective
+=== Core Concepts
 
-Define how invitation flows work between roommates so onboarding and access to shared resources is predictable and secure.
-
-The purpose of this document is to define and describe:
-
-    Invitation lifecycle states:
-
-        - Sent
-        - Accepted
-        - Declined
-        - Expired
-        - Revoked
-        - Determine who is allowed to send invitations (owner only vs all members vs role-based).
-
-    Specify validation rules:
-
-        - Duplicate invites
-        - Invalid emails
-        - Expiration timing
-
-    Document expected behavior for:
-
-        - Invite acceptance
-        - Invite rejection
-        - Invite cancellation
-        - User joining via link vs direct invite
-
-== Core Concepts
-
-=== Invitation
+==== Invitation
 
 An *invitation* is a temporary request made by an Owner or authorized Member, that allows a user to join a household or shared inventory group.
 
 Each invitation contains:
+
 - Sender
 - Recipient
 - Target household or group
 - Status
 - Expiration timestamp
 
-=== Invitation Permissions
+==== Invitation Permissions
 
 Permissions determine what user is allowed to send invitations.
 
@@ -55,64 +28,64 @@ Users with the appropriate permissions can include:
 
 By default, invite permissions can only be made by Owners, unless Member permissions are expanded.
 
-== Invitation Lifecycle States
+=== Invitation Lifecycle States
 
-=== Sent
+==== Sent
 - Invitation has been created and delivered.
 - Awaiting recipient response.
 - Editable or revocable by sender.
 
-=== Accepted
+==== Accepted
 - Recipient has joined the household.
 - Invitation is marked as accepted and becomes inactive.
 - Permissions are assigned based on role configuraton.
 
-=== Declined
+==== Declined
 - Recipient declines the invitation.
 - Invitation is marked as declined and becomes inactive.
 - Sender may resend a new invitation.
 
-=== Expired
+==== Expired
 - Invitation exceeded its time limit.
 - Cannot be accepted and is marked as inactive.
 - Requires a new invitation to be sent.
 
-=== Revoked
+==== Revoked
 - Sender or Owner cancels the invitation before acceptance.
 - Recipient loses the ability to join using that instance of the invitation.
 - Marked as revoked and becomes inactive.
 
-== Validation Rules
+=== Validation Rules
 
-=== Duplicate Invites
+==== Duplicate Invites
 - Only allow invitations made to the same user for the same household to be editable, not duplicated.
 - Allow resend only after expiration, decline, or revocation.
 
-=== Expiration Timing
+==== Expiration Timing
 - Default expiration window: 72 hours (editable by inviter).
 - System should automatically invalidate expired invites.
 - Expired invites are not reusable.
 
-== Expected System Behaviors
+=== Expected System Behaviors
 
-=== Invite Acceptance
+==== Invite Acceptance
 - User gains access immediately upon confirmation.
 - Assigned default Member role unless specified otherwise.
 - Notification sent to existing household members.
 
-=== Invite Rejection
+==== Invite Rejection
 - Invitation marked Declined.
 - No access granted.
 - Sender notified of rejection.
 - Household is notified of the declined invitation.
 
-=== Invite Cancellation
+==== Invite Cancellation
 - Sender or Owner may revoke before acceptance.
 - Invitation becomes invalid instantly.
 - Houselhold Members are notified of the cancellation.
 - Recipient invite becomes unusable.
 
-=== User Joining via Link vs Direct Invite
+==== User Joining via Link vs Direct Invite
 
 * Direct Invite
 ** Recipient receives invite through application.
@@ -123,22 +96,13 @@ By default, invite permissions can only be made by Owners, unless Member permiss
 ** Requires validation step before access is granted.
 ** Will require user to create an account or log in before joining.
 
-== Security Considerations
+=== Security Considerations
 
 - Invitations must use secure tokens.
 - Tokens should be single-use or time-bound.
 - Server-side validation required for all joins.
 
-== Summary Rules
-
-. Invitations are temporary and must expire.
-. Only authorized roles may issue invites.
-. Active invites are editable as to avoid duplicate active invites.
-. Acceptance grants immediate access with default role.
-. Revoked or expired invites cannot be reused.
-. Server-side validation overrides client behavior.
-
-== Success Criteria
+=== Success Criteria
 
 * Invitation lifecycle states clearly defined.
 * Permission rules documented.
