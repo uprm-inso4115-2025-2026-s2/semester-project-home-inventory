@@ -1,0 +1,52 @@
+= Project Risk Assessment
+:toc:
+
+== Overview
+
+The digital home inventory system relies on real-time data synchronization, third-party APIs, and mobile device capabilities. While these technologies provide a robust user experience, they also introduce system risks that may affect reliability, user adoption, and data integrity.
+
+This document identifies potential high-level project risks in the system architecture and suggests possible ways to reduce those risks.
+
+== Risk Analysis Table
+
+[cols="1,3,3,3"]
+|===
+|Risk ID |Risk Description |Potential Impact |Mitigation Strategy
+
+|R1
+|Supabase Backend / Database Downtime (Network outages or misconfigured Edge Functions cause temporary unavailability)
+|The core utility of the application is blocked. Users cannot retrieve inventory data, verify stock, or update lists while shopping.
+|Implement offline read-only caching on the mobile device so users can at least view their existing lists during outages.
+
+|R2
+|Notification Fatigue / Alert Spam (Automated systems trigger duplicate or excessive alerts for low-stock or expiring items)
+|Users may become frustrated and disable OS-level notifications entirely, which defeats the purpose of the automated alert system and reduces user retention.
+|Implement strict notification deduplication logic and provide UI settings for users to configure their own alert frequency and thresholds.
+
+|R3
+|Unrecognized Barcodes / API Failure (Third-party barcode databases fail to recognize local Puerto Rican brands or specific store-brand items)
+|Users are temporarily inconvenienced during rapid bulk entry, slowing down the onboarding process for new groceries.
+|Provide a seamless manual entry fallback UI and allow users to save custom items locally or to the database for future use.
+
+|R4
+|Concurrent Edit Data Corruption (Multiple roommates attempt to edit the same shared grocery list or inventory item simultaneously)
+|Overlapping database transactions may lead to corrupted budget ledgers, duplicate purchases, or inaccurate stock counts in shared households.
+|Utilize Supabase's real-time synchronization and implement proper database transaction locks or optimistic UI updates to handle concurrency gracefully.
+
+|R5
+|Device Offline Sync Failure (Users lose internet signal inside large concrete supermarkets like Costco or Sam's Club)
+|If the app crashes or fails to cache data, users cannot complete their shopping accurately or update their ledgers on the spot.
+|Build offline-first capabilities using local device storage to queue actions and automatically sync changes to the backend when the connection is restored.
+
+|===
+
+== Recommendations
+
+To further improve project reliability, the following monitoring strategies are recommended:
+
+* Conduct user testing specifically focused on the manual entry fallback to ensure it is fast enough to mitigate barcode API failures.
+* Monitor backend database query performance to catch concurrency issues early in shared household environments.
+* Implement error logging for mobile network timeouts to track how often users experience offline sync failures.
+* Establish clear UI guidelines for notification frequency to prevent user fatigue.
+
+These practices will help the development team detect structural issues early and maintain system reliability across the entire application lifecycle.

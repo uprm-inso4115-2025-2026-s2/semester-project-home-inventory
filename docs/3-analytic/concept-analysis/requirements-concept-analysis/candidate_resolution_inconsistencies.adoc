@@ -1,0 +1,175 @@
+= Candidate Solutions for Resolving Requirement Inconsistencies
+// Author: Fabiola Z. Torres Maldonado
+// GitHub user: @FabiolaZTorres
+// Date: 3/28/2026
+// Issue #388
+
+
+
+== Resolution Approach Classification
+
+NOTE: In the following cases, user names (Mateo, Sofia, Julian, Andrea) refer to the personas defined in Section 4.2 (Personas).
+
+Two primary strategies are used to resolve inconsistencies:
+
+Elicitation-Based Resolution: relies on additional stakeholder input; clarifies intent, expectations, and real-world behavior
+
+Formal Resolution Tactics: relies on structured reasoning and modeling techniques; resolves conflicts through consistency rules, prioritization, or abstraction
+
+This distinction ensures that both human-centered and system-centered solutions are considered.
+
+
+
+== Elicitation-Based Resolution Cases
+
+=== Case EBR1: Clarifying Item Ownership Responsibility
+
+Inconsistency:
+Inconsistency between Andrea’s need for complete visibility and control over shared items (N4/N5) and Sofia’s expectation of autonomy for personal items, as reflected in IR-03 vs US-INV-02.
+
+Resolution Approach:
+Conduct stakeholder interviews and scenario walkthroughs to determine expected ownership and access behavior in shared households.
+
+Outcome:
+
+- ownership responsibility is explicitly assigned per household roles and items
+- alternative shared responsibility models are evaluated and rejected based on stakeholder preference
+- clear mapping between personas and requirement IDs is established for traceability
+
+Rationale:
+Direct stakeholder input ensures alignment with real-world expectations and usage patterns while balancing household coordination and individual autonomy.
+
+---
+
+=== Case EBR2: Notification Frequency Expectations
+
+Inconsistency:
+Conflict between Mateo’s desire for timely expiration alerts to avoid spoiled food (N2) and Julian’s preference for minimal alerts to prevent distraction during meal prep (N2/N3). This is reflected in DR-4 and the low-stock/expiration alert requirements.
+
+Resolution Approach:
+Elicit user preferences via surveys, scenario testing, and persona-based walkthroughs to determine optimal notification frequency.
+
+Outcome:
+
+- introduce configurable notification frequency settings per persona or household member
+- default behavior is informed by common user expectations
+- alerts are mapped to actionable states to minimize missed or redundant notifications
+
+Rationale:
+User feedback resolves ambiguity by grounding system behavior in actual preferences and personas, ensuring that notifications are helpful rather than intrusive.
+
+---
+
+=== Case EBR3: Definition of “Low Stock”
+
+Inconsistency:
+Disagreement between Andrea’s need for strict thresholds to maintain household stock (N4) and Sofia’s preference for flexible, item-specific thresholds to avoid overbuying (N5). Julian also requires precise thresholds for specialty dietary items (N5). Tied to DR-5 and US-INV-04.
+
+Resolution Approach:
+Engage stakeholders to define acceptable low-stock thresholds per item type or category, with flexibility to adapt to persona needs.
+
+Outcome:
+
+- establish user-defined thresholds per item or category
+- allow flexibility for specialty items, balancing strict household management and individual preferences
+- conflicts between personas are documented and resolved via consensus or configurable settings
+
+Rationale:
+Elicitation captures contextual differences that cannot be generalized effectively and aligns with system behavior with both household and individual needs.
+
+
+
+== Formal Resolution Tactic Cases
+
+=== Case FRT1: Priority-Based Requirement Resolution
+
+Inconsistency:
+Conflicting requirements between minimizing user effort and maintaining high data accuracy.
+
+Resolution Approach:
+Apply prioritization rules to determine which requirement takes precedence.
+
+Outcome:
+
+- prioritize reduced user effort for usability
+- introduce supporting mechanisms (e.g., automation) to mitigate accuracy loss
+
+Rationale:
+Formal prioritization provides a structured way to resolve competing system goals.
+
+---
+
+=== Case FRT2: Constraint Enforcement for Data Consistency
+
+Inconsistency:
+Conflicting updates in shared inventory environments leading to inconsistent item states.
+
+Resolution Approach:
+Introduce domain constraints and validation rules to enforce consistent updates across shared inventory.
+
+Outcome:
+
+- enforce rules such as non-negative quantities and restricted simultaneous conflicting updates
+- only authorized users for a specific `household_id` may modify shared items
+- this resolution is implemented via Supabase Row Level Security (RLS) policies, ensuring that only authorized members of a household can modify stock levels
+
+Rationale:
+Formal constraints provide enforceable consistency rules independent of user behavior while leveraging Supabase’s access control capabilities.
+
+---
+
+=== Case FRT3: Abstraction of Item State Representation
+
+Inconsistency:
+Overly detailed or inconsistent representations of item states (e.g., partial usage, estimated quantities).
+
+Resolution Approach:
+Abstract item state into simplified, standardized representations.
+
+Outcome:
+
+- define discrete states (e.g., in stock, low, out of stock)
+- reduce reliance on imprecise or highly variable data
+- the simplified item states are broadcast to all roommates using Supabase Realtime, ensuring the UI reflects the abstract immediately across all devices without manual refreshes
+
+Rationale:
+Abstraction reduces ambiguity, improves model consistency, and leverages the technology stack to maintain synchronized states across all users.
+
+
+
+== Comparative Analysis of Resolution Strategies
+
+Elicitation-based approaches:
+
+- align system behavior with real-world expectations
+- reduce misunderstanding of stakeholder intent
+- may require iterative validation
+
+Formal tactics:
+
+- ensure logical consistency and enforceable rules
+- reduce ambiguity through structure and constraints
+- may not fully capture human behavior nuances
+
+Implications:
+
+- both approaches are necessary for robust resolution
+- elicitation informs correctness
+- formal tactics ensure consistency and enforceability
+
+
+
+== Implications for Concept Analysis
+
+These candidate solutions demonstrate that resolving inconsistencies requires both:
+
+- understanding stakeholder intent
+- applying structured modeling techniques
+
+The domain model must support:
+
+- adaptability to refined requirements
+- explicit representation of constraints and priorities
+- integration of user-driven configuration where ambiguity exists
+
+This combined approach strengthens the reliability and coherence of the Digital Home Inventory system.

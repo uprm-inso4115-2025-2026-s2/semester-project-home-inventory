@@ -1,0 +1,201 @@
+= Domain Analysis and Concept Formation Pipeline
+:toc:
+:toc-title: Table of Contents
+:toclevels: 3
+
+== Overview
+
+This document describes the structured pipeline used to process raw domain description units
+into higher-level abstractions for the Home Inventory Management System. The pipeline moves
+from unstructured observations and low-level entity lists toward a coherent set of named
+domain concepts and a unified narrative, while surfacing inconsistencies and gaps for
+analyst review.
+
+The pipeline consists of four sequential stages:
+
+[source]
+----
+[Stage 1: Ingest]
+   Raw Domain Description Units
+         ↓
+[Stage 2: Concept Formation]
+   Group low-level entities → named domain concepts
+         ↓
+[Stage 3: Narrative Rewrite]
+   Replace entity lists with concept terminology
+         ↓
+[Stage 4: Inconsistency Detection]
+   Flag P / not-P conflicts, gaps, and incompletenesses
+         ↓
+[Output: Analyst Review Package]
+   Unified narrative + flagged issues
+----
+
+---
+
+== Stage 1 — Ingest: Raw Domain Description Units
+
+Raw domain description units (DDUs) are the unprocessed observations, interviews, and
+artifacts collected during domain acquisition. For this project the raw DDUs were gathered
+from student surveys, informal household practices, and course domain analysis exercises.
+
+=== Collected DDUs
+
+The following table lists every raw DDU ingested, organized by source section:
+
+[cols="1,2,3", options="header"]
+|===
+| DDU ID | Source Section | Raw Description
+
+| DDU-01 | Narrative | Students buy food and supplies irregularly, store them in household locations, and consume them gradually.
+| DDU-02 | Narrative | When items run low or out, someone must notice and replenish.
+| DDU-03 | Narrative | Tracked understanding diverges from reality; relies on memory, fridge notes, chat messages, pantry checks.
+| DDU-04 | Narrative | Items may be forgotten in different locations; backups opened without recording.
+| DDU-05 | Narrative | Duplicates purchased due to incomplete information.
+| DDU-06 | Narrative | Exam weeks and guest visits increase usage rates; variable consumption patterns.
+| DDU-07 | Narrative | Bulk purchases create multiple items with different expiration dates.
+| DDU-08 | Narrative | Spending influences decisions — bulk for lower price, delay restocks, cheaper alternatives.
+| DDU-09 | Narrative | In shared households, disputes arise over personal vs. shared purchases.
+| DDU-10 | Entities | pantry items, bathroom products, cleaning supplies, medicine, utilities, kitchen items.
+| DDU-11 | Entities | kitchen, bathroom, bedroom, pantry, storage closet, hallway shelf.
+| DDU-12 | Entities | purchase date, expiration date, quantity, price, notes.
+| DDU-13 | Entities | running low, out of stock, near expiry, expired.
+| DDU-14 | Entities | restock, shopping trip, grocery run, replenishment event.
+| DDU-15 | Entities | budget tracking, spending history, spending category.
+| DDU-16 | Entities | notification, alert, reminder, push notification.
+| DDU-17 | Entities | household, student, roommate, household manager, household member.
+| DDU-18 | Behaviors | Household maintenance cycle: acquire → store → consume → judge → replenish.
+| DDU-19 | Behaviors | Shared-household coordination: shared vs. personal item scoping, duplicate prevention.
+| DDU-20 | Functions | Low-stock detection: threshold logic, qualitative vs. quantitative judgments.
+| DDU-21 | Functions | Budget management: cycle-based limits, threshold crossing alerts, spending attribution.
+| DDU-22 | Artifacts | Fridge notes, whiteboards, group chat messages, notes apps, pantry photos, receipts.
+|===
+
+---
+
+== Stage 2 — Concept Formation: Abstraction Mapping
+
+In this stage, low-level entity lists from the raw DDUs are grouped into named domain
+concepts at a higher abstraction level. The goal is to identify the *kinds of things*
+the domain talks about, independent of any specific implementation.
+
+=== Concept Abstraction Table
+
+[cols="2,3,2", options="header"]
+|===
+| Domain Concept | Raw DDU Entities Grouped Under This Concept | Source DDUs
+
+| *Household Item*
+| pantry items, bathroom products, cleaning supplies, medicine, utilities, kitchen items, food, supplies
+| DDU-01, DDU-10
+
+| *Location*
+| kitchen, bathroom, bedroom, pantry, storage closet, hallway shelf, household locations
+| DDU-01, DDU-11
+
+| *Item Attributes*
+| purchase date, expiration date, quantity, price, notes, batch, variant, size, brand
+| DDU-07, DDU-12
+
+| *Availability State*
+| running low, out of stock, near expiry, expired, "feels light", "opened backup", qualitative judgment
+| DDU-02, DDU-04, DDU-13, DDU-20
+
+| *Tracked Inventory Record*
+| fridge notes, chat messages, pantry checks, notes app lists, pantry photos, memory-based estimates
+| DDU-03, DDU-22
+
+| *Replenishment Action*
+| restock, shopping trip, grocery run, replenishment event, acquiring more
+| DDU-02, DDU-14
+
+| *Expenditure*
+| spending history, spending category, receipt, price paid, shared purchase, personal purchase
+| DDU-08, DDU-09, DDU-15
+
+| *Budget*
+| budget tracking, cycle-based limits, threshold, budget status, spending cap
+| DDU-08, DDU-15, DDU-21
+
+| *Alert / Notification*
+| notification, alert, reminder, push notification, low-stock alert, expiration alert, budget alert
+| DDU-16
+
+| *Household*
+| household, living unit, shared home, student household
+| DDU-17, DDU-18
+
+| *Household Member*
+| student, roommate, household manager, participant, member, occupant
+| DDU-17, DDU-19
+
+| *Coordination Failure*
+| duplicate purchase, missing update, stale information, ownership dispute, inconsistent records
+| DDU-04, DDU-05, DDU-09, DDU-19
+
+|===
+
+=== Concept Hierarchy
+
+The following hierarchy shows how concepts relate to one another:
+
+[source]
+----
+Household
+├── Household Member (1 or more)
+└── Inventory (reality)
+    └── Household Item (many)
+        ├── Item Attributes (expiration, quantity, price...)
+        ├── Location (where stored)
+        └── Availability State (OK / Low / Out / Expired)
+
+Tracked Inventory Record  ← approximates → Inventory (reality)
+
+Replenishment Action  ← triggered by → Availability State (Low / Out)
+Expenditure          ← recorded after → Replenishment Action
+Budget               ← governs → Expenditure
+
+Alert / Notification ← triggered by → Availability State or Budget threshold
+Coordination Failure ← arises from → Tracked Inventory Record diverging from reality
+----
+
+---
+
+== Stage 3 — Narrative Rewrite
+
+See: link:unified-domain-narrative.adoc[Unified Domain Narrative]
+
+The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with their
+corresponding concept names from Stage 2. All terminology is drawn exclusively from the
+project's Ubiquitous Language dictionary
+(`docs/2-descriptive/domain-description/terminology/terminology.adoc`).
+
+---
+
+== Stage 4 — Inconsistency Detection
+
+See: link:inconsistency-detection.adoc[Inconsistency Detection Report]
+
+The inconsistency detector scans all DDUs and existing domain documents for:
+
+* *Direct P / not-P conflicts* — one unit asserts a property that another directly negates.
+* *Scope conflicts* — a rule applies a constraint that another rule exempts.
+* *Completeness gaps* — a concept is referenced but never fully defined.
+* *Terminology drift* — the same real-world phenomenon described under two different names.
+
+---
+
+== Output: Analyst Review Package
+
+The full analyst review package produced by this pipeline consists of:
+
+[cols="1,3", options="header"]
+|===
+| Artifact | Location
+
+| Concept Abstraction Mapping | This document — Stage 2 table above
+| Unified Domain Narrative | link:unified-domain-narrative.adoc[unified-domain-narrative.adoc]
+| Inconsistency Detection Report | link:inconsistency-detection.adoc[inconsistency-detection.adoc]
+| Existing Terminology Dictionary | `docs/2-descriptive/domain-description/terminology/terminology.adoc`
+| Existing Domain Concept Analysis | `docs/3-analytic/concept-analysis/domain-concept-analysis/domain-concept-analysis.adoc`
+|===

@@ -1,0 +1,184 @@
+= Inconsistency Detection Report
+:toc:
+:toc-title: Table of Contents
+:toclevels: 3
+
+== Purpose
+
+This document is the output of Stage 4 of the Domain Concept Formation Pipeline. It
+catalogs all detected inconsistencies, conflicts, and incompleteness gaps found across
+the raw domain description units (DDUs) and existing domain documents.
+
+Each entry follows the pattern:
+
+* *Type* — Direct P/not-P conflict, Scope conflict, Completeness gap, or Terminology drift.
+* *Sources* — The DDU IDs or document sections where each side of the conflict appears.
+* *Conflict statement* — The exact contradiction expressed as P and not-P.
+* *Impact* — What downstream work is affected if left unresolved.
+* *Resolution* — The recommended fix or the decision needed from the team.
+* *Status* — Open / Resolved.
+
+---
+
+== Detected Inconsistencies
+
+=== IC-01 — Spending Records: Immutable vs. Adjustable
+
+[cols="1,3"]
+|===
+| Type | Direct P / not-P conflict
+| Source P | `docs/4-specific-topics/domain-requirements-acquisition/` — Rule 5: "Spending events are immutable once recorded."
+| Source not-P | `docs/2-descriptive/domain-description/functions/spending tracking logic/spending_tracking_logic.adoc` — Rule 7 / adjustSpending function: "Spending records can be corrected via an adjustment entry."
+| P | A spending record cannot be changed after it is created.
+| not-P | A spending record can be modified via an adjustment operation.
+| Impact | Downstream budget calculations and audit trails depend on knowing whether historical records are authoritative or subject to revision.
+| Resolution | Replace "immutable" with "append-only": original records are never deleted or edited in place; corrections are recorded as new *Expenditure* entries with a reference to the original. Both the original and the correction remain visible.
+| Status | *Resolved* — adopt append-only model.
+|===
+
+---
+
+=== IC-02 — Spending Persistence After Item Deletion
+
+[cols="1,3"]
+|===
+| Type | Direct P / not-P conflict
+| Source P | Spending/budget rules — "Deleting an item does not delete associated spending records." (spending history must persist for financial reporting)
+| Source not-P | Data integrity rules — "No orphaned records are allowed; every spending entry must reference an existing item."
+| P | Spending records survive item deletion.
+| not-P | Spending records must always reference a live item record.
+| Impact | If items are hard-deleted, spending records become orphans and violate referential integrity. If spending is deleted with the item, financial history is lost.
+| Resolution | Use soft deletion: deleted items are marked `archived = true` but remain in the database. Spending records continue to reference the archived item row. Archived items are excluded from active inventory views but available to financial reports.
+| Status | *Resolved* — adopt soft deletion.
+|===
+
+---
+
+=== IC-03 — Household Ownership: Exactly One Owner vs. Multiple Owners
+
+[cols="1,3"]
+|===
+| Type | Direct P / not-P conflict
+| Source P | Domain requirement DR-4: "A Household has exactly one Owner at all times."
+| Source not-P | Sharing rules document (`docs/descriptive/ownership models and rules/`): "The Owner role can be assigned to multiple roommates."
+| P | A household must have exactly one Owner.
+| not-P | The Owner role may be held by more than one member.
+| Impact | Access control logic, permission checks, and the `household_members` schema depend on this cardinality. An unresolved conflict here will produce runtime permission errors.
+| Resolution (Option A) | Rename the permission tier to "Admin" or "Co-manager", allow multiple admins, remove the "exactly one" constraint from DR-4.
+| Resolution (Option B) | Keep a single designated Owner for legal/billing purposes; introduce a separate "Admin" role for operational access that multiple members can hold.
+| Status | *Open* — decision required from team leads @FabianVelezOcasio and @andreasegarra.
+|===
+
+---
+
+=== IC-04 — Low-Stock Judgment: Numeric Threshold vs. Qualitative Assessment
+
+[cols="1,3"]
+|===
+| Type | Scope conflict
+| Source P | Alert system requirements and Supabase schema — low-stock detection is defined as `quantity < threshold` (numeric).
+| Source not-P | Domain narrative and terminology dictionary — "Low-stock is not inherently numeric; qualitative availability judgments are valid domain events."
+| P | Low-stock is detected by comparing a numeric quantity against a stored threshold value.
+| not-P | Low-stock can be judged qualitatively (e.g., "feels light", "only one left") without a numeric quantity.
+| Impact | The system will miss valid low-stock events that users express qualitatively. Items without a recorded quantity will never trigger alerts even when genuinely low.
+| Resolution | Support two detection modes: (a) automated numeric check when a quantity is recorded; (b) manual low-stock flag that a *Household Member* can set on any item regardless of recorded quantity. The *Availability State* concept must accommodate both.
+| Status | *Open* — requires design decision on UI for manual flagging.
+|===
+
+---
+
+=== IC-05 — Item Location: Always Known vs. Possibly Unknown
+
+[cols="1,3"]
+|===
+| Type | Direct P / not-P conflict
+| Source P | Entity model domain invariant I2: "An item instance, if it exists, is stored in some location (even if forgotten)."
+| Source not-P | Domain narrative DDU-04: "Items may be forgotten in different locations" — implying the system may not have a recorded location.
+| P | Every item has a location (physically true by definition).
+| not-P | The system may not know an item's location (tracking gap).
+| Impact | If the data model requires a non-null location reference, items discovered without a recorded location cannot be entered. This creates a data entry barrier and potential data loss.
+| Resolution | Distinguish between the physical truth (an item always exists somewhere) and the tracked state (the system may record location as "Unknown"). The `location` field on an item instance should allow a sentinel value of `unknown` or `null` with a UI prompt to resolve it.
+| Status | *Resolved* — allow null/unknown location in the schema with a prompt to update.
+|===
+
+---
+
+=== IC-06 — Inventory Terminology: Reality vs. Record
+
+[cols="1,3"]
+|===
+| Type | Terminology drift
+| Source A | Entities document (Section 1, system-oriented): "Inventory — the collection of household items at a given time."
+| Source B | Terminology dictionary: "Inventory (reality)" vs. "Tracked Inventory Record" — explicitly distinguished as two different concepts.
+| Drift | The word "Inventory" is used in some documents to mean the real physical stock and in others to mean the system's representation of it. Downstream documents that inherit from Section 1 conflate the two.
+| Impact | System designers building on the conflated definition will build a model where the tracked record is treated as ground truth, missing the key domain insight that it diverges from reality.
+| Resolution | Enforce the two-name convention from the terminology dictionary across all documents: use *Inventory* only for the physical reality; use *Tracked Inventory Record* for what the system stores. Flag all occurrences of the word "inventory" that are not qualified.
+| Status | *Open* — documentation team to audit and update affected sections.
+|===
+
+---
+
+=== IC-07 — Alert Repetition: No-Spam Rule vs. Continuous State
+
+[cols="1,3"]
+|===
+| Type | Scope conflict
+| Source P | Terminology dictionary — "Alerts must not cause repeated notifications without a change in domain state."
+| Source not-P | Alert system requirements — daily scheduled checks re-evaluate all items and emit alerts for any item still in a low/expired state, regardless of prior alerts.
+| P | An alert fires only when state changes.
+| not-P | The scheduled check fires alerts on every run for any item in an alert-worthy state.
+| Impact | Users will receive repeated identical alerts for the same item day after day, causing notification fatigue and alert dismissal.
+| Resolution | Add a "last alerted" timestamp to each alert record. The scheduled check only emits a new alert if (a) the state has changed since the last alert, or (b) a configurable re-notification interval (e.g., 7 days) has elapsed with no member action.
+| Status | *Open* — requires implementation decision from Team 2 (@Solimar-Cruz).
+|===
+
+---
+
+== Completeness Gaps
+
+The following concepts are referenced in DDUs or domain documents but are not fully defined:
+
+[cols="1,3,2", options="header"]
+|===
+| Gap ID | Description | Affected Documents
+
+| GAP-01
+| *Backup supply* is identified as a domain practice in the terminology dictionary but no formal rules govern when a backup is created, how many backups are allowed, or when a backup transitions to "primary stock."
+| `terminology.adoc`, `narrative.adoc`
+
+| GAP-02
+| *Household membership change* (member leaves or joins) is described in the narrative but no defined workflow or rule covers how existing *Expenditure* records, *Tracked Inventory Records*, or *Alert* subscriptions are updated when membership changes.
+| `entities.adoc`, `narrative.adoc`
+
+| GAP-03
+| *Spending category* is listed as an attribute of *Expenditure* but no canonical list of categories is defined. Individual teams have used different category names (Food, Kitchen, Cleaning vs. Pantry, Hygiene, Household).
+| `spending_tracking_logic.adoc`, expenditure report screen
+
+| GAP-04
+| The *Budget cycle* (weekly, monthly, custom) is mentioned but the rule governing what happens when a cycle ends — whether unspent budget rolls over or resets — is not defined.
+| `budget_management_logic.adoc`
+|===
+
+---
+
+== Summary
+
+[cols="1,1,1,1", options="header"]
+|===
+| ID | Type | Status | Owner
+
+| IC-01 | P/not-P conflict | Resolved | —
+| IC-02 | P/not-P conflict | Resolved | —
+| IC-03 | P/not-P conflict | Open | @FabianVelezOcasio, @andreasegarra
+| IC-04 | Scope conflict | Open | Design team
+| IC-05 | P/not-P conflict | Resolved | —
+| IC-06 | Terminology drift | Open | Documentation team
+| IC-07 | Scope conflict | Open | @Solimar-Cruz
+| GAP-01 | Completeness gap | Open | Team 1
+| GAP-02 | Completeness gap | Open | Team 3
+| GAP-03 | Completeness gap | Open | All teams
+| GAP-04 | Completeness gap | Open | Team 3
+|===
+
+*Resolved:* 3 of 7 direct conflicts. +
+*Open:* 4 conflicts + 4 completeness gaps requiring team decisions.

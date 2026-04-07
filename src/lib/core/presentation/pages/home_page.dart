@@ -24,6 +24,12 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            buildButton(context, "Inventory", () {
+              context.go('/home/inventory');
+            }),
+
+            SizedBox(height: 10),
+
             buildButton(context, "Grocery List", () {
               AppRouter.goTo(context, "grocery_home");
             }),
@@ -60,19 +66,23 @@ class HomePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: AppTheme
-                          .primaryColor, // Example of using the custom color defined in the theme
+                      .primaryColor, // Example of using the custom color defined in the theme
                 ),
                 child: Text(
                   "Go to TODOs page",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppTheme.surfaceColor,
-                      ), // Example of using the custom typography and color defined in the theme
+                    color: AppTheme.surfaceColor,
+                  ), // Example of using the custom typography and color defined in the theme
                 ),
               ),
               onPressed: () {
                 AppRouter.goTo(context, 'todos');
               },
             ),
+
+            buildButton(context, "Invite Roommate", () {
+              AppRouter.goTo(context, 'invite_roommate');
+            }),
           ],
         ),
       ),

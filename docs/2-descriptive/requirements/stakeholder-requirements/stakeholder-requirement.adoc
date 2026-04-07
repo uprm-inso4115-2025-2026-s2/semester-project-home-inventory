@@ -1,0 +1,383 @@
+== Stakeholder Audit of Section 2.2 — Requirements
+
+The section presents the findings which were obtained through a comprehensive examination of Section 2.2 (Requirements) from the Milestone 1 documentation. The researchers aim to identify all actor references which exist as both direct and indirect mentions throughout the documented requirements while tracing each reference to the particular requirements which either acknowledge or impact it. The researchers intend to identify all textual references to actors who remain unnamed in the document.
+
+=== Part 1 — Named Persona References
+
+These actors are introduced by first name in the user-story headers of Section 2.2.1. Each
+story carries a primary persona and an "Also affects" list.
+
+[cols="1,1,3", options="header"]
+|===
+| Persona | Role label (from story) | Requirements that reference this persona
+
+| Mateo
+| Busy solo student
+| User Story US-INV-01 (primary author/subject); +
+  User Story US-ALT-01 ("Also affects"); +
+  User Story US-SB-01 ("Also affects"); +
+  User Story US-RPT-01 ("Also affects")
+
+| Sofia
+| Budget-conscious roommate
+| User Story US-INV-01 ("Also affects"); +
+  User Story US-INV-02 (primary author/subject); +
+  User Story US-SB-01 ("Also affects"); +
+  User Story US-RPT-01 ("Also affects")
+
+| Julian
+| Diet-constrained student
+| User Story US-INV-01 ("Also affects"); +
+  User Story US-INV-02 ("Also affects"); +
+  User Story US-ALT-01 (primary author/subject); +
+  User Story US-SB-01 ("Also affects"); +
+  User Story US-RPT-01 ("Also affects")
+
+| Andrea
+| Unofficial household manager
+| User Story US-INV-01 ("Also affects"); +
+  User Story US-INV-02 ("Also affects"); +
+  User Story US-ALT-01 ("Also affects"); +
+  User Story US-SB-01 (primary author/subject); +
+  User Story US-RPT-01 (primary author/subject)
+|===
+
+---
+
+=== Part 2 — Role-Based Actor References
+
+These actors function as generic role nouns rather than showing their true identities. The elements of the domain requirements and the interface requirements and the machine requirements exist as recurring elements throughout the system.
+
+==== 2.1 Household Member
+
+The most frequently occurring actor in Section 2.2. Appears wherever the system must represent,
+respond to, or synchronize data across the people who share a living space.
+
+[cols="1,3", options="header"]
+|===
+| Requirement | How the household member is referenced
+
+| Interface Requirement IR-01
+| "When a household member acquires a new item … they must have a way to create a
+  corresponding representation inside the system."
+
+| Interface Requirement IR-02
+| "When a household member consumes part of an item … the tracked representation must
+  be updated."
+
+| Interface Requirement IR-03
+| "In shared households, members need to know whether an item is personal or shared." +
+  "associate it with a household member."
+
+| Interface Requirement IR-04
+| "Households use different 'low' definitions depending on the item." (members own the
+  threshold configuration)
+
+| Interface Requirement IR-05
+| "Some items have expiration dates that must be captured." (members enter expiration
+  dates)
+
+| Interface Requirement IR-06
+| "When a household member spends money on household items, that transaction must be
+  representable."
+
+| Interface Requirement IR-07
+| "split shared purchase costs among selected household members"
+
+| Interface Requirement IR-08
+| "Household members need a high-level overview without searching through details."
+
+| Domain Requirement DR-5
+| "A system user may belong to multiple households, each with an independent membership
+  role and membership state."
+
+| Domain Requirement DR-6
+| "Spending entries shall remain attributed to the household member who made the
+  purchase."
+
+| Machine Requirement MR-1
+| Inventory views must respond fast enough "to be usable while shopping" (household
+  member as primary user of search/filter)
+
+| Machine Requirement MR-2
+| "Shared-household inventory data shall remain consistent across household members
+  after synchronization."
+
+| Machine Requirement MR-3
+| "Core workflows … shall remain usable during temporary connectivity gaps" (household
+  member depends on offline tolerance)
+
+| Machine Requirement MR-4
+| "Household data shall be accessible only to authorized household members." +
+  "Removing a member's access shall take effect promptly."
+|===
+
+==== 2.2 Household Admin
+
+Referenced as a distinct role from regular members. The system requirements appear in two main areas which include domain requirements for governance and deferred edge-case interface requirements.
+
+[cols="1,3", options="header"]
+|===
+| Requirement | How the household admin is referenced
+
+| Domain Requirement DR-4
+| "Each Household shall have exactly one household admin role at a time.
+  Administrative responsibility shall be transferable before the current admin leaves."
+
+| Edge-Case Interface Requirement IR-EC-I _(deferred)_
+| "This log must be accessible to the household admin." (audit trail access control)
+|===
+
+==== 2.3 System User
+
+A more abstract actor than "household member" — refers to a registered account in the
+system, independent of which household(s) the account belongs to.
+
+[cols="1,3", options="header"]
+|===
+| Requirement | How the system user is referenced
+
+| Domain Requirement DR-5
+| "A system user may belong to multiple households, each with an independent membership
+  role and membership state."
+
+| Machine Requirement MR-4
+| "Removing a member's access shall take effect promptly (access revocation must prevent
+  future reads/writes)." (the removed entity is effectively a system user whose
+  membership is revoked)
+|===
+
+==== 2.4 Stakeholder (as generic actor in edge-case IRs)
+
+The word "stakeholder" is used in all nine deferred edge-case interface requirements
+(Edge-Case Interface Requirement IR-EC-A through Edge-Case Interface Requirement IR-EC-I) as a substitute for "household member" or "system user". It
+is used in the active-actor sense ("when a stakeholder adds an item…"), not in the
+broader project-analysis sense.
+
+[cols="1,3", options="header"]
+|===
+| Requirement | Usage
+
+| Edge-Case Interface Requirement IR-EC-A _(deferred)_
+| "When a stakeholder adds an item whose name matches an existing product …"
+
+| Edge-Case Interface Requirement IR-EC-B _(deferred)_
+| "When a stakeholder attempts to merge two stock entries …"
+
+| Edge-Case Interface Requirement IR-EC-C _(deferred)_
+| "When a stakeholder uploads a CSV import file …"
+
+| Edge-Case Interface Requirement IR-EC-D _(deferred)_
+| "When a stakeholder deletes or merges an inventory entry …"
+
+| Edge-Case Interface Requirement IR-EC-E _(deferred)_
+| "When a stakeholder returns a purchased item …"
+
+| Edge-Case Interface Requirement IR-EC-F _(deferred)_
+| "When a stakeholder removes expired, lost, or consumed items …"
+
+| Edge-Case Interface Requirement IR-EC-G _(deferred)_
+| "When a stakeholder adds an item in a shared inventory …"
+
+| Edge-Case Interface Requirement IR-EC-H _(deferred)_
+| "Every auto-merge of inventory quantities … must be reversible … via an undo control."
+  (implied actor: the stakeholder who triggered the auto-merge)
+
+| Edge-Case Interface Requirement IR-EC-I _(deferred)_
+| "Every edge-case resolution that modifies inventory state must generate a log entry
+  containing … user …" (the acting stakeholder is logged)
+|===
+
+==== 2.5 Purchase Maker / Buyer
+
+An actor implied by spending and cost-splitting requirements. Never named as a distinct
+role, but consistently treated as the agent who initiates financial transactions.
+
+[cols="1,3", options="header"]
+|===
+| Requirement | Implicit reference
+
+| Domain Requirement DR-6
+| "Spending entries shall remain attributed to the household member who made the
+  purchase." — the purchase-maker is the accountable financial agent.
+
+| Interface Requirement IR-06
+| "When a household member spends money on household items, that transaction must be
+  representable." — the spender/buyer is the actor who logs the purchase.
+
+| Edge-Case Interface Requirement IR-EC-G _(deferred)_
+| "the system must prompt 'Who bought this?' with the current user as default. If the
+  stakeholder selects another household member, the system must require confirmation." —
+  acknowledges that the person entering the item and the buyer may differ.
+|===
+
+==== 2.6 Alert Recipient / Notified User
+
+Implied by every alert-related requirement. The actor who receives a notification is
+never formally named as a role but governs deduplication, anti-spam, and delivery-channel
+decisions.
+
+[cols="1,3", options="header"]
+|===
+| Requirement | Implicit reference
+
+| User Story US-ALT-01
+| "I want to receive low-stock warnings … so that I can reorder in time." +
+  "the system may group notifications or present a summarized view to avoid
+  overwhelming users."
+
+| Feature F-ALERT
+| "Notifies household members when tracked conditions become actionable …
+  Delivery method can be in-app initially; push may be later."
+
+| Domain Requirement DR-14
+| "Alerts shall be deduplicated … so repeated checks without state change do not
+  generate repeated alerts." — the recipient drives the anti-spam constraint.
+
+| Machine Requirement MR-6
+| "Alert generation shall be deduplicated and primarily triggered by state transitions
+  … Re-running automated checks without state changes shall not generate duplicate
+  alerts."
+|===
+
+---
+
+=== Part 3 — Implicit System Actor References
+
+The requirements text specifies technical sub-systems which exist in the system. The system includes non-human entities which establish connections with the system while it requires their assistance to fulfill its operational needs. The entities appear in Section 2.2 but there exists no official declaration of their existence as actors.
+
+[cols="1,2,3", options="header"]
+|===
+| Implicit system actor | Category | Requirements that imply its existence
+
+| AutoCheck process
+| Internal scheduled job
+| Feature F-AUTOCHK: "Produces an 'AutoCheck Output' (items + status results) used to drive
+  alerts and grocery list updates without requiring the user to manually inspect
+  everything." — implies a background process that runs on a schedule.
+
+| Grocery list generator
+| Internal derived-view subsystem
+| Feature F-GL-AUTO: "Auto-generated grocery list from AutoCheck Output." — implies a subsystem
+  that consumes AutoCheck results and updates a list artifact.
+
+| Push notification delivery channel
+| External platform integration
+| Feature F-ALERT: "Delivery method can be in-app initially; push may be later." — implies a
+  future dependency on a mobile push service (e.g., FCM/APNs).
+
+| Barcode / product identity authority
+| External reference data source
+| Domain Requirement DR-1, Domain Requirement DR-15, Domain Requirement DR-17, Edge-Case Interface Requirement IR-EC-A: barcode uniqueness and normalization rules imply
+  reliance on an external or internal product definition registry; Domain Requirement DR-1 requires "exactly
+  one Item type" per barcode, which presupposes an authoritative mapping exists.
+
+| CSV import source
+| External data input channel
+| Edge-Case Interface Requirement IR-EC-C _(deferred)_: "When a stakeholder uploads a CSV import file …" — implies the
+  system must accept structured external data, making the import pipeline an implicit
+  system boundary actor.
+
+| Audit trail / transaction log
+| Internal record-keeping subsystem
+| Domain Requirement DR-9, Machine Requirement MR-5, Edge-Case Interface Requirement IR-EC-I: "Inventory corrections … shall be auditable and reversible …
+  the system shall preserve what changed, when, and why." The log is never declared as
+  a component but drives multiple integrity constraints.
+
+| Authentication / authorization subsystem
+| Internal security subsystem
+| Machine Requirement MR-4: "Household data shall be accessible only to authorized household members.
+  Removing a member's access shall take effect promptly." — implies an access-control
+  layer enforcing membership-state checks, though it is never formally introduced as a
+  component in Section 2.2.
+
+| Synchronization / reconciliation engine
+| Internal consistency subsystem
+| Machine Requirement MR-2, Machine Requirement MR-3, User Story US-INV-02 (acceptance criteria): "changes shall synchronize when
+  connectivity returns"; "Conflicts or reconciliation behavior … shall be predictable
+  and testable." — implies a sync mechanism operating between clients and shared state,
+  never formally named.
+|===
+
+---
+
+=== Part 4 — Summary: Actor-to-Requirement Cross-Reference
+
+The table below consolidates every identified actor and the full list of requirements in Section 2.2 that reference it. The raw mapping data establishes the foundational input which will be used for creating formal stakeholder documents and tracking requirements throughout future project stages.
+
+[cols="1,1,3", options="header"]
+|===
+| Actor | Category | Requirements in Section 2.2
+
+| Mateo
+| Named persona
+| User Story US-INV-01, User Story US-ALT-01, User Story US-SB-01, User Story US-RPT-01
+
+| Sofia
+| Named persona
+| User Story US-INV-01, User Story US-INV-02, User Story US-SB-01, User Story US-RPT-01
+
+| Julian
+| Named persona
+| User Story US-INV-01, User Story US-INV-02, User Story US-ALT-01, User Story US-SB-01, User Story US-RPT-01
+
+| Andrea
+| Named persona
+| User Story US-INV-01, User Story US-INV-02, User Story US-ALT-01, User Story US-SB-01, User Story US-RPT-01
+
+| Household member
+| Role-based
+| Interface Requirement IR-01, Interface Requirement IR-02, Interface Requirement IR-03, Interface Requirement IR-04, Interface Requirement IR-05, Interface Requirement IR-06, Interface Requirement IR-07, Interface Requirement IR-08, Domain Requirement DR-5, Domain Requirement DR-6, Machine Requirement MR-1, Machine Requirement MR-2, Machine Requirement MR-3, Machine Requirement MR-4
+
+| Household admin
+| Role-based
+| Domain Requirement DR-4, Edge-Case Interface Requirement IR-EC-I _(deferred)_
+
+| System user
+| Role-based
+| Domain Requirement DR-5, Machine Requirement MR-4
+
+| Stakeholder (EC usage)
+| Role-based (deferred scope)
+| Edge-Case Interface Requirement IR-EC-A through Edge-Case Interface Requirement IR-EC-I _(all deferred)_
+
+| Purchase maker / buyer
+| Implicit role
+| Domain Requirement DR-6, Interface Requirement IR-06, Edge-Case Interface Requirement IR-EC-G _(deferred)_
+
+| Alert recipient
+| Implicit role
+| User Story US-ALT-01, Feature F-ALERT, Domain Requirement DR-14, Machine Requirement MR-6
+
+| AutoCheck process
+| Implicit system actor
+| Feature F-AUTOCHK, Feature F-GL-AUTO
+
+| Grocery list generator
+| Implicit system actor
+| Feature F-GL-AUTO, Feature F-GL-USER
+
+| Push notification channel
+| Implicit system actor
+| Feature F-ALERT
+
+| Barcode / product authority
+| Implicit system actor
+| Domain Requirement DR-1, Domain Requirement DR-15, Domain Requirement DR-17, Edge-Case Interface Requirement IR-EC-A _(deferred)_
+
+| CSV import source
+| Implicit system actor
+| Edge-Case Interface Requirement IR-EC-C _(deferred)_
+
+| Audit trail / transaction log
+| Implicit system actor
+| Domain Requirement DR-9, Machine Requirement MR-5, Edge-Case Interface Requirement IR-EC-I _(deferred)_
+
+| Authentication / authorization subsystem
+| Implicit system actor
+| Machine Requirement MR-4
+
+| Synchronization / reconciliation engine
+| Implicit system actor
+| Machine Requirement MR-2, Machine Requirement MR-3, User Story US-INV-02 (acceptance criteria)
+|===
