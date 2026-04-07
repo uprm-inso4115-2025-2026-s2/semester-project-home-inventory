@@ -1,0 +1,277 @@
+= Identifying Domain Inconsistencies in Home Inventory
+
+== Objective
+
+This lecture topic task demonstrates how to systematically identify, document, and propose resolutions for inconsistencies in domain descriptions. Five domain inconsistencies are identified, each explaining how conflicting statements can arise and how to resolve them.
+
+---
+
+== Methodology
+
+Domain inconsistencies occur when two or more text passages describe contradictory properties ("P and not P"). The methodology for detection:
+
+1. Review domain description units across multiple documents.
+2. Identify pairs or groups of statements that describe opposite or conflicting rules/behaviors.
+3. Determine if the conflict is genuine or context-dependent.
+4. Document the conflict sources and propose resolution.
+
+---
+
+== Identified Inconsistencies
+
+=== Inconsistency 1: Immutable Spending Records vs. Adjusting Spending
+
+**Severity:** High (affects financial data integrity)
+
+==== Conflicting Statements
+
+*Statement A - Behaviors (Domain Rules):*
+----
+"Spend Events are immutable - inventory corrections must never overwrite financial history (DR-3, DR-9)."
+----
+
+*Statement B - Domain Requirements (Spending Functions):*
+----
+"Correct spending records via adjustment/refund entries rather than destructive edits (adjustSpending function)."
+----
+
+==== Explanation
+
+The first statement asserts that spending records cannot be changed at all. The second statement permits corrections through an adjustment system. The contradiction:
+
+* Spending records are immutable (cannot change).
+* Spending records can be corrected (changed via adjustment entries).
+
+The intended design uses an *append-only log* (new adjustment entries) rather than destructive edits, but the term "immutable" creates confusion by suggesting absolute non-changeability.
+
+==== Proposed Resolution
+
+Replace "immutable" with more precise language:
+
+----
+"Spending records use append-only journaling: corrections are recorded as new adjustment entries, 
+never by overwriting or deleting historical values. This preserves financial traceability and audit capability."
+----
+
+---
+
+=== Inconsistency 2: Spending Persists After Item Deletion vs. No Orphaned Records
+
+**Severity:** High (creates data integrity violation)
+
+==== Conflicting Statements
+
+*Statement A - Behaviors (Domain Rules):*
+----
+"Deleting an item does not delete associated spending... Financial history must remain structurally consistent."
+----
+
+*Statement B - Domain Invariants:*
+----
+"A spending event must reference an item that existed at the time of the transaction. 
+Invalid or orphaned financial records are not allowed."
+----
+
+==== Explanation
+
+Rule A allows spending records to survive item deletion. Rule B forbids orphaned records (those referencing non-existent items). If an item is deleted, Rule A requires keeping its spending-but those records now link to a missing item, violating Rule B.
+
+* Spending records linked to deleted items must be preserved.
+* All spending records must reference valid (existing) items.
+
+==== Proposed Resolution
+
+Implement **soft deletion** of items:
+
+----
+"Items are marked as archived/deleted (not removed from database) to preserve foreign key relationships. 
+Spending records remain valid even for archived items. Hard deletion is never performed on items with associated spending."
+----
+
+---
+
+=== Inconsistency 3: Single Owner Rule vs. Owner as Assignable Role
+
+**Severity:** Medium (affects permission design)
+
+==== Conflicting Statements
+
+*Statement A - Domain Rules (DR-4 - Behaviors):*
+----
+"A Household must always have exactly one Owner (DR-4). 
+Ownership must be transferred before an Owner can leave a Household (DR-4)."
+----
+
+*Statement B - Entities (Roles Definition):*
+----
+"Owner: A Stakeholder role representing the primary manager of a Home who has the highest access 
+and permission to make changes."
+----
+
+*Statement C - Sharing Rules (Implied from workflow descriptions):*
+----
+"Permission roles include: Viewer (read-only), Editor (modify items), Owner (full control)."
+----
+
+==== Explanation
+
+Statement A asserts household ownership is unique and non-transferable except by explicit transfer. Statements B and C describe "Owner" as a role that can be assigned to members. This creates ambiguity:
+
+* Only one Owner per household (unique role).
+* Owner is one of several assignable permission roles.
+
+If "Owner" is assignable like "Editor" or "Viewer," then multiple members could hold it, violating DR-4.
+
+==== Proposed Resolution
+
+**Option A - Owner is unique; rename the role:**
+
+----
+"Keep 'Owner' as the unique creator/manager role (non-transferable except via explicit DR-4 transfer). 
+Rename the highest assignable permission tier to 'Admin' or 'Co-manager' to avoid confusion."
+----
+
+**Option B - Allow multiple Owners; revise DR-4:**
+
+----
+"Revise DR-4 to: 'A household must always have at least one Owner (co-ownership allowed). 
+To leave, an Owner must delegate at least one other member as an Owner first.' 
+Use 'Owner' consistently as both a creator-role and an assignable permission tier."
+----
+
+*(Team decision required based on sharing model intent.)*
+
+---
+
+=== Inconsistency 4: System State Transitions vs. Domain-Level Events
+
+**Severity:** Medium (affects system design scope)
+
+==== Conflicting Statements
+
+*Statement A - Behaviors (Expiration Monitoring):*
+----
+"Stock nears its expiration date → the system transitions the item to an Expiring state → 
+alert issued → stakeholder removes or discards the item."
+----
+
+*Statement B - Events (Domain-Level):*
+----
+"Item approaching expiration: An item instance is within a near-expiry window. 
+Motivates timely decisions. [Note] Delivery method is not part of the domain event."
+----
+
+*Statement C - Terminology (Domain vs. Requirements):*
+----
+"Alert (domain-level): A message informing a household member about an actionable condition. 
+Delivery method is an implementation choice."
+----
+
+==== Explanation
+
+Statement A describes the system actively managing state ("transitions the item to Expiring state"). Statement B and C describe domain awareness of approaching expiration without system-driven state management. The contradiction:
+
+* The system actively transitions items into expiration states (system-driven).
+* Expiration approaching is a domain observation requiring a household response (domain-level, not system-driven).
+* Alert delivery is an implementation detail, not a domain requirement.
+
+This confusion mixes domain-level concepts (what happens in reality) with system-level behavior (what the software does).
+
+==== Proposed Resolution
+---
+**Domain Level:**
+"Item approaching expiration: A household member judges or observes that an item is nearing its expiration date. 
+This may trigger a decision to use it soon or discard it. Judgment may be based on date or condition assessment."
+
+**System Level (Requirements):**
+"The system detects and notifies: When a stock entry's expiration date is within N days of today, 
+the system generates a near-expiry alert (not a state transition, but a trigger for user action)."
+
+**Avoid mixing terminology:** Use 'domain state' for real-world conditions (nearing expiration) 
+and 'system state' for software representations (alert generated, notification pending).
+
+---
+
+=== Inconsistency 5: Quantitative vs. Qualitative Availability Tracking
+
+**Severity:** Medium (affects data model design)
+
+==== Conflicting Statements
+
+*Statement A - Events (Domain-Level):*
+"Low-stock judged: A household member judges an item as running low. 
+'Feels light' / 'backup opened' / threshold-based."
+
+*Statement B - Terminology (Availability):*
+"Availability: A household's current understanding of how much of an item is left, 
+often qualitative ('full', 'almost empty', 'backup'). May later be represented as quantity."
+
+*Statement C - Domain Behaviors (Restock Cycle):*
+"A stakeholder consumes stock → quantity decreases → low-stock threshold is crossed → alert issued."
+
+*Statement D - Terminology (Inventory Record):*
+"Inventory (reality): The set of item instances that physically exist in the household at a given time. 
+Real-world state, not a list or record."
+
+==== Explanation
+
+Statements A and B support qualitative tracking ("feels light," "backup opened"). Statement C assumes numeric quantity tracking with defined thresholds. Statement D distinguishes tracked records from real inventory. The contradiction:
+
+* Households use qualitative availability judgments ("feels light").
+* System requires numeric quantity and defined thresholds.
+* Tracked records may diverge from reality.
+
+The system design needs to clarify: Does the system enforce numeric tracking, support qualitative input with automatic thresholds, or allow both?
+
+==== Proposed Resolution
+**Quantitative Branch:**
+If numeric quantity is recorded, the system compares it to a defined reorder point and triggers low-stock alerts.
+
+**Qualitative Branch:**
+If quantity is unknown or optional, the system accepts qualitative status (e.g., 'almost-empty', 'backup-opened') 
+and treats these as low-stock indicators without requiring exact numbers.
+
+**State Rule:**
+The system tracks both quantity (when available) and availability status (always), 
+so households can use either judgement path depending on the item type and household preference.
+
+Example: Milk may use numeric quantity (2L = full, < 0.5L = low). 
+Paper towels may use status-only (unopened, in-use, depleted). 
+Both trigger alerts at appropriate stages.
+---
+
+== Summary Table
+
+[cols="1,2,2,2,3",options="header"]
+|===
+| # | Inconsistency | Source 1 | Source 2 | Resolution Type
+| 1 | Immutable vs. Adjustable Spending | Behaviors (DR-3, DR-9) | Requirements (adjustSpending) | Clarify append-only journaling design
+| 2 | Item Deletion vs. Orphaned Records | Behaviors | Domain Invariants | Implement soft deletion policy
+| 3 | Single Owner vs. Owner Role | Domain Rules (DR-4) | Entities/Roles | Decide: unique or assignable Owner
+| 4 | System States vs. Domain Events | Behaviors (state transition) | Events (domain-level) | Separate domain-level from system-level concepts
+| 5 | Quantitative vs. Qualitative Tracking | Events/Terminology | Domain Behaviors | Support dual-mode (numeric + status)
+|===
+
+== Key Takeaways
+
+1. **Inconsistencies arise from independent authorship** - Different sections written at different times or by different authors may redefine terms or rules.
+
+2. **Terminology overloading** - Single terms like "Owner," "Availability," or "State" may have different meanings in different contexts.
+
+3. **Scope confusion** - Mixing domain-level observations (what stakeholders do) with system-level requirements (what the software must do) creates apparent contradictions.
+
+4. **Resolution requires team alignment** - Some inconsistencies have multiple valid resolutions; the team must choose based on design intent.
+
+5. **Explicit rules prevent reinterpretation** - Vague or implicit rules are more likely to be interpreted differently by different readers.
+
+== References
+
+* [Domain Inconsistency Document](../../lecture-topic-tasks/domain-inconsistency.adoc)  
+* [Domain Behaviors](../../2-descriptive/domain-description/behaviors/behaviors.adoc)  
+* [Domain Events](../../2-descriptive/domain-description/events/events.adoc)  
+* [Domain Terminology](../../2-descriptive/domain-description/terminology/terminology.adoc)  
+* [Domain Entities](../../2-descriptive/domain-description/entities/entities.adoc)  
+* [Domain Invariants](../../2-descriptive/domain-description/domain_invariants.adoc)
+
+---
+
