@@ -3,3 +3,4 @@
 
 include::concept-analysis/concept-analysis.adoc[leveloffset=+1]
 include::validation-verification/validation-verification.adoc[leveloffset=+1]
+include::requirements-quality-assurance/requirements-inspection-checklist.adoc[leveloffset=+1]
