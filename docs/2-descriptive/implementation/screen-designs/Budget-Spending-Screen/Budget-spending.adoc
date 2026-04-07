@@ -1,24 +1,24 @@
-== Budget Spending Page Wireframe
-Author: Nataliavera6
+== #Budget Spending Page Wireframe#
+#Author: Nataliavera6#
 --
-This page is necessary because it provides a visual representation of spending habits and budget. The purpose of this page is to allow users to track where their money is allocated throughout the month. 
+#This page is necessary because it provides a visual representation of spending habits and budget. The purpose of this page is to allow users to track where their money is allocated throughout the month.# 
 
-- The logo of the app is placed at the top right of the page 
-- The main data visual is placed at the center of the page. 
-- Data visuals based on category ar placed below the main data visual.
-- The option to filter date is placed at the top of the page
+- #The logo of the app is placed at the top right of the page# 
+- #The main data visual is placed at the center of the page.# 
+- #Data visuals based on category ar placed below the main data visual.#
+- #The option to filter date is placed at the top of the page#
 --
-= Risks
-- Users may find the page overwhelming if there is too much data visualizations.
-- Users may be confused about how to use the page if there is not enough guidance or instructions.
+= #Risks#
+- #Users may find the page overwhelming if there is too much data visualizations.#
+- #Users may be confused about how to use the page if there is not enough guidance or instructions.#
 
-= Benefits & Mitigations
-- The page provides a clear and concise way for users to track their spending habits and budget,
+= #Benefits & Mitigations#
+- #The page provides a clear and concise way for users to track their spending habits and budget,#
 
-- To mitigate the risk of overwhelming users, we will limit the number of data visualizations on the page and provide clear instructions on how to use the page effectively. 
+- #To mitigate the risk of overwhelming users, we will limit the number of data visualizations on the page and provide clear instructions on how to use the page effectively.# 
 
 --
-Final product::
+#Final product::#
 
 
 image:images/Budges_spending_wireframe.png[]
