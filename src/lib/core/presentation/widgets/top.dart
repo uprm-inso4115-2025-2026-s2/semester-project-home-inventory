@@ -14,6 +14,7 @@ class Top extends StatelessWidget {
   final Function()? addFunction;
   final bool? padding;
   final String? title;
+  final TextStyle? textStyle;
   final IconData? addIcon;
   final Color? backgroundColor;
   final Function(String value)? onChanged;
@@ -36,6 +37,7 @@ class Top extends StatelessWidget {
     this.replacedBackButton,
     this.titleWidget,
     required this.title,
+    this.textStyle,
     this.addButton,
     this.addFunction,
     this.padding,
@@ -75,11 +77,13 @@ class Top extends StatelessWidget {
                 child: leftButtonText != null && leftButtonText!.isNotEmpty
                     ? Text(
                         leftButtonText!,
-                        style: TextStyle(
-                          color: iconColor ?? Colors.black,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style:
+                            textStyle ??
+                            TextStyle(
+                              color: iconColor ?? Colors.black,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
                       )
                     : Icon(
                         icon ?? CupertinoIcons.back,
@@ -96,12 +100,14 @@ class Top extends StatelessWidget {
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   textScaler: TextScaler.noScaling,
-                  style: TextStyle(
-                    color: color,
-                    decoration: TextDecoration.none,
-                    fontSize: 21.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style:
+                      textStyle ??
+                      TextStyle(
+                        color: color,
+                        decoration: TextDecoration.none,
+                        fontSize: 21.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
               if (widget != null) widget!,

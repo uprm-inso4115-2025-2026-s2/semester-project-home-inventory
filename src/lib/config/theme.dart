@@ -12,6 +12,9 @@ class AppTheme {
   static const Color backgroundColor = Color(0xFFFBF7EF);
 
   static const Color redAccent = Color(0xFFFF0000);
+  static const Color lightRedAccent = Color(
+    0xFFFFA3A3,
+  ); // For "Remove from..." actions
   static const Color greenAccent = Color(
     0xFF5FFF89,
   ); // For success messages or "Add to..." actions

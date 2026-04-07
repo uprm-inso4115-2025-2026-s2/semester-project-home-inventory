@@ -1,0 +1,88 @@
+= Identify External Systems Interacting with Home Inventory System
+// Author: Andrea P Segarra
+// GitHub user: @andreasegarra
+// Issue #483
+
+Based on lecture: Domain Acquisition
+
+== Role of External Systems in the Domain
+
+External systems define the environment in which the Home Inventory System operates.  
+They represent services and platforms outside the system boundary that support core functionality such as data storage, authentication, and communication.
+
+Identifying these systems helps clarify dependencies, system boundaries, and integration points, which are essential for accurate domain modeling and system design.
+
+
+== External Systems Overview
+
+The Home Inventory System relies on a set of external services rather than implementing all functionality internally.  
+These systems provide foundational capabilities that allow the application to function efficiently and scale as needed.
+
+[cols="1,3"]
+|===
+|External System |Role in the Domain
+
+|Supabase
+|Acts as the main backend platform. It provides access to database services, authentication, APIs, and other backend capabilities required by the system.
+
+|Supabase Authentication
+|Responsible for verifying user identity and managing sessions. It ensures that access to protected features is restricted to authorized users.
+
+|Supabase Database
+|Stores all core domain data, including items, inventories, households, and budget-related information. It maintains the persistent state of the system.
+
+|Supabase Storage
+|Handles storage of images and files associated with inventory items. It allows users to upload and retrieve media content.
+
+|Supabase Realtime
+|Supports real-time data synchronization between users. It ensures that updates in shared inventories are reflected immediately across all clients.
+|===
+
+
+== Interaction with the Domain
+
+External systems interact directly with the core domain concepts defined in the system.
+
+- Inventory and Item data are stored and retrieved through the database  
+- User and Membership concepts depend on authentication services  
+- Shared Inventory behavior relies on real-time synchronization between users  
+- Item-related media is managed through storage services  
+
+These interactions show that external systems are tightly connected to how domain concepts are created, updated, and accessed.
+
+
+== Ambiguity and Boundary Risks
+
+Without clear identification of external systems, it may be difficult to distinguish between what belongs to the domain and what is handled externally.
+
+Common risks include:
+
+- treating external services as internal components of the system  
+- misunderstanding where certain responsibilities (e.g., authentication or storage) are handled  
+- unclear system boundaries leading to incorrect design decisions  
+
+Clearly defining these systems helps avoid confusion and ensures proper separation of concerns.
+
+
+== Guidelines for Identifying External Systems
+
+To maintain consistency in domain analysis:
+
+- external systems must be clearly separated from internal domain components  
+- only systems outside the application’s direct implementation should be included  
+- each external system should have a clearly defined role in supporting domain functionality  
+- interactions should be described in relation to domain concepts, not just technical behavior  
+
+
+== Implications for Domain Modeling
+
+Understanding external systems improves the overall clarity of the domain model.
+
+It allows developers and stakeholders to:
+
+- define accurate system boundaries  
+- understand dependencies and integration points  
+- design features with awareness of external constraints  
+- maintain a clear separation between domain logic and infrastructure  
+
+By identifying these systems, the Home Inventory domain becomes easier to reason about and extend.

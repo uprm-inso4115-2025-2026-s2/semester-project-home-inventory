@@ -1,0 +1,56 @@
+:nofooter:
+:milestone: Milestone 2
+:team: Team 3
+:week: Week 3
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+== Objective
+
+Provide a summary of the work completed by the Sharing & Budget team during Week 3, including progress, challenges, and next steps.
+
+
+== What the team accomplished this week
+
+- Completed implementation of entities, models, and data sources  
+- Developed UI design documentation for Shared Inventory screens  
+- Created and submitted multiple Lecture Topic Tasks (LTTs)  
+- Reviewed and approved pull requests to maintain code and documentation quality  
+- Continued integration work between frontend and backend (Supabase)  
+
+
+== Tasks completed / Issues closed
+
+- Implement Entities and Models for Sharing & Budget  
+- Implement Data Sources for Sharing & Budget  
+- Shared Inventory UI Design Documentation  
+- Multiple LTTs completed and submitted  
+- Several PRs reviewed and approved  
+
+
+== What is currently in progress
+
+- Integration of UI with backend data  
+- Implementation of user flows (Shared Inventory, Roommate Invitation, Duplicate Warning)  
+- Debugging and improving existing features  
+
+
+== Blockers or challenges
+
+- Merge conflicts when working across multiple branches  
+- Environment setup and running the project locally (Flutter issues)  
+- Ensuring consistency between UI, domain, and backend integration  
+
+
+== Plans for next week
+
+- Finalize user flows and ensure full functionality  
+- Complete frontend-backend integration  
+- Resolve remaining bugs and edge cases  
+- Prepare demo and presentation for milestone  
+
+
+== Documentation Links
+
+All related AsciiDoc files are located in:
+
+/docs/project-management/weekly-reports/week-3

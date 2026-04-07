@@ -1,0 +1,144 @@
+= Value-Cost Prioritization for Team 3 Sharing & Budget Requirements
+:toc:
+:toclevels: 2
+:sectnums:
+
+== Objective
+
+Prioritize key Team 3 Sharing & Budget requirements by comparing their relative value and implementation cost.
+
+This document supports planning and discussion by identifying which requirements should receive more focus based on their expected user value and implementation effort.
+
+== Evaluation Method
+
+Each requirement is evaluated using the following scales:
+
+- *Value (1-10):* Estimated importance, usefulness, and impact for the household sharing and budgeting experience
+- *Cost (1-10):* Estimated implementation complexity and effort, including logic, validation, synchronization, permissions, and UI impact
+
+Priority is assigned using a balanced Sharing & Budget perspective, not only one side of Team 3.
+
+== Selected Requirements
+
+The following requirements were selected because they are important, documented, and comparable at a similar level of detail:
+
+- duplicate purchase warning
+- shared inventory synchronization
+- budget threshold alerts
+- spending history visibility
+- ownership indicator visibility
+- spending attribution per roommate
+
+== Value-Cost Prioritization Table
+
+[cols="1,4,1,1,1,5", options="header"]
+|===
+|ID |Requirement |Value |Cost |Priority |Justification
+
+|VC-01
+|Duplicate purchase warning
+|9
+|4
+|High
+|This requirement directly helps prevent unnecessary purchases, which is one of the project’s main problems. It provides immediate value to users and is less costly than deeper synchronization or attribution logic because it can often be implemented with warning-based comparison rules.
+
+|VC-02
+|Shared inventory synchronization
+|10
+|8
+|High
+|This is one of the most important sharing requirements because the shared inventory loses trust if users do not see consistent data. The value is extremely high, but the cost is also high due to multi-user state consistency, update timing, and access control concerns.
+
+|VC-03
+|Budget threshold alerts
+|8
+|5
+|High
+|This requirement gives strong budgeting value by helping users avoid overspending. It is important to the budgeting side of Team 3 and has moderate cost because it depends on budget rules, threshold comparisons, and alert behavior, but is still more manageable than full synchronization logic.
+
+|VC-04
+|Spending history visibility
+|8
+|4
+|High
+|Users need to review past spending to understand household expenses and make budgeting decisions. This has high practical value and a relatively moderate cost because it mostly depends on retrieving, filtering, and displaying already recorded spending data.
+
+|VC-05
+|Ownership indicator visibility
+|7
+|3
+|Medium
+|This requirement improves clarity in shared inventory by showing who owns or created an item. It is useful for accountability and coordination, but slightly lower in value than synchronization or duplicate prevention. It is low cost because it is mainly a visibility and presentation requirement once ownership data exists.
+
+|VC-06
+|Spending attribution per roommate
+|8
+|7
+|Medium
+|This requirement has strong value for fairness, cost sharing, and accountability in shared households. However, it has a higher implementation cost because it requires careful data modeling, attribution rules, and possible edge-case handling for shared vs individual spending responsibility.
+|===
+
+== Matrix Interpretation
+
+=== High Value / Low Cost
+
+These requirements should usually receive the earliest attention because they provide strong benefit without requiring the highest implementation effort.
+
+- VC-01 Duplicate purchase warning
+- VC-03 Budget threshold alerts
+- VC-04 Spending history visibility
+
+=== High Value / High Cost
+
+These requirements are very important, but they require more implementation effort and should be planned carefully.
+
+- VC-02 Shared inventory synchronization
+- VC-06 Spending attribution per roommate
+
+=== Moderate Value / Low Cost
+
+These requirements are still useful, but they may come after the highest-impact items.
+
+- VC-05 Ownership indicator visibility
+
+=== Low Value / High Cost
+
+No selected requirement was placed in this category because all chosen requirements provide meaningful value to Team 3 goals.
+
+== Priority Summary
+
+=== High Priority
+
+The following requirements should receive the most focus in planning and discussion:
+
+- VC-01 Duplicate purchase warning
+- VC-02 Shared inventory synchronization
+- VC-03 Budget threshold alerts
+- VC-04 Spending history visibility
+
+These were prioritized highly because they strongly support Team 3’s two main responsibilities: sharing coordination and budgeting support.
+
+=== Medium Priority
+
+The following requirements are important but may be scheduled after the highest-priority items or developed incrementally:
+
+- VC-05 Ownership indicator visibility
+- VC-06 Spending attribution per roommate
+
+These still matter, but either their value is slightly lower in near-term planning or their cost is high enough that they may require additional clarification before implementation.
+
+=== Low Priority
+
+No requirement in this comparison was assigned low priority because all selected requirements support important Team 3 functionality.
+
+== Notes
+
+- These estimates are relative, not absolute.
+- Value and cost may need revision if milestone scope changes or if implementation constraints become clearer.
+- This prioritization is intended to support planning and discussion, not to permanently lock implementation order.
+
+== Conclusion
+
+This prioritization compares six important Team 3 Sharing & Budget requirements using both value and implementation cost.
+
+The results suggest that duplicate warning behavior, budget threshold alerts, spending history visibility, and shared inventory synchronization deserve the most attention in milestone planning, while ownership visibility and roommate spending attribution remain important but somewhat less urgent or more costly to implement.
