@@ -1,13 +1,13 @@
-== Personas (Reference)
+// == Personas (Reference)
 
-This file is optional because personas also appear under 4-specific-topics. Choose one “source of truth.”
+// This file is optional because personas also appear under 4-specific-topics. Choose one “source of truth.”
 
-Below is a brief summary of the main personas used to justify requirements:
+// Below is a brief summary of the main personas used to justify requirements:
 
-* **Mateo** – Young professional, shares household with roommates, values convenience and notifications for shared inventory tasks.
-* **Sofía** – Parent, manages family inventory, prioritizes reliability and ease of use for tracking items and responsibilities.
-* **Gerardo** – Student, interested in collaborative features and learning how to manage shared resources efficiently.
-* **Adriana** – Occasional user, less engaged, but benefits from reminders and simple interfaces.
+// * **Mateo** – Young professional, shares household with roommates, values convenience and notifications for shared inventory tasks.
+// * **Sofía** – Parent, manages family inventory, prioritizes reliability and ease of use for tracking items and responsibilities.
+// * **Gerardo** – Student, interested in collaborative features and learning how to manage shared resources efficiently.
+// * **Adriana** – Occasional user, less engaged, but benefits from reminders and simple interfaces.
 
-For full details and updates, see:
-include::../../4-specific-topics/personas/personas.adoc[]
+// For full details and updates, see:
+// include::../../4-specific-topics/personas/personas.adoc[]

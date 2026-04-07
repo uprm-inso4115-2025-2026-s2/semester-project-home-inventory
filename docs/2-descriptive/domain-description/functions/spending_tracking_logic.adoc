@@ -1,24 +1,24 @@
 == Domain Logic for Spending Tracking
 
-Spending tracking in this domain represents how household purchases are recorded, attributed, and preserved over time. A spending event exists only when a financial transaction occurs within a household context, and it supports later budgeting, reporting, and accountability without depending on any specific implementation.
+#Spending tracking in this domain represents how household purchases are recorded, attributed, and preserved over time. A spending event exists only when a financial transaction occurs within a household context, and it supports later budgeting, reporting, and accountability without depending on any specific implementation.#
 
-A spending event captures:
-* who paid
-* what was purchased
-* the monetary amount
-* when the transaction occurred
-* whether the cost is personal or shared
+#A spending event captures:#
+* #who paid#
+* #what was purchased#
+* #the monetary amount#
+* #when the transaction occurred#
+* #whether the cost is personal or shared#
 
-=== Core rules
+=== #Core rules#
 
-* Spending is recorded only when a purchase with a defined cost exists. Creating or editing non-financial item information does not by itself create spending.
-* Spending is always associated with a household context. It does not exist independently of the shared environment in which the purchase occurred.
-* Every spending event must identify a payer. Anonymous financial records are not allowed.
-* Spending must distinguish between personal and shared attribution. Shared attribution does not remove payer identification.
-* Spending records are historical and must remain traceable. Deleting or changing inventory items does not erase past spending.
-* Spending depends on a valid purchased item or recorded purchase context. Orphaned financial records are not valid.
-* If cost information is corrected, the correction must preserve traceability through a new entry or other explicit record of change rather than silently overwriting history.
+* #Spending is recorded only when a purchase with a defined cost exists. Creating or editing non-financial item information does not by itself create spending.#
+* #Spending is always associated with a household context. It does not exist independently of the shared environment in which the purchase occurred.#
+* #Every spending event must identify a payer. Anonymous financial records are not allowed.#
+* #Spending must distinguish between personal and shared attribution. Shared attribution does not remove payer identification.#
+* #Spending records are historical and must remain traceable. Deleting or changing inventory items does not erase past spending.#
+* #Spending depends on a valid purchased item or recorded purchase context. Orphaned financial records are not valid.#
+* #If cost information is corrected, the correction must preserve traceability through a new entry or other explicit record of change rather than silently overwriting history.#
 
-=== Implications
+=== #Implications#
 
-These rules ensure that spending remains tied to household activity, preserves accountability, and can later support budgeting, reporting, and reimbursement logic without redefining the core domain concepts.
+#These rules ensure that spending remains tied to household activity, preserves accountability, and can later support budgeting, reporting, and reimbursement logic without redefining the core domain concepts.#

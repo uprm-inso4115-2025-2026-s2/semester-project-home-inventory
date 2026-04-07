@@ -1,78 +1,78 @@
-== User Stories
+== #User Stories#
 
-The following user stories describe the core user-visible behaviors of the Digital Home Inventory system for Milestone 1. Each story is written from the perspective of a persona and is supported by measurable acceptance criteria. The story identifiers use prefixes: US-INV (Core Inventory), US-ALT (Alerts & Restock), US-SB (Sharing & Budget), and US-RPT (Reports & Insights).
+#The following user stories describe the core user-visible behaviors of the Digital Home Inventory system for Milestone 1. Each story is written from the perspective of a persona and is supported by measurable acceptance criteria. The story identifiers use prefixes: US-INV (Core Inventory), US-ALT (Alerts & Restock), US-SB (Sharing & Budget), and US-RPT (Reports & Insights).#
 
-=== US-INV-01: Add items to inventory
+=== #US-INV-01: Add items to inventory#
 
-As *Mateo* (busy solo student), I want to *quickly add items to my tracked inventory after shopping*, so that *I can reliably know what I have without relying on memory*.
+#As *Mateo* (busy solo student), I want to *quickly add items to my tracked inventory after shopping*, so that *I can reliably know what I have without relying on memory*.#
 
-*Also affects:* Sofia, Julian, Andrea  
-*Priority:* High
+#*Also affects:* Sofia, Julian, Andrea#  
+#*Priority:* High#
 
-**Acceptance Criteria**
-* The system provides a prominent “Add Item” entry point from the inventory view.
-* Adding an item requires only minimal fields (name + quantity/availability), with optional fields (category, location, ownership status, expiration date).
-* Creating an item takes low effort (goal: can be completed in under 1 minute for a small set of items, assuming typical mobile input).
-* After saving, the item appears in the inventory list without requiring a manual refresh.
-* The user can edit an item from the inventory list (e.g., correct name/variant), and the updated information is reflected consistently wherever it appears.
+#**Acceptance Criteria**#
+* #The system provides a prominent “Add Item” entry point from the inventory view.#
+* #Adding an item requires only minimal fields (name + quantity/availability), with optional fields (category, location, ownership status, expiration date).#
+* #Creating an item takes low effort (goal: can be completed in under 1 minute for a small set of items, assuming typical mobile input).#
+* #After saving, the item appears in the inventory list without requiring a manual refresh.#
+* #The user can edit an item from the inventory list (e.g., correct name/variant), and the updated information is reflected consistently wherever it appears.#
 
 [NOTE]
 ====
-Expiration dates are optional. If an expiration date is unknown or unreadable, the system treats expiration status as unknown and avoids false “expired” alerts.
+#Expiration dates are optional. If an expiration date is unknown or unreadable, the system treats expiration status as unknown and avoids false “expired” alerts.#
 ====
 
-=== US-INV-02: See what belongs to whom
+=== #US-INV-02: See what belongs to whom#
 
-As *Sofia* (budget-conscious roommate), I want to *see which items are shared and which belong to specific people*, so that *I can avoid conflict and protect my personal purchases*.
+#As *Sofia* (budget-conscious roommate), I want to *see which items are shared and which belong to specific people*, so that *I can avoid conflict and protect my personal purchases*.#
 
-*Also affects:* Julian, Andrea  
-*Priority:* High
+#*Also affects:* Julian, Andrea#  
+#*Priority:* High#
 
-**Acceptance Criteria**
-* Every item in a shared household includes an ownership indicator: personal (linked to a household member) or shared.
-* The item detail view shows ownership status and relevant metadata (purchase date/cost when recorded).
-* When adding/editing an item, the user can set ownership to personal or shared.
-* Changing ownership from personal ↔ shared updates the tracked record and becomes visible consistently to household members after synchronization.
-* Spending views (if enabled) separate personal spending from shared spending so users can understand personal vs household costs.
+#**Acceptance Criteria**#
+* #Every item in a shared household includes an ownership indicator: personal (linked to a household member) or shared.#
+* #The item detail view shows ownership status and relevant metadata (purchase date/cost when recorded).#
+* #When adding/editing an item, the user can set ownership to personal or shared.#
+* #Changing ownership from personal ↔ shared updates the tracked record and becomes visible consistently to household members after synchronization.#
+* #Spending views (if enabled) separate personal spending from shared spending so users can understand personal vs household costs.#
 
-=== US-ALT-01: Receive low-stock warnings
+=== #US-ALT-01: Receive low-stock warnings#
 
-As *Julian* (diet-constrained student), I want to *receive low-stock warnings for items I rely on*, so that *I can reorder in time and avoid unexpected shortages*.
+#As *Julian* (diet-constrained student), I want to *receive low-stock warnings for items I rely on*, so that *I can reorder in time and avoid unexpected shortages*.#
 
-*Also affects:* Mateo, Andrea  
-*Priority:* High
+#*Also affects:* Mateo, Andrea#  
+#*Priority:* High#
 
-**Acceptance Criteria**
-* The user can set a low-stock threshold for an item (with sensible defaults if no threshold is set).
-* When an item’s tracked quantity crosses from NORMAL/IN_STOCK to LOW_STOCK (threshold boundary), the system flags the item as low-stock.
-* Low-stock alerts are generated primarily on state transitions (e.g., NORMAL → LOW_STOCK) and are deduplicated (re-running checks without state change does not spam alerts).
-* When multiple items are low, the system may group notifications or present a summarized view to avoid overwhelming users.
-* Low-stock status remains consistent across views (inventory list, restock list/planner, dashboard summaries where applicable).
+#**Acceptance Criteria**#
+* #The user can set a low-stock threshold for an item (with sensible defaults if no threshold is set).#
+* #When an item’s tracked quantity crosses from NORMAL/IN_STOCK to LOW_STOCK (threshold boundary), the system flags the item as low-stock.#
+* #Low-stock alerts are generated primarily on state transitions (e.g., NORMAL → LOW_STOCK) and are deduplicated (re-running checks without state change does not spam alerts).#
+* #When multiple items are low, the system may group notifications or present a summarized view to avoid overwhelming users.#
+* #Low-stock status remains consistent across views (inventory list, restock list/planner, dashboard summaries where applicable).#
 
-=== US-SB-01: Split shared purchases with roommates
+=== #US-SB-01: Split shared purchases with roommates#
 
-As *Andrea* (unofficial household manager), I want to *record shared purchases and split costs with roommates*, so that *reimbursements are clear and disputes are reduced*.
+#As *Andrea* (unofficial household manager), I want to *record shared purchases and split costs with roommates*, so that *reimbursements are clear and disputes are reduced*.#
 
-*Also affects:* Sofia, Mateo, Julian  
-*Priority:* High
+#*Also affects:* Sofia, Mateo, Julian#  
+#*Priority:* High#
 
-**Acceptance Criteria**
-* The user can record a purchase with total cost and date, and mark line items (or the purchase) as shared vs personal.
-* The system can compute a split for shared items among selected household members (default equal split; adjustable when needed).
-* Household members can view the breakdown of a shared purchase (what was bought, how the split was calculated).
-* Payments can be marked as paid/unpaid, and the system maintains a simple reimbursement status view.
-* Disputes can be flagged on a purchase line item (recording that a discussion is needed) without deleting transaction history.
+#**Acceptance Criteria**#
+* #The user can record a purchase with total cost and date, and mark line items (or the purchase) as shared vs personal.#
+* #The system can compute a split for shared items among selected household members (default equal split; adjustable when needed).#
+* #Household members can view the breakdown of a shared purchase (what was bought, how the split was calculated).#
+* #Payments can be marked as paid/unpaid, and the system maintains a simple reimbursement status view.#
+* #Disputes can be flagged on a purchase line item (recording that a discussion is needed) without deleting transaction history.#
 
-=== US-RPT-01: See household dashboard with insights
+=== #US-RPT-01: See household dashboard with insights#
 
-As *Andrea* (unofficial household manager), I want to *open one screen and quickly see what needs attention*, so that *I can plan restocking without guessing or repeatedly messaging roommates*.
+#As *Andrea* (unofficial household manager), I want to *open one screen and quickly see what needs attention*, so that *I can plan restocking without guessing or repeatedly messaging roommates*.#
 
-*Also affects:* Sofia, Mateo, Julian  
-*Priority:* Medium
+#*Also affects:* Sofia, Mateo, Julian#  
+#*Priority:* Medium#
 
-**Acceptance Criteria**
-* The dashboard presents a summary view including: number of low-stock items, number of expiring/expired items (when expiration dates exist), and current-period spending (if spending is enabled).
-* The user can filter the dashboard by location (e.g., kitchen/bathroom) and return to the unfiltered view.
-* Summary counts update after changes are recorded and synchronized (avoid stale information).
-* Low/expiring summaries include location context when available (e.g., “toilet paper low in bathroom”).
-* The dashboard does not require users to navigate multiple screens to find the “top-level” status of the household.
+#**Acceptance Criteria**#
+* #The dashboard presents a summary view including: number of low-stock items, number of expiring/expired items (when expiration dates exist), and current-period spending (if spending is enabled).#
+* #The user can filter the dashboard by location (e.g., kitchen/bathroom) and return to the unfiltered view.#
+* #Summary counts update after changes are recorded and synchronized (avoid stale information).#
+* #Low/expiring summaries include location context when available (e.g., “toilet paper low in bathroom”).#
+* #The dashboard does not require users to navigate multiple screens to find the “top-level” status of the household.#

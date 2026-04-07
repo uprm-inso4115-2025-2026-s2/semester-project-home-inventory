@@ -10,27 +10,27 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 === Domain rules
 
-* One barcode corresponds to exactly one *Item type* definition.
-* A duplicate *Item instance* entry submitted within a short window may be treated as an addition to an existing tracked record rather than as a separate new record, unless household members explicitly keep them separate.
+* One barcode corresponds to exactly one *#Item type#* definition.
+* A duplicate *#Item instance#* entry submitted within a short window may be treated as an addition to an existing tracked record rather than as a separate new record, unless household members explicitly keep them separate.
 * *Spending entries* are historical records; inventory corrections should not silently overwrite financial history.
-* A *Household* has one administrative responsibility at a time when that role is formally represented.
+* A *#Household#* has one administrative responsibility at a time when that role is formally represented.
 * If that administrative responsibility is transferred, the new responsibility must be established before the previous admin leaves the household context.
 
 === Edge cases
 
 * If an item instance has no expiration date, expiration-based behavior cannot be derived from date information alone.
-* If a household admin attempts to leave without transferring that responsibility, shared-household administration becomes unresolved until another member takes over.
+* If a *#household admin#* attempts to leave without transferring that responsibility, #shared-household administration# becomes unresolved until another member takes over.
 
-=== Shared-Household Invitation and Membership Changes
+=== #Shared-Household Invitation and Membership Changes#
 
-In shared households, participation may change over time as new members are invited, current members leave, or access is revoked. Invitation is therefore part of how household membership changes, even though the exact delivery and security mechanism belong to later requirements and implementation sections.
+#In shared households, participation may change over time as new members are invited, current members leave, or access is revoked. Invitation is therefore part of how household membership changes, even though the exact delivery and security mechanism belong to later requirements and implementation sections.#
 
-A household invitation is a temporary request that allows a participant to join a household context. At the domain level, the important states are:
+#A household invitation is a temporary request that allows a participant to join a household context. At the domain level, the important states are:#
 
-* sent
-* accepted
-* declined
-* expired
-* revoked
+* #sent#
+* #accepted#
+* #declined#
+* #expired#
+* #revoked#
 
-These states matter because they affect who participates in household coordination and who should continue to receive shared information.
+#These states matter because they affect who participates in household coordination and who should continue to receive shared information.#

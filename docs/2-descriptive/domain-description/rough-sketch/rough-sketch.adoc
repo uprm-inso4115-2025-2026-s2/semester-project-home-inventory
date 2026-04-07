@@ -1,62 +1,62 @@
 == Domain Rough Sketch
 
-Raw, lightly organized domain notes and examples. The goal of this section is to preserve concrete observations and participant wording as directly as possible before later interpretation.
+#Raw, lightly organized domain notes and examples. The goal of this section is to preserve concrete observations and participant wording as directly as possible before later interpretation.#
 
-Most quotes were translated from Spanish. Real names are omitted and replaced with stable participant labels so that statements from the same participant can still be traced consistently across the document.
+Most quotes were translated from Spanish. #Real names are omitted and replaced with stable participant labels so that statements from the same participant can still be traced consistently across the document.#
 
 === Interview Snippets and Raw Observations
 
 ==== Shared Apartment - 3 Students (Interview, Jan. 20, 2026)
 
-* *Student 1:* "If it is not on our fridge note, we assume we are out."
-* *Student 2:* "Sometimes I check the pantry before leaving, but by the time I get to Walmart I forgot what we needed."
-* *Student 3:* "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway."
-* Current tracking method observed: fridge sticky note + WhatsApp group chat.
-* Observed responsibility pattern: no one described being formally responsible for keeping track of quantities.
-* Shared example reported: milk is sometimes bought twice in the same week.
-* When asked how they know something is low, participants answered with phrases such as "when it feels light" and "when we open the backup."
-* The backup opening is not usually written down.
+* *#Student 1#:* "If it is not on our fridge note, we assume we are out."
+* *#Student 2#:* "Sometimes I check the pantry before leaving, but by the time I get to Walmart I forgot what we needed."
+* *#Student 3#:* "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway."
+* #Current tracking method observed: fridge sticky note + WhatsApp group chat.#
+* #Observed responsibility pattern: no one described being formally responsible for keeping track of quantities.#
+* #Shared example reported: milk is sometimes bought twice in the same week.#
+* #When asked how they know something is low, participants answered with phrases such as "when it feels light" and "when we open the backup."#
+* #The backup opening is not usually written down.#
 
-==== Student 4 - Living Alone (Interview, Feb. 2, 2026)
+==== #Student 4 - Living Alone# (Interview, Feb. 2, 2026)
 
-* *Student 4:* "I buy in bulk from Costco when I go with my parents."
-* *Student 4:* "I got like 24 yogurts once."
-* *Student 4:* "Some of them expired."
-* Follow-up note: participant estimated throwing away several yogurts during the last semester.
-* *Student 4:* "I keep cleaning supplies in the bathroom closet and under the kitchen sink."
-* *Student 4:* "I don't count exactly. I just look."
-* *Student 4:* "I use the Notes app sometimes, but then I stop."
-* *Student 4:* "If it takes more than a few seconds to log, I won't do it."
+* *#Student 4#:* "I buy in bulk from Costco when I go with my parents."
+* *#Student 4#:* "I got like 24 yogurts once."
+* *#Student 4#:* "Some of them expired."
+* #Follow-up note: participant estimated throwing away several yogurts during the last semester.#
+* *#Student 4#:* "I keep cleaning supplies in the bathroom closet and under the kitchen sink."
+* *#Student 4#:* "I don't count exactly. I just look."
+* *#Student 4#:* "I use the Notes app sometimes, but then I stop."
+* *#Student 4#:* "If it takes more than a few seconds to log, I won't do it."
 
 ==== Shared Household - 2 Adults, 1 Child
 
-* One household member reported inviting family members to a shared grocery list app.
-* One adult reportedly does most purchases.
-* Reported situation: a child may use the last unit of an item without telling the others.
-* Reported example: toilet paper runs out unexpectedly when guests visit.
-* Medicines are kept in a separate drawer because expiration matters more there.
-* Reported situation: expired medicine was discarded without realizing there was another unopened box.
-* Reported expectation: access should be removable when someone moves out.
+* #One household member reported inviting family members to a shared grocery list app.#
+* #One adult reportedly does most purchases.#
+* #Reported situation: a child may use the last unit of an item without telling the others.#
+* #Reported example: toilet paper runs out unexpectedly when guests visit.#
+* #Medicines are kept in a separate drawer because expiration matters more there.#
+* #Reported situation: expired medicine was discarded without realizing there was another unopened box.#
+* #Reported expectation: access should be removable when someone moves out.#
 
-==== Student 5 - Student Athlete (Interview, Feb. 2, 2026)
+==== #Student 5 - Student Athlete# (Interview, Feb. 2, 2026)
 
-* *Student 5:* "During exam weeks I eat way more snacks."
-* *Student 5:* "Protein bars last me like two weeks normally, but during midterms maybe four or five days."
-* *Student 5:* "I don't really adjust it formally. I just buy more when they're gone."
-* *Student 5:* "I just remember how fast it ran out last time."
+* *#Student 5#:* "During exam weeks I eat way more snacks."
+* *#Student 5#:* "Protein bars last me like two weeks normally, but during midterms maybe four or five days."
+* *#Student 5#:* "I don't really adjust it formally. I just buy more when they're gone."
+* *#Student 5#:* "I just remember how fast it ran out last time."
 
 ==== Observations from Informal Brainstorming Session
 
-* Participants often describe availability with words like "full", "almost empty", or "backup", and less often with exact numbers.
-* Items repeatedly mentioned as essentials included toilet paper, soap, toothpaste, milk, and rice.
-* Perishables repeatedly mentioned included yogurt, vegetables, chicken, and medicine.
-* Bulk buying was usually justified by lower price per unit.
-* Waste was mentioned more often for food than for cleaning supplies.
-* Duplicate buying was mentioned most often for milk, eggs, and rice.
-* Some participants organize by location such as kitchen, bathroom, or laundry area; others do not.
-* No participant described doing a periodic full inventory check.
-* Multiple participants said they have forgotten what they already had at home.
-* Some participants said they prefer taking a pantry picture instead of writing a list.
+* #Participants often describe availability with words like "full", "almost empty", or "backup", and less often with exact numbers.#
+* #Items repeatedly mentioned as essentials included toilet paper, soap, toothpaste, milk, and rice.#
+* #Perishables repeatedly mentioned included yogurt, vegetables, chicken, and medicine.#
+* #Bulk buying was usually justified by lower price per unit.#
+* #Waste was mentioned more often for food than for cleaning supplies.#
+* #Duplicate buying was mentioned most often for milk, eggs, and rice.#
+* #Some participants organize by location such as kitchen, bathroom, or laundry area; others do not.#
+* #No participant described doing a periodic full inventory check.#
+* #Multiple participants said they have forgotten what they already had at home.#
+* #Some participants said they prefer taking a pantry picture instead of writing a list.#
 
 ==== Edge Situations Mentioned
 
@@ -68,5 +68,5 @@ Most quotes were translated from Spanish. Real names are omitted and replaced wi
 
 [NOTE]
 ====
-A previously stated edge case claimed that items bought in bulk may have multiple different expiration dates in the same package. Because that statement is not yet supported by a clearly attributable source in the current rough sketch, it is not treated as established domain evidence here.
+#A previously stated edge case claimed that items bought in bulk may have multiple different expiration dates in the same package. Because that statement is not yet supported by a clearly attributable source in the current rough sketch, it is not treated as established domain evidence here.#
 ====

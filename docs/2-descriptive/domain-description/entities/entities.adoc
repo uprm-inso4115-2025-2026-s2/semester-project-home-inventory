@@ -48,9 +48,9 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |A logged financial transaction event within a household.
 |amount, date/time, payer (household member), scope (shared/personal), optional item type reference, category, notes, transaction type (purchase/refund/adjustment)
 
-|Spending category
-|A grouping label used to organize spending by type or purpose.
-|name, optional description
+|#Spending category#
+|#A grouping label used to organize spending by type or purpose.#
+|#name, optional description#
 
 |Budget
 |A spending limit defined for a period.
@@ -60,22 +60,22 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |A derived view of spending versus budget within a cycle.
 |spent-to-date, remaining, percent used, threshold-crossed flags
 
-|Invitation
-|A temporary request that allows a new participant to join a shared household context.
-|sender, recipient, target household, status, expiration timestamp
+|#Invitation#
+|#A temporary request that allows a new participant to join a shared household context.#
+|#sender, recipient, target household, status, expiration timestamp#
 
-|Membership
-|The relationship connecting a system participant to a household for coordination and access purposes.
-|household reference, participant reference, role, membership state
+|#Membership#
+|#The relationship connecting a system participant to a household for coordination and access purposes.#
+|#household reference, participant reference, role, membership state#
 |===
 
 [NOTE]
 ====
-Earlier drafts used terms such as *Home*, *Room*, *Product*, *Stock*, *Owner*, and *Member*. In this document, those terms are replaced by the unified vocabulary defined in the terminology section:
+#Earlier drafts used terms such as *Home*, *Room*, *Product*, *Stock*, *Owner*, and *Member*. In this document, those terms are replaced by the unified vocabulary defined in the terminology section:#
 
-* Home -> Household
-* Room -> Location
-* Product -> Item type
-* Stock -> Item instance (package)
-* Owner / Member -> Household member, with more specific role language used only where needed
+* #Home -> Household#
+* #Room -> Location#
+* #Product -> Item type#
+* #Stock -> Item instance (package)#
+* #Owner / Member -> Household member, with more specific role language used only where needed#
 ====
