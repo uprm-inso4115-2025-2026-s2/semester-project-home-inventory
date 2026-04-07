@@ -3,13 +3,13 @@ Author: Jorge L. De León Orama
 :toc:
 :sectnums:
 
-== Introduction
-This document presents the mockups for the Product Stock Screen developed in Figma to guide their implementation. The Product Stock screen allows users to view and manage specific purchased instances of a Product tracked in the inventory system. Each stock entry represents a distinct batch of a product, which may differ from other entries of the same product by attributes such as expiration date, quantity, status, owner, and notes.
+== Purpose
+Present the mockups for the Product Stock Screen developed in Figma to guide their implementation. The Product Stock screen allows users to view and manage specific purchased instances of a Product tracked in the inventory system. Each stock entry represents a distinct batch of a product, which may differ from other entries of the same product by attributes such as expiration date, quantity, status, owner, and notes.
 
 == Mockups
 The Product Stock screen displays a header card summarizing the product and a scrollable list of individual stock entries below. Each stock entry card shows the item's ID, note, expiration date, and status indicator. A white bar is left at the bottom where the global navigation buttons from the dashboard screen should appear.
 
-The designed mockups follow the predefined product stock sequence diagram to ensure all possible views are covered. This document is found in `doc/2-descriptive/domain-description/events/product-stock/`
+The designed mockups follow the predefined product stock sequence diagram, found within `doc/2-descriptive/domain-description/events/product-stock/`, to ensure all possible views are covered.
 
 == Product Stock Screen Mockups
 The Product Stock screen is the primary screen for this feature. Its tappable components include: the back arrow (top left), the Edit toggle button (top right), the Filter by dropdown (center right), the sort button (right of filter), the three-dots menu per list item, the Remove button per item (Edit mode only), and the add (+) button (Edit mode only).
