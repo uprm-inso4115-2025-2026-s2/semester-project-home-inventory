@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repositories.dart';
 import 'package:src/config/injection_dependencies.dart';
-import 'package:src/features/auth/presentation/pages/auth_landing_page.dart';
+import 'package:src/features/auth/presentation/routes.dart';
 
 /// Home page displaying the inventory dashboard with charts and statistics
 class HomeDashboardPage extends StatelessWidget {
@@ -274,11 +274,7 @@ class HomeDashboardPage extends StatelessWidget {
           child: Center(
             child: IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const AuthLandingPage(),
-                  ),
-                );
+                context.push(AuthRoutes.landingPath);
               },
               icon: Icon(
                 Icons.account_circle,

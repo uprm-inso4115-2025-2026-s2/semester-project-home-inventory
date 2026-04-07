@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:src/config/theme.dart';
 import 'package:src/features/auth/presentation/widgets/auth_form_field.dart';
 import 'package:src/features/auth/presentation/widgets/auth_primary_button.dart';
@@ -19,7 +20,7 @@ class _AccountRecoveryPageState extends State<AccountRecoveryPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Recovery instructions sent.')),
     );
-    Navigator.of(context).pop();
+    context.pop();
   }
 
   @override
@@ -39,7 +40,7 @@ class _AccountRecoveryPageState extends State<AccountRecoveryPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back_ios_new),
                 color: AppTheme.primaryColor,
               ),
