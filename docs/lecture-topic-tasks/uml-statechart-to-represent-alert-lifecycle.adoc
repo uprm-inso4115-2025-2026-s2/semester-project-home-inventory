@@ -1,0 +1,73 @@
+= Lecture Topic Task: UML Statechart Representation of Alert and Expiration Logic
+
+== 1. Objective
+
+This lecture topic task applies state-based modeling from learned in class to existing information from the documentation. The goal is to show that part of the current  logic can be represented visually as a UML-style statechart(using the mermaid tool) and a supporting architecture flow. This could also provide a better understanding of this information.
+
+== 2. Existing Documentation Used
+
+This task is based on the these existing documentation:
+* `docs/3-analytic/alert-system-states.adoc`
+* `docs/2-descriptive/domain-description/behaviors/User-Interaction-Flows-for-Alerts-&-Notifications/User-Interaction-Flows-for-Alerts-&-Notifications.adoc`
+* `docs/2-descriptive/requirements/features/define-alert-trigger-logic.adoc`
+* `docs/3-analytic/concept-analysis/requirements-concept-analysis/automation-check-system.adoc`
+
+== 3. Issue Framing
+
+The current project documentation already defines alert states and transitions, but the logic is distributed across multiple documents and narrative sections. A UML statechart provides a single formal representation of:
+* Item lifecycle states (`Active`, `Expiring`, `Expired`, `Renewed`, `Deleted`)
+* Triggering events (daily scheduled check, user updates, delete actions)
+* Transition guards (days-to-expiration checks)
+
+This improves traceability between requirements, backend automation, and UI behavior.
+
+== 4. Proposed UML Statechart 
+
+[mermaid]
+....
+stateDiagram-v2
+    [*] --> Active: Item created with expiration date
+
+    Active --> Expiring: Daily check && days_to_expiration in user_intervals
+    Active --> Deleted: User deletes item
+
+    Expiring --> Expired: Daily check && today >= expiration_date
+    Expiring --> Renewed: User updates expiration date
+    Expiring --> Deleted: User deletes item
+    Expiring --> Expiring: User snoozes alert
+
+    Renewed --> Active: Reset alert schedule
+    Renewed --> Deleted: User deletes item
+
+    Expired --> Deleted: User marks item thrown away/archive
+....
+
+brief explination: 
+This statechart summarizes how an item moves through alert states over time.  
+An item starts as `Active`, changes to `Expiring` when a scheduled check detects it is within the user-defined alert interval, and becomes `Expired` once the expiration date is reached.  
+User actions can also change the flow: updating the expiration date sends it to `Renewed` (then back to `Active`), while delete/archive actions move it to `Deleted`.
+
+== 5. Supporting Architecture View
+
+[mermaid]
+....
+flowchart LR
+    A[Scheduler / Cron Job] --> B[Supabase Edge Function]
+    B --> C[(Inventory + Alert Preferences)]
+    C --> B
+    B --> D[State Transition Evaluation]
+    D --> E[(Notification Records)]
+    D --> F[(Updated Item State)]
+....
+
+brief explination:
+This flowchart shows the backend process that evaluates and updates alert states.  
+A scheduler triggers a Supabase Edge Function, which reads inventory data and alert preferences, evaluates state transitions, then writes results back as updated item state and notification records.  
+In short, it connects scheduled automation with persistent data updates and user-facing alerts.
+
+== 6. Why This Representation Helps
+
+* Clarifies allowed transitions and edge cases.
+* Makes backend logic easier to test.
+* Creates a direct bridge between domain events and UI alert handling.
+* Reduces ambiguity when different teams implement related features.
