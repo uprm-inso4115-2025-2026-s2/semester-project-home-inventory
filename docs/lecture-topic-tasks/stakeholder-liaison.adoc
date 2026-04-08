@@ -1,0 +1,124 @@
+= Stakeholder Liaison
+// Author: Alondra S. Arce Perea
+// GitHub user: @alondra-arce
+// Date: 4/8/2026
+// Issue #538
+
+== Objective
+
+This document identifies and analyzes the role of stakeholder liaison in the Digital Home Inventory domain.
+
+Its purpose is to explain why continuous communication with stakeholders is necessary, how stakeholder liaison supports domain modeling, and what responsibilities must be documented to keep stakeholder knowledge organized and usable throughout the project.
+
+== Stakeholder Liaison in Domain Modeling
+
+Stakeholder liaison refers to the ongoing effort to identify stakeholder groups, maintain communication with them, and document their roles and responsibilities within the domain.
+
+In domain modeling, stakeholder liaison is important because domain knowledge is not static. Different stakeholders contribute different concerns, expectations, and interpretations of the same phenomena.
+
+Without liaison work, stakeholder knowledge may remain incomplete, informal, or inconsistent across the project.
+
+== Why Stakeholder Liaison Matters
+
+Stakeholder liaison is necessary for several reasons:
+
+- it keeps stakeholder information visible and organized
+- it supports transparency about whose concerns are being considered
+- it helps prevent important groups from being ignored
+- it improves the completeness of domain understanding
+- it supports later requirements work by preserving stakeholder context
+
+In a large project, the absence of stakeholder liaison can result in fragmented knowledge, duplicated assumptions, or missing viewpoints.
+
+== Stakeholder Groups in the Digital Home Inventory Domain
+
+In the Digital Home Inventory domain, several stakeholder groups may need to be tracked and contacted over time.
+
+Examples include:
+
+- household members who use and update inventory information
+- primary household organizers who manage restocking and planning
+- occasional users who consult the inventory before purchases
+- guests or temporary household members with limited interaction
+- grocery or retail service providers connected indirectly through restocking behavior
+- project team members documenting and interpreting the domain
+
+These groups do not all have the same responsibilities, needs, or frequency of interaction with the system.
+
+== Responsibilities of Stakeholder Liaison
+
+Stakeholder liaison should support the project by making stakeholder involvement explicit and manageable.
+
+Key responsibilities include:
+
+- maintaining an open list of relevant stakeholder groups
+- documenting the role of each stakeholder group in the domain
+- identifying how each group depends on or influences the inventory system
+- recording concerns, expectations, and possible conflicts between groups
+- updating stakeholder documentation as the domain model evolves
+- ensuring that non-obvious stakeholders are not overlooked
+
+This activity is not limited to initial analysis. It must continue as the project gains more knowledge about the domain.
+
+== Communication and Documentation Needs
+
+Effective stakeholder liaison depends on consistent communication and written documentation.
+
+The project should document:
+
+- who the stakeholders are
+- why they matter in the domain
+- what their responsibilities and interests are
+- which domain phenomena they are affected by
+- where their perspectives align or conflict
+- how changes in understanding should be reflected in domain documents
+
+Written documentation is especially important because it allows the team to revisit decisions, validate interpretations, and refine the domain model over time.
+
+== Risks of Poor Stakeholder Liaison
+
+If stakeholder liaison is weak or missing, several problems may appear.
+
+Potential risks include:
+
+- relevant stakeholder groups are omitted from the domain model
+- overly narrow assumptions guide documentation and design
+- conflicting stakeholder concerns remain hidden
+- the team focuses only on obvious users and ignores indirect stakeholders
+- later requirements may be based on incomplete or biased domain knowledge
+
+These risks can reduce the quality of both the domain model and the resulting system requirements.
+
+== Implications for the Digital Home Inventory Project
+
+For the Digital Home Inventory project, stakeholder liaison helps ensure that the domain is understood beyond the most obvious user perspective.
+
+For example:
+
+- a primary household organizer may value planning and control
+- other household members may prioritize convenience and low effort
+- shared households may introduce coordination problems
+- indirect stakeholders may shape expectations about alerts, purchasing, and item availability
+
+Maintaining stakeholder liaison helps the project preserve these distinctions instead of collapsing them into a single simplified view.
+
+== Conceptual Requirements for Stakeholder Liaison Support
+
+To support stakeholder liaison in the domain documentation, the project should ensure that:
+
+- stakeholder groups are explicitly listed and periodically reviewed
+- stakeholder roles and responsibilities are documented in writing
+- communication outcomes are reflected in updated domain artifacts
+- non-obvious stakeholders are actively considered
+- conflicting perspectives are noted rather than ignored
+- stakeholder knowledge remains traceable across project documents
+
+These practices strengthen the accuracy and maintainability of the domain model.
+
+== Conclusion
+
+Stakeholder liaison is an essential domain activity because it connects stakeholder identification with ongoing communication and documentation.
+
+In the Digital Home Inventory domain, it supports a broader and more realistic understanding of how different people relate to inventory management, alerts, updates, and shared household coordination.
+
+By maintaining clear records of stakeholder groups, their roles, and their concerns, the project can improve transparency, reduce omissions, and keep the domain model aligned with real-world needs.
