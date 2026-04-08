@@ -1,150 +1,150 @@
-= Countermeasures for Identified Project Risks
+= #Countermeasures for Identified Project Risks#
 // Author: Fabiola Z. Torres Maldonado
 // GitHub user: @FabiolaZTorres
 // Date: 3/29/2026
 // Issue #389
 
 
-== Risk Selection Criteria
+== #Risk Selection Criteria#
 
-The risks selected for this analysis are those with:
+#The risks selected for this analysis are those with:#
 
-- high impact on system reliability or usability
+#- high impact on system reliability or usability
 - high likelihood of occurring in real-world usage
-- direct influence on core system functionality
+- direct influence on core system functionality#
 
-These risks require explicit handling to ensure system robustness.
+#These risks require explicit handling to ensure system robustness.#
 
 
-== Risk Countermeasure Cases (Behavioral/System Interaction Risks)
+== #Risk Countermeasure Cases (Behavioral/System Interaction Risks)#
 
-=== Case BR1: Inaccurate inventory data due to low user engagement
+=== #Case BR1: Inaccurate inventory data due to low user engagement#
 
-Risk Description:
-Inventory data becomes unreliable when users fail to consistently update item usage or stock levels.
+#Risk Description:
+Inventory data becomes unreliable when users fail to consistently update item usage or stock levels.#
 
-Countermeasure:
-Introduce automated assistance mechanisms, including:
+#Countermeasure:
+Introduce automated assistance mechanisms, including:#
 
-- periodic reminders for inventory updates
+#- periodic reminders for inventory updates
 - optional quick-update interactions (e.g., one-tap decrement)
-- passive tracking enhancements where feasible
+- passive tracking enhancements where feasible#
 
-Applied Tactic:
-mitigation
+#Applied Tactic:
+mitigation#
 
-Rationale:
-The risk cannot be fully avoided, but its impact can be reduced by lowering the effort required for user participation.
+#Rationale:
+The risk cannot be fully avoided, but its impact can be reduced by lowering the effort required for user participation.#
 
-Implications:
+#Implications:#
 
-- improves data accuracy without enforcing strict user behavior
-- maintains usability while reducing reliance on manual updates
+#- improves data accuracy without enforcing strict user behavior
+- maintains usability while reducing reliance on manual updates#
 
-=== Case BR2: Notification fatigue leading to disabled alerts
+=== #Case BR2: Notification fatigue leading to disabled alerts#
 
-Risk Description:
-Users may disable notifications if alerts are too frequent or perceived as irrelevant.
+#Risk Description:
+Users may disable notifications if alerts are too frequent or perceived as irrelevant.#
 
-Countermeasure:
-Implement adaptive notification controls aligned with the system’s Notification Deduplication / Anti-Spam strategy:
+#Countermeasure:
+Implement adaptive notification controls aligned with the system's Notification Deduplication / Anti-Spam strategy:#
 
-- generate notifications only on actionable state transitions (e.g., NORMAL → LOW_STOCK)
+#- generate notifications only on actionable state transitions (e.g., NORMAL → LOW_STOCK)
 - apply deduplication rules to prevent repeated alerts for unchanged conditions
 - support user-configurable notification frequency and prioritization
-- batch or summarize lower-priority notifications where appropriate
+- batch or summarize lower-priority notifications where appropriate#
 
-Applied Tactic:
-mitigation
+#Applied Tactic:
+mitigation#
 
-Rationale:
-This countermeasure operationalizes the requirement-level concept of deduplication / anti-spam by ensuring that notifications are only generated on meaningful state transitions. This reduces redundant alerts while preserving the relevance and actionability of notifications.
+#Rationale:
+This countermeasure operationalizes the requirement-level concept of deduplication / anti-spam by ensuring that notifications are only generated on meaningful state transitions. This reduces redundant alerts while preserving the relevance and actionability of notifications.#
 
-Implications:
+#Implications:#
 
-- preserves effectiveness of the alert system without overwhelming users
-- improves clarity and trust in notifications by ensuring each alert reflects a meaningful change
+#- preserves effectiveness of the alert system without overwhelming users
+- improves clarity and trust in notifications by ensuring each alert reflects a meaningful change#
 
-=== Case BR3: Conflicting updates in shared inventory environments
+=== #Case BR3: Conflicting updates in shared inventory environments#
 
-Risk Description:
-Multiple users updating the same item may result in inconsistent or conflicting inventory states.
+#Risk Description:
+Multiple users updating the same item may result in inconsistent or conflicting inventory states.#
 
-Countermeasure:
-Introduce system-level consistency controls aligned with the transaction tracking model:
+#Countermeasure:
+Introduce system-level consistency controls aligned with the transaction tracking model:#
 
-- enforce consistency through the append-only transaction history (each quantity change recorded with timestamp and reason)
+#- enforce consistency through the append-only transaction history (each quantity change recorded with timestamp and reason)
 - resolve conflicting updates using transaction ordering based on recorded timestamps
 - provide visibility of recent transactions to all household members
-- support optional ownership or responsibility assignment
+- support optional ownership or responsibility assignment#
 
-Applied Tactic:
-mitigation
+#Applied Tactic:
+mitigation#
 
-Rationale:
-This ensures that conflicting updates are resolved consistently and transparently, leveraging the established transaction history model to maintain a reliable system state.
+#Rationale:
+This ensures that conflicting updates are resolved consistently and transparently, leveraging the established transaction history model to maintain a reliable system state.#
 
-Implications:
+#Implications:#
 
-- improves reliability in collaborative environments
-- supports accountability and transparency
+#- improves reliability in collaborative environments
+- supports accountability and transparency#
 
-=== Case BR4: Missing or incomplete item data
+=== #Case BR4: Missing or incomplete item data#
 
-Risk Description:
-Users may omit important data such as expiration dates, limiting system functionality.
+#Risk Description:
+Users may omit important data such as expiration dates, limiting system functionality.#
 
-Countermeasure:
-Accept partial data while encouraging completeness:
+#Countermeasure:
+Accept partial data while encouraging completeness:#
 
-- allow optional fields without blocking core functionality
+#- allow optional fields without blocking core functionality
 - provide non-intrusive prompts for missing data
-- enhance features only when sufficient data is available
+- enhance features only when sufficient data is available#
 
-Applied Tactic:
-acceptance
+#Applied Tactic:
+acceptance#
 
-Rationale:
-Forcing complete data entry may harm usability; accepting the limitation preserves user adoption.
+#Rationale:
+Forcing complete data entry may harm usability; accepting the limitation preserves user adoption.#
 
-Implications:
+#Implications:#
 
-- system remains flexible and user-friendly
-- some advanced features may operate with reduced accuracy
+#- system remains flexible and user-friendly
+- some advanced features may operate with reduced accuracy#
 
 
-== Comparative Analysis of Risk Reduction Strategies
+== #Comparative Analysis of Risk Reduction Strategies#
 
-Mitigation:
+#Mitigation:#
 
-- reduces impact or likelihood of risks
-- most applicable to user behavior and system interaction risks
+#- reduces impact or likelihood of risks
+- most applicable to user behavior and system interaction risks#
 
-Acceptance:
+#Acceptance:#
 
-- acknowledges unavoidable limitations
-- used when enforcing constraints would harm usability or adoption
+#- acknowledges unavoidable limitations
+- used when enforcing constraints would harm usability or adoption#
 
-Avoidance and Transfer:
+#Avoidance and Transfer:#
 
-- less applicable in this domain context
-- most risks are inherent to user interaction and cannot be fully eliminated or externalized
+#- less applicable in this domain context
+- most risks are inherent to user interaction and cannot be fully eliminated or externalized#
 
-Implications:
+#Implications:#
 
-- a balanced strategy is required
+#- a balanced strategy is required
 - over-reliance on mitigation may increase system complexity
-- selective acceptance preserves usability and flexibility
+- selective acceptance preserves usability and flexibility#
 
 
-== Implications for Requirement Concept Analysis
+== #Implications for Requirement Concept Analysis#
 
-These countermeasures establish how the system should respond to uncertainty and variability in real-world usage.
+#These countermeasures establish how the system should respond to uncertainty and variability in real-world usage.#
 
-The requirements must:
+#The requirements must:#
 
-- incorporate mechanisms that reduce risk impact
+#- incorporate mechanisms that reduce risk impact
 - remain adaptable to unpredictable user behavior
-- balance system control with user flexibility
+- balance system control with user flexibility#
 
-By explicitly defining countermeasures, the system ensures that identified risks are not only acknowledged but actively managed within the requirement design.
+#By explicitly defining countermeasures, the system ensures that identified risks are not only acknowledged but actively managed within the requirement design.#

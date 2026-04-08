@@ -1,29 +1,29 @@
-= Inconsistency Detection Report
+= #Inconsistency Detection Report#
 :toc:
 :toc-title: Table of Contents
 :toclevels: 3
 
-== Purpose
+== #Purpose#
 
-This document is the output of Stage 4 of the Domain Concept Formation Pipeline. It
-catalogs all detected inconsistencies, conflicts, and incompleteness gaps found across
-the raw domain description units (DDUs) and existing domain documents.
+#This document is the output of Stage 4 of the Domain Concept Formation Pipeline. It catalogs all detected inconsistencies, conflicts, and incompleteness gaps found across the raw domain description units (DDUs) and existing domain documents.#
 
-Each entry follows the pattern:
+#Each entry follows the pattern:#
 
-* *Type* — Direct P/not-P conflict, Scope conflict, Completeness gap, or Terminology drift.
-* *Sources* — The DDU IDs or document sections where each side of the conflict appears.
-* *Conflict statement* — The exact contradiction expressed as P and not-P.
-* *Impact* — What downstream work is affected if left unresolved.
-* *Resolution* — The recommended fix or the decision needed from the team.
-* *Status* — Open / Resolved.
+// FIX: Applied '#' to each list item individually instead of spanning across multiple lines
+* #*Type* — Direct P/not-P conflict, Scope conflict, Completeness gap, or Terminology drift.#
+* #*Sources* — The DDU IDs or document sections where each side of the conflict appears.#
+* #*Conflict statement* — The exact contradiction expressed as P and not-P.#
+* #*Impact* — What downstream work is affected if left unresolved.#
+* #*Resolution* — The recommended fix or the decision needed from the team.#
+* #*Status* — Open / Resolved.#
 
 ---
 
-== Detected Inconsistencies
+== #Detected Inconsistencies#
 
-=== IC-01 — Spending Records: Immutable vs. Adjustable
+=== #IC-01 — Spending Records: Immutable vs. Adjustable#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Direct P / not-P conflict
@@ -38,8 +38,9 @@ Each entry follows the pattern:
 
 ---
 
-=== IC-02 — Spending Persistence After Item Deletion
+=== #IC-02 — Spending Persistence After Item Deletion#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Direct P / not-P conflict
@@ -54,8 +55,9 @@ Each entry follows the pattern:
 
 ---
 
-=== IC-03 — Household Ownership: Exactly One Owner vs. Multiple Owners
+=== #IC-03 — Household Ownership: Exactly One Owner vs. Multiple Owners#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Direct P / not-P conflict
@@ -71,8 +73,9 @@ Each entry follows the pattern:
 
 ---
 
-=== IC-04 — Low-Stock Judgment: Numeric Threshold vs. Qualitative Assessment
+=== #IC-04 — Low-Stock Judgment: Numeric Threshold vs. Qualitative Assessment#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Scope conflict
@@ -87,8 +90,9 @@ Each entry follows the pattern:
 
 ---
 
-=== IC-05 — Item Location: Always Known vs. Possibly Unknown
+=== #IC-05 — Item Location: Always Known vs. Possibly Unknown#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Direct P / not-P conflict
@@ -103,8 +107,9 @@ Each entry follows the pattern:
 
 ---
 
-=== IC-06 — Inventory Terminology: Reality vs. Record
+=== #IC-06 — Inventory Terminology: Reality vs. Record#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Terminology drift
@@ -118,8 +123,9 @@ Each entry follows the pattern:
 
 ---
 
-=== IC-07 — Alert Repetition: No-Spam Rule vs. Continuous State
+=== #IC-07 — Alert Repetition: No-Spam Rule vs. Continuous State#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3"]
 |===
 | Type | Scope conflict
@@ -134,10 +140,11 @@ Each entry follows the pattern:
 
 ---
 
-== Completeness Gaps
+== #Completeness Gaps#
 
-The following concepts are referenced in DDUs or domain documents but are not fully defined:
+#The following concepts are referenced in DDUs or domain documents but are not fully defined:#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,3,2", options="header"]
 |===
 | Gap ID | Description | Affected Documents
@@ -161,8 +168,9 @@ The following concepts are referenced in DDUs or domain documents but are not fu
 
 ---
 
-== Summary
+== #Summary#
 
+// FIX: Removed '#' from table configuration and boundaries
 [cols="1,1,1,1", options="header"]
 |===
 | ID | Type | Status | Owner
@@ -180,5 +188,6 @@ The following concepts are referenced in DDUs or domain documents but are not fu
 | GAP-04 | Completeness gap | Open | Team 3
 |===
 
-*Resolved:* 3 of 7 direct conflicts. +
-*Open:* 4 conflicts + 4 completeness gaps requiring team decisions.
+// FIX: Separated the highlight tags onto individual lines instead of spanning across a line break.
+#*Resolved:* 3 of 7 direct conflicts.# +
+#*Open:* 4 conflicts + 4 completeness gaps requiring team decisions.#

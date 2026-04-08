@@ -1,8 +1,8 @@
-=== Evidence Concept Analysis
+=== #Evidence Concept Analysis#
 
-This subsection documents how requirement-level concepts were derived from raw observations in the rough sketch and supporting research artifacts. It ensures traceability between real-world problems and the 13 requirement-level concepts defined in the parent section.
+#This subsection documents how requirement-level concepts were derived from raw observations in the rough sketch and supporting research artifacts. It ensures traceability between real-world problems and the 13 requirement-level concepts defined in the parent section.#
 
-==== Rough Sketch Drivers to Requirement Concepts
+==== #Rough Sketch Drivers to Requirement Concepts#
 
 [cols="2,2,2",options="header"]
 |===
@@ -41,9 +41,9 @@ This subsection documents how requirement-level concepts were derived from raw o
 | Tracked record vs reality, Transaction history, Alert / notification record/event
 |===
 
-==== Concept Formation from Evidence and Artifacts
+==== #Concept Formation from Evidence and Artifacts#
 
-The 13 requirement-level concepts were formed by analyzing rough sketch statements, supporting research documents, and actor capabilities. The following table traces the originating evidence for each concept:
+#The 13 requirement-level concepts were formed by analyzing rough sketch statements, supporting research documents, and actor capabilities. The following table traces the originating evidence for each concept:#
 
 [cols="2,3,2",options="header"]
 |===
@@ -102,42 +102,42 @@ The 13 requirement-level concepts were formed by analyzing rough sketch statemen
 | Append-only log of quantity changes with reason and timestamp enables traceability and audit; transaction history provides a traceable explanation for how the current quantity in the tracked inventory record was reached.
 |===
 
-==== Requirement Formation Decisions
+==== #Requirement Formation Decisions#
 
-The following requirement concepts were selected because they directly address domain problems identified in the rough sketch and supported by research artifacts:
+#The following requirement concepts were selected because they directly address domain problems identified in the rough sketch and supported by research artifacts:#
 
-- *Fast capture* — directly addresses "won't log if > few seconds" friction
-- *Tracked record vs reality* — acknowledges that households are dynamic; system is a representation, not ground truth
-- *Shared visibility* — necessary to reduce duplicate purchases and informal fridge-note coordination
-- *Actionable states* — enables decision-making without requiring household members to interpret raw facts
-- *State transition* — critical to alert / notification design; prevents notification fatigue
-- *Low-stock strategy* — balances simplicity (fixed threshold) with flexibility (per-item type configuration)
-- *Near-expiry window & scheduled sweep* — automate detection of waste risks
-- *Notification record/event & delivery approach* — provide a way to notify without requiring push infrastructure
-- *Deduplication / anti-spam* — protects against alert fatigue and repeated restock list additions
-- *Auto-add to restock list* — extends alerts into actionable purchasing recommendations
-- *Transaction history* — provides evidence trail for shared accountability and consumption analysis
+- #*Fast capture* — directly addresses "won't log if > few seconds" friction#
+- #*Tracked record vs reality* — acknowledges that households are dynamic; system is a representation, not ground truth#
+- #*Shared visibility* — necessary to reduce duplicate purchases and informal fridge-note coordination#
+- #*Actionable states* — enables decision-making without requiring household members to interpret raw facts#
+- #*State transition* — critical to alert / notification design; prevents notification fatigue#
+- #*Low-stock strategy* — balances simplicity (fixed threshold) with flexibility (per-item type configuration)#
+- #*Near-expiry window & scheduled sweep* — automate detection of waste risks#
+- #*Notification record/event & delivery approach* — provide a way to notify without requiring push infrastructure#
+- #*Deduplication / anti-spam* — protects against alert fatigue and repeated restock list additions#
+- #*Auto-add to restock list* — extends alerts into actionable purchasing recommendations#
+- #*Transaction history* — provides evidence trail for shared accountability and consumption analysis#
 
-==== Alignment with Domain Concepts
+==== #Alignment with Domain Concepts#
 
-Requirement-level concepts align with domain concepts as follows:
+#Requirement-level concepts align with domain concepts as follows:#
 
-- Fast capture — operations on tracked inventory records and item types / item instances
-- Tracked record vs reality - gap between *Inventory (reality)* and the *tracked inventory record (system representation)*
-- Shared visibility - *Household* (shared context) and interaction between *Household members*
-- Actionable states - *Availability* (qualitative state: full, almost empty, backup) and derived judgment states
-- State transition -triggering mechanism for *alert / notification* generation
-- Low-stock strategy - implementation of *low-stock judgment* concept
-- Near-expiry window - definition of *expiration-time concern*
-- Scheduled sweep - systematic evaluation of *Item Instance expiration* and *Availability*
-- Notification record/event - recording mechanism for system responses
-- Delivery approach - infrastructure choice for household member communication
-- Deduplication / anti-spam - rules governing *alert / notification* production
-- Auto-add to restock list - connection between *Actionable states* and *purchasing intent*
-- Transaction history - transaction history representing availability changes over time
+- #Fast capture — operations on tracked inventory records and item types / item instances#
+- #Tracked record vs reality - gap between *Inventory (reality)* and the *tracked inventory record (system representation)*#
+- #Shared visibility - *Household* (shared context) and interaction between *Household members*#
+- #Actionable states - *Availability* (qualitative state: full, almost empty, backup) and derived judgment states#
+- #State transition -triggering mechanism for *alert / notification* generation#
+- #Low-stock strategy - implementation of *low-stock judgment* concept#
+- #Near-expiry window - definition of *expiration-time concern*#
+- #Scheduled sweep - systematic evaluation of *Item Instance expiration* and *Availability*#
+- #Notification record/event - recording mechanism for system responses#
+- #Delivery approach - infrastructure choice for household member communication#
+- #Deduplication / anti-spam - rules governing *alert / notification* production#
+- #Auto-add to restock list - connection between *Actionable states* and *purchasing intent*#
+- #Transaction history - transaction history representing availability changes over time#
 
-This ensures consistency between domain analysis (Section 3.1) and requirements.
+#This ensures consistency between domain analysis (Section 3.1) and requirements.#
 
-==== Scope Note
+==== #Scope Note#
 
-This evidence section traces all 13 requirement-level concepts to their originating rough sketch statements and supporting research artifacts. Concepts include both domain-grounded concerns (fast capture, shared visibility, actionable states) and system-design concerns (scheduled sweep, notification delivery, deduplication). While the latter may involve system behavior, they remain justified by domain drivers and supported by architectural research documented in the supporting artifacts referenced above.
+#This evidence section traces all 13 requirement-level concepts to their originating rough sketch statements and supporting research artifacts. Concepts include both domain-grounded concerns (fast capture, shared visibility, actionable states) and system-design concerns (scheduled sweep, notification delivery, deduplication). While the latter may involve system behavior, they remain justified by domain drivers and supported by architectural research documented in the supporting artifacts referenced above.#

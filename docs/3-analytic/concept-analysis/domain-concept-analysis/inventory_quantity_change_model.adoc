@@ -1,60 +1,60 @@
-= Inventory Quantity Change Model
+= #Inventory Quantity Change Model#
 
-== Key Information:
+== #Key Information:#
 
-=== Issue ##
-=== Completed by: @Kemuel05
+=== #Issue ##
+=== #Completed by: @Kemuel05#
 
-== Overview
+== #Overview#
 
-This document defines how an item’s stock quantity should increase and decrease in the system.
-The goal is to ensure inventory quantity behaves in a clear, predictable way so low-stock logic can be applied consistently.
+#This document defines how an item's stock quantity should increase and decrease in the system.
+The goal is to ensure inventory quantity behaves in a clear, predictable way so low-stock logic can be applied consistently.#
 
-== Stock Increase Actions
+== #Stock Increase Actions#
 
-Stock quantity should increase only when one of the following actions occurs:
+#Stock quantity should increase only when one of the following actions occurs:#
 
-* Restocking an item (user adds more of an existing item).
+#* Restocking an item (user adds more of an existing item).
 * Adding a new item with an initial quantity.
-* Manual quantity adjustment that increases stock.
+* Manual quantity adjustment that increases stock.#
 
-These actions represent valid ways inventory enters the system.
+#These actions represent valid ways inventory enters the system.#
 
-== Stock Decrease Actions
+== #Stock Decrease Actions#
 
-Stock quantity should decrease only when one of the following actions occurs:
+#Stock quantity should decrease only when one of the following actions occurs:#
 
-* Consuming or using an item.
+#* Consuming or using an item.
 * Manual quantity adjustment that decreases stock.
-* System-driven decrease (future support, such as auto-consumption).
+* System-driven decrease (future support, such as auto-consumption).#
 
-These actions represent inventory leaving the system.
+#These actions represent inventory leaving the system.#
 
-== Quantity Update Rules
+== #Quantity Update Rules#
 
-* Stock quantity should always be updated using a single, consistent method.
+#* Stock quantity should always be updated using a single, consistent method.
 * Quantity changes should be applied as positive or negative values.
 * The system should not allow stock quantity to go below zero.
-* Each quantity change should be intentional and traceable.
+* Each quantity change should be intentional and traceable.#
 
-== Consistency Rules
+== #Consistency Rules#
 
-* All items follow the same rules for increasing and decreasing stock.
+#* All items follow the same rules for increasing and decreasing stock.
 * No special cases should exist per item unless explicitly defined.
-* Quantity updates should always result in a valid inventory state.
+* Quantity updates should always result in a valid inventory state.#
 
-== Best Practices
+== #Best Practices#
 
-* Keep quantity change logic simple and predictable.
+#* Keep quantity change logic simple and predictable.
 * Avoid hidden or automatic quantity changes without clear rules.
 * Validate quantity changes before saving them.
-* Ensure backend logic can apply these rules without extra assumptions.
+* Ensure backend logic can apply these rules without extra assumptions.#
 
-== Recommendation
+== #Recommendation#
 
-The recommended approach is to update inventory quantity through clearly defined increase and decrease actions, with basic validation to prevent invalid states.
-This model ensures consistent inventory behavior and provides a reliable foundation for low-stock detection and future features.
+#The recommended approach is to update inventory quantity through clearly defined increase and decrease actions, with basic validation to prevent invalid states.
+This model ensures consistent inventory behavior and provides a reliable foundation for low-stock detection and future features.#
 
-== Sources
+== #Sources#
 
-* https://abcsupplychain.com/optimize-reduce-inventory/
+#* https://abcsupplychain.com/optimize-reduce-inventory/#

@@ -1,8 +1,8 @@
-=== Evidence Concept Analysis
+=== #Evidence Concept Analysis#
 
-This subsection documents how raw observations from the domain rough sketch were transformed into structured domain concepts. The goal is to ensure traceability between the initial unstructured notes and the final abstractions used in the domain model.
+#This subsection documents how raw observations from the domain rough sketch were transformed into structured domain concepts. The goal is to ensure traceability between the initial unstructured notes and the final abstractions used in the domain model.#
 
-==== Rough Sketch vs Concept Formation
+==== #Rough Sketch vs Concept Formation#
 
 [cols="1,1"]
 |===
@@ -24,43 +24,44 @@ This subsection documents how raw observations from the domain rough sketch were
 | Availability (qualitative state: full, almost empty, backup) / Low-stock judgment
 |===
 
-By analyzing these statements side-by-side:
 
-- Different expressions referring to "groceries", "items", and "products" are unified under the concept of *Household Item*.
+#By analyzing these statements side-by-side:#
+
+#- Different expressions referring to "groceries", "items", and "products" are unified under the concept of *Household Item*.
 - Repeated mentions of duplicates and shortages indicate coordination issues within shared households.
-- Time-based concerns introduce the concept of *Expiration Date* tied to specific item instances.
+- Time-based concerns introduce the concept of *Expiration Date* tied to specific item instances.#
 
-==== Concept Formation Decisions
+==== #Concept Formation Decisions#
 
-The following abstractions were introduced by grouping similar ideas:
+#The following abstractions were introduced by grouping similar ideas:#
 
-- "Groceries", "items", "products" - *Household Item*
+#- "Groceries", "items", "products" - *Household Item*
 - Multiple physical units - *Item Instance*
 - "Extra one" - *Backup supply*
 - "Expires" - *Expiration Date*
-- "Running out" - *Availability* (with qualitative judgments: full, almost empty, backup)
+- "Running out" - *Availability* (with qualitative judgments: full, almost empty, backup)#
 
-These groupings allow consistent reasoning across different user statements and scenarios.
+#These groupings allow consistent reasoning across different user statements and scenarios.#
 
-==== Identifying Concept Relationships
+==== #Identifying Concept Relationships#
 
-From the analysis:
+#From the analysis:#
 
-- A *Household Item* may have multiple *Item Instances*
+#- A *Household Item* may have multiple *Item Instances*
 - Each *Item Instance* may have an *Expiration Date*
 - A *Household Item* can be associated with an *Availability* state (qualitative assessment: full, almost empty, backup)
-- Household members interact with shared items in a common environment
+- Household members interact with shared items in a common environment#
 
-==== Terminology Alignment
+==== #Terminology Alignment#
 
-Potential inconsistencies were identified and resolved:
+#Potential inconsistencies were identified and resolved:#
 
-- "Item", "product", and "groceries" - standardized as *Household Item*
+#- "Item", "product", and "groceries" - standardized as *Household Item*
 - "Running out" vs "not available" - unified under *Availability*
-- "Extra" vs "backup" - unified as *Backup supply*
+- "Extra" vs "backup" - unified as *Backup supply*#
 
-==== Domain Scope Note
+==== #Domain Scope Note#
 
-This analysis focuses strictly on domain concepts and avoids system-specific terminology. Instead of referring to "users", domain roles such as household members, roommates, or students are implied.
+#This analysis focuses strictly on domain concepts and avoids system-specific terminology. Instead of referring to "users", domain roles such as household members, roommates, or students are implied.#
 
-This section highlights a representative subset of concept formation decisions. The parent concept analysis derives approximately 15 distinct concepts; this section traces 5 foundational concepts to demonstrate the methodology of mapping raw observations to domain abstractions.
+#This section highlights a representative subset of concept formation decisions. The parent concept analysis derives approximately 15 distinct concepts; this section traces 5 foundational concepts to demonstrate the methodology of mapping raw observations to domain abstractions.#

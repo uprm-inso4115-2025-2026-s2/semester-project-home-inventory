@@ -1,65 +1,65 @@
-== Requirements Inspection Checklist (Defect-Driven)
+== #Requirements Inspection Checklist (Defect-Driven)#
 
-This checklist standardizes requirement reviews so the team can detect common defects early and record them consistently.
+#This checklist standardizes requirement reviews so the team can detect common defects early and record them consistently.#
 
-=== Purpose
+=== #Purpose#
 
-Use this checklist to review requirement statements, identify defects, classify their severity, and assign follow-up actions.
+#Use this checklist to review requirement statements, identify defects, classify their severity, and assign follow-up actions.#
 
-=== How to Use
+=== #How to Use#
 
-. Select the requirement section to review.
+#. Select the requirement section to review.
 . Check each requirement against the defect categories below.
 . Record findings in the review log.
 . Classify each issue as Critical, Major, or Minor.
-. Propose a concrete fix and assign an owner.
+. Propose a concrete fix and assign an owner.#
 
-=== Severity Guide
+=== #Severity Guide#
 
-* *Critical* — blocks implementation or testing, or may cause major incorrect behavior.
+#* *Critical* — blocks implementation or testing, or may cause major incorrect behavior.
 * *Major* — creates significant ambiguity, inconsistency, or traceability problems.
-* *Minor* — reduces clarity or structure but does not block progress.
+* *Minor* — reduces clarity or structure but does not block progress.#
 
-=== Defect-Driven Checklist
+=== #Defect-Driven Checklist#
 
-==== Omissions
-* Is every requirement defined somewhere?
+==== #Omissions#
+#* Is every requirement defined somewhere?
 * Are expected inputs, outputs, and system responses covered?
-* Are edge cases such as missing data, invalid values, or no response addressed?
+* Are edge cases such as missing data, invalid values, or no response addressed?#
 
-==== Contradictions
-* Does the requirement conflict with another requirement, goal, or constraint?
-* Are terms used consistently across documents?
+==== #Contradictions#
+#* Does the requirement conflict with another requirement, goal, or constraint?
+* Are terms used consistently across documents?#
 
-==== Inadequacies
-* Does the requirement reflect a real stakeholder need?
-* Is it valid for realistic student or roommate usage scenarios?
+==== #Inadequacies#
+#* Does the requirement reflect a real stakeholder need?
+* Is it valid for realistic student or roommate usage scenarios?#
 
-==== Ambiguities
-* Can the statement be interpreted in more than one way?
-* Are vague terms such as "fast", "easy", or "soon" replaced with measurable criteria?
+==== #Ambiguities#
+#* Can the statement be interpreted in more than one way?
+* Are vague terms such as "fast", "easy", or "soon" replaced with measurable criteria?#
 
-==== Unmeasurability
-* Does the requirement include fit criteria such as time, threshold, count, or accuracy?
-* Is there a clear pass/fail condition?
+==== #Unmeasurability#
+#* Does the requirement include fit criteria such as time, threshold, count, or accuracy?
+* Is there a clear pass/fail condition?#
 
-==== Noise
-* Is the statement relevant to system goals or constraints?
-* Would removing it change expected system behavior or quality?
+==== #Noise#
+#* Is the statement relevant to system goals or constraints?
+* Would removing it change expected system behavior or quality?#
 
-==== Overspecification
-* Does the requirement force a design decision too early?
-* Could the same goal be satisfied in more than one way?
+==== #Overspecification#
+#* Does the requirement force a design decision too early?
+* Could the same goal be satisfied in more than one way?#
 
-==== Poor Structuring
-* Is the requirement located in the correct section?
-* Is it mixed with assumptions, domain properties, or implementation details?
+==== #Poor Structuring#
+#* Is the requirement located in the correct section?
+* Is it mixed with assumptions, domain properties, or implementation details?#
 
-==== Opacity and Modifiability
-* Are dependencies between requirements explicit?
-* Would changing this requirement force scattered edits across many documents?
+==== #Opacity and Modifiability#
+#* Are dependencies between requirements explicit?
+* Would changing this requirement force scattered edits across many documents?#
 
-=== Review Log Template
+=== #Review Log Template#
 
 [cols="1,2,2,1,2,2",options="header"]
 |===
@@ -67,7 +67,7 @@ Use this checklist to review requirement statements, identify defects, classify 
 |RQA-001 |REQ-XXX |Ambiguity |Major |Replace "quickly" with "under 2 seconds" |@username
 |===
 
-=== Minimum Team Usage Rule
+=== #Minimum Team Usage Rule#
 
-* Each team should apply this checklist at least once per sprint to active requirements.
-* Findings should be linked to GitHub issues or PR comments for traceability.
+#* Each team should apply this checklist at least once per sprint to active requirements.
+* Findings should be linked to GitHub issues or PR comments for traceability.#

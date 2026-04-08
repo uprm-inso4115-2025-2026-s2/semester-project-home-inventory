@@ -96,22 +96,22 @@ The requirement-level concepts above introduce several tensions that later requi
 
 These tradeoffs explain why later requirements must emphasize low-friction entry, explainable alerting, deduplication, shared-versus-personal separation, and traceable quantity history.
 
-=== AHP-Based Requirement Prioritization
+=== #AHP-Based Requirement Prioritization#
 
-This section documents an AHP-based method for requirement prioritization and provides a reproducible calculation path for the team.
+#This section documents an AHP-based method for requirement prioritization and provides a reproducible calculation path for the team.#
 
-==== Evaluation Criteria
+==== #Evaluation Criteria#
 
-The prioritization compares requirements using the following criteria:
+#The prioritization compares requirements using the following criteria:#
 
-* *User value* — how strongly the requirement supports waste reduction, coordination, or low-friction capture.
+#* *User value* — how strongly the requirement supports waste reduction, coordination, or low-friction capture.
 * *Feasibility* — how practical the requirement is under the current architecture and project constraints.
 * *Impact* — how much the requirement improves overall household inventory behavior.
-* *Implementation complexity* — how difficult the requirement is to build; lower complexity is preferred when value is similar.
+* *Implementation complexity* — how difficult the requirement is to build; lower complexity is preferred when value is similar.#
 
-==== Team Input Aggregation Method
+==== #Team Input Aggregation Method#
 
-Each team member supplies pairwise comparisons for the criteria and for the requirements under each criterion. The shared matrices are produced by averaging the corresponding matrix entries across team members.
+#Each team member supplies pairwise comparisons for the criteria and for the requirements under each criterion. The shared matrices are produced by averaging the corresponding matrix entries across team members.#
 
 [source,r]
 ----
@@ -120,19 +120,19 @@ aggregate_matrix <- function(matrices) {
 }
 ----
 
-==== AHP Process Steps
+==== #AHP Process Steps#
 
-. Collect pairwise comparisons from all team members for the evaluation criteria.
+#. Collect pairwise comparisons from all team members for the evaluation criteria.
 . Aggregate the criteria matrices.
 . Collect pairwise comparisons for the requirements under each criterion.
 . Aggregate the requirement matrices for each criterion.
 . Compute criterion weights and local requirement weights.
 . Compute global scores from local weights and criterion weights.
-. Rank requirements by final score.
+. Rank requirements by final score.#
 
-==== Sample Aggregated AHP Result
+==== #Sample Aggregated AHP Result#
 
-The script `docs/3-analytic/concept-analysis/requirements-concept-analysis/ahp-prioritization.R` demonstrates the method and can be updated with real team input.
+#The script `docs/3-analytic/concept-analysis/requirements-concept-analysis/ahp-prioritization.R` demonstrates the method and can be updated with real team input.#
 
 [cols="1,3",options="header"]
 |===
@@ -153,8 +153,7 @@ The script `docs/3-analytic/concept-analysis/requirements-concept-analysis/ahp-p
 |5
 |Restock list auto-add behavior
 
-|6
-|Transaction history and traceability
+|6 |Transaction history and traceability
 |===
 
-The AHP method makes the prioritization process transparent, repeatable, and easier to defend during review.
+#The AHP method makes the prioritization process transparent, repeatable, and easier to defend during review.#

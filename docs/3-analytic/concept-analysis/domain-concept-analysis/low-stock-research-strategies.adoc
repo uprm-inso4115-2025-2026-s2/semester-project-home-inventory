@@ -1,11 +1,11 @@
-= Low Stock Threshold Strategies
+= #Low Stock Threshold Strategies#
 
-== Key Information:
+== #Key Information:#
 
-=== Issue #23
-=== Completed by: @Kemuel05
+=== #Issue #23#
+=== #Completed by: @Kemuel05#
 
-== Low Stock Detection Strategies
+== #Low Stock Detection Strategies#
 
 [cols="1,1,1,1"]
 |===
@@ -17,7 +17,7 @@
 |Not adaptive to demand changes. Same threshold may not fit all items.
 
 |Percentage-Based Threshold
-|The system triggers an alert when the stock falls below a certain percentage of the item’s maximum quantity.
+|The system triggers an alert when the stock falls below a certain percentage of the item's maximum quantity.
 |More flexible than fixed thresholds. Scales better across different item quantities.
 |Requires knowing the maximum stock level. Still not demand-aware.
 
@@ -32,20 +32,20 @@
 |Complex calculations. Overkill for small or simple systems.
 |===
 
-== Best Practices for Low Stock Detection
 
-* Choose a strategy that aligns with the system’s complexity and available data.
+== #Best Practices for Low Stock Detection#
+
+#* Choose a strategy that aligns with the system's complexity and available data.
 * Avoid overly complex models.
 * Prevent repeated alerts by triggering notifications only when crossing the low-stock threshold.
-* Allow thresholds to be configurable to support different item behaviors.
+* Allow thresholds to be configurable to support different item behaviors.#
 
 
-== Recommendation
+== #Recommendation#
 
-Based on the research, the recommended approach is a fixed quantity threshold with per-item configuration. This strategy offers a balance between simplicity and flexibility while remaining easy to implement within the project’s scope.
+#Based on the research, the recommended approach is a fixed quantity threshold with per-item configuration. This strategy offers a balance between simplicity and flexibility while remaining easy to implement within the project's scope.#
 
-== Sources
+== #Sources#
 
 
-* https://abcsupplychain.com/optimize-reduce-inventory/
-
+#* https://abcsupplychain.com/optimize-reduce-inventory/#
