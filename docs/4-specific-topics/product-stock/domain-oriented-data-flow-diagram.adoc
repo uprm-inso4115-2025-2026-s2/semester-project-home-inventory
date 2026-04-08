@@ -1,0 +1,145 @@
+= Product Stock Data Flow Diagram
+Author: Jorge L. De León Orama
+:toc:
+:sectnums:
+
+== Diagram
+
+image::images/product-stock-dfd.png[]
+
+== External Entities
+
+The following external entities interact with the Product Stock feature:
+
+* Student – The primary actor of the feature. The student creates product stocks, views stock details, and manages individual stock items by adding, removing, or editing them.
+
+== Processes
+
+The following processes represent the core business operations of the Product Stock feature:
+
+=== Process 1: Create Product Stock
+
+The student provides a product selection and an item list. In return, the student receives a stock creation confirmation once the stock has been registered.
+
+=== Process 2: View Product Stock
+
+The student provides a stock view request indicating the product they want to inspect. In return, the student receives the product stock details.
+
+=== Process 3: Add Item
+
+The student provides new item information for the product stock they are currently viewing. The new item is then recorded in the Inventory.
+
+=== Process 4: Remove Item
+
+The student indicates the item they want removed from the product stock they are currently viewing. The item is then deleted from the Inventory.
+
+=== Process 5: Edit Item
+
+The student provides the item they want to edit along with the updated item information. In return, the student receives confirmation that the item was successfully modified.
+
+== Data Stores
+
+The following data store supports the Product Stock feature:
+
+* D1 Inventory – Stores all product stock records and individual item entries. It is read and written by all five processes within this feature.
+
+== Data Flows
+
+The following table summarizes the data flows present in the diagram:
+
+[cols="1,2,2,2", options="header"]
+|===
+| Flow Label | From | To | Description
+
+| Product Selection
+| Student
+| Create Product Stock
+| The product the student wants to create a stock for.
+
+| Item List
+| Student
+| Create Product Stock
+| The list of items the student wants to compose the stock with.
+
+| Product Stock
+| Create Product Stock
+| Inventory
+| The new stock record the student's submission produces in the inventory.
+
+| Stock Creation Confirmed
+| Create Product Stock
+| Student
+| The confirmation the student receives after the stock is successfully created.
+
+| Stock View Request
+| Student
+| View Product Stock
+| The product the student indicates they want to view the stock of.
+
+| Product Stock Details
+| Inventory
+| View Product Stock
+| The stock details retrieved for the product the student requested.
+
+| Product Stock Details
+| View Product Stock
+| Student
+| The stock details delivered back to the student.
+
+| Product Stock Details
+| View Product Stock
+| Add Item
+| The product stock context the student is currently viewing, carried into the add operation.
+
+| New Item Information
+| Student
+| Add Item
+| The item information the student provides for the new item to be added.
+
+| New Item
+| Add Item
+| View Product Stock
+| The new item entry produced from the student's submission.
+
+| Item
+| Student
+| Remove Item
+| The item the student indicates they want removed.
+
+| Product Stock Details
+| Inventory
+| Remove Item
+| The stock context of the product the student is currently viewing.
+
+| Item
+| Student
+| Edit Item
+| The item the student indicates they want to edit.
+
+| New Item Information
+| Student
+| Edit Item
+| The updated item information the student provides.
+
+| Modified Item
+| Edit Item
+| Inventory
+| The updated item record produced from the student's submission.
+
+| Edit Successful Notification
+| Edit Item
+| Student
+| The confirmation the
+student receives after the
+item is successfully
+edited.
+|===
+
+== Identified Risks and Considerations
+
+The following risks were identified during the development of this diagram:
+
+* Ambiguity in stock requirements may result in missing or incorrect data flows during implementation.
+* The Add Item, Remove Item, and Edit Item processes each reference the same Inventory data store. These are represented separately in the diagram for readability but refer to a single shared store.
+* Edge cases such as empty stock, failed retrievals, or partial updates are not represented in this domain-level diagram and should be addressed at the implementation level.
+* The diagram intentionally excludes UI and technical implementation details in order to maintain a domain-oriented perspective.
