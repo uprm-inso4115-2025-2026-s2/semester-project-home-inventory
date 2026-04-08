@@ -4,9 +4,7 @@
 
 == #Purpose#
 
-#Systematically identify, categorize, and resolve inconsistencies within the current system requirements.
-This includes detecting clashes such as terminology inconsistencies, timing conflicts, overlapping features, or contradictions between functional and non-functional requirements.
-This is specific to section 3.1 of the documentation.#
+#Systematically identify, categorize, and resolve inconsistencies within the current system requirements. This includes detecting clashes such as terminology inconsistencies, timing conflicts, overlapping features, or contradictions between functional and non-functional requirements. This is specific to section 3.1 of the documentation.#
 
 == #Terminology Inconsistencies#
 
@@ -33,18 +31,14 @@ This is specific to section 3.1 of the documentation.#
 - Product instead of item type
 - Grocery item instead of item type
 - Grocery list instead of restock list / planner
-- User instead of household 
-member
+- User instead of household member
 Notification record/event instead of alert / notification record#
 
-#This creates ambiguity about whether these represent different entities or the same entity in different contexts.
-While some terms are used interchangeably, it is unclear if they are meant to be distinct, so it is better to standardize terminology in all sections.#
+#This creates ambiguity about whether these represent different entities or the same entity in different contexts. While some terms are used interchangeably, it is unclear if they are meant to be distinct, so it is better to standardize terminology in all sections.#
 
 === #Resolution#
 
-#Revise the official terminology list in `terminology.adoc` to ensure consistent use of terms across all documents.
-Make changes needed within the documents so they align with the standardized terminology.
-For example: in all documents pertaining to Section 3.1, change all instances of "user" to "household member".#
+#Revise the official terminology list in `terminology.adoc` to ensure consistent use of terms across all documents. Make changes needed within the documents so they align with the standardized terminology. For example: in all documents pertaining to Section 3.1, change all instances of "user" to "household member".#
 
 === #Final Decision#
 
@@ -80,14 +74,11 @@ must use the terms without redefining them.#
 - Cron jobs
 - Polling mechanisms#
 
-#This creates ambiguity about when alerts should be generated and when automation logic 
-should run.#
+#This creates ambiguity about when alerts should be generated and when automation logic should run.#
 
 === #Resolution#
 
-#Take the already defined rules and ensure consistency across all documents.
-Make any additions or modifications needed to clarify when sweeps happen and when alerts are generated.
-For example, in `definition-expiration-alert-system.adoc`, clarify that expiration and near-expiry conditions are evaluated during the scheduled sweep, and that alerts are only generated when a state transition occurs.#
+#Take the already defined rules and ensure consistency across all documents. Make any additions or modifications needed to clarify when sweeps happen and when alerts are generated. For example, in `definition-expiration-alert-system.adoc`, clarify that expiration and near-expiry conditions are evaluated during the scheduled sweep, and that alerts are only generated when a state transition occurs.#
 
 === #Final Decision#
 
@@ -125,8 +116,7 @@ It is unclear which subsystem is responsible for triggering each action.#
 
 === #Resolution#
 
-#In each feature document, clearly define the responsibility boundary for that feature.
-For example, in `definition-expiration-alert-system.adoc`, clarify that expiration-related state detection belongs to the Automation System, while creation of alert / notification records belongs to the Notification Service.#
+#In each feature document, clearly define the responsibility boundary for that feature. For example, in `definition-expiration-alert-system.adoc`, clarify that expiration-related state detection belongs to the Automation System, while creation of alert / notification records belongs to the Notification Service.#
 
 === #Final Decision#
 
@@ -157,8 +147,7 @@ For example, in `definition-expiration-alert-system.adoc`, clarify that expirati
 - current quantity is stored directly in the tracked inventory record, or
 - current quantity is derived by applying all transaction (quantity change) records#
 
-#This creates ambiguity in the data model and may lead to inconsistent implementation, 
-testing, and automation behavior.#
+#This creates ambiguity in the data model and may lead to inconsistent implementation, testing, and automation behavior.#
 
 === #Resolution#
 
@@ -166,8 +155,7 @@ testing, and automation behavior.#
 
 #Tracked inventory records store the current quantity and are updated whenever a transaction (quantity change) is recorded.#
 
-#Transaction (quantity change) records serve as append-only historical records that explain how the current quantity was reached over time.
-They are not the primary source used to compute current quantity during normal operation.#
+#Transaction (quantity change) records serve as append-only historical records that explain how the current quantity was reached over time. They are not the primary source used to compute current quantity during normal operation.#
 
 === #Final Decision#
 
@@ -200,11 +188,7 @@ Transactions are used for history, auditing, and analytics, not for real-time qu
 
 === #Resolution#
 
-#In all relevant documents, clarify that the Automation System is responsible for evaluating low-stock, near-expiry, and expired conditions and detecting state transitions.
-When a new relevant state transition is detected, the Automation System triggers downstream notification handling.
-The Automation System does not own notification delivery. Creation of alert / notification records belongs to the Notification Service.
-In-app notification records are then displayed through the application interface.
-Push delivery, if enabled later, belongs to the Push Service.#
+#In all relevant documents, clarify that the Automation System is responsible for evaluating low-stock, near-expiry, and expired conditions and detecting state transitions. When a new relevant state transition is detected, the Automation System triggers downstream notification handling. The Automation System does not own notification delivery. Creation of alert / notification records belongs to the Notification Service. In-app notification records are then displayed through the application interface. Push delivery, if enabled later, belongs to the Push Service.#
 
 === #Final Decision#
 
@@ -222,8 +206,7 @@ Push delivery, if implemented later, will be handled by a separate Push Service.
 
 === #Requirement Concept Overlap#
 
-#Concept overlaps were fixed while addressing the problems with the other categories.
-For example, the concept of "state transition" was clarified in the context of both low-stock and expiration detection, which resolves overlaps between those features and their associated alerts and notifications.#
+#Concept overlaps were fixed while addressing the problems with the other categories. For example, the concept of "state transition" was clarified in the context of both low-stock and expiration detection, which resolves overlaps between those features and their associated alerts and notifications.#
 
 == #Conclusion#
 
