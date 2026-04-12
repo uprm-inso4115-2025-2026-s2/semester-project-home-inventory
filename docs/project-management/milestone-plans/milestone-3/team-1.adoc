@@ -48,6 +48,7 @@ Identify and implement small missing features such as:
 * Improved validation
 * UI feedback improvements
 * Any small UX gaps discovered during testing
+* Unit tests for critical logic (Cubit, Repository, Use Cases)
 
 NOTE: No major new features should be introduced.
 
@@ -72,6 +73,22 @@ NOTE: No major new features should be introduced.
 * Ensure responsiveness across screen sizes
 * Clean up reusable components
 
+=== 6. Testing (Quality Assurance)
+
+* Add unit tests for:
+  * Cubit logic (state transitions, edge cases)
+  * Repository methods (data handling, mapping)
+  * Core use cases (if applicable)
+* Ensure tests cover:
+  * Success scenarios
+  * Failure scenarios (errors, invalid inputs)
+  * Edge cases
+* (Optional) Add Flutter widget tests for:
+  * Key screens (Inventory List, Item Details)
+  * Critical UI interactions
+  * Basic rendering validation
+* Ensure tests are runnable and documented
+
 
 == Preliminary Work Breakdown
 
@@ -87,10 +104,12 @@ NOTE: No major new features should be introduced.
 * Identify missing or broken paths
 * Fix edge case handling
 
-=== Phase 3 - Subfeature Completion
+=== Phase 3 - Subfeature & Testing Completion
 
 * Identify small missing features
 * Implement and test them
+* Add unit tests for critical components
+* (Optional) Add widget tests for key UI flows
 * Keep scope strictly controlled
 
 === Phase 4 - Documentation Review
@@ -105,6 +124,8 @@ NOTE: No major new features should be introduced.
 * Error handling improvements
 * Minor UX enhancements
 * Final bug fixes
+* Ensure all tests pass
+* Fix failing or flaky tests
 
 
 == Suggested Ownership Direction
@@ -151,6 +172,8 @@ Before {milestone} begins:
    * Use case validation
    * Missing subfeatures
    * Documentation updates
+   * Unit testing tasks
+   * Optional widget testing tasks
 3. Use the team's standardized issue template:
    * Objective
    * Description
@@ -162,6 +185,6 @@ Before {milestone} begins:
 Sprint Plan:
 
 * Sprint 1: Integration completion + Use case validation
-* Sprint 2: Subfeatures + Documentation + Polish
+* Sprint 2: Subfeatures + Testing + Documentation + Polish
 
 This plan ensures the team focuses on refinement, correctness, and delivery quality rather than expanding scope.
