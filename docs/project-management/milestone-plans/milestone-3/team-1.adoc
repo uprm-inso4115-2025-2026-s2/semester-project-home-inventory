@@ -1,0 +1,190 @@
+:milestone: Milestone 3
+
+= {milestone} - Team 1: Core Inventory Feature Finalization & Validation Plan
+
+== {milestone} Target Deliverables
+
+By the end of {milestone}, the Core Inventory feature must be fully integrated, consistent, and validated across all layers (UI, state management, domain, and data).
+
+The focus of this milestone is NOT building major new features, but rather:
+
+* Finalizing UI + Cubit integration
+* Verifying all use cases are properly implemented and connected
+* Ensuring documentation consistency across the project
+* Implementing any missing minor subfeatures
+* Improving stability, usability, and overall polish
+
+The deliverable must be demo-ready, cohesive, and reflect a production-quality feature.
+
+
+== High-Level Implementation Scope
+
+=== 1. Integration Completion (Primary Focus)
+
+* Finalize UI + Cubit connections
+* Ensure all screens correctly trigger state changes
+* Verify correct data flow from UI -> Cubit -> Repository -> Supabase -> UI
+* Fix any inconsistencies between implemented UI and expected behavior
+
+=== 2. Use Case Verification
+
+* Audit all intended use cases:
+- View items
+- View item details
+- Create item
+- Edit item
+- Delete item
+* Ensure each use case:
+- Is reachable from the UI
+- Works end-to-end
+- Handles edge cases (empty states, errors, invalid input)
+
+=== 3. Missing Subfeatures (Light Enhancements)
+
+Identify and implement small missing features such as:
+
+* Filtering
+* Sorting
+* Improved validation
+* UI feedback improvements
+* Any small UX gaps discovered during testing
+* Unit tests for critical logic (Cubit, Repository, Use Cases)
+
+NOTE: No major new features should be introduced.
+
+
+=== 4. Documentation Consistency
+
+* Ensure alignment between:
+- Codebase
+- Milestone plans
+- GitHub issues
+- README / technical documentation
+* Update outdated descriptions
+* Ensure naming consistency (entities, methods, states, etc.)
+* Verify architecture reflects actual implementation
+
+
+=== 5. Stability & UX Polish
+
+* Fix UI bugs and inconsistencies
+* Improve loading states and transitions
+* Improve error handling (user-friendly messages)
+* Ensure responsiveness across screen sizes
+* Clean up reusable components
+
+=== 6. Testing (Quality Assurance)
+
+* Add unit tests for:
+- Cubit logic (state transitions, edge cases)
+- Repository methods (data handling, mapping)
+- Core use cases (if applicable)
+* Ensure tests cover:
+- Success scenarios
+- Failure scenarios (errors, invalid inputs)
+- Edge cases
+* (Optional) Add Flutter widget tests for:
+- Key screens (Inventory List, Item Details)
+- Critical UI interactions
+- Basic rendering validation
+* Ensure tests are runnable and documented
+
+
+== Preliminary Work Breakdown
+
+=== Phase 1 - Integration Finalization
+
+* Complete UI + Cubit merging
+* Fix broken or incomplete interactions
+* Validate state transitions in real scenarios
+
+=== Phase 2 - Use Case Audit
+
+* Systematically test all CRUD flows
+* Identify missing or broken paths
+* Fix edge case handling
+
+=== Phase 3 - Subfeature & Testing Completion
+
+* Identify small missing features
+* Implement and test them
+* Add unit tests for critical components
+* (Optional) Add widget tests for key UI flows
+* Keep scope strictly controlled
+
+=== Phase 4 - Documentation Review
+
+* Review all related documentation
+* Align with actual implementation
+* Fix inconsistencies and gaps
+
+=== Phase 5 - Polish & Stabilization
+
+* UI cleanup
+* Error handling improvements
+* Minor UX enhancements
+* Final bug fixes
+* Ensure all tests pass
+* Fix failing or flaky tests
+
+
+== Suggested Ownership Direction
+
+Work may be distributed as follows:
+
+* Developer A: Integration fixes (UI ↔ Cubit)
+* Developer B: Use case validation & bug fixing
+* Developer C: Subfeatures & UX improvements
+* Developer D: Documentation consistency & cleanup
+
+The Team Lead will:
+
+* Oversee UI + Cubit integration completion
+* Validate architectural correctness
+* Ensure use case completeness
+* Review pull requests
+* Control scope and prevent unnecessary feature additions
+
+
+== Dependencies / Risks
+
+=== Dependencies
+
+* Completed work from previous milestone
+* Stable Supabase integration
+* Clear understanding of intended use cases
+
+=== Risks
+
+* Incomplete or rushed integration from previous milestone
+* Hidden bugs due to late feature merging
+* Scope creep (adding unnecessary features)
+* Inconsistency between documentation and implementation
+
+
+== Backlog Readiness Plan
+
+Before {milestone} begins:
+
+1. Audit existing GitHub issues.
+2. Create new issues for:
+   * Integration fixes
+   * Use case validation
+   * Missing subfeatures
+   * Documentation updates
+   * Unit testing tasks
+   * Optional widget testing tasks
+3. Use the team's standardized issue template:
+   * Objective
+   * Description
+   * Acceptance Criteria
+   * Testing Plan
+   * Difficulty
+   * Urgency
+
+Sprint Plan:
+
+* Sprint 1: Integration completion + Use case validation
+* Sprint 2: Subfeatures + Testing + Documentation + Polish
+
+This plan ensures the team focuses on refinement, correctness, and delivery quality rather than expanding scope.
