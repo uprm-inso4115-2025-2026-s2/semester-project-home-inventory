@@ -29,15 +29,15 @@ The deliverable must be demo-ready, cohesive, and reflect a production-quality f
 === 2. Use Case Verification
 
 * Audit all intended use cases:
-  * View items
-  * View item details
-  * Create item
-  * Edit item
-  * Delete item
+- View items
+- View item details
+- Create item
+- Edit item
+- Delete item
 * Ensure each use case:
-  * Is reachable from the UI
-  * Works end-to-end
-  * Handles edge cases (empty states, errors, invalid input)
+- Is reachable from the UI
+- Works end-to-end
+- Handles edge cases (empty states, errors, invalid input)
 
 === 3. Missing Subfeatures (Light Enhancements)
 
@@ -56,10 +56,10 @@ NOTE: No major new features should be introduced.
 === 4. Documentation Consistency
 
 * Ensure alignment between:
-  * Codebase
-  * Milestone plans
-  * GitHub issues
-  * README / technical documentation
+- Codebase
+- Milestone plans
+- GitHub issues
+- README / technical documentation
 * Update outdated descriptions
 * Ensure naming consistency (entities, methods, states, etc.)
 * Verify architecture reflects actual implementation
@@ -76,17 +76,17 @@ NOTE: No major new features should be introduced.
 === 6. Testing (Quality Assurance)
 
 * Add unit tests for:
-  * Cubit logic (state transitions, edge cases)
-  * Repository methods (data handling, mapping)
-  * Core use cases (if applicable)
+- Cubit logic (state transitions, edge cases)
+- Repository methods (data handling, mapping)
+- Core use cases (if applicable)
 * Ensure tests cover:
-  * Success scenarios
-  * Failure scenarios (errors, invalid inputs)
-  * Edge cases
+- Success scenarios
+- Failure scenarios (errors, invalid inputs)
+- Edge cases
 * (Optional) Add Flutter widget tests for:
-  * Key screens (Inventory List, Item Details)
-  * Critical UI interactions
-  * Basic rendering validation
+- Key screens (Inventory List, Item Details)
+- Critical UI interactions
+- Basic rendering validation
 * Ensure tests are runnable and documented
 
 
