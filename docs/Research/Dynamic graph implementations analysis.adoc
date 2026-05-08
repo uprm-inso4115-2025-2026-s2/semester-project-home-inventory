@@ -1,21 +1,20 @@
-= Research: Charting Library Evaluation for Dynamic Data Display
+= Evaluation of different libraries or methods for dynamic graph implementations
 :toc: macro
 :toc-title: Table of Contents
-:author: Your Name
-:revdate: {localdate}
+:author: Disclosure: This document represents the work of @Programian, but AI was used to help draft the document.
 :icons: font
 :source-highlighter: rouge
 
 toc::[]
 
-== Executive Summary
+== Summary
 
 [horizontal]
 Decision:: **fl_chart** recommended for all three chart types
-Rationale:: Best balance of features, documentation, active maintenance, and MIT license
-Migration Effort:: ~4-6 hours to replace all three chart implementations
+Why:: Best balance of features, documentation, active maintenance, and MIT license
+Migration Effort:: About 4-6 hours to replace all three chart implementations
 
-This research evaluates approaches for implementing dynamic bar, line, and pie charts in Flutter to replace the current static, hardcoded implementations in the Inventory Stock Summary, Item Usage Rates, and Expenditures report pages.
+This research evaluates different approaches for implementing dynamic bar, line, and pie charts in Flutter to replace the current static, hardcoded implementations in the Inventory Stock Summary, Item Usage Rates, and Expenditures report pages.
 
 == Current State Analysis
 
@@ -62,7 +61,7 @@ The application currently uses three different custom implementations:
 | Customization | Low | Ability to match existing design system
 |===
 
-== Libraries/Approaches Evaluated
+== Libraries or Approaches Evaluated
 
 [cols="2,2,3", options="header"]
 |===
@@ -79,42 +78,34 @@ The application currently uses three different custom implementations:
 [cols="2,1,1,1,1,1", options="header"]
 |===
 | Feature / Library | Custom Painter | fl_chart | Syncfusion | charts_flutter | graphic
-| Bar Chart Support | ✅ Basic | ✅ Full | ✅ Full | ✅ Full | ✅ Full
-| Line Chart Support | ✅ Basic | ✅ Full | ✅ Full | ✅ Full | ✅ Full
-| Pie Chart Support | ✅ Basic | ✅ Full | ✅ Full | ✅ Full | ✅ Full
-| Dynamic Data Binding | ⚠️ Manual | ✅ Easy | ✅ Easy | ✅ Easy | ✅ Easy
-| Tooltips | ❌ | ✅ | ✅ | ✅ | ✅
-| Animations | ❌ | ✅ | ✅ | ✅ | ✅
-| Legends | ❌ | ✅ | ✅ | ✅ | ✅
-| Zoom/Pan | ❌ | ✅ | ✅ | ⚠️ Limited | ⚠️ Limited
-| Touch Callbacks | ❌ | ✅ | ✅ | ✅ | ✅
-| PDF Export Quality | ⚠️ Screen-dependent | ✅ Vector-quality | ✅ Vector-quality | ✅ Vector-quality | ✅ Vector-quality
+| Bar Chart Support | Basic | Full | Full | Full | Full
+| Line Chart Support | Basic | Full | Full | Full | Full
+| Pie Chart Support | Basic | Full | Full | Full | Full
+| Dynamic Data Binding | Manual | Easy | Easy | Easy | Easy
+| Tooltips | No | Yes | Yes | Yes | Yes
+| Animations | No | Yes | Yes | Yes | Yes
+| Legends | No | Yes | Yes | Yes | Yes
+| Zoom/Pan | No | Yes | Yes | Limited | Limited
+| Touch Callbacks | No | Yes | Yes | Yes | Yes
+| PDF Export Quality | Screen-dependent | Vector-quality | Vector-quality | Vector-quality | Vector-quality
 | Bundle Size | 0 MB | ~500 KB | ~5 MB | ~400 KB | ~300 KB
 | Learning Curve | Already done | Low (1-2 hrs) | Medium (3-4 hrs) | Medium (3-4 hrs) | Medium (3-4 hrs)
-| Active Maintenance | N/A | ✅ High | ✅ High | ⚠️ Low | ✅ Medium
+| Active Maintenance | N/A | High | High | Low | Medium
 | License | MIT | MIT | Commercial | Apache 2.0 | MIT
 | Pub.dev Likes | N/A | 2.5k+ | 1.2k+ | 800+ | 400+
 |===
 
-== Pros and Cons Analysis
+== Analysis of the Proposed Solutions
 
 === Option 1: Continue with CustomPainter
 
 [cols="1,3", options="header"]
 |===
 | Type | Details
-| ✅ Pros | 
-- Full control over rendering and behavior
-- No additional dependencies
-- Already works with current code
-- Smallest bundle size
-- Can optimize specifically for use case
-| ❌ Cons |
-- Missing standard features (tooltips, animations, legends)
-- More code to write and maintain
-- Manual PDF capture has quality limitations
-- No touch interaction support
-- Each chart type needs separate implementation
+| Pros | 
+Full control over rendering and behavior, No additional dependencies, Already works with current code, Smallest bundle size, Can optimize specifically for use case
+| Cons |
+Missing standard features (tooltips, animations, legends), More code to write and maintain, Manual PDF capture has quality limitations, No touch interaction support, Each chart type needs separate implementation
 |===
 
 === Option 2: fl_chart (Recommended)
@@ -122,17 +113,10 @@ The application currently uses three different custom implementations:
 [cols="1,3", options="header"]
 |===
 | Type | Details
-| ✅ Pros |
-- Most popular Flutter charting library
-- Excellent documentation with many examples
-- Supports all chart types needed
-- Active development and community
-- MIT license (compatible with project)
-- Built-in touch interactions and tooltips
-- Smooth animations out of the box
-| ❌ Cons |
-- Adds ~500KB to bundle size
-- Some customization requires learning their API
+| Pros |
+Most popular Flutter charting library, Excellent documentation with many examples, Supports all chart types needed, Active development and community, MIT license (compatible with project), Built-in touch interactions and tooltips, Smooth animations out of the box
+| Cons |
+Adds ~500KB to bundle size, Some customization requires learning their API
 |===
 
 === Option 3: syncfusion_flutter_charts
@@ -140,15 +124,10 @@ The application currently uses three different custom implementations:
 [cols="1,3", options="header"]
 |===
 | Type | Details
-| ✅ Pros |
-- Most feature-rich option
-- Excellent performance with large datasets
-- Enterprise support available
-- Comprehensive documentation
-| ❌ Cons |
-- Commercial license (watermark on free tier)
-- Largest bundle size (~5MB)
-- Some features require paid license
+| Pros |
+Most feature-rich option, Excellent performance with large datasets, Enterprise support available, Comprehensive documentation
+| Cons |
+Commercial license (watermark on free tier), Largest bundle size (~5MB), Some features require paid license
 |===
 
 === Option 4: charts_flutter (Google)
@@ -156,14 +135,11 @@ The application currently uses three different custom implementations:
 [cols="1,3", options="header"]
 |===
 | Type | Details
-| ✅ Pros |
-- Official Google library
-- Good integration with Flutter framework
+| Pros |
+Official Google library, Good integration with Flutter framework
 - Apache 2.0 license
-| ❌ Cons |
-- Slow maintenance (last major update 2022)
-- Limited customization options
-- Fewer examples and community support
+| Cons |
+Slow maintenance (last major update 2022), Limited customization options, Fewer examples and community support
 |===
 
 === Option 5: graphic
@@ -171,14 +147,10 @@ The application currently uses three different custom implementations:
 [cols="1,3", options="header"]
 |===
 | Type | Details
-| ✅ Pros |
-- Grammar of graphics approach (similar to ggplot2)
-- Declarative API
-- MIT license
-| ❌ Cons |
-- Smaller community
-- Less documentation
-- Steeper learning curve for complex charts
+| Pros |
+Grammar of graphics approach (similar to ggplot2), Declarative API, MIT license
+| Cons |
+Smaller community, Less documentation, Steeper learning curve for complex charts
 |===
 
 == Final Recommendation
