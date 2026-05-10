@@ -409,7 +409,7 @@ Future<Uint8List?> _captureChart() async {
 
 . **Inventory Stock Summary** - Current manual Container bars are most limited
 . **Item Usage Rates** - CustomPainter works but missing tooltips
-. **Expenditure Report** - Optional; current CustomPainter may be sufficient
+. **Expenditure Report** - Optional, current CustomPainter may be sufficient
 
 === Rollback Plan
 
