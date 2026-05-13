@@ -430,7 +430,7 @@ Next steps:
 . Add fl_chart dependency
 . Migrate Inventory Stock Summary bar chart (highest impact)
 . Migrate Item Usage Rates line chart
-. (Optional) Migrate Expenditure Report pie chart for consistency
+. Migrate Expenditure Report pie chart
 . Test dynamic data binding with real backend data
 . Update PDF export to use higher resolution captures
 
