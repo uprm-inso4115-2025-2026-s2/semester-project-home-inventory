@@ -27,16 +27,17 @@ class DynamicBarChart extends StatelessWidget {
 
     // Get screen height for responsive sizing
     final screenHeight = MediaQuery.of(context).size.height;
-    double chartHeight = screenHeight * 0.35; // 35% of screen height
+    // Increase to 45% of screen height to leave room for tooltips
+    double chartHeight = screenHeight * 0.45;
     
-    // Adjust for very small screens
-    if (chartHeight < 250) {
-      chartHeight = 250;
+    // Adjust for very small screens - ensure minimum height
+    if (chartHeight < 350) {
+      chartHeight = 350;
     }
 
     final maxVal = data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    // Add 10% padding to the top so numbers don't get cut off
-    final safeMaxVal = maxVal == 0 ? 100.0 : (maxVal * 1.1).toDouble();
+    // Add 30% padding to the top so tooltips and numbers have room
+    final safeMaxVal = maxVal == 0 ? 100.0 : (maxVal * 1.3).toDouble();
     
     // Bar width for better spacing
     const double barWidth = 100;
@@ -121,6 +122,8 @@ class DynamicBarChart extends StatelessWidget {
               barTouchData: BarTouchData(
                 enabled: true,
                 touchTooltipData: BarTouchTooltipData(
+                  // Position the tooltip above the bar
+                  tooltipPadding: const EdgeInsets.all(8),
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
                     final value = data[group.x.toInt()].quantity;
                     return BarTooltipItem(
