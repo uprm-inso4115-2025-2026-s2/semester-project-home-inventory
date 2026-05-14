@@ -286,7 +286,7 @@ class _ReportViewState extends State<_ReportView> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Favourites dropdown
+                // Star icon - Favourites dropdown
                 BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
                   builder: (context, state) {
                     return PopupMenuButton<ReportFavorite>(
@@ -328,34 +328,15 @@ class _ReportViewState extends State<_ReportView> {
                     );
                   },
                 ),
-                const SizedBox(width: 4),
-                // Save current filters
+                const SizedBox(width: 8),
+                // Download icon - Save current filters
                 IconButton(
                   onPressed: () => _showSaveFavoriteDialog(context),
                   icon: const Icon(Icons.save_alt, color: Colors.black87),
                   tooltip: 'Save current filters',
                 ),
-                const SizedBox(width: 4),
-                // Export PDF button
-                BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
-                  builder: (context, state) {
-                    final isValid = state.validationResult?.isValid ?? false;
-                    return ElevatedButton.icon(
-                      onPressed: isValid ? () => _generateReport(context, state) : null,
-                      icon: const Icon(Icons.picture_as_pdf, size: 18),
-                      label: const Text('Export PDF'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(width: 4),
-                // Share PDF button
+                const SizedBox(width: 8),
+                // Share button
                 BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
                   builder: (context, state) {
                     return IconButton(
@@ -440,8 +421,8 @@ class _ReportViewState extends State<_ReportView> {
               const SizedBox(height: 16),
               // Data table
               Expanded(child: _DataTable(items: state.filteredItems)),
-              // Search bar
-              _SearchBar(),
+              // Search bar with export button
+              _SearchBar(onExport: () => _exportPdf(context, state)),
             ],
           );
         },
@@ -577,21 +558,9 @@ class _StatusBadge extends StatelessWidget {
   }
 }
 
-class _SearchBar extends StatefulWidget {
-  const _SearchBar();
-
-  @override
-  State<_SearchBar> createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<_SearchBar> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class _SearchBar extends StatelessWidget {
+  final VoidCallback onExport;
+  const _SearchBar({required this.onExport});
 
   @override
   Widget build(BuildContext context) {
@@ -605,7 +574,6 @@ class _SearchBarState extends State<_SearchBar> {
         children: [
           Expanded(
             child: TextField(
-              controller: _controller,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 hintText: 'Type here to search',
@@ -614,29 +582,22 @@ class _SearchBarState extends State<_SearchBar> {
                 fillColor: Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                suffixIcon: _controller.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.black54),
-                        onPressed: () {
-                          _controller.clear();
-                          context.read<InventoryStockReportCubit>().setSearchQuery('');
-                          setState(() {});
-                        },
-                      )
-                    : null,
               ),
               onChanged: (value) {
                 context.read<InventoryStockReportCubit>().setSearchQuery(value);
-                setState(() {});
               },
             ),
           ),
           const SizedBox(width: 8),
           Container(
-            decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: IconButton(
               icon: const Icon(Icons.open_in_new, color: Colors.black),
-              onPressed: () {},
+              onPressed: onExport,
+              tooltip: 'Export PDF',
             ),
           ),
         ],
