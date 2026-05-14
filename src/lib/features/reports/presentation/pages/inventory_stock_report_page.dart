@@ -11,7 +11,7 @@ import '../cubit/inventory_stock_report_cubit.dart';
 import '../cubit/inventory_stock_report_state.dart';
 import '../../domain/entities/report_filter_validator.dart';
 import '../../domain/repositories/favorites_repository.dart';
-import '../../presentation/widgets/dynamic_bar_chart.dart';
+import '../widgets/dynamic_bar_chart.dart';
 
 class InventoryStockReportPage extends StatelessWidget {
   const InventoryStockReportPage({super.key});

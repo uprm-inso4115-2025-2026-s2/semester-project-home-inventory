@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:src/config/theme.dart';
-import '../../cubit/inventory_stock_report_state.dart'; // Add this import for CategoryData
+import '../cubit/inventory_stock_report_state.dart'; // Add this import for CategoryData
 
 // TODO: Replace with real data from Supabase backend when available
 // This widget accepts dynamic data but currently uses placeholder data structure
@@ -27,7 +27,7 @@ class DynamicBarChart extends StatelessWidget {
     }
 
     final maxVal = data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    final safeMaxVal = maxVal == 0 ? 100 : maxVal.toDouble();
+    final safeMaxVal = maxVal == 0 ? 100.0 : maxVal.toDouble();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
