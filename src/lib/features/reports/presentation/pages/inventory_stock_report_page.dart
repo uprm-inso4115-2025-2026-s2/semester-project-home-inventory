@@ -267,9 +267,9 @@ class _ReportViewState extends State<_ReportView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor, // Changed from 0xFFFAF9F6
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppTheme.backgroundColor, // Changed from 0xFFFAF9F6
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -345,7 +345,7 @@ class _ReportViewState extends State<_ReportView> {
                       icon: const Icon(Icons.picture_as_pdf, size: 18),
                       label: const Text('Export PDF'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryColor, // Changed from 0xFF8B9D7F
+                        backgroundColor: AppTheme.primaryColor,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         minimumSize: Size.zero,
@@ -375,25 +375,23 @@ class _ReportViewState extends State<_ReportView> {
         builder: (context, state) {
           return Column(
             children: [
-              // Filter row: only date pickers (no category dropdown)
+              // Filter row: date pickers side by side
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
+                    // Date pickers side by side in a Row
+                    Row(
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.45,
+                        Expanded(
                           child: _DatePickerField(
                             label: 'Start Date',
                             value: state.filters.startDate,
                             onChanged: (d) => context.read<InventoryStockReportCubit>().setStartDate(d!),
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.45,
+                        const SizedBox(width: 12),
+                        Expanded(
                           child: _DatePickerField(
                             label: 'End Date',
                             value: state.filters.endDate,
@@ -434,7 +432,7 @@ class _ReportViewState extends State<_ReportView> {
                   ],
                 ),
               ),
-              // Chart - Using DynamicBarChart with fl_chart
+              // Chart
               RepaintBoundary(
                 key: _chartKey,
                 child: DynamicBarChart(data: state.currentPageData),
@@ -495,9 +493,9 @@ class _DataTable extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceColor, // Changed from 0xFFFAF9F6
+          color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.borderColor), // Changed from Colors.black12
+          border: Border.all(color: AppTheme.borderColor),
         ),
         child: const Center(
           child: Padding(
@@ -510,9 +508,9 @@ class _DataTable extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppTheme.surfaceColor, // Changed from 0xFFFAF9F6
+        color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.borderColor), // Changed from Colors.black12
+        border: Border.all(color: AppTheme.borderColor),
       ),
       child: Column(
         children: [
