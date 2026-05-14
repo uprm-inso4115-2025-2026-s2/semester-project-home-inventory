@@ -29,9 +29,9 @@ class DynamicLineChart extends StatelessWidget {
       );
     }
 
-    // Calculate min and max for Y-axis
+    // Calculate max for Y-axis
     final maxY = points.reduce((a, b) => a > b ? a : b);
-    final safeMaxY = maxY == 0 ? 30.0 : maxY + 5; // Add 5 for padding
+    final safeMaxY = maxY == 0 ? 30.0 : maxY + 5;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -125,15 +125,11 @@ class DynamicLineChart extends StatelessWidget {
             lineTouchData: LineTouchData(
               enabled: true,
               touchTooltipData: LineTouchTooltipData(
-                tooltipRoundedRadius: 8,
-                tooltipMargin: 8,
-                tooltipBgColor: AppTheme.primaryColor,
-                tooltipBottomMargin: 8,
+                // Only use parameters that exist in 0.69.2
                 getTooltipItems: (List<LineBarSpot> touchedSpots) {
-                  return touchedSpots.map((LineBarSpot touchedSpot) {
-                    final value = touchedSpot.y.toInt();
+                  return touchedSpots.map((touchedSpot) {
                     return LineTooltipItem(
-                      value.toString(),
+                      touchedSpot.y.toInt().toString(),
                       const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
