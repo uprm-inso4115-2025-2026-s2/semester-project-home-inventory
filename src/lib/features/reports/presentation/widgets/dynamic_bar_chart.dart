@@ -13,7 +13,7 @@ class DynamicBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (data.isEmpty) {
       return Container(
-        height: 220,
+        height: 300,
         decoration: BoxDecoration(
           color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
@@ -26,10 +26,11 @@ class DynamicBarChart extends StatelessWidget {
     }
 
     final maxVal = data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    final safeMaxVal = maxVal == 0 ? 100.0 : maxVal.toDouble();
+    // Add 10% padding to the top so numbers don't get cut off
+    final safeMaxVal = maxVal == 0 ? 100.0 : (maxVal * 1.1).toDouble();
     
-    // Fixed width per bar (60px gives enough room for category names)
-    const double barWidth = 60;
+    // Increase bar width to 100px for better spacing
+    const double barWidth = 100;
     final double chartWidth = data.length * barWidth;
 
     return Container(
@@ -40,12 +41,13 @@ class DynamicBarChart extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppTheme.borderColor),
       ),
-      child: SizedBox(
-        height: 220,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: SizedBox(
             width: chartWidth,
+            height: 250, // Fixed height for the chart area
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceEvenly,
@@ -56,20 +58,23 @@ class DynamicBarChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 40,
+                      reservedSize: 60,
                       getTitlesWidget: (value, meta) {
                         final index = value.toInt();
                         if (index >= 0 && index < data.length) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              data[index].name,
-                              style: TextStyle(
-                                fontSize: 11, 
-                                color: AppTheme.primaryText,
+                          return Transform.rotate(
+                            angle: -0.3,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+                              child: Text(
+                                data[index].name,
+                                style: TextStyle(
+                                  fontSize: 11, 
+                                  color: AppTheme.primaryText,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.visible,
                             ),
                           );
                         }
@@ -80,7 +85,7 @@ class DynamicBarChart extends StatelessWidget {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 40,
+                      reservedSize: 45,
                       interval: (safeMaxVal / 5).ceilToDouble(),
                       getTitlesWidget: (value, meta) {
                         return Text(
@@ -112,14 +117,14 @@ class DynamicBarChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    // Removed tooltipBgColor - not supported in fl_chart 0.69.2
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      final value = data[group.x.toInt()].quantity;
                       return BarTooltipItem(
-                        '${data[group.x.toInt()].quantity}',
+                        value.toString(),
                         TextStyle(
                           color: AppTheme.surfaceColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
                         ),
                       );
                     },
@@ -138,14 +143,16 @@ class DynamicBarChart extends StatelessWidget {
       final category = data[index];
       final height = category.quantity.toDouble();
       
+      // For zero values, return a bar with 0 height (invisible but touchable)
+      // The touch area will still work because the BarChartGroupData exists
       return BarChartGroupData(
         x: index,
         barRods: [
           BarChartRodData(
-            toY: height,
+            toY: height, // If 0, bar won't be visible
             color: AppTheme.accentColor,
-            width: 40,
-            borderRadius: BorderRadius.circular(4),
+            width: 60,
+            borderRadius: BorderRadius.circular(6),
             backDrawRodData: BackgroundBarChartRodData(
               show: true,
               toY: maxVal,
