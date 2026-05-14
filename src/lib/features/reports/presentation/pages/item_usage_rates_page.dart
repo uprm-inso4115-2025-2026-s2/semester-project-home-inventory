@@ -656,11 +656,11 @@ class _BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              color: AppTheme.borderColor.withOpacity(0.5), blurRadius: 4, offset: Offset(0, -2))
+              color: AppTheme.borderColor.withOpacity(0.5), blurRadius: 4, offset: const Offset(0, -2))
         ],
       ),
       child: Row(

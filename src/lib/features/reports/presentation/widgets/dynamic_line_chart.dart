@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:src/config/theme.dart';
 
-//TO DO: Replace with real data from Supabase backend when available
+// TODO: Replace with real data from Supabase backend when available
 class DynamicLineChart extends StatelessWidget {
   final List<double> points;
   final List<String> days;
@@ -117,7 +117,7 @@ class DynamicLineChart extends StatelessWidget {
               horizontalInterval: 10,
               getDrawingHorizontalLine: (value) {
                 return FlLine(
-                  color: Colors.black12,
+                  color: AppTheme.borderColor.withOpacity(0.5),
                   strokeWidth: 1,
                 );
               },
@@ -126,7 +126,7 @@ class DynamicLineChart extends StatelessWidget {
             lineTouchData: LineTouchData(
               enabled: true,
               touchTooltipData: LineTouchTooltipData(
-                tooltipBgColor: AppTheme.primaryColor,
+                // tooltipBgColor removed - not supported in this version
                 getTooltipItem: (touchedSpot) {
                   return LineTooltipItem(
                     touchedSpot.y.toInt().toString(),
