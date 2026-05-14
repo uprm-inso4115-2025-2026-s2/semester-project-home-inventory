@@ -1,0 +1,144 @@
+= Lecture Topic Task: Analyze Human Behavioral Unpredictability in Shared Alert and Restock Interactions
+
+== Objective
+
+Analyze how *inconsistent or unpredictable* household-member behavior affects the *reliability* of the Alert & Restock slice in *shared student housing*: where several people share one tracked inventory, informal coordination already fails in ways the domain narrative calls *coordination failures* <<unified-narrative>>. The lecture lens combines *human behavior facets* (cognitive and social tendencies that shape how people use systems) <<facets-human>>, *biddable behavior* (people may not honor stated expectations or interface prompts even when the machine “asks” correctly), and *unreliable actors* (members who update late, differently, or not at all) relative to interface and domain requirements such as IR-02 <<stakeholder-req>>.
+
+This document satisfies the issue success criteria (<<issue-554>>): unpredictable behaviors are named and illustrated; effects on alerts, restock automation, and inventory accuracy are explained; mitigation strategies are included; and lecture concepts are tied to Alert & Restock flows and existing documentation.
+
+== Bounded context
+
+The focus is *multi-member households* in a student-housing setting <<narrative>>, the *tracked inventory record* that may diverge from physical reality <<entities>>, and Team 2 concerns: *alerts* (low/out/near-expiry/expired), *restock or grocery automation* driven from inventory-derived flags <<grocery-restock>>, and policies such as deduplication and snooze <<alert-states>> <<alert-seq>>. The system’s domain rules (e.g. stock and expiration classification <<src-stock>> <<src-expiration>>) are largely *deterministic* given their inputs; *unpredictability* enters through *who* updates data, *when*, and *how* members respond to notifications—so reliability is a joint property of software and social practice.
+
+== Unpredictable behaviors and system effects
+
+The following tables group behaviors by theme. They are not an exhaustive psychology catalog; they connect recurring patterns to Alert & Restock outcomes and align with broader human-behavior analysis <<facets-human>> and human-error scenarios <<model-human-error>>.
+
+=== Alert and notification responses
+
+[options="header"]
+|===
+| Unpredictable behavior | Typical manifestation (shared housing) | Effects on alerts, restock automation, and inventory accuracy
+
+| Ignoring or batching attention to alerts
+| Push or in-app alerts dismissed unread; “inbox zero” never; only one roommate reads notifications.
+| Alert *delivery* succeeds but *action* does not; restock lists stay stale; same underlying stock state may re-trigger alerts unless deduplication and state transitions are carefully defined <<alert-states>> <<alert-seq>>.
+
+| Chronic snooze or defer without state change
+| User silences reminders while physical stock continues to drop or age.
+| Reduces noise short term but can mask true urgency; automation may still add restock lines from flags while humans disagree on who acts <<grocery-restock>>.
+
+| Heterogeneous trust in automation
+| Some members follow system lists; others shop from memory or a parallel group chat.
+| *Duplicate purchasing* or *missed purchasing* relative to the tracked record; inventory numbers diverge further after unlogged consumption or unlogged bulk buys <<unified-narrative>>.
+
+|===
+
+=== Inventory hygiene and logging
+
+[options="header"]
+|===
+| Unpredictable behavior | Typical manifestation (shared housing) | Effects on alerts, restock automation, and inventory accuracy
+
+| Forgetting to update quantities after use
+| Snacks, toiletries, or shared milk consumed without a log entry; “someone will update it.”
+| Quantities stay high in the system while reality is low—*false negatives* for low-stock and out-of-stock alerts; restock automation may not fire when it should <<src-stock>> <<grocery-restock>>.
+
+| Consuming without logging (present bias, friction)
+| Immediate convenience of not opening the app wins over logging <<facets-human>>.
+| Same as above; expiration-only signals may still fire if dates exist, but *quantity-based* reliability collapses.
+
+| Incorrect or duplicate data entry
+| Wrong quantity, wrong product, or duplicate line after a manual shop.
+| *False positives* for low/out alerts; spurious restock suggestions; wasted notifications and list clutter <<model-human-error>>.
+
+| Delayed entry after a real restock
+| Groceries put away first; app updated hours or days later.
+| Temporary mismatch: alerts may still show low/out after the household already restocked; members lose trust in alert timing <<alert-seq>>.
+
+|===
+
+=== Coordination and shared responsibility
+
+[options="header"]
+|===
+| Unpredictable behavior | Typical manifestation (shared housing) | Effects on alerts, restock automation, and inventory accuracy
+
+| Social loafing on shared tasks
+| Everyone assumes someone else will log or shop <<facets-human>>.
+| Tracked record drifts; alert and automation policies optimized for a single diligent user misfire under diffuse responsibility.
+
+| Unclear ownership (personal vs shared)
+| Item treated as communal in reality but marked personal (or vice versa) <<model-human-error>>.
+| Wrong person alerted or wrong restock priority; disputes and duplicated “fixes” to the same line.
+
+| Parallel channels (chat vs app)
+| Decisions happen in group chat; the app is not updated to match <<narrative>>.
+| System-derived alerts reflect *artifact* state, not *agreed* roommate state—classic coordination failure <<unified-narrative>>.
+
+|===
+
+== Mitigation strategies and examples
+
+These strategies do not assume perfect users; they reduce harm from *biddable* and *unreliable* participation <<facets-human>> <<issue-554>>.
+
+* *Lower logging friction* — quick adjust quantity, barcode or template flows, optional “used one” gestures so consumption events match reality more often (addresses false negatives for <<src-stock>>-driven alerts).
+* *Attribution and visibility* — show who last changed a line or acknowledged an alert so social loafing is harder to hide <<facets-human>>; aligns with IR-style expectations that members can see shared state <<stakeholder-req>>.
+* *Targeted routing* — notify the member who usually consumes an item type, or rotate a lightweight “inventory champion” role, instead of broadcasting identical alerts to everyone.
+* *Honest automation* — restock auto-add rules <<grocery-restock>> should tolerate stale flags (e.g. confirm-before-push, merge duplicates, or require recent confirmation) so list spam does not train users to ignore the app.
+* *Alert policy tuning* — deduplication, snooze caps, and state-based suppression <<alert-states>> <<alert-seq>> balance annoyance vs. signal when behavior is irregular.
+* *Channel alignment* — optional lightweight “we bought this” or chat deep-link so parallel coordination leaves a trace in the tracked record <<unified-narrative>>.
+* *Ownership clarity* — explicit personal vs. shared markers reduce wrong accountability and duplicate buys <<entities>> <<model-human-error>>.
+
+== Mapping to Alert & Restock design and code
+
+Team 2’s stock and expiration logic is *pure over current model data*: `checkStock` and `checkExpiration` classify lines from stored quantity and dates <<src-stock>> <<src-expiration>>; `automatedCheckStock` and `automatedCheckExpiration` aggregate results over the inventory <<src-auto-stock>> <<src-auto-exp>>. There is no built-in model of *which member* is reliable or whether a quantity was just consumed in the kitchen; *human unpredictability* therefore shows up as *bad or stale inputs* and *uneven follow-through* on outputs. Restock automation requirements explicitly consume flags such as `isLowStock`, `isOutOfStock`, and `isExpired` <<grocery-restock>>—all of which inherit whatever inaccuracy roommates introduce. Notification design (deduplication, `last_triggered`, snooze) <<alert-states>> is partly a response to *known* human attention limits but cannot fully correct missing logs.
+
+== Downstream consequences (not only “bugs”)
+
+Consequences spill across bounded contexts:
+
+* *Budget and spending* — duplicate buys and emergency runs show up as unplanned cost; not strictly Team 2 but linked to failed restock coordination <<narrative>>.
+* *Reports* — dashboards summarize the *record*, not the pantry; misleading trends if logging is uneven.
+* *Member trust* — if alerts are often “wrong” from the user’s perspective because data is stale, users disable channels or ignore future alerts <<facets-human>>.
+
+== Boundaries and overlap (issue risks)
+
+* *Variation across households and cultures* — mitigations must be configurable; one policy will not fit all living arrangements <<issue-554>>.
+* *Overlap* with <<facets-human>>, <<model-human-error>>, and coordination narratives <<unified-narrative>>; this lecture task narrows the lens to *Alert & Restock reliability* rather than replacing those documents.
+* *Milestone scope* — some mitigations (passive sensing, hardware, org-wide policies) may exceed current implementation; they are still valid *design directions*.
+
+[bibliography]
+== References
+
+* [[[issue-554]]] Lecture Topic Task (GitHub). _Analyze Human Behavioral Unpredictability in Shared Alert & Restock Interactions._ https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/554
+
+* [[[facets-human]]] Team documentation. _Facets of Human Behavior in Home Inventory Management._ xref:Facets of Human Behavior in Home Inventory Management.adoc[Facets of Human Behavior in Home Inventory Management.adoc]
+
+* [[[unified-narrative]]] Team documentation. _Unified domain narrative_ (coordination failures, shared households). xref:../3-analytic/concept-analysis/domain-concept-formation/unified-domain-narrative.adoc[unified-domain-narrative.adoc]
+
+* [[[narrative]]] Team documentation. _Domain narrative_ (actors, informal artifacts). xref:../2-descriptive/domain-description/narrative/narrative.adoc[narrative.adoc]
+
+* [[[entities]]] Team documentation. _Entities_ (tracked inventory record, alerts). xref:../2-descriptive/domain-description/entities/entities.adoc[entities.adoc]
+
+* [[[stakeholder-req]]] Team documentation. _Stakeholder requirements_ (IR-02 consumption updates). xref:../2-descriptive/requirements/stakeholder-requirements/stakeholder-requirement.adoc[stakeholder-requirement.adoc]
+
+* [[[model-human-error]]] Team documentation. _Model Human Error Scenarios in Digital Home Inventory Management._ xref:model_human_error_scenarios_ltt.adoc[model_human_error_scenarios_ltt.adoc]
+
+* [[[domain-events-ltt]]] Team documentation. _Domain Events for Inventory Alerts and Restocking._ xref:domain-events-for-inventory-alerts-and-restocking.adoc[domain-events-for-inventory-alerts-and-restocking.adoc]
+
+* [[[reactive-ltt]]] Team documentation. _Reactive Domain Behavior Modeling for Alert and Restock Notifications._ xref:reactive_domain_behavior_modeling_for_alert_&_restock_notifications.adoc[reactive_domain_behavior_modeling_for_alert_&_restock_notifications.adoc]
+
+* [[[alert-states]]] Team documentation. _Design Item Expiration States_ (alert preferences, deduplication). xref:../3-analytic/alert-system-states.adoc[alert-system-states.adoc]
+
+* [[[alert-seq]]] Team documentation. _UML Sequence Diagram for Alert Delivery._ xref:alert-delivery-sequence-diagram.adoc[alert-delivery-sequence-diagram.adoc]
+
+* [[[grocery-restock]]] Team documentation. _Grocery list / restock autogeneration decision logic._ xref:../3-analytic/concept-analysis/requirements-concept-analysis/grocerylist_autoadd_decisionlogic.adoc[grocerylist_autoadd_decisionlogic.adoc]
+
+* [[[src-stock]]] Application source. `src/lib/features/alerts_restock/domain/usecases/check_stock.dart`
+
+* [[[src-auto-stock]]] Application source. `src/lib/features/alerts_restock/domain/usecases/automated_check_stock.dart`
+
+* [[[src-expiration]]] Application source. `src/lib/features/alerts_restock/domain/usecases/check_expiration.dart`
+
+* [[[src-auto-exp]]] Application source. `src/lib/features/alerts_restock/domain/usecases/automated_check_expiration.dart`
