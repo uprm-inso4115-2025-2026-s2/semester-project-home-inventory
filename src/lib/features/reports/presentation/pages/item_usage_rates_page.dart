@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/config/theme.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
+import '../widgets/dynamic_line_chart.dart';
 
 // ======================== Models ========================
 
