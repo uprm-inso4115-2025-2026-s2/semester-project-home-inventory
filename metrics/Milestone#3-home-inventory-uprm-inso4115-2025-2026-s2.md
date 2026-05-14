@@ -1,6 +1,6 @@
 # Milestone Data
 
-## Date Generated: 2026-05-13
+## Date Generated: 2026-05-14
 | Developer | Points Closed | Percent Contribution | Indivudal Grade | Milestone Grade | Lecture Topic Tasks |
 | --------- | ------------- | -------------------- | --------------- | --------------- | ------------------- |
 | reinaldo-martinez1 | 0.0 | 0.0% | 0.0% | 40.0% | 0 |
@@ -77,39 +77,39 @@
 
 | Developer | Week #1 | Week #2 | Week #3 | Week #4 | Penalty |
 |---|---|---|---|---|---|
+| nataliavera6 | Yes | No | No | No | 9.0 |
+| andreasegarra | Yes | No | No | No | 9.0 |
+| nicolasrivera25 | No | No | No | No | 14.0 |
+| Kemuel05 | Yes | No | No | No | 9.0 |
+| reinaldo-martinez1 | Yes | No | No | No | 9.0 |
+| alondra-arce | No | No | No | No | 14.0 |
+| ernestosoto3 | Yes | No | No | No | 9.0 |
+| alianasofiaaa | No | No | No | No | 14.0 |
+| ronaldoflores9 | Yes | No | No | No | 9.0 |
+| yamilette-alemany | Yes | No | No | No | 9.0 |
+| kevinlara1 | Yes | No | No | No | 9.0 |
+| JorgeRivera94 | Yes | No | No | No | 9.0 |
+| devlin-hahn04 | Yes | No | No | No | 9.0 |
+| Solimar-Cruz | Yes | No | No | No | 9.0 |
+| eliel-hernandez | Yes | No | No | No | 9.0 |
+| JorgeDeLeonOrama | Yes | No | No | No | 9.0 |
+| jaydensanchez12 | Yes | No | No | No | 9.0 |
+| Programian | Yes | No | No | No | 9.0 |
+| FabiolaZTorres | Yes | No | No | No | 9.0 |
+| jankii03 | Yes | No | No | No | 9.0 |
+| AdrianaFigueroa9 | No | No | No | No | 14.0 |
 | Kay9876 | Yes | No | No | No | 9.0 |
 | FabianVelezOcasio | Yes | No | No | No | 9.0 |
 | kevgom018 | Yes | No | No | No | 9.0 |
-| yamilette-alemany | Yes | No | No | No | 9.0 |
-| AdrianaFigueroa9 | No | No | No | No | 14.0 |
-| kian-robert | Yes | No | No | No | 9.0 |
-| nataliavera6 | Yes | No | No | No | 9.0 |
-| jaydensanchez12 | Yes | No | No | No | 9.0 |
-| JorgeDeLeonOrama | Yes | No | No | No | 9.0 |
-| ernestosoto3 | Yes | No | No | No | 9.0 |
-| FabiolaZTorres | Yes | No | No | No | 9.0 |
-| PeraltaJorge9128 | Yes | No | No | No | 9.0 |
-| devlin-hahn04 | Yes | No | No | No | 9.0 |
-| nicolasrivera25 | No | No | No | No | 14.0 |
-| Programian | Yes | No | No | No | 9.0 |
-| SamarysB | Yes | No | No | No | 9.0 |
-| JorgeRivera94 | Yes | No | No | No | 9.0 |
-| jankii03 | Yes | No | No | No | 9.0 |
-| ronaldoflores9 | Yes | No | No | No | 9.0 |
-| reinaldo-martinez1 | Yes | No | No | No | 9.0 |
-| daniellameleroo | Yes | No | No | No | 9.0 |
 | Gerardoruiz1 | Yes | No | No | No | 9.0 |
-| alondra-arce | No | No | No | No | 14.0 |
-| alianasofiaaa | No | No | No | No | 14.0 |
+| L-A-M-D | Yes | No | No | No | 9.0 |
 | fernan-castro | Yes | No | No | No | 9.0 |
-| kevinlara1 | Yes | No | No | No | 9.0 |
-| Kemuel05 | Yes | No | No | No | 9.0 |
 | aryamdiaz | No | No | No | No | 14.0 |
 | LuisJCruz | No | No | No | No | 14.0 |
-| Solimar-Cruz | Yes | No | No | No | 9.0 |
-| L-A-M-D | Yes | No | No | No | 9.0 |
-| andreasegarra | Yes | No | No | No | 9.0 |
-| eliel-hernandez | Yes | No | No | No | 9.0 |
+| daniellameleroo | Yes | No | No | No | 9.0 |
+| SamarysB | Yes | No | No | No | 9.0 |
+| PeraltaJorge9128 | Yes | No | No | No | 9.0 |
+| kian-robert | Yes | No | No | No | 9.0 |
 
 ## Point Percent by Label
 
@@ -118,9 +118,15 @@ There are no labels assigned to any issue
 
 | Message |
 | ------- |
-| WARNING: Milestone due date in config doesn't match milestone due date on Github |
 | INFO: Found Project(name='home-inventory', number=6, url='https://github.com/orgs/uprm-inso4115-2025-2026-s2/projects/6', public=False) |
 | WARNING: Project visibility is set to private. This can lead to issues not being found if the Personal Access Token doesn't have permissions for viewing private projects. |
+| WARNING: [Issue #571](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/571) is not associated with a milestone. |
+| WARNING: [Issue #572](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/572) is not associated with a milestone. |
+| WARNING: [Issue #573](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/573) is not associated with a milestone. |
+| WARNING: [Issue #580](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/580) is not associated with a milestone. |
+| WARNING: [Issue #581](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/581) is not associated with a milestone. |
+| WARNING: [Issue #582](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/582) is not associated with a milestone. |
+| WARNING: [Issue #583](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/583) is not associated with a milestone. |
 | WARNING: reinaldo-martinez1 hasn't completed the minimum 1 task(s) required for sprint 2026/05/06-2026/05/17 |
 | WARNING: alianasofiaaa hasn't completed the minimum 1 task(s) required for sprint 2026/05/06-2026/05/17 |
 | WARNING: aryamdiaz hasn't completed the minimum 1 task(s) required for sprint 2026/05/06-2026/05/17 |
