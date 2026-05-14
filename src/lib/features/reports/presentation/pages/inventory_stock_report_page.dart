@@ -6,10 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/data/services/pdf_export_service.dart';
 import '../../../../core/data/services/pdf_share_helper.dart';
+import '../../../../config/theme.dart';
 import '../cubit/inventory_stock_report_cubit.dart';
 import '../cubit/inventory_stock_report_state.dart';
 import '../../domain/entities/report_filter_validator.dart';
 import '../../domain/repositories/favorites_repository.dart';
+import '../../presentation/widgets/dynamic_bar_chart.dart';
 
 class InventoryStockReportPage extends StatelessWidget {
   const InventoryStockReportPage({super.key});
@@ -265,9 +267,9 @@ class _ReportViewState extends State<_ReportView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF9F6),
+      backgroundColor: AppTheme.backgroundColor, // Changed from 0xFFFAF9F6
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFAF9F6),
+        backgroundColor: AppTheme.backgroundColor, // Changed from 0xFFFAF9F6
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -343,7 +345,7 @@ class _ReportViewState extends State<_ReportView> {
                       icon: const Icon(Icons.picture_as_pdf, size: 18),
                       label: const Text('Export PDF'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B9D7F),
+                        backgroundColor: AppTheme.primaryColor, // Changed from 0xFF8B9D7F
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         minimumSize: Size.zero,
@@ -432,10 +434,10 @@ class _ReportViewState extends State<_ReportView> {
                   ],
                 ),
               ),
-              // Chart
+              // Chart - Using DynamicBarChart with fl_chart
               RepaintBoundary(
                 key: _chartKey,
-                child: _BarChart(data: state.currentPageData),
+                child: DynamicBarChart(data: state.currentPageData),
               ),
               const SizedBox(height: 16),
               // Data table
@@ -483,63 +485,6 @@ class _DatePickerField extends StatelessWidget {
   }
 }
 
-class _BarChart extends StatelessWidget {
-  final List<CategoryData> data;
-  const _BarChart({required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    final maxVal = data.isEmpty ? 100 : data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFAF9F6),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black12),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 200,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: data.map((cat) {
-                final height = (cat.quantity / maxVal * 150).clamp(20.0, 150.0);
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('${cat.quantity}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black)),
-                    const SizedBox(height: 4),
-                    Container(
-                      width: 40,
-                      height: height,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF8B9D7F),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(cat.name, style: const TextStyle(fontSize: 11, color: Colors.black)),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Builder(
-            builder: (context) {
-              final page = context.watch<InventoryStockReportCubit>().state.filters.page;
-              return Text('< Page ${page + 1} >', style: const TextStyle(color: Colors.black));
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _DataTable extends StatelessWidget {
   final List<ItemData> items;
   const _DataTable({required this.items});
@@ -550,9 +495,9 @@ class _DataTable extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFFAF9F6),
+          color: AppTheme.surfaceColor, // Changed from 0xFFFAF9F6
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.black12),
+          border: Border.all(color: AppTheme.borderColor), // Changed from Colors.black12
         ),
         child: const Center(
           child: Padding(
@@ -565,9 +510,9 @@ class _DataTable extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF9F6),
+        color: AppTheme.surfaceColor, // Changed from 0xFFFAF9F6
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black12),
+        border: Border.all(color: AppTheme.borderColor), // Changed from Colors.black12
       ),
       child: Column(
         children: [
