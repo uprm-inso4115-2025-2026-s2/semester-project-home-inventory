@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:src/config/theme.dart';
+import '../../cubit/inventory_stock_report_state.dart'; // Add this import for CategoryData
 
-//TO DO: Replace with real data from Supabase backend when available
-//This widget accepts dynamic data but currently uses placeholder data structure
+// TODO: Replace with real data from Supabase backend when available
+// This widget accepts dynamic data but currently uses placeholder data structure
 class DynamicBarChart extends StatelessWidget {
   final List<CategoryData> data;
   
@@ -26,7 +27,7 @@ class DynamicBarChart extends StatelessWidget {
     }
 
     final maxVal = data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    final safeMaxVal = maxVal == 0 ? 100 : maxVal;
+    final safeMaxVal = maxVal == 0 ? 100 : maxVal.toDouble();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -43,7 +44,7 @@ class DynamicBarChart extends StatelessWidget {
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
-                maxY: safeMaxVal.toDouble(),
+                maxY: safeMaxVal,
                 barGroups: _createBarGroups(data, safeMaxVal),
                 titlesData: FlTitlesData(
                   show: true,
@@ -101,7 +102,6 @@ class DynamicBarChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    tooltipBgColor: Colors.grey[800],
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       return BarTooltipItem(
                         '${data[group.x.toInt()].quantity}',
@@ -120,8 +120,7 @@ class DynamicBarChart extends StatelessWidget {
           const SizedBox(height: 8),
           Builder(
             builder: (context) {
-              //This will need to be adapted based on your cubit
-              //For now, just showing a placeholder or you can inject page info
+              // TODO: Connect to cubit page state when available
               return const Text(
                 '< Page 1 >',
                 style: TextStyle(color: Colors.black),
