@@ -46,23 +46,19 @@ class InventoryStockReportState {
     return items;
   }
 
-  List<CategoryData> get currentPageData {
-    if (filters.page == 0) {
-      return const [
-        CategoryData('Food', 44),
-        CategoryData('Kitchen', 20),
-        CategoryData('Cleaning', 38),
-        CategoryData('Hygiene', 24),
-        CategoryData('Bathroom', 30),
-      ];
-    } else {
-      return const [
-        CategoryData('Utilities', 64),
-        CategoryData('Medicine', 20),
-        CategoryData('Laundry', 0),
-      ];
-    }
-  }
+List<CategoryData> get currentPageData {
+  // Return ALL categories for scrolling instead of pagination
+  return const [
+    CategoryData('Food', 44),
+    CategoryData('Kitchen', 20),
+    CategoryData('Cleaning', 38),
+    CategoryData('Hygiene', 24),
+    CategoryData('Bathroom', 30),
+    CategoryData('Utilities', 64),
+    CategoryData('Medicine', 20),
+    CategoryData('Laundry', 0),
+  ];
+}
 
   InventoryStockReportState copyWith({
     ReportFilters? filters,
