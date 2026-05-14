@@ -89,7 +89,7 @@ class DynamicBarChart extends StatelessWidget {
                 ),
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
-                    showTitles: true,
+                    showTitles: false,
                     reservedSize: 45,
                     interval: (safeMaxVal / 5).ceilToDouble(),
                     getTitlesWidget: (value, meta) {
