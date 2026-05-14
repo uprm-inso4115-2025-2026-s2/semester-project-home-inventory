@@ -2,6 +2,7 @@
 :toc: macro
 :toc-title: Table of Contents
 :author: Disclosure: This document represents the work of @Programian, but AI was used to help draft the document.
+:revdate: {localdate}
 :icons: font
 :source-highlighter: rouge
 
