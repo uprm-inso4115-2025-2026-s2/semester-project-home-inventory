@@ -29,7 +29,7 @@ class DynamicBarChart extends StatelessWidget {
     // Add 10% padding to the top so numbers don't get cut off
     final safeMaxVal = maxVal == 0 ? 100.0 : (maxVal * 1.1).toDouble();
     
-    // Increase bar width to 100px for better spacing
+    // Bar width for better spacing
     const double barWidth = 100;
     final double chartWidth = data.length * barWidth;
 
@@ -42,93 +42,87 @@ class DynamicBarChart extends StatelessWidget {
         border: Border.all(color: AppTheme.borderColor),
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: chartWidth,
-            height: 250, // Fixed height for the chart area
-            child: BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceEvenly,
-                maxY: safeMaxVal,
-                barGroups: _createBarGroups(data, safeMaxVal),
-                titlesData: FlTitlesData(
-                  show: true,
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 60,
-                      getTitlesWidget: (value, meta) {
-                        final index = value.toInt();
-                        if (index >= 0 && index < data.length) {
-                          return Transform.rotate(
-                            angle: -0.3,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-                              child: Text(
-                                data[index].name,
-                                style: TextStyle(
-                                  fontSize: 11, 
-                                  color: AppTheme.primaryText,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: chartWidth,
+          height: 250,
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceEvenly,
+              maxY: safeMaxVal,
+              barGroups: _createBarGroups(data, safeMaxVal),
+              titlesData: FlTitlesData(
+                show: true,
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 60,
+                    getTitlesWidget: (value, meta) {
+                      final index = value.toInt();
+                      if (index >= 0 && index < data.length) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+                          child: Text(
+                            data[index].name,
+                            style: TextStyle(
+                              fontSize: 11, 
+                              color: AppTheme.primaryText,
+                              fontWeight: FontWeight.w500,
                             ),
-                          );
-                        }
-                        return const Text('');
-                      },
-                    ),
-                  ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 45,
-                      interval: (safeMaxVal / 5).ceilToDouble(),
-                      getTitlesWidget: (value, meta) {
-                        return Text(
-                          value.toInt().toString(),
-                          style: TextStyle(fontSize: 11, color: AppTheme.mutedText),
+                            textAlign: TextAlign.center,
+                          ),
                         );
-                      },
-                    ),
-                  ),
-                  topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
+                      }
+                      return const Text('');
+                    },
                   ),
                 ),
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: (safeMaxVal / 5).ceilToDouble(),
-                  getDrawingHorizontalLine: (value) {
-                    return FlLine(
-                      color: AppTheme.borderColor.withOpacity(0.5),
-                      strokeWidth: 1,
-                    );
-                  },
-                ),
-                borderData: FlBorderData(show: false),
-                barTouchData: BarTouchData(
-                  enabled: true,
-                  touchTooltipData: BarTouchTooltipData(
-                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                      final value = data[group.x.toInt()].quantity;
-                      return BarTooltipItem(
-                        value.toString(),
-                        TextStyle(
-                          color: AppTheme.surfaceColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 45,
+                    interval: (safeMaxVal / 5).ceilToDouble(),
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        value.toInt().toString(),
+                        style: TextStyle(fontSize: 11, color: AppTheme.mutedText),
                       );
                     },
                   ),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+              ),
+              gridData: FlGridData(
+                show: true,
+                drawVerticalLine: false,
+                horizontalInterval: (safeMaxVal / 5).ceilToDouble(),
+                getDrawingHorizontalLine: (value) {
+                  return FlLine(
+                    color: AppTheme.borderColor.withOpacity(0.5),
+                    strokeWidth: 1,
+                  );
+                },
+              ),
+              borderData: FlBorderData(show: false),
+              barTouchData: BarTouchData(
+                enabled: true,
+                touchTooltipData: BarTouchTooltipData(
+                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                    final value = data[group.x.toInt()].quantity;
+                    return BarTooltipItem(
+                      value.toString(),
+                      TextStyle(
+                        color: AppTheme.surfaceColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -143,13 +137,11 @@ class DynamicBarChart extends StatelessWidget {
       final category = data[index];
       final height = category.quantity.toDouble();
       
-      // For zero values, return a bar with 0 height (invisible but touchable)
-      // The touch area will still work because the BarChartGroupData exists
       return BarChartGroupData(
         x: index,
         barRods: [
           BarChartRodData(
-            toY: height, // If 0, bar won't be visible
+            toY: height,
             color: AppTheme.accentColor,
             width: 60,
             borderRadius: BorderRadius.circular(6),
