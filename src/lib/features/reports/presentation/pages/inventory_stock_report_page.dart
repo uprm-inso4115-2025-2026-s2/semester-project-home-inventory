@@ -273,11 +273,11 @@ class _ReportViewState extends State<_ReportView> {
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: AppTheme.primaryText),
         ),
         title: const Text(
-          'Inventory Stock Summary',
-          style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.w600),
+          'Inventory',
+          style: TextStyle(color: AppTheme.primaryText, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         centerTitle: false,
         actions: [
@@ -290,7 +290,7 @@ class _ReportViewState extends State<_ReportView> {
                 BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
                   builder: (context, state) {
                     return PopupMenuButton<ReportFavorite>(
-                      icon: const Icon(Icons.star_border, color: Colors.black87),
+                      icon: const Icon(Icons.star_border, color: AppTheme.primaryText),
                       tooltip: 'Saved filters',
                       onSelected: (fav) => context.read<InventoryStockReportCubit>().applyFavorite(fav),
                       itemBuilder: (ctx) {
@@ -332,7 +332,7 @@ class _ReportViewState extends State<_ReportView> {
                 // Download icon - Save current filters
                 IconButton(
                   onPressed: () => _showSaveFavoriteDialog(context),
-                  icon: const Icon(Icons.save_alt, color: Colors.black87),
+                  icon: const Icon(Icons.save_alt, color: AppTheme.primaryText),
                   tooltip: 'Save current filters',
                 ),
                 const SizedBox(width: 8),
@@ -341,7 +341,7 @@ class _ReportViewState extends State<_ReportView> {
                   builder: (context, state) {
                     return IconButton(
                       onPressed: () => _sharePdf(context, state),
-                      icon: const Icon(Icons.share, color: Colors.black87),
+                      icon: const Icon(Icons.share, color: AppTheme.primaryText),
                       tooltip: 'Share PDF',
                     );
                   },
