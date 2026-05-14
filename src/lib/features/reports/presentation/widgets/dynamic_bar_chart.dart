@@ -27,10 +27,12 @@ class DynamicBarChart extends StatelessWidget {
 
     // Get screen height for responsive sizing
     final screenHeight = MediaQuery.of(context).size.height;
-    final chartHeight = screenHeight * 0.35; // 35% of screen height
+    double chartHeight = screenHeight * 0.35; // 35% of screen height
     
     // Adjust for very small screens
-    final safeChartHeight = chartHeight < 250 ? 250 : chartHeight;
+    if (chartHeight < 250) {
+      chartHeight = 250;
+    }
 
     final maxVal = data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
     // Add 10% padding to the top so numbers don't get cut off
@@ -52,7 +54,7 @@ class DynamicBarChart extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: SizedBox(
           width: chartWidth,
-          height: safeChartHeight,
+          height: chartHeight,
           child: BarChart(
             BarChartData(
               alignment: BarChartAlignment.spaceEvenly,
