@@ -356,72 +356,82 @@ class _ReportViewState extends State<_ReportView> {
         builder: (context, state) {
           return Column(
             children: [
-              // Filter row: date pickers side by side
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    // Date pickers side by side in a Row
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _DatePickerField(
-                            label: 'Start Date',
-                            value: state.filters.startDate,
-                            onChanged: (d) => context.read<InventoryStockReportCubit>().setStartDate(d!),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _DatePickerField(
-                            label: 'End Date',
-                            value: state.filters.endDate,
-                            onChanged: (d) => context.read<InventoryStockReportCubit>().setEndDate(d!),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Validation messages
-                    if (state.validationResult != null && state.validationResult!.conflicts.isNotEmpty)
-                      Container(
-                        margin: const EdgeInsets.only(top: 12),
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: state.validationResult!.hasErrors ? Colors.red.shade50 : Colors.orange.shade50,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+              // Scrollable content (everything except the bottom search bar)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Filter row: date pickers side by side
+                      Padding(
+                        padding: const EdgeInsets.all(16),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: state.validationResult!.conflicts.map((c) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    c.severity == ConflictSeverity.error ? Icons.error : Icons.warning,
-                                    size: 16,
-                                    color: c.severity == ConflictSeverity.error ? Colors.red : Colors.orange,
+                          children: [
+                            // Date pickers side by side in a Row
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _DatePickerField(
+                                    label: 'Start Date',
+                                    value: state.filters.startDate,
+                                    onChanged: (d) => context.read<InventoryStockReportCubit>().setStartDate(d!),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Expanded(child: Text('${c.message} (${c.suggestion})')),
-                                ],
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _DatePickerField(
+                                    label: 'End Date',
+                                    value: state.filters.endDate,
+                                    onChanged: (d) => context.read<InventoryStockReportCubit>().setEndDate(d!),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Validation messages
+                            if (state.validationResult != null && state.validationResult!.conflicts.isNotEmpty)
+                              Container(
+                                margin: const EdgeInsets.only(top: 12),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: state.validationResult!.hasErrors ? Colors.red.shade50 : Colors.orange.shade50,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: state.validationResult!.conflicts.map((c) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 2),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            c.severity == ConflictSeverity.error ? Icons.error : Icons.warning,
+                                            size: 16,
+                                            color: c.severity == ConflictSeverity.error ? Colors.red : Colors.orange,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(child: Text('${c.message} (${c.suggestion})')),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
-                            );
-                          }).toList(),
+                          ],
                         ),
                       ),
-                  ],
+                      // Chart
+                      RepaintBoundary(
+                        key: _chartKey,
+                        child: DynamicBarChart(data: state.currentPageData),
+                      ),
+                      const SizedBox(height: 16),
+                      // Data table
+                      _DataTable(items: state.filteredItems),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
-              // Chart
-              RepaintBoundary(
-                key: _chartKey,
-                child: DynamicBarChart(data: state.currentPageData),
-              ),
-              const SizedBox(height: 16),
-              // Data table
-              Expanded(child: _DataTable(items: state.filteredItems)),
-              // Search bar with export button
+              // Search bar with export button (sticky at bottom)
               _SearchBar(onExport: () => _exportPdf(context, state)),
             ],
           );
@@ -497,13 +507,9 @@ class _DataTable extends StatelessWidget {
         children: [
           _header(),
           const Divider(height: 1),
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: items.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (_, i) => _row(items[i]),
-            ),
+          // Removed Expanded and ListView - using simple Column with children
+          Column(
+            children: items.map((item) => _row(item)).toList(),
           ),
         ],
       ),
