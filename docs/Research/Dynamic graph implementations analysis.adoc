@@ -194,12 +194,12 @@ Syncfusion is feature-rich, but the commercial license and large bundle size mak
 
 === Step 1: Add Dependency
 
-Add to `pubspec.yaml`:
+Add fl_chart dependency to `pubspec.yaml`:
 
 [source,yaml]
 ----
 dependencies:
-  fl_chart: ^0.69.0  # Check for latest version
+  fl_chart: ^0.69.0  #Check for latest version
 ----
 
 Then run:
@@ -211,189 +211,189 @@ flutter pub get
 
 === Step 2: Bar Chart Implementation (Inventory Stock Summary)
 
-Current implementation uses manual `Container` bars. Replace with:
+Migrate current implementation that uses manual `Container` bars.
 
-[source,dart]
-----
-import 'package:fl_chart/fl_chart.dart';
+// [source,dart]
+// ----
+// import 'package:fl_chart/fl_chart.dart';
 
-class DynamicBarChart extends StatelessWidget {
-  final List<CategoryData> data;
+// class DynamicBarChart extends StatelessWidget {
+//   final List<CategoryData> data;
   
-  const DynamicBarChart({required this.data});
+//   const DynamicBarChart({required this.data});
 
-  @override
-  Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barGroups: data.asMap().entries.map((entry) {
-          return BarChartGroupData(
-            x: entry.key,
-            barRods: [
-              BarChartRodData(
-                toY: entry.value.quantity.toDouble(),
-                color: AppTheme.primaryColor,
-                width: 40,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ],
-          );
-        }).toList(),
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                return Text(data[value.toInt()].name);
-              },
-            ),
-          ),
-        ),
-        gridData: FlGridData(show: true),
-      ),
-    );
-  }
-}
-----
+//   @override
+//   Widget build(BuildContext context) {
+//     return BarChart(
+//       BarChartData(
+//         barGroups: data.asMap().entries.map((entry) {
+//           return BarChartGroupData(
+//             x: entry.key,
+//             barRods: [
+//               BarChartRodData(
+//                 toY: entry.value.quantity.toDouble(),
+//                 color: AppTheme.primaryColor,
+//                 width: 40,
+//                 borderRadius: BorderRadius.circular(4),
+//               ),
+//             ],
+//           );
+//         }).toList(),
+//         titlesData: FlTitlesData(
+//           bottomTitles: AxisTitles(
+//             sideTitles: SideTitles(
+//               showTitles: true,
+//               getTitlesWidget: (value, meta) {
+//                 return Text(data[value.toInt()].name);
+//               },
+//             ),
+//           ),
+//         ),
+//         gridData: FlGridData(show: true),
+//       ),
+//     );
+//   }
+// }
+// ----
 
 === Step 3: Line Chart Implementation (Item Usage Rates)
 
-Current implementation uses `_LineChartPainter`. Replace with:
+Migrate current implementation that uses `_LineChartPainter`.
 
-[source,dart]
-----
-import 'package:fl_chart/fl_chart.dart';
+// [source,dart]
+// ----
+// import 'package:fl_chart/fl_chart.dart';
 
-class DynamicLineChart extends StatelessWidget {
-  final List<double> points;
-  final List<String> days;
+// class DynamicLineChart extends StatelessWidget {
+//   final List<double> points;
+//   final List<String> days;
   
-  const DynamicLineChart({required this.points, required this.days});
+//   const DynamicLineChart({required this.points, required this.days});
 
-  @override
-  Widget build(BuildContext context) {
-    return LineChart(
-      LineChartData(
-        lineBarsData: [
-          LineChartBarData(
-            spots: points.asMap().entries.map((entry) {
-              return FlSpot(entry.key.toDouble(), entry.value);
-            }).toList(),
-            isCurved: false,
-            color: Colors.black87,
-            barWidth: 2,
-            dotData: FlDotData(show: true),
-          ),
-        ],
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                if (value.toInt() < days.length) {
-                  return Text(days[value.toInt()]);
-                }
-                return const Text('');
-              },
-            ),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              interval: 10,
-              reservedSize: 40,
-            ),
-          ),
-        ),
-        gridData: FlGridData(show: true),
-        lineTouchData: LineTouchData(
-          touchTooltipEnabled: true,
-          touchCallback: (event, response) {
-            // Handle tap for showing value
-          },
-        ),
-      ),
-    );
-  }
-}
-----
+//   @override
+//   Widget build(BuildContext context) {
+//     return LineChart(
+//       LineChartData(
+//         lineBarsData: [
+//           LineChartBarData(
+//             spots: points.asMap().entries.map((entry) {
+//               return FlSpot(entry.key.toDouble(), entry.value);
+//             }).toList(),
+//             isCurved: false,
+//             color: Colors.black87,
+//             barWidth: 2,
+//             dotData: FlDotData(show: true),
+//           ),
+//         ],
+//         titlesData: FlTitlesData(
+//           bottomTitles: AxisTitles(
+//             sideTitles: SideTitles(
+//               showTitles: true,
+//               getTitlesWidget: (value, meta) {
+//                 if (value.toInt() < days.length) {
+//                   return Text(days[value.toInt()]);
+//                 }
+//                 return const Text('');
+//               },
+//             ),
+//           ),
+//           leftTitles: AxisTitles(
+//             sideTitles: SideTitles(
+//               showTitles: true,
+//               interval: 10,
+//               reservedSize: 40,
+//             ),
+//           ),
+//         ),
+//         gridData: FlGridData(show: true),
+//         lineTouchData: LineTouchData(
+//           touchTooltipEnabled: true,
+//           touchCallback: (event, response) {
+//             // Handle tap for showing value
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
+// ----
 
 === Step 4: Pie Chart Implementation (Expenditure Report)
 
-Current implementation uses `_PieChartPainter`. Replace with:
+Migrate current implementation that uses `_PieChartPainter`.
 
-[source,dart]
-----
-import 'package:fl_chart/fl_chart.dart';
+// [source,dart]
+// ----
+// import 'package:fl_chart/fl_chart.dart';
 
-class DynamicPieChart extends StatelessWidget {
-  final List<ExpenditureCategory> categories;
+// class DynamicPieChart extends StatelessWidget {
+//   final List<ExpenditureCategory> categories;
   
-  const DynamicPieChart({required this.categories});
+//   const DynamicPieChart({required this.categories});
 
-  @override
-  Widget build(BuildContext context) {
-    final total = categories.fold(0.0, (sum, c) => sum + c.amount);
+//   @override
+//   Widget build(BuildContext context) {
+//     final total = categories.fold(0.0, (sum, c) => sum + c.amount);
     
-    return PieChart(
-      PieChartData(
-        sections: categories.map((category) {
-          final percentage = category.amount / total;
-          return PieChartSectionData(
-            value: percentage,
-            title: '${(percentage * 100).round()}%',
-            color: category.color,
-            radius: 100,
-            titleStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          );
-        }).toList(),
-        sectionsSpace: 2,
-        centerSpaceRadius: 40,
-        startDegreeOffset: -90,
-      ),
-    );
-  }
-}
-----
+//     return PieChart(
+//       PieChartData(
+//         sections: categories.map((category) {
+//           final percentage = category.amount / total;
+//           return PieChartSectionData(
+//             value: percentage,
+//             title: '${(percentage * 100).round()}%',
+//             color: category.color,
+//             radius: 100,
+//             titleStyle: const TextStyle(
+//               fontSize: 12,
+//               fontWeight: FontWeight.bold,
+//               color: Colors.white,
+//             ),
+//           );
+//         }).toList(),
+//         sectionsSpace: 2,
+//         centerSpaceRadius: 40,
+//         startDegreeOffset: -90,
+//       ),
+//     );
+//   }
+// }
+// ----
 
 === Step 5: Dynamic Data Binding
 
-Connect charts to BLoC/Cubit:
+Connect charts to BLoC/Cubit.
 
-[source,dart]
-----
-class ExpenditureReportPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ExpenditureCubit, ExpenditureState>(
-      builder: (context, state) {
-        return DynamicPieChart(categories: state.categories);
-      },
-    );
-  }
-}
-----
+// [source,dart]
+// ----
+// class ExpenditureReportPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<ExpenditureCubit, ExpenditureState>(
+//       builder: (context, state) {
+//         return DynamicPieChart(categories: state.categories);
+//       },
+//     );
+//   }
+// }
+// ----
 
-=== Step 6: PDF Export Enhancement
+// === Step 6: PDF Export Enhancement
 
-For higher quality PDF captures:
+// For higher quality PDF captures:
 
-[source,dart]
-----
-Future<Uint8List?> _captureChart() async {
-  final boundary = _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-  if (boundary == null) return null;
+// [source,dart]
+// ----
+// Future<Uint8List?> _captureChart() async {
+//   final boundary = _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+//   if (boundary == null) return null;
   
-  // Use higher pixel ratio for better PDF quality
-  final image = await boundary.toImage(pixelRatio: 4.0);
-  final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  return byteData?.buffer.asUint8List();
-}
-----
+//   //Use higher pixel ratio for better PDF quality
+//   final image = await boundary.toImage(pixelRatio: 4.0);
+//   final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+//   return byteData?.buffer.asUint8List();
+// }
+// ----
 
 == Migration Plan
 
