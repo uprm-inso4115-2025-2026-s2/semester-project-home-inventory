@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:src/config/theme.dart';
+import 'package:src/features/reports/presentation/pages/expenditure_report_page.dart';
 
-//TO DO: Replace with real data from Supabase backend when available
+// TODO: Replace with real data from Supabase backend when available
 class DynamicPieChart extends StatelessWidget {
   final List<ExpenditureCategory> categories;
   
@@ -50,22 +51,9 @@ class DynamicPieChart extends StatelessWidget {
           sectionsSpace: 2,
           centerSpaceRadius: 40,
           startDegreeOffset: -90,
+          // PieTouchData without touchTooltipData for 0.69.2
           pieTouchData: PieTouchData(
             enabled: true,
-            touchTooltipData: PieTouchTooltipData(
-              getTooltipItem: (touchedSection) {
-                final category = categories[touchedSection.sectionIndex];
-                final percentage = (category.amount / total * 100);
-                return PieTooltipItem(
-                  '${category.name}\n\$${category.amount.toStringAsFixed(2)}\n${percentage.toStringAsFixed(1)}%',
-                  const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                );
-              },
-            ),
           ),
         ),
       ),
@@ -76,7 +64,8 @@ class DynamicPieChart extends StatelessWidget {
     return List.generate(categories.length, (index) {
       final category = categories[index];
       final percentage = category.amount / total;
-      final showPercentage = percentage > 0.05; // Only show label if slice is large enough
+      // Only show label if slice is large enough (more than 5%)
+      final showPercentage = percentage > 0.05;
       
       return PieChartSectionData(
         value: percentage,
