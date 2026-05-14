@@ -112,7 +112,7 @@ class DynamicBarChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    tooltipBgColor: AppTheme.primaryColor,
+                    // Removed tooltipBgColor - not supported in fl_chart 0.69.2
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       return BarTooltipItem(
                         '${data[group.x.toInt()].quantity}',
