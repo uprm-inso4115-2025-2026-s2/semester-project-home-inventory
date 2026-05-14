@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:src/config/theme.dart';
 import '../cubit/inventory_stock_report_state.dart';
 
-// TODO: Replace with real data from Supabase backend when available
+//TO DO: Replace with real data from Supabase backend when available
 class DynamicBarChart extends StatelessWidget {
   final List<CategoryData> data;
   
