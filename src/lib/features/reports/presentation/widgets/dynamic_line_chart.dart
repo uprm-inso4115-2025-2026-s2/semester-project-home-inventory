@@ -30,7 +30,6 @@ class DynamicLineChart extends StatelessWidget {
     }
 
     // Calculate min and max for Y-axis
-    final minY = 0.0;
     final maxY = points.reduce((a, b) => a > b ? a : b);
     final safeMaxY = maxY == 0 ? 30.0 : maxY + 5; // Add 5 for padding
 
@@ -82,7 +81,7 @@ class DynamicLineChart extends StatelessWidget {
                           days[index],
                           style: const TextStyle(
                             fontSize: 11,
-                            color: Colors.black54,
+                            color: AppTheme.mutedText,
                           ),
                         ),
                       );
@@ -99,7 +98,7 @@ class DynamicLineChart extends StatelessWidget {
                   getTitlesWidget: (value, meta) {
                     return Text(
                       value.toInt().toString(),
-                      style: const TextStyle(fontSize: 10, color: Colors.black54),
+                      style: const TextStyle(fontSize: 10, color: AppTheme.mutedText),
                     );
                   },
                 ),
@@ -126,16 +125,22 @@ class DynamicLineChart extends StatelessWidget {
             lineTouchData: LineTouchData(
               enabled: true,
               touchTooltipData: LineTouchTooltipData(
-                // tooltipBgColor removed - not supported in this version
-                getTooltipItem: (touchedSpot) {
-                  return LineTooltipItem(
-                    touchedSpot.y.toInt().toString(),
-                    const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
+                tooltipRoundedRadius: 8,
+                tooltipMargin: 8,
+                tooltipBgColor: AppTheme.primaryColor,
+                tooltipBottomMargin: 8,
+                getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                  return touchedSpots.map((LineBarSpot touchedSpot) {
+                    final value = touchedSpot.y.toInt();
+                    return LineTooltipItem(
+                      value.toString(),
+                      const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    );
+                  }).toList();
                 },
               ),
             ),
