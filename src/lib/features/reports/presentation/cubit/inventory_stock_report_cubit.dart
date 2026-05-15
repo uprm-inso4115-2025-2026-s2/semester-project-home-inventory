@@ -12,7 +12,7 @@ class InventoryStockReportCubit extends Cubit<InventoryStockReportState> {
 
   InventoryStockReportCubit()
       : super(InventoryStockReportState(
-          filters: ReportFilters(  // ✅ Removed 'const' keyword
+          filters: ReportFilters(  //Removed 'const' keyword
             startDate: DateTime(2026, 3, 9),
             endDate: DateTime(2026, 3, 15),
             page: 0,
