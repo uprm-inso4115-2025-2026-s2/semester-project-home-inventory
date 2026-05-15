@@ -35,6 +35,11 @@ This schema uses Supabase Auth as the user source of truth:
 
 No duplicate custom users table should be created for Team 2.
 
+NOTE (Auth ↔ Inventory integration):
+- `auth.users.id` is a UUID string (Supabase). Schema fields such as `owner_user_id` should be UUIDs and reference `auth.users.id`.
+- Implementation detail: legacy application code or test fixtures may use numeric `ownerId` values; the data layer must therefore support identifier-based lookups (UUID string) and tolerate both formats until migration completes.
+- Tests: prefer a dedicated test Supabase project and ensure created users/inventories are tracked and cleaned up after tests.
+
 == Canonical Tables
 
 === 1. inventory_items
