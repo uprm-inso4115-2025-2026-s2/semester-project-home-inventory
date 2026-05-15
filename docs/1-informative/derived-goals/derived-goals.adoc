@@ -68,112 +68,112 @@ These goals compete because coordination improves when household members can see
 
 ==== Summary of trade-off handling
 
-These competing-goal resolutions clarify that the system must not optimize convenience, reminders, or transparency in isolation. Instead, the project balances adoption, data trustworthiness, alert usefulness, and household coordination by introducing derived requirements that are concrete enough to guide implementation and later validation and verification.
+#These competing-goal resolutions clarify that the system must not optimize convenience, reminders, or transparency in isolation. Instead, the project balances adoption, data trustworthiness, alert usefulness, and household coordination by introducing derived requirements that are concrete enough to guide implementation and later validation and verification.#
 
 === Implementation Status (M1/M2 Reconciliation)
- 
-The following table reconciles each derived goal and derived requirement with the team's implementation progress through M2. Goals marked *Partially Met* still require work before M3 is considered complete.
- 
+
+#The following table reconciles each derived goal and derived requirement with the team's implementation progress through M2. Goals marked *Partially Met* still require work before M3 is considered complete.#
+
 [cols="3,1,4,2", options="header"]
 |===
-| Goal / Requirement | Status | Evidence | Notes
- 
-4+| *Primary Derived Goals*
- 
-| Encourage sustainable household routines and reduce avoidable waste
-| Met
-| Expiration and low-stock alerts are up and running. Usage-rate and expenditure reports give users a clear picture of their consumption habits over time.
+| #Goal / Requirement# | #Status# | #Evidence# | #Notes#
+
+4+| #*Primary Derived Goals*#
+
+| #Encourage sustainable household routines and reduce avoidable waste#
+| #Met#
+| #Expiration and low-stock alerts are up and running. Usage-rate and expenditure reports give users a clear picture of their consumption habits over time.#
 |
- 
-| Improve adoption and continued use under busy student schedules
-| Partially Met
-| We have a working dashboard and kept item workflows simple enough for day-to-day use. That said, customizable thresholds and a smoother onboarding experience still need attention.
-| Finishing this up in M3.
- 
-| Strengthen shared-household coordination and trust
-| Partially Met
-| Household membership, the invitation flow, and the underlying sharing data layer are all in place. The shared inventory view that pulls it all together for users is still being built.
-| Finishing this up in M3.
- 
-| Support spending-pattern awareness for more informed household budget planning
-| Dropped
-| This goal was always conditional on budget awareness being in scope. We sketched out domain models early on, but no user-facing screens were ever built and the goal was cut due to time constraints.
-| De-scoped — no UI ever delivered.
- 
-| Maintain stable terminology and consistent documentation across milestones
-| Met
-| Naming conventions and documentation structure have stayed consistent across all feature areas from M1 through M2, making it easier to revisit past decisions.
+
+| #Improve adoption and continued use under busy student schedules#
+| #Partially Met#
+| #We have a working dashboard and kept item workflows simple enough for day-to-day use. That said, customizable thresholds and a smoother onboarding experience still need attention.#
+| #Finishing this up in M3.#
+
+| #Strengthen shared-household coordination and trust#
+| #Partially Met#
+| #Household membership, the invitation flow, and the underlying sharing data layer are all in place. The shared inventory view that pulls it all together for users is still being built.#
+| #Finishing this up in M3.#
+
+| #Support spending-pattern awareness for more informed household budget planning#
+| #Dropped#
+| #This goal was always conditional on budget awareness being in scope. We sketched out domain models early on, but no user-facing screens were ever built and the goal was cut due to time constraints.#
+| #De-scoped — no UI ever delivered.#
+
+| #Maintain stable terminology and consistent documentation across milestones#
+| #Met#
+| #Naming conventions and documentation structure have stayed consistent across all feature areas from M1 through M2, making it easier to revisit past decisions.#
 |
- 
-| Apply evidence-based development through personas, scenarios, and testing
-| Met
-| Personas and scenarios directly shaped domain-model decisions; tests cover core features and are used to verify that things behave the way we expect.
+
+| #Apply evidence-based development through personas, scenarios, and testing#
+| #Met#
+| #Personas and scenarios directly shaped domain-model decisions; tests cover core features and are used to verify that things behave the way we expect.#
 |
- 
-4+| *DG-REQ — Competing Goal 1: Low-effort use vs. inventory accuracy*
- 
-| DG-REQ-01: Create an item record with minimal required information; add richer metadata later
-| Met
-| Item creation only asks for what's needed to identify and track the item. Everything else is optional and can be filled in whenever it becomes relevant.
+
+4+| #*DG-REQ — Competing Goal 1: Low-effort use vs. inventory accuracy*#
+
+| #DG-REQ-01: Create an item record with minimal required information; add richer metadata later#
+| #Met#
+| #Item creation only asks for what's needed to identify and track the item. Everything else is optional and can be filled in whenever it becomes relevant.#
 |
- 
-| DG-REQ-02: Alerts and reminders only evaluate when the required item data is present and valid
-| Met
-| Stock and expiration checks are guarded so they only run when the relevant item data is actually there and complete — no alerts fire on incomplete records.
+
+| #DG-REQ-02: Alerts and reminders only evaluate when the required item data is present and valid#
+| #Met#
+| #Stock and expiration checks are guarded so they only run when the relevant item data is actually there and complete — no alerts fire on incomplete records.#
 |
- 
-| DG-REQ-03: Recorded item metadata remains stable unless an authorized user changes it
-| Met
-| Item data goes through a structured data layer with no silent or automatic changes; anything that modifies a record has to come from an explicit user action.
+
+| #DG-REQ-03: Recorded item metadata remains stable unless an authorized user changes it#
+| #Met#
+| #Item data goes through a structured data layer with no silent or automatic changes; anything that modifies a record has to come from an explicit user action.#
 |
- 
-| DG-REQ-04: Routine item updates are lightweight enough for ordinary student workflows
-| Met
-| The dashboard and alert feed surface routine status at a glance, and common update actions are kept short enough that they don't feel like a chore.
+
+| #DG-REQ-04: Routine item updates are lightweight enough for ordinary student workflows#
+| #Met#
+| #The dashboard and alert feed surface routine status at a glance, and common update actions are kept short enough that they don't feel like a chore.#
 |
- 
-4+| *DG-REQ — Competing Goal 2: Timely reminders vs. notification fatigue*
- 
-| DG-REQ-05: Low-stock reminders are sent but not more than once per item per day per household group
-| Dropped
-| The stock check is a stateless function with no sense of time — there's no timestamp tracking or daily-window logic anywhere in it. The infrastructure needed to enforce this cap was never built.
-| Dropped — rate-limiting requires persistent notification state that was never implemented.
- 
-| DG-REQ-06: Expiration reminders are sent with daily rate-limiting; a new alert is issued on state change
-| Dropped
-| Same root cause as DG-REQ-05: the expiration check is also stateless and has no memory of alerts it has already fired.
-| Dropped — same missing infrastructure as DG-REQ-05.
- 
-| DG-REQ-07: Repeated sweep executions do not produce duplicate notifications for the same condition within a day
-| Dropped
-| There's no sweep scheduler and no deduplication store. Without a persistent notification history, there's simply no way to suppress a repeated firing.
-| Dropped — depends on infrastructure from DG-REQ-05/06 that was never built.
- 
-| DG-REQ-08: Reminders favor relevance over volume by only firing on valid data and active rules
-| Met
-| The alert feed only surfaces conditions backed by valid item data and active alert rules. Nothing spurious shows up.
+
+4+| #*DG-REQ — Competing Goal 2: Timely reminders vs. notification fatigue*#
+
+| #DG-REQ-05: Low-stock reminders are sent but not more than once per item per day per household group#
+| #Dropped#
+| #The stock check is a stateless function with no sense of time — there's no timestamp tracking or daily-window logic anywhere in it. The infrastructure needed to enforce this cap was never built.#
+| #Dropped — rate-limiting requires persistent notification state that was never implemented.#
+
+| #DG-REQ-06: Expiration reminders are sent with daily rate-limiting; a new alert is issued on state change#
+| #Dropped#
+| #Same root cause as DG-REQ-05: the expiration check is also stateless and has no memory of alerts it has already fired.#
+| #Dropped — same missing infrastructure as DG-REQ-05.#
+
+| #DG-REQ-07: Repeated sweep executions do not produce duplicate notifications for the same condition within a day#
+| #Dropped#
+| #There's no sweep scheduler and no deduplication store. Without a persistent notification history, there's simply no way to suppress a repeated firing.#
+| #Dropped — depends on infrastructure from DG-REQ-05/06 that was never built.#
+
+| #DG-REQ-08: Reminders favor relevance over volume by only firing on valid data and active rules#
+| #Met#
+| #The alert feed only surfaces conditions backed by valid item data and active alert rules. Nothing spurious shows up.#
 |
- 
-4+| *DG-REQ — Competing Goal 3: Shared household visibility vs. privacy and least privilege*
- 
-| DG-REQ-09: Household members can see the availability and replenishment status of shared items
-| Partially Met
-| The household membership and sharing data models are solid. The shared inventory view that actually shows this information to members is still in progress.
-| Finishing this up in M3.
- 
-| DG-REQ-10: Shared household data and personal item data remain distinguishable in the same household context
-| Partially Met
-| The data models cleanly separate household-level and user-level records. Reflecting that distinction clearly in the UI is still a work in progress.
-| Finishing this up in M3.
- 
-| DG-REQ-11: Ownership and user-specific item information is only visible to users with the appropriate permission
-| Dropped
-| The app controls access at the household level — membership and invitations — not at the individual item level. Fine-grained per-item permissions were never part of the design and are beyond what this project set out to do.
-| Dropped — household-level access control is what was actually designed and built.
- 
-| DG-REQ-12: The distinction between shared and personal items is clear when it affects replenishment or coordination
-| Partially Met
-| Domain models already track item ownership correctly. Presenting that distinction clearly in the UI is still being worked on.
-| Finishing this up in M3.
- 
+
+4+| #*DG-REQ — Competing Goal 3: Shared household visibility vs. privacy and least privilege*#
+
+| #DG-REQ-09: Household members can see the availability and replenishment status of shared items#
+| #Partially Met#
+| #The household membership and sharing data models are solid. The shared inventory view that actually shows this information to members is still in progress.#
+| #Finishing this up in M3.#
+
+| #DG-REQ-10: Shared household data and personal item data remain distinguishable in the same household context#
+| #Partially Met#
+| #The data models cleanly separate household-level and user-level records. Reflecting that distinction clearly in the UI is still a work in progress.#
+| #Finishing this up in M3.#
+
+| #DG-REQ-11: Ownership and user-specific item information is only visible to users with the appropriate permission#
+| #Dropped#
+| #The app controls access at the household level — membership and invitations — not at the individual item level. Fine-grained per-item permissions were never part of the design and are beyond what this project set out to do.#
+| #Dropped — household-level access control is what was actually designed and built.#
+
+| #DG-REQ-12: The distinction between shared and personal items is clear when it affects replenishment or coordination#
+| #Partially Met#
+| #Domain models already track item ownership correctly. Presenting that distinction clearly in the UI is still being worked on.#
+| #Finishing this up in M3.#
+
 |===
