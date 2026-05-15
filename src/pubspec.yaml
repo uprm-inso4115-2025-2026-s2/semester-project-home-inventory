@@ -55,6 +55,7 @@ dev_dependencies:
 
   test: any
   mocktail: any
+  bloc_test: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -82,8 +83,8 @@ flutter:
     - assets/images/inventory_stock_icon.png
     - assets/images/item_usage_rates_icon.png
     - assets/images/expenditures_icon.png
-    - assets/images/homeinventorylogo.png
-    - assets/images/duplicates_warning_icon.png
+#    - assets/images/homeinventorylogo.png
+#    - assets/images/duplicates_warning_icon.png // FIXME: this throws an error because it cant find it
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

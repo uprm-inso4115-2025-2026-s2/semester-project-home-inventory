@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/product.dart';
-import '../../../core_inventory/data/data_sources/inventory_supabase_datasource.dart';
+import '../exceptions.dart';
 
 class ProductSupabaseDataSource {
   final SupabaseClient _supabaseClient;

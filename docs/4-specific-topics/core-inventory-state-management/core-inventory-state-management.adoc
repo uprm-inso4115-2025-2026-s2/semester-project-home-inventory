@@ -2,7 +2,7 @@
 
 == 1. Objective and Chosen Approach
 
-The Core Inventory feature utilizes the **Cubit** pattern (via the `flutter_bloc` package) for state management. 
+The Core Inventory feature utilizes the **Cubit** pattern (via the `flutter_bloc` package) for state management.
 
 **Why Cubit instead of Bloc?**
 Cubit was selected over the full Bloc pattern to minimize repetitive setup code (boilerplate). Since the Core Inventory primarily handles CRUD operations, using direct function calls within a Cubit provides a more concise implementation while maintaining the strict unidirectional data flow required by Clean Architecture.
@@ -30,12 +30,23 @@ class InventoryCubit extends Cubit<InventoryState> {
 
   // Caches the owner context to simplify subsequent calls
   int? _currentOwnerId;
-  
+
   // ... functions calling use cases
 }
 ----
 
 Note: The Cubit is responsible for maintaining the `ownerId` context. Once `loadInventory(ownerId)` is called, the Cubit stores that ID so that functions like `addStock` can refresh the data automatically without the UI needing to provide the owner ID again.
+
+== Implementation Flow (concise)
+
+For quick reference, the canonical runtime flow is:
+
+- Data Source (Supabase / network) → Repository (data → domain model mapping)
+- Repository → Use Case (domain business rule invocation)
+- Use Case → Cubit (presentation orchestration)
+- Cubit → UI (via `BlocProvider` / `BlocBuilder` state emissions)
+
+Keep conversions and DB logic inside `data/`, business rules in `domain/`, and UI-only logic in `presentation/`.
 
 == 4. Dependency Injection (GetIt)
 

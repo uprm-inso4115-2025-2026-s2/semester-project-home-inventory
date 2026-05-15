@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:src/core/presentation/pages/home_page.dart';
-import 'package:src/features/example_feature/presentation/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:src/features/dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -11,6 +9,7 @@ import 'package:src/core/presentation/pages/home_dashboard_page.dart';
 import 'package:src/features/core_inventory/presentation/routes.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
+// TODO: route InviteRoommatePage properly
 import 'package:src/features/alerts_feed/presentation/routes.dart';
 import 'package:src/features/invite_roomate_page/presentation/routes.dart';
 
