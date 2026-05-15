@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/config/injection_dependencies.dart';
-// ignore: unused_import
 import 'package:src/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:src/features/auth/presentation/cubit/auth_state.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
