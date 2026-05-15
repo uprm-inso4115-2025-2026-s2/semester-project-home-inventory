@@ -1,3 +1,6 @@
+//TO DO: REPLACE HARDCODED DATA THAT'S USED IN inventory_stock_report_cubit.dart AND
+//inventory_stock_report_state.dart, BOTH FILES IN THE CUBIT FOLDER SIBLING OF THE CURRENT PAGES ONE
+
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -6,10 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/data/services/pdf_export_service.dart';
 import '../../../../core/data/services/pdf_share_helper.dart';
+import '../../../../config/theme.dart';
 import '../cubit/inventory_stock_report_cubit.dart';
 import '../cubit/inventory_stock_report_state.dart';
 import '../../domain/entities/report_filter_validator.dart';
 import '../../domain/repositories/favorites_repository.dart';
+import '../widgets/dynamic_bar_chart.dart';
 
 class InventoryStockReportPage extends StatelessWidget {
   const InventoryStockReportPage({super.key});
@@ -265,17 +270,17 @@ class _ReportViewState extends State<_ReportView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF9F6),
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFAF9F6),
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: AppTheme.primaryText),
         ),
         title: const Text(
-          'Inventory Stock Summary',
-          style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.w600),
+          'Inventory',
+          style: TextStyle(color: AppTheme.primaryText, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         centerTitle: false,
         actions: [
@@ -284,11 +289,11 @@ class _ReportViewState extends State<_ReportView> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Favourites dropdown
+                // Star icon - Favourites dropdown
                 BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
                   builder: (context, state) {
                     return PopupMenuButton<ReportFavorite>(
-                      icon: const Icon(Icons.star_border, color: Colors.black87),
+                      icon: const Icon(Icons.star_border, color: AppTheme.primaryText),
                       tooltip: 'Saved filters',
                       onSelected: (fav) => context.read<InventoryStockReportCubit>().applyFavorite(fav),
                       itemBuilder: (ctx) {
@@ -326,39 +331,20 @@ class _ReportViewState extends State<_ReportView> {
                     );
                   },
                 ),
-                const SizedBox(width: 4),
-                // Save current filters
+                const SizedBox(width: 8),
+                // Download icon - Save current filters
                 IconButton(
                   onPressed: () => _showSaveFavoriteDialog(context),
-                  icon: const Icon(Icons.save_alt, color: Colors.black87),
+                  icon: const Icon(Icons.save_alt, color: AppTheme.primaryText),
                   tooltip: 'Save current filters',
                 ),
-                const SizedBox(width: 4),
-                // Export PDF button
-                BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
-                  builder: (context, state) {
-                    final isValid = state.validationResult?.isValid ?? false;
-                    return ElevatedButton.icon(
-                      onPressed: isValid ? () => _generateReport(context, state) : null,
-                      icon: const Icon(Icons.picture_as_pdf, size: 18),
-                      label: const Text('Export PDF'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B9D7F),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(width: 4),
-                // Share PDF button
+                const SizedBox(width: 8),
+                // Share button
                 BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
                   builder: (context, state) {
                     return IconButton(
                       onPressed: () => _sharePdf(context, state),
-                      icon: const Icon(Icons.share, color: Colors.black87),
+                      icon: const Icon(Icons.share, color: AppTheme.primaryText),
                       tooltip: 'Share PDF',
                     );
                   },
@@ -373,75 +359,83 @@ class _ReportViewState extends State<_ReportView> {
         builder: (context, state) {
           return Column(
             children: [
-              // Filter row: only date pickers (no category dropdown)
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.45,
-                          child: _DatePickerField(
-                            label: 'Start Date',
-                            value: state.filters.startDate,
-                            onChanged: (d) => context.read<InventoryStockReportCubit>().setStartDate(d!),
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.45,
-                          child: _DatePickerField(
-                            label: 'End Date',
-                            value: state.filters.endDate,
-                            onChanged: (d) => context.read<InventoryStockReportCubit>().setEndDate(d!),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Validation messages
-                    if (state.validationResult != null && state.validationResult!.conflicts.isNotEmpty)
-                      Container(
-                        margin: const EdgeInsets.only(top: 12),
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: state.validationResult!.hasErrors ? Colors.red.shade50 : Colors.orange.shade50,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+              // Scrollable content (everything except the bottom search bar)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Filter row: date pickers side by side
+                      Padding(
+                        padding: const EdgeInsets.all(16),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: state.validationResult!.conflicts.map((c) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    c.severity == ConflictSeverity.error ? Icons.error : Icons.warning,
-                                    size: 16,
-                                    color: c.severity == ConflictSeverity.error ? Colors.red : Colors.orange,
+                          children: [
+                            // Date pickers side by side in a Row
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _DatePickerField(
+                                    label: 'Start Date',
+                                    value: state.filters.startDate,
+                                    onChanged: (d) => context.read<InventoryStockReportCubit>().setStartDate(d!),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Expanded(child: Text('${c.message} (${c.suggestion})')),
-                                ],
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _DatePickerField(
+                                    label: 'End Date',
+                                    value: state.filters.endDate,
+                                    onChanged: (d) => context.read<InventoryStockReportCubit>().setEndDate(d!),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Validation messages
+                            if (state.validationResult != null && state.validationResult!.conflicts.isNotEmpty)
+                              Container(
+                                margin: const EdgeInsets.only(top: 12),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: state.validationResult!.hasErrors ? Colors.red.shade50 : Colors.orange.shade50,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: state.validationResult!.conflicts.map((c) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 2),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            c.severity == ConflictSeverity.error ? Icons.error : Icons.warning,
+                                            size: 16,
+                                            color: c.severity == ConflictSeverity.error ? Colors.red : Colors.orange,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(child: Text('${c.message} (${c.suggestion})')),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
-                            );
-                          }).toList(),
+                          ],
                         ),
                       ),
-                  ],
+                      // Chart
+                      RepaintBoundary(
+                        key: _chartKey,
+                        child: DynamicBarChart(data: state.currentPageData),
+                      ),
+                      const SizedBox(height: 16),
+                      // Data table
+                      _DataTable(items: state.filteredItems),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
-              // Chart
-              RepaintBoundary(
-                key: _chartKey,
-                child: _BarChart(data: state.currentPageData),
-              ),
-              const SizedBox(height: 16),
-              // Data table
-              Expanded(child: _DataTable(items: state.filteredItems)),
-              // Search bar
-              _SearchBar(),
+              // Search bar with export button (sticky at bottom)
+              _SearchBar(onExport: () => _exportPdf(context, state)),
             ],
           );
         },
@@ -483,63 +477,6 @@ class _DatePickerField extends StatelessWidget {
   }
 }
 
-class _BarChart extends StatelessWidget {
-  final List<CategoryData> data;
-  const _BarChart({required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    final maxVal = data.isEmpty ? 100 : data.map((e) => e.quantity).reduce((a, b) => a > b ? a : b);
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFAF9F6),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black12),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 200,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: data.map((cat) {
-                final height = (cat.quantity / maxVal * 150).clamp(20.0, 150.0);
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('${cat.quantity}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black)),
-                    const SizedBox(height: 4),
-                    Container(
-                      width: 40,
-                      height: height,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF8B9D7F),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(cat.name, style: const TextStyle(fontSize: 11, color: Colors.black)),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Builder(
-            builder: (context) {
-              final page = context.watch<InventoryStockReportCubit>().state.filters.page;
-              return Text('< Page ${page + 1} >', style: const TextStyle(color: Colors.black));
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _DataTable extends StatelessWidget {
   final List<ItemData> items;
   const _DataTable({required this.items});
@@ -550,9 +487,9 @@ class _DataTable extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFFAF9F6),
+          color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.black12),
+          border: Border.all(color: AppTheme.borderColor),
         ),
         child: const Center(
           child: Padding(
@@ -565,21 +502,17 @@ class _DataTable extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF9F6),
+        color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black12),
+        border: Border.all(color: AppTheme.borderColor),
       ),
       child: Column(
         children: [
           _header(),
           const Divider(height: 1),
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: items.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (_, i) => _row(items[i]),
-            ),
+          // Removed Expanded and ListView - using simple Column with children
+          Column(
+            children: items.map((item) => _row(item)).toList(),
           ),
         ],
       ),
@@ -634,21 +567,9 @@ class _StatusBadge extends StatelessWidget {
   }
 }
 
-class _SearchBar extends StatefulWidget {
-  const _SearchBar();
-
-  @override
-  State<_SearchBar> createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<_SearchBar> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class _SearchBar extends StatelessWidget {
+  final VoidCallback onExport;
+  const _SearchBar({required this.onExport});
 
   @override
   Widget build(BuildContext context) {
@@ -662,7 +583,6 @@ class _SearchBarState extends State<_SearchBar> {
         children: [
           Expanded(
             child: TextField(
-              controller: _controller,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 hintText: 'Type here to search',
@@ -671,29 +591,22 @@ class _SearchBarState extends State<_SearchBar> {
                 fillColor: Colors.grey[100],
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                suffixIcon: _controller.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.black54),
-                        onPressed: () {
-                          _controller.clear();
-                          context.read<InventoryStockReportCubit>().setSearchQuery('');
-                          setState(() {});
-                        },
-                      )
-                    : null,
               ),
               onChanged: (value) {
                 context.read<InventoryStockReportCubit>().setSearchQuery(value);
-                setState(() {});
               },
             ),
           ),
           const SizedBox(width: 8),
           Container(
-            decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: IconButton(
               icon: const Icon(Icons.open_in_new, color: Colors.black),
-              onPressed: () {},
+              onPressed: onExport,
+              tooltip: 'Export PDF',
             ),
           ),
         ],

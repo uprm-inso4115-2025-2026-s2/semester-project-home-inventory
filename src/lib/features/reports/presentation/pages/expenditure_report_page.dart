@@ -1,3 +1,6 @@
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 44)
+//Graph radius in widgets/dynamic_pie_chart.dart may require adjustment based on the amount of categories
+
 import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -7,8 +10,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
+import '../../../../config/theme.dart';
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
+import '../widgets/dynamic_pie_chart.dart';
 
 // ======================== Models ========================
 
@@ -37,6 +42,7 @@ class ExpenditureState {
   ExpenditureState({
     DateTime? startDate,
     DateTime? endDate,
+    //TO DO: REPLACE HARDCODED DATA WITH BACKEND DATA
     this.categories = const [
       ExpenditureCategory(name: 'Food',      amount: 56.78, color: Color(0xFFF5A623)),
       ExpenditureCategory(name: 'Kitchen',   amount: 45.87, color: Color(0xFF4ECDC4)),
@@ -257,18 +263,18 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF7EF),
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFBF7EF),
+        backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: AppTheme.primaryText),
         ),
         title: const Text(
           'Expenditures',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.primaryText,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -279,7 +285,7 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
           BlocBuilder<ExpenditureCubit, ExpenditureState>(
             builder: (context, state) {
               return PopupMenuButton<ReportFavorite>(
-                icon: const Icon(Icons.star_border, color: Colors.black87),
+                icon: const Icon(Icons.star_border, color: AppTheme.primaryText),
                 tooltip: 'Saved filters',
                 onSelected: (fav) => context.read<ExpenditureCubit>().applyFavorite(fav),
                 itemBuilder: (ctx) {
@@ -314,7 +320,7 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
           // Save current filters button
           IconButton(
             onPressed: () => _showSaveFavoriteDialog(context),
-            icon: const Icon(Icons.save_alt, color: Colors.black87),
+            icon: const Icon(Icons.save_alt, color: AppTheme.primaryText),
             tooltip: 'Save current filters',
           ),
           const SizedBox(width: 8),
@@ -331,27 +337,23 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Date range row with date pickers (Filters button removed)
+                      // Date range row with date pickers side by side
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Date pickers
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _DatePickerField(
-                                  label: 'Start Date',
-                                  value: state.startDate,
-                                  onChanged: (d) => context.read<ExpenditureCubit>().setStartDate(d!),
-                                ),
-                                const SizedBox(height: 8),
-                                _DatePickerField(
-                                  label: 'End Date',
-                                  value: state.endDate,
-                                  onChanged: (d) => context.read<ExpenditureCubit>().setEndDate(d!),
-                                ),
-                              ],
+                            child: _DatePickerField(
+                              label: 'Start Date',
+                              value: state.startDate,
+                              onChanged: (d) => context.read<ExpenditureCubit>().setStartDate(d!),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: _DatePickerField(
+                              label: 'End Date',
+                              value: state.endDate,
+                              onChanged: (d) => context.read<ExpenditureCubit>().setEndDate(d!),
                             ),
                           ),
                         ],
@@ -364,22 +366,15 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF4B5563),
+                            color: AppTheme.mutedText,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      // Solid pie chart
+                      const SizedBox(height: 18),
+                      // Pie chart using fl_chart
                       RepaintBoundary(
                         key: _chartKey,
-                        child: SizedBox(
-                          height: 240,
-                          child: CustomPaint(
-                            painter: _PieChartPainter(
-                                categories: state.categories),
-                            child: const SizedBox.expand(),
-                          ),
-                        ),
+                        child: DynamicPieChart(categories: state.categories),
                       ),
                       const SizedBox(height: 20),
                       // Table
@@ -439,54 +434,6 @@ class _DatePickerField extends StatelessWidget {
   }
 }
 
-// ======================== Pie Chart ========================
-
-class _PieChartPainter extends CustomPainter {
-  final List<ExpenditureCategory> categories;
-
-  _PieChartPainter({required this.categories});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final total = categories.fold(0.0, (sum, c) => sum + c.amount);
-    if (total == 0) return;
-
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = math.min(size.width, size.height) / 2 - 4;
-    final rect = Rect.fromCircle(center: center, radius: radius);
-
-    double startAngle = -math.pi / 2;
-
-    for (final category in categories) {
-      final sweepAngle = (category.amount / total) * 2 * math.pi;
-
-      final fillPaint = Paint()
-        ..style = PaintingStyle.fill
-        ..color = category.color;
-      canvas.drawArc(rect, startAngle, sweepAngle, true, fillPaint);
-
-      // White separator line between slices
-      final linePaint = Paint()
-        ..style = PaintingStyle.stroke
-        ..color = Colors.white
-        ..strokeWidth = 2.5;
-      canvas.drawLine(
-        center,
-        Offset(
-          center.dx + radius * math.cos(startAngle),
-          center.dy + radius * math.sin(startAngle),
-        ),
-        linePaint,
-      );
-
-      startAngle += sweepAngle;
-    }
-  }
-
-  @override
-  bool shouldRepaint(_PieChartPainter old) => old.categories != categories;
-}
-
 // ======================== Table ========================
 
 class _ExpenditureTable extends StatelessWidget {
@@ -506,7 +453,7 @@ class _ExpenditureTable extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
-            children: const [
+            children: [
               Expanded(
                 flex: 4,
                 child: Text(
@@ -514,7 +461,7 @@ class _ExpenditureTable extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Colors.black87,
+                    color: AppTheme.primaryText,
                   ),
                 ),
               ),
@@ -526,7 +473,7 @@ class _ExpenditureTable extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Colors.black87,
+                    color: AppTheme.primaryText,
                   ),
                 ),
               ),
@@ -538,7 +485,7 @@ class _ExpenditureTable extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Colors.black87,
+                    color: AppTheme.primaryText,
                   ),
                 ),
               ),
@@ -570,9 +517,9 @@ class _ExpenditureTable extends StatelessWidget {
                   child: Text(
                     '\$${c.amount.toStringAsFixed(2)}',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
-                      color: Colors.black87,
+                      color: AppTheme.primaryText,
                     ),
                   ),
                 ),
@@ -581,9 +528,9 @@ class _ExpenditureTable extends StatelessWidget {
                   child: Text(
                     '$pct%',
                     textAlign: TextAlign.end,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
-                      color: Colors.black87,
+                      color: AppTheme.primaryText,
                     ),
                   ),
                 ),
@@ -608,11 +555,14 @@ class _BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))
+            color: AppTheme.borderColor.withOpacity(0.5),
+            blurRadius: 4,
+            offset: const Offset(0, -2),
+          ),
         ],
       ),
       child: Row(
@@ -620,18 +570,17 @@ class _BottomBar extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: AppTheme.primaryText),
               decoration: InputDecoration(
                 hintText: 'Type here to search',
-                hintStyle: const TextStyle(color: Colors.black54),
+                hintStyle: const TextStyle(color: AppTheme.mutedText),
                 filled: true,
                 fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               ),
             ),
           ),
@@ -642,7 +591,7 @@ class _BottomBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: IconButton(
-              icon: const Icon(Icons.open_in_new, color: Colors.black),
+              icon: const Icon(Icons.open_in_new, color: AppTheme.primaryText),
               onPressed: onExport,
               tooltip: 'Export to PDF',
             ),
