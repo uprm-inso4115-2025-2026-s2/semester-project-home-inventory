@@ -1,5 +1,5 @@
 //TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 44)
-//Graph radius may require adjustment based on the amount of categories
+//Graph radius in widgets/dynamic_pie_chart.dart may require adjustment based on the amount of categories
 
 import 'dart:math' as math;
 import 'dart:typed_data';
