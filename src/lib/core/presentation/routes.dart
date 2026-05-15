@@ -10,6 +10,8 @@ import 'package:src/features/core_inventory/presentation/routes.dart';
 import 'package:src/features/grocery_list/presentation/routes.dart';
 import 'package:src/features/reports/presentation/routes.dart';
 // TODO: route InviteRoommatePage properly
+import 'package:src/features/alerts_feed/presentation/routes.dart';
+import 'package:src/features/invite_roomate_page/presentation/routes.dart';
 
 const List<MainNavTab> _mainTabs = [
   MainNavTab(label: 'Home', icon: Icons.home_filled, rootPath: '/home'),
@@ -18,8 +20,6 @@ const List<MainNavTab> _mainTabs = [
     icon: Icons.checklist,
     rootPath: '/grocery_home',
   ),
-  // Replaced /add-item route with the Add Item page in the Inventory section,
-  // since wireframes establish that as the proposed navigation.
   MainNavTab(label: 'Inventory', icon: Icons.inventory, rootPath: '/inventory'),
   MainNavTab(
     label: 'Reports',
@@ -29,7 +29,6 @@ const List<MainNavTab> _mainTabs = [
   MainNavTab(label: 'Alerts', icon: Icons.notifications, rootPath: '/alerts'),
 ];
 
-// Placeholder page for the AlertsPage
 class _AlertsPageStub extends StatelessWidget {
   const _AlertsPageStub();
 
@@ -45,15 +44,6 @@ var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
     return MainNavShell(navigationShell: navigationShell, tabs: _mainTabs);
   },
-  // routes: [
-  //   todosRoutes,
-  //   inventoryStockReportRoute,
-  //   groceryListRoutes,
-  //   alertsFeedRoutes,
-  //   reportsOverviewRoute,
-  //   groceryListRoutes
-    //For testing Purposes
-    //reportListRoute,
   branches: [
     StatefulShellBranch(
       routes: [
@@ -80,8 +70,6 @@ var mainRoutes = StatefulShellRoute.indexedStack(
       ],
     ),
     StatefulShellBranch(routes: [groceryListRoutes]),
-    // Replaced /add-item route with the Add Item page in the Inventory section,
-    // since wireframes establish that as the proposed navigation.
     StatefulShellBranch(routes: [inventoryRoutes]),
     StatefulShellBranch(routes: [reportsOverviewRoute]),
     StatefulShellBranch(
