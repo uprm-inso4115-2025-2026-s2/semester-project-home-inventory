@@ -1,3 +1,6 @@
+//TO DO: REPLACE HARDCODED DATA THAT'S USED IN inventory_stock_report_cubit.dart AND
+//inventory_stock_report_state.dart, BOTH FILES IN THE CUBIT FOLDER SIBLING OF THE CURRENT PAGES ONE
+
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';

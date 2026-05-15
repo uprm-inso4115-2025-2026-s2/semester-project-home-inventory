@@ -1,3 +1,5 @@
+//TO DO: REPLACE HARDCODED DATA WITH REAL DATA PULLED FROM BACKEND (SEE LINE 51)
+
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
 import '../../domain/entities/report_filter_validator.dart';
@@ -46,6 +48,7 @@ class InventoryStockReportState {
     return items;
   }
 
+//TO DO: REPLACE HARDCODED DATA HERE AND IN inventory_stock_report_cubit.dart
 List<CategoryData> get currentPageData {
   // Return ALL categories for scrolling instead of pagination
   return const [

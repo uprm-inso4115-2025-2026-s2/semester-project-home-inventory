@@ -1,3 +1,5 @@
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 44)
+
 import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -39,6 +41,7 @@ class ExpenditureState {
   ExpenditureState({
     DateTime? startDate,
     DateTime? endDate,
+    //TO DO: REPLACE HARDCODED DATA WITH BACKEND DATA
     this.categories = const [
       ExpenditureCategory(name: 'Food',      amount: 56.78, color: Color(0xFFF5A623)),
       ExpenditureCategory(name: 'Kitchen',   amount: 45.87, color: Color(0xFF4ECDC4)),

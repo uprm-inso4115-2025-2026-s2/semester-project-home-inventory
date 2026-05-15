@@ -1,3 +1,5 @@
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 30)
+
 import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -25,6 +27,7 @@ class _UsageCategory {
 
 // ======================== Static Sample Data ========================
 
+//TO DO: REPLACE HARDCODED DATA WITH BACKEND DATA
 const _kAllCategories = [
   _UsageCategory(name: 'Food',      itemsUsed: 25, usageRatePercent: 30),
   _UsageCategory(name: 'Kitchen',   itemsUsed: 5,  usageRatePercent: 10),
