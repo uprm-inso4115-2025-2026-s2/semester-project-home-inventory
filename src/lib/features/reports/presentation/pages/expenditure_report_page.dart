@@ -366,7 +366,7 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 18),
                       // Pie chart using fl_chart
                       RepaintBoundary(
                         key: _chartKey,
