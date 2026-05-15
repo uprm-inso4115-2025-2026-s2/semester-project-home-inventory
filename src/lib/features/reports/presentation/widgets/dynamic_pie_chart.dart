@@ -49,9 +49,8 @@ class DynamicPieChart extends StatelessWidget {
         PieChartData(
           sections: _createSections(categories, total),
           sectionsSpace: 2,
-          centerSpaceRadius: 40,
+          centerSpaceRadius: 0,  // Changed from 40 to 0 - solid pie chart
           startDegreeOffset: -90,
-          // PieTouchData without touchTooltipData for 0.69.2
           pieTouchData: PieTouchData(
             enabled: true,
           ),
@@ -64,7 +63,6 @@ class DynamicPieChart extends StatelessWidget {
     return List.generate(categories.length, (index) {
       final category = categories[index];
       final percentage = category.amount / total;
-      // Only show label if slice is large enough (more than 5%)
       final showPercentage = percentage > 0.05;
       
       return PieChartSectionData(
