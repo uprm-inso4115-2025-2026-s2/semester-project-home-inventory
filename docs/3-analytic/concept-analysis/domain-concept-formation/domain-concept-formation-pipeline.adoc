@@ -117,6 +117,10 @@ the domain talks about, independent of any specific implementation.
 | budget tracking, cycle-based limits, threshold, budget status, spending cap
 | DDU-08, DDU-15, DDU-21
 
+| *Budget Period Window*
+| budget cycle, active period, start date, end date, period boundary, weekly/monthly/yearly window, "this month's budget", "current cycle"
+| DDU-15, DDU-21
+
 | *Alert / Notification*
 | notification, alert, reminder, push notification, low-stock alert, expiration alert, budget alert
 | DDU-16
@@ -154,9 +158,15 @@ Tracked Inventory Record  ← approximates → Inventory (reality)
 Replenishment Action  ← triggered by → Availability State (Low / Out)
 Expenditure          ← recorded after → Replenishment Action
 Budget               ← governs → Expenditure
+Budget Period Window ← is the active time-slice of → Budget
+Expenditure          ← falls within (or outside) → Budget Period Window
 
 Alert / Notification ← triggered by → Availability State or Budget threshold
 Coordination Failure ← arises from → Tracked Inventory Record diverging from reality
+
+NOTE: The rule that determines whether an Expenditure falls within a Budget Period Window
+      (i.e., the boundary semantics of BudgetPeriod.weekly/monthly/yearly) is currently
+      undefined — see IC-08 and IC-09 in inconsistency-detection.adoc.
 ----
 
 ---

@@ -134,6 +134,38 @@ Each entry follows the pattern:
 
 ---
 
+=== IC-08 — Budget Period End Date: Documented Requirement vs. Missing Domain Entity Field
+
+[cols="1,3"]
+|===
+| Type | Direct P / not-P conflict
+| Source P | `budget_management_logic.adoc` Section 3 — "Each budget period must store: Budget amount, Start date, *End date*, Remaining balance, Total spent, Status (Active, Completed, Exceeded)."
+| Source not-P | `src/lib/features/sharing_budget/domain/entities/budget_entity.dart` — `BudgetEntity` fields are: `id`, `householdId`, `limitAmount`, `period` (weekly/monthly/yearly enum), `startDate`. No `endDate`, no `status`, no `remainingBalance`, no `totalSpent`.
+| P | A budget period has a defined end date, a running total, and a status.
+| not-P | The domain entity representing a budget period cannot compute or store its own end date, remaining balance, or status.
+| Impact | Any feature that checks whether a spend event falls within a budget's active window (reporting, threshold alerts, remaining-balance display) must re-derive the end date from `period` + `startDate` ad hoc, with no shared rule. Teams will produce inconsistent results because the period boundary semantics are undefined — does `BudgetPeriod.monthly` starting 2026-01-15 end on 2026-02-14, 2026-02-15, or 2026-01-31?
+| Resolution | The team must decide on one of two boundary interpretations and document it as a domain invariant: (A) *Rolling window* — end date is exactly N days after `startDate` (7 for weekly, 30 for monthly, 365 for yearly); (B) *Calendar alignment* — end date is the last day of the calendar week/month/year containing `startDate`. Once decided, `BudgetEntity` should expose a computed `endDate` and a `covers(DateTime date)` predicate derived from the agreed rule, so all features share a single source of truth.
+| Status | *Open* — boundary interpretation decision required from @Gerardoruiz1.
+|===
+
+---
+
+=== IC-09 — SpendEvent-to-Budget Linkage: Assumed vs. Undefined
+
+[cols="1,3"]
+|===
+| Type | Completeness gap elevated to scope conflict
+| Source P | `budget_management_logic.adoc` Section 5 — "Every spending record must be linked to an active budget period (if applicable). All relevant budgets must update in real time."
+| Source not-P | `src/lib/features/sharing_budget/domain/entities/spend_event_entity.dart` — `SpendEventEntity` fields: `id`, `userId`, `householdId`, `productId`, `amount`, `date`, `source`, `receiptId`. No `budgetId`. `BudgetAllocationEntity` links a spend event to a user and split mode, but also has no `budgetId`.
+| P | A spend event is linked to a budget period at the domain level.
+| not-P | The domain entities provide no field or rule to establish this link. The only shared key between `SpendEventEntity` and `BudgetEntity` is `householdId`, which is insufficient when a household has multiple simultaneous budgets (e.g., household-level + category-level).
+| Impact | Without an explicit linkage, the domain cannot answer "which budget(s) does this spend event affect?" consistently. Any budget-total calculation will either over-count (applying the same event to multiple budgets) or under-count (skipping events that should apply).
+| Resolution | Define and document the domain rule: a `SpendEventEntity` contributes to a `BudgetEntity` if and only if `spendEvent.householdId == budget.householdId` AND `budget.covers(spendEvent.date)` (using the boundary rule resolved in IC-08). If category-level budgets are supported (per `budget_management_logic.adoc` Section 2.2), the rule must also match on spending category, which requires adding a `category` field to `SpendEventEntity`.
+| Status | *Open* — depends on IC-08 resolution; category field decision required from @Gerardoruiz1.
+|===
+
+---
+
 == Completeness Gaps
 
 The following concepts are referenced in DDUs or domain documents but are not fully defined:
@@ -157,6 +189,10 @@ The following concepts are referenced in DDUs or domain documents but are not fu
 | GAP-04
 | The *Budget cycle* (weekly, monthly, custom) is mentioned but the rule governing what happens when a cycle ends — whether unspent budget rolls over or resets — is not defined.
 | `budget_management_logic.adoc`
+
+| GAP-05
+| `SpendSource.refund` is defined as an enum value in the domain entities but the sign convention for refund amounts is never stated. It is unspecified whether a refund is recorded as a positive amount subtracted from total spend, or as a negative `amount` field on `SpendEventEntity`. Without this rule, refund handling will diverge across features (reports, budget totals, alerts).
+| `src/lib/features/sharing_budget/domain/entities/enums.dart`, `src/lib/features/sharing_budget/domain/entities/spend_event_entity.dart`, `budget_management_logic.adoc`
 |===
 
 ---
@@ -174,11 +210,14 @@ The following concepts are referenced in DDUs or domain documents but are not fu
 | IC-05 | P/not-P conflict | Resolved | —
 | IC-06 | Terminology drift | Open | Documentation team
 | IC-07 | Scope conflict | Open | @Solimar-Cruz
+| IC-08 | P/not-P conflict | Open | @Gerardoruiz1
+| IC-09 | Scope conflict | Open | @Gerardoruiz1
 | GAP-01 | Completeness gap | Open | Team 1
 | GAP-02 | Completeness gap | Open | Team 3
 | GAP-03 | Completeness gap | Open | All teams
 | GAP-04 | Completeness gap | Open | Team 3
+| GAP-05 | Completeness gap | Open | @Gerardoruiz1
 |===
 
-*Resolved:* 3 of 7 direct conflicts. +
-*Open:* 4 conflicts + 4 completeness gaps requiring team decisions.
+*Resolved:* 3 of 9 direct conflicts. +
+*Open:* 6 conflicts + 5 completeness gaps requiring team decisions.
