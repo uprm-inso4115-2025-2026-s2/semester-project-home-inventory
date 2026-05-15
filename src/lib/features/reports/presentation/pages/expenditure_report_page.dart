@@ -1,4 +1,4 @@
-//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 44)
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 49)
 //Graph radius in widgets/dynamic_pie_chart.dart may require adjustment based on the amount of categories
 
 import 'dart:math' as math;
@@ -39,6 +39,10 @@ class ExpenditureState {
   final bool isLoadingFavorites;
   final String? favoriteError;
 
+  // NEW: loading and error states for expenditure data
+  final bool isLoading;
+  final String? errorMessage;
+
   ExpenditureState({
     DateTime? startDate,
     DateTime? endDate,
@@ -54,6 +58,8 @@ class ExpenditureState {
     this.favorites = const [],
     this.isLoadingFavorites = false,
     this.favoriteError,
+    this.isLoading = false,
+    this.errorMessage,
   })  : startDate = startDate ?? DateTime(2026, 3, 9),
         endDate   = endDate   ?? DateTime(2026, 3, 15);
 
@@ -63,17 +69,22 @@ class ExpenditureState {
   ExpenditureState copyWith({
     DateTime? startDate,
     DateTime? endDate,
+    List<ExpenditureCategory>? categories,
     List<ReportFavorite>? favorites,
     bool? isLoadingFavorites,
     String? favoriteError,
+    bool? isLoading,
+    String? errorMessage,
   }) {
     return ExpenditureState(
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      categories: categories,
+      categories: categories ?? this.categories,
       favorites: favorites ?? this.favorites,
       isLoadingFavorites: isLoadingFavorites ?? this.isLoadingFavorites,
       favoriteError: favoriteError ?? this.favoriteError,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
@@ -81,12 +92,57 @@ class ExpenditureState {
 class ExpenditureCubit extends Cubit<ExpenditureState> {
   final FavoritesRepository _favoritesRepository = FavoritesRepository();
   
-  ExpenditureCubit() : super(ExpenditureState()) {
+  // Simulate error for testing (set to true to test error state)
+  static const bool _simulateError = false;
+
+  ExpenditureCubit() : super(ExpenditureState(isLoading: true)) {
     loadFavorites();
+    loadExpenditureData();
   }
 
-  void setStartDate(DateTime date) => emit(state.copyWith(startDate: date));
-  void setEndDate(DateTime date) => emit(state.copyWith(endDate: date));
+  // ---------- Data fetching (simulated) ----------
+  /// Simulates an asynchronous fetch of expenditure data.
+  /// Replace with real Supabase call later.
+  Future<List<ExpenditureCategory>> _fetchExpenditureData() async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (_simulateError) {
+      throw Exception('Simulated network failure');
+    }
+    // Return hardcoded demo data
+    return const [
+      ExpenditureCategory(name: 'Food',      amount: 56.78, color: Color(0xFFF5A623)),
+      ExpenditureCategory(name: 'Kitchen',   amount: 45.87, color: Color(0xFF4ECDC4)),
+      ExpenditureCategory(name: 'Cleaning',  amount: 20.60, color: Color(0xFF4A90D9)),
+      ExpenditureCategory(name: 'Hygiene',   amount: 22.65, color: Color(0xFF7BC67A)),
+      ExpenditureCategory(name: 'Bathroom',  amount: 70.96, color: Color(0xFF7B68EE)),
+      ExpenditureCategory(name: 'Utilities', amount: 61.67, color: Color(0xFFF08080)),
+    ];
+  }
+
+  Future<void> loadExpenditureData() async {
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+
+    try {
+      final categories = await _fetchExpenditureData();
+      emit(state.copyWith(categories: categories, isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(
+        categories: const [],
+        isLoading: false,
+        errorMessage: 'Unable to load expenditure data. Please check your connection and try again.',
+      ));
+    }
+  }
+
+  void setStartDate(DateTime date) {
+    emit(state.copyWith(startDate: date));
+    loadExpenditureData();
+  }
+
+  void setEndDate(DateTime date) {
+    emit(state.copyWith(endDate: date));
+    loadExpenditureData();
+  }
 
   Future<void> loadFavorites() async {
     emit(state.copyWith(isLoadingFavorites: true, favoriteError: null));
@@ -128,6 +184,7 @@ class ExpenditureCubit extends Cubit<ExpenditureState> {
       startDate: favorite.filters.startDate,
       endDate: favorite.filters.endDate,
     ));
+    loadExpenditureData();
   }
 }
 
@@ -328,6 +385,50 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
       ),
       body: BlocBuilder<ExpenditureCubit, ExpenditureState>(
         builder: (context, state) {
+          // Loading state
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Error state
+          if (state.errorMessage != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => context.read<ExpenditureCubit>().loadExpenditureData(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primaryColor,
+                    ),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // Empty state (no categories after data loaded)
+          if (state.categories.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: Text(
+                  'No expenditure data found for the selected period.',
+                  style: TextStyle(fontSize: 16, color: AppTheme.mutedText),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+
+          // Normal loaded state
           return Column(
             children: [
               Expanded(

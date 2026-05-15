@@ -1,4 +1,4 @@
-//TO DO: REPLACE HARDCODED DATA WITH REAL DATA PULLED FROM BACKEND (SEE LINE 51)
+// TO DO: REPLACE HARDCODED DATA WITH REAL DATA PULLED FROM BACKEND (SEE LINE 57)
 
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
@@ -26,6 +26,10 @@ class InventoryStockReportState {
   final bool isLoadingFavorites;
   final String? favoriteError;
 
+  // NEW: loading and error states for inventory data
+  final bool isLoading;
+  final String? errorMessage;
+
   const InventoryStockReportState({
     required this.filters,
     required this.allItems,
@@ -33,6 +37,8 @@ class InventoryStockReportState {
     this.validationResult,
     this.isLoadingFavorites = false,
     this.favoriteError,
+    this.isLoading = false,
+    this.errorMessage,
   });
 
   // No category filter – only search query
@@ -48,20 +54,20 @@ class InventoryStockReportState {
     return items;
   }
 
-//TO DO: REPLACE HARDCODED DATA HERE AND IN inventory_stock_report_cubit.dart
-List<CategoryData> get currentPageData {
-  // Return ALL categories for scrolling instead of pagination
-  return const [
-    CategoryData('Food', 44),
-    CategoryData('Kitchen', 20),
-    CategoryData('Cleaning', 38),
-    CategoryData('Hygiene', 24),
-    CategoryData('Bathroom', 30),
-    CategoryData('Utilities', 64),
-    CategoryData('Medicine', 20),
-    CategoryData('Laundry', 0),
-  ];
-}
+  // TO DO: REPLACE HARDCODED DATA HERE AND IN inventory_stock_report_cubit.dart
+  List<CategoryData> get currentPageData {
+    // Return ALL categories for scrolling instead of pagination
+    return const [
+      CategoryData('Food', 44),
+      CategoryData('Kitchen', 20),
+      CategoryData('Cleaning', 38),
+      CategoryData('Hygiene', 24),
+      CategoryData('Bathroom', 30),
+      CategoryData('Utilities', 64),
+      CategoryData('Medicine', 20),
+      CategoryData('Laundry', 0),
+    ];
+  }
 
   InventoryStockReportState copyWith({
     ReportFilters? filters,
@@ -70,6 +76,8 @@ List<CategoryData> get currentPageData {
     ValidationResult? validationResult,
     bool? isLoadingFavorites,
     String? favoriteError,
+    bool? isLoading,
+    String? errorMessage,
   }) {
     return InventoryStockReportState(
       filters: filters ?? this.filters,
@@ -78,6 +86,8 @@ List<CategoryData> get currentPageData {
       validationResult: validationResult ?? this.validationResult,
       isLoadingFavorites: isLoadingFavorites ?? this.isLoadingFavorites,
       favoriteError: favoriteError ?? this.favoriteError,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
