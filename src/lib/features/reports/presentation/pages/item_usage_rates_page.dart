@@ -1,3 +1,5 @@
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 30)
+
 import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -7,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/config/theme.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
+import '../widgets/dynamic_line_chart.dart';
 
 // ======================== Models ========================
 
@@ -24,6 +27,7 @@ class _UsageCategory {
 
 // ======================== Static Sample Data ========================
 
+//TO DO: REPLACE HARDCODED DATA WITH BACKEND DATA
 const _kAllCategories = [
   _UsageCategory(name: 'Food',      itemsUsed: 25, usageRatePercent: 30),
   _UsageCategory(name: 'Kitchen',   itemsUsed: 5,  usageRatePercent: 10),
@@ -237,12 +241,12 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
         elevation: 0,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: AppTheme.primaryText),
         ),
         title: const Text(
           'Item Usage Rates',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.primaryText,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -270,12 +274,12 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black87,
+                              color: AppTheme.primaryText,
                             ),
                           ),
                           const Text(
                             '2026',
-                            style: TextStyle(fontSize: 14, color: Colors.black87),
+                            style: TextStyle(fontSize: 14, color: AppTheme.primaryText),
                           ),
                         ],
                       ),
@@ -325,7 +329,7 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                   // Line chart wrapped with RepaintBoundary for capturing
                   RepaintBoundary(
                     key: _chartKey,
-                    child: _LineChart(points: _kChartPoints, days: _kChartDays),
+                    child: DynamicLineChart(points: _kChartPoints, days: _kChartDays),
                   ),
                   const SizedBox(height: 20),
                   // Table
@@ -556,131 +560,6 @@ class _FilterMenuButton extends StatelessWidget {
   }
 }
 
-// ======================== Line Chart ========================
-
-class _LineChart extends StatelessWidget {
-  final List<double> points;
-  final List<String> days;
-
-  const _LineChart({required this.points, required this.days});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.borderColor),
-      ),
-      child: SizedBox(
-        height: 200,
-        child: CustomPaint(
-          painter: _LineChartPainter(points: points, days: days),
-          child: const SizedBox.expand(),
-        ),
-      ),
-    );
-  }
-}
-
-class _LineChartPainter extends CustomPainter {
-  final List<double> points;
-  final List<String> days;
-
-  const _LineChartPainter({required this.points, required this.days});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const double paddingLeft = 32;
-    const double paddingBottom = 24;
-    const double paddingTop = 12;
-    const double paddingRight = 8;
-
-    final chartW = size.width - paddingLeft - paddingRight;
-    final chartH = size.height - paddingBottom - paddingTop;
-
-    const double maxY = 30;
-    const double minY = 0;
-
-    final gridPaint = Paint()
-      ..color = Colors.black12
-      ..strokeWidth = 1;
-
-    final labelStyle = const TextStyle(
-      fontSize: 10,
-      color: Colors.black54,
-    );
-
-    for (final yVal in [0, 10, 20, 30]) {
-      final y = paddingTop + chartH * (1 - (yVal - minY) / (maxY - minY));
-      canvas.drawLine(
-        Offset(paddingLeft, y),
-        Offset(size.width - paddingRight, y),
-        gridPaint,
-      );
-      final tp = TextPainter(
-        text: TextSpan(text: '$yVal', style: labelStyle),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      tp.paint(canvas, Offset(0, y - tp.height / 2));
-    }
-
-    for (int i = 0; i < days.length; i++) {
-      final x = paddingLeft + (i / (days.length - 1)) * chartW;
-      final tp = TextPainter(
-        text: TextSpan(text: days[i], style: labelStyle),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      tp.paint(
-        canvas,
-        Offset(x - tp.width / 2, size.height - paddingBottom + 6),
-      );
-    }
-
-    final linePaint = Paint()
-      ..color = Colors.black87
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-
-    final dotPaint = Paint()
-      ..color = AppTheme.backgroundColor
-      ..style = PaintingStyle.fill;
-
-    final dotBorderPaint = Paint()
-      ..color = Colors.black87
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    final path = Path();
-    final List<Offset> dotPositions = [];
-
-    for (int i = 0; i < points.length; i++) {
-      final x = paddingLeft + (i / (points.length - 1)) * chartW;
-      final y = paddingTop + chartH * (1 - (points[i] - minY) / (maxY - minY));
-      final offset = Offset(x, y);
-      dotPositions.add(offset);
-
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-
-    canvas.drawPath(path, linePaint);
-
-    for (final pos in dotPositions) {
-      canvas.drawCircle(pos, 5, dotPaint);
-      canvas.drawCircle(pos, 5, dotBorderPaint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(_LineChartPainter old) =>
-      old.points != points || old.days != days;
-}
-
 // ======================== Usage Table ========================
 
 class _UsageTable extends StatelessWidget {
@@ -721,7 +600,7 @@ class _UsageTable extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
-                      color: Colors.black87))),
+                      color: AppTheme.primaryText))),
           Expanded(
               flex: 2,
               child: Text('Items Used',
@@ -729,7 +608,7 @@ class _UsageTable extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
-                      color: Colors.black87))),
+                      color: AppTheme.primaryText))),
           Expanded(
               flex: 2,
               child: Text('Usage Rate',
@@ -737,7 +616,7 @@ class _UsageTable extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
-                      color: Colors.black87))),
+                      color: AppTheme.primaryText))),
         ],
       ),
     );
@@ -751,17 +630,17 @@ class _UsageTable extends StatelessWidget {
           Expanded(
               flex: 3,
               child: Text(cat.name,
-                  style: const TextStyle(fontSize: 13, color: Colors.black87))),
+                  style: const TextStyle(fontSize: 13, color: AppTheme.primaryText))),
           Expanded(
               flex: 2,
               child: Text('${cat.itemsUsed}',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 13, color: Colors.black87))),
+                  style: const TextStyle(fontSize: 13, color: AppTheme.primaryText))),
           Expanded(
               flex: 2,
               child: Text('${cat.usageRatePercent}%',
                   textAlign: TextAlign.end,
-                  style: const TextStyle(fontSize: 13, color: Colors.black87))),
+                  style: const TextStyle(fontSize: 13, color: AppTheme.primaryText))),
         ],
       ),
     );
@@ -780,11 +659,11 @@ class _BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              color: Colors.black12, blurRadius: 4, offset: Offset(0, -2))
+              color: AppTheme.borderColor.withOpacity(0.5), blurRadius: 4, offset: const Offset(0, -2))
         ],
       ),
       child: Row(
@@ -792,10 +671,10 @@ class _BottomBar extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: AppTheme.primaryText),
               decoration: InputDecoration(
                 hintText: 'Type here to search',
-                hintStyle: const TextStyle(color: Colors.black54),
+                hintStyle: const TextStyle(color: AppTheme.mutedText),
                 filled: true,
                 fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
@@ -805,7 +684,7 @@ class _BottomBar extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 12),
               ),
-              // TODO: Wire up search to filter table rows once backend is connected
+              //TO DO: Wire up search to filter table rows once backend is connected
             ),
           ),
           const SizedBox(width: 8),
@@ -815,7 +694,7 @@ class _BottomBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: IconButton(
-              icon: const Icon(Icons.open_in_new, color: Colors.black),
+              icon: const Icon(Icons.open_in_new, color: AppTheme.primaryText),
               onPressed: onExport,
               tooltip: 'Export report',
             ),

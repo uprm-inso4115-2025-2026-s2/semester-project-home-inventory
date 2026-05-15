@@ -1,3 +1,5 @@
+//TO DO: REPLACE HARDCODED DATA WITH REAL DATA PULLED FROM BACKEND (SEE LINE 51)
+
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
 import '../../domain/entities/report_filter_validator.dart';
@@ -46,23 +48,20 @@ class InventoryStockReportState {
     return items;
   }
 
-  List<CategoryData> get currentPageData {
-    if (filters.page == 0) {
-      return const [
-        CategoryData('Food', 44),
-        CategoryData('Kitchen', 20),
-        CategoryData('Cleaning', 38),
-        CategoryData('Hygiene', 24),
-        CategoryData('Bathroom', 30),
-      ];
-    } else {
-      return const [
-        CategoryData('Utilities', 64),
-        CategoryData('Medicine', 20),
-        CategoryData('Laundry', 0),
-      ];
-    }
-  }
+//TO DO: REPLACE HARDCODED DATA HERE AND IN inventory_stock_report_cubit.dart
+List<CategoryData> get currentPageData {
+  // Return ALL categories for scrolling instead of pagination
+  return const [
+    CategoryData('Food', 44),
+    CategoryData('Kitchen', 20),
+    CategoryData('Cleaning', 38),
+    CategoryData('Hygiene', 24),
+    CategoryData('Bathroom', 30),
+    CategoryData('Utilities', 64),
+    CategoryData('Medicine', 20),
+    CategoryData('Laundry', 0),
+  ];
+}
 
   InventoryStockReportState copyWith({
     ReportFilters? filters,

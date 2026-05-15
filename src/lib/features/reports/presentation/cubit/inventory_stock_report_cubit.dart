@@ -1,3 +1,5 @@
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 23)
+
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/report_filters.dart';
@@ -12,12 +14,13 @@ class InventoryStockReportCubit extends Cubit<InventoryStockReportState> {
 
   InventoryStockReportCubit()
       : super(InventoryStockReportState(
-          filters: ReportFilters(  // ✅ Removed 'const' keyword
+          filters: ReportFilters(  //Removed 'const' keyword
             startDate: DateTime(2026, 3, 9),
             endDate: DateTime(2026, 3, 15),
             page: 0,
             searchQuery: '',
           ),
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (potentially also update line 18-19 dates)
           allItems: const [
             ItemData('Eggs', 'Food', 18, 'OK'),
             ItemData('Beans (cans)', 'Food', 15, 'OK'),
