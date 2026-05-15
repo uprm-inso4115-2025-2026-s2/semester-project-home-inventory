@@ -3,7 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:src/config/theme.dart';
 import 'package:src/features/reports/presentation/pages/expenditure_report_page.dart';
 
-// TODO: Replace with real data from Supabase backend when available
+//TO DO: Replace with real data from Supabase backend when available
+//Radius of the graph in line 73, centerSpaceRadius leave as is
 class DynamicPieChart extends StatelessWidget {
   final List<ExpenditureCategory> categories;
   
@@ -49,7 +50,7 @@ class DynamicPieChart extends StatelessWidget {
         PieChartData(
           sections: _createSections(categories, total),
           sectionsSpace: 2,
-          centerSpaceRadius: 0,  // Changed from 40 to 0 - solid pie chart
+          centerSpaceRadius: 0, //Radius of center, not of the graph itself (does not need to change)
           startDegreeOffset: -90,
           pieTouchData: PieTouchData(
             enabled: true,
@@ -69,7 +70,7 @@ class DynamicPieChart extends StatelessWidget {
         value: percentage,
         title: showPercentage ? '${(percentage * 100).round()}%' : '',
         color: category.color,
-        radius: 100,
+        radius: 100, //May need change
         titleStyle: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
