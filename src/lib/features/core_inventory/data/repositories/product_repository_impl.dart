@@ -1,11 +1,10 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../../domain/entities/product.dart';
 import '../../domain/entities/enums.dart';
 import '../data_sources/product_supabase_datasource.dart';
 import '../models/product.dart';
+import '../exceptions.dart';
 import '/core/util/util.dart';
-import '../../../core_inventory/data/repositories/inventory_repository_impl.dart';
 
 
 class ProductRepositoryImpl implements ProductRepository {

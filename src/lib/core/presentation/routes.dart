@@ -49,13 +49,13 @@ var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
     return MainNavShell(navigationShell: navigationShell, tabs: _mainTabs);
   },
-  routes: [
-    todosRoutes,
-    inventoryStockReportRoute,
-    groceryListRoutes,
-    alertsFeedRoutes,
-    reportsOverviewRoute,
-    groceryListRoutes
+  // routes: [
+  //   todosRoutes,
+  //   inventoryStockReportRoute,
+  //   groceryListRoutes,
+  //   alertsFeedRoutes,
+  //   reportsOverviewRoute,
+  //   groceryListRoutes
     //For testing Purposes
     //reportListRoute,
   branches: [

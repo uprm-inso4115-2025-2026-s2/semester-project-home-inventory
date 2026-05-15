@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/features/core_inventory/domain/entities/enums.dart';
+import 'package:src/features/core_inventory/domain/entities/inventory.dart';
 import 'package:src/features/core_inventory/domain/entities/product.dart';
 import 'package:src/features/core_inventory/domain/entities/stock.dart';
-import 'package:src/features/core_inventory/presentation/mock_data/sample_data.dart';
+import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
+import 'package:src/features/core_inventory/presentation/cubits/inventory_state.dart';
 
 class InventoryCategoryPage extends StatelessWidget {
   const InventoryCategoryPage({super.key});
@@ -13,63 +16,82 @@ class InventoryCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryId =
         GoRouterState.of(context).pathParameters['categoryId'] ?? 'in_stock';
-    final inventory = buildSampleInventory();
     final title = inventoryCategoryTitle(categoryId);
-    final products = filterProductsForCategory(inventory, categoryId);
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Wrap(
-                spacing: 3.w,
-                runSpacing: 1.h,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      context.push('/inventory/category/$categoryId/labels');
-                    },
-                    child: const Text('Item Label Key'),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      context.push('/inventory/category/$categoryId/add');
-                    },
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add Item'),
-                  ),
-                ],
-              ),
-              SizedBox(height: 2.h),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: products.length,
-                  separatorBuilder: (_, __) => SizedBox(height: 1.5.h),
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    final stocks =
-                        inventory.stock[product] ?? const <StockEntity>[];
-                    return _ItemCard(
-                      product: product,
-                      stocks: stocks,
-                      onEdit: stocks.isEmpty
-                          ? null
-                          : () {
-                              context.push(
-                                '/inventory/category/$categoryId/edit/${stocks.first.id}',
-                              );
-                            },
-                    );
-                  },
+      body: BlocBuilder<InventoryCubit, InventoryState>(
+        builder: (context, state) {
+          if (state is InventoryLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is InventoryError) {
+            return Center(child: Text('Error: ${state.message}'));
+          } else if (state is InventoryLoaded) {
+            final inventory = state.inventory;
+            final products = filterProductsForCategory(inventory, categoryId);
+
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      spacing: 3.w,
+                      runSpacing: 1.h,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            context.push(
+                              '/inventory/category/$categoryId/labels',
+                            );
+                          },
+                          child: const Text('Item Label Key'),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            // TODO: Let user select or create a product first
+                            // For now, use placeholder productId 0 (new product)
+                            context.push(
+                              '/inventory/category/$categoryId/add/0',
+                            );
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text('Add Item'),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 2.h),
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: products.length,
+                        separatorBuilder: (_, __) => SizedBox(height: 1.5.h),
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          final stocks =
+                              inventory.stock[product] ?? const <StockEntity>[];
+                          return _ItemCard(
+                            product: product,
+                            stocks: stocks,
+                            onEdit: stocks.isEmpty
+                                ? null
+                                : () {
+                                    context.push(
+                                      '/inventory/category/$categoryId/edit/${product.id}/${stocks.first.id}',
+                                    );
+                                  },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
+            );
+          } else {
+            return const Center(child: Text('No inventory data'));
+          }
+        },
       ),
     );
   }
@@ -179,5 +201,57 @@ class _ItemCard extends StatelessWidget {
       default:
         return 'Unknown';
     }
+  }
+}
+
+// Helper functions for filtering and categorizing inventory
+String inventoryCategoryTitle(String categoryId) {
+  switch (categoryId) {
+    case 'in_stock':
+      return 'In Stock';
+    case 'low_stock':
+      return 'Low Stock';
+    case 'out_of_stock':
+      return 'Out of Stock';
+    case 'custom':
+      return 'Category';
+    default:
+      return 'Category';
+  }
+}
+
+List<ProductEntity> filterProductsForCategory(
+  InventoryEntity inventory,
+  String categoryId,
+) {
+  final products = inventory.stock.keys.toList();
+
+  switch (categoryId) {
+    case 'in_stock':
+      return products.where((product) {
+        final stocks = inventory.stock[product] ?? const <StockEntity>[];
+        return stocks.any(
+          (stock) =>
+              stock.status == Status.FULL || stock.status == Status.HALFWAY,
+        );
+      }).toList();
+
+    case 'low_stock':
+      return products.where((product) {
+        final stocks = inventory.stock[product] ?? const <StockEntity>[];
+        return stocks.any((stock) => stock.status == Status.LOW);
+      }).toList();
+
+    case 'out_of_stock':
+      return products.where((product) {
+        final stocks = inventory.stock[product] ?? const <StockEntity>[];
+        return stocks.any((stock) => stock.status == Status.EMPTY);
+      }).toList();
+
+    case 'custom':
+      return products;
+
+    default:
+      return products;
   }
 }
