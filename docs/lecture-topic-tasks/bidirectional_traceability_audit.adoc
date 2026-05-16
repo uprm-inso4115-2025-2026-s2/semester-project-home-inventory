@@ -1,0 +1,172 @@
+= Bi-Directional Traceability Audit: Low-Stock & Alerts Cluster
+:author: Devlin Hahn
+:date: 2026-05-16
+
+== Audit Based On
+
+Parasoft Webinar: Requirement Traceability for Safety-Critical Applications
+
+This audit applies the webinar's bi-directional traceability concept to the Home Inventory App's Low-Stock & Alerts requirement cluster.
+
+---
+
+== Requirement Cluster Selected
+
+|===
+| Cluster | Requirements Included | Why Important
+| Low-Stock & Alerts | DR-12, DR-13, DR-14, US-ALT-01, F-ALERT, MR-06, MR-07 | Core user value for restock and expiration awareness
+|===
+
+---
+
+== Forward Traceability Matrix
+
+|===
+| Requirement ID | Requirement Summary | Linked to IR? | Linked to US? | Linked to Feature? | Linked to MR? | Hypothetical Test
+
+| DR-12
+| Threshold-driven low-stock
+| Yes — IR-04
+| Yes — US-ALT-01
+| Yes — F-ALERT, F-AUTOCHECK
+| Yes — MR-01, MR-02
+| `testLowStockTriggersWhenQuantityAtOrBelowThreshold()`
+
+| DR-13
+| Expiration status derivation
+| Yes — IR-05
+| No (only in note)
+| Yes — F-ALERT, F-AUTOCHECK
+| Yes — MR-01, MR-08
+| `testExpiredStatusDerivedCorrectlyWhenDatePresent()`
+
+| DR-14
+| Deduplicated alerting
+| No
+| Yes — US-ALT-01
+| Yes — F-ALERT
+| Yes — MR-07
+| `testRepeatedAutoCheckWithoutStateChangeDoesNotGenerateDuplicateAlerts()`
+
+| US-ALT-01
+| Receive low-stock warnings
+| Yes — IR-04, IR-05
+| N/A
+| Yes — F-ALERT, F-AUTOCHECK
+| Yes — MR-06, MR-07
+| `testUserReceivesLowStockWarningWhenThresholdCrossed()`
+
+| F-ALERT
+| Alert generation from state changes
+| Yes — IR-04, IR-05
+| Yes — US-ALT-01
+| N/A
+| Yes — MR-06, MR-07
+| `testAlertGeneratedOnlyOnActionableStateTransitions()`
+
+| MR-06
+| Auditability (quantity change logging)
+| No
+| No
+| Yes — F-ALERT (notes "actions logged")
+| N/A
+| `testQuantityChangeLoggedWithTimestampAndUserId()`
+
+| MR-07
+| Notification quality (no duplicate alerts)
+| No
+| Yes — US-ALT-01
+| Yes — F-ALERT
+| N/A
+| `testRepeatedChecksWithoutStateChangeNoDuplicateAlerts()`
+|===
+
+---
+
+== Backward Traceability Matrix
+
+**Test Name:** `testLowStockTriggersWhenQuantityAtOrBelowThreshold()`
+
+**↓ Verifies which Interface Requirement?**
+
+IR-04 (Low-Stock Threshold Definition)
+- "The system shall provide a means to set low-stock thresholds for individual items"
+- Includes threshold field on item creation and edit screens
+- Source: `interface-requirements.adoc`
+
+**↓ Implements which Domain Requirement?**
+
+DR-12 (Threshold-driven low-stock)
+- "The system shall evaluate whether an item type is low-stock by comparing its current quantity to an item-specific threshold"
+- "When quantity falls at or below the threshold, the system shall flag the item type as low-stock"
+- Source: `domain-requirements.adoc`
+
+**↓ Supports which User Story?**
+
+US-ALT-01 (Receive low-stock warnings)
+- "As Julian, I want to receive low-stock warnings for items I rely on"
+- Acceptance criteria: "When an item's tracked quantity crosses from NORMAL/IN_STOCK to LOW_STOCK (threshold boundary), the system flags the item as low-stock"
+- Source: `user-stories.adoc`
+
+**↓ Enables which Feature?**
+
+F-ALERT (Alert generation from actionable state changes)
+- "Notifies household members when tracked conditions become actionable (e.g., LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY/EXPIRED)"
+- "With deduplication based on state transitions"
+- Source: `features.adoc`
+
+---
+
+== Traceability Gaps Identified
+
+=== Gap 1: DR-14 Has No Interface Requirement
+
+**Finding:** DR-14 (Deduplicated alerting) has no direct link to any Interface Requirement.
+
+**Evidence from files:**
+- `domain-requirements.adoc` contains DR-14: "The system shall deduplicate alerts and trigger them primarily on actionable state transitions"
+- `interface-requirements.adoc` contains no IR mentioning deduplication, alert frequency settings, or how a user would interact with deduplication behavior
+
+**Why this matters:** An auditor would ask: "How does the user know deduplication is happening? Can they configure it? Can they see when an alert was suppressed?" Without an IR, these questions cannot be answered.
+
+---
+
+=== Gap 2: MR-06 Has No User Story or Interface Requirement
+
+**Finding:** MR-06 (Auditability) for alert quantity changes has no User Story and no Interface Requirement.
+
+**Evidence from files:**
+- `machine-requirements.adoc` MR-06: "Quantity changes shall be logged with timestamp, user ID, item, and previous value"
+- `user-stories.adoc` contains no user story about viewing audit logs for alerts
+- `interface-requirements.adoc` contains no IR about audit log visibility or access
+
+**Why this matters:** An auditor would ask: "Show me the requirement that proves users can see when alert-related quantity changes occurred." Without a User Story (user need) or IR (user interaction), this requirement exists only as a technical implementation detail with no user-facing justification.
+
+---
+
+=== Gap 3: Custom Alert Intervals Missing from All Requirement Layers
+
+**Finding:** The ability for users to customize alert intervals appears only in an implementation document, not in any formal requirement layer.
+
+**Evidence from files:**
+- `define-alert-trigger-logic.adoc` states: "Users will have the option to customize the alert intervals based on their preferences... a user may choose to receive alerts 10 days before expiration instead of the default 7 days"
+- This requirement appears **nowhere** in:
+  - Domain Requirements (DR-12, DR-13, DR-14 do not mention customization)
+  - Interface Requirements (no IR for setting custom intervals)
+  - User Stories (US-ALT-01 does not mention customization)
+  - Features (F-ALERT does not mention customization)
+  - Machine Requirements (MR-07 does not mention customization)
+
+**Why this matters:** If implemented, custom alert intervals would have no traceability back to an approved requirement. An auditor would consider this an unvalidated feature or scope creep. Alternatively, if a developer reads only the requirements files and not the implementation document, they would never know customization was expected.
+
+---
+
+== Summary of Traceability Gaps
+
+|===
+| Gap # | Description | Affected Requirements | Severity
+| 1 | DR-14 has no Interface Requirement link | DR-14 | High
+| 2 | MR-06 has no User Story or Interface Requirement | MR-06 | High
+| 3 | Custom alert intervals missing from all requirement layers | (Implementation-only) | Critical
+|===
+
