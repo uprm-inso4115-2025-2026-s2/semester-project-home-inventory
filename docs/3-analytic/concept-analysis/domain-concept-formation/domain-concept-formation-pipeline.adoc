@@ -193,6 +193,55 @@ The inconsistency detector scans all DDUs and existing domain documents for:
 * *Completeness gaps* — a concept is referenced but never fully defined.
 * *Terminology drift* — the same real-world phenomenon described under two different names.
 
+=== Milestone 3 Acquisition Feedback Integrated into Concept Formation
+
+The Milestone 3 acquisition round added implementation-driven evidence to the concept formation pipeline. These additions refine the relationship between requirements and domain concepts discovered during M2 implementation.
+
+[cols="1,3,3,3"]
+|===
+| M3 source | Gap or ambiguity | Concept refined | Requirement impact
+
+| M3-QA-01
+| Personal items were not clearly separated from shared inventory visibility.
+| Visibility scope; Ownership
+| DR-18, IR-09, MR-05-R
+
+| M3-QA-02
+| Household roles existed but daily permissions were underspecified.
+| Role-scoped permission; Membership
+| DR-19, IR-09, MR-05-R
+
+| M3-QA-03
+| Complex searches were deferred without identifying which filters were essential.
+| Filtered inventory lookup
+| DR-20, IR-10, US-RPT-01-R
+
+| M3-QA-04
+| Barcode fallback behavior needed a clearer low-friction minimum.
+| Fast fallback capture
+| DR-21, IR-11, MR-08-R
+
+| M3-QA-05
+| Budget alerts were in scope conceptually but lacked user preference rules.
+| Budget alert preference
+| DR-22, IR-12
+
+| M3-QA-06
+| Shared-household alert audience and delivery rules were ambiguous.
+| Shared alert audience
+| DR-23, IR-13, MR-07-R
+
+| M3-QA-07
+| Grocery-list auto-add needed user override semantics.
+| Restock override
+| DR-24, IR-14
+
+| M3-QA-08
+| Offline support was view-only, but user workflows required pending updates.
+| Pending offline change
+| DR-25, MR-03-R
+|===
+
 ---
 
 == Output: Analyst Review Package
