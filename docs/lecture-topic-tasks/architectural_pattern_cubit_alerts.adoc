@@ -1,0 +1,52 @@
+= Architectural Pattern Analysis - State Management (Cubit) Separation of Concerns in Alerts UI
+:toc: left
+:icons: font
+
+== 1. Introduction
+
+In Software Engineering, selecting the right **Architectural Pattern** is crucial for ensuring a system's long-term viability. One of the core principles taught in software architecture is the **Separation of Concerns (SoC)**, the idea that a program should be divided into distinct sections, each addressing a separate concern.
+
+This document analyzes how the Alerts & Notifications UI achieves SoC by utilizing the **Cubit pattern**. We will map theoretical concepts like the Observer Pattern and SoC to our codebase, and evaluate how this architectural decision satisfies our Non-Functional Requirements (NFRs).
+
+== 2. Theoretical Foundations
+
+=== 2.1. Separation of Concerns (SoC)
+In frontend development, SoC dictates that the User Interface (Presentation Layer) should be completely unaware of how data is fetched, processed, or stored (Business/Data Layer). The UI should only know how to display data and capture user inputs.
+
+=== 2.2. The Observer Pattern
+The Observer pattern is a software design pattern in which an object (the subject) maintains a list of its dependents (observers) and notifies them automatically of any state changes. This is the foundational theory behind reactive programming and state management in modern frameworks.
+
+== 3. Mapping Theory to Implementation
+
+In the Alerts feature, we successfully separated the presentation from the business logic by implementing `AlertsCubit` and `AlertsState`.
+
+=== 3.1. The Subject (State Manager)
+* **Implementation:** `AlertsCubit`
+* **Role:** Acts as the single source of truth for the Alerts feed. It contains the business logic for filtering alerts (`setFilter`) and dismissing alerts (`removeAlert`). 
+* **Architectural Benefit:** If the backend team needs to change the Supabase endpoint or modify how alerts are deleted from the database, they only need to modify the `AlertsCubit` methods. The UI code remains completely untouched.
+
+=== 3.2. The Observers (UI Components)
+* **Implementation:** `AlertsHome` (via `BlocBuilder`)
+* **Role:** The `BlocBuilder` acts as the observer. It listens to the `AlertsCubit` and automatically rebuilds the `ListView` whenever a new `AlertsState` is emitted (e.g., when the active filter changes from "All" to "Low Stock").
+
+=== 3.3. Event Triggers (Decoupled Actions)
+In the `AlertModal`, when a user updates an expiration date and taps "Save", the UI does not write to the database. Instead, it delegates the action:
+[source,dart]
+----
+context.read<AlertsCubit>().removeAlert(widget.alert.id);
+----
+This single line demonstrates perfect SoC. The UI merely dispatches an intent; the Cubit handles the execution.
+
+== 4. Impact on Non-Functional Requirements (NFRs)
+
+By strictly adhering to the Cubit architectural pattern, we directly improve two critical Non-Functional Requirements:
+
+=== 4.1. Maintainability
+Because the `AlertCard` and `AlertModal` widgets are completely devoid of database queries or heavy logic, the codebase is highly modular. UI developers can tweak the `flutter_slidable` animations or modal colors without risking breaking the backend data flow. 
+
+=== 4.2. Testability
+Testing UI components mixed with database calls is notoriously difficult. By using Cubit, the `AlertsCubit` can be rigorously **Unit Tested** in isolation by simply calling its methods and expecting specific state emissions, without ever needing to render a single Flutter widget or spin up an emulator.
+
+== 5. Conclusion
+
+The implementation of the Cubit pattern in the Alerts & Notifications screen is a textbook application of Separation of Concerns and the Observer pattern. By decoupling the presentation layer from the business logic, the architecture ensures that the system remains highly maintainable, easily testable, and prepared for seamless backend integration.

@@ -1,4 +1,4 @@
-//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 30)
+//TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 31)
 
 import 'dart:math' as math;
 import 'dart:typed_data';
@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:src/config/theme.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
@@ -25,7 +26,7 @@ class _UsageCategory {
   });
 }
 
-// ======================== Static Sample Data ========================
+// ======================== Static Sample Data (will be replaced) ========================
 
 //TO DO: REPLACE HARDCODED DATA WITH BACKEND DATA
 const _kAllCategories = [
@@ -53,22 +54,134 @@ const _kDateRanges = [
   'Feb 2 - 8',
 ];
 
+// ======================== Cubit & State ========================
+
+class ItemUsageRatesState {
+  final String selectedDateRange;
+  final Set<String> selectedCategories;
+  final List<_UsageCategory> categories; // filtered based on selection
+  final List<double> chartPoints;
+  final List<String> chartDays;
+  final bool isLoading;
+  final String? errorMessage;
+
+  const ItemUsageRatesState({
+    required this.selectedDateRange,
+    required this.selectedCategories,
+    required this.categories,
+    required this.chartPoints,
+    required this.chartDays,
+    this.isLoading = false,
+    this.errorMessage,
+  });
+
+  ItemUsageRatesState copyWith({
+    String? selectedDateRange,
+    Set<String>? selectedCategories,
+    List<_UsageCategory>? categories,
+    List<double>? chartPoints,
+    List<String>? chartDays,
+    bool? isLoading,
+    String? errorMessage,
+  }) {
+    return ItemUsageRatesState(
+      selectedDateRange: selectedDateRange ?? this.selectedDateRange,
+      selectedCategories: selectedCategories ?? this.selectedCategories,
+      categories: categories ?? this.categories,
+      chartPoints: chartPoints ?? this.chartPoints,
+      chartDays: chartDays ?? this.chartDays,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+}
+
+class ItemUsageRatesCubit extends Cubit<ItemUsageRatesState> {
+  static const bool _simulateError = false; // set to true to test error state
+
+  ItemUsageRatesCubit()
+      : super(ItemUsageRatesState(
+          selectedDateRange: 'Mar 9 - 15',
+          selectedCategories: {
+            'Food', 'Kitchen', 'Cleaning', 'Hygiene',
+            'Bathroom', 'Utilities', 'Medicine', 'Laundry',
+          },
+          categories: _kAllCategories,
+          chartPoints: _kChartPoints,
+          chartDays: _kChartDays,
+          isLoading: true,
+        )) {
+    _loadData();
+  }
+
+  // Simulate async data fetch (replace with real Supabase call)
+  Future<void> _loadData() async {
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (_simulateError) {
+      emit(state.copyWith(
+        isLoading: false,
+        errorMessage: 'Unable to load usage rates. Please check your connection and try again.',
+      ));
+      return;
+    }
+    // Use static data (future: fetch from backend)
+    final allCategories = _kAllCategories;
+    final filtered = allCategories
+        .where((c) => state.selectedCategories.contains(c.name))
+        .toList();
+    emit(state.copyWith(
+      categories: filtered,
+      isLoading: false,
+      errorMessage: null,
+    ));
+  }
+
+  void setDateRange(String range) {
+    emit(state.copyWith(selectedDateRange: range));
+    _loadData(); // In real implementation, fetch data for new date range
+  }
+
+  void toggleCategory(String category) {
+    final newSelection = Set<String>.from(state.selectedCategories);
+    if (newSelection.contains(category)) {
+      if (newSelection.length > 1) {
+        newSelection.remove(category);
+      }
+    } else {
+      newSelection.add(category);
+    }
+    emit(state.copyWith(selectedCategories: newSelection));
+    _loadData(); // Refetch filtered data (or filter client-side)
+  }
+
+  void retryLoad() {
+    _loadData();
+  }
+}
+
 // ======================== Page ========================
 
-class ItemUsageRatesPage extends StatefulWidget {
+class ItemUsageRatesPage extends StatelessWidget {
   const ItemUsageRatesPage({super.key});
 
   @override
-  State<ItemUsageRatesPage> createState() => _ItemUsageRatesPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ItemUsageRatesCubit(),
+      child: const _ItemUsageRatesView(),
+    );
+  }
 }
 
-class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
-  String _selectedDateRange = 'Mar 9 - 15';
-  final Set<String> _selectedCategories = {
-    'Food', 'Kitchen', 'Cleaning', 'Hygiene',
-    'Bathroom', 'Utilities', 'Medicine', 'Laundry',
-  };
+class _ItemUsageRatesView extends StatefulWidget {
+  const _ItemUsageRatesView();
 
+  @override
+  State<_ItemUsageRatesView> createState() => _ItemUsageRatesViewState();
+}
+
+class _ItemUsageRatesViewState extends State<_ItemUsageRatesView> {
   final TextEditingController _searchController = TextEditingController();
 
   // LayerLink anchors the overlay to the Filters button
@@ -93,7 +206,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;
-    // Don't call setState here — may be called during dispose
   }
 
   void _closeOverlay() {
@@ -112,7 +224,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
 
   void _setOverlayState(String state) {
     setState(() => _overlayState = state);
-    // Rebuild the existing entry in place
     _overlayEntry?.markNeedsBuild();
   }
 
@@ -139,7 +250,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
           child: Material(
             color: Colors.transparent,
             child: GestureDetector(
-              // Prevent taps inside the overlay from hitting the barrier
               onTap: () {},
               child: _buildOverlayContent(),
             ),
@@ -150,6 +260,9 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   }
 
   Widget _buildOverlayContent() {
+    final cubit = context.read<ItemUsageRatesCubit>();
+    final state = cubit.state;
+
     switch (_overlayState) {
       case 'main':
         return _MainFilterOverlay(
@@ -159,26 +272,18 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
       case 'dateRange':
         return _DateRangeOverlay(
           dateRanges: _kDateRanges,
-          selected: _selectedDateRange,
+          selected: state.selectedDateRange,
           onSelect: (range) {
-            setState(() => _selectedDateRange = range);
+            cubit.setDateRange(range);
             _closeOverlay();
           },
         );
       case 'categories':
         return _CategoriesOverlay(
           allCategories: _kAllCategories.map((c) => c.name).toList(),
-          selected: _selectedCategories,
+          selected: state.selectedCategories,
           onToggle: (name) {
-            setState(() {
-              if (_selectedCategories.contains(name)) {
-                if (_selectedCategories.length > 1) {
-                  _selectedCategories.remove(name);
-                }
-              } else {
-                _selectedCategories.add(name);
-              }
-            });
+            cubit.toggleCategory(name);
             _overlayEntry?.markNeedsBuild();
           },
         );
@@ -203,16 +308,16 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
 
   // ── PDF export ─────────────────────────────────────────────────
 
-  Future<void> _exportPdf() async {
+  Future<void> _exportPdf(ItemUsageRatesState state) async {
     final pdfService = PdfExportService();
-    final categories = _filteredCategories
+    final categories = state.categories
         .map((c) => {'name': c.name, 'itemsUsed': c.itemsUsed, 'usageRate': c.usageRatePercent})
         .toList();
     
     final chartImage = await _captureChart();
 
     await pdfService.exportItemUsageRatesReport(
-      dateRange: _selectedDateRange,
+      dateRange: state.selectedDateRange,
       categories: categories,
       chartImage: chartImage,
     );
@@ -223,12 +328,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
       );
     }
   }
-
-  // ── Helpers ────────────────────────────────────────────────────
-
-  List<_UsageCategory> get _filteredCategories => _kAllCategories
-      .where((c) => _selectedCategories.contains(c.name))
-      .toList();
 
   // ======================== Build ========================
 
@@ -253,98 +352,146 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      body: BlocBuilder<ItemUsageRatesCubit, ItemUsageRatesState>(
+        builder: (context, state) {
+          // Loading state
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Error state
+          if (state.errorMessage != null) {
+            return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Date range + Filters button row
-                  Row(
+                  Text(
+                    state.errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => context.read<ItemUsageRatesCubit>().retryLoad(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primaryColor,
+                    ),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // Empty state (no categories after filtering)
+          if (state.categories.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: Text(
+                  'No categories match your selection.',
+                  style: TextStyle(fontSize: 16, color: AppTheme.mutedText),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+
+          // Normal loaded state
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Date range display
-                      Column(
+                      // Date range + Filters button row
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            _selectedDateRange,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.primaryText,
-                            ),
+                          // Date range display
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.selectedDateRange,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.primaryText,
+                                ),
+                              ),
+                              const Text(
+                                '2026',
+                                style: TextStyle(fontSize: 14, color: AppTheme.primaryText),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            '2026',
-                            style: TextStyle(fontSize: 14, color: AppTheme.primaryText),
+                          const Spacer(),
+                          // Filters button — anchored with CompositedTransformTarget
+                          CompositedTransformTarget(
+                            link: _layerLink,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (_overlayState != null) {
+                                  _closeOverlay();
+                                } else {
+                                  _showOverlay('main');
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primaryColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      'Filters',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Icon(
+                                      _overlayState != null
+                                          ? Icons.arrow_drop_up
+                                          : Icons.arrow_drop_down,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      const Spacer(),
-                      // Filters button — anchored with CompositedTransformTarget
-                      CompositedTransformTarget(
-                        link: _layerLink,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_overlayState != null) {
-                              _closeOverlay();
-                            } else {
-                              _showOverlay('main');
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Filters',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 14),
-                                ),
-                                const SizedBox(width: 4),
-                                Icon(
-                                  _overlayState != null
-                                      ? Icons.arrow_drop_up
-                                      : Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      const SizedBox(height: 16),
+                      // Line chart wrapped with RepaintBoundary for capturing
+                      RepaintBoundary(
+                        key: _chartKey,
+                        child: DynamicLineChart(points: state.chartPoints, days: state.chartDays),
                       ),
+                      const SizedBox(height: 20),
+                      // Table
+                      _UsageTable(categories: state.categories),
+                      const SizedBox(height: 12),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  // Line chart wrapped with RepaintBoundary for capturing
-                  RepaintBoundary(
-                    key: _chartKey,
-                    child: DynamicLineChart(points: _kChartPoints, days: _kChartDays),
-                  ),
-                  const SizedBox(height: 20),
-                  // Table
-                  _UsageTable(categories: _filteredCategories),
-                  const SizedBox(height: 12),
-                ],
+                ),
               ),
-            ),
-          ),
-          // Fixed bottom bar
-          _BottomBar(
-            controller: _searchController,
-            onExport: _exportPdf,
-          ),
-        ],
+              // Fixed bottom bar
+              _BottomBar(
+                controller: _searchController,
+                onExport: () => _exportPdf(state),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

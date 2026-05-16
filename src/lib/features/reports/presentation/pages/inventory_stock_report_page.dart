@@ -1,5 +1,5 @@
-//TO DO: REPLACE HARDCODED DATA THAT'S USED IN inventory_stock_report_cubit.dart AND
-//inventory_stock_report_state.dart, BOTH FILES IN THE CUBIT FOLDER SIBLING OF THE CURRENT PAGES ONE
+// TO DO: REPLACE HARDCODED DATA THAT'S USED IN inventory_stock_report_cubit.dart AND
+// inventory_stock_report_state.dart, BOTH FILES IN THE CUBIT FOLDER SIBLING OF THE CURRENT PAGES ONE
 
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -266,7 +266,7 @@ class _ReportViewState extends State<_ReportView> {
     }
   }
 
-  // ---------- Build ----------
+  // ---------- Build with Loading / Error / Empty States ----------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -357,6 +357,50 @@ class _ReportViewState extends State<_ReportView> {
       ),
       body: BlocBuilder<InventoryStockReportCubit, InventoryStockReportState>(
         builder: (context, state) {
+          // --- Loading state ---
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // --- Error state ---
+          if (state.errorMessage != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => context.read<InventoryStockReportCubit>().loadInventoryData(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primaryColor,
+                    ),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // --- Empty state (data loaded but no items) ---
+          if (state.allItems.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: Text(
+                  'No inventory items found for the selected filters.',
+                  style: TextStyle(fontSize: 16, color: Colors.black54),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+
+          // --- Normal loaded state ---
           return Column(
             children: [
               // Scrollable content (everything except the bottom search bar)
@@ -434,7 +478,7 @@ class _ReportViewState extends State<_ReportView> {
                   ),
                 ),
               ),
-              // Search bar with export button (sticky at bottom)
+              // Search bar with export button
               _SearchBar(onExport: () => _exportPdf(context, state)),
             ],
           );
@@ -510,7 +554,6 @@ class _DataTable extends StatelessWidget {
         children: [
           _header(),
           const Divider(height: 1),
-          // Removed Expanded and ListView - using simple Column with children
           Column(
             children: items.map((item) => _row(item)).toList(),
           ),
