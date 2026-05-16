@@ -348,4 +348,64 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Requirements
 | A persisted representation of an alert, including type, timestamp, and read/unread status, available at minimum for in-app review.
 | Refines the domain-level "alert"; adds persistence and status tracking.
+
+| Barcode scanning
+| Function
+| Requirements
+| A system feature that allows a user to add or identify an item by scanning its barcode instead of entering all item details manually.
+| Related to manual entry and item acquisition.
+
+| Manual entry
+| Function
+| Requirements
+| A system feature that allows a user to add or update item information by typing the details directly into the application.
+| Used when barcode scanning is unavailable, unreliable, or the item has no barcode.
+
+| Shared inventory
+| Concept
+| Requirements
+| An inventory context where multiple household members can view, coordinate, and update item-related information.
+| Related to household membership, permission rules, and duplicate purchase prevention.
+
+| Permission rule
+| Rule
+| Requirements
+| A constraint that defines what actions a user or household member is allowed to perform within a household or shared inventory.
+| Examples include viewing items, editing items, inviting members, removing members, or managing shared household data.
+
+| Grocery list
+| Artifact
+| Requirements
+| A user-facing list of items that need to be purchased or replenished.
+| Related to the restock list / planner, but refers to the system-facing feature used by users.
+
+| Duplicate warning
+| Alert / Rule
+| Requirements
+| A system warning that informs the user when an item, purchase, or restock action may duplicate an existing inventory item or planned item.
+| Supports duplicate purchase prevention and shared household coordination.
+
+| Report
+| Artifact
+| Requirements
+| A system-generated summary that presents inventory, spending, usage, or stock information to help users understand household patterns.
+| May include expenditure reports, stock summaries, budget views, or usage-rate views.
+
+| Usage rate
+| Derived Property
+| Requirements
+| A computed estimate of how quickly an item is consumed over time.
+| Supports reporting, restock planning, and inventory analysis.
+
+| Expenditure report
+| Artifact
+| Requirements
+| A report that summarizes spending entries over a selected period, category, household, or user.
+| Related to budget status, spending category, and spending entry.
+
+| Stock summary
+| Artifact
+| Requirements
+| A report or view that summarizes current item availability, low-stock items, out-of-stock items, and related inventory conditions.
+| Related to availability, quantity, low-stock judgment, and actionable states.
 |===
