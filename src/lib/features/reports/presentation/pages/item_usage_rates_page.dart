@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -24,23 +23,6 @@ class _UsageCategory {
   });
 }
 
-// ======================== Date Range Data ========================
-
-const _kDateRanges = [
-  'January 2026',
-  'February 2026',
-  'March 2026',
-  'April 2026',
-  'May 2026',
-  'June 2026',
-  'July 2026',
-  'August 2026',
-  'September 2026',
-  'October 2026',
-  'November 2026',
-  'December 2026',
-];
-
 // ======================== Page ========================
 
 class ItemUsageRatesPage extends StatefulWidget {
@@ -51,7 +33,8 @@ class ItemUsageRatesPage extends StatefulWidget {
 }
 
 class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
-  String _selectedDateRange = 'March 2026';
+  late String _selectedDateRange;
+  late List<String> _dateRanges;
 
   final Set<String> _selectedCategories = {};
 
@@ -68,15 +51,32 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   final GlobalKey _chartKey = GlobalKey();
 
   List<_UsageCategory> _allCategories = [];
-  List<double> _chartPoints = [];
-  List<String> _chartLabels = [];
 
   bool _isLoading = true;
   String? _errorMessage;
 
+  static const List<String> _monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
   @override
   void initState() {
     super.initState();
+
+    _dateRanges = _generateMonthRanges();
+    _selectedDateRange = _formatMonth(DateTime.now());
+
     _loadUsageRates();
   }
 
@@ -87,38 +87,34 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
     super.dispose();
   }
 
-  // ── Supabase data loading ──────────────────────────────────────
+  // ── Date helpers ───────────────────────────────────────────────
+
+  List<String> _generateMonthRanges() {
+    final now = DateTime.now();
+    final ranges = <String>[];
+
+    for (int month = 1; month <= 12; month++) {
+      final date = DateTime(now.year, month, 1);
+      ranges.add(_formatMonth(date));
+    }
+
+    return ranges;
+  }
+
+  String _formatMonth(DateTime date) {
+    return '${_monthNames[date.month - 1]} ${date.year}';
+  }
 
   DateTime _getMonthStart(String range) {
-    switch (range) {
-      case 'January 2026':
-        return DateTime(2026, 1, 1);
-      case 'February 2026':
-        return DateTime(2026, 2, 1);
-      case 'March 2026':
-        return DateTime(2026, 3, 1);
-      case 'April 2026':
-        return DateTime(2026, 4, 1);
-      case 'May 2026':
-        return DateTime(2026, 5, 1);
-      case 'June 2026':
-        return DateTime(2026, 6, 1);
-      case 'July 2026':
-        return DateTime(2026, 7, 1);
-      case 'August 2026':
-        return DateTime(2026, 8, 1);
-      case 'September 2026':
-        return DateTime(2026, 9, 1);
-      case 'October 2026':
-        return DateTime(2026, 10, 1);
-      case 'November 2026':
-        return DateTime(2026, 11, 1);
-      case 'December 2026':
-        return DateTime(2026, 12, 1);
-      default:
-        return DateTime(2026, 3, 1);
-    }
+    final parts = range.split(' ');
+    final monthName = parts[0];
+    final year = int.tryParse(parts[1]) ?? DateTime.now().year;
+    final month = _monthNames.indexOf(monthName) + 1;
+
+    return DateTime(year, month, 1);
   }
+
+  // ── Supabase data loading ──────────────────────────────────────
 
   Future<void> _loadUsageRates() async {
     setState(() {
@@ -147,12 +143,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
 
       setState(() {
         _allCategories = categories;
-
-        _chartPoints = categories
-            .map((category) => category.usageRatePercent.toDouble())
-            .toList();
-
-        _chartLabels = categories.map((category) => category.name).toList();
 
         _selectedCategories
           ..clear()
@@ -235,7 +225,7 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
         );
       case 'dateRange':
         return _DateRangeOverlay(
-          dateRanges: _kDateRanges,
+          dateRanges: _dateRanges,
           selected: _selectedDateRange,
           onSelect: (range) async {
             setState(() => _selectedDateRange = range);
@@ -245,7 +235,7 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
         );
       case 'categories':
         return _CategoriesOverlay(
-          allCategories: _allCategories.map((c) => c.name).toList(),
+          allCategories: _allCategories.map((c) => c.name).toSet().toList(),
           selected: _selectedCategories,
           onToggle: (name) {
             setState(() {
@@ -324,6 +314,9 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final canShowChart = _filteredChartPoints.length >= 2 &&
+        _filteredChartPoints.length == _filteredChartLabels.length;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
@@ -357,30 +350,27 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 12),
+                horizontal: 16,
+                vertical: 12,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Date range + Filters button
+                  // Date range + Filters button row
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Date range display
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _selectedDateRange,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.primaryText,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        _selectedDateRange,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryText,
+                        ),
                       ),
                       const Spacer(),
-                      // Filters button
+                      // Filters button — anchored with CompositedTransformTarget
                       CompositedTransformTarget(
                         link: _layerLink,
                         child: GestureDetector(
@@ -393,7 +383,9 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 8),
+                              horizontal: 14,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.primaryColor,
                               borderRadius: BorderRadius.circular(8),
@@ -404,8 +396,9 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                                 const Text(
                                   'Filters',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14),
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
                                 ),
                                 const SizedBox(width: 4),
                                 Icon(
@@ -439,13 +432,27 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                     )
                   else ...[
                     // Line chart
-                    RepaintBoundary(
-                      key: _chartKey,
-                      child: DynamicLineChart(
-                        points: _filteredChartPoints,
-                        days: _filteredChartLabels,
+                    if (canShowChart)
+                      RepaintBoundary(
+                        key: _chartKey,
+                        child: DynamicLineChart(
+                          points: _filteredChartPoints,
+                          days: _filteredChartLabels,
+                        ),
+                      )
+                    else
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
+                          child: Text(
+                            'Add at least 2 usage rate entries to display the chart.',
+                            style: TextStyle(
+                              color: AppTheme.primaryText,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
                     const SizedBox(height: 20),
                     // Table
                     _UsageTable(categories: _filteredCategories),
@@ -522,7 +529,9 @@ class _DateRangeOverlay extends StatelessWidget {
                   onTap: () => onSelect(range),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 10),
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     margin: const EdgeInsets.only(bottom: 4),
                     decoration: BoxDecoration(
                       color: isSelected
@@ -538,15 +547,17 @@ class _DateRangeOverlay extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13,
                               color: AppTheme.primaryText,
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.normal,
+                              fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.normal,
                             ),
                           ),
                         ),
                         if (isSelected)
-                          const Icon(Icons.check,
-                              size: 16, color: AppTheme.primaryColor),
+                          const Icon(
+                            Icons.check,
+                            size: 16,
+                            color: AppTheme.primaryColor,
+                          ),
                       ],
                     ),
                   ),
@@ -606,7 +617,9 @@ class _CategoriesOverlay extends StatelessWidget {
                         Text(
                           name,
                           style: const TextStyle(
-                              fontSize: 13, color: AppTheme.primaryText),
+                            fontSize: 13,
+                            color: AppTheme.primaryText,
+                          ),
                         ),
                       ],
                     ),
@@ -693,12 +706,14 @@ class _UsageTable extends StatelessWidget {
         children: [
           _tableHeader(),
           const Divider(height: 1, color: AppTheme.borderColor),
-          ...categories.map((cat) => Column(
-            children: [
-              _tableRow(cat),
-              const Divider(height: 1, color: AppTheme.borderColor),
-            ],
-          )),
+          ...categories.map(
+                (cat) => Column(
+              children: [
+                _tableRow(cat),
+                const Divider(height: 1, color: AppTheme.borderColor),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -710,28 +725,40 @@ class _UsageTable extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              flex: 3,
-              child: Text('Category',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: AppTheme.primaryText))),
+            flex: 3,
+            child: Text(
+              'Category',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
           Expanded(
-              flex: 2,
-              child: Text('Items Used',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: AppTheme.primaryText))),
+            flex: 2,
+            child: Text(
+              'Items Used',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
           Expanded(
-              flex: 2,
-              child: Text('Usage Rate',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: AppTheme.primaryText))),
+            flex: 2,
+            child: Text(
+              'Usage Rate',
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -743,22 +770,37 @@ class _UsageTable extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              flex: 3,
-              child: Text(cat.name,
-                  style: const TextStyle(
-                      fontSize: 13, color: AppTheme.primaryText))),
+            flex: 3,
+            child: Text(
+              cat.name,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
           Expanded(
-              flex: 2,
-              child: Text('${cat.itemsUsed}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 13, color: AppTheme.primaryText))),
+            flex: 2,
+            child: Text(
+              '${cat.itemsUsed}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
           Expanded(
-              flex: 2,
-              child: Text('${cat.usageRatePercent}%',
-                  textAlign: TextAlign.end,
-                  style: const TextStyle(
-                      fontSize: 13, color: AppTheme.primaryText))),
+            flex: 2,
+            child: Text(
+              '${cat.usageRatePercent}%',
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -771,7 +813,10 @@ class _BottomBar extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onExport;
 
-  const _BottomBar({required this.controller, required this.onExport});
+  const _BottomBar({
+    required this.controller,
+    required this.onExport,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -781,9 +826,10 @@ class _BottomBar extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-              color: AppTheme.borderColor.withOpacity(0.5),
-              blurRadius: 4,
-              offset: const Offset(0, -2))
+            color: AppTheme.borderColor.withOpacity(0.5),
+            blurRadius: 4,
+            offset: const Offset(0, -2),
+          )
         ],
       ),
       child: Row(
@@ -802,9 +848,11 @@ class _BottomBar extends StatelessWidget {
                   borderSide: BorderSide.none,
                 ),
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 12),
+                  horizontal: 20,
+                  vertical: 12,
+                ),
               ),
-              // TO DO: Wire up search to filter table rows once backend is connected
+              // TO DO: Wire up search to filter table rows
             ),
           ),
           const SizedBox(width: 8),
