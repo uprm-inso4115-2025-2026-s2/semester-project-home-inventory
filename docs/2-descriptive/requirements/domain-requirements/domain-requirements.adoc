@@ -54,7 +54,7 @@ _Domain property behind this requirement:_ In the domain, low-stock is a judgmen
 
 === Added and Refined Domain Requirements
 
-The following domain requirements were added or revised after the Milestone 3 second-round requirements acquisition documented in Section 4.4.5.
+The following domain requirements were added or revised after the Milestone 3 second-round requirements acquisition documented in <<second-round-requirements-acquisition,Second-Round Requirements Acquisition>>.
 
 * DR-18 (Personal item default privacy): Personal item records shall be visible only to the owning household member by default, unless the owner explicitly shares the item with the household.
 ** M3 source: M3-QA-01.

@@ -181,7 +181,7 @@ Deferred items for later milestones:
 | Add tests for opt-in budget alert settings.
 
 | M3-QA-06
-| DR-14, DR-23, IR-13, MR-07
+| DR-23, IR-13, MR-07
 | N2, N4, N5
 | Shared alert audience, Alert / notification record
 | Add tests for deduplication and delivery preferences.

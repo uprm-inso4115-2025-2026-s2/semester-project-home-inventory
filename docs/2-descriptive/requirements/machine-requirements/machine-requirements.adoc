@@ -33,7 +33,7 @@ Response time measurements will be collected during walkthroughs to establish ba
 
 The mobile client shall support viewing inventory while offline and shall allow pending item creation and quantity updates while disconnected. Pending changes shall be clearly marked in the interface until synchronization succeeds. If the same tracked inventory record is changed remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
 
-*Trace*: DR-9 (Auditability of corrections), DR-14 (deduplicated alerting), DR-25 (Pending offline inventory changes)
+*Trace*: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)
 
 *Milestone 3 source*: M3-QA-08.
 
