@@ -1,41 +1,41 @@
-= Automated Inventory Stock Check
+= Automated Inventory Availability Check
 
 == Overview
 
-The automated inventory stock check analyzes all stock items within an
-inventory and identifies which items are low on stock or out of stock.
+The automated inventory availability check analyzes the item instances in a tracked inventory record and identifies which items are in a low-stock or out-of-stock condition.
 
-This logic is implemented through the `automatedCheckStock()` use case
-inside the alerts_restock feature.
+This logic is implemented through the `automatedCheckStock()` use case inside the alerts_restock feature. The use case name is kept because it matches the current implementation, but this document uses the domain terminology defined in the glossary.
 
 == Inventory Processing
 
 The use case operates on an `InventoryEntity`.
 
-An inventory contains a map of products and their associated stock items:
+An inventory contains item types and their associated item instances. In the current implementation, these concepts may still appear through legacy class names:
 
 ----
 Map<ProductEntity, List<StockEntity>>
 ----
 
-The function iterates through each product entry and its list of stock
-items. For each `StockEntity`, it calls `checkStock()` using the item's
-current [.underline]#quantity#.
+For documentation purposes:
+
+* `ProductEntity` corresponds to an *Item type*.
+* `StockEntity` corresponds to an *Item instance (package)*.
+
+The function iterates through each item type entry and its list of item instances. For each item instance, it calls `checkStock()` using the item's current [.underline]#quantity#.
 
 == Result Object
 
 The function returns a `StockCheckResult` object containing two lists:
 
-* `lowStockItems` – stock items identified as low stock
-* `outOfStockItems` – stock items identified as out of stock
+* `lowStockItems` – item instances identified as low-stock
+* `outOfStockItems` – item instances identified as out-of-stock
 
-[.underline]#Items that are sufficiently stocked are not included in the result#.
-
+[.underline]#Items with sufficient availability are not included in the result#.
 
 == Testing
 
 Unit tests were implemented to verify the following scenarios:
 
-* low stock items are correctly identified
-* out of stock items are correctly identified
-* sufficiently stocked items are ignored
+* low-stock item instances are correctly identified
+* out-of-stock item instances are correctly identified
+* item instances with sufficient availability are ignored

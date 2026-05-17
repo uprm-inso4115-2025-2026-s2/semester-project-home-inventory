@@ -4,34 +4,66 @@
 **AI Disclosure:** Portions of this lecture topic task were drafted and refined with the assistance of AI tools. All content, metrics, and conclusions have been thoroughly reviewed, edited, and verified by the human author to ensure complete accuracy and project alignment.
 
 == Objective
+
 This document classifies the core phenomena of the Home Inventory domain based on their tangibility: *physically tangible*, *humanly tangible*, or *intangible*. Categorizing these phenomena establishes the fundamental boundaries of data precision, measurement mechanisms, and error validation patterns required by the system.
+
+This document follows the terminology defined in the main terminology glossary. In particular, it uses *Item type* for the kind of item, *Item instance* for a specific physical object or package, *Location* for a storage place, and *Household member* for a person who participates in the household context.
 
 == Tangibility Evaluation Matrix
 
 [cols="2,2,4", options="header"]
 |===
 | Phenomenon / Concept | Classification | Justification & Modeling Strategy
-| Inventory Item (e.g., groceries, tools, electronics) | Physically Tangible | Exists as a physical object within the real world. It possesses measurable dimensions (height, width, mass), can be scanned via a physical barcode/QR label, and occupies a distinct, observable coordinate or container in physical space.
-| Storage Room / Location (e.g., Kitchen Pantry, Garage Shelf) | Physically Tangible | Represents a concrete spatial asset or bounded physical environment. Its capacity boundaries are physically measurable (e.g., cubic feet or shelf surface area), and its contents can be visually verified by household members.
-| Supporting Document (e.g., Physical Receipt, Paper Warranty) | Physically Tangible | Exists in its original state as a physical slip of paper or cardboard card. It possesses material weight and ink markings, and must be digitized via optical sensors (camera/scanner) to be ingested by the system.
-| Item Condition (e.g., Excellent, Good, Fair, Damaged) | Humanly Tangible | Perceived directly by human senses but lacks an exact, automated instrument for objective measurement. An item marked as "Good" by one roommate might be classified as "Fair" by another. It is a subjective assessment modeled using restrictive, standardized enumerations.
-| Sentimental Value (e.g., Low, High, Irreplaceable) | Humanly Tangible | An internal emotional weight or subjective preference attributed to an asset by an individual household member. It cannot be derived using mathematical formulas or hardware sensors. Modeled strictly as a user-defined qualitative metric.
-| Roommate Trust & Compliance (e.g., Probability of logging item usage) | Humanly Tangible | A psychological and social phenomenon reflecting how consistently household members accurately report inventory consumption. While critical to preventing stale data, it is a fluid, human variable that cannot be perfectly codified.
-| Item Category (e.g., Perishables, Cleaning Supplies) | Intangible | A purely logical classification, taxonomy, or abstract mathematical set. Categories do not exist as standalone physical objects; they are sorting tags used to simplify indexing and database indexing lookup queries.
-| Inventory Operations (e.g., Add Item, Decrement Stock, Delete) | Intangible | Abstract state mutations and logical operational events. An operation has no physical presence; it exists only as an instantaneous transaction entry or an entry in a database ledger/audit trail tracking code actions.
-| User Permission Level (e.g., Owner, Member, Viewer Roles) | Intangible | An abstract security compliance framework concept modeled as an enumerated access control specification sort. It dictates what system operations a token can perform, existing purely as logical rules within the software architecture.
+
+| Item instance (package) (e.g., groceries, tools, electronics)
+| Physically Tangible
+| Exists as a physical object within the real world. It can have measurable physical properties, can be scanned through a physical barcode or QR label when available, and occupies a distinct observable location within the household.
+
+| Location (e.g., kitchen pantry, garage shelf)
+| Physically Tangible
+| Represents a concrete storage place or bounded physical environment within the household. Its capacity boundaries may be physically estimated or measured, and its contents can be visually verified by household members.
+
+| Supporting document (e.g., physical receipt, paper warranty)
+| Physically Tangible
+| Exists in its original state as a physical slip of paper or card. It possesses material weight and visible markings, and must be digitized through a camera or scanner before being represented by the system.
+
+| Item condition (e.g., excellent, good, fair, damaged)
+| Humanly Tangible
+| Perceived directly by human senses but difficult to measure automatically with full objectivity. An item instance marked as "good" by one household member might be classified as "fair" by another. The system should model this as a controlled qualitative value rather than unrestricted text.
+
+| Sentimental value (e.g., low, high, irreplaceable)
+| Humanly Tangible
+| Represents the personal or emotional importance assigned to an item instance beyond its practical or financial value. It cannot be derived only from quantity, cost, or physical measurements, so it must be captured as a user-provided qualitative value when needed.
+
+| Household member trust and update behavior
+| Humanly Tangible
+| Reflects how consistently household members report inventory changes, consumption, or replenishment. While important for preventing stale data, this is a social behavior that cannot be perfectly measured by the system.
+
+| Item category (e.g., perishables, cleaning supplies)
+| Intangible
+| A logical classification used to organize item types. Categories do not exist as standalone physical objects; they are sorting labels that support filtering, reporting, and data organization.
+
+| Inventory operations (e.g., add item, update quantity, discard item)
+| Intangible
+| Abstract actions or state changes performed on tracked inventory records and item instances. An operation has no physical presence; it is represented through application behavior, transaction history, or database records.
+
+| Permission rule (e.g., admin, editor, viewer)
+| Intangible
+| A logical access-control constraint that defines what actions a household member can perform. It exists as a rule within the software architecture rather than as a physical or directly observable object.
 |===
 
 == Boundary Cases & Engineering Rationale
 
-The separation boundary between Physically Tangible domain entities and Humanly Tangible attributes represents a critical transition vector in software design:
+The separation boundary between physically tangible domain entities and humanly tangible attributes is important for software design because not every meaningful household property can be measured automatically.
 
 1. The Item Condition Paradox:
-An item's physical state undergoes concrete, systematic degradation in the physical world (e.g., food spoiling or a tool rusting). However, the system cannot measure this automatically without expensive chemical or visual diagnostic arrays. The representation of this state relies completely on human sensory perception and subjective manual entry. 
 
-Design Resolution: To manage this ambiguity, the software architecture enforces rigid data contracts (`Sorts`) in the database layer via structured constraints (enums) rather than allowing open-ended text fields. This maps humanly tangible perceptions into bounded, predictable system values.
+An item instance can physically degrade in the real world, such as food spoiling or a tool rusting. However, the system cannot measure this automatically without specialized sensors or expensive diagnostic tools. The representation of this state therefore relies on human sensory perception and manual entry.
+
+Design Resolution: To manage this ambiguity, the software architecture should represent item condition using controlled values, such as enums or predefined options, instead of unrestricted text fields. This maps humanly tangible perceptions into bounded and predictable system values.
 
 2. The Digitized Physical Document:
-A receipt or warranty card is physically tangible. Once scanned, its image and extracted OCR text fields are processed by the system. 
 
-Design Resolution: The system models the *original source document* as physically tangible (prone to being lost, ripped, or faded), while treating the metadata record as an intangible collection of strings and numbers. Validation rules must account for errors introduced during this physical-to-digital translation boundary (e.g., blurry photos, unreadable text).
+A receipt or warranty card is physically tangible. Once scanned, its image and extracted text fields are processed by the system.
+
+Design Resolution: The system models the original source document as physically tangible because it can be lost, damaged, or unreadable. Its digitized metadata record is intangible because it exists as stored strings, numbers, or file references. Validation rules must account for errors introduced during the physical-to-digital transition, such as blurry photos or unreadable text.
