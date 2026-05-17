@@ -1,0 +1,93 @@
+
+== 1. Objective
+
+This lecture topic task applies state-based modeling to the item-entry path that combines barcode scanning with manual fallback. The goal is to clarify how the user moves between scanning, lookup, error recovery, and saved inventory entry states.
+
+== 2. Existing Documentation Used
+
+This task is based on the following project documentation:
+
+* `docs/2-descriptive/implementation/Barcode Scanning and Manual Entry/barcode_scanning_manual_entry.adoc`
+* `docs/2-descriptive/requirements/features/features.adoc`
+* `docs/2-descriptive/domain-description/entities/entities.adoc`
+* `docs/2-descriptive/domain-description/functions/functions.adoc`
+
+== 3. Issue Framing
+
+The barcode scanning documentation explains implementation options and manual entry examples. A statechart helps clarify what should happen when the preferred scanning path does not work.
+
+The model is useful because barcode entry has several failure or interruption points:
+
+* camera permission can be denied;
+* the barcode may be unreadable;
+* lookup may return no product data;
+* the user may need to complete missing item fields manually;
+* validation may fail before the item can be saved.
+
+== 4. Proposed UML Statechart
+
+[mermaid]
+....
+stateDiagram-v2
+    [*] --> EntryChoice: User chooses add item
+
+    EntryChoice --> RequestCamera: Select scan barcode
+    EntryChoice --> ManualEntry: Select manual entry
+
+    RequestCamera --> Scanning: Permission granted
+    RequestCamera --> ManualEntry: Permission denied
+
+    Scanning --> BarcodeDetected: Barcode recognized
+    Scanning --> ScanFailed: Timeout or unreadable barcode
+    ScanFailed --> Scanning: Retry scan
+    ScanFailed --> ManualEntry: Use manual entry
+
+    BarcodeDetected --> LookupProduct: Query product data
+    LookupProduct --> ReviewAutoFilledFields: Product found
+    LookupProduct --> ManualEntry: Product not found
+
+    ManualEntry --> ValidateItem: User submits item fields
+    ReviewAutoFilledFields --> ValidateItem: User confirms or edits fields
+
+    ValidateItem --> CorrectionNeeded: Required fields missing or invalid
+    CorrectionNeeded --> ManualEntry: User fixes values
+
+    ValidateItem --> Saved: Item valid
+    Saved --> [*]
+....
+
+== 5. Recovery Rules
+
+[cols="1,2,2", options="header"]
+|===
+| Situation
+| State transition
+| Requirement clarification
+
+| Camera permission denied
+| `RequestCamera -> ManualEntry`
+| Manual entry must be available without forcing the user to abandon item creation.
+
+| Barcode cannot be read
+| `Scanning -> ScanFailed`
+| The user should be able to retry or switch to manual entry.
+
+| Product lookup fails
+| `LookupProduct -> ManualEntry`
+| A valid barcode is not enough; the user may still need to supply product details manually.
+
+| Validation fails
+| `ValidateItem -> CorrectionNeeded`
+| Required domain fields must be checked before inventory persistence.
+
+| Validation succeeds
+| `ValidateItem -> Saved`
+| Only valid item records should enter the shared inventory.
+|===
+
+== 6. Why This Representation Helps
+
+* Makes error recovery explicit instead of treating manual entry as a separate feature.
+* Clarifies that scanning is only one path into the same item validation process.
+* Supports test cases for permission denial, scan retry, lookup failure, and invalid item data.
+* Helps UI and implementation teams keep barcode scanning aligned with the domain requirement that inventory items must be complete enough to track.
