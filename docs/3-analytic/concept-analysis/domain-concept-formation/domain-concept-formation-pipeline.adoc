@@ -204,22 +204,22 @@ The Milestone 3 acquisition round added implementation-driven evidence to the co
 | M3-QA-01
 | Personal items were not clearly separated from shared inventory visibility.
 | Visibility scope; Ownership
-| DR-18, IR-09, MR-05-R
+| DR-18, IR-09, MR-05
 
 | M3-QA-02
 | Household roles existed but daily permissions were underspecified.
 | Role-scoped permission; Membership
-| DR-19, IR-09, MR-05-R
+| DR-19, IR-09, MR-05
 
 | M3-QA-03
 | Complex searches were deferred without identifying which filters were essential.
 | Filtered inventory lookup
-| DR-20, IR-10, US-RPT-01-R
+| DR-20, IR-10, US-RPT-01
 
 | M3-QA-04
 | Barcode fallback behavior needed a clearer low-friction minimum.
 | Fast fallback capture
-| DR-21, IR-11, MR-08-R
+| DR-21, IR-11, MR-08
 
 | M3-QA-05
 | Budget alerts were in scope conceptually but lacked user preference rules.
@@ -229,7 +229,7 @@ The Milestone 3 acquisition round added implementation-driven evidence to the co
 | M3-QA-06
 | Shared-household alert audience and delivery rules were ambiguous.
 | Shared alert audience
-| DR-23, IR-13, MR-07-R
+| DR-23, IR-13, MR-07
 
 | M3-QA-07
 | Grocery-list auto-add needed user override semantics.
@@ -239,7 +239,7 @@ The Milestone 3 acquisition round added implementation-driven evidence to the co
 | M3-QA-08
 | Offline support was view-only, but user workflows required pending updates.
 | Pending offline change
-| DR-25, MR-03-R
+| DR-25, MR-03
 |===
 
 ---
