@@ -47,13 +47,13 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Entity
 | Domain
 | The kind of an item, independent of a specific package (e.g., "Milk", "Dish soap", "Toilet paper").
-| Previously "Product."
+| Previously "Product." #"Asset" and "Belonging" should be avoided unless referring generally to household possessions; use "Item type" for the kind of item and "Item instance" for a specific physical package.#
 
 | Item instance (package)
 | Entity
 | Domain
 | A concrete package or unit of an item type that physically exists in the household (e.g., a specific milk carton).
-| Previously "Stock."
+| Previously "Stock." #"Asset" and "Belonging" may appear in older drafts, but "Item instance" is the preferred term for a specific physical object/package.#
 
 | Inventory (reality)
 | Entity
@@ -83,13 +83,13 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Artifact
 | Domain
 | A household-oriented list of items that should be replenished soon (fridge note, notes-app list, chat).
-| Delivery method is not part of the domain.
+| #Canonical domain term. "Grocery list" is the system-facing feature name when the replenishment list is presented through the application.#
 
 | Alert / notification (domain-level)
 | Artifact / Event
 | Domain
 | A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed).
-| Represents that an actionable condition has been communicated.
+| #General notification concept. "Duplicate warning" is a specialized alert used for possible duplicate item or purchase situations.#
 
 | Spending entry
 | Record
@@ -209,8 +209,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Event
 | Domain
 | A household member uses an item, decreasing its availability.
-| Consumption rate may increase during exams or when guests visit.
-
+| #Usage rate may increase during exams or when guests visit. "Consumption rate" is treated as a synonym of "usage rate."#
 | Backup opened
 | Event
 | Domain
@@ -348,4 +347,82 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Requirements
 | A persisted representation of an alert, including type, timestamp, and read/unread status, available at minimum for in-app review.
 | Refines the domain-level "alert"; adds persistence and status tracking.
+
+| #Barcode scanning#
+| #Function#
+| #Requirements#
+| #A system feature that allows a user to add or identify an item by scanning its barcode instead of entering all item details manually.#
+| #Related to manual entry and item acquisition.#
+
+| #Manual entry#
+| #Function#
+| #Requirements#
+| #A system feature that allows a user to add or update item information by typing the details directly into the application.#
+| #Used when barcode scanning is unavailable, unreliable, or the item has no barcode.#
+
+| #Shared inventory#
+| #Concept#
+| #Requirements#
+| #An inventory context where multiple household members can view, coordinate, and update item-related information.#
+| #Related to household membership, permission rules, and duplicate purchase prevention.#
+
+| #Permission rule#
+| #Rule#
+| #Requirements#
+| #A constraint that defines what actions a user or household member is allowed to perform within a household or shared inventory.#
+| #Examples include viewing items, editing items, inviting members, removing members, or managing shared household data.#
+
+| #Grocery list#
+| #Artifact#
+| #Requirements#
+| #A system-facing feature that presents items the user may need to purchase or replenish.#
+| #Use "Restock list / planner" as the canonical domain term. Use "Grocery list" only when referring to the implemented or designed application feature.#
+
+| #Duplicate warning#
+| #Alert / Rule#
+| #Requirements#
+| #A specialized alert that informs the user when an item, purchase, or restock action may duplicate an existing inventory item or planned item.#
+| #Specialized form of "Alert / notification"; supports duplicate purchase prevention and shared household coordination.#
+
+| #Report#
+| #Artifact#
+| #Requirements#
+| #A general system-generated summary that presents household information to support review or decision-making.#
+| #Umbrella term only. Prefer more specific terms such as "Expenditure report" or "Stock summary" when the report type is known.#
+
+| #Usage rate#
+| #Derived Property#
+| #Requirements#
+| #A computed estimate of how quickly an item is consumed over time.#
+| #Canonical term. "Consumption rate" is treated as a synonym and should be replaced with "usage rate" in running text when possible.#
+
+| #Expenditure report#
+| #Artifact#
+| #Requirements#
+| #A report that summarizes spending entries over a selected period, category, household, or user.#
+| #Related to budget status, spending category, and spending entry.#
+
+| #Stock summary#
+| #Artifact#
+| #Requirements#
+| #A report or view that summarizes current item availability, low-stock items, out-of-stock items, and related inventory conditions.#
+| #Related to availability, quantity, low-stock judgment, and actionable states.#
+
+| #Item condition#
+| #Property#
+| #Domain#
+| #The observed state of an item instance, such as new, opened, damaged, expired, spoiled, or usable.#
+| #Helps household members decide whether an item should be kept, used, repaired, discarded, or replaced.#
+
+| #Sentimental value#
+| #Property#
+| #Domain#
+| #The personal or emotional importance assigned to an item beyond its practical or financial value.#
+| #Important for non-consumable household possessions where disposal or replacement decisions are not based only on quantity or cost.#
+
+| #Inventory operations#
+| #Concept#
+| #Domain#
+| #The set of actions that change or inspect the household inventory, such as adding, locating, updating, transferring, consuming, replenishing, archiving, or discarding items.#
+| #Umbrella term for inventory-related actions described across scenarios, requirements, and implementation sections.#
 |===
