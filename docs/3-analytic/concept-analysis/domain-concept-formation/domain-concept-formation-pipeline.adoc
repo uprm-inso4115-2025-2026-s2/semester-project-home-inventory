@@ -139,6 +139,115 @@ the domain talks about, independent of any specific implementation.
 
 |===
 
+=== DDU Traceability Index
+
+This index extends the concept formation pipeline by showing how selected raw DDUs support
+the higher-level concepts in the abstraction table above. It is not a replacement for the
+terminology dictionary or the concept abstraction mapping; it is a compact traceability aid.
+Concept names follow the existing terminology in
+`docs/2-descriptive/domain-description/terminology/terminology.adoc`.
+
+[cols="1,1,3,2,1,2", options="header"]
+|===
+| DDU ID
+| Source
+| Related domain concept(s)
+| Stakeholder group affected
+| Phenomenon kind
+| Relevant attribute category
+
+| DDU-01
+| Narrative
+| *Household Item*, *Location*, *Consumption*
+| Student household members; roommates
+| Behavior
+| Location; availability over time
+
+| DDU-02
+| Narrative
+| *Availability State*, *Replenishment Action*
+| Household members responsible for noticing and restocking
+| Event
+| Availability; low/out-of-stock condition
+
+| DDU-03
+| Narrative
+| *Tracked Inventory Record*, *Coordination Failure*
+| Shared-household members and solo students relying on memory
+| Artifact
+| Record accuracy; divergence from reality
+
+| DDU-04
+| Narrative
+| *Availability State*, *Tracked Inventory Record*, *Coordination Failure*
+| Household members using distributed storage or backup supplies
+| Behavior
+| Location; backup supply; record freshness
+
+| DDU-05
+| Narrative
+| *Coordination Failure*, *Replenishment Action*, *Expenditure*
+| Roommates and budget-conscious household members
+| Event
+| Purchase duplication; financial impact
+
+| DDU-07
+| Narrative
+| *Household Item*, *Item Attributes*, *Availability State*
+| Bulk buyers; household members managing expiring items
+| Entity
+| Expiration date; batch; quantity
+
+| DDU-09
+| Narrative
+| *Expenditure*, *Household Member*, *Coordination Failure*
+| Roommates; household members sharing purchases
+| Behavior
+| Ownership scope; spending attribution
+
+| DDU-12
+| Entities
+| *Item Attributes*, *Tracked Inventory Record*
+| Household members who enter, inspect, or correct item data
+| Entity
+| Temporal, quantity, financial, and note attributes
+
+| DDU-13
+| Entities
+| *Availability State*, *Alert / Notification*
+| Alert recipients; household members deciding what needs attention
+| Entity
+| Actionable condition; expiration status
+
+| DDU-14
+| Entities
+| *Replenishment Action*
+| Household members who shop or plan grocery runs
+| Event
+| Restock timing; replenishment reason
+
+| DDU-16
+| Entities
+| *Alert / Notification*
+| Notified household members; alert recipients
+| Artifact
+| Communication channel; urgency/actionability
+
+| DDU-19
+| Behaviors
+| *Household Member*, *Tracked Inventory Record*, *Coordination Failure*
+| Shared-household members; roommates
+| Behavior
+| Sharing scope; duplicate prevention
+
+| DDU-20
+| Functions
+| *Availability State*, *Low-stock judgment*, *Alert / Notification*
+| Household members who monitor stock; alert recipients
+| Function
+| Threshold rule; qualitative or quantitative judgment
+|===
+
 === Concept Hierarchy
 
 The following hierarchy shows how concepts relate to one another:
