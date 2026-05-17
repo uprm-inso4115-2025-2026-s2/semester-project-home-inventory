@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 = #Automated Inventory Availability Check#
 
 == Overview
@@ -6,57 +5,30 @@
 #The automated inventory availability check analyzes the item instances in a tracked inventory record and identifies which items are in a low-stock or out-of-stock condition.#
 
 #This logic is implemented through the `automatedCheckStock()` use case inside the alerts_restock feature. The use case name is kept because it matches the current implementation, but this document uses the domain terminology defined in the glossary.#
-=======
-= Automated Inventory Availability Check
-
-== Overview
-
-The automated inventory availability check analyzes the item instances in a tracked inventory record and identifies which items are in a low-stock or out-of-stock condition.
-
-This logic is implemented through the `automatedCheckStock()` use case inside the alerts_restock feature. The use case name is kept because it matches the current implementation, but this document uses the domain terminology defined in the glossary.
->>>>>>> milestone3-documentation-clean
 
 == Inventory Processing
 
 The use case operates on an `InventoryEntity`.
 
-<<<<<<< HEAD
 #An inventory contains item types and their associated item instances. In the current implementation, these concepts may still appear through legacy class names:#
-=======
-An inventory contains item types and their associated item instances. In the current implementation, these concepts may still appear through legacy class names:
->>>>>>> milestone3-documentation-clean
 
 ----
 Map<ProductEntity, List<StockEntity>>
 ----
 
-<<<<<<< HEAD
 #For documentation purposes:#
 
 * #`ProductEntity` corresponds to an *Item type*.#
 * #`StockEntity` corresponds to an *Item instance (package)*.#
 
 #The function iterates through each item type entry and its list of item instances. For each item instance, it calls `checkStock()` using the item's current# [.underline]#quantity#.
-=======
-For documentation purposes:
-
-* `ProductEntity` corresponds to an *Item type*.
-* `StockEntity` corresponds to an *Item instance (package)*.
-
-The function iterates through each item type entry and its list of item instances. For each item instance, it calls `checkStock()` using the item's current [.underline]#quantity#.
->>>>>>> milestone3-documentation-clean
 
 == Result Object
 
 The function returns a `StockCheckResult` object containing two lists:
 
-<<<<<<< HEAD
 * #`lowStockItems` – item instances identified as low-stock#
 * #`outOfStockItems` – item instances identified as out-of-stock#
-=======
-* `lowStockItems` – item instances identified as low-stock
-* `outOfStockItems` – item instances identified as out-of-stock
->>>>>>> milestone3-documentation-clean
 
 [.underline]#Items with sufficient availability are not included in the result#.
 
@@ -64,12 +36,6 @@ The function returns a `StockCheckResult` object containing two lists:
 
 Unit tests were implemented to verify the following scenarios:
 
-<<<<<<< HEAD
 * #low-stock item instances are correctly identified#
 * #out-of-stock item instances are correctly identified#
 * #item instances with sufficient availability are ignored#
-=======
-* low-stock item instances are correctly identified
-* out-of-stock item instances are correctly identified
-* item instances with sufficient availability are ignored
->>>>>>> milestone3-documentation-clean
