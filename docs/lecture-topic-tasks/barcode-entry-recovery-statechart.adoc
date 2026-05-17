@@ -1,4 +1,6 @@
 
+= Lecture Topic Task: Barcode Scanning and Manual Entry Recovery
+
 == 1. Objective
 
 This lecture topic task applies state-based modeling to the item-entry path that combines barcode scanning with manual fallback. The goal is to clarify how the user moves between scanning, lookup, error recovery, and saved inventory entry states.
