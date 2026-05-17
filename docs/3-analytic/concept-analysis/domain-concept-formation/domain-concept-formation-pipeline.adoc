@@ -117,6 +117,10 @@ the domain talks about, independent of any specific implementation.
 | budget tracking, cycle-based limits, threshold, budget status, spending cap
 | DDU-08, DDU-15, DDU-21
 
+| *Budget Period Window*
+| budget cycle, active period, start date, end date, period boundary, weekly/monthly/yearly window, "this month's budget", "current cycle"
+| DDU-15, DDU-21
+
 | *Alert / Notification*
 | notification, alert, reminder, push notification, low-stock alert, expiration alert, budget alert
 | DDU-16
@@ -133,6 +137,115 @@ the domain talks about, independent of any specific implementation.
 | duplicate purchase, missing update, stale information, ownership dispute, inconsistent records
 | DDU-04, DDU-05, DDU-09, DDU-19
 
+|===
+
+=== DDU Traceability Index
+
+This index extends the concept formation pipeline by showing how selected raw DDUs support
+the higher-level concepts in the abstraction table above. It is not a replacement for the
+terminology dictionary or the concept abstraction mapping; it is a compact traceability aid.
+Concept names follow the existing terminology in
+`docs/2-descriptive/domain-description/terminology/terminology.adoc`.
+
+[cols="1,1,3,2,1,2", options="header"]
+|===
+| DDU ID
+| Source
+| Related domain concept(s)
+| Stakeholder group affected
+| Phenomenon kind
+| Relevant attribute category
+
+| DDU-01
+| Narrative
+| *Household Item*, *Location*, *Consumption*
+| Student household members; roommates
+| Behavior
+| Location; availability over time
+
+| DDU-02
+| Narrative
+| *Availability State*, *Replenishment Action*
+| Household members responsible for noticing and restocking
+| Event
+| Availability; low/out-of-stock condition
+
+| DDU-03
+| Narrative
+| *Tracked Inventory Record*, *Coordination Failure*
+| Shared-household members and solo students relying on memory
+| Artifact
+| Record accuracy; divergence from reality
+
+| DDU-04
+| Narrative
+| *Availability State*, *Tracked Inventory Record*, *Coordination Failure*
+| Household members using distributed storage or backup supplies
+| Behavior
+| Location; backup supply; record freshness
+
+| DDU-05
+| Narrative
+| *Coordination Failure*, *Replenishment Action*, *Expenditure*
+| Roommates and budget-conscious household members
+| Event
+| Purchase duplication; financial impact
+
+| DDU-07
+| Narrative
+| *Household Item*, *Item Attributes*, *Availability State*
+| Bulk buyers; household members managing expiring items
+| Entity
+| Expiration date; batch; quantity
+
+| DDU-09
+| Narrative
+| *Expenditure*, *Household Member*, *Coordination Failure*
+| Roommates; household members sharing purchases
+| Behavior
+| Ownership scope; spending attribution
+
+| DDU-12
+| Entities
+| *Item Attributes*, *Tracked Inventory Record*
+| Household members who enter, inspect, or correct item data
+| Entity
+| Temporal, quantity, financial, and note attributes
+
+| DDU-13
+| Entities
+| *Availability State*, *Alert / Notification*
+| Alert recipients; household members deciding what needs attention
+| Entity
+| Actionable condition; expiration status
+
+| DDU-14
+| Entities
+| *Replenishment Action*
+| Household members who shop or plan grocery runs
+| Event
+| Restock timing; replenishment reason
+
+| DDU-16
+| Entities
+| *Alert / Notification*
+| Notified household members; alert recipients
+| Artifact
+| Communication channel; urgency/actionability
+
+| DDU-19
+| Behaviors
+| *Household Member*, *Tracked Inventory Record*, *Coordination Failure*
+| Shared-household members; roommates
+| Behavior
+| Sharing scope; duplicate prevention
+
+| DDU-20
+| Functions
+| *Availability State*, *Low-stock judgment*, *Alert / Notification*
+| Household members who monitor stock; alert recipients
+| Function
+| Threshold rule; qualitative or quantitative judgment
 |===
 
 === Concept Hierarchy
@@ -154,9 +267,15 @@ Tracked Inventory Record  ← approximates → Inventory (reality)
 Replenishment Action  ← triggered by → Availability State (Low / Out)
 Expenditure          ← recorded after → Replenishment Action
 Budget               ← governs → Expenditure
+Budget Period Window ← is the active time-slice of → Budget
+Expenditure          ← falls within (or outside) → Budget Period Window
 
 Alert / Notification ← triggered by → Availability State or Budget threshold
 Coordination Failure ← arises from → Tracked Inventory Record diverging from reality
+
+NOTE: The rule that determines whether an Expenditure falls within a Budget Period Window
+      (i.e., the boundary semantics of BudgetPeriod.weekly/monthly/yearly) is currently
+      undefined — see IC-08 and IC-09 in inconsistency-detection.adoc.
 ----
 
 ---

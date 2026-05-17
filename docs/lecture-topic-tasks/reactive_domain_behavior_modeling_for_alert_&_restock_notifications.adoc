@@ -1,0 +1,138 @@
+= Lecture Topic Task: Reactive Domain Behavior Modeling for Alert and Restock Notifications
+
+== Objective
+
+Model how the Alerts & Restock slice *reacts* to inventory and time: low stock, out of stock, expiration windows, quantity and date updates, and (at the requirements level) automated restock or grocery list actions. A *reactive* view complements event catalogs: the domain is a *dynamic system* whose state evolves; *domain events* (past-tense, business-significant occurrences) name transitions other parts may handle <<evans-ddd>>; reactive policies interpret state changes or schedules and drive alerts, deduplication, and list automation. See <<domain-events-ltt>> for the named event vocabulary this document aligns with.
+
+This document satisfies the issue success criteria (<<issue-553>>): reactive behaviors identified, inventory triggers tied to alert and restock reactions, low-stock and expiration examples grounded in application code, and lecture concepts connected to Team 2 flows.
+
+== Bounded context
+
+The analysis is phrased around *household inventory* as the core aggregate (products, stock lines, quantities, expiration dates) and the *alert/restock* concerns that depend on that data. Reactions can be *immediate* (after a user persists a quantity or date) or *time-driven* (a job or screen load recomputes every line against “today”). The Flutter code mostly *evaluates* state in use cases (<<src-expiration>>, <<src-auto-exp>>, <<src-stock>>, <<src-auto-stock>>) rather than publishing a formal event bus; the tables below still describe *observable reactive behavior*—what the system does or should do when rules fire—whether or not events are emitted as objects. <<classification-ltt>> distinguishes entities, events, and behaviors; this document emphasizes the *behavior* side: stimulus, interpretation, and response.
+
+== Reactive domain behaviors
+
+The following tables group reactive patterns by theme. Names in the first column tie to conceptual domain events in <<domain-events-ltt>> where applicable.
+
+=== Expiration monitoring
+
+[options="header"]
+|===
+| Reactive behavior (conceptual event) | When it occurs | Why it matters (typical reactions)
+
+| `NearExpirationDetected`
+| A stock line’s expiration date falls within the configured “near” window (e.g. within 7 days before expiration, per default in <<src-expiration>>), evaluated against “today,” or `expirationDate` is edited into that window.
+| Drive *approaching expiration* alerts, badge counts, and prioritization in the UI; may combine with user alert intervals in backend automation (<<alert-states>>); restock automation may use an `isExpired` / near-expiry style flag per <<grocery-restock>>.
+
+| `ExpirationReached`
+| The expiration date is today or in the past (`ExpirationStatus.expired` in <<src-expiration>>).
+| Drive *expired* alerts, discourage consumption prompts, or trigger cleanup workflows; restock list auto-add with reason `EXPIRED` when integrated <<grocery-restock>>.
+
+| `ExpirationDateRenewed`
+| The user (or authorized process) updates a stock line’s expiration date to a future date after it was near or past expiration.
+| Reset expiration-related alert state (aligns with *Renewed* in <<alert-states>>); suppress stale notifications.
+
+| `ExpirationTrackingCleared`
+| Expiration date removed or item/stock line removed from inventory.
+| Stop expiration checks and cancel pending expiration alerts for that line.
+|===
+
+=== Stock level and restocking
+
+[options="header"]
+|===
+| Reactive behavior (conceptual event) | When it occurs | Why it matters (typical reactions)
+
+| `LowStockThresholdCrossed`
+| Reported quantity moves from above the low-stock threshold to at or below it (`StockStatus.lowStock` in <<src-stock>>).
+| Drive *low stock* alerts and dashboard highlights; restock list auto-add with reason `LOW_STOCK` when integrated <<grocery-restock>>.
+
+| `StockDepleted`
+| Quantity becomes zero (`StockStatus.outOfStock`; <<src-stock>>).
+| Drive *out of stock* alerts; stronger urgency than low stock; restock list auto-add with reason `OUT_OF_STOCK` <<grocery-restock>>.
+
+| `StockReplenished`
+| Quantity increases (purchase, delivery recorded, or correction)—especially from zero or from a low band back to comfortable levels.
+| Clear or downgrade stock alerts; update restock suggestions; optional “restocked” confirmation for the household (<<alert-states>>).
+
+| `StockThresholdConfigurationChanged`
+| Household or product-level threshold rules change (e.g. default “5 units” in <<src-stock>> overridden per item).
+| Recalculate who is low/out without a quantity change; avoid false positives/negatives in alerts.
+|===
+
+=== Alert, preference, and list automation (supporting)
+
+These sit at the boundary between *domain* and *application* but are included because <<issue-553>> ties reactivity to notifications and restock automation.
+
+[options="header"]
+|===
+| Reactive behavior (conceptual event) | When it occurs | Why it matters (typical reactions)
+
+| `AlertDispatchRequested`
+| Policy decides a human should be notified (after deduplication, snooze, and channel rules).
+| Create notification records, push payloads, or in-app inbox entries (<<alert-seq>>).
+
+| `AlertSnoozedOrDismissed`
+| User defers or clears a notification; preferences updated.
+| Suppress repeat alerts until the next interval or state change (`last_triggered`, `is_snoozed` in <<alert-states>>).
+
+| `AlertChannelPreferenceChanged`
+| User enables/disables push, changes device token, or switches in-app-only behavior.
+| Route future `AlertDispatchRequested` outcomes correctly.
+
+| Inventory-wide re-evaluation (`StockCheckResult` / `ExpirationCheckResult`)
+| Scheduled or on-load batch run over full `InventoryEntity` (<<src-auto-stock>>, <<src-auto-exp>>).
+| Feed alert generation, deduplication, and channels per <<alert-seq>>; supply flags to restock automation <<grocery-restock>>.
+
+| Restock list creation and frequent-pattern follow-up
+| Restock list is created; downstream rules consume `isFrequent` and stock flags (<<grocery-restock>>).
+| Auto-add item types when gating conditions hold (`RestockListCreated` pattern in requirements docs).
+|===
+
+== Mapping to current application code
+
+Useful anchors under `src/lib/features/alerts_restock/`: <<src-expiration>> classifies a single line into `ExpirationStatus`; <<src-auto-exp>> scans inventory for near-expired and expired lines; <<src-stock>> classifies quantity into `StockStatus`; <<src-auto-stock>> scans for low and out-of-stock lines. `checkStock` treats invalid or missing counts as `inStock`, zero as `outOfStock`, values in `1..threshold` as `lowStock`, and above threshold as `inStock` <<src-stock>>. `checkExpiration` normalizes calendar dates, treats `null` expiration as `ok`, marks `expired` when `daysUntilExpiration <= 0`, and `nearExpiration` when within the configured day window <<src-expiration>>.
+
+Core inventory persistence and updates live under <<src-core-inv>>; a *quantity or date change* there is the usual *cause* of recomputed stock or expiration status and thus of the reactive patterns above, even if conceptual events are not emitted as objects today.
+
+== Downstream reactions (not always separate domain events)
+
+Reactions often belong to other bounded contexts:
+
+* *Grocery list and restock list* — subscribe (in requirements and future integration) to low/out/expired signals and to `RestockListCreated`-style triggers; see prioritized triggers in <<grocery-restock>>.
+* *Reports and insights* — may aggregate counts of alerts raised or items restocked over time.
+* *Scheduled automation* — edge functions or cron jobs may periodically re-evaluate inventory and emit or persist alert-related outcomes, as sketched in <<alert-seq>>.
+
+== Boundaries and overlap (issue risks)
+
+* *Other teams* own full notification transport, Supabase schemas, and parts of inventory CRUD. This document describes *how the domain side should behave* when data changes, not which service implements each step.
+* *Overlap with prior alert tasks*: Event names and reactions overlap <<domain-events-ltt>> and <<alert-seq>>; this lecture task adds the explicit *reactive* and *dynamic-system* framing rather than replacing those artifacts.
+* *Concurrent inventory updates*: Simultaneous writers on the same line can produce transient classifications or duplicate alert attempts if deduplication keys are too narrow; mitigations belong in application policy (<<alert-states>>, <<alert-seq>>).
+* *Evaluation vs. discrete event*: Automated checks can run on a schedule; the same physical item might satisfy “near expiration” on multiple days. Product decisions define whether each run raises a new user-visible signal or only on first entry to the window (deduplication / `last_triggered_alert` in <<alert-states>>).
+
+[bibliography]
+== References
+
+* [[[issue-553]]] Lecture Topic Task (GitHub). _Reactive Domain Behavior Modeling for Alert & Restock Notifications._ https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/553
+
+* [[[domain-events-ltt]]] Team documentation. _Domain Events for Inventory Alerts and Restocking._ xref:domain-events-for-inventory-alerts-and-restocking.adoc[domain-events-for-inventory-alerts-and-restocking.adoc]
+
+* [[[classification-ltt]]] Team documentation. _Classification of Alert System Phenomena._ xref:classification-of-alert-system-phenomena.adoc[classification-of-alert-system-phenomena.adoc]
+
+* [[[alert-states]]] Team documentation. _Design Item Expiration States_ (item states, alert preference fields, daily alert logic). xref:../3-analytic/alert-system-states.adoc[alert-system-states.adoc]
+
+* [[[alert-seq]]] Team documentation. _UML Sequence Diagram for Alert Delivery._ xref:alert-delivery-sequence-diagram.adoc[alert-delivery-sequence-diagram.adoc]
+
+* [[[grocery-restock]]] Team documentation. _Grocery list / restock autogeneration decision logic._ xref:../3-analytic/concept-analysis/requirements-concept-analysis/grocerylist_autoadd_decisionlogic.adoc[grocerylist_autoadd_decisionlogic.adoc]
+
+* [[[evans-ddd]]] Evans, E. (2003). _Domain-Driven Design: Tackling Complexity in the Heart of Software._ Addison-Wesley. (Domain events as past-tense, model-relevant occurrences; complements reactive and dynamic-system views.)
+
+* [[[src-expiration]]] Application source. `src/lib/features/alerts_restock/domain/usecases/check_expiration.dart` — single-item expiration classification.
+
+* [[[src-auto-exp]]] Application source. `src/lib/features/alerts_restock/domain/usecases/automated_check_expiration.dart` — inventory-wide expiration scan.
+
+* [[[src-stock]]] Application source. `src/lib/features/alerts_restock/domain/usecases/check_stock.dart` — quantity vs. threshold classification.
+
+* [[[src-auto-stock]]] Application source. `src/lib/features/alerts_restock/domain/usecases/automated_check_stock.dart` — inventory-wide stock scan.
+
+* [[[src-core-inv]]] Application source. `src/lib/features/core_inventory/` — inventory aggregates, repositories, and persistence.
