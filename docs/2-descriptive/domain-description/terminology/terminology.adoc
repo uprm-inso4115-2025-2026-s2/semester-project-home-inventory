@@ -210,6 +210,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Domain
 | A household member uses an item, decreasing its availability.
 | Usage rate may increase during exams or when guests visit. "Consumption rate" is treated as a synonym of "usage rate."
+
 | Backup opened
 | Event
 | Domain
@@ -425,4 +426,76 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Domain
 | The set of actions that change or inspect the household inventory, such as adding, locating, updating, transferring, consuming, replenishing, archiving, or discarding items.
 | Umbrella term for inventory-related actions described across scenarios, requirements, and implementation sections.
+
+| Supabase
+| External Service
+| Requirements
+| The backend platform used by the system to support database persistence, authentication, storage, real-time synchronization, and backend functions when applicable.
+| M2/M3 implementation and deployment term used across software design, architecture, and validation/verification documentation.
+
+| Supabase Auth
+| External Service / Authentication
+| Requirements
+| The authentication service used to identify users and provide session information for authorization decisions.
+| Related to household membership, permission rules, RLS policies, and authenticated access.
+
+| Supabase Realtime
+| Integration Mechanism
+| Requirements
+| A Supabase service that allows the application to receive backend data updates without requiring users to manually refresh the interface.
+| Used for shared inventory synchronization, dashboard updates, and multi-user coordination.
+
+| Row Level Security (RLS)
+| Security Mechanism
+| Requirements
+| A database-level access control mechanism used to restrict which records a user can view or modify based on household membership, role, or permission rules.
+| Often abbreviated as "RLS"; related to Supabase Auth, permission rules, and shared inventory access.
+
+| Edge Function
+| Backend Function
+| Requirements
+| A server-side function used to execute backend logic outside the client application, especially for operations that require validation, scheduled execution, or cross-table coordination.
+| In this project, Edge Functions are mainly discussed in the context of Supabase backend logic.
+
+| Automation System
+| System Component
+| Requirements
+| The system component responsible for evaluating inventory-related conditions such as low-stock, out-of-stock, near-expiry, and expired states.
+| It detects relevant state transitions but does not directly own notification delivery.
+
+| Notification Service
+| System Component
+| Requirements
+| The system component responsible for creating and storing notification records after relevant state transitions are detected.
+| Receives triggers from the Automation System; distinct from alert condition evaluation.
+
+| Validation activity
+| Process
+| Requirements
+| An activity used to check whether the system is addressing the right user needs, such as stakeholder reviews, scenario walkthroughs, usability checks, or feedback sessions.
+| Related to Section 3.2 validation and verification.
+
+| Verification artifact
+| Artifact
+| Requirements
+| Evidence used to show that the implemented system satisfies documented requirements, such as test cases, test results, coverage reports, or manual verification procedures.
+| Related to Section 3.2 validation and verification.
+
+| Acceptance criteria
+| Requirement Detail
+| Requirements
+| A set of specific conditions that must be satisfied for a user story or requirement to be considered complete.
+| Used to make user stories measurable and testable.
+
+| End-to-end (E2E) test
+| Verification Activity
+| Requirements
+| A test that checks a complete user workflow across multiple parts of the system, from user interaction through backend behavior and final result.
+| Often used with acceptance testing to validate user-visible behavior.
+
+| Deployment target
+| Environment
+| Requirements
+| The platform, service, or environment where the system is intended to run for review, testing, staging, or release.
+| Related to machine requirements, build procedure, deployment documentation, and external service configuration.
 |===
