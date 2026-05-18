@@ -83,35 +83,35 @@ The following concepts are used to express later requirements without prematurel
 |An append-only log of quantity changes with reason and timestamp, allowing the current tracked state to be explained.
 |===
 
-Milestone 3 acquisition round introduced additional requirement-level concepts from implementation-driven gaps:
+#Milestone 3 acquisition round introduced additional requirement-level concepts from implementation-driven gaps:#
 
 [cols="1,3"]
 |===
-| Concept | Meaning in requirements
+| #Concept# | #Meaning in requirements#
 
-| Visibility scope
-| The boundary determining which household members can see an item record or its details. Visibility may differ for personal items, shared items, spending details, and household-level alerts.
+| #Visibility scope#
+| #The boundary determining which household members can see an item record or its details. Visibility may differ for personal items, shared items, spending details, and household-level alerts.#
 
-| Role-scoped permission
-| A rule that determines what a household member can view, create, edit, invite, remove, or administer based on their role.
+| #Role-scoped permission#
+| #A rule that determines what a household member can view, create, edit, invite, remove, or administer based on their role.#
 
-| Fast fallback capture
-| A manual-entry path used when barcode scanning fails or no product match is found. It preserves low-friction capture by requiring only the minimum information needed to save a usable item record.
+| #Fast fallback capture#
+| #A manual-entry path used when barcode scanning fails or no product match is found. It preserves low-friction capture by requiring only the minimum information needed to save a usable item record.#
 
-| Filtered inventory lookup
-| The ability to narrow inventory by item name, location, category, ownership/scope, stock status, or expiration status so users can answer shopping/planning questions quickly.
+| #Filtered inventory lookup#
+| #The ability to narrow inventory by item name, location, category, ownership/scope, stock status, or expiration status so users can answer shopping/planning questions quickly.#
 
-| Budget alert preference
-| A user or household setting that controls whether budget threshold crossings create alerts and how those alerts are delivered.
+| #Budget alert preference#
+| #A user or household setting that controls whether budget threshold crossings create alerts and how those alerts are delivered.#
 
-| Shared alert audience
-| The set of household members who can see or receive a shared alert. Audience and delivery are separate: an alert may be visible in-app to the household without sending push notifications to every member.
+| #Shared alert audience#
+| #The set of household members who can see or receive a shared alert. Audience and delivery are separate: an alert may be visible in-app to the household without sending push notifications to every member.#
 
-| Restock override
-| A household member’s ability to remove, snooze, or manually adjust auto-added restock list entries.
+| #Restock override#
+| #A household member’s ability to remove, snooze, or manually adjust auto-added restock list entries.#
 
-| Pending offline change
-| An item creation or quantity update recorded while offline and waiting for synchronization. Pending changes must remain visible as not-yet-synced state.
+| #Pending offline change#
+| #An item creation or quantity update recorded while offline and waiting for synchronization. Pending changes must remain visible as not-yet-synced state.#
 |===
 
 === Conflicts and Tradeoffs

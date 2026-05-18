@@ -52,30 +52,30 @@ _Domain property behind this requirement:_ In the domain, low-stock is a judgmen
 * DR-12..DR-14 support low-stock/expiry awareness with notification quality.
 * DR-15..DR-17 support duplicate prevention and data integrity.
 
-=== Added and Refined Domain Requirements
+=== #Added and Refined Domain Requirements#
 
-The following domain requirements were added or revised after the Milestone 3 second-round requirements acquisition documented in <<second-round-requirements-acquisition,Second-Round Requirements Acquisition>>.
+#The following domain requirements were added or revised after the Milestone 3 second-round requirements acquisition documented in <<second-round-requirements-acquisition,Second-Round Requirements Acquisition>>.#
 
-* DR-18 (Personal item default privacy): Personal item records shall be visible only to the owning household member by default, unless the owner explicitly shares the item with the household.
-** M3 source: M3-QA-01.
+* #DR-18 (Personal item default privacy): Personal item records shall be visible only to the owning household member by default, unless the owner explicitly shares the item with the household.#
+** #M3 source: M3-QA-01.#
 
-* DR-19 (Role-scoped household permissions): Household access shall distinguish at minimum between viewer, member, and admin capabilities. Viewers may inspect shared household information; members may update shared inventory records; admins may invite, remove, and manage household members and roles.
-** M3 source: M3-QA-02.
+* #DR-19 (Role-scoped household permissions): Household access shall distinguish at minimum between viewer, member, and admin capabilities. Viewers may inspect shared household information; members may update shared inventory records; admins may invite, remove, and manage household members and roles.#
+** #M3 source: M3-QA-02.#
 
-* DR-20 (Essential inventory lookup filters): The system shall support filtering or searching inventory by item name, location, category, ownership/scope, stock status, and expiration status.
-** M3 source: M3-QA-03.
+* #DR-20 (Essential inventory lookup filters): The system shall support filtering or searching inventory by item name, location, category, ownership/scope, stock status, and expiration status.#
+** #M3 source: M3-QA-03.#
 
-* DR-21 (Minimal barcode fallback capture): If barcode scanning fails or no product match is found, the system shall allow a household member to create a minimum viable item record using item name and quantity/availability, with location, category, ownership, cost, and expiration date editable later.
-** M3 source: M3-QA-04.
+* #DR-21 (Minimal barcode fallback capture): If barcode scanning fails or no product match is found, the system shall allow a household member to create a minimum viable item record using item name and quantity/availability, with location, category, ownership, cost, and expiration date editable later.#
+** #M3 source: M3-QA-04.#
 
-* DR-22 (Opt-in budget threshold alerts): Budget threshold alerts shall be optional and shall support configurable warning levels, including default warning levels at 80% and 100% of the active budget when budget tracking is enabled.
-** M3 source: M3-QA-05.
+* #DR-22 (Opt-in budget threshold alerts): Budget threshold alerts shall be optional and shall support configurable warning levels, including default warning levels at 80% and 100% of the active budget when budget tracking is enabled.#
+** #M3 source: M3-QA-05.#
 
-* DR-23 (Shared alert audience control): Shared household alerts shall be represented as household-level alert records. Delivery to individual members shall respect notification preferences and shall avoid repeated notifications for unchanged conditions.
-** M3 source: M3-QA-06.
+* #DR-23 (Shared alert audience control): Shared household alerts shall be represented as household-level alert records. Delivery to individual members shall respect notification preferences and shall avoid repeated notifications for unchanged conditions.#
+** #M3 source: M3-QA-06.#
 
-* DR-24 (Restock auto-add override): Auto-added restock list entries shall be removable or snoozable by an authorized household member. The system shall not immediately re-add a removed or snoozed entry unless a new qualifying state transition occurs or the snooze period expires.
-** M3 source: M3-QA-07.
+* #DR-24 (Restock auto-add override): Auto-added restock list entries shall be removable or snoozable by an authorized household member. The system shall not immediately re-add a removed or snoozed entry unless a new qualifying state transition occurs or the snooze period expires.#
+** #M3 source: M3-QA-07.#
 
-* DR-25 (Pending offline inventory changes): The system shall support pending offline item creation and quantity updates. Pending changes shall be clearly marked until synchronized, and conflicts shall be surfaced to the household member instead of silently overwriting remote updates.
-** M3 source: M3-QA-08.
+* #DR-25 (Pending offline inventory changes): The system shall support pending offline item creation and quantity updates. Pending changes shall be clearly marked until synchronized, and conflicts shall be surfaced to the household member instead of silently overwriting remote updates.#
+** #M3 source: M3-QA-08.#

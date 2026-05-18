@@ -17,4 +17,4 @@ Extended literature notes: `docs/lecture-topic-tasks/domain-acquisition-ltt.adoc
 * Acceptance and E2E testing artifacts: Section 3.5
 
 === Notes for Completion
-* The Milestone 3 second-round acquisition findings have been recorded in Section 4.4.5. Each Milestone 3 answer is assigned a stable M3-QA identifier, and every requirement added or revised in Section 2.2 cites the corresponding M3-QA source. Traceability updates were added to Sections 3.1, 3.2, and 4.3 to avoid gaps between acquisition evidence, concept analysis, requirements, and verification planning.
+#* The Milestone 3 second-round acquisition findings have been recorded in Section 4.4.5. Each Milestone 3 answer is assigned a stable M3-QA identifier, and every requirement added or revised in Section 2.2 cites the corresponding M3-QA source. Traceability updates were added to Sections 3.1, 3.2, and 4.3 to avoid gaps between acquisition evidence, concept analysis, requirements, and verification planning.#
