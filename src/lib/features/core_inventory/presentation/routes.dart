@@ -4,11 +4,13 @@ import 'package:src/config/injection_dependencies.dart';
 import 'package:src/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:src/features/auth/presentation/cubit/auth_state.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
+import 'package:src/features/core_inventory/presentation/cubits/product_stock_cubit.dart';
 import 'package:src/features/core_inventory/presentation/pages/add_item_page.dart';
 import 'package:src/features/core_inventory/presentation/pages/edit_item_page.dart';
 import 'package:src/features/core_inventory/presentation/pages/inventory_category_page.dart';
 import 'package:src/features/core_inventory/presentation/pages/inventory_page.dart';
 import 'package:src/features/core_inventory/presentation/pages/item_labels_page.dart';
+import 'package:src/features/core_inventory/presentation/pages/product_stock_page.dart';
 
 var inventoryRoutes = GoRoute(
   path: '/inventory',
@@ -63,6 +65,14 @@ var inventoryRoutes = GoRoute(
           path: 'edit/:productId/:stockId',
           name: 'inventory_edit_item',
           builder: (context, state) => const EditItemPage(),
+        ),
+        GoRoute(
+          path: 'product/:productId',
+          name: 'inventory_product_stock',
+          builder: (context, state) => BlocProvider(
+            create: (_) => ProductStockCubit(),
+            child: const ProductStockPage(),
+          ),
         ),
       ],
     ),

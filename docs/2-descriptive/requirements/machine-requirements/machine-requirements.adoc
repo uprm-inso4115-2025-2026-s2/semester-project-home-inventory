@@ -31,11 +31,13 @@ Response time measurements will be collected during walkthroughs to establish ba
 
 === MR-03: Offline Operation
 
-The mobile client shall support viewing inventory while offline. Adding items and updating quantities while offline is deferred to post-Milestone 2.
+The mobile client shall support viewing inventory while offline and shall allow pending item creation and quantity updates while disconnected. Pending changes shall be clearly marked in the interface until synchronization succeeds. If the same tracked inventory record is changed remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
 
-*Trace*: DR-14 (deduplicated alerting)
+*Trace*: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)
 
-*Verification*: Integration tests with connectivity simulation.
+*Milestone 3 source*: M3-QA-08.
+
+*Verification*: Integration tests with connectivity simulation; manual tests creating and updating items offline, then reconnecting.
 
 ---
 
@@ -51,11 +53,13 @@ When multiple household members use the same inventory, changes shall be propaga
 
 === MR-05: Security and Privacy
 
-Only household members shall have access to their respective household inventories. A user belonging to multiple households shall have access only to the household for which they are a member. Access revocation for a removed member shall take effect upon their next login attempt for that specific household.
+Only authorized household members shall have access to household inventory data. Personal item records shall be hidden from non-owners by default unless explicitly shared. Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views.
 
-*Trace*: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention)
+*Trace*: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention), DR-18 (Personal item default privacy), DR-19 (Role-scoped household permissions)
 
-*Verification*: Access control tests with test accounts spanning multiple households.
+*Milestone 3 source*: M3-QA-01, M3-QA-02.
+
+*Verification*: Access control tests using owner/member/viewer/admin test accounts.
 
 ---
 
@@ -71,23 +75,27 @@ Quantity changes shall be logged with timestamp, user ID, item, and previous val
 
 === MR-07: Notification Quality
 
-Repeated automated checks without state changes shall not generate duplicate alerts during testing.
+Repeated automated checks without meaningful state changes shall not generate duplicate alert records or repeated push notifications. Shared household alerts shall support household-level in-app visibility while respecting individual delivery preferences.
 
-*Trace*: DR-14 (deduplicated alerting)
+*Trace*: DR-14 (deduplicated alerting), DR-23 (Shared alert audience control)
 
-*Verification*: Integration tests with repeated triggers.
+*Milestone 3 source*: M3-QA-06.
+
+*Verification*: Integration tests with repeated triggers, shared-household accounts, and different notification preferences.
 
 ---
 
 === MR-08: Barcode Scanning and Fallback
 
-The mobile client shall use the device camera to scan barcodes for item identification. When a barcode is scanned, the system shall attempt to match it to an existing item type. If no match is found, the system shall allow manual entry without blocking the workflow. If the barcode is unreadable or scanning is unavailable, manual entry shall remain the primary fallback.
+The mobile client shall use the device camera to scan barcodes for item identification. When barcode lookup fails, scanning is unavailable, or the product is unrecognized, the system shall immediately provide a manual-entry fallback requiring only item name and quantity/availability to save a minimum viable item record. Optional metadata shall remain editable later.
 
 NOTE: Barcode uniqueness is a domain requirement, not a machine requirement. This MR addresses the interface/device aspect: using the camera to capture barcodes and falling back gracefully when scanning fails.
 
-*Trace*: DR-1, DR-13
+*Trace*: DR-1, DR-13, DR-21 (Minimal barcode fallback capture)
 
-*Verification*: Manual tests with valid barcode, invalid barcode, and scanning unavailable scenarios.
+*Milestone 3 source*: M3-QA-04.
+
+*Verification*: Manual tests with valid barcode, invalid barcode, unavailable scanner, and unrecognized local product scenarios.
 
 ---
 
