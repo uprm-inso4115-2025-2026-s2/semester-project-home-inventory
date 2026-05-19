@@ -1,0 +1,231 @@
+= Domain Acquisition: Budget Analyzer Screen
+:author: @nataliavera6
+
+**AI Disclosure:** Portions of this domain acquisition task were drafted and refined with the assistance of AI tools. The final content, classifications, and project alignment were reviewed and verified by the assigned developer.
+
+toc::[]
+
+== Objective
+
+This document collects and organizes domain facts from stakeholders about how the *Budget Analyzer* screen should track, display, and explain home inventory spending.
+
+The goal is to identify what users expect from the Budget Analyzer, organize those expectations into domain description units, and tag each unit using the categories from the Domain Acquisition lecture. 
+
+== Relevant Stakeholder Groups
+
+The Budget Analyzer screen involves several stakeholder groups because budget tracking affects how users understand the financial side of their home inventory.
+
+* **Primary home inventory users**
+** Users who add, edit, and review inventory items.
+** They need the Budget Analyzer to clearly show how much money has been spent.
+
+* **Household members**
+** Users who share the same inventory space.
+** They may contribute to expenses, add items, or affect category totals.
+
+* **Budget-conscious users**
+** Users who want to control spending and avoid exceeding monthly limits.
+** They need clear summaries, warnings, and recommendations.
+
+* **Project team members**
+** Developers and designers responsible for building the Budget Analyzer screen.
+** They need organized domain facts to guide the UI, calculations, and user messages.
+
+* **Student users**
+** Users with limited budgets who may track food, household supplies, school materials, or shared living expenses.
+** They need simple budget feedback without complex financial terminology.
+
+== Elicitation Questionnaire
+
+The following questions should be used to collect stakeholder expectations about the Budget Analyzer screen.
+
+[cols="1,3", options="header"]
+|===
+| Question ID | Question
+
+| Q-001
+| What budget information should appear first when the user opens the Budget Analyzer screen?
+
+| Q-002
+| Should the screen focus more on total spending, category spending, or remaining budget?
+
+| Q-003
+| What expense categories should be shown for home inventory spending?
+
+| Q-004
+| Should users be able to set a monthly budget limit?
+
+| Q-005
+| How should the system warn users when they are close to or over budget?
+
+| Q-006
+| Should missing prices or missing purchase dates be shown as data issues?
+
+| Q-007
+| What kind of spending summary would be most useful: cards, tables, charts, or alerts?
+
+| Q-008
+| Should the Budget Analyzer give recommendations, or should it only display facts?
+
+| Q-009
+| What wording should the system use to avoid making users feel judged about their spending?
+
+| Q-010
+| What information would help users understand their spending habits better?
+|===
+
+== Domain Description Units
+
+Each domain description unit records one important budget-related fact. The units include an ID, stakeholder group, category, concept, kind, attribute, facet, and description.
+
+[cols="1,2,2,2,2,2,2,4", options="header"]
+|===
+| Unit ID | Stakeholder Group | Category | Concept | Kind | Attribute | Facet | Description
+
+| budget-0001
+| Primary home inventory users
+| Budget tracking
+| Monthly budget limit
+| Entity
+| Static until edited
+| Intrinsic
+| A user can define a monthly spending limit that acts as the planned maximum amount for inventory-related expenses during a selected month.
+
+| budget-0002
+| Budget-conscious users
+| Spending summary
+| Total spent
+| Function
+| Dynamic
+| Intrinsic
+| The Budget Analyzer calculates the total amount spent using item prices, quantities, and selected date ranges.
+
+| budget-0003
+| Household members
+| Expense organization
+| Spending category
+| Entity
+| Static until edited
+| Intrinsic
+| Inventory expenses can be grouped by categories such as food, cleaning supplies, electronics, tools, or household essentials.
+
+| budget-0004
+| Primary home inventory users
+| Budget feedback
+| Over-budget warning
+| Event
+| Reactive
+| Support technology
+| The screen should display a warning when total spending or category spending exceeds the selected budget limit.
+
+| budget-0005
+| Project team members
+| Data quality
+| Missing financial data
+| Event
+| Reactive
+| Support technology
+| The system should identify items with missing prices or dates because incomplete data can weaken budget accuracy.
+
+| budget-0006
+| Budget-conscious users
+| Spending analysis
+| Category spending breakdown
+| Function
+| Dynamic
+| Intrinsic
+| The Budget Analyzer should show how much money was spent in each category so users can identify where most spending occurs.
+
+| budget-0007
+| Student users
+| User communication
+| Neutral budget message
+| Behavior
+| Reactive
+| Support technology
+| The system should use respectful, non-judgmental language when explaining budget status, such as “spending exceeded the planned limit” instead of “bad spending.”
+
+| budget-0008
+| Household members
+| Shared budget visibility
+| Household expense contribution
+| Behavior
+| Dynamic
+| Intrinsic
+| When multiple household members add items, the Budget Analyzer should reflect shared spending activity in the total budget view.
+
+| budget-0009
+| Primary home inventory users
+| Budget visualization
+| Budget progress indicator
+| Function
+| Dynamic
+| Support technology
+| The screen should visually show how much of the budget has been used through a progress bar, chart, or summary card.
+
+| budget-0010
+| Budget-conscious users
+| Recommendation support
+| Budget adjustment suggestion
+| Function
+| Reactive
+| Support technology
+| The system may suggest adjusting a category budget when repeated spending patterns show that the current limit is unrealistic.
+|===
+
+== Stakeholder Expectations Summary
+
+Based on the domain acquisition process, stakeholders are expected to want the Budget Analyzer screen to provide a simple and understandable view of inventory-related spending.
+
+The main expectations are:
+
+* Users want to see the most important budget information quickly.
+* Users need clear totals, such as total spent, remaining budget, and monthly budget limit.
+* Users want expenses grouped into understandable categories.
+* Users expect the system to warn them when spending is close to or above the limit.
+* Users need missing prices or dates to be flagged because incomplete data affects accuracy.
+* Users prefer neutral and respectful messages instead of judgmental financial language.
+* Users may benefit from visual summaries such as cards, progress bars, and category breakdowns.
+* Users want recommendations only when they are supported by measurable data.
+
+== Identified Inconsistencies & Abstractions
+
+=== Inconsistency: Budget Accuracy vs. Missing Data
+
+*Observation:* The Budget Analyzer may be expected to show accurate totals, but some inventory items may not have prices or purchase dates.
+
+*Refined Requirement:* The screen should still show available budget information, but it must clearly mark the analysis as incomplete when important financial data is missing.
+
+*Example Message:* “Some items are missing prices, so the budget total may be incomplete.”
+
+=== Inconsistency: Recommendations vs. Limited Evidence
+
+*Observation:* Users may expect budget recommendations, but the system should not infer too much from only one or two expenses.
+
+*Refined Requirement:* Recommendations should only appear when there is enough measurable data to support them.
+
+*Example:* A single grocery purchase over budget should be shown as an over-budget event, not as a long-term spending pattern.
+
+=== Inconsistency: Shared Household Spending
+
+*Observation:* In a shared household, multiple users may add items, which can make it unclear who contributed to total spending.
+
+*Refined Requirement:* The Budget Analyzer should focus on household-level spending unless individual contribution tracking is explicitly included in the project scope.
+
+=== Abstraction: Budget Status States
+
+The Budget Analyzer can simplify budget feedback by abstracting spending into clear states:
+
+* *Within Budget:* Spending is below the selected limit.
+* *Near Limit:* Spending is close to the selected limit.
+* *Over Budget:* Spending exceeds the selected limit.
+* *Incomplete Data:* Some financial data is missing.
+
+== Engineering Rationale
+
+The Budget Analyzer should be designed around measurable domain facts first. Values such as price, quantity, date, category, and budget limit are the foundation for all calculations.
+
+More abstract concepts, such as spending behavior, financial risk, or budget health, should only be generated from those measurable values. This prevents the system from making unsupported or judgmental conclusions.
+
+The Budget Analyzer should also treat missing data as a normal part of the domain. Since home inventory systems often depend on manual entry, users may forget to add prices, dates, or categories. Instead of failing, the screen should explain what is missing and how it affects the analysis.
+
