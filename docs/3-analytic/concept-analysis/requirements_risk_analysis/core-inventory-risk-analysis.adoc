@@ -1,0 +1,118 @@
+=== Core Inventory: Risk Register and Analysis
+
+The following risk register summarizes the main risks identified for the Core Inventory feature based on requirements, architectural analysis, implementation behavior, and verification coverage. Each entry outlines the affected components, estimated likelihood and impact, and possible mitigation strategies.
+
+Scope:
+
+- UI and Cubit integration for Core Inventory flows
+- Repository and data-source flow for load/add/update/delete operations
+- Use-case coverage and verification blind spots
+- Requirement ambiguity, documentation drift, and known implementation gaps
+
+[cols="1,2,4,3,1,1,4,3",options="header"]
+|===
+|Risk ID
+|Risk title
+|Description
+|Affected component(s)
+|Likelihood
+|Impact
+|Suggested mitigation strategy
+|Current status / uncertainty notes
+
+|CI-R01
+|Requirement ambiguity in expiration handling
+|Requirements indicate that expiration dates are optional, whereas acceptance criteria and some UI validations treat expiration as required. The resulting inconsistency risks divergent behavior between implementation, tests, and stakeholder expectations.
+|Requirements stories, add/edit item UI validation, acceptance tests
+|High
+|High
+|Establish a canonical rule for expiration-date semantics within the requirements specification and ensure acceptance tests and UI validation reflect that rule.
+|Observation: behavior is not documented consistently across artifacts.
+
+|CI-R02
+|Core Inventory state-management document drift
+|The implementation and the state-management documentation exhibit partial divergence (for example, dependency registration and owner-identifier handling). This drift increases onboarding difficulty and raises the chance of incorrect integration.
+|Specific-topics state-management doc, dependency injection configuration
+|High
+|Medium
+|Maintain the state-management documentation as a living contract: synchronize dependency snippets with implementation changes and annotate the document with a verification date or reference.
+|Observation: documentation and implementation are partially misaligned.
+
+|CI-R03
+|Owner context precondition for write operations
+|Write operations rely on a previously established owner context; invoking add/update/delete without such context results in explicit errors and aborted operations. This dependency creates a condition that must be handled correctly by routing or UI flow.
+|Inventory Cubit, add/edit/delete screens, navigation orchestration
+|Medium
+|Medium
+|Specify the precondition in the feature flow, require route-level inventory loading prior to write actions, and add unit/behavioral tests that assert guard behavior when context is missing.
+|Observation: route flow mitigates risk in typical navigation, but the precondition remains an operational dependency.
+
+|CI-R04
+|Owner identifier resolution uncertainty
+|The Cubit accepts both numeric owner identifiers and non-numeric owner identifiers; if identifier formats or the mapping between authentication tokens and owner records change, identifier resolution may fail or behave inconsistently.
+|Inventory Cubit, identifier-based use case, auth-to-owner mapping
+|Medium
+|Medium
+|Document the identifier contract clearly and include tests covering numeric, UUID-like, and invalid identifier inputs.
+|Observation: identifier-path assumptions are not fully specified in the requirements corpus.
+
+|CI-R05
+|Scaling risk in repository composition
+|Inventory fetching resolves product metadata iteratively for each stock entry. With larger inventories, this approach may introduce noticeable latency and additional load on upstream services.
+|Inventory repository implementation, product repository calls, inventory fetch flow
+|Medium
+|High
+|Consider batched product-resolution strategies or caching of product metadata; incorporate performance-focused verification scenarios for large inventory sizes.
+|Observation: functionally correct but may exhibit scalability limitations in larger datasets.
+
+|CI-R06
+|State refresh churn and synchronization race potential
+|Following mutations the Cubit performs a full reload; when combined with real-time subscriptions, this pattern can produce temporary UI churn and make state timing and consistency harder to reason about.
+|Inventory Cubit state transitions, real-time UI refresh behavior
+|Medium
+|Medium
+|Document the expected state-transition sequence and add focused tests that exercise rapid consecutive operations to reveal stale or flickering UI states.
+|Observation: the current approach favors strong consistency at the cost of potential timing complexity.
+
+|CI-R07
+|Validation boundary uncertainty for time-sensitive fields
+|Expiration validation relies on runtime evaluation; without an explicitly documented convention (date-only versus timestamp-aware comparisons), boundary conditions such as midnight transitions or timezone differences may produce inconsistent results.
+|Repository validation logic, add/update inventory workflows, verification cases
+|Medium
+|Medium
+|Define a canonical date-evaluation convention and include boundary tests that exercise transitions across day and timezone boundaries.
+|Observation: boundary behavior is implied by implementation but lacks explicit specification.
+
+|CI-R08
+|Verification blind spots for Core Inventory mutation paths
+|Current verification covers load and add operations; however, update, delete, and identifier-based mutation sequences still lack explicit coverage in the Cubit test suite.
+|Core Inventory Cubit tests, mutation flows, identifier-path flows
+|High
+|Medium
+|Extend the verification matrix to include update and delete success/failure cases and mutation sequences that follow identifier-based loading.
+|Observation: baseline tests provide coverage for common flows, but important mutation paths remain under-tested.
+
+|CI-R09
+|Architecture coupling through shared assumptions
+|Core Inventory semantics underpin alerts, grocery-list automation, and reporting. If status, ownership, or quantity semantics change without clear cross-feature contracts, downstream behavior may become inconsistent.
+|Core Inventory domain model, alerts and grocery-list consumers, reports
+|Medium
+|High
+|Define explicit cross-feature contracts for status semantics, ownership, and quantity interpretation; include downstream verification when inventory semantics are modified.
+|Observation: some controls exist in feature documentation, but contract boundaries are not fully explicit.
+
+|CI-R10
+|Risk-tracking discoverability gap
+|Risk analysis for Core Inventory was previously less discoverable from feature-level documentation. Maintaining discoverability is important so architectural evaluation and verification planning continue referencing identified concerns.
+|Documentation navigation across 3-analytic and 4-specific-topics
+|High
+|Medium
+|Maintain the analytical risk register within the analytic corpus and ensure cross-references from specific-topic documentation and top-level indices to preserve discoverability.
+|Observation: the register is linked from analytic and specific-topic indices; links should be maintained as the documentation structure evolves.
+
+|===
+
+==== Mitigation tracking notes
+
+- Mitigation notes in this register reflect analysis and recommended actions; recorded mitigation status does not necessarily imply its implementation was completed.
+- When mitigation actions are taken, the associated requirements, architecture, and verification artifacts should be updated within the same documentation cycle to reduce conceptual drift.
