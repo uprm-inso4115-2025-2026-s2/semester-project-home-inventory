@@ -1,0 +1,110 @@
+= Lecture Topic Task: Budget Analyzer Temporal Modeling
+:author: @nataliavera6
+
+**AI Disclosure:** Portions of this lecture topic task were drafted and refined with the assistance of AI tools. All content, classifications, and conclusions were reviewed, edited, and verified by the assigned developer to ensure complete accuracy and project alignment.
+
+== Objective
+
+This document models spending behavior in the *Budget Analyzer* screen by classifying financial activity as *discrete*, *continuous*, or *hybrid*. This classification helps the system separate individual purchase records from broader spending trends.
+
+The goal is to make sure the Budget Analyzer can explain how single transactions affect the overall budget while still allowing users to understand long-term spending behavior.
+
+== Temporal Modeling Matrix
+
+[cols="2,2,4", options="header"]
+|===
+| Phenomenon / Concept | Classification | Justification & Modeling Strategy
+
+| Individual purchase
+| Discrete
+| Represents a single financial event that occurs at a specific point in time. The system should record it as one transaction with a price, date, category, and related inventory item.
+
+| One-time expense
+| Discrete
+| Represents an isolated expense that does not automatically repeat. It should affect the budget for the selected period but should not be treated as a long-term spending trend unless similar expenses repeat.
+
+| Added inventory item with recorded price
+| Discrete
+| Adding an item with a price creates a specific budget event. The item should increase total spending once it is added to the inventory record.
+
+| Manual budget update
+| Discrete
+| Represents a user-triggered change, such as editing a budget limit or correcting an expense. The system should record the update as an event that affects future calculations.
+
+| Monthly spending trend
+| Continuous
+| Represents spending behavior across a period of time. It is not one transaction, but a pattern created from many discrete expenses.
+
+| Average weekly spending
+| Continuous
+| Represents an ongoing calculation based on spending over time. The system should use transaction records to calculate a trend value for each week.
+
+| Budget usage over time
+| Continuous
+| Represents how the budget is gradually consumed during a selected period. It should be displayed through visual elements such as progress bars or line charts.
+
+| Category spending trend
+| Continuous
+| Represents gradual increase or decrease in spending within a category. It should be calculated from multiple expenses in the same category across time.
+
+| Subscription payment
+| Hybrid
+| A subscription charge is discrete when the payment occurs, but it also contributes to a continuous monthly spending pattern. The system should treat each charge as a transaction while also including it in recurring spending analysis.
+
+| Grocery spending
+| Hybrid
+| Each grocery purchase is a discrete event, but grocery spending across weeks or months forms a continuous behavior. The Budget Analyzer should support both item-level records and category-level trends.
+
+| Inventory value over time
+| Hybrid
+| Inventory value changes through discrete item additions, removals, or edits, but the total value of the home inventory can be analyzed as a continuous trend over time.
+|===
+
+== Boundary Cases & Engineering Rationale
+
+The separation between discrete, continuous, and hybrid budget data is important because the Budget Analyzer must avoid mixing individual transactions with long-term interpretations.
+
+1. The Subscription Boundary:
+
+A subscription payment happens on a specific date, which makes it a discrete event. However, because it repeats regularly, it also creates a predictable spending pattern.
+
+Design Resolution: The system should record each subscription charge as an individual transaction while also grouping recurring subscription charges into monthly spending trends.
+
+2. The Grocery Spending Boundary:
+
+A grocery purchase is a discrete event because it happens once and has a specific cost. However, grocery spending is usually repeated, so it becomes meaningful as a trend over time.
+
+Design Resolution: The Budget Analyzer should allow users to view grocery purchases as individual expenses and also summarize them as weekly or monthly category trends.
+
+3. The Inventory Value Boundary:
+
+Adding a new item increases inventory value at one point in time. However, total inventory value can also rise or fall gradually as items are added, removed, consumed, or updated.
+
+Design Resolution: The system should separate transaction history from trend analysis. The transaction list should show individual changes, while the budget summary should show how those changes affect the overall financial picture.
+
+== Structured Explanation for the Budget Analyzer
+
+The Budget Analyzer should explain temporal data using three levels:
+
+* *Discrete events* represent individual financial actions, such as purchases, item additions, or budget edits.
+* *Continuous behavior* represents spending movement across time, such as weekly averages or monthly trends.
+* *Hybrid behavior* combines both, where individual events contribute to a broader financial pattern.
+
+This structure allows the screen to show detailed transaction records without confusing them with long-term spending insights.
+
+== Suggested UI Representation
+
+[cols="2,3", options="header"]
+|===
+| Data Type | Suggested UI Display
+
+| Discrete events
+| Recent expense list, transaction table, item history, edit log
+
+| Continuous behavior
+| Spending trend chart, monthly summary, weekly average card, progress bar
+
+| Hybrid behavior
+| Recurring expense section, category trend breakdown, inventory value timeline
+|===
+
