@@ -1,6 +1,6 @@
 == Machine Requirements
 
-Machine requirements define measurable quality properties for Milestone 2 implementation. Since the prototype is under development, these requirements establish targets that will be verified upon completion. Where specific thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated.
+Machine requirements define measurable quality properties for the implementation, together with the supported environment and deployment assumptions needed to run, test, and review the system. Milestone 2 established the initial quality properties (MR-01..MR-08) verified against the prototype, and Milestone 3 extends this section with the environment, platform, runtime, third-party service, and deployment requirements needed for end users, developers, and reviewers. Where specific thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated.
 
 Each requirement includes traceability to relevant Domain Requirements (DR) where applicable.
 
