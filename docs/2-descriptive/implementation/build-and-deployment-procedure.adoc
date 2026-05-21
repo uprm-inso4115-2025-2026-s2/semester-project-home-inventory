@@ -1,0 +1,254 @@
+= Build and Deployment Procedure
+
+== Overview
+
+This section documents the basic build, setup, and deployment procedure for the Digital Home Inventory system. The purpose of this guide is to allow developers, reviewers, and team members to consistently set up and run the project from a clean environment without depending on undocumented local configurations.
+
+The system currently uses a Flutter frontend application with Supabase services for backend functionality, authentication, storage, and synchronization.
+
+== Repository Structure
+
+The main project repository contains:
+
+* Project documentation under the `docs/` directory.
+* Flutter application source code under the `src/` directory.
+* Configuration and dependency management through `pubspec.yaml`.
+
+The Flutter client should always be executed from the `src/` directory.
+
+== Prerequisites
+
+Before running the project locally, the following tools and dependencies should be installed:
+
+[cols="2,3",options="header"]
+|===
+|Tool / Dependency
+|Purpose
+
+|Git
+|Repository cloning and version control
+
+|Flutter SDK
+|Flutter application development and execution
+
+|Dart SDK
+|Programming language support for Flutter
+
+|Android Studio or VS Code
+|Recommended development environments
+
+|Android Emulator / iOS Simulator
+|Local mobile application testing
+
+|Supabase Account
+|Backend database, authentication, and storage services
+
+|Internet Connection
+|Dependency installation and backend communication
+|===
+
+== Runtime Environment
+
+The current local development environment used during Milestone 3 includes:
+
+* Flutter SDK 3.35.5
+* Dart SDK 3.9.2
+* Flutter package management through `flutter pub`
+
+The authoritative dependency source for the Flutter client is:
+
+----
+src/pubspec.yaml
+----
+
+== Clone and Setup Procedure
+
+=== 1. Clone the Repository
+
+Clone the repository locally:
+
+[source,bash]
+----
+git clone https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory.git
+----
+
+Enter the repository directory:
+
+[source,bash]
+----
+cd semester-project-home-inventory
+----
+
+=== 2. Navigate to the Flutter Project
+
+The Flutter application is located inside the `src/` directory:
+
+[source,bash]
+----
+cd src
+----
+
+=== 3. Install Dependencies
+
+Install all required Flutter and Dart packages:
+
+[source,bash]
+----
+flutter pub get
+----
+
+This command downloads all dependencies defined in `pubspec.yaml`.
+
+=== 4. Configure Environment Variables
+
+For Milestone 3, the Supabase project URL and anonymous key are read directly from `src/lib/config/injection_dependencies.dart` inside the `Supabase.initialize(...)` call. No `.env` file, `--dart-define` flow, or external configuration loader is wired up yet, so a clean checkout will connect to the team's shared Supabase project without any extra setup.
+
+The values currently passed to `Supabase.initialize` are:
+
+[cols="2,3",options="header"]
+|===
+|Configuration value
+|Source
+
+|Supabase Project URL (`url:`)
+|`src/lib/config/injection_dependencies.dart`
+
+|Supabase Anonymous / Publishable Key (`anonKey:`)
+|`src/lib/config/injection_dependencies.dart`
+|===
+
+If you need to point the app at a different Supabase project (for example, a personal sandbox), edit those two arguments in `injection_dependencies.dart` locally. Do not commit replacement credentials.
+
+Planned for a later milestone: moving these values out of source and into either a git-ignored `.env` file or `--dart-define` build arguments (e.g. `flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...`). When that change lands this section must be updated to document the new mechanism.
+
+Sensitive credentials and secrets must never be committed to version control once the project moves to a per-developer or per-environment configuration scheme.
+
+=== 5. Check Flutter Environment
+
+Before running the application, verify that the Flutter environment is configured correctly:
+
+[source,bash]
+----
+flutter doctor
+----
+
+The Flutter environment should report no critical dependency or SDK issues before attempting to run the application.
+
+== Running the Application
+
+=== Run on Emulator or Physical Device
+
+Start an Android emulator, iOS simulator, or connect a physical device.
+
+Run the Flutter application:
+
+[source,bash]
+----
+flutter run
+----
+
+Flutter automatically builds and launches the application on the selected device.
+
+== Build Procedure
+
+=== Debug Build
+
+Generate a debug build locally:
+
+[source,bash]
+----
+flutter build apk --debug
+----
+
+=== Release Build
+
+Generate a release APK build:
+
+[source,bash]
+----
+flutter build apk --release
+----
+
+Additional platform-specific builds may require extra platform configuration.
+
+=== iOS Build
+
+iOS builds are produced via Xcode; see Known Limitations.
+
+== Backend and External Services
+
+The system depends on several external services provided through Supabase:
+
+* Supabase PostgreSQL database
+* Supabase Authentication
+* Supabase Realtime synchronization
+* Supabase Storage
+* Optional Edge Functions and automation services
+
+Certain features may not function correctly without valid backend configuration and internet connectivity.
+
+== Deployment Assumptions
+
+For Milestone 3, deployment is primarily treated as a local development and review workflow rather than a finalized production deployment pipeline.
+
+Current assumptions include:
+
+* Developers run the project locally using Flutter tooling.
+* Backend services are hosted through Supabase.
+* Environment-specific credentials are configured locally.
+* Production hosting and release infrastructure may continue evolving in future milestones.
+
+== Verification Procedure
+
+After setup is completed successfully:
+
+* The Flutter project should compile without dependency errors.
+* The application should launch successfully using `flutter run`.
+* Supabase-connected features should initialize correctly when valid credentials are provided.
+* Navigation, inventory management, alerts, and synchronization-related functionality should load without startup failures.
+* A second team member or reviewer should be able to follow this procedure from a clean environment and successfully launch the application.
+
+== Known Limitations
+
+Current limitations and assumptions include:
+
+* Some functionality requires active internet connectivity.
+* Push notification services may require additional platform configuration.
+* Production deployment pipelines are not finalized.
+* Certain features may behave differently depending on emulator/device permissions.
+* iOS builds may require Apple-specific signing and provisioning configuration.
+
+== Common Failure Modes and Recovery Steps
+
+[cols="2,3",options="header"]
+|===
+|Issue
+|Recovery Step
+
+|`flutter pub get` fails
+|Verify Flutter/Dart installation and internet connectivity, then rerun the command.
+
+|Supabase connection errors
+|Check that the Supabase URL and API keys are configured correctly.
+
+|Application does not launch on emulator
+|Restart the emulator/device and confirm Flutter detects the device using `flutter devices`.
+
+|Missing dependencies or SDK mismatch
+|Verify the installed Flutter/Dart versions are compatible with the SDK constraint defined in `src/pubspec.yaml`.
+
+|Permission-related barcode scanning failures
+|Ensure camera permissions are enabled on the emulator or physical device.
+
+|Build command fails
+|Run `flutter clean` followed by `flutter pub get`, then retry the build command.
+|===
+
+== Security Considerations
+
+The following practices should be followed during development and deployment:
+
+* Never commit secrets, API keys, or private credentials.
+* Store sensitive configuration outside version-controlled files.
+* Use authenticated backend access through Supabase Auth.
+* Limit access to environment configuration files when possible.
