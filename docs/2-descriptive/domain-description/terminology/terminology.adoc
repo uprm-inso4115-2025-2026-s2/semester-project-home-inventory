@@ -4,6 +4,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)
 * *Requirements* — introduced when specifying capabilities of the system-to-be
+* *Implementation* — introduced during M2/M3 software design, architecture, and deployment work
 
 [cols="2,1,1,4,3", options="header"]
 |===
@@ -429,31 +430,31 @@ This section consolidates the domain's ubiquitous language into a single annotat
 
 | Supabase
 | External Service
-| Requirements
+| Implementation
 | The backend platform used by the system to support database persistence, authentication, storage, real-time synchronization, and backend functions when applicable.
 | M2/M3 implementation and deployment term used across software design, architecture, and validation/verification documentation.
 
 | Supabase Auth
 | External Service / Authentication
-| Requirements
+| Implementation
 | The authentication service used to identify users and provide session information for authorization decisions.
 | Related to household membership, permission rules, RLS policies, and authenticated access.
 
 | Supabase Realtime
 | Integration Mechanism
-| Requirements
+| Implementation
 | A Supabase service that allows the application to receive backend data updates without requiring users to manually refresh the interface.
 | Used for shared inventory synchronization, dashboard updates, and multi-user coordination.
 
 | Row Level Security (RLS)
 | Security Mechanism
-| Requirements
+| Implementation
 | A database-level access control mechanism used to restrict which records a user can view or modify based on household membership, role, or permission rules.
 | Often abbreviated as "RLS"; related to Supabase Auth, permission rules, and shared inventory access.
 
 | Edge Function
 | Backend Function
-| Requirements
+| Implementation
 | A server-side function used to execute backend logic outside the client application, especially for operations that require validation, scheduled execution, or cross-table coordination.
 | In this project, Edge Functions are mainly discussed in the context of Supabase backend logic.
 
@@ -475,12 +476,6 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | An activity used to check whether the system is addressing the right user needs, such as stakeholder reviews, scenario walkthroughs, usability checks, or feedback sessions.
 | Related to Section 3.2 validation and verification.
 
-| Verification artifact
-| Artifact
-| Requirements
-| Evidence used to show that the implemented system satisfies documented requirements, such as test cases, test results, coverage reports, or manual verification procedures.
-| Related to Section 3.2 validation and verification.
-
 | Acceptance criteria
 | Requirement Detail
 | Requirements
@@ -495,7 +490,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 
 | Deployment target
 | Environment
-| Requirements
+| Implementation
 | The platform, service, or environment where the system is intended to run for review, testing, staging, or release.
 | Related to machine requirements, build procedure, deployment documentation, and external service configuration.
 |===
