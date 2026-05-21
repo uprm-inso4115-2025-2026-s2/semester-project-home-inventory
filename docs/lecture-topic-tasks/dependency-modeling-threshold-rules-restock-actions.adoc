@@ -1,0 +1,419 @@
+= Dependency Modeling Between Inventory Threshold Rules and Automated Restock Actions
+:author: Solimar Cruz
+:toc:
+
+== Objective
+
+This document analyzes how inventory threshold rules influence automated restock behaviors within the Alerts & Restock module of the Home Inventory System. The goal is to identify the dependencies between inventory conditions, automated grocery list generation, and user notifications.
+
+== Overview
+
+The Alerts & Restock module is responsible for monitoring inventory items and detecting when an item needs attention. The system evaluates inventory data such as quantity, stock status, expiration date, and household rules. When certain conditions are met, the system can automatically trigger restock actions, create grocery list entries, and notify household members.
+
+The main dependency is:
+
+[source,text]
+----
+Inventory item data -> Threshold rule evaluation -> Restock decision -> Automated action
+----
+
+== Main Inventory Conditions
+
+The system depends on several inventory conditions to decide whether an automated restock action should occur.
+
+=== 1. Low Stock Condition
+
+A low stock condition occurs when an item quantity is greater than zero but less than or equal to the defined minimum threshold.
+
+Example:
+
+[source,text]
+----
+Current quantity = 2
+Minimum threshold = 3
+Result: Low stock alert is triggered
+----
+
+Expected system behavior:
+
+[source,text]
+----
+- Mark item as LOW
+- Generate a low-stock notification
+- Add item to grocery list if it is not already there
+----
+
+=== 2. Out of Stock Condition
+
+An out-of-stock condition occurs when the item quantity reaches zero.
+
+Example:
+
+[source,text]
+----
+Current quantity = 0
+Minimum threshold = 3
+Result: Out-of-stock alert is triggered
+----
+
+Expected system behavior:
+
+[source,text]
+----
+- Mark item as EMPTY
+- Generate an out-of-stock notification
+- Add item to grocery list with higher priority
+----
+
+=== 3. Near Expiration Condition
+
+A near expiration condition occurs when an item is close to its expiration date.
+
+Example:
+
+[source,text]
+----
+Expiration date = May 25
+Current date = May 21
+Expiration warning window = 5 days
+Result: Near-expiration alert is triggered
+----
+
+Expected system behavior:
+
+[source,text]
+----
+- Generate an expiration warning
+- Notify household members
+- Optionally suggest replacing or restocking the item soon
+----
+
+=== 4. Expired Condition
+
+An expired condition occurs when the current date is past the expiration date.
+
+Example:
+
+[source,text]
+----
+Expiration date = May 15
+Current date = May 21
+Result: Expired alert is triggered
+----
+
+Expected system behavior:
+
+[source,text]
+----
+- Mark item as EXPIRED
+- Notify household members
+- Recommend removing or replacing the item
+----
+
+== Dependency Model
+
+The automated restock process depends on multiple data points.
+
+[cols="1,1,2", options="header"]
+|===
+|Input Data |Dependency |Automated Action
+
+|Current item quantity
+|Compared against minimum threshold
+|Triggers low-stock or out-of-stock alert
+
+|Minimum stock threshold
+|Defines when an item should be restocked
+|Determines whether grocery list generation is needed
+
+|Expiration date
+|Compared against current date
+|Triggers near-expiration or expired notification
+
+|Household ID
+|Connects inventory items to shared household users
+|Ensures all household members can see relevant alerts
+
+|Existing grocery list item
+|Checked before inserting new restock item
+|Prevents duplicate grocery list entries
+
+|Item category
+|May affect threshold values or restock behavior
+|Allows different rules for different item types
+|===
+
+== Behavioral Workflow
+
+The system follows a basic event-driven workflow.
+
+[source,text]
+----
+Inventory item is updated
+        |
+        v
+System checks item quantity and expiration date
+        |
+        v
+Threshold rules are evaluated
+        |
+        v
+System determines item status
+        |
+        v
+If restock is needed:
+    - Create or update grocery list item
+    - Generate notification
+    - Store reason for restock action
+        |
+        v
+Household members can view the alert and grocery list update
+----
+
+== Low Stock Event Flow
+
+Scenario:
+
+A household member updates the quantity of milk from 4 to 2. The minimum threshold for milk is 3.
+
+[source,text]
+----
+User updates item quantity
+        |
+        v
+System receives new quantity: 2
+        |
+        v
+System checks threshold: 2 <= 3
+        |
+        v
+Item is classified as LOW
+        |
+        v
+System checks grocery list
+        |
+        v
+If milk is not already listed:
+    Add milk to grocery list
+Else:
+    Update existing grocery list entry
+        |
+        v
+Send low-stock notification
+----
+
+Example result:
+
+[source,text]
+----
+Item: Milk
+Status: LOW
+Action: Added to grocery list
+Notification: "Milk is running low."
+----
+
+== Out of Stock Event Flow
+
+Scenario:
+
+A household member updates the quantity of eggs from 1 to 0.
+
+[source,text]
+----
+User updates item quantity
+        |
+        v
+System receives new quantity: 0
+        |
+        v
+System classifies item as EMPTY
+        |
+        v
+System checks grocery list
+        |
+        v
+If eggs are not already listed:
+    Add eggs to grocery list with out-of-stock reason
+Else:
+    Update existing grocery list item priority/reason
+        |
+        v
+Send out-of-stock notification
+----
+
+Example result:
+
+[source,text]
+----
+Item: Eggs
+Status: EMPTY
+Action: Added to grocery list
+Notification: "Eggs are out of stock."
+----
+
+== Rule Interaction in Shared Household Environments
+
+Because the Home Inventory System supports shared households, multiple users may interact with the same inventory data. This creates dependencies between user actions and automated restock logic.
+
+=== Possible Interaction Cases
+
+[cols="1,2,2", options="header"]
+|===
+|Case |Problem |Expected Handling
+
+|Two users update the same item
+|One user may increase quantity while another decreases it
+|System should use the latest saved quantity before evaluating rules
+
+|Multiple alerts for the same item
+|Low-stock and near-expiration alerts may trigger at the same time
+|System should avoid duplicate notifications and group related alerts when possible
+
+|Item already exists in grocery list
+|Automation could create duplicate grocery list entries
+|System should update the existing entry instead of inserting a duplicate
+
+|Different threshold rules by category
+|Food, cleaning products, and medicine may require different limits
+|System should allow item-specific or category-specific threshold values
+|===
+
+== Edge Cases
+
+=== Edge Case 1: Low Stock and Near Expiration at the Same Time
+
+An item may be both low in quantity and close to expiration.
+
+Example:
+
+[source,text]
+----
+Item: Yogurt
+Quantity: 1
+Minimum threshold: 2
+Expiration date: Tomorrow
+----
+
+Expected behavior:
+
+[source,text]
+----
+- Trigger low-stock alert
+- Trigger near-expiration alert
+- Avoid creating duplicate grocery list entries
+- Store both reasons if possible
+----
+
+=== Edge Case 2: Item Already Exists in Grocery List
+
+If an item is already in the grocery list, the system should not create another duplicate entry.
+
+Expected behavior:
+
+[source,text]
+----
+- Search grocery list for existing item
+- If found, update quantity or reason
+- If not found, insert a new grocery list item
+----
+
+=== Edge Case 3: Quantity Is Increased After Alert
+
+If a user restocks an item manually, the system should update the item status.
+
+Example:
+
+[source,text]
+----
+Old quantity: 0
+New quantity: 5
+Minimum threshold: 3
+----
+
+Expected behavior:
+
+[source,text]
+----
+- Change status from EMPTY to AVAILABLE or FULL
+- Remove or resolve related alert if needed
+- Grocery list entry may be marked completed or removed
+----
+
+=== Edge Case 4: Multiple Household Members Trigger Updates
+
+If two household members update the same item close together, the system should avoid inconsistent automation.
+
+Expected behavior:
+
+[source,text]
+----
+- Use the most recent item state
+- Avoid duplicate alerts
+- Maintain accurate grocery list status
+----
+
+== Dependency Diagram
+
+[source,text]
+----
++----------------------+
+| Inventory Item Data  |
+| quantity, category,  |
+| expiration date      |
++----------+-----------+
+           |
+           v
++----------------------+
+| Threshold Rules      |
+| min quantity,        |
+| expiration window    |
++----------+-----------+
+           |
+           v
++----------------------+
+| Rule Evaluation      |
+| LOW, EMPTY, EXPIRED, |
+| NEAR_EXPIRATION      |
++----------+-----------+
+           |
+           v
++----------------------+
+| Restock Decision     |
+| Should item be added |
+| to grocery list?     |
++----------+-----------+
+           |
+           v
++----------------------+
+| Automated Actions    |
+| create/update list,  |
+| send notification    |
++----------------------+
+----
+
+== Success Criteria Validation
+
+[cols="2,2", options="header"]
+|===
+|Success Criteria |How It Was Addressed
+
+|Dependency relationships between thresholds and restock actions are clearly documented.
+|The dependency model explains how quantity, expiration dates, thresholds, and household data influence automation.
+
+|Behavioral workflows accurately represent system automation logic.
+|Low-stock and out-of-stock event flows describe how the system reacts to inventory changes.
+
+|Event-trigger interactions are identified and analyzed.
+|The document explains how multiple triggers can interact, including low stock, out of stock, near expiration, and expired items.
+
+|Documentation aligns with the current Alerts & Restock architecture.
+|The model follows the expected architecture of inventory checks, automated grocery list generation, and notifications.
+|===
+
+== Final Summary
+
+The Alerts & Restock module depends on threshold-based rules to determine when inventory items require action. When an item quantity falls below its minimum threshold or reaches zero, the system should automatically generate the appropriate alert and create or update a grocery list entry. Expiration-based rules add another layer of automation by notifying users when items are near expiration or already expired.
+
+The main challenge is handling overlapping rules and shared household interactions without creating duplicate alerts or grocery list items. To manage this, the system should always check the current item state, verify whether a grocery list entry already exists, and update existing records when possible.
+
+This dependency model helps clarify how inventory events lead to automated restock behavior and supports future implementation, testing, and documentation of the Alerts & Restock system.
