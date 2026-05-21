@@ -1,0 +1,34 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Team 1
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# {milestone} Week 1 — {team} Progress Report
+
+## Objective
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+
+## What the Team Accomplished This Week
+- Distributed work the milestone
+
+
+## Tasks Completed / Issues Closed
+- None, efforts were distributed
+
+
+## What Is Currently In Progress
+- {issue-base-url}643[Cubits]
+- {issue-base-url}318[UI For Item Stock]
+- {issue-base-url}274[Cross Integration and Clean Architecture Validation]
+
+## Blockers or Challenges
+- Not much completion from team members
+
+
+## Plans for Next Week
+- Complete various infrastructure issues for the feature
+- Review our documentation
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above
