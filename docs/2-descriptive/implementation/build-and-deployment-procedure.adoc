@@ -101,18 +101,29 @@ This command downloads all dependencies defined in `pubspec.yaml`.
 
 === 4. Configure Environment Variables
 
-The project may require backend configuration values for Supabase integration.
+For Milestone 3, the Supabase project URL and anonymous key are read directly from `src/lib/config/injection_dependencies.dart` inside the `Supabase.initialize(...)` call. No `.env` file, `--dart-define` flow, or external configuration loader is wired up yet, so a clean checkout will connect to the team's shared Supabase project without any extra setup.
 
-Typical configuration values may include:
+The values currently passed to `Supabase.initialize` are:
 
-* Supabase Project URL
-* Supabase Anonymous/Public API Key
-* Authentication configuration
-* Notification-related configuration values
+[cols="2,3",options="header"]
+|===
+|Configuration value
+|Source
 
-Sensitive credentials and secrets must never be committed to version control.
+|Supabase Project URL (`url:`)
+|`src/lib/config/injection_dependencies.dart`
 
-=== Check Flutter Environment
+|Supabase Anonymous / Publishable Key (`anonKey:`)
+|`src/lib/config/injection_dependencies.dart`
+|===
+
+If you need to point the app at a different Supabase project (for example, a personal sandbox), edit those two arguments in `injection_dependencies.dart` locally. Do not commit replacement credentials.
+
+Planned for a later milestone: moving these values out of source and into either a git-ignored `.env` file or `--dart-define` build arguments (e.g. `flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...`). When that change lands this section must be updated to document the new mechanism.
+
+Sensitive credentials and secrets must never be committed to version control once the project moves to a per-developer or per-environment configuration scheme.
+
+=== 5. Check Flutter Environment
 
 Before running the application, verify that the Flutter environment is configured correctly:
 
@@ -159,6 +170,10 @@ flutter build apk --release
 ----
 
 Additional platform-specific builds may require extra platform configuration.
+
+=== iOS Build
+
+iOS builds are produced via Xcode; see Known Limitations.
 
 == Backend and External Services
 
