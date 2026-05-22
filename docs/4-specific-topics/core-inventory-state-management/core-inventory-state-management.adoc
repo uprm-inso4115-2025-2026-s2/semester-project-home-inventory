@@ -91,3 +91,11 @@ While the UI is a separate task, this Cubit is built to support standard `flutte
 1. `BlocProvider`: Should wrap the Inventory screen to provide the `InventoryCubit` instance.
 2. `BlocBuilder`: Should be used to switch between the loading spinner, the error view, and the actual inventory list based on the states defined in Section 2.
 3. Methods: The UI should call `addStock`, `updateStock`, or `deleteStock` directly on the Cubit instance. These methods are asynchronous and handle state transitions internally.
+
+== 6. Risk Analysis Cross-Reference
+
+Implementation-facing and documentation-facing Core Inventory risks are maintained in:
+
+* `docs/3-analytic/concept-analysis/requirements_risk_analysis/core-inventory-risk-analysis.adoc`
+
+Use this document together with the present state-management guide when evaluating architecture concerns, requirement uncertainty, and mitigation tracking.
