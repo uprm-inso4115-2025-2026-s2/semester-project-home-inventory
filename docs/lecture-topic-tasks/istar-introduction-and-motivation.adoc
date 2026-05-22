@@ -1,0 +1,158 @@
+= iStar Introduction and Motivation
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+:source highlighter: highlight.js
+
+== Objective
+
+The first part of the iStar 2.0 tutorial (slides 1–13) covers the rationale for goal modeling and the standardization history behind iStar 2.0. The project already identifies actors like Household Member and Household Admin, and personas like Mateo, Sofia, Julian, and Andrea, but it does not yet formally capture _why_ they interact or _what_ they depend on each other for. Goal modeling is the missing lens.
+
+
+== Background: What is Goal Modeling and Why Do We Need It?
+
+=== The "Why" Problem
+
+Requirements documents describe _what_ a system should do ("the app shall send a low stock alert") and _how_ it does it ("via push notification at 8 AM"). What they do not capture is _why_ that requirement exists, the social motivation, the competing priorities, and the trust relationships between people.
+
+In this project, the user stories and domain requirements are formed. But they do not explain why Sofia's story creates tension with Andrea's, or why Julian's need for isolated personal inventory is a social boundary with real system consequences, not just a preference. A static model like an ER diagram says "an item belongs to a household." It does not say that Andrea is the only one consistently logging consumption, and that her roommates depend on her for that without any formal agreement in place.
+
+That gap between what the system does and the social web that makes it necessary, is what goal modeling, and specifically the i* framework, addresses.
+
+=== Socio Technical Systems
+
+The iStar 2.0 tutorial (Dalpiaz, Franch, and Horkoff, 2016) establishes early that most systems today are _socio technical_: embedded in a network of people, roles, and organizations that need to cooperate, compromise, and depend on each other to function.
+
+The Digital Home Inventory qualifies. The moment Andrea logging a bulk purchase directly affects whether Sofia buys something she already assumed was out of stock, there is social complexity that a data model will not capture.
+
+Goal modeling languages like i* address three questions the current documentation leaves unanswered:
+
+* *Security, privacy, and trust:* Julian keeps his food separate from the shared inventory because he does not trust his roommates not to consume it accidentally. That trust relationship shapes a hard system requirement (personal vs. shared item scoping), but the current documents treat it as a functional rule rather than a socially motivated constraint.
+* *Profitability and cost:* Sofia's budget ceiling is not a preference. It is a constraint whose violation causes direct harm, she goes short on meals. The system interacts with her economic vulnerability.
+* *Adoption:* If Andrea finds the app too complicated for coordinating reimbursements, she reverts to WhatsApp. That is a quality concern with socio technical roots.
+
+Goal modeling does not replace IR/DR requirements. It provides the rationale layer underneath them, the "why" that makes the requirements defensible.
+
+== The i* Language:
+
+Yu's original i* framework introduced two complementary models:
+
+* *SR (Strategic Rationale):* How actors achieve goals internally, and the rationale behind their choices, the actor's inner decision structure.
+* *SD (Strategic Dependency):* The dependency relationships between actors , who needs what from whom, and the social web those dependencies form.
+
+== iStar 2.0 Design Objectives
+
+The iStar 2.0 standard was shaped by seven design objectives. Understanding them also clarifies how the language should be applied.
+
+[cols="1,3", options="header"]
+|===
+| Objective | What it means in practice
+
+| *Consolidation*
+| Bring together the shared core of existing i* variants rather than invent something new. iStar 2.0 is deliberately conservative — it only standardizes what the community already agrees on.
+
+| *Simplicity*
+| Fewer constructs, not more. Ambiguous or redundant elements are removed so that two people modeling the same scenario reach a comparable diagram.
+
+| *Usability*
+| The notation is learnable; tools built on the standard interoperate. The standard lowers the barrier to entry.
+
+| *Expressiveness*
+| Despite being a core, it captures the essential modeling needs: who depends on whom, for what, and with what degree of freedom.
+
+| *Accuracy*
+| The semantics of each construct are precise enough that diagrams can be reasoned about, not just drawn.
+
+| *Teachability*
+| Students learning from different instructors end up with compatible mental models.
+
+| *Extensibility*
+| The standard is a floor, not a ceiling. Domain specific extensions are explicitly welcome, provided they are built on top of the standardized core.
+|===
+
+== Connection to the Digital Home Inventory Project
+
+=== Why This System is Socio Technical
+
+The Digital Home Inventory is not just a database with a Flutter frontend. It is a coordination tool embedded in a household where people have conflicting motivations, unequal effort invested, and a shared need to trust each other's inputs. Three cases from the existing personas make this concrete.
+
+==== Sofia and Andrea: Conflicting Needs, Shared Inventory
+
+Sofia needs to know the real time state of the shared inventory before spending her limited money. Andrea is the one person consistently updating that inventory after shopping trips. This creates a dependency: Sofia's goal (avoid duplicate spending) depends entirely on Andrea's behavior (logging purchases immediately after buying).
+
+If Andrea forgets to log a purchase, which her persona makes realistic, given she currently uses a "chaotic mix of WhatsApp messages, scattered receipts, and Apple Notes", Sofia's goal fails even though the system itself worked correctly. No amount of technical correctness resolves a social dependency that has not been surfaced and designed around.
+
+In i* terms, this is a goal dependency: Sofia is the depender, Andrea is the dependee. Making that dependency explicit opens concrete design questions, an automatic log from receipt feature, or a "pending confirmation" state that blocks Sofia from treating an item as stocked until a purchase is confirmed.
+
+==== Julian's Isolation Boundary as a Social Contract
+
+Julian's requirement for personal only inventory is documented as a functional rule: personal items must not be visible to or editable by other household members. His persona reveals that this is not a privacy preference, it is a social boundary protecting him from real harm. His dietary requirements are medical grade; cross contamination is a genuine risk.
+
+In i* terms, Julian has no dependency on any other actor for his personal inventory. That absence is itself meaningful. His goal (maintain an uninterrupted supply of specialty items) is entirely self contained. Any feature that blurs the personal/shared boundary carries risk for Julian that it does not carry for other personas.
+
+==== Andrea's Mental Load as a Missing Role Agreement
+
+Andrea is the household admin by default, not by agreement. Her persona notes she "naturally fell into the role" because she has a car. No one formally agreed that she would carry the burden of tracking shared stock and coordinating reimbursements.
+
+This is a classic i* scenario: an actor has taken on responsibilities that other actors depend on without explicitly agreeing to that dependence. The i* distinction between a *role* (an abstract behavioral characterization) and an *agent* (the concrete person playing it) captures this precisely. Andrea the agent is playing the Household Admin role without the social infrastructure, shared expectations, system features, explicit handoffs that the role actually requires.
+
+=== What Goal Modeling Adds Over the Existing Documents
+
+[cols="2,2,2", options="header"]
+|===
+| What is already documented | What goal modeling adds | Where it applies in this project
+
+| IR/DR requirements
+| The motivation behind the requirement
+| Why Sofia's duplicate prevention requirement is economically necessary, not just convenient
+
+| Persona profiles
+| The formal dependency relationships between personas
+| Andrea depending on Mateo and others to log consumption; Sofia depending on Andrea to log purchases
+
+| User stories
+| The rationale for why each user wants the story fulfilled
+| Julian's isolation boundary stems from a medical constraint that changes its priority
+
+| Domain description
+| The social structure that produces domain events
+| Stock depletion events are only meaningful if someone is observing and acting on them
+
+|===
+
+
+== Potential Risks and Blockers
+
+=== Terminology Barrier
+
+The iStar tutorial references several older frameworks without inline definitions. One sentence definitions for the most likely sources of confusion:
+
+* *KAOS* — A goal oriented requirements language (1991) focused on formally specifying system goals and obstacles to their satisfaction; i*'s more formal, verification focused relative.
+* *NFR Framework* — The Non Functional Requirements Framework (2000), which models quality attributes like performance and security as "softgoals" satisfied to a degree rather than definitively achieved.
+* *GRL* — Goal oriented Requirement Language; the ITU T standardized variant of i* used in the User Requirements Notation (URN) standard, common in telecommunications and government procurement.
+* *TROPOS* — A requirements methodology built on top of i* that extends goal modeling across the full development lifecycle, from early requirements through architectural design.
+* *SD model* — Strategic Dependency model; shows the dependency network _between_ actors without exposing their internal rationale.
+* *SR model* — Strategic Rationale model; shows actors, their internal goals and tasks, and the dependencies between them.
+
+== Success Criteria
+
+=== Criterion 1: Articulate the value of goal modeling over IR/DR alone
+
+A requirements list or data model is insufficient to capture the Digital Home Inventory's socio technical complexity. Goal modeling surfaces at least one relationship between personas that the current documents leave implicit.
+
+_Example:_ The IR requires that shared inventory be synchronized in real time, but it does not say that Sofia's ability to avoid overspending depends entirely on Andrea actually logging her purchases. Goal modeling makes that dependency explicit so the system can be designed to make it reliable, not just assumed.
+
+=== Criterion 2: Identify at least one concrete intentional or social relationship among existing personas
+
+At least one dependency in the i* sense is identifiable between two of the project's personas.
+
+_Example:_ Andrea (depender) depends on Mateo (dependee) for the goal "shared consumption logged." This is a goal dependency — Mateo is free to fulfill it however he chooses (manual entry, barcode scan, etc.), but Andrea's success depends on him fulfilling it at all.
+
+Additional dependency pairs:
+
+* Sofia (depender) → Andrea (dependee): dependum = "shared purchase recorded before next shopping trip" (goal dependency)
+* Julian (depender) → System (dependee): dependum = "personal inventory isolated from shared view" (task dependency — the system must execute this in a prescribed way)
+* Andrea (depender) → All roommates (dependee): dependum = "consumption acknowledged" (resource dependency — the data of who consumed what)
+
+
