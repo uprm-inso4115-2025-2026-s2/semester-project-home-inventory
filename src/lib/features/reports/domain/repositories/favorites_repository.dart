@@ -3,17 +3,16 @@ import '../entities/report_filters.dart';
 
 class FavoritesRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
-  
-  // Hardcoded valid UUID for testing (no need for users table)
-  // When user table and registration gets completed
-  // this file will change
-  static const String _testUserId = '11111111-1111-1111-1111-111111111111';
 
-  Future<String> _getUserId() async => _testUserId;
+  String _getUserId() {
+    final uid = _supabase.auth.currentUser?.id;
+    if (uid == null) throw Exception('No authenticated user');
+    return uid;
+  }
 
   Future<List<ReportFavorite>> getUserFavorites() async {
     try {
-      final userId = await _getUserId();
+      final userId = _getUserId();
       final response = await _supabase
           .from('user_report_favorites')
           .select()
@@ -27,8 +26,8 @@ class FavoritesRepository {
   }
 
   Future<void> saveFavorite(String name, ReportFilters filters) async {
-    final userId = await _getUserId();
     try {
+      final userId = _getUserId();
       final existing = await _supabase
           .from('user_report_favorites')
           .select()
@@ -57,7 +56,7 @@ class FavoritesRepository {
   }
 
   Future<void> updateFavorite(String id, String newName, ReportFilters filters) async {
-    final userId = await _getUserId();
+    final userId = _getUserId();
     await _supabase.from('user_report_favorites').update({
       'name': newName,
       'filters': filters.toJson(),
@@ -66,7 +65,7 @@ class FavoritesRepository {
   }
 
   Future<void> deleteFavorite(String id) async {
-    final userId = await _getUserId();
+    final userId = _getUserId();
     await _supabase.from('user_report_favorites').delete().match({'id': id, 'user_id': userId});
   }
 }
