@@ -1,0 +1,137 @@
+= Goal Model for the Home Inventory System
+
+
+This document captures the intentional and social dimensions of the Home Inventory System using an iStar-style goal model. It focuses on why the system exists and how stakeholder goals, softgoals, tasks, and resources connect across the system boundary.
+
+== 1. Actors / Stakeholders
+
+* **Homeowner / Household Manager** — owns the household inventory, controls sharing settings, and maintains stock accuracy.
+* **Roommate / Shared Household Member** — cooperates on shared inventory, contributes item updates, and consumes household supplies.
+* **System** — provides inventory tracking, notifications, shared views, and enforcement of access rules.
+* **Admin / App Maintainer** — manages technical operations, security rules, and environment configuration.
+* **Guest / Transient Member** — consumes items temporarily and may cause inventory drift or require reconciliation.
+* **External Reporter (Insurance / Property Manager)** — consumes exported inventory summaries for claims, coverage, or property documentation.
+
+== 2. Main Goals by Stakeholder
+
+=== 2.1 Homeowner / Household Manager
+
+* **Track household inventory accurately** — maintain a reliable record of what belongs to the household.
+* **Coordinate shared purchases** — avoid duplicate buying and ensure reimbursements are clear.
+* **Protect personal and shared items** — control who can view or edit specific inventory details.
+* **Receive timely alerts** — know when low-stock or expiration events require action.
+
+=== 2.2 Roommate / Shared Household Member
+
+* **View shared inventory status** — see the current stock, recent changes, and upcoming needs.
+* **Update personal and shared items easily** — make consumption and replenishment adjustments without friction.
+* **Avoid unneeded purchases** — check current stock before buying groceries.
+* **Trust the shared data** — feel confident that the system reflects what is actually in the house.
+
+=== 2.3 System
+
+* **Capture item data reliably** — accept item entries, edits, and consumption updates from users.
+* **Enforce role-based access** — honor owner, roommate, and guest permissions.
+* **Generate accurate reports and alerts** — create notifications, summaries, and exports that stakeholders can act on.
+* **Keep data synchronized** — ensure all users see the same shared inventory state.
+
+=== 2.4 Admin / App Maintainer
+
+* **Secure the backend and data access** — keep authentication, database rules, and cloud credentials safe.
+* **Maintain system availability** — keep the system running and responsive.
+* **Support documentation and traceability** — preserve clear requirements, design rationale, and evidence for evaluation.
+* **Monitor data compliance** — ensure privacy and data retention rules are respected.
+
+== 3. Softgoals / Quality Concerns
+
+* **Security** — protect inventory data from unauthorized access or tampering.
+* **Privacy** — limit exposure of personal item records and user identifiers.
+* **Trust** — ensure users believe the app’s inventory and alerts are accurate.
+* **Usability** — make entry, review, and reconciliation tasks easy for busy students.
+* **Reliability** — make the system available and correct when users depend on it.
+* **Transparency** — provide clear attribution, change history, and permissions.
+
+== 4. Tasks and Resources
+
+=== Tasks
+
+* **Log an item** — create a new inventory entry with name, quantity, location, and optional expiration.
+* **Update consumption** — decrease item quantity when a user consumes or shares an item.
+* **Review shared inventory** — load and inspect the current household stock list.
+* **Adjust access controls** — change household membership, shared permissions, and guest access.
+* **Export a report** — produce a summary of inventory for insurance, reimbursement, or property documentation.
+
+=== Resources
+
+* **Inventory item record** — the core data object representing quantity, ownership, and metadata.
+* **Shared household view** — the aggregated set of inventory items visible to authorized users.
+* **Alert notification stream** — low-stock and expiration warnings delivered to stakeholders.
+* **User access profile** — the role-based identity data that controls visibility and editing rights.
+* **Export/report file** — a shareable artifact for external stakeholders.
+
+== 5. Dependencies and Social Relations
+
+=== System Dependencies
+
+* **System depends on Homeowner** to provide accurate household boundaries, share preferences, and item ownership assignments.
+* **System depends on Roommate** to enter consumption updates, item adjustments, and shared purchase information.
+* **System depends on Admin** to configure security rules, database access, and cloud infrastructure.
+
+=== User Dependencies on System
+
+* **Homeowner depends on System** for accurate stock reports, notifications, and secure sharing of inventory with roommates.
+* **Roommate depends on System** for timely low-stock and expiration alerts, and for visibility into shared household items.
+* **Guest depends on System** indirectly through reconciliation support and clear owner controls for temporary usage.
+* **External Reporter depends on System** for correct exported summaries of inventory value and condition.
+
+=== Social Dependencies
+
+* **Homeowner helps Roommate** by granting access and maintaining shared item accuracy.
+* **Roommate helps Homeowner** by keeping shared consumption updates current and reporting discrepancies.
+* **Admin helps all users** by preserving system availability, security, and data integrity.
+
+== 6. Goal Classification in iStar Terms
+
+=== Goals
+
+* Track household inventory accurately
+* Coordinate shared purchases
+* View shared inventory status
+* Enforce role-based access
+* Secure the backend and data access
+
+=== Softgoals
+
+* Security
+* Privacy
+* Trust
+* Usability
+* Reliability
+* Transparency
+
+=== Tasks
+
+* Log an item
+* Update consumption
+* Review shared inventory
+* Adjust access controls
+* Export a report
+
+=== Resources
+
+* Inventory item record
+* Shared household view
+* Alert notification stream
+* User access profile
+* Export/report file
+
+== 7. Risks and Conflict Notes
+
+* **Access conflict:** Roommates may want full edit access while the homeowner wants read-only sharing for some items. The system must support configurable permission levels and personal item privacy.
+* **Privacy vs. transparency:** Strong privacy for personal items can conflict with trust-building from shared visibility. The design should separate personal-only records from shared household data.
+* **Accuracy dependency:** Trust depends on users updating the system. If roommates or guests do not enter consumption properly, low-stock alerts and reports become unreliable.
+* **Scope risk:** Softgoals like security and privacy are hard to define concretely without direct stakeholder feedback, so the model should be revisited as actual users validate preferences.
+
+== 8. Summary
+
+This goal model anchors the Home Inventory System in the intentions of its main actors and their quality expectations. By separating functional goals, softgoals, tasks, and resources, the model supports aligned decisions about sharing, security, usability, and coordination before implementation begins.
