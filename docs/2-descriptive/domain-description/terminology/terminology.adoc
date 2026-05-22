@@ -4,6 +4,7 @@ This section consolidates the domain's ubiquitous language into a single annotat
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)
 * *Requirements* — introduced when specifying capabilities of the system-to-be
+* *Implementation* — introduced during M2/M3 software design, architecture, and deployment work
 
 [cols="2,1,1,4,3", options="header"]
 |===
