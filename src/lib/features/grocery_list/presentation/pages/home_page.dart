@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 onPageChanged: (index) {
                   setState(() => currentPage = index);
                 },
-                children: const [CollectionsPage(), MyGroceryListPage()],
+                children: [CollectionsPage(), MyGroceryListPage()],
               ),
             ),
           ],
@@ -84,18 +84,22 @@ class _HomePageState extends State<HomePage> {
           color: isSelected ? primary : Colors.grey.shade300,
           borderRadius: BorderRadius.circular(10000),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.grey.shade700,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2.w),
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.grey.shade700,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -21,6 +21,7 @@ import 'package:src/features/example_feature/domain/usecases/stream_todos.dart';
 import 'package:src/features/example_feature/domain/usecases/unmark_todo_completed.dart';
 import 'package:src/features/example_feature/domain/usecases/update_todo.dart';
 import 'package:src/features/example_feature/presentation/cubits/todo_cubit.dart';
+import 'package:src/features/grocery_list/presentation/cubits/grocery_list_cubit.dart';
 import 'package:src/features/reports/domain/repositories/supabase_report_repository.dart';
 import 'package:src/features/reports/domain/repositories/report_repositories.dart';
 import 'package:src/features/reports/presentation/cubit/report_list_cubit.dart';
@@ -105,6 +106,8 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<TodoCubit>(
     TodoCubit(sl(), sl(), sl(), sl(), sl(), sl()),
   );
+
+  sl.registerSingleton<GroceryListCubit>(GroceryListCubit());
 
   /// The dependencies of the features might be a bit interleaved because
   /// they're not 100% standalone.
