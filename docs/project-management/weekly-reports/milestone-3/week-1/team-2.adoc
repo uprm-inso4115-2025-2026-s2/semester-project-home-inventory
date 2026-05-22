@@ -1,0 +1,179 @@
+= Milestone 3 - Week 1 Report: Team 2 - Alerts & Restock
+:author: Solimar Cruz
+:toc:
+
+== Team
+
+Team 2 - Alerts & Restock
+
+== Reporting Period
+
+Week 1 - Milestone 3
+
+== Summary
+
+During Week 1, Team 2 focused on documentation, analysis, and continued development of the Alerts & Restock module for the Home Inventory System. The team completed several lecture topic tasks related to domain modeling, glossary quality, user behavior, reactive notification behavior, usability verification, and architectural separation of concerns. In addition, progress was made on the Restock Automation Engine, which supports the automatic generation of grocery list actions based on inventory conditions such as low stock and out-of-stock items.
+
+== Work Completed
+
+=== Lecture Topic Tasks Completed
+
+The following lecture topic tasks were completed and approved during the week:
+
+[source,text]
+----
+#614 - Domain Description Units and Tagging in the Home Inventory System
+#608 - Glossary Quality Criteria and Key Term Audit
+#554 - Analyze Human Behavioral Unpredictability in Shared Alert & Restock Interactions
+#553 - Reactive Domain Behavior Modeling for Alert & Restock Notifications
+#548 - Heuristic Evaluation and Usability Verification of the Alerts Interface
+#547 - Architectural Pattern Analysis - State Management (Cubit) Separation of Concerns in Alerts UI
+----
+
+These tasks helped improve the documentation and design understanding of the Alerts & Restock module.
+
+== Main Contributions
+
+=== Domain Description and Tagging
+
+The team worked on describing important domain units in the Home Inventory System. This included identifying how items, alerts, restock rules, inventory states, and household interactions are represented within the system.
+
+This task helped clarify the main vocabulary and structure used by the Alerts & Restock feature.
+
+=== Glossary and Key Term Review
+
+The team reviewed important terminology used throughout the project documentation. This helped make sure that terms such as inventory item, alert, restock rule, threshold, grocery list item, and notification are used consistently.
+
+This is important because the Alerts & Restock module depends on clear definitions to avoid confusion during implementation and testing.
+
+=== Human Behavior Analysis
+
+The team analyzed how unpredictable human behavior can affect shared inventory systems. For example, different household members may update quantities at different times, forget to mark items as used, or manually restock an item without updating the app.
+
+This analysis helped identify possible edge cases for alerts and restock automation.
+
+=== Reactive Behavior Modeling
+
+The team documented how the system should react when inventory conditions change. For example, when an item becomes low in stock, the system should trigger an alert and may also update the grocery list.
+
+This task helped connect inventory events to automated system behavior.
+
+=== Alerts Interface Usability Review
+
+The team reviewed the Alerts interface using usability and heuristic evaluation principles. The purpose was to check whether users can clearly understand alerts, identify which items need attention, and respond to alerts easily.
+
+This supports the goal of making the Alerts & Restock feature simple and useful for household users.
+
+=== Cubit and State Management Analysis
+
+The team analyzed the use of Cubit for state management in the Alerts UI. This focused on separating UI logic from business logic, making the alerts feature easier to maintain, test, and expand.
+
+This supports better architecture for the Alerts & Restock module.
+
+== Restock Automation Engine Progress
+
+In addition to the completed documentation tasks, Team 2 also worked on the Restock Automation Engine.
+
+The Restock Automation Engine is responsible for checking inventory conditions and deciding whether an automated restock action should be created.
+
+The main logic includes:
+
+[source,text]
+----
+- Checking item quantity
+- Detecting low-stock items
+- Detecting out-of-stock items
+- Comparing current quantity against defined thresholds
+- Creating or updating grocery list items
+- Avoiding duplicate grocery list entries
+----
+
+The engine supports the automation flow between inventory tracking and grocery list generation.
+
+=== Restock Automation Flow
+
+[source,text]
+----
+Inventory item is updated
+        |
+        v
+System checks current stock level
+        |
+        v
+System compares quantity with threshold
+        |
+        v
+If item is low or out of stock:
+    Create or update grocery list entry
+        |
+        v
+User can view restock item in grocery list
+----
+
+== Tasks Completed / Issues Closed
+
+[cols="1,3,1", options="header"]
+|===
+|Issue |Title |Status
+
+|#614
+|Domain Description Units and Tagging in the Home Inventory System
+|Completed and Approved
+
+|#608
+|Glossary Quality Criteria and Key Term Audit
+|Completed and Approved
+
+|#554
+|Analyze Human Behavioral Unpredictability in Shared Alert & Restock Interactions
+|Completed and Approved
+
+|#553
+|Reactive Domain Behavior Modeling for Alert & Restock Notifications
+|Completed and Approved
+
+|#548
+|Heuristic Evaluation and Usability Verification of the Alerts Interface
+|Completed and Approved
+
+|#547
+|Architectural Pattern Analysis - State Management Cubit Separation of Concerns in Alerts UI
+|Completed and Approved
+|===
+
+== Work Currently In Progress
+
+The team is continuing work on the Alerts & Restock module, especially the automation logic that connects inventory conditions to grocery list updates.
+
+Current focus areas include:
+
+[source,text]
+----
+- Improving the Restock Automation Engine
+- Documenting threshold-based alert behavior
+- Testing low-stock and out-of-stock scenarios
+- Making sure duplicate grocery list entries are avoided
+- Connecting alert behavior with shared household inventory changes
+----
+
+== Blockers and Challenges
+
+=== Shared Household Behavior
+
+One challenge is handling inventory updates from multiple household members. If two users update the same item close together, the system needs to use the most recent quantity and avoid creating incorrect alerts.
+
+=== Duplicate Restock Actions
+
+The automation engine must avoid creating duplicate grocery list entries when the same item is already listed.
+
+=== Threshold Differences
+
+Different item categories may require different threshold logic. For example, food items, cleaning supplies, and household products may not all use the same restock rules.
+
+== Plans for Next Week
+
+Next week, Team 2 plans to continue improving the Alerts & Restock module by focusing on implementation, validation, and documentation.
+
+== Conclusion
+
+During Week 1 of Milestone 3, Team 2 completed several approved lecture topic tasks and made progress on the Restock Automation Engine. The completed work helped strengthen the documentation, architecture, usability, and behavioral understanding of the Alerts & Restock module.
