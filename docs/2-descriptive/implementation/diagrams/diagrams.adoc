@@ -19,4 +19,21 @@ image::stock_ERD.png[]
 
 Shows the finalized database schema including users, homes, rooms, items, products, and relationship tables. Useful for validating data structure and clarifying how features map to persistent storage.
 
+=== Sequence Diagrams for Core Workflows
+
+==== Add Item to Inventory
+image::Add Item to Inventory.png[]
+
+Shows the workflow for adding a new inventory item using barcode scanning or manual entry fallback. The diagram includes product lookup, validation, saving the item to Supabase, and updating the inventory list through realtime synchronization.
+
+==== Search or Filter Inventory Item
+image::Search or Filter Inventory Item.png[]
+
+Shows how a household member searches or filters inventory items using criteria such as item name, category, location, ownership, stock status, or expiration status. The diagram includes the inventory UI, Cubit state management, and database queries.
+
+==== Generate Inventory Report
+image::Generate Inventory Report.png[]
+
+Shows the workflow for generating an inventory stock report and exporting it as a PDF. The diagram includes retrieving inventory data, generating report summaries, and saving the PDF file for viewing or sharing.
+
 // Add additional diagrams below as needed
