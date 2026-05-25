@@ -1,0 +1,162 @@
+= User-Friendly Error Handling Guide
+:showtitle: true
+:icons: font
+
+== Overview
+
+This document describes the reusable error handling components implemented in the Core Inventory feature. These components can be used by other features to provide consistent, user-friendly error messages across the application.
+
+== Components
+
+=== InventoryErrorHandler
+
+**Location:** `src/lib/features/core_inventory/presentation/utils/error_handler.dart`
+
+**Purpose:** Converts technical exceptions into user-friendly error messages with titles, actions, and error types.
+
+**Public Methods:**
+
+[cols="1,3", options="header"]
+|===
+| Method | Description
+
+| `getUserFriendlyMessage(error)`
+| Returns an `InventoryErrorMessage` with title, message, action, and error type.
+
+| `showErrorSnackbar(context, error, {onRetry})`
+| Displays a user-friendly error snackbar with optional retry action.
+
+| `showErrorDialog(context, error, {onRetry, onDismiss})`
+| Displays a modal error dialog for critical failures.
+|===
+
+**Error Type Mapping:**
+
+[cols="1,2,2", options="header"]
+|===
+| Technical Error Pattern | User-Friendly Title | Suggested Action
+
+| SocketException, network, connection, timeout
+| "Connection Issue"
+| "Check your Wi-Fi or mobile data and try again."
+
+| PostgrestException (permission, unauthorized)
+| "Access Denied"
+| "Please contact support if you think this is a mistake."
+
+| PostgrestException (duplicate, unique)
+| "Duplicate Entry"
+| "Try using different details or edit the existing item."
+
+| PostgrestException (other)
+| "Server Error"
+| "Please try again in a moment."
+
+| RepositoryException (not found)
+| "Not Found"
+| "It may have been deleted. Refresh the page."
+
+| Validation (cannot be empty)
+| "Missing Information"
+| "Check that you've entered an item name and quantity."
+
+| Validation (quantity)
+| "Invalid Quantity"
+| "Enter a number greater than or equal to zero."
+
+| Validation (expiration date)
+| "Invalid Date"
+| "Please select a future date for expiration."
+|===
+
+=== ErrorStateWidget
+
+**Location:** `src/lib/features/core_inventory/presentation/widgets/error_state_widget.dart`
+
+**Purpose:** Displays a full-screen or inline error state with retry functionality.
+
+**Usage Example:**
+
+[source,dart]
+----
+if (state is InventoryError) {
+  return ErrorStateWidget(
+    error: state.originalError ?? state,
+    onRetry: () {
+      context.read<InventoryCubit>().retryLastOperation();
+    },
+  );
+}
+----
+
+**Properties:**
+
+- `error` — The original exception or error object
+- `onRetry` — Callback executed when user taps "Try Again"
+- `fullScreen` — If true, wraps content in a Scaffold
+
+=== DeleteConfirmationDialog
+
+**Location:** `src/lib/features/core_inventory/presentation/widgets/delete_confirmation_dialog.dart`
+
+**Purpose:** Provides a consistent confirmation dialog before destructive actions.
+
+**Usage Example:**
+
+[source,dart]
+----
+await DeleteConfirmationDialog.show(
+  context,
+  itemName: product.name,
+  onConfirm: () async {
+    await deleteItem();
+  },
+);
+----
+
+== Integration with Cubit
+
+The `InventoryCubit` includes error handling that emits structured `InventoryError` states:
+
+[source,dart]
+----
+catch (error) {
+  final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
+  emit(InventoryError(
+    message: friendlyError.message,
+    title: friendlyError.title,
+    action: friendlyError.action,
+    errorType: friendlyError.type,
+    originalError: error,
+  ));
+}
+----
+
+== Retry Pattern
+
+Cubits should implement a `retryLastOperation()` method to allow users to recover from transient failures:
+
+[source,dart]
+----
+Future<void> retryLastOperation() async {
+  if (_currentOwnerId != null) {
+    await loadInventory(_currentOwnerId!);
+  }
+}
+----
+
+== Best Practices
+
+. **Never show raw exceptions to users** — Always use `InventoryErrorHandler`
+. **Log technical details** — Use `debugPrint()` or proper logging for debugging
+. **Provide retry options** — For recoverable errors (network, timeout)
+. **Use inline validation** — For form errors, show messages under the relevant field
+. **Confirm destructive actions** — Always use `DeleteConfirmationDialog`
+
+== Traceability
+
+This error handling implementation supports:
+
+- *MR-07*: Notification Quality — prevents raw error exposure
+- *US-INV-01/02*: User stories requiring clear feedback
+- *DG-REQ-08*: Reminders favor relevance over volume

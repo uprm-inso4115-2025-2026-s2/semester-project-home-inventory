@@ -493,4 +493,30 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Implementation
 | The platform, service, or environment where the system is intended to run for review, testing, staging, or release.
 | Related to machine requirements, build procedure, deployment documentation, and external service configuration.
+
+| Delete confirmation dialog
+| Widget
+| Implementation
+| A modal dialog that requires explicit user confirmation before performing destructive actions.
+| Implemented in `delete_confirmation_dialog.dart`; prevents accidental deletions.
+
+| Error handler
+| Utility
+| Implementation
+| A reusable utility that converts technical exceptions into user-friendly error messages with titles, actions, and error types.
+| Implemented in `error_handler.dart`; used by InventoryCubit and UI components.
+
+| Error state widget
+| Widget
+| Implementation
+| A UI component that displays user-friendly error messages with a retry button for recoverable failures.
+| Implemented in `error_state_widget.dart`; used on loading failure screens.
+
+| Validation rule
+| Rule
+| Implementation
+| An explicit constraint on user input that prevents invalid data from being submitted to the system.
+| Implemented in `form_validators.dart`; includes name length, quantity range, and date format rules.
 |===
+
+

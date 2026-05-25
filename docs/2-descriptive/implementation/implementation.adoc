@@ -72,6 +72,8 @@ This section documents the minimal viable set of high-value features that have b
 - **Validation:** Client-side validation ensures data integrity before submission; server-side triggers enforce constraints
 - **Barcode Fallback:** If barcode scanning fails or is unavailable, users can manually search and select from a product catalog
 - **Category Management:** Items are automatically categorized based on product metadata; users can override if needed
+- **User-Friendly Error Handling:** All technical exceptions (network failures, Supabase errors, validation failures) are mapped to user-friendly messages via `InventoryErrorHandler`. Users see actionable messages with retry options instead of raw stack traces.
+- **Inline Form Validation:** Real-time validation with immediate feedback under each field prevents invalid data before submission.
 
 **Completion Status:** Completed — Core add/view/edit operations fully functional. Barcode scanning integrated with fallback manual entry.
 
@@ -411,7 +413,8 @@ User selects date range (optional)
 | F-INV
 | Inventory Management (Add/View/Edit items)
 | Completed
-| AddItemPage, InventoryCubit, ProductDataSource, Barcode Scanner
+| AddItemPage, InventoryCubit, ProductDataSource, Barcode Scanner, Error Handling Utilities
+
 
 | F-ALERT
 | Alert Generation & Notifications
