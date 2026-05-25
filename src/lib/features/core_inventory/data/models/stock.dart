@@ -7,15 +7,30 @@ class StockModel extends StockEntity {
     required super.brand,
     required super.quantity,
     required super.status,
+    super.ownerId,
     super.expirationDate,
   });
 
   factory StockModel.fromEntity(StockEntity entity) {
-    return entity as StockModel;
+    return StockModel(
+      id: entity.id,
+      brand: entity.brand,
+      quantity: entity.quantity,
+      status: entity.status,
+      ownerId: entity is StockModel ? entity.ownerId : entity.ownerId,
+      expirationDate: entity.expirationDate,
+    );
   }
 
   StockEntity toEntity() {
-    return this as StockEntity;
+    return StockEntity(
+      id: id,
+      brand: brand,
+      quantity: quantity,
+      status: status,
+      ownerId: ownerId,
+      expirationDate: expirationDate,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +39,7 @@ class StockModel extends StockEntity {
       'brand': brand,
       'quantity': quantity,
       'status': status.name,
+      if (ownerId != null) 'ownerId': ownerId,
       'expirationDate': expirationDate?.toIso8601String(),
     };
   }
@@ -34,6 +50,11 @@ class StockModel extends StockEntity {
       brand: json['brand'] as String,
       quantity: json['quantity'] as int,
       status: Status.values.firstWhere((s) => s.name == json['status']),
+      ownerId: json['ownerId'] is int
+          ? json['ownerId'] as int
+          : (json['ownerId'] is String
+                ? int.tryParse(json['ownerId'] as String)
+                : null),
       expirationDate: json['expirationDate'] != null
           ? DateTime.parse(json['expirationDate'])
           : null,
@@ -46,6 +67,7 @@ class StockModel extends StockEntity {
       brand: '',
       quantity: 0,
       status: Status.EMPTY,
+      ownerId: null,
       expirationDate: DateTime.now(),
     );
   }

@@ -5,6 +5,7 @@ class StockEntity {
   final String brand;
   final int quantity;
   final Status status;
+  final int? ownerId;
   final DateTime? expirationDate;
 
   const StockEntity({
@@ -12,6 +13,7 @@ class StockEntity {
     required this.brand,
     required this.quantity,
     required this.status,
+    this.ownerId,
     this.expirationDate,
   });
 
@@ -23,6 +25,7 @@ class StockEntity {
         brand == other.brand &&
         quantity == other.quantity &&
         status == other.status &&
+        ownerId == other.ownerId &&
         expirationDate == other.expirationDate;
   }
 
