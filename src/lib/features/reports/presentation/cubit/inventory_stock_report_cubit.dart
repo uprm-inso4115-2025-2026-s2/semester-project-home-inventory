@@ -29,41 +29,68 @@ class InventoryStockReportCubit extends Cubit<InventoryStockReportState> {
     loadInventoryData();
   }
 
-  // ---------- Fetch items: usage_date <= startDate ----------
+  // ---------- Fetch items: usage_date <= startDate + household filter ----------
   Future<List<ItemData>> _fetchUsageData() async {
-  final start = state.filters.startDate;
-  final adjustedStart = DateTime(start.year, start.month, start.day + 1);
+    final start = state.filters.startDate;
+    final adjustedStart = DateTime(start.year, start.month, start.day + 1);
 
-  final response = await Supabase.instance.client
-      .from('usage_rates')
-      .select()
-      .lt('usage_date', adjustedStart.toIso8601String().split('T').first)
-      .order('category_name');
+    // 1. Get current user
+    final user = Supabase.instance.client.auth.currentUser;
 
-  return response.map<ItemData>((row) {
-    final categoryName = row['category_name'] as String? ?? '';
-    final itemName = row['item_name'] as String?;
-    final itemsUsed = (row['items_used'] as int?) ?? 0;
-    final rate = (row['usage_rate_percent'] as int?) ?? 0;
+    // 2. Build query with date filter
+    var query = Supabase.instance.client
+        .from('usage_rates')
+        .select()
+        .lt('usage_date', adjustedStart.toIso8601String().split('T').first);
 
-    final displayName = (itemName != null && itemName.isNotEmpty) ? itemName : categoryName;
+    // 3. Apply household_id filter
+    if (user == null) {
+      // Guest – only items with household_id IS NULL
+      query = query.filter('household_id', 'is', null);
+    } else {
+      // Logged in – get user's household_id from profiles table
+      final profile = await Supabase.instance.client
+          .from('profiles')
+          .select('household_id')
+          .eq('id', user.id)
+          .single();
 
-    // Read the stored status first
-    String status = row['item_status'] as String? ?? '';
-    if (status.isEmpty) {
-      // fallback only if item_status is null or empty
-      if (rate >= 95) {
-        status = 'OUT OF STOCK';
-      } else if (rate >= 80) {
-        status = 'LOW';
+      if (profile != null && profile['household_id'] != null) {
+        final householdId = profile['household_id'] as int;
+        query = query.eq('household_id', householdId);
       } else {
-        status = 'OK';
+        // No household assigned – return no items
+        return [];
       }
     }
 
-    return ItemData(displayName, categoryName, itemsUsed, status);
-  }).toList();
-}
+    // 4. Execute query with ordering
+    final response = await query.order('category_name');
+
+    // 5. Map to ItemData
+    return response.map<ItemData>((row) {
+      final categoryName = row['category_name'] as String? ?? '';
+      final itemName = row['item_name'] as String?;
+      final itemsUsed = (row['items_used'] as int?) ?? 0;
+      final rate = (row['usage_rate_percent'] as int?) ?? 0;
+
+      final displayName = (itemName != null && itemName.isNotEmpty) ? itemName : categoryName;
+
+      // Read stored status first
+      String status = row['item_status'] as String? ?? '';
+      if (status.isEmpty) {
+        if (rate >= 95) {
+          status = 'OUT OF STOCK';
+        } else if (rate >= 80) {
+          status = 'LOW';
+        } else {
+          status = 'OK';
+        }
+      }
+
+      return ItemData(displayName, categoryName, itemsUsed, status);
+    }).toList();
+  }
 
   // ---------- Load data ----------
   Future<void> loadInventoryData() async {

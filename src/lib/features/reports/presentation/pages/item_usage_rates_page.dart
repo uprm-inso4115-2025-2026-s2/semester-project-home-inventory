@@ -99,7 +99,7 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
     return DateTime(year, month, 1);
   }
 
-  // ── Supabase data loading ──────────────────────────────────────
+  // ── Supabase data loading (household filter added) ─────────────
   Future<void> _loadUsageRates() async {
     setState(() {
       _isLoading = true;
@@ -110,12 +110,44 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
       final startDate = _getMonthStart(_selectedDateRange);
       final endDate = DateTime(startDate.year, startDate.month + 1, 1);
 
-      final data = await Supabase.instance.client
+      // 1. Get current user
+      final user = Supabase.instance.client.auth.currentUser;
+
+      // 2. Build base query with date filters
+      var query = Supabase.instance.client
           .from('usage_rates')
           .select()
           .gte('usage_date', startDate.toIso8601String().split('T').first)
-          .lt('usage_date', endDate.toIso8601String().split('T').first)
-          .order('category_name');
+          .lt('usage_date', endDate.toIso8601String().split('T').first);
+
+      // 3. Apply household filter
+      if (user == null) {
+        // Guest – only items with household_id IS NULL
+        query = query.filter('household_id', 'is', null);
+      } else {
+        // Logged in – get user's household_id from profiles table
+        final profile = await Supabase.instance.client
+            .from('profiles')
+            .select('household_id')
+            .eq('id', user.id)
+            .single();
+
+        if (profile != null && profile['household_id'] != null) {
+          final householdId = profile['household_id'] as int;
+          query = query.eq('household_id', householdId);
+        } else {
+          // No household assigned – return no items
+          setState(() {
+            _allItems = [];
+            _selectedCategories.clear();
+            _isLoading = false;
+          });
+          return;
+        }
+      }
+
+      // 4. Execute query with ordering
+      final data = await query.order('category_name');
 
       final items = data.map<_UsageItem>((row) {
         final catName = row['category_name'] as String? ?? '';
@@ -294,7 +326,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
     return items;
   }
 
-  // Group items by category for per-category charts
   Map<String, List<_UsageItem>> get _itemsByCategory {
     final map = <String, List<_UsageItem>>{};
     for (final item in _filteredItems) {
@@ -307,7 +338,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   // ======================== Build ========================
   @override
   Widget build(BuildContext context) {
-    // Prepare chart keys for each category
     _chartKeys.clear();
     for (final cat in _itemsByCategory.keys) {
       _chartKeys[cat] = GlobalKey();
@@ -352,7 +382,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Date range + Filters button row
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -424,7 +453,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                                 ),
                               )
                             else ...[
-                              // Charts: one per category, X-axis labels blanked
                               if (_itemsByCategory.isNotEmpty) ...[
                                 for (final entry in _itemsByCategory.entries)
                                   Padding(
@@ -475,7 +503,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
                                   ),
                                 ),
                               const SizedBox(height: 20),
-                              // Table with individual items
                               _UsageTable(items: _filteredItems),
                               const SizedBox(height: 12),
                             ],
