@@ -1,33 +1,28 @@
 import 'package:src/features/core_inventory/domain/repositories/product_repository.dart';
-import '../../domain/repositories/inventory_repositories.dart'; 
-import '../../domain/entities/inventory.dart';                  
-import '../../domain/entities/product.dart';                
-import '../../domain/entities/stock.dart';                    
-import '../../domain/entities/enums.dart';                    
-import '../data_sources/inventory_supabase_datasource.dart';    
-import '../models/inventory.dart';                              
-import '../models/stock.dart';     
+import '../../domain/repositories/inventory_repositories.dart';
+import '../../domain/entities/inventory.dart';
+import '../../domain/entities/product.dart';
+import '../../domain/entities/stock.dart';
+import '../../domain/entities/enums.dart';
+import '../data_sources/inventory_supabase_datasource.dart';
+import '../models/inventory.dart';
+import '../models/stock.dart';
+import '../exceptions.dart';
 
 //Implements the domain repository contract and bridges the domain layer with the data layer
 //Responsabilities:
 //validate business rules before database operations
 //Convert Entities
 //Convert Models
-//Handling and translating errors to exceptions 
+//Handling and translating errors to exceptions
 //NO direct database knowledge
-
-// Simple custom exceptions
-class RepositoryException implements Exception {
-  final String message;
-  RepositoryException(this.message);
-}
 
 class InventoryRepositoryImpl implements InventoryRepository {
   final InventorySupabaseDataSource _dataSource;
   final ProductRepository _productRepository;
-  
+
   InventoryRepositoryImpl(this._dataSource, this._productRepository);
-  
+
 @override
 Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
   if(ownerId <= 0){
@@ -36,10 +31,10 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
 
   try {
     final inventoryModel = await _dataSource.fetchInventoryByOwnerId(ownerId);
-    
+
     // Convert to entity
     final stockEntities = <ProductEntity, List<StockEntity>>{};
-    
+
     for (final entry in inventoryModel.stock.entries) {
 
       final productId = int.parse(entry.key);    //
@@ -48,21 +43,48 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       if(productEntity == null){
         throw RepositoryException('Product with ID $productId not found');
       }
-      
+
       stockEntities[productEntity] = entry.value
           .map((model) => model.toEntity())
           .toList();
     }
-    
+
     return inventoryModel.toEntity(stockEntities);
   } catch (e) {
     throw RepositoryException('Failed to get inventory: $e');
   }
 }
-  
+
+  @override
+  Future<InventoryEntity> getInventoryByOwnerIdentifier(String ownerIdentifier) async {
+    try {
+      final inventoryModel = await _dataSource.fetchInventoryByOwnerIdentifier(ownerIdentifier);
+
+      // Convert to entity
+      final stockEntities = <ProductEntity, List<StockEntity>>{};
+
+      for (final entry in inventoryModel.stock.entries) {
+        final productId = int.parse(entry.key);
+        final productEntity = await _productRepository.getProductById(productId);
+
+        if (productEntity == null) {
+          throw RepositoryException('Product with ID $productId not found');
+        }
+
+        stockEntities[productEntity] = entry.value
+            .map((model) => model.toEntity())
+            .toList();
+      }
+
+      return inventoryModel.toEntity(stockEntities);
+    } catch (e) {
+      throw RepositoryException('Failed to get inventory by identifier: $e');
+    }
+  }
+
   @override
   Future<InventoryEntity> createInventory(InventoryEntity inventory) async {
-    
+
     //Validation
     if(inventory.ownerId <= 0){
       throw RepositoryException('Invalid owner ID');
@@ -76,7 +98,7 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       throw RepositoryException('Failed to create inventory: $e');
     }
   }
-  
+
   @override
   Future<InventoryEntity> updateInventory(InventoryEntity inventory) async {
 
@@ -99,11 +121,11 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       throw RepositoryException('Failed to update inventory: $e');
     }
   }
-  
-  
+
+
   @override
   Future<StockEntity> addStock(int inventoryId, int productId, StockEntity stock) async {
-    
+
     //Validation
     if(inventoryId <= 0){
       throw RepositoryException('Invalid inventory ID');
@@ -120,8 +142,8 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     if(stock.quantity <= 0){
       throw RepositoryException('Stock quantity cannot be zero or negative');
     }
-    
-    //validating expiration date if provided 
+
+    //validating expiration date if provided
     if(stock.expirationDate != null){
       if(stock.expirationDate!.isBefore(DateTime.now())){
         throw RepositoryException('Expiration date cannot be in the past');
@@ -149,17 +171,17 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       throw RepositoryException('Failed to add stock: $e');
     }
   }
-  
+
   @override
   Future<StockEntity> updateStock(int inventoryId, int productId, StockEntity stock) async {
-    
+
     //Validation
     if(inventoryId <= 0){
       throw RepositoryException('Invalid inventory ID');
     }
 
     if(productId <= 0){
-      throw RepositoryException('Invalid product ID');    
+      throw RepositoryException('Invalid product ID');
     }
 
     if(stock.brand.isEmpty){
@@ -169,8 +191,8 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
     if(stock.quantity <= 0){
       throw RepositoryException('Stock quantity cannot be zero or negative');
     }
-    
-    //validating expiration date if provided 
+
+    //validating expiration date if provided
     if(stock.expirationDate != null){
       if(stock.expirationDate!.isBefore(DateTime.now())){
         throw RepositoryException('Expiration date cannot be in the past');
@@ -203,15 +225,15 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       throw RepositoryException('Failed to update stock: $e');
     }
   }
-  
+
   @override
   Future<void> deleteStock(int inventoryId, int productId, int stockId) async {
-    
+
     //Validation
     if(inventoryId <= 0){
       throw RepositoryException('Invalid inventory ID');
     }
-  
+
     if(productId <= 0){
       throw RepositoryException('Invalid product ID');
     }
@@ -226,10 +248,10 @@ Future<InventoryEntity> getInventoryByOwnerId(int ownerId) async {
       throw RepositoryException('Failed to delete stock: $e');
     }
   }
-  
+
   @override
   Future<List<StockEntity>> getStockForProduct(int inventoryId, int productId) async {
-    
+
     //Validation
     if(inventoryId <= 0){
       throw RepositoryException('Invalid inventory ID');

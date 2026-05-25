@@ -1,0 +1,183 @@
+= Lecture Topic Task: Modeling Chaotic and Unpredictable Behavior in Shared Budget Systems
+
+== Research Findings
+
+Collaborative planning systems may demonstrate sensitivity to small changes in user behavior. Minor inconsistencies, such as delayed inventory updates or duplicate shopping suggestions, may propagate through the subsystem and generate larger inconsistencies in suggested budget calculations. This behavior resembles the concept of sensitive dependence on initial conditions commonly discussed in chaotic systems analysis.
+
+== Sources of Chaotic Behavior in the Sharing & Budget Subsystem
+
+=== Uncoordinated Budget Responsibility Shifts
+
+Household members may informally shift shopping or budgeting responsibilities without properly coordinating these changes through the system.
+
+Examples include:
+
+* One household member assuming another person will purchase a suggested item
+* Users independently deciding to ignore previously assumed responsibilities
+* Sudden changes in shopping responsibilities without updating shared planning information
+
+Potential consequences include:
+
+* Missing essential purchases
+* Inaccurate shared budget expectations
+* Duplicate shopping efforts
+* Ambiguity regarding household responsibilities
+
+=== Refusal or Avoidance of Shared Participation
+
+Some household members may intentionally or unintentionally avoid participating in shared planning activities.
+
+Examples include:
+
+* Ignoring suggested shopping lists
+* Failing to update consumed inventory items
+* Refusing to review shared budget suggestions
+* Inconsistent participation in collaborative planning workflows
+
+Potential consequences include:
+
+* Reduced reliability of budget estimates
+* Inaccurate inventory depletion assumptions
+* Increased planning ambiguity
+* Reduced trust in shared planning information
+
+=== Conflicting Shopping List Modifications
+
+Multiple household members may modify suggested shopping lists in incompatible or contradictory ways.
+
+Examples include:
+
+* One household member removing an item while another increases its quantity
+* Household members reorganizing categories differently
+* Simultaneous changes to shared shopping priorities
+
+Potential consequences include:
+
+* Desynchronized shopping lists
+* Inconsistent purchase planning
+* Confusion regarding intended purchases
+* Reduced reliability of generated budget suggestions
+
+=== Duplicate Suggested Purchases
+
+Household members or automated system recommendations may unintentionally generate overlapping purchase suggestions.
+
+Examples include:
+
+* Multiple household members manually adding the same item to a shared shopping list
+* Suggested restock items overlapping with existing planned purchases
+* Delayed synchronization causing repeated suggestions
+
+Potential consequences include:
+
+* Inflated shared budget estimates
+* Duplicate purchases
+* Inventory overstocking
+* Increased household waste
+
+=== Simultaneous Shared List Edits
+
+Collaborative editing introduces the possibility of concurrent modifications to shared shopping information.
+
+Examples include:
+
+* Two household members editing the same shopping list simultaneously
+* Multiple devices submitting overlapping updates
+* Conflicting item quantity modifications occurring at the same time
+
+Potential consequences include:
+
+* Lost or overwritten updates
+* Inconsistent shared list states
+* User confusion regarding the latest version of the list
+* Synchronization conflicts between devices or users
+
+=== Desynchronized Shared Budget Records
+
+Collaborative systems may experience synchronization inconsistencies between users or devices.
+
+Examples include:
+
+* Different household members viewing different suggested budget totals
+* Delayed updates after shopping list modifications
+* Budget calculations not immediately reflecting inventory changes
+
+Potential consequences include:
+
+* Inconsistent planning information
+* Confusion regarding expected shopping costs
+* Duplicate or unnecessary purchase suggestions
+
+== Risks Introduced by Chaotic Behavior
+
+Some major risks introduced by chaotic behavior in the Sharing & Budget subsystem include:
+
+* Inaccurate shared budget estimates - duplicate shopping suggestions, inconsistent inventory updates, or conflicting list modifications may artificially inflate or reduce projected shopping costs, which directly reflect on the budget. 
+
+* Desynchronized shared shopping information - simultaneous modifications or delayed synchronization events may cause household members to view different versions of the same shopping list or suggested budget estimate. These inconsistencies may reduce confidence in the accuracy of shared planning data.
+
+* Ambiguity regarding household responsibilities - uncoordinated planning activities or avoidance of participation may create uncertainty about who is expected to purchase or manage specific inventory items.
+
+* Repeated inconsistencies - shopping suggestions or shared budget estimates may become unreliable or unhelpful, users may gradually stop depending on collaborative planning features altogether.
+
+As multiple chaotic behaviors overlap, the usability of the feature is quickly diminished.
+
+== Improving System Resilience
+
+=== Validation Mechanisms
+
+The subsystem may validate shared shopping list modifications to prevent invalid quantities, malformed entries, or duplicate suggested purchases. For example, the system may detect when identical low-stock items are added repeatedly to a shared shopping list within a short period of time.
+
+Validation may also help maintain category consistency by ensuring that shared inventory items follow predefined categorization rules. This may reduce reporting inconsistencies caused by different household members organizing purchases differently.
+
+Additionally, validation mechanisms may verify whether shopping suggestions already exist before generating new recommendations, reducing unnecessary duplicate entries and inflated budget estimates.
+
+=== Conflict Handling
+
+The subsystem may incorporate conflict handling strategies such as timestamp-based update prioritization may help determine which modification should be preserved when simultaneous edits occur.
+
+The system may also maintain shared modification histories that allow users to review recent changes made to shopping lists or suggested budget information.
+
+Additional conflict handling approaches may include:
+
+* temporary edit locking
+* user notifications regarding concurrent changes
+* automatic synchronization refreshes after significant modifications are detected.
+
+=== Error Prevention Strategies
+
+Visual indicators such as confirmation dialogs, warning messages or icons may also help users identify recently modified items, unresolved suggestions, or outdated shopping information. 
+
+Clear ownership indicators and shared activity summaries may further reduce ambiguity by helping users understand who interacted with shared planning information and when those interactions occurred.
+
+=== Workflow Recovery
+
+The subsystem should support recovery from incomplete or inconsistent collaborative planning states.
+
+Potential recovery mechanisms may include:
+
+* automatic refresh of outdated shared shopping lists
+* restoration of accidentally removed items
+* recovery prompts after interrupted editing sessions
+* temporary draft states for unresolved modifications
+* notifications when synchronization failures are detected
+
+These mechanisms may help reduce confusion caused by abandoned workflows or conflicting modifications.
+
+=== State Consistency
+
+Maintaining consistent shared planning information across users and devices is important for collaborative reliability.
+
+Potential consistency strategies may include:
+
+* centralized update validation
+* real-time synchronization
+* atomic shared list updates
+* synchronization timestamps
+* automatic shared-state refreshes
+
+These approaches may help reduce ambiguity caused by outdated or conflicting shared planning information.
+
+=== References
+
+Issitt, M. L. (2024). Chaotic systems. EBSCO Research Starters. https://www.ebsco.com/research-starters/science/chaotic-systems

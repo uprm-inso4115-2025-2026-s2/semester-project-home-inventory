@@ -1,0 +1,216 @@
+= Domain Relationship Mapping (Lecture Topic Task)
+:toc:
+:toclevels: 3
+
+== Objective
+
+This document maps the relationships between the core domain entities in the Digital Home Inventory System.
+
+== Core Domain Entities
+
+The primary domain entities stated in the project's documentation are:
+
+* Household
+* Household Member
+* Membership
+* Invitation
+* Location
+* Item Type
+* Item Instance
+* Category
+* Inventory
+* Shopping List
+* Shopping List Item
+* Spending Record
+* Budget
+* Alert or Notification
+
+This is a direct reference to the entities.adoc and terminology.adoc documents.
+
+== Domain Relationship Mapping
+
+[cols="2,2,2,4", options="header"]
+|===
+|Source Entity
+|Relationship
+|Target Entity
+|Cardinality / Explanation
+
+|Household
+|is associated with
+|Household Member
+|One household has one or more household members. A household member belongs to at least one household context through membership.
+
+|Household Member
+|participates through
+|Membership
+|A household member’s relationship to a household is represented through membership. Membership may define role, access, or participation status.
+
+|Household
+|has
+|Membership
+|One household may have many memberships. Each membership connects one household member to one household.
+
+|Household
+|sends or receives
+|Invitation
+|One household may have many invitations. Each invitation allows a potential household member to join the household.
+
+|Invitation
+|creates or updates
+|Membership
+|An accepted invitation may create a new membership or activate a household member’s participation.
+
+|Household
+|contains
+|Location
+|One household has many locations, such as kitchen cabinet, fridge, pantry, hallway bin, or bathroom storage.
+
+|Location
+|stores
+|Item Instance
+|One location may store many item instances. Each item instance is stored in one household location at a time.
+
+|Household
+|contains
+|Inventory
+|A household has one inventory reality representing the set of item instances physically present in the household.
+
+|Inventory
+|tracks
+|Item Instance
+|An inventory contains many item instances.
+
+|Item Type
+|classifies
+|Item Instance
+|One item type may describe many item instances.
+
+|Category
+|groups
+|Item Type
+|One category may group many item types. For example, "Cleaning Supplies" may include detergent, paper towels, and disinfectant.
+
+|Item Instance
+|is based on
+|Item Type
+|Each item instance is an actual package or unit of a defined item type.
+
+|Household Member
+|adds, consumes, updates, or retires
+|Item Instance
+|Household members interact with item instances by stocking, consuming, moving, updating, or removing them from active inventory.
+
+|Household Member
+|creates or updates
+|Shopping List
+|A household member may create or update shopping lists based on restock needs.
+
+|Shopping List
+|contains
+|Shopping List Item
+|One shopping list may contain many shopping list items.
+
+|Shopping List Item
+|refers to
+|Item Type
+|Each shopping list item usually refers to an item type that should be purchased or restocked.
+
+|Item Instance
+|may trigger
+|Alert or Notification
+|An item instance may trigger an alert when it is low in stock, expired, near expiration, or otherwise needs attention.
+
+|Alert or Notification
+|refers to
+|Item Instance or Item Type
+|An alert may refer to a specific item instance or a broader item type depending on the situation.
+
+|Household Member
+|receives
+|Alert or Notification
+|Household members may receive alerts related to inventory status, restock needs, or expiration.
+
+|Household Member
+|records
+|Spending Record
+|A household member may record a spending event when a purchase occurs.
+
+|Spending Record
+|belongs to
+|Household
+|Each spending record belongs to the household context where the purchase occurred.
+
+|Spending Record
+|may reference
+|Item Type or Item Instance
+|A spending record may be associated with what was purchased, either at the item type or item instance level.
+
+|Budget
+|belongs to
+|Household
+|A household may define one or more budgets to guide spending or shopping planning.
+
+|Budget
+|may constrain
+|Category
+|A budget may apply to a category such as groceries, cleaning supplies, or shared household essentials.
+
+|Budget
+|uses
+|Spending Record
+|Spending records may be used to evaluate budget usage over time.
+|===
+
+
+== Relationship Explanations
+
+=== Household and Household Members
+
+The relationship between a household and a member is best represented through a membership concept, because participation may change over time.
+
+=== Household and Invitations
+
+A household may send many invitations, and each invitation may result in a new membership if accepted.
+
+=== Household and Locations
+
+Locations represent physical places in a household where item instances may be stored, such as a pantry, fridge, kitchen cabinet, bathroom shelf, or hallway bin. A location may contain many item instances, but each item instance should have one current storage location.
+
+=== Inventory and Item Instances
+
+The inventory represents the real collection of items currently present in the household. It is composed of item instances.
+
+=== Item Types and Item Instances
+
+An item type defines the general concept of an item, while an item instance represents a specific physical unit of that item. This distinction helps the system represent duplicates, backups, expiration dates, quantities, and different storage locations.
+
+=== Categories and Item Types
+
+Categories group item types into meaningful organizational units. This relationship supports filtering, reporting, spending analysis, and budget organization.
+
+=== Household Members and Inventory Operations
+
+Household members interact with inventory by performing actions such as adding, locating, updating, transferring, consuming, or retiring item instances. This relationship shows that inventory is dynamic and changes through household member actions.
+
+=== Shopping Lists and Item Types
+
+Shopping lists represent planned or suggested purchases. A shopping list contains shopping list items, and each shopping list item usually refers to an item type that should be purchased.
+
+=== Alerts and Notifications
+
+Alerts and notifications are triggered by inventory-related conditions, such as low stock, expiration, or missing items. Household members may receive these alerts and decide whether to update the count, add the item to a shopping list, ignore the alert, or take another action.
+
+=== Spending Records and Household Members
+
+A spending record represents a financial event related to a household purchase. A household member may record spending when they buy an item for the household.
+
+=== Spending Records and Budgets
+
+Budgets provide spending limits or planning guidelines for the household. Spending records contribute to budget evaluation.
+
+=== Budget and Category
+
+A budget may apply to a whole household or to a specific category. Category-based budgets allow the household to track spending for groups such as groceries, cleaning supplies, or shared essentials.
+
+This relationship helps connect inventory organization with financial planning.

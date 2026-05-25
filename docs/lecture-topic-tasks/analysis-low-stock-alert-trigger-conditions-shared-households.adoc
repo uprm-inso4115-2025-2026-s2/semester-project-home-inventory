@@ -1,0 +1,489 @@
+= Analysis of Low-Stock Alert Trigger Conditions in Shared Household Inventories
+:author: Solimar Cruz
+:toc:
+
+== Objective
+
+This document analyzes how low-stock alerts are triggered within the Alerts & Restock module of the Home Inventory System. The goal is to document the conditions that cause inventory items to generate low-stock notifications, especially in shared household environments where multiple users can update inventory quantities.
+
+== Overview
+
+Low-stock alerts help users know when an inventory item is close to running out. In the Home Inventory System, an item should trigger a low-stock alert when its current quantity reaches or falls below a defined minimum threshold, but has not reached zero.
+
+The general rule is:
+
+[source,text]
+----
+If current quantity <= minimum threshold
+AND current quantity > 0
+THEN trigger low-stock alert
+----
+
+If the quantity is zero, the item should usually be treated as out of stock instead of low stock.
+
+== Low-Stock Trigger Conditions
+
+A low-stock alert is triggered when the system detects that an item quantity is below the acceptable amount defined by the user or system.
+
+=== Main Condition
+
+[source,text]
+----
+current_quantity <= minimum_threshold
+----
+
+However, the item should still have some quantity left.
+
+[source,text]
+----
+current_quantity > 0
+----
+
+Therefore, the complete condition is:
+
+[source,text]
+----
+0 < current_quantity <= minimum_threshold
+----
+
+Example:
+
+[source,text]
+----
+Item: Milk
+Current quantity: 2
+Minimum threshold: 3
+Result: Low-stock alert triggered
+----
+
+== Threshold Definition
+
+A threshold is the minimum amount of an item that should be available before the system warns the user.
+
+For example:
+
+[cols="1,1,1", options="header"]
+|===
+|Item |Current Quantity |Minimum Threshold
+
+|Milk
+|2
+|3
+
+|Eggs
+|5
+|4
+
+|Rice
+|1
+|2
+
+|Soap
+|3
+|3
+|===
+
+Based on these values:
+
+[cols="1,1,1,1", options="header"]
+|===
+|Item |Current Quantity |Minimum Threshold |Alert Result
+
+|Milk
+|2
+|3
+|Low-stock alert triggered
+
+|Eggs
+|5
+|4
+|No alert triggered
+
+|Rice
+|1
+|2
+|Low-stock alert triggered
+
+|Soap
+|3
+|3
+|Low-stock alert triggered
+|===
+
+== Difference Between Low Stock and Out of Stock
+
+Low stock and out of stock should be handled separately.
+
+[cols="1,1,1", options="header"]
+|===
+|Condition |Meaning |Expected Alert
+
+|current_quantity > minimum_threshold
+|Item has enough stock
+|No alert
+
+|0 < current_quantity <= minimum_threshold
+|Item is running low
+|Low-stock alert
+
+|current_quantity = 0
+|Item is empty
+|Out-of-stock alert
+|===
+
+Example:
+
+[source,text]
+----
+Item: Eggs
+Minimum threshold: 3
+
+Quantity = 5 -> No alert
+Quantity = 3 -> Low-stock alert
+Quantity = 1 -> Low-stock alert
+Quantity = 0 -> Out-of-stock alert
+----
+
+== Shared Household Inventory Behavior
+
+In a shared household, multiple users may interact with the same inventory item. This means the system must evaluate the most recent quantity before deciding whether to trigger an alert.
+
+Example:
+
+[source,text]
+----
+User A updates milk quantity from 5 to 2.
+User B updates milk quantity from 2 to 4 shortly after.
+----
+
+If the minimum threshold is 3, the system should avoid keeping an unnecessary low-stock alert if the latest quantity is now 4.
+
+Expected behavior:
+
+[source,text]
+----
+- Always evaluate the latest saved item quantity
+- Avoid duplicate low-stock notifications
+- Update or resolve alerts when quantity changes
+- Keep household members synced with the same inventory state
+----
+
+== Low-Stock Alert Workflow
+
+[source,text]
+----
+Inventory item is updated
+        |
+        v
+System reads current quantity
+        |
+        v
+System checks minimum threshold
+        |
+        v
+Is quantity greater than 0?
+        |
+        v
+Is quantity less than or equal to threshold?
+        |
+        v
+If yes:
+    Trigger low-stock alert
+    Check grocery list
+    Add or update grocery list item
+        |
+        v
+Notify household members
+----
+
+== Event Flow Example
+
+Scenario:
+
+A household member updates the quantity of rice from 4 to 1. The minimum threshold for rice is 2.
+
+[source,text]
+----
+User updates rice quantity
+        |
+        v
+System receives new quantity: 1
+        |
+        v
+System checks threshold: 1 <= 2
+        |
+        v
+System confirms quantity is above 0
+        |
+        v
+Low-stock condition is true
+        |
+        v
+System creates low-stock alert
+        |
+        v
+System checks if rice is already in grocery list
+        |
+        v
+If rice is not in grocery list:
+    Add rice to grocery list
+Else:
+    Update existing grocery list entry
+        |
+        v
+Notify household members
+----
+
+Result:
+
+[source,text]
+----
+Item: Rice
+Status: LOW
+Alert: "Rice is running low."
+Grocery list action: Add or update rice
+----
+
+== Example Scenarios
+
+=== Scenario 1: No Alert Needed
+
+[source,text]
+----
+Item: Cereal
+Current quantity: 5
+Minimum threshold: 2
+----
+
+Result:
+
+[source,text]
+----
+No low-stock alert is triggered because the quantity is above the threshold.
+----
+
+=== Scenario 2: Low-Stock Alert Triggered
+
+[source,text]
+----
+Item: Milk
+Current quantity: 2
+Minimum threshold: 3
+----
+
+Result:
+
+[source,text]
+----
+Low-stock alert is triggered because 2 <= 3 and quantity is greater than 0.
+----
+
+=== Scenario 3: Out-of-Stock Alert Instead of Low Stock
+
+[source,text]
+----
+Item: Eggs
+Current quantity: 0
+Minimum threshold: 3
+----
+
+Result:
+
+[source,text]
+----
+Out-of-stock alert is triggered instead of low-stock alert.
+----
+
+=== Scenario 4: Quantity Updated After Alert
+
+[source,text]
+----
+Item: Juice
+Original quantity: 1
+Minimum threshold: 2
+Updated quantity: 5
+----
+
+Result:
+
+[source,text]
+----
+The low-stock alert should be resolved or removed because the item quantity is now above the threshold.
+----
+
+=== Scenario 5: Shared Household Update Conflict
+
+[source,text]
+----
+Item: Bread
+Minimum threshold: 2
+
+User A updates quantity to 1.
+User B updates quantity to 4 shortly after.
+----
+
+Result:
+
+[source,text]
+----
+The system should use the latest quantity. If the latest saved quantity is 4, the low-stock alert should not remain active.
+----
+
+== Interaction With Automated Grocery List Generation
+
+Low-stock alerts are connected to automated grocery list generation. When an item becomes low in stock, the system should check whether the item already exists in the grocery list.
+
+Expected grocery list behavior:
+
+[source,text]
+----
+If low-stock alert is triggered:
+    Check grocery list for existing item
+
+If item does not exist:
+    Add item to grocery list
+
+If item already exists:
+    Update item quantity, reason, or timestamp
+----
+
+This prevents duplicate grocery list entries.
+
+Example:
+
+[source,text]
+----
+Item: Milk
+Current quantity: 2
+Minimum threshold: 3
+Grocery list status: Milk already exists
+----
+
+Expected result:
+
+[source,text]
+----
+Do not create duplicate entry.
+Update existing Milk grocery list item if needed.
+----
+
+== Potential Risks and Edge Cases
+
+=== Different Category Thresholds
+
+Different inventory categories may need different threshold logic.
+
+Example:
+
+[source,text]
+----
+Food items may use quantity-based thresholds.
+Cleaning supplies may use package-count thresholds.
+Medicine may require stricter expiration and availability rules.
+----
+
+Expected handling:
+
+[source,text]
+----
+Allow item-specific or category-specific threshold values.
+----
+
+=== Simultaneous Updates
+
+Multiple household members may update the same item close together.
+
+Risk:
+
+[source,text]
+----
+The system may trigger an alert based on outdated quantity data.
+----
+
+Expected handling:
+
+[source,text]
+----
+The system should evaluate the most recent saved quantity before creating or updating alerts.
+----
+
+=== Missing or Incorrect Quantity
+
+If quantity data is missing, negative, or incorrect, the system may trigger false alerts.
+
+Expected handling:
+
+[source,text]
+----
+- Validate quantity before evaluating threshold
+- Prevent negative quantities
+- Require a default threshold or item-specific threshold
+----
+
+=== Repeated Notifications
+
+Rapid updates may cause repeated low-stock alerts for the same item.
+
+Example:
+
+[source,text]
+----
+Quantity changes from 3 to 2 to 1 within a short time.
+----
+
+Expected handling:
+
+[source,text]
+----
+- Avoid sending repeated alerts for the same item
+- Update the existing alert instead of creating a new one
+- Use alert status such as active, resolved, or dismissed
+----
+
+== Suggested Alert Logic
+
+[source,text]
+----
+IF current_quantity is missing:
+    Do not trigger alert
+    Mark item data as incomplete
+
+ELSE IF current_quantity < 0:
+    Reject update or correct quantity
+
+ELSE IF current_quantity == 0:
+    Trigger out-of-stock alert
+
+ELSE IF current_quantity <= minimum_threshold:
+    Trigger low-stock alert
+
+ELSE:
+    No stock alert needed
+----
+
+== Success Criteria Validation
+
+[cols="2,2", options="header"]
+|===
+|Success Criteria |How It Was Addressed
+
+|Low-stock alert conditions are clearly documented.
+|The document defines the condition as 0 < current_quantity <= minimum_threshold.
+
+|Threshold behaviors are analyzed for shared household use cases.
+|Shared household scenarios explain how multiple users can affect alert consistency.
+
+|Example scenarios correctly demonstrate alert generation logic.
+|Several examples show when alerts should and should not be triggered.
+
+|Documentation aligns with the current Alerts & Restock system implementation.
+|The workflow follows the expected process of inventory update, threshold evaluation, alert creation, and grocery list generation.
+|===
+
+== Final Summary
+
+Low-stock alerts are triggered when an inventory item has a quantity greater than zero but less than or equal to its minimum threshold. This allows the Home Inventory System to warn users before an item completely runs out.
+
+In shared household environments, the system must be careful to evaluate the latest item quantity, avoid duplicate alerts, and update grocery list entries instead of creating repeated items. Low-stock alerts should also interact with automated grocery list generation so that users can easily restock needed items.
+
+This analysis helps clarify the conditions, workflows, and edge cases involved in low-stock alert generation within the Alerts & Restock module.

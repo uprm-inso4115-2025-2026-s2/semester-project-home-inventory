@@ -49,9 +49,21 @@ class InventoryModel {
 
   factory InventoryModel.fromJson(Map<String, dynamic> json) {
     final stock = json['stock'] as Map<String, dynamic>? ?? {};
+    // ownerId in the database might be stored as int or string (uuid).
+    // Be tolerant: accept int, numeric string, or non-numeric string.
+    int parsedOwnerId;
+    final rawOwner = json['ownerId'];
+    if (rawOwner is int) {
+      parsedOwnerId = rawOwner;
+    } else if (rawOwner is String) {
+      parsedOwnerId = int.tryParse(rawOwner) ?? -1;
+    } else {
+      parsedOwnerId = -1;
+    }
+
     return InventoryModel(
       id: json['id'] as int,
-      ownerId: json['ownerId'] as int,
+      ownerId: parsedOwnerId,
       stock: stock.map(
         (key, value) => MapEntry(
           key,

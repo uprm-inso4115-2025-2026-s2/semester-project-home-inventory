@@ -1,0 +1,342 @@
+= Domain Facets — Sharing & Budget Feature
+Home Inventory System — Software Requirenements 
+@daniellameleroo
+:doctype: article
+:toc: left
+:toc-title: Table of Contents
+:sectnums:
+:icons: font
+
+---
+
+== Introduction
+
+This document applies the *8 Domain Facets* framework to the Sharing and Budget features of the Home Inventory System. The goal is to capture all relevant perspectives of these two features before implementation begins, ensuring that requirements are complete, consistent, and aligned across the development team.
+
+Each facet is analyzed specifically in the context of sharing household inventory with roommates and tracking spending through a budget system.
+
+---
+
+== Facet 1 — Generic Perspective
+
+=== Definition
+
+The Generic Perspective provides a high-level overview of what the feature means in the context of the domain: what it is, who it is for, and why it exists.
+
+=== Sharing Feature
+
+Sharing in the Home Inventory System allows a household owner to grant other users: such as roommates, family members, or property managers — access to view or manage a shared inventory. The purpose is to make household item tracking a collaborative activity rather than a single-user experience. Shared inventories reduce duplication of effort, improve transparency between household members, and support joint decision-making about shared assets.
+
+=== Budget Feature
+
+Budget tracking in the Home Inventory System allows users to define spending limits per category and monitor how much has been spent relative to those limits. The purpose is to give users financial visibility over their household purchases, helping them avoid overspending on certain categories such as electronics, furniture, or appliances. Budget tracking complements the inventory by connecting item values and purchases to financial goals.
+
+=== Open Questions
+
+* Should sharing be limited to one household per user, or can a user belong to multiple households simultaneously?
+* Is the budget feature personal (per user) or shared across all household members?
+
+---
+
+== Facet 2 — Business Procedures
+
+=== Definition
+
+Business Procedures describe the workflows and processes that users follow when interacting with the feature — the step-by-step actions they take to accomplish their goals.
+
+=== Sharing Procedures
+
+* *Inviting a collaborator:* The owner opens the Household Members screen, taps Invite Roommate, enters the invitee's email or username, previews the invitation, and sends it. The invitee receives a notification, reviews the invitation, and accepts or declines.
+* *Removing a collaborator:* The owner navigates to the Members list, selects the member to remove, and confirms the removal. The removed member immediately loses access to the shared inventory.
+* *Changing access level:* The owner selects a member and changes their role from Viewer to Editor or vice versa. The change takes effect immediately.
+
+=== Budget Procedures
+
+* *Setting a budget:* The user opens the Budget screen, selects a category (e.g. Electronics), enters a spending limit (e.g. $500), and saves. The system creates a budget entry linked to that category.
+* *Tracking spending:* When a new item is added to the inventory with a purchase value, the system automatically updates the relevant category budget to reflect the new spend.
+* *Reviewing budget status:* The user opens the Budget screen to see a list of categories with their limits, current spend, and remaining balance. Categories over budget are flagged visually.
+
+=== Open Questions
+
+* Does the budget reset at the end of each month, or is it a fixed one-time limit?
+* Can multiple household members contribute to the same budget, or is each budget personal?
+
+---
+
+== Facet 3 — Intrinsics
+
+=== Definition
+
+Intrinsics describe the core properties and attributes of the entities involved in the feature — what data they hold and what defines them.
+
+=== Sharing Entity Properties
+
+A *Shared Inventory* has the following core properties:
+
+[cols="1,2", options="header"]
+|===
+| Property
+| Description
+
+| Inventory ID
+| Unique identifier for the shared inventory
+
+| Owner
+| The user who created the inventory and has full control
+
+| Collaborators
+| List of users with access, each with a role (Viewer or Editor)
+
+| Items
+| The list of household items belonging to this inventory
+
+| Created at
+| Timestamp of when the inventory was created
+
+| Visibility
+| Whether the inventory is private (owner only) or shared
+|===
+
+=== Budget Entity Properties
+
+A *Budget* has the following core properties:
+
+[cols="1,2", options="header"]
+|===
+| Property
+| Description
+
+| Budget ID
+| Unique identifier for the budget entry
+
+| Category
+| The item category this budget applies to (e.g. Electronics)
+
+| Limit
+| The maximum spending amount defined by the user
+
+| Current spend
+| The total value of items in this category already purchased
+
+| Remaining
+| Limit minus current spend — cannot go below zero in display
+
+| Owner
+| The user who created and owns this budget entry
+
+| Reset period
+| Whether the budget resets (monthly, yearly, or never)
+|===
+
+=== Open Questions
+
+* Should a collaborator be able to see budget information, or is budget data private to the owner?
+* What happens to the budget if an item is deleted — does the spend decrease?
+
+---
+
+== Facet 4 — Support Technology
+
+=== Definition
+
+Support Technology describes the tools, platforms, and systems that enable the feature to function — the technical infrastructure behind the scenes.
+
+=== Sharing Feature
+
+* *Authentication* — manages user identity and session tokens used to verify who is sending or receiving an invitation.
+* *Database (`profiles` table)* — stores user information used to look up invitees by email or username.
+* *Database (`household_members` table)* — stores the relationship between inventories and their collaborators, including role (Viewer or Editor).
+* *Realtime* — can be used to push live updates to all members when an item is added or removed from a shared inventory.
+* *Push notifications (Expo Push Token)* — used to notify the invitee when an invitation is sent and the owner when an invitation is accepted or declined.
+
+=== Budget Feature
+
+* *Database (`budgets` table)* — stores budget entries per user per category, including limit, current spend, and reset period.
+* *Database (`items` table)* — the purchase value of items triggers budget spend updates when a new item is added.
+* *Backend functions or triggers* — can be used to automatically update current spend when an item is added, updated, or deleted.
+* *Flutter UI components* — progress bars and visual indicators on the Budget screen show remaining balance at a glance.
+
+=== Open Questions
+
+* Will database backend Realtime be used for live budget updates across multiple devices, or is a manual refresh sufficient?
+* Are our backend triggers or client-side logic preferred for updating budget spend when items change?
+
+---
+
+== Facet 5 — Management and Organization
+
+=== Definition
+
+Management and Organization describes how the feature is governed — who has authority over decisions, who can perform which actions, and how ownership and control are structured.
+
+=== Sharing Management
+
+* *Owner* — has full control over the shared inventory. Can invite collaborators, remove them, change their roles, add and delete items, and delete the entire inventory.
+* *Editor* — can add, edit, and delete items within the shared inventory but cannot invite or remove other members.
+* *Viewer* — can only view items. Cannot add, edit, or delete items. Cannot see member management options.
+* *Invitation management* — only the owner can send invitations. Pending invitations can be cancelled by the owner at any time.
+
+=== Budget Management
+
+* *Budget owner* — the user who created the budget is the only one who can modify or delete it.
+* *Spend updates* — spend is updated automatically when items with a purchase value are added to the inventory. Only items belonging to the owner's inventory affect their budget.
+* *Category assignment* — each budget is tied to a single category. A user can have one budget per category at a time.
+
+=== Open Questions
+
+* Can an Editor invite other members, or is that restricted to the Owner only?
+* Can the Owner transfer ownership of an inventory to another member?
+
+---
+
+== Facet 6 — Rules and Regulations
+
+=== Definition
+
+Rules and Regulations describe the constraints, business rules, and policies that the feature must enforce — the boundaries within which the system must operate.
+
+=== Sharing Rules
+
+* Only the Owner can invite or remove collaborators.
+* A user cannot be added to an inventory they are already a member of.
+* An invitation expires after a defined period (e.g. 7 days) if not accepted.
+* An inventory must always have exactly one Owner — the Owner cannot be removed or downgraded.
+* A Viewer cannot perform any write operations (add, edit, delete items).
+* A removed member immediately loses all access — no grace period.
+
+=== Budget Rules
+
+* A budget limit must be a positive number — zero and negative values are not allowed.
+* A category cannot have more than one active budget per user at a time.
+* Current spend cannot be displayed as negative — if items are deleted and spend drops below zero, it is shown as zero.
+* Budget spend is calculated only from items with a defined purchase value — items without a value do not affect the budget.
+* Deleting an item reduces the current spend for its category by the item's purchase value.
+
+=== Open Questions
+
+* What happens if a user sets a budget limit lower than the current spend — is this allowed or blocked?
+* Should the system send a notification when a budget is close to the limit (e.g. 80% spent)?
+
+---
+
+== Facet 7 — Scripts
+
+=== Definition
+
+Scripts describe typical user scenarios — the concrete, step-by-step stories of how real users interact with the feature in realistic situations.
+
+=== Sharing Scripts
+
+*Script 1 — Sharing inventory with a new roommate:*
+Maria just got a new roommate, Jamie. She opens the Home Inventory app, navigates to the Household Members screen, and taps Invite Roommate. She enters Jamie's email address, previews the invitation, and sends it. Jamie receives a push notification, opens the app, reviews the household details, and taps Accept. The members list updates to show Jamie as an active member with Viewer access. Jamie can now browse the shared inventory.
+
+*Script 2 — Upgrading a member from Viewer to Editor:*
+Maria trusts Jamie enough to let them add items. She opens the Members list, taps Jamie's name, and changes the role from Viewer to Editor. Jamie now sees the Add Item button on the shared inventory screen.
+
+*Script 3 — Removing a member who moved out:*
+Jamie moves out. Maria opens the Members list, selects Jamie, and taps Remove Member. She confirms the action. Jamie immediately loses access and can no longer see the shared inventory.
+
+=== Budget Scripts
+
+*Script 1 — Setting a monthly electronics budget:*
+Maria wants to control her electronics spending. She opens the Budget screen, taps Add Budget, selects the Electronics category, enters $500 as the limit, and saves. The budget card appears showing $500 limit and $0 current spend.
+
+*Script 2 — Budget updates when a new item is added:*
+Maria adds a new TV to the shared inventory with a purchase value of $300. The Electronics budget automatically updates to show $300 spent out of $500 — $200 remaining.
+
+*Script 3 — Budget exceeded warning:*
+Maria adds a laptop worth $250. The Electronics budget now shows $550 spent against a $500 limit. The budget card turns red and shows an over-budget warning — helping Maria decide whether to return the laptop or adjust her budget.
+
+---
+
+== Facet 8 — Human Behavior
+
+=== Definition
+
+Human Behavior describes the motivations, expectations, emotions, and habits that drive users to interact with the feature — the psychological and social context behind the actions.
+
+=== Sharing Feature
+
+* *Motivation:* Users share inventories primarily for transparency and coordination. Roommates want to avoid buying duplicate items and want to know what is already in the household before making a new purchase.
+* *Expectation:* Users expect sharing to feel safe — they want to trust that only the people they invite can see their items, and that removing someone is immediate and permanent.
+* *Social context:* Sharing an inventory is a social act. Users may feel uncomfortable if the system sends notifications that feel intrusive (e.g. notifying the owner every time a Viewer looks at an item).
+* *Friction points:* Users may abandon the invitation flow if it requires too many steps or if the invitee does not receive the notification promptly.
+
+=== Budget Feature
+
+* *Motivation:* Users track budgets because they want to feel in control of their household spending. Seeing a visual indicator of remaining balance provides reassurance and motivates mindful purchasing.
+* *Expectation:* Users expect the budget to update automatically when they add items — they do not want to manually enter spend amounts.
+* *Emotional response:* An over-budget warning should be informative and calm — not alarming. Users should feel empowered to make a decision, not penalized for overspending.
+* *Friction points:* If the budget calculation is confusing or inconsistent (e.g. does not account for deleted items), users will lose trust in the feature and stop using it.
+
+=== Open Questions
+
+* Should the app send proactive budget alerts (e.g. "You have reached 80% of your Electronics budget")?
+* Should sharing feel more social (notifications, activity feed) or more utilitarian (silent access changes)?
+
+---
+
+== Summary of Open Questions
+
+The following open questions were identified across all 8 facets and must be resolved before implementation begins:
+
+[cols="1,2,1", options="header"]
+|===
+| Facet
+| Open Question
+| Priority
+
+| Generic Perspective
+| Can a user belong to multiple households simultaneously?
+| High
+
+| Generic Perspective
+| Is the budget feature personal or shared across household members?
+| High
+
+| Business Procedures
+| Does the budget reset monthly, yearly, or never?
+| High
+
+| Business Procedures
+| Can multiple members contribute to the same budget?
+| Medium
+
+| Intrinsics
+| Can collaborators see budget information?
+| Medium
+
+| Intrinsics
+| Does deleting an item reduce the budget spend?
+| High
+
+| Support Technology
+| Supabase Realtime vs. manual refresh for budget updates?
+| Medium
+
+| Management
+| Can an Editor invite other members?
+| Medium
+
+| Rules
+| Is setting a limit lower than current spend allowed?
+| Medium
+
+| Rules
+| Should a notification fire when budget is near the limit?
+| Low
+
+| Human Behavior
+| Should proactive budget alerts be sent?
+| Low
+
+| Human Behavior
+| Should sharing feel social or utilitarian?
+| Low
+|===
+
+---
+
+== Reference
+
+Schütz-Schmuck, M. (2024). _Domain Analysis and Concept Formation_. Department of Mathematical Sciences, University of Puerto Rico at Mayagüez.

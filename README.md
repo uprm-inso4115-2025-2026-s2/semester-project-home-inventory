@@ -19,8 +19,8 @@
 
 ## 🎯 Project Overview
 
-**Topic:** Digital Home Inventory  
-**Target Audience:** Students living independently (alone or with roommates)  
+**Topic:** Digital Home Inventory
+**Target Audience:** Students living independently (alone or with roommates)
 **Date Started:** February 3, 2026
 
 ### The Problem
@@ -367,6 +367,13 @@ This project follows **Clean Architecture** principles to ensure:
 - **Maintainability** - Changes in one layer don't affect others
 - **Scalability** - Easy to add new features without breaking existing code
 
+Additional dependency rules (explicit):
+- **Dependency direction:** Presentation → Domain ← Data (domain has NO imports from data or presentation).
+- **Repository contract:** Repository interfaces live in `domain/`; concrete implementations live in `data/` and are injected at runtime.
+- **Use cases:** Business rules and usecases belong to `domain/` and must not import Flutter or Supabase packages.
+- **DI safety:** Register data-layer services before domain/presentation in `injection_dependencies.dart` to avoid initialization order crashes.
+- **No circular deps:** Avoid any import cycles between features/layers; resolve via interfaces and DI.
+
 ### `/lib` Folder Structure
 
 The Flutter application code is organized in the `src/lib/` directory following a clean architecture pattern:
@@ -469,18 +476,18 @@ See `features/example_feature/` for a complete reference implementation showing:
 
 - **`core/`** - Use for shared code used by MULTIPLE features
   - Examples: Supabase service, common utilities, shared UI components
-  
+
 - **`features/`** - Use for feature-specific code
   - Each feature should be self-contained and independent
   - Features should not import from other features
 
 #### Benefits of This Structure
 
-✅ **Scalability** - Easy to add new features without affecting existing ones  
-✅ **Team Collaboration** - Teams can work on different features independently  
-✅ **Testability** - Each layer can be tested in isolation  
-✅ **Maintainability** - Clear separation makes code easier to understand and modify  
-✅ **Flexibility** - Easy to swap implementations (e.g., change database provider)  
+✅ **Scalability** - Easy to add new features without affecting existing ones
+✅ **Team Collaboration** - Teams can work on different features independently
+✅ **Testability** - Each layer can be tested in isolation
+✅ **Maintainability** - Clear separation makes code easier to understand and modify
+✅ **Flexibility** - Easy to swap implementations (e.g., change database provider)
 
 ---
 
@@ -501,7 +508,7 @@ See `features/example_feature/` for a complete reference implementation showing:
 
 ## 📄 License
 
-This project is part of the INSO 4115 course at UPRM.  
+This project is part of the INSO 4115 course at UPRM.
 See [LICENSE](LICENSE) for more information.
 
 ---

@@ -1,0 +1,476 @@
+= Domain Description Units and Tagging in the Home Inventory System
+== Objective
+
+This report applies the lecture topic of Domain Description Units and Tagging to the Digital Home Inventory System.
+
+In domain acquisition, facts about the domain are collected, recorded, and organized before deeper analysis takes place. These facts can be written as domain description units and tagged according to useful categories such as stakeholder group, phenomenon/concept, kind, attribute, and facet.
+
+The purpose of this task is to identify important domain facts from the Home Inventory System and classify them using structured tags. This helps make the domain documentation easier to navigate, analyze, and extend.
+
+---
+
+
+== Domain Description Units
+
+=== DDU-001: Inventory Ownership
+
+*Domain Description Unit:*  
+A user can own an inventory that stores household items and stock information.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory owner / household user
+
+|Phenomenon or Concept
+|Inventory, User, Ownership
+
+|Kind
+|Entity / Relationship
+
+|Attribute
+|Static
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+This unit describes a basic structural relationship in the domain. An inventory belongs to a user or owner, which establishes responsibility and access control.
+
+---
+
+=== DDU-002: Product Representation
+
+*Domain Description Unit:*  
+A product represents a general item definition that can be tracked in inventory.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory user
+
+|Phenomenon or Concept
+|Product
+
+|Kind
+|Entity
+
+|Attribute
+|Static
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+Products define reusable item information such as name, description, tags, unit, or image. This separates the general product definition from the actual stock quantity stored in inventory.
+
+---
+
+=== DDU-003: Stock Tracking
+
+*Domain Description Unit:*  
+A stock entry records the quantity and status of a product inside an inventory.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory owner / household user
+
+|Phenomenon or Concept
+|Stock, Quantity, Product
+
+|Kind
+|Entity / Behavior
+
+|Attribute
+|Reactive
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+Stock is one of the central domain concepts because it connects products to measurable inventory quantities. It is reactive because its status may change when quantity changes.
+
+---
+
+=== DDU-004: Low-Stock Status
+
+*Domain Description Unit:*  
+When an item quantity becomes low or reaches zero, the system can classify the stock as low stock or out of stock.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory user
+
+|Phenomenon or Concept
+|Stock Status, Low Stock, Out of Stock
+
+|Kind
+|Behavior
+
+|Attribute
+|Reactive
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+This unit describes behavior based on the current state of stock. The system reacts to quantity changes by assigning a stock status.
+
+---
+
+=== DDU-005: Expiration Monitoring
+
+*Domain Description Unit:*  
+A stock item may have an expiration date, and the system can classify it as okay, near expiration, or expired.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory user
+
+|Phenomenon or Concept
+|Expiration Date, Expiration Status
+
+|Kind
+|Behavior / State
+
+|Attribute
+|Reactive
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+Expiration monitoring is a reactive behavior because the state of an item changes as time passes. This supports food safety and waste reduction.
+
+---
+
+=== DDU-006: Alert Generation
+
+*Domain Description Unit:*  
+The system can generate notifications when important inventory conditions occur, such as low stock or expiration.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory user / household member
+
+|Phenomenon or Concept
+|Notification, Alert, Trigger
+
+|Kind
+|Event / Behavior
+
+|Attribute
+|Active / Reactive
+
+|Facet
+|Support Technology
+|===
+
+*Explanation:*  
+Notifications are system-generated events. They are reactive because they depend on domain conditions, but also active because the system initiates communication with the user.
+
+---
+
+=== DDU-007: Restocking
+
+*Domain Description Unit:*  
+Users can increase the quantity of an inventory item when they restock it.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory owner / household member
+
+|Phenomenon or Concept
+|Restocking, Quantity Change, Stock Update
+
+|Kind
+|Function / Event
+
+|Attribute
+|Active
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+Restocking is an action that changes inventory state. It is an important event because it updates quantity and can change stock status from low or empty back to available.
+
+---
+
+=== DDU-008: Item Consumption or Usage
+
+*Domain Description Unit:*  
+Users can reduce the quantity of an inventory item when the item is consumed, used, or removed.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory user / household member
+
+|Phenomenon or Concept
+|Consumption, Usage, Quantity Change
+
+|Kind
+|Function / Event
+
+|Attribute
+|Active
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+This unit captures the opposite of restocking. It is a domain event because the inventory changes over time based on user activity.
+
+---
+
+=== DDU-009: Household Membership
+
+*Domain Description Unit:*  
+A household can contain multiple members who may collaborate in managing shared inventory.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Household owner / household member
+
+|Phenomenon or Concept
+|Household, Household Member, Shared Inventory
+
+|Kind
+|Entity / Relationship
+
+|Attribute
+|Static
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+Household membership models the collaborative side of the system. It defines who participates in shared inventory management.
+
+---
+
+=== DDU-010: Invitation Flow
+
+*Domain Description Unit:*  
+A household owner can invite another user to join a household or shared inventory.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Household owner / invited user
+
+|Phenomenon or Concept
+|Invitation, Access, Role
+
+|Kind
+|Function / Event
+
+|Attribute
+|Active
+
+|Facet
+|Support Technology
+|===
+
+*Explanation:*  
+The invitation process is a domain event that supports shared access. It involves user roles, invitation status, and acceptance or rejection.
+
+---
+
+=== DDU-011: Budget Tracking
+
+*Domain Description Unit:*  
+The system can represent budgets and spending events related to household inventory activity.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Household member / budget manager
+
+|Phenomenon or Concept
+|Budget, Spending, Spend Event
+
+|Kind
+|Entity / Function
+
+|Attribute
+|Active
+
+|Facet
+|Intrinsic
+|===
+
+*Explanation:*  
+Budget tracking extends the domain beyond item storage by connecting inventory activity with household spending and financial planning.
+
+---
+
+=== DDU-012: Dashboard and Reporting
+
+*Domain Description Unit:*  
+The system may summarize inventory or household information through dashboard metrics and reports.
+
+[cols="1,2", options="header"]
+|===
+|Tag |Classification
+
+|Stakeholder Group
+|Inventory user / household member
+
+|Phenomenon or Concept
+|Dashboard, Metrics, Report
+
+|Kind
+|Function
+
+|Attribute
+|Active
+
+|Facet
+|Support Technology
+|===
+
+*Explanation:*  
+Reports and dashboards are support features that help users understand the current state of the domain, such as stock levels, spending, or expiring items.
+
+---
+
+== Summary of Tagged Domain Concepts
+
+[cols="1,2,2,2", options="header"]
+|===
+|Unit |Main Concept |Kind |Attribute
+
+|DDU-001
+|Inventory Ownership
+|Entity / Relationship
+|Static
+
+|DDU-002
+|Product
+|Entity
+|Static
+
+|DDU-003
+|Stock Tracking
+|Entity / Behavior
+|Reactive
+
+|DDU-004
+|Low-Stock Status
+|Behavior
+|Reactive
+
+|DDU-005
+|Expiration Monitoring
+|Behavior / State
+|Reactive
+
+|DDU-006
+|Alert Generation
+|Event / Behavior
+|Active / Reactive
+
+|DDU-007
+|Restocking
+|Function / Event
+|Active
+
+|DDU-008
+|Item Consumption
+|Function / Event
+|Active
+
+|DDU-009
+|Household Membership
+|Entity / Relationship
+|Static
+
+|DDU-010
+|Invitation Flow
+|Function / Event
+|Active
+
+|DDU-011
+|Budget Tracking
+|Entity / Function
+|Active
+
+|DDU-012
+|Dashboard and Reporting
+|Function
+|Active
+|===
+
+---
+
+== Observations
+
+The tagged domain description units show that the Home Inventory System contains both structural and behavioral domain facts.
+
+Structural facts include concepts such as:
+
+* User
+* Inventory
+* Product
+* Stock
+* Household
+* Household Member
+
+Behavioral facts include concepts such as:
+
+* Stock updates
+* Restocking
+* Item consumption
+* Expiration monitoring
+* Alert generation
+* Invitation handling
+
+The tagging process also shows that some concepts belong to more than one classification. For example, stock can be treated as an entity because it stores product quantity, but it also participates in behavior because its status changes when quantity changes.
+
+---
+
+== Conclusion
+
+The Domain Description Units and Tagging analysis helps organize important facts from the Digital Home Inventory System into a more structured form.
+
+By classifying facts according to stakeholder group, phenomenon or concept, kind, attribute, and facet, the system domain becomes easier to understand and analyze. The tagged units show that the project includes a mix of static entities, active user functions, reactive system behaviors, and event-based changes.
+
+This structure provides a stronger foundation for future domain analysis, concept formation, and system refinement.

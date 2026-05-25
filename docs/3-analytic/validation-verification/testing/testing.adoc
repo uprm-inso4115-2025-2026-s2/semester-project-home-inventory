@@ -8,6 +8,13 @@ Testing is the main verification mechanism for this project. For Milestone 1, th
 * *Automated tests:* unit, integration, and verification tests run on pull requests and before merge. At minimum, affected tests must pass before changes are merged.
 * *Manual checks:* short repeatable smoke checks are performed after merges for stakeholder-visible behaviors such as item updates, alerts, and shared inventory consistency.
 
+==== Supabase integration tests (guidance)
+
+* Run Supabase integration tests only against a dedicated test project or schema; never run destructive tests against production.
+* Track all created resources (users, inventories, products) during tests and call a centralized `cleanup()` in `tearDownAll()` to delete them.
+* Be aware: deleting auth users may require elevated/admin privileges; tests should handle failures gracefully and log resources for manual cleanup if needed.
+* Prefer idempotent test data and explicit resource naming (test_ prefix) to avoid collisions and simplify cleanup.
+
 === Test Types
 
 * *Unit tests:* verify isolated rules such as threshold crossing, expiration handling, ownership changes, state transitions, and transaction creation.

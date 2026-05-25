@@ -1,0 +1,231 @@
+= Milestone 3 - Week 2 Report: Team 2 - Alerts & Restock
+:author: Solimar Cruz
+:toc:
+
+== Team
+
+Team 2 - Alerts & Restock
+
+== Reporting Period
+
+Milestone 3 - Week 2
+
+== Summary
+
+During Week 2 of Milestone 3, Team 2 continued working on development, documentation, and feature improvements for the Alerts & Restock module of the Home Inventory System. The team focused on improving grocery list functionality, documenting system architecture, analyzing low-stock alert behavior, modeling threshold-based restock actions, and continuing work on inventory stock movement tracking.
+
+The team also completed and approved the task related to fixing compilation errors, which helped stabilize the project and allowed development to continue more smoothly.
+
+== Work Completed
+
+=== Fix Compilation Errors
+
+Team 2 completed the task for fixing compilation errors.
+
+This task was important because unresolved compilation errors can block development and testing. By resolving these errors, the team improved the stability of the project and made it easier to continue implementing the Alerts & Restock features.
+
+[source,text]
+----
+Issue #570 - Fix Compilation Errors
+Status: Completed and Approved
+----
+
+== Work Currently In Progress
+
+During Week 2, Team 2 worked on several active tasks related to development and documentation.
+
+[cols="1,3,1", options="header"]
+|===
+|Issue |Title |Status
+
+|#638
+|Milestone 3 - Week 1 & Week 2: Alerts & Restock Weekly Report
+|Being Worked On
+
+|#625
+|Make Grocery List Items Display on Page
+|Being Worked On
+
+|#615
+|Concept Formation and Abstraction in the Home Inventory System
+|Being Worked On
+
+|#600
+|Analysis of Low-Stock Alert Trigger Conditions in Shared Household Inventories
+|Being Worked On
+
+|#599
+|Dependency Modeling Between Inventory Threshold Rules and Automated Restock Actions
+|Being Worked On
+
+|#313
+|Implement Inventory Stock Movement Tracking
+|Being Worked On
+|===
+
+== Tasks Awaiting Assignment
+
+Several tasks were also prepared for Team 2 and are awaiting assignment. These tasks are mainly related to routing, documentation, diagrams, and architectural clarity.
+
+[cols="1,3,1", options="header"]
+|===
+|Issue |Title |Status
+
+|#654
+|Add Route and Navigation Link for Alerts & Notifications Screen
+|Awaiting Assignment / Fix Needed
+
+|#649
+|Document Implementation Decisions and Trade-offs
+|Awaiting Assignment
+
+|#648
+|Add Architecture Overview Diagram
+|Awaiting Assignment
+
+|#647
+|Add State Diagram for the Item Lifecycle
+|Awaiting Assignment
+|===
+
+== Main Contributions
+
+=== Grocery List Display Work
+
+The team worked on making grocery list items display on the page.
+
+This feature is important because the Alerts & Restock module depends on users being able to see which items need to be restocked. When an item becomes low in stock or out of stock, the system should be able to create or update a grocery list item, and that item should appear clearly on the grocery list page.
+
+Expected behavior:
+
+[source,text]
+----
+Inventory item becomes low or out of stock
+        |
+        v
+System detects restock condition
+        |
+        v
+Grocery list item is created or updated
+        |
+        v
+Grocery list page displays the item
+----
+
+=== Low-Stock Alert Trigger Analysis
+
+The team worked on analyzing the conditions that trigger low-stock alerts in shared household inventories.
+
+The main condition being documented is:
+
+[source,text]
+----
+0 < current_quantity <= minimum_threshold
+----
+
+This means that an item should trigger a low-stock alert when its quantity is greater than zero but less than or equal to the minimum threshold. If the quantity reaches zero, the system should treat the item as out of stock instead of low stock.
+
+This task helps clarify how alerts should behave when inventory quantities change.
+
+=== Dependency Modeling Between Threshold Rules and Restock Actions
+
+The team also worked on documenting how inventory threshold rules influence automated restock actions.
+
+This analysis focuses on how item quantity, stock thresholds, and inventory status determine whether the system should create or update a grocery list item.
+
+Basic dependency flow:
+
+[source,text]
+----
+Inventory quantity changes
+        |
+        v
+Threshold rule is evaluated
+        |
+        v
+Low-stock or out-of-stock condition is detected
+        |
+        v
+Automated restock action is triggered
+        |
+        v
+Grocery list is created or updated
+----
+
+This documentation supports the design of the Restock Automation Engine.
+
+=== Inventory Stock Movement Tracking
+
+The team continued working on inventory stock movement tracking.
+
+This task focuses on tracking how item quantities change over time. It supports the Alerts & Restock module because stock movement history can help explain why an item became low, empty, or restocked.
+
+Examples of stock movement events include:
+
+[source,text]
+----
+- Item quantity decreases after use
+- Item quantity increases after restocking
+- Item quantity reaches the low-stock threshold
+- Item quantity reaches zero
+- Item quantity changes because of a household member update
+----
+
+=== Concept Formation and Abstraction
+
+The team worked on a lecture topic task related to concept formation and abstraction in the Home Inventory System.
+
+This task helps identify the main concepts used in the system and organize them into clearer domain abstractions. For Team 2, this is useful for understanding concepts such as alerts, inventory items, thresholds, restock actions, and grocery list entries.
+
+=== Architecture and Documentation Preparation
+
+Several architecture and documentation tasks were created or prepared during Week 2. These include documenting implementation decisions, adding an architecture overview diagram, and adding a state diagram for the item lifecycle.
+
+These tasks will help explain how the Alerts & Restock module is structured and how inventory items move through different states.
+
+== Blockers and Challenges
+
+=== Routing and Navigation Fixes
+
+The task for adding the route and navigation link for the Alerts & Notifications screen is marked as needing a fix. This may block users from accessing the alerts screen properly until the routing issue is resolved.
+
+=== Duplicate Grocery List Entries
+
+The system needs to avoid creating duplicate grocery list entries when the same item is already listed. This is important for the Restock Automation Engine and grocery list display.
+
+=== Shared Household Updates
+
+Since multiple household members can update inventory items, the system must use the latest saved quantity before triggering alerts or restock actions.
+
+=== Alert Consistency
+
+Low-stock and out-of-stock alerts must be triggered correctly. The system should avoid repeated notifications for the same item when an alert is already active.
+
+=== Documentation Alignment
+
+The team needs to make sure all documentation, diagrams, and lecture topic tasks match the current implementation of the Alerts & Restock module.
+
+== Plans for Next Week
+
+Next week, Team 2 plans to continue working on both implementation and documentation tasks.
+
+Planned work includes:
+
+[source,text]
+----
+- Continue implementing grocery list item display
+- Continue improving inventory stock movement tracking
+- Complete low-stock alert trigger documentation
+- Complete dependency modeling documentation
+- Work on the architecture overview diagram
+- Work on the item lifecycle state diagram
+- Review and fix routing for the Alerts & Notifications screen
+- Continue documenting implementation decisions and trade-offs
+- Test low-stock, out-of-stock, and grocery list automation behavior
+----
+
+== Conclusion
+
+During Week 2 of Milestone 3, Team 2 made progress on both development and documentation for the Alerts & Restock module. The team completed the compilation error fix task and continued working on grocery list display, low-stock alert analysis, threshold dependency modeling, concept abstraction, and inventory stock movement tracking.
+
+The main focus moving forward is to continue improving the connection between inventory changes, alert generation, and automated grocery list updates while keeping the documentation aligned with the current system implementation.

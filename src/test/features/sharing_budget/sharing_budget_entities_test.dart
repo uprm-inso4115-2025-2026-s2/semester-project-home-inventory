@@ -149,6 +149,102 @@ void main() {
     });
   });
 
+  group('BudgetEntity computedEndDate', () {
+    test('weekly: ends 6 days after startDate', () {
+      final budget = BudgetEntity(
+        id: 1, householdId: 1, limitAmount: 100,
+        period: BudgetPeriod.weekly,
+        startDate: DateTime(2026, 3, 2),
+      );
+      expect(budget.computedEndDate, DateTime(2026, 3, 8));
+    });
+
+    test('monthly: ends the day before the same date next month', () {
+      final budget = BudgetEntity(
+        id: 1, householdId: 1, limitAmount: 100,
+        period: BudgetPeriod.monthly,
+        startDate: DateTime(2026, 1, 15),
+      );
+      expect(budget.computedEndDate, DateTime(2026, 2, 14));
+    });
+
+    test('monthly: wraps correctly across year boundary', () {
+      final budget = BudgetEntity(
+        id: 1, householdId: 1, limitAmount: 100,
+        period: BudgetPeriod.monthly,
+        startDate: DateTime(2026, 12, 1),
+      );
+      expect(budget.computedEndDate, DateTime(2026, 12, 31));
+    });
+
+    test('yearly: ends the day before the same date next year', () {
+      final budget = BudgetEntity(
+        id: 1, householdId: 1, limitAmount: 100,
+        period: BudgetPeriod.yearly,
+        startDate: DateTime(2026, 1, 15),
+      );
+      expect(budget.computedEndDate, DateTime(2027, 1, 14));
+    });
+  });
+
+  group('BudgetEntity covers()', () {
+    final monthly = BudgetEntity(
+      id: 1, householdId: 1, limitAmount: 500,
+      period: BudgetPeriod.monthly,
+      startDate: DateTime(2026, 3, 10),
+    );
+
+    test('start date is covered', () {
+      expect(monthly.covers(DateTime(2026, 3, 10)), isTrue);
+    });
+
+    test('end date is covered', () {
+      expect(monthly.covers(DateTime(2026, 4, 9)), isTrue);
+    });
+
+    test('day after end date is not covered', () {
+      expect(monthly.covers(DateTime(2026, 4, 10)), isFalse);
+    });
+
+    test('day before start date is not covered', () {
+      expect(monthly.covers(DateTime(2026, 3, 9)), isFalse);
+    });
+
+    test('mid-period date is covered', () {
+      expect(monthly.covers(DateTime(2026, 3, 25)), isTrue);
+    });
+
+    test('time-of-day is ignored: midnight on start date is covered', () {
+      expect(monthly.covers(DateTime(2026, 3, 10, 0, 0, 0)), isTrue);
+    });
+
+    test('time-of-day is ignored: end of day on end date is covered', () {
+      expect(monthly.covers(DateTime(2026, 4, 9, 23, 59, 59)), isTrue);
+    });
+
+    test('weekly covers exactly 7 days', () {
+      final weekly = BudgetEntity(
+        id: 2, householdId: 1, limitAmount: 100,
+        period: BudgetPeriod.weekly,
+        startDate: DateTime(2026, 3, 2),
+      );
+      expect(weekly.covers(DateTime(2026, 3, 2)), isTrue);
+      expect(weekly.covers(DateTime(2026, 3, 8)), isTrue);
+      expect(weekly.covers(DateTime(2026, 3, 9)), isFalse);
+    });
+
+    test('yearly covers correct range', () {
+      final yearly = BudgetEntity(
+        id: 3, householdId: 1, limitAmount: 5000,
+        period: BudgetPeriod.yearly,
+        startDate: DateTime(2026, 6, 1),
+      );
+      expect(yearly.covers(DateTime(2026, 6, 1)), isTrue);
+      expect(yearly.covers(DateTime(2027, 5, 31)), isTrue);
+      expect(yearly.covers(DateTime(2027, 6, 1)), isFalse);
+    });
+  });
+
   group('BudgetEntity equality', () {
     final startDate = DateTime(2025, 1, 1);
 

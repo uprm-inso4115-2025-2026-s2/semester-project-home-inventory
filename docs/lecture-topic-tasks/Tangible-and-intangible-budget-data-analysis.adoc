@@ -1,0 +1,120 @@
+= Lecture Topic Task:Tangible and Intangible Budget Data Analysis
+:author: @nataliavera6
+
+**AI Disclosure:** Portions of this lecture topic task were drafted and refined with the assistance of AI tools. All content, metrics, and conclusions have been thoroughly reviewed, edited, and verified by the human author to ensure complete accuracy and project alignment.
+
+== Objective
+
+This document classifies the core budget-related phenomena of the Budget Analyzer screen based on their tangibility: *tangible financial data* or *intangible analysis concepts*. This classification helps separate measurable values, such as item prices and purchase dates, from interpreted insights, such as budget health, financial risk, and spending behavior.
+
+This document follows the terminology used in the Budget Analyzer feature. In particular, it uses *Item price* for the monetary value of an inventory item, *Purchase date* for the recorded date of the expense, *Category* for the group assigned to an item or expense, and *Budget limit* for the maximum planned spending amount.
+
+== Tangibility Evaluation Matrix
+
+[cols="2,2,4", options="header"]
+|===
+| Phenomenon / Concept | Classification | Justification & Modeling Strategy
+
+| Item price
+| Tangible Financial Data
+| Represents a measurable monetary value entered by the user or stored by the system. It can be used directly to calculate total spending, category spending, and remaining budget.
+
+| Purchase date
+| Tangible Financial Data
+| Represents a specific recorded date associated with an item or expense. It supports time-based analysis, such as monthly spending trends or spending comparisons across periods.
+
+| Quantity
+| Tangible Financial Data
+| Represents a countable value connected to an inventory item. It affects total cost calculations when multiple units of the same item are purchased.
+
+| Category
+| Tangible Financial Data
+| Represents a selected classification assigned to an expense or inventory item. Although the category itself is a logical label, it is stored as structured data and can be used for filtering, grouping, and budget calculations.
+
+| Total cost
+| Tangible Financial Data
+| Represents a calculated monetary value based on item price and quantity. Because it can be computed directly from measurable values, it should be treated as tangible financial data.
+
+| Budget limit
+| Tangible Financial Data
+| Represents a specific monetary value set by the user. It provides the comparison point for determining whether the user is within, near, or over budget.
+
+| Spending behavior
+| Intangible Analysis Concept
+| Represents a pattern inferred from multiple financial entries over time. It is not directly entered as a single measurable value, so the system should only describe it when enough supporting data exists.
+
+| Financial risk
+| Intangible Analysis Concept
+| Represents an interpretation based on budget usage, repeated overspending, or missing financial data. It should be presented carefully to avoid unsupported or judgmental conclusions.
+
+| Budget health
+| Intangible Analysis Concept
+| Represents the overall condition of the user's budget based on measurable values such as total spent, remaining budget, and category totals. It should be expressed using clear labels such as "within budget," "near limit," or "over budget."
+
+| Overspending pattern
+| Intangible Analysis Concept
+| Represents a repeated behavior detected when spending exceeds the planned budget in one or more categories. It depends on historical spending data and should not be claimed from a single isolated expense.
+
+| User discipline or consistency
+| Intangible Analysis Concept
+| Represents an interpretation of how regularly the user follows budget limits or updates financial data. This should be avoided or worded carefully because it can sound personal or judgmental.
+
+| Recommended budget adjustments
+| Intangible Analysis Concept
+| Represents system-generated suggestions based on measurable spending data. Recommendations should explain what tangible data supports them, such as category totals or repeated over-budget records.
+|===
+
+== Boundary Cases & Engineering Rationale
+
+The separation boundary between tangible financial data and intangible analysis concepts is important because the Budget Analyzer should not make unsupported conclusions from limited or incomplete data.
+
+1. The Budget Health Boundary:
+
+ A value such as "$250 spent this month" is tangible financial data because it is measurable and can be calculated. However, saying that the user's "budget health is poor" is intangible because it interprets the meaning of that value.
+
+ Design Resolution: The system should use neutral labels such as "within budget," "near limit," or "over budget" instead of judgmental language. This keeps the analysis tied to measurable financial values.
+
+2. The Missing Data Problem:
+
+ If an item is missing a price or purchase date, the Budget Analyzer cannot fully calculate accurate spending totals or time-based trends.
+
+  Design Resolution: The system should display a clear message explaining that some data is missing. For example: "Some items are missing prices, so the budget total may be incomplete."
+
+3. The Overspending Interpretation:
+
+ If a category exceeds its budget once, the system can identify it as over budget. However, calling it an overspending pattern requires repeated evidence across multiple periods.
+
+ Design Resolution: The system should only describe something as a pattern when there are multiple examples supporting the conclusion. A single event should be labeled as an over-budget occurrence, not a behavioral pattern.
+
+4. The User Discipline Concern:
+
+ The original analysis concept includes user discipline or consistency, but this is risky because it can sound like the system is judging the user's personal habits.
+
+ Design Resolution: The Budget Analyzer should avoid personal labels. Instead of evaluating the user, the system should evaluate the data. For example, use "Budget updates have been inconsistent this month" instead of "The user is inconsistent."
+
+== User-Facing Language Guidelines
+
+The Budget Analyzer should use clear and respectful wording that is based on measurable financial data.
+
+[cols="2,2", options="header"]
+|===
+| Avoid Saying | Use Instead
+
+| Bad spending
+| Spending exceeded the planned limit.
+
+| Poor budget behavior
+| This category has repeated overspending.
+
+| You failed to stay within budget.
+| The monthly budget limit has been exceeded.
+
+| Your budget is wrong.
+| Some data is missing, so the analysis may be incomplete.
+
+| You are not managing your money well.
+| Current spending is higher than the selected budget limit.
+
+| Your financial risk is high because of bad habits.
+| This category has exceeded its planned limit multiple times.
+|===

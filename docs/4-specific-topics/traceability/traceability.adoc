@@ -127,14 +127,15 @@ For Milestone 1, traceability is extended to the main validation and verificatio
 * Which scenarios/tests must be revisited to verify the changed requirement?
 * Which domain concepts are involved in a given requirement (to avoid terminology drift)?
 
-=== Current traceability status (Milestone 1)
+=== Current traceability status (Milestone 3)
 
 We have established traceability for:
 
 * Persona goals: all personas have labeled goals (MG*, SG*, JG*, AG*).
-* Needs: core needs N1–N5 are referenced by the interface requirements.
-* Requirements: IR-01 through IR-08 are tagged to needs/goals and mapped to stories.
-* Validation/verification: key scenarios and initial test cases are linked to the most central IRs.
+* Needs: core needs N1–N5 are referenced by interface requirements and M3 refinements.
+* Requirements: IR-01 through IR-14, DR-1 through DR-25, and MR-01 through MR-08 are linked to needs, concepts, or Milestone 3 acquisition evidence where applicable.
+* Validation/verification: key scenarios and test cases are linked to the most central requirements.
+* Milestone 3 acquisition evidence: each requirement added or revised during Milestone 3 references a specific M3-QA source in Section 4.4.5.
 
 [NOTE]
 ====
@@ -142,3 +143,58 @@ Deferred items for later milestones:
 * Additional edge-case interface requirements captured under “Deferred edge cases (Milestone 2+)” will be traced once they are promoted into explicit IR IDs.
 * Domain requirements (DR-*) will be added to the traceability matrix once the DR list is finalized and terminology is normalized across all requirements.
 ====
+
+=== Milestone 3 Traceability Matrix Addendum
+
+[cols="1,2,2,2,2"]
+|===
+| M3 source | Requirement(s) added/revised | Need(s) | Domain concept(s) | Verification impact
+
+| M3-QA-01
+| DR-18, IR-09, MR-05
+| N4, N5
+| Visibility scope, Ownership, Household member
+| Add access-control tests for personal item visibility.
+
+| M3-QA-02
+| DR-19, IR-09, MR-05
+| N4, N5
+| Membership, Role-scoped permission
+| Add role matrix tests for viewer/member/admin behavior.
+
+| M3-QA-03
+| DR-20, IR-10, US-RPT-01
+| N1, N3, N4
+| Filtered inventory lookup, Location, Availability
+| Add UI/integration tests for inventory filters.
+
+| M3-QA-04
+| DR-21, IR-11, US-INV-01, MR-08
+| N1, N2
+| Fast fallback capture, Item type, Quantity
+| Add fallback manual-entry tests for failed barcode lookup.
+
+| M3-QA-05
+| DR-22, IR-12, US-SB-01, US-RPT-01
+| N5
+| Budget, Spending entry, Budget threshold crossing
+| Add tests for opt-in budget alert settings.
+
+| M3-QA-06
+| DR-23, IR-13, MR-07
+| N2, N4, N5
+| Shared alert audience, Alert / notification record
+| Add tests for deduplication and delivery preferences.
+
+| M3-QA-07
+| DR-24, IR-14
+| N2, N5
+| Restock list / planner, Restock override
+| Add tests for remove/snooze and no immediate re-add.
+
+| M3-QA-08
+| DR-25, MR-03
+| N1, N2
+| Pending offline change, Synchronization
+| Add offline queue and conflict handling tests.
+|===

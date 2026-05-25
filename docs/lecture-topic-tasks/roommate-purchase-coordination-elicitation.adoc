@@ -1,0 +1,270 @@
+= Roommate Purchase Coordination Elicitation Questions
+:author: Ernesto Soto
+:issue: 544
+
+== Purpose
+
+I am writing this document to create elicitation questions for roommate purchase coordination in the Sharing and Budget feature. The focus is how students and roommates coordinate shared purchases before buying household items.
+
+The main reason for this document is to help the team understand the domain before making more requirements or implementation decisions. This task does not create personas, implement features, or change duplicate prevention logic. It only creates a focused questionnaire that can later help the team learn how roommates actually plan, communicate, split costs, and avoid duplicate purchases.
+
+== Scope
+
+This document focuses only on roommate purchase coordination.
+
+Included in this scope:
+
+* How roommates decide who buys shared items.
+* How roommates communicate before buying something.
+* How duplicate purchases happen.
+* How planned purchases are tracked.
+* How costs are split after a shared purchase.
+* How purchase plans change.
+* How budget limits affect shared purchases.
+* How ownership is decided for shared and private items.
+* How much roommates trust shared inventory information.
+
+Not included in this scope:
+
+* General stakeholder identification
+* Persona creation
+* General inventory behavior
+* Full budgeting implementation
+* Duplicate prevention implementation
+* UI design
+* Database design
+
+== Connection to Domain Acquisition
+
+This task applies the Domain Acquisition lecture topic. The main idea is that the team should gather information from the domain before deciding exactly how the system should behave.
+
+For this task, the domain is shared student housing and roommate purchase coordination. The questionnaire should help the team collect information from people who have experience buying household items with roommates.
+
+The questions are a mix of open-ended and focused questions. Open-ended questions help discover unexpected information. Focused questions help gather specific facts about purchase planning, communication, budgeting, and duplicate purchases.
+
+== Background Questions
+
+[cols="1,3,3", options="header"]
+|===
+| ID
+| Question
+| Why this question matters
+
+| BQ-01
+| Do you currently live with roommates or share household items with other people?
+| This helps identify whether the respondent has direct experience with shared household purchases.
+
+| BQ-02
+| What types of items do you usually share with roommates?
+| This helps the team understand which items are usually treated as shared, such as groceries, cleaning supplies, or paper products.
+
+| BQ-03
+| How often do you or your roommates buy shared household items?
+| This helps estimate how frequent shared purchase coordination is in the real domain.
+|===
+
+== Roommate Coordination Questions
+
+[cols="1,3,3", options="header"]
+|===
+| ID
+| Question
+| Why this question matters
+
+| RC-01
+| How do you usually decide who is responsible for buying a shared item?
+| This helps identify whether responsibility is assigned, volunteered, rotated, or decided informally.
+
+| RC-02
+| How do you tell your roommates that you plan to buy something?
+| This helps the team understand the communication methods roommates already use, such as text messages, group chats, in-person reminders, or shared lists.
+
+| RC-03
+| What happens if two roommates both plan to buy the same item?
+| This helps identify real duplicate purchase situations before designing system behavior.
+
+| RC-04
+| Do roommates usually confirm with each other before buying a shared item?
+| This helps show whether coordination happens before the purchase or only after someone already buys the item.
+|===
+
+== Budget and Spending Questions
+
+[cols="1,3,3", options="header"]
+|===
+| ID
+| Question
+| Why this question matters
+
+| BS-01
+| How do you decide whether a shared purchase is affordable for the group?
+| This helps identify whether roommates consider budget limits before buying shared items.
+
+| BS-02
+| How do you split the cost after someone buys a shared item?
+| This helps the team understand common cost-sharing behavior, such as equal split, one person paying, or rotating responsibility.
+
+| BS-03
+| Do you track planned purchases before money is actually spent?
+| This helps connect purchase coordination to purchase intention and future budget impact.
+
+| BS-04
+| What happens if someone buys an item that other roommates did not agree to pay for?
+| This helps identify conflict points related to spending responsibility and shared budgeting.
+|===
+
+== Duplicate Purchase Questions
+
+[cols="1,3,3", options="header"]
+|===
+| ID
+| Question
+| Why this question matters
+
+| DP-01
+| Can you describe a time when you or a roommate accidentally bought a duplicate item?
+| This helps gather real examples of duplicate purchases instead of only assuming how they happen.
+
+| DP-02
+| What usually causes duplicate purchases in your household?
+| This helps identify causes such as poor communication, outdated inventory, forgotten plans, or unclear responsibility.
+
+| DP-03
+| How do you normally prevent two people from buying the same thing?
+| This helps identify existing prevention strategies that the system may support.
+
+| DP-04
+| If the app warned you that another roommate planned to buy the same item, would you trust that warning?
+| This helps evaluate whether planned purchase information could actually support duplicate prevention.
+|===
+
+== Trust and Reliability Questions
+
+[cols="1,3,3", options="header"]
+|===
+| ID
+| Question
+| Why this question matters
+
+| TR-01
+| How much do you trust shared lists or shared inventory information when deciding what to buy?
+| This helps the team understand whether users would rely on app information before buying something.
+
+| TR-02
+| What would make you stop trusting a shared purchase list?
+| This helps identify reliability problems, such as outdated information, forgotten updates, or incorrect ownership.
+
+| TR-03
+| How often do purchase plans change after someone says they will buy something?
+| This helps show whether purchase intentions need statuses such as planned, delayed, cancelled, or completed.
+
+| TR-04
+| What should happen when someone forgets to update that they bought or cancelled an item?
+| This helps identify possible recovery behavior and communication problems.
+|===
+
+== Follow-Up Questions
+
+[cols="1,3,3", options="header"]
+|===
+| ID
+| Question
+| Why this question matters
+
+| FU-01
+| Is there anything frustrating about how your household currently handles shared purchases?
+| This allows respondents to mention problems that were not covered by the previous questions.
+
+| FU-02
+| What would make shared purchase coordination easier for you?
+| This helps identify possible user needs without directly asking for a specific feature.
+
+| FU-03
+| What information would you want to see before deciding whether to buy a shared item?
+| This helps identify important data fields for future requirements.
+
+| FU-04
+| Are there any shared purchase situations that an app would not handle well?
+| This helps reveal edge cases and limitations in the domain.
+|===
+
+== Expected Domain Facts
+
+The team hopes to discover domain facts such as:
+
+* How roommates decide who buys shared items.
+* Which items are usually considered shared.
+* How roommates communicate planned purchases.
+* How often duplicate purchases happen.
+* Why duplicate purchases happen.
+* Whether roommates track purchases before they happen.
+* How costs are usually split.
+* How budget limits affect purchase decisions.
+* How ownership is decided after buying an item.
+* How much roommates trust shared inventory or shared purchase information.
+* What happens when a planned purchase is cancelled, delayed, or forgotten.
+
+These facts can later support Sharing and Budget requirements, duplicate prevention behavior, and purchase intention modeling.
+
+== Trustworthiness Notes
+
+If this questionnaire is used later, the team should document how trustworthy the responses are.
+
+Important notes to record:
+
+* Who answered the questionnaire.
+* Whether the respondent currently lives with roommates.
+* Whether the respondent has experience buying shared household items.
+* How the questionnaire was conducted.
+* Which responses were complete or incomplete.
+* Whether the respondent described actual behavior or ideal behavior.
+* Whether multiple respondents gave similar answers.
+* Whether any answer seems unclear or needs follow-up.
+* Any tags that help classify the response, such as budgeting, duplicate prevention, ownership, communication, or purchase intention.
+
+These notes matter because not all responses have the same value. A student who currently shares household purchases with roommates may provide more useful information than someone who has never had that experience.
+
+== Possible Tags for Responses
+
+The following tags can be used later to organize responses:
+
+* purchase-intention
+* planned-purchase
+* duplicate-prevention
+* roommate-communication
+* shared-budget
+* cost-splitting
+* item-ownership
+* trust-and-reliability
+* cancelled-purchase
+* delayed-purchase
+* shared-inventory
+
+== Risks and Assumptions
+
+There are some risks with this questionnaire.
+
+* The team may not conduct real interviews before the milestone.
+* Some respondents may describe ideal behavior instead of what they actually do.
+* Some questions may overlap with user needs or persona work if the scope becomes too broad.
+* The questionnaire may need adjustment if the Sharing and Budget feature changes.
+* Students may have different roommate arrangements, so not all answers will apply to every household.
+
+== Notes for Future Use
+
+If the team uses this questionnaire later, it should stay focused on roommate purchase coordination. The goal is not to collect general opinions about the entire app.
+
+The results can be used to improve:
+
+* Sharing and Budget requirements
+* Duplicate prevention rules
+* Purchase intention modeling
+* Budget planning behavior
+* Roommate communication assumptions
+* Future documentation for Team 3
+
+== Conclusion
+
+Roommate purchase coordination is important because many shared purchase decisions happen before someone actually buys an item. A focused elicitation questionnaire can help the team understand how roommates communicate, split costs, avoid duplicates, and handle changing purchase plans.
+
+By documenting these questions now, Team 3 has a simple reference that can support future domain analysis and requirements work without turning this task into implementation or persona documentation.

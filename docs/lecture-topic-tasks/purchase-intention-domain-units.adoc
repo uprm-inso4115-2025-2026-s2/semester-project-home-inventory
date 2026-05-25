@@ -1,0 +1,243 @@
+= Purchase Intention Domain Units
+:author: Ernesto Soto
+:issue: 543
+
+== Purpose
+
+I am writing this document to define purchase intention as a domain concept inside the Sharing and Budget feature. The focus is the moment when a roommate plans to buy an item before the purchase actually happens.
+
+The main reason for documenting this is to separate a planned purchase from other concepts like inventory items, completed purchases, budget records, duplicate warnings, and ownership records. This task does not implement a new feature. It only documents domain facts that can help the team understand how planned purchases affect roommate coordination, shared spending, and duplicate prevention.
+
+== Scope
+
+This document focuses only on purchase intention in the Sharing and Budget feature.
+
+Included in this scope:
+
+* A roommate plans to buy an item.
+* The planned item may affect shared spending.
+* Other roommates may need to know about the planned purchase.
+* A planned purchase may help prevent duplicate purchases.
+* A planned purchase may later become a completed purchase.
+* A planned purchase may be cancelled, delayed, ignored, or forgotten.
+* The planned purchase may affect budget expectations before money is actually spent.
+
+Not included in this scope:
+
+* Implementing purchase intention in the application
+* Creating database tables
+* Writing repository methods
+* Rewriting duplicate prevention rules
+* Changing budgeting edge cases
+* Creating UI screens
+* Updating item ownership logic
+
+== Domain Concept: Purchase Intention
+
+A purchase intention is a planned purchase that has not happened yet.
+
+For this project, it means that a roommate is thinking about buying or planning to buy an item for the household. This is different from a completed purchase because no money has been spent yet. It is also different from an inventory item because the item may not physically exist in the household yet.
+
+A purchase intention can still be useful because it gives other roommates early information. If one roommate plans to buy paper towels, milk, cleaning supplies, or another shared item, the rest of the household can avoid buying the same thing at the same time.
+
+== Why Purchase Intention Matters
+
+Purchase intention matters because roommate spending is not only about completed purchases. A lot of coordination happens before the purchase.
+
+For example, a roommate may say they are going to buy an item later that day. Another roommate may check the shared inventory or budget before buying the same item. If the planned purchase is visible, it can reduce duplicate purchases and make shared budgeting more predictable.
+
+This concept is important for Team 3 because Sharing and Budget already deals with spending, duplicate prevention, roommate coordination, and ownership. Purchase intention connects those areas without replacing them.
+
+== Tagged Domain Description Units
+
+The following units describe purchase intention as domain facts. Each unit includes a stakeholder group, phenomenon or concept, kind, attribute, and facet.
+
+[cols="1,2,2,1,1,1,3", options="header"]
+|===
+| Unit ID
+| Domain Fact
+| Stakeholder Group
+| Phenomenon or Concept
+| Kind
+| Attribute
+| Facet
+
+| SAB-PI-001
+| A roommate may declare an intention to purchase a shared household item before the item is actually bought.
+| Roommates
+| Purchase intention
+| Behavior
+| Dynamic
+| Coordination
+
+| SAB-PI-002
+| A purchase intention may help other roommates avoid buying the same item.
+| Roommates
+| Duplicate prevention
+| Function
+| Reactive
+| Coordination
+
+| SAB-PI-003
+| A planned purchase may affect the expected household budget before money is actually spent.
+| Roommates
+| Planned shared expense
+| Entity
+| Dynamic
+| Budgeting
+
+| SAB-PI-004
+| A purchase intention can change into a completed purchase after the roommate buys the item.
+| Roommate buyer
+| Intended purchase to completed purchase
+| Event
+| Dynamic
+| Budgeting
+
+| SAB-PI-005
+| A roommate may cancel or delay a planned purchase after other roommates already expected it to happen.
+| Roommates
+| Cancelled or delayed intention
+| Event
+| Dynamic
+| Communication
+
+| SAB-PI-006
+| A planned purchase may create confusion if it is not updated after the item is bought or cancelled.
+| Roommates
+| Outdated purchase intention
+| Behavior
+| Reactive
+| Communication
+
+| SAB-PI-007
+| A purchase intention may refer to an item that will later become shared, private, or group-owned.
+| Roommates
+| Future item ownership
+| Entity
+| Dynamic
+| Intrinsic
+
+| SAB-PI-008
+| A purchase intention may need basic details such as item name, expected buyer, planned date, and whether the item is shared.
+| Roommates
+| Purchase intention information
+| Entity
+| Static
+| Support technology
+|===
+
+== Explanation of the Domain Units
+
+The domain units above describe purchase intention as something that exists before a real purchase. This is why the concept is marked as dynamic in most cases. A purchase intention can be created, changed, cancelled, completed, or forgotten.
+
+Some units focus on communication because roommates need to understand each other's plans. Other units focus on budgeting because a planned purchase can affect how much money roommates expect to spend. Some units also connect to duplicate prevention because planned purchases can reduce the chance of two people buying the same item.
+
+== Difference From Related Concepts
+
+[cols="1,3", options="header"]
+|===
+| Concept
+| Difference from Purchase Intention
+
+| Inventory item
+| An inventory item is something that already exists in the household inventory. A purchase intention is only a plan to buy something.
+
+| Completed purchase
+| A completed purchase means the item was already bought and money was spent. A purchase intention happens before that.
+
+| Duplicate warning
+| A duplicate warning is a system response that warns users about possible overlap. A purchase intention is one reason why that warning may be useful.
+
+| Budget record
+| A budget record tracks actual or planned financial information. A purchase intention may affect the budget, but it is not the full budget record by itself.
+
+| Roommate ownership record
+| An ownership record explains who owns or shares the item. A purchase intention may suggest future ownership, but ownership is not final until the item is bought or assigned.
+|===
+
+== How Purchase Intention Supports Duplicate Prevention
+
+Purchase intention can support duplicate prevention without replacing the existing duplicate handling rules.
+
+[cols="1,3,3", options="header"]
+|===
+| Area
+| How purchase intention helps
+| Limitation
+
+| Early awareness
+| Roommates can see that someone already plans to buy an item.
+| The plan may change or be forgotten.
+
+| Duplicate prevention
+| A planned purchase can warn another roommate before they buy the same item.
+| The system still needs rules to decide when two items are similar enough to count as duplicates.
+
+| Budget planning
+| Roommates can estimate future spending before the purchase happens.
+| The actual cost may be different from the expected cost.
+
+| Coordination
+| Roommates can divide who is buying what.
+| This depends on roommates updating their plans honestly and on time.
+
+| Ownership
+| A planned purchase can include whether the item is expected to be shared or private.
+| Ownership may still change after the purchase is completed.
+|===
+
+== Possible Purchase Intention Information
+
+A purchase intention may include simple information such as:
+
+* Item name
+* Roommate planning to buy the item
+* Expected purchase date
+* Whether the item is shared or private
+* Estimated cost
+* Budget category
+* Status of the intention
+* Notes for other roommates
+
+The status of a purchase intention could be something like:
+
+* Planned
+* Cancelled
+* Delayed
+* Completed
+* Ignored or expired
+
+These are only possible examples. They are not implementation requirements.
+
+== Risks and Assumptions
+
+There are some risks in documenting purchase intention as a domain concept.
+
+* Purchase intention may not currently exist as a formal feature.
+* The team may decide it belongs inside duplicate prevention instead of being separate.
+* Some planned purchases may overlap with budgeting edge cases.
+* Roommates may forget to update their purchase plans.
+* A planned purchase may create false confidence if another roommate assumes it will happen.
+* The data model may change later, so these domain units may need updates.
+
+== Notes for Future Requirements
+
+If the team later turns purchase intention into a system feature, these domain units can support future requirements.
+
+Possible future requirements could include:
+
+* A roommate can record a planned purchase.
+* A roommate can cancel or update a planned purchase.
+* Other roommates can see planned shared purchases.
+* The system can warn users when a planned purchase may overlap with another item.
+* A planned purchase can become a completed purchase after the item is bought.
+* The system can show whether a planned purchase affects the household budget.
+
+These are only possible future requirements. This document is only focused on domain analysis.
+
+== Conclusion
+
+Purchase intention is useful because roommate coordination often happens before money is spent. A planned purchase can affect budgeting, duplicate prevention, communication, and future ownership.
+
+By documenting purchase intention as a domain concept, Team 3 has a clearer way to talk about planned purchases without confusing them with inventory items, completed purchases, duplicate warnings, budget records, or ownership records.

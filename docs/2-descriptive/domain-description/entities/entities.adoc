@@ -26,7 +26,7 @@ Key domain entities and artifacts. The entities below follow the terminology est
 
 |Item instance (package)
 |A concrete package or unit of an item type that exists in the household.
-|item type reference, location reference, ownership (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
+|item type reference, location reference, ownership status (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
 
 |Inventory (reality)
 |The set of item instances that physically exist in the household at a given time.
@@ -37,7 +37,7 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |artifact type (note/chat/list/memory), item reference (explicit or implicit), last-updated (if recorded)
 
 |Restock list / planner
-|A list of items judged to need replenishment soon.
+|A list of item types judged to need replenishment soon.
 |entries (item types), reason (low/out/expired), optional responsibility marker, status (active/deferred)
 
 |Alert / notification record
@@ -71,11 +71,5 @@ Key domain entities and artifacts. The entities below follow the terminology est
 
 [NOTE]
 ====
-Earlier drafts used terms such as *Home*, *Room*, *Product*, *Stock*, *Owner*, and *Member*. In this document, those terms are replaced by the unified vocabulary defined in the terminology section:
-
-* Home -> Household
-* Room -> Location
-* Product -> Item type
-* Stock -> Item instance (package)
-* Owner / Member -> Household member, with more specific role language used only where needed
+This section uses the canonical vocabulary defined in the terminology glossary. Deprecated vocabulary from earlier drafts has been consolidated into the current terms, such as *Household*, *Location*, *Item type*, *Item instance (package)*, and *Household member*.
 ====

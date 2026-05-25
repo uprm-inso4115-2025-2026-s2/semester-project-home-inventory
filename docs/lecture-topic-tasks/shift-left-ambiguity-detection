@@ -1,0 +1,158 @@
+= Shift-Left Ambiguity Detection: Low-Stock & Alerts Cluster
+:author: Devlin Hahn
+:date: 2026-05-16
+
+== Audit Based On
+
+Parasoft Webinar: Requirement Traceability for Safety-Critical Applications
+
+This shift-left inspection applies the webinar's principle of finding defects before coding by analyzing requirements for ambiguity, inconsistency, and untestability.
+
+---
+
+== Step 1: Ambiguous Requirements
+
+|===
+| Requirement | Text | What is Ambiguous? | How Could a Developer Misinterpret It?
+
+| DR-7
+| "short window (initially 30 seconds)"
+| What does "initially" mean? When does it change? Who decides to change it? Is this configurable at runtime or only in code?
+| Developer hardcodes 30 seconds permanently, thinking "initially" means "for now but we'll document the change later." When product asks for 45 seconds in Milestone 3, the developer argues it wasn't a requirement.
+
+| DR-14
+| "deduplicate alerts … triggered primarily on actionable state transitions"
+| What does "primarily" mean? What percentage? What are the exceptions where non-actionable transitions trigger alerts?
+| Developer implements 100% of alerts triggered by state transitions. When a user manually requests an inventory check and gets duplicate alerts, they file a bug. The developer says "primarily means mostly, not always" — but no one defined the exceptions.
+
+| IR-04
+| "optional threshold field … quick-edit affordance when an item is flagged as low-stock"
+| What is a "quick-edit affordance"? Is it a pencil icon? A long press? A swipe gesture? An inline text field?
+| Developer implements a pencil icon that opens a full edit screen (not "quick"). QA rejects because "quick" implies inline editing. Designer expects a long-press. Stakeholder expected a slider. No one agrees.
+
+| MR-02
+| "respond quickly enough that … no participant shall abandon a task due to perceived slowness"
+| What is "perceived slowness"? How many milliseconds? How many participants must abandon before it's a failure?
+| Developer adds no performance optimization because "perceived slowness is subjective." During usability testing, 2 participants abandon a task. Stakeholders argue. Developer says "the requirement didn't specify a threshold."
+
+|===
+
+---
+
+== Step 2: Conflicting Requirements
+
+**Checked pairs:**
+- DR-4 (exactly one household admin) vs permission-rules-definition.adoc (Owner role)
+- IR-03 (ownership specification) vs DR-6 (attribution retention)
+- DR-12 (threshold low-stock) vs IR-04 (threshold definition)
+
+|===
+| Requirement A | Requirement B | Conflict Description | Which Should Win?
+| DR-4: "Each Household shall have exactly one household admin role at a time"
+| permission-rules-definition.adoc: "Owner: full permissions … Member: add/edit/delete items"
+| DR-4 says exactly one admin role. permission-rules says Owner is admin-level, but also says Owners can transfer ownership and Member can become Owner. The doc does not specify if a household can have an Owner AND a separate admin role, or if Owner IS the admin.
+| DR-4 should win. The domain requirement is authoritative. Clarify: "Owner = household admin. Only one Owner exists at a time. Transfer ownership changes who the admin is."
+
+| IR-03: "mark an item as personal or shared, and if personal, associate it with a household member"
+| DR-6: "Spending entries shall remain attributed to the household member who made the purchase, even when inventory quantities are reorganized"
+| If a personal item is purchased by Member A but then marked as shared, should the spending entry stay attributed to Member A? Or become shared across household budget? IR-03 and DR-6 don't answer this.
+| DR-6 should win. Financial history is immutable. Spending attribution never changes, even if item ownership changes later. Document this explicitly.
+
+|===
+
+**Note:** No direct conflict found between DR-12 and IR-04. They are complementary.
+
+---
+
+== Step 3: Untestable Requirements
+
+|===
+| Requirement | Why Is It Untestable? | Rewrite to Make It Testable
+
+| MR-01: "The system shall remain operational during supervised usability testing. No unplanned downtime requiring restart shall occur during testing sessions"
+| What defines "testing sessions"? How long are they? What counts as "unplanned downtime"? A 2-second network retry? A 30-second Supabase connection loss? If a test session is 8 hours, is any restart a failure?
+| "During any 60-minute supervised usability testing session, the system shall experience zero unplanned restarts. Planned maintenance or explicit developer restarts are excluded. Network-related temporary disconnections (under 10 seconds) that auto-recover without user intervention do not count as downtime."
+
+| MR-02: "No participant shall abandon a task due to perceived slowness"
+| "Perceived slowness" is entirely subjective. One user's "fast" is another user's "slow." No participant abandoning a task is impossible to guarantee because abandonment depends on user personality, patience, and external distractions.
+| "For each usability testing session with 5 participants, 100% of participants shall complete the following tasks without manually canceling or navigating away: (1) add an item in under 60 seconds, (2) view low-stock alerts in under 3 seconds, (3) mark an item as consumed in under 10 seconds. Measured by screen recording timestamps."
+
+| DR-14: "The system shall deduplicate alerts and trigger them primarily on actionable state transitions, so that repeated checks without state change do not generate repeated alerts."
+| "Primarily" is not measurable. What percentage of alerts must come from state transitions? 90%? 95%? 99%? Also, what counts as a "repeated check"? Every minute? Every hour? Every AutoCheck run?
+| "The system shall generate alerts ONLY on actionable state transitions (NORMAL→LOW_STOCK, IN_STOCK→OUT_OF_STOCK, VALID→EXPIRED). The AutoCheck process running daily shall NOT generate new alerts for any item whose state has not changed since the previous day's AutoCheck. Zero duplicate alerts shall be generated across consecutive daily runs when no state changes occur."
+
+|===
+
+---
+
+== Step 4: Shift-Left Inspection Report
+
+=== 1. If you coded today from these requirements, what would likely break?
+
+**Risk 1: 30-Second Window Hardcoding (DR-7)**
+The word "initially" would be interpreted by most developers as "use 30 seconds for now, we can change it later when requirements update." But no requirement tells them it needs to be configurable. When product wants 45 seconds, the code would need a rewrite. This could have been prevented by writing "The system shall use a configurable short window, defaulting to 30 seconds, adjustable via environment variable or admin setting."
+
+**Risk 2: No Alert Deduplication Logic Exists (DR-14)**
+The requirement says "primarily" — a developer might implement 80% deduplication or 100% deduplication. Without a clear threshold, QA cannot write a test that fails or passes. The most likely outcome: developer implements no deduplication because "primarily" implies exceptions, and exceptions require more requirements. Feature ships with duplicate alerts on every AutoCheck.
+
+**Risk 3: Threshold Editing Experience Failure (IR-04)**
+Four different stakeholders would expect four different "quick-edit affordance" implementations. Developer builds one. Reviewers reject it. Rework takes 2 extra sprints. This could have been prevented by specifying: "When an item is flagged as low-stock, an inline pencil icon appears next to the threshold value. Tapping the pencil replaces the value with an editable text field and a save button."
+
+---
+
+=== 2. Which single requirement would you clarify first?
+
+**Original Requirement:**
+DR-14: "The system shall deduplicate alerts and trigger them primarily on actionable state transitions, so that repeated checks without state change do not generate repeated alerts."
+
+**Improved Requirement:**
+DR-14: "The system shall generate an alert for an item ONLY when the item's state transitions from one actionable status to another actionable status (e.g., NORMAL→LOW_STOCK, LOW_STOCK→OUT_OF_STOCK, VALID→EXPIRED). The AutoCheck process shall run daily. For any item whose state has not changed since the previous AutoCheck run, the system shall generate zero alerts. This 100% deduplication rule has no exceptions. Alert generation is idempotent per state transition."
+
+---
+
+=== 3. Equivalent requirements quality standard
+
+The webinar mentioned MISRA/CERT for code (coding standards that prevent undefined behavior).
+
+For requirements, the equivalent would be **EARS (Easy Approach to Requirements Syntax)** or **INCOSE Guide for Writing Requirements**.
+
+**Suggested rules for a project requirements quality standard:**
+
+.Suggested rules for a project requirements quality standard
+|===
+| Rule | Description | Example Violation
+
+| 1. No subjective adjectives
+| Avoid "fast," "easy," "quickly," "primarily," "initially"
+| ❌ "The system shall respond quickly" +
+  ✅ "The system shall respond within 500ms for 95% of requests"
+
+| 2. One requirement per sentence
+| No "ands" or "ors" combining multiple behaviors
+| ❌ "The system shall deduplicate alerts and trigger them primarily on state transitions" +
+  ✅ Split into two separate requirements
+
+| 3. Testable in one sentence
+| If you cannot describe how to test it in 10 words, rewrite it
+| ❌ "The system shall be user-friendly" +
+  ✅ "90% of new users complete onboarding without assistance"
+
+| 4. No ambiguous quantifiers
+| Avoid "some," "many," "several," "mostly," "primarily"
+| ❌ "Most alerts shall be deduplicated" +
+  ✅ "100% of alerts for unchanged states shall be suppressed"
+
+| 5. Define all affordances
+| If UI behavior is required, specify the interaction pattern
+| ❌ "quick-edit affordance" +
+  ✅ "inline pencil icon that opens an editable text field"
+|===
+
+---
+
+== References
+
+- `domain-requirements.adoc` – DR-4, DR-6, DR-7, DR-12, DR-14
+- `interface-requirements.adoc` – IR-03, IR-04
+- `machine-requirements.adoc` – MR-01, MR-02
+- `permission-rules-definition.adoc` – Owner/Member role definitions

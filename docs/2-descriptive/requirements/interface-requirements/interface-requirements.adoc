@@ -139,3 +139,53 @@ Every auto-merge of inventory quantities must be reversible within 10 seconds vi
 ==== IR-EC-I: Audit Trail for Edge-Case Resolutions
 
 Every edge-case resolution that modifies inventory state must generate a log entry containing at minimum: timestamp, user, household, source, action type, item type reference, item instance reference, spending entry reference, reason, and a reference to the previous state. This log must be accessible to the household admin.
+
+=== Milestone 3 Additional Interface Requirements
+
+* IR-09: Role-Based Visibility and Permission Controls
++
+The system shall provide interface behavior that reflects household role and ownership rules. Personal items shall be hidden from non-owners by default, shared items shall be visible to household members according to their role, and admin-only actions such as removing members or changing roles shall be visually separated from ordinary inventory actions.
++
+Needs: N4, N5 | Goals: SG3, JG3, AG2 | Domain concepts: Household member, Membership, Ownership, Item instance
++
+M3 source: M3-QA-01, M3-QA-02.
+
+* IR-10: Filtered Inventory Lookup
++
+The system shall provide inventory lookup controls for item name, location, category, ownership/scope, stock status, and expiration status. These controls shall support quick use while shopping or planning restock actions.
++
+Needs: N1, N3, N4 | Goals: MG1, SG3, AG3 | Domain concepts: Item type, Location, Availability, Ownership
++
+M3 source: M3-QA-03.
+
+* IR-11: Fast Manual Entry After Barcode Failure
++
+When barcode scanning fails, scanning is unavailable, or no product match is found, the system shall transition directly to a manual-entry fallback that allows saving an item with only item name and quantity/availability required. Optional details may be added immediately or later.
++
+Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Quantity, Availability
++
+M3 source: M3-QA-04.
+
+* IR-12: Budget Alert Preferences
++
+The system shall provide controls for enabling or disabling budget threshold alerts. When enabled, household members shall be able to review or configure warning thresholds, with default thresholds at 80% and 100% of the active budget.
++
+Needs: N5 | Goals: SG1, AG2 | Domain concepts: Budget, Budget cycle, Budget threshold crossing, Spending entry
++
+M3 source: M3-QA-05.
+
+* IR-13: Shared Alert Audience and Delivery Preferences
++
+The system shall show shared household alert records in-app to authorized household members while allowing individual delivery preferences for push notifications or grouped summaries. Repeated alerts for unchanged conditions shall be suppressed.
++
+Needs: N2, N4, N5 | Goals: MG2, AG1, SG3 | Domain concepts: Alert / notification record, Household, Household member, Actionable state
++
+M3 source: M3-QA-06.
+
+* IR-14: Restock List Override Controls
++
+The system shall allow authorized household members to remove or snooze auto-added restock list entries. The interface shall indicate when an entry was system-added and why it was added.
++
+Needs: N2, N5 | Goals: AG1, AG3, SG3 | Domain concepts: Restock list / planner, Replenishment, Low-stock judgment, Alert dismissed / deferred
++
+M3 source: M3-QA-07.

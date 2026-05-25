@@ -1,0 +1,540 @@
+= Glossary Quality Criteria and Key Term Audit
+:toc:
+:toclevels: 3
+
+== Purpose
+
+This Lecture Topic Task defines quality criteria for glossary terms and applies those criteria to key terminology used in the Home Inventory project. The goal is to improve documentation consistency, reduce ambiguity, and support clearer communication across domain analysis, requirements, design, implementation, and verification work.
+
+A glossary is useful only if its terms are clear enough for different teams to apply them consistently. In this project, terminology matters because the same ideas appear across multiple feature areas: core inventory, alerts and restock, sharing and budget, reports, authentication, and automation. If terms such as "inventory," "item," "alert," or "household member" are interpreted differently, later requirements and implementation decisions may become inconsistent.
+
+This audit does not replace the existing terminology file. Instead, it evaluates selected terms from the existing terminology documentation and identifies where the current definitions are strong, where they may create ambiguity, and where small refinements would improve usefulness.
+
+== Glossary Quality Criteria
+
+The following criteria are used to evaluate whether a glossary term is strong enough to support project communication and later requirements work.
+
+[cols="1,3,3",options="header"]
+|===
+| Criterion | Meaning | Why it matters
+
+| QC-1: Clear definition
+| The definition states what the term means in direct, understandable language.
+| Reduces ambiguity and helps all teams use the term the same way.
+
+| QC-2: Consistent with project terminology
+| The term uses other official project terms instead of informal or conflicting synonyms.
+| Prevents terminology drift across documentation sections.
+
+| QC-3: Distinct from related terms
+| The definition makes clear how the term differs from similar concepts.
+| Prevents overlapping meanings, especially between domain, requirements, and implementation terms.
+
+| QC-4: Useful for requirements and design decisions
+| The term helps the team reason about system behavior, responsibilities, permissions, alerts, or data modeling.
+| Ensures the glossary supports engineering decisions rather than only describing vocabulary.
+
+| QC-5: Traceable to context
+| The definition identifies whether the term belongs mainly to the domain, requirements, or implementation layer.
+| Helps readers understand whether the term describes the real-world problem, the system-to-be, or a technical solution.
+|===
+
+== Audit Method
+
+Each selected term is evaluated using three outcome labels:
+
+* *Strong:* The current definition is clear and useful with no major change needed.
+* *Needs minor refinement:* The term is mostly clear, but a small wording improvement would reduce ambiguity.
+* *Needs clarification:* The definition may overlap with another term or leave an important interpretation open.
+
+The audit focuses on 10 high-value terms because they are central to inventory tracking, sharing, alerts, and automation.
+
+== Key Term Audit
+
+=== 1. Household member
+
+Current definition:
+
+"A person who belongs to a household and participates in consuming, replenishing, or coordinating around items."
+
+Audit result: *Strong*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. The definition identifies the actor and the actor's role in the domain.
+
+| QC-2: Consistent with project terminology
+| Strong. It uses official terms such as household, consuming, replenishing, and coordinating.
+
+| QC-3: Distinct from related terms
+| Strong. The terminology file explicitly distinguishes "Household member" from "User," where "User" is system-facing.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports permissions, shared inventory visibility, replenishment responsibility, and household coordination.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain term.
+|===
+
+Recommendation:
+
+No major change needed. The definition is clear and useful. If the team wants even stronger distinction from "User," the notes could mention that a household member may or may not currently be logged into the system.
+
+Suggested refinement:
+
+"A person who belongs to a household and participates in consuming, replenishing, or coordinating around household items; in the system-to-be, a household member may correspond to a user account."
+
+=== 2. Tracked inventory record
+
+Current definition:
+
+"A representation of availability used by household members (fridge note, list, memory, chat message). May diverge from reality."
+
+Audit result: *Strong*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. It states that this is a representation, not the physical inventory itself.
+
+| QC-2: Consistent with project terminology
+| Strong. It uses "availability" and "household members," both official glossary terms.
+
+| QC-3: Distinct from related terms
+| Strong. It clearly differs from "Inventory (reality)."
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports the project's key idea that the system record can diverge from the real household state.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain artifact.
+|===
+
+Recommendation:
+
+No major change needed. This is one of the strongest glossary entries because it captures an important domain distinction.
+
+Suggested refinement:
+
+None required. Optional wording could say "may be incomplete, outdated, or wrong" to make the divergence more explicit.
+
+=== 3. Item type
+
+Current definition:
+
+"The kind of an item, independent of a specific package (e.g., 'Milk', 'Dish soap', 'Toilet paper')."
+
+Audit result: *Strong*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. The definition is short and understandable.
+
+| QC-2: Consistent with project terminology
+| Strong. It avoids the older synonym "Product."
+
+| QC-3: Distinct from related terms
+| Strong. It explicitly distinguishes the term from a specific package.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports inventory grouping, restock planning, barcode/product lookup, and category organization.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain entity.
+|===
+
+Recommendation:
+
+No major change needed.
+
+Suggested refinement:
+
+"The kind of household item independent of any specific physical package or unit, such as 'Milk,' 'Dish soap,' or 'Toilet paper.'"
+
+=== 4. Item instance (package)
+
+Current definition:
+
+"A concrete package or unit of an item type that physically exists in the household (e.g., a specific milk carton)."
+
+Audit result: *Strong*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. The definition identifies that the term refers to a physical unit.
+
+| QC-2: Consistent with project terminology
+| Strong. It correctly references item type and household.
+
+| QC-3: Distinct from related terms
+| Strong. It is clearly distinct from item type.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term is important for expiration tracking because expiration applies to specific packages, not only broad item types.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain entity.
+|===
+
+Recommendation:
+
+No major change needed. The term is especially important for expiration-related requirements.
+
+Suggested refinement:
+
+"A concrete package or unit of an item type that physically exists in the household, such as one specific milk carton or one specific medicine box."
+
+=== 5. Availability
+
+Current definition:
+
+"A household's current understanding of how much of an item is left, often qualitative ('full', 'almost empty', 'backup')."
+
+Audit result: *Needs minor refinement*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Mostly clear. The phrase "current understanding" correctly signals that availability may be approximate.
+
+| QC-2: Consistent with project terminology
+| Strong. The definition aligns with the tracked-record-versus-reality distinction.
+
+| QC-3: Distinct from related terms
+| Moderate. It is related to Quantity, Low-stock judgment, and Availability State, so the distinction could be sharper.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports low-stock logic, manual updates, and qualitative household behavior.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain property.
+|===
+
+Problem identified:
+
+The term is useful, but it could be confused with exact quantity or with system-derived actionable states. Availability is the household's understanding of what remains; quantity is a precise or approximate measure; actionable state is a system-recognized condition such as LOW_STOCK or OUT_OF_STOCK.
+
+Recommendation:
+
+Clarify that availability can be qualitative or quantitative, and that it may be represented in the system as quantity or state later.
+
+Suggested refinement:
+
+"A household's current understanding of how much of an item is left. Availability may be qualitative, such as 'full' or 'almost empty,' or represented later as a quantity or actionable state in the system."
+
+=== 6. Low-stock judgment
+
+Current definition:
+
+"A decision that an item is running low, based on a household strategy ('feels light', 'opened backup') or a numeric threshold. Not inherently numeric."
+
+Audit result: *Strong*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. The definition explains that low-stock can come from either human judgment or numeric threshold.
+
+| QC-2: Consistent with project terminology
+| Strong. It uses household strategy, backup, and threshold language consistently.
+
+| QC-3: Distinct from related terms
+| Strong. The note "Not inherently numeric" helps distinguish domain judgment from implementation-level threshold logic.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports both manual and automated low-stock detection strategies.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain event/rule.
+|===
+
+Recommendation:
+
+No major change needed. This term is well-defined and helps prevent a common design mistake: assuming that all low-stock conditions must be numeric.
+
+Suggested refinement:
+
+None required. Optional wording could mention that the system may later formalize this judgment through a reorder point or threshold.
+
+=== 7. Alert / notification (domain-level)
+
+Current definition:
+
+"A message that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed). Delivery method is an implementation choice."
+
+Audit result: *Needs minor refinement*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. It identifies the purpose of the message.
+
+| QC-2: Consistent with project terminology
+| Strong. It uses household member and actionable condition.
+
+| QC-3: Distinct from related terms
+| Moderate. The distinction from Notification record and Push notification is present in the notes, but could be made more explicit.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. The definition correctly separates the domain-level alert from implementation delivery.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain artifact/event.
+|===
+
+Problem identified:
+
+The term combines "alert" and "notification," which is acceptable if the project treats them interchangeably at the domain level. However, later documents also define "Notification record," "Push notification," and "In-app notification list," so the definition should emphasize that this term refers to the domain message concept, not the stored database record or delivery mechanism.
+
+Recommendation:
+
+Keep the term, but sharpen its distinction from implementation-specific notification objects.
+
+Suggested refinement:
+
+"A domain-level message concept that informs a household member about an actionable condition, such as low-stock, out-of-stock, near-expiry, expired, or budget threshold crossed. It does not specify whether the message is stored in-app, pushed to a device, or delivered by another mechanism."
+
+=== 8. Notification record
+
+Current definition:
+
+"A persisted representation of an alert, including type, timestamp, and read/unread status, available at minimum for in-app review."
+
+Audit result: *Strong*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. It states that this is a persisted representation, not merely the message concept.
+
+| QC-2: Consistent with project terminology
+| Strong. It references alert and in-app review consistently.
+
+| QC-3: Distinct from related terms
+| Strong. It is distinct from domain-level Alert / notification and Push notification.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. It supports database schema, notification lifecycle, read/unread state, and verification.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Requirements record.
+|===
+
+Recommendation:
+
+No major change needed.
+
+Suggested refinement:
+
+"A persisted requirements-level representation of a domain alert, including type, timestamp, recipient, and read/unread or lifecycle status, available at minimum for in-app review."
+
+=== 9. Scheduled sweep
+
+Current definition:
+
+"A periodic background check that evaluates low-stock and expiration conditions without requiring the user to open the system."
+
+Audit result: *Needs minor refinement*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. The definition explains the basic function.
+
+| QC-2: Consistent with project terminology
+| Mostly strong. It uses low-stock and expiration conditions consistently.
+
+| QC-3: Distinct from related terms
+| Moderate. It could be more clearly distinguished from immediate transaction-based checks.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports automation, observability, retries, and alert generation.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Requirements function.
+|===
+
+Problem identified:
+
+The definition explains what the scheduled sweep is, but does not mention that some checks may happen immediately after transactions while scheduled sweeps handle periodic evaluation. This distinction matters because other project documents describe a hybrid timing model.
+
+Recommendation:
+
+Clarify that scheduled sweep is periodic and background-based, not the only possible evaluation mechanism.
+
+Suggested refinement:
+
+"A periodic background check that evaluates low-stock, near-expiry, and expiration conditions without requiring the user to open the system. It is distinct from immediate checks that may occur after a transaction or quantity change."
+
+=== 10. Restock list / planner
+
+Current definition:
+
+"A household-oriented list of items that should be replenished soon (fridge note, notes-app list, chat). Delivery method is not part of the domain."
+
+Audit result: *Needs minor refinement*
+
+[cols="1,3",options="header"]
+|===
+| Criterion | Evaluation
+
+| QC-1: Clear definition
+| Clear. The definition describes the purpose of the list.
+
+| QC-2: Consistent with project terminology
+| Strong. It uses household-oriented and replenished language consistently.
+
+| QC-3: Distinct from related terms
+| Moderate. It could better distinguish a restock list entry from a restock action or replenishment decision.
+
+| QC-4: Useful for requirements and design decisions
+| Strong. This term supports auto-add rules, duplicate prevention, and shopping planning.
+
+| QC-5: Traceable to context
+| Strong. It is marked as a Domain artifact.
+|===
+
+Problem identified:
+
+The term is clear, but the word "planner" may imply more advanced scheduling or optimization than currently required. The definition should keep the scope lightweight.
+
+Recommendation:
+
+Clarify that the restock list / planner is an artifact for tracking intended replenishment, not necessarily an automated shopping optimizer.
+
+Suggested refinement:
+
+"A household-oriented artifact that records item types intended for replenishment soon. It may be manual or system-assisted, but it does not by itself imply advanced shopping optimization."
+
+== Summary of Audit Results
+
+[cols="2,2,4",options="header"]
+|===
+| Term | Audit Result | Main Finding
+
+| Household member
+| Strong
+| Clear domain actor; well distinguished from system-facing User.
+
+| Tracked inventory record
+| Strong
+| Strong distinction between real inventory and tracked representation.
+
+| Item type
+| Strong
+| Clear distinction from item instance/package.
+
+| Item instance (package)
+| Strong
+| Important for expiration-specific reasoning.
+
+| Availability
+| Needs minor refinement
+| Should more clearly distinguish qualitative availability from quantity and actionable state.
+
+| Low-stock judgment
+| Strong
+| Correctly avoids assuming that low-stock must be numeric.
+
+| Alert / notification (domain-level)
+| Needs minor refinement
+| Should more explicitly distinguish domain alert concept from stored notification record and delivery mechanism.
+
+| Notification record
+| Strong
+| Clear requirements-level concept for persisted alerts.
+
+| Scheduled sweep
+| Needs minor refinement
+| Should distinguish periodic sweep from immediate transaction-based checks.
+
+| Restock list / planner
+| Needs minor refinement
+| Should avoid implying advanced planning or optimization beyond current scope.
+|===
+
+== Recommended Improvements
+
+The following improvements are recommended for future terminology refinement.
+
+=== Recommendation 1: Preserve the domain vs requirements vs implementation distinction
+
+The current terminology file already tags each term by phase. This should be preserved because it helps prevent confusion between real-world concepts and system-specific mechanisms.
+
+Examples:
+
+* Domain-level: `Alert / notification (domain-level)`
+* Requirements-level: `Notification record`
+* Implementation-level: `Push notification` and `In-app notification list`
+
+This distinction should continue to be enforced across project documentation.
+
+=== Recommendation 2: Strengthen terms that sit between human behavior and system behavior
+
+Terms such as `Availability`, `Low-stock judgment`, and `Scheduled sweep` are important because they connect real-world household behavior to system logic. These terms should explicitly state whether they describe:
+
+* a household member's understanding,
+* a system-computed state,
+* a persisted record,
+* or a background function.
+
+This reduces the risk of treating approximate human judgment as exact system truth.
+
+=== Recommendation 3: Avoid redefining glossary terms in feature-specific documents
+
+Feature documents should use the official terminology instead of redefining terms locally. If a team needs a feature-specific interpretation, it should either:
+
+* reference the official glossary term, or
+* propose a refinement to `terminology.adoc`.
+
+This prevents terminology drift across Core Inventory, Alerts & Restock, Sharing & Budget, and Reports & Insights.
+
+=== Recommendation 4: Add examples only when they clarify scope
+
+Examples are useful when they prevent ambiguity. For example, "Milk" as an item type and "a specific milk carton" as an item instance help clarify the distinction. However, examples should not replace the definition.
+
+The strongest entries in the terminology file combine both:
+
+* a general definition,
+* and a concrete example.
+
+== Implications for Milestone 3
+
+This audit supports Milestone 3 by improving the reliability of the documentation base used for implementation and review. A consistent glossary helps teams write requirements, design workflows, and verify behavior using the same language.
+
+The most important terminology distinction to preserve is:
+
+* real-world household domain concepts,
+* system-to-be requirements concepts,
+* and implementation mechanisms.
+
+Keeping these layers separate will reduce ambiguity as the project moves from documentation into more concrete implementation, validation, and verification work.
+
+== Conclusion
+
+The existing terminology documentation is generally strong. Most key terms are clear, well-scoped, and useful for later requirements and design decisions. The strongest entries are those that explicitly distinguish related concepts, such as `Item type` vs. `Item instance (package)` and `Inventory (reality)` vs. `Tracked inventory record`.
+
+The main improvement needed is not a full rewrite of the glossary. Instead, the team should make small refinements to terms that bridge domain behavior and system behavior, especially `Availability`, `Alert / notification (domain-level)`, `Scheduled sweep`, and `Restock list / planner`.
+
+These refinements would improve consistency while preserving the existing terminology structure.

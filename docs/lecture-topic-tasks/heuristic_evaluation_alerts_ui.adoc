@@ -1,0 +1,45 @@
+= Heuristic Evaluation and Usability Verification of the Alerts Interface
+:toc: left
+:icons: font
+
+== 1. Introduction
+
+In Software Engineering, Verification and Validation (V&V) extends beyond unit testing backend logic; it also requires verifying that the User Interface (UI) meets the established Non-Functional Requirements (NFRs) for usability. 
+
+This document conducts a formal **Heuristic Evaluation**, a standard usability engineering method for finding usability problems in a UI design, on the Alerts & Notifications UI (`AlertCard` and `AlertModal`). We evaluate the system against Jakob Nielsen’s 10 General Principles for Interaction Design to verify that the interface is highly usable and prevents human error.
+
+== 2. Scope of Evaluation
+
+The evaluation focuses on the primary components of the Alerts Feed:
+* **`AlertCard`**: The list item displaying the alert, integrated with `flutter_slidable` for swipe gestures.
+* **`AlertModal`**: The dynamic, stateful dialog used to update item counts, expiration dates, and confirm actions.
+
+== 3. Usability Heuristics Verified
+
+Our implementation successfully verifies several key heuristics. Below is the analysis of the top four heuristics applied in our UI:
+
+=== 3.1. Heuristic 5: Error Prevention
+* **Definition:** Even better than good error messages is a careful design which prevents a problem from occurring in the first place.
+* **Verification in our UI:** Instead of providing a free-text `TextField` for updating the inventory count (which allows users to input invalid data like negative numbers, letters, or special characters), the `AlertModal` implements constrained `+` and `-` `IconButton` widgets. The state (`_itemCount`) logically prevents the count from dropping below zero. By constraining the inputs, we guarantee that the backend will only receive clean, predictable data.
+
+=== 3.2. Heuristic 9: Help Users Recognize, Diagnose, and Recover from Errors
+* **Definition:** Error messages should be expressed in plain language, precisely indicate the problem, and constructively suggest a solution.
+* **Verification in our UI:**
+  During the development of the "Update Expiration Date" flow, we actively decided against using global `SnackBar` notifications for errors. SnackBars appear at the bottom of the screen (Scaffold level), disconnecting the error from the user's focus area inside the Modal. 
+  Instead, we implemented **Inline Error Validation**. If a user attempts to save without selecting a valid date, a red (`AppTheme.redAccent`) error text appears directly above the "Save" button stating: _"Please select a valid date before saving."_ This immediately draws the user's attention to the exact point of failure, enabling instant recovery.
+
+=== 3.3. Heuristic 7: Flexibility and Efficiency of Use
+* **Definition:** Accelerators—unseen by the novice user—may often speed up the interaction for the expert user so that the system can cater to both inexperienced and experienced users.
+* **Verification in our UI:**
+  To make the app efficient for frequent users (like roommates who just want to quickly manage groceries), we implemented the `flutter_slidable` package in the `AlertCard`. 
+  While novice users can tap the `...` menu to see all options, expert users can simply **Swipe Right** to add an item to the grocery list, or **Swipe Left** to dismiss the alert entirely. This frictionless interaction drastically reduces the time required to perform routine inventory maintenance.
+
+=== 3.4. Heuristic 1: Visibility of System Status
+* **Definition:** The design should always keep users informed about what is going on, through appropriate feedback within a reasonable amount of time.
+* **Verification in our UI:**
+  When an action is taken inside the `AlertModal` (e.g., updating a count), the modal does not just abruptly close. It seamlessly transitions to a `ConfirmationMode` displaying a clear checkmark icon and a success message (e.g., _"Item Count has been updated!"_). 
+  Furthermore, upon dismissing the modal, the `AlertsCubit` immediately updates the state, removing the modified `AlertCard` from the feed. The user instantly sees that the system has registered their action, fulfilling the feedback loop.
+
+== 4. Conclusion
+
+By applying standard HCI heuristics to our frontend code, we have successfully verified the usability Non-Functional Requirements of the Alerts & Notifications system. The strategic use of constrained inputs (`+`/`-`), inline validation, swipe accelerators, and dynamic confirmation states ensures that the biddable user can manage their shared inventory efficiently while protecting the backend database from formatting errors.

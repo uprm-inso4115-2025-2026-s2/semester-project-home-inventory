@@ -64,6 +64,26 @@ InventoryEntity buildSampleInventory() {
           status: Status.FULL,
           expirationDate: DateTime(2026, 8, 15),
         ),
+        StockEntity(
+          id: 7,
+          brand: 'Canilla',
+          quantity: 2,
+          status: Status.HALFWAY,
+          expirationDate: DateTime(2026, 3, 10),
+        ),
+        StockEntity(
+          id: 8,
+          brand: 'Mahatma',
+          quantity: 1,
+          status: Status.LOW,
+          expirationDate: DateTime(2027, 1, 5),
+        ),
+        StockEntity(
+          id: 9,
+          brand: 'Store Brand',
+          quantity: 3,
+          status: Status.FULL,
+        ),
       ],
       beans: [
         StockEntity(
@@ -72,6 +92,13 @@ InventoryEntity buildSampleInventory() {
           quantity: 3,
           status: Status.HALFWAY,
           expirationDate: DateTime(2026, 7, 1),
+        ),
+        StockEntity(
+          id: 10,
+          brand: 'Goya',
+          quantity: 1,
+          status: Status.LOW,
+          expirationDate: DateTime(2026, 5, 20),
         ),
       ],
       milk: [

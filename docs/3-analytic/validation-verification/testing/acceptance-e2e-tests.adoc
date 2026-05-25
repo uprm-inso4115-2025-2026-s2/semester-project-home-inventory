@@ -25,10 +25,17 @@ To provide concrete evidence of our system's reliability, we conducted formal Ac
 |  **PASS**
 
 | **TC-1.3**
-| Attempt to save an item with a blank expiration date or negative quantity.
+| Attempt to save an item with a blank expiration date.
+| Happy Path
+| The UI accepts the save and treats expiration as optional/unknown.
+| Blank expiration was accepted and the item saved successfully without an expiration date.
+|  **PASS**
+
+| **TC-1.4**
+| Attempt to save an item with a negative quantity.
 | Failure State
-| The UI prevents the transaction and displays inline validation errors.
-| Save button disabled. Red validation text appeared: "Expiration date is required."
+| The UI blocks the submission and prevents the inventory update from being persisted.
+| Validation rejected the submission because quantity must be greater than zero.
 |  **PASS**
 |===
 

@@ -506,3 +506,7 @@ Example verification for F-INV (Inventory Management):
 5. **Integration with grocery delivery services:** Direct ordering from grocery list
 
 ---
+
+include::build-and-deployment-procedure.adoc[leveloffset=+1]
+
+---

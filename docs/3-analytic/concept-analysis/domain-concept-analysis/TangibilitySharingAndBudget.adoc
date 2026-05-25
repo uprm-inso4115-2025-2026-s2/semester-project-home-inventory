@@ -1,0 +1,131 @@
+= Tangibility of Sharing & Budget Domain Concepts
+
+== Overview
+
+This document classifies domain concepts from the Sharing & Budget
+team using the tangibility framework.
+Each concept is evaluated using:
+
+* *Humanly tangible*: directly verifiable by a person
+  without instruments or computation.
+* *Physically tangible*: requires measurement or indirect observation
+  to verify.
+* *Intangible (precise)*: abstract but fully formalizable, can be
+  captured in exact rules or formulas.
+* *Intangible (imprecise)*: abstract and resistant to full
+  formalization, depends on subjective interpretation.
+
+
+== Domain Concept Tangibility Classifications
+
+=== Spending Event
+
+*Tangibility:* Humanly tangible. +
+A spending event is a concrete, observable action. A household member
+logs a purchase with an amount, a date, and a context. Any member of
+the household can directly verify that the event was recorded and
+inspect its details without any computation or inference.
+
+*Modeling implication:* Because it is humanly tangible, a spending
+event can be modeled as a concrete, inspectable record. It should be
+directly visible to all relevant household members and require no
+derived or computed representation to be understood.
+
+=== Allocated Amount
+
+*Tangibility:* Intangible (precise). +
+The allocated amount assigned to a user for a spending event is not
+directly observable, it is derived from a formula based on the chosen
+split mode and the total expense. However, the derivation is fully
+formalizable: given the inputs, the result is deterministic and exact.
+
+*Modeling implication:* Because it is precisely intangible, the
+allocated amount can be enforced as a computed rule in the domain
+model. There is no ambiguity in its value once the split mode and
+total are known. The model should treat it as a derived concept, not
+a user-entered one.
+
+
+=== Budget Fairness
+
+*Tangibility:* Intangible (imprecise). +
+Budget fairness refers to whether household members feel that expenses
+are being split justly. This is not something that can be measured
+or computed, two members may look at the same allocation and disagree
+on whether or not the split is fair.
+
+*Modeling implication:* Because it is imprecisely intangible, budget
+fairness cannot be enforced or fully captured in the domain model. The
+model can offer tools that support fairness (flexible split modes,
+transparent allocation records) but should not attempt to define or
+judge fairness itself. This is a concept left to user judgment.
+
+
+=== Split Mode
+
+*Tangibility:* Intangible (precise). +
+Split mode is an abstract concept, it describes a rule for how an
+expense should be divided among household members. It is not something
+a person can physically observe, but it is fully formalizable: equal
+means divided by member count, proportional means divided by a defined
+ratio, and so on.
+
+*Modeling implication:* Split mode should be modeled as an enumerated
+rule set with well-defined semantics. Each value maps to an exact
+computation. The domain model should make these rules explicit rather
+than leaving them as informal conventions.
+
+=== Household Trust
+
+*Tangibility:* Intangible (imprecise). +
+Household trust refers to the degree of confidence members have in
+each other when sharing budgets and expenses. It influences whether
+members feel comfortable joining a household, sharing financial data,
+or accepting allocations set by others.
+
+*Modeling implication:* Like budget fairness, household trust cannot
+be captured as a domain rule. However, it should inform system design
+decisions, for example, making budget data visible only to household
+members, or requiring explicit acceptance of invitations rather than
+automatic enrollment. 
+
+=== Budget Limit
+
+*Tangibility:* Intangible (precise). +
+A budget limit is a numeric threshold set by a household to cap
+spending over a given period.
+
+*Modeling implication:* Budget limit should be modeled as a concrete,
+inspectable value in the domain. It can be compared against total
+spending to determine whether the household is within or over budget.
+The model can enforce rules based on it (like alerting when the limit
+is approached) without any ambiguity.
+
+=== Invite Token Validity
+
+*Tangibility:* Intangible (precise). +
+The validity of an invite token is an abstract state, but one that is fully deterministic.
+Given the token's creation time and expiration window, validity can
+be computed exactly at any moment.
+
+*Modeling implication:* Token validity should be modeled as a derived
+state computed from timestamps. The domain model does not need to
+store validity explicitly. However, the model
+should make the rules for expiration explicit so they are applied
+consistently across the system.
+
+
+== Summary
+
+[cols="3,2,3", options="header"]
+|===
+| Concept               | Tangibility Class        | Modeling Implication
+
+| Spending event        | Humanly tangible         | Model as a direct, inspectable record
+| Allocated amount      | Intangible (precise)     | Model as a derived computed value
+| Budget fairness       | Intangible (imprecise)   | Cannot be enforced, leave to user judgment
+| Split mode            | Intangible (precise)     | Model as an enumerated rule set
+| Household trust       | Intangible (imprecise)   | Inform design decisions, not domain rules
+| Budget limit          | Intangible (precise)     | Model as a concrete enforceable threshold
+| Invite token validity | Intangible (precise)     | Model as a derived state from timestamps
+|===
