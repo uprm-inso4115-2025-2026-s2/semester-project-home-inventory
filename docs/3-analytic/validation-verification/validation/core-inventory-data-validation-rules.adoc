@@ -22,3 +22,36 @@ Within this section, these concerns are checked through tests and reviews such a
 * checking that shared and personal purchase data remain correctly distinguishable
 
 Detailed field-level constraints and schema-oriented data rules are documented with the corresponding design and data-model material rather than in this validation and verification section.
+
+== Core Inventory Verification Summary
+
+An implementation pass done in May 24, 2026 compared the current Core Inventory implementation against the documented requirements that apply to the feature area, with special attention to add/edit/remove flows, expiration handling, ownership visibility, and inventory lookup behavior. The results are summarized in the table below, which highlights areas that are fully implemented, mostly aligned, or still need fixes to meet the documented requirements. The "Evidence / notes" column provides specific references to code components, behaviors, and any relevant observations from testing and code review.
+
+[cols="1,2,2",options="header"]
+|===
+| Area | Status | Evidence / notes
+
+| Item creation and editing
+| Implemented
+| `AddItemPage`, `EditItemPage`, `ItemForm`, `AddInventoryItem`, `UpdateInventoryItem`, and `InventoryCubit` support add/edit flows and reject invalid quantities.
+
+| Expiration handling
+| Implemented
+| Expiration is optional in the requirements and code. Missing dates are accepted and treated as unknown, while past dates are rejected in the use cases and repository.
+
+| Remove/delete stock
+| Implemented
+| `InventoryCubit.deleteStock`, `DeleteInventoryItem`, and `InventorySupabaseDataSource.deleteStockFromInventory` provide the remove flow.
+
+| Ownership / role visibility
+| Needs fix
+| The current stock entity, data model, and UI do not expose personal/shared ownership metadata or role-scoped visibility controls for Core Inventory items.
+
+| Inventory lookup and filtering
+| Needs fix
+| The current UI only exposes category navigation and an expiration-only stock filter; it does not yet provide the full lookup filter set described by the requirements.
+
+| Schema and persistence
+| Mostly aligned
+| Inventory data is owner-scoped in Supabase, but the current feature still models stock without item-level ownership metadata.
+|===
