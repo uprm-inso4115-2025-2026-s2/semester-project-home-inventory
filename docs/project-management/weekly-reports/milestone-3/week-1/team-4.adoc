@@ -1,0 +1,39 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Team 4
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# Milestone 3 Week 1 — Team 4 Progress Report
+
+## Objective
+Establish the foundation for Milestone 3 by delivering completed tasks from the previous sprint and distributing new work for the coming weeks.
+
+## What the Team Accomplished This Week
+- Closed all remaining tasks from the prior sprint, including lecture topic validations, feature implementations, and UI enhancements.
+- Validated domain concepts for temporal filtering and budget period coverage.
+- Connected item usage rates to backend and integrated dynamic graphs using the fl_chart library.
+
+## Tasks Completed / Issues Closed
+- [#606 – Define and Formalize the Budget Period Coverage Concept](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/606)
+- [#567 – Connect Item Usage Rates to backend](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/567)
+- [#559 – Implement dynamic graphs and update the three detailed report pages](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/559)
+- [#555 – Review Implemented Dashboard and UI Requirements](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/555)
+- [#552 – Add loading & error states to Inventory Stock Report](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/552)
+- [#549 – Temporal Filtering Domain Concept Validation](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/549)
+
+## What Is Currently In Progress
+- [#560 – Identify Interface Requirements for Guest Consumption Logging](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/560)
+- [#556 – Identify Potential UI-Related Goal Conflicts in Home Inventory](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/556)
+
+
+## Blockers or Challenges
+- No major blockers; team successfully closed all Week 1 planned issues.
+- Some new documentation tasks (#657, #656) are still being scoped.
+
+## Plans for Next Week
+- Continue work on in-progress lecture topic tasks and documentation.
+- Begin addressing newly opened backend and validation issues.
+- Ensure weekly reporting is maintained.
+
+## Documentation Links
+- Available throughout pull requests and issues mentioned above.

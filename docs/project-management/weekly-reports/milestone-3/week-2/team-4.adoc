@@ -1,0 +1,40 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Team 4
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# Milestone 3 Week 2 — Team 4 Progress Report
+
+## Objective
+Advance core documentation and lecture topic analysis while tracking both completed and pending work from the week.
+
+## What the Team Accomplished This Week
+- Continued work on documentation: stakeholder reconciliation and sequence diagrams.
+- Made progress on lecture topic tasks related to guest logging, UI goal conflicts, and inventory accuracy obstacles.
+- Opened new backend-focused tasks for inventory stock and domain validation.
+
+## Tasks Completed / Issues Closed
+- No issues were closed this week; all previously closed tasks remain from Week 1.
+
+## What Is Currently In Progress
+- [#657 – Reconcile Stakeholder Identification with Current Reality](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/657)
+- [#656 – Add Sequence Diagrams for Core Workflows](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/656)
+- [#640 – Milestone 3 Week 1 & Week 2: Reports & Insights Weekly Report](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/640)
+- [#560 – Identify Interface Requirements for Guest Consumption Logging](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/560)
+- [#556 – Identify Potential UI-Related Goal Conflicts in Home Inventory](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/556)
+
+## New Issues Opened This Week (Not Yet Completed)
+- [#678 – Inventory Stock (Report Section) Backend Implementation + Objective Satisfaction Results](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/678) – Awaiting Assignment
+- [#668 – Domain Validation Through Removal of Simulated Inventory Data](https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/668) – Awaiting Assignment
+
+## Blockers or Challenges
+- Several tasks remain in “Being Worked On” without nearing completion.
+- New backend issues are awaiting assignment, slowing down backend progress.
+
+## Plans for Next Week
+- Focus on resolving in-progress documentation and lecture topic tasks.
+- Assign and begin work on the new backend issues (#678 and #668).
+- Prepare for final milestone review.
+
+## Documentation Links
+- Sequence diagrams and stakeholder documents available in PRs linked to issues #657 and #656.
