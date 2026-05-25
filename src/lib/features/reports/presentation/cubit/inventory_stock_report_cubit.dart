@@ -1,7 +1,7 @@
-// TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (SEE LINE 47)
-
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
 import '../../domain/entities/report_filter_validator.dart';
@@ -12,99 +12,120 @@ class InventoryStockReportCubit extends Cubit<InventoryStockReportState> {
   final ReportFilterValidator _validator = ReportFilterValidator();
   Timer? _debounceTimer;
 
-  // For simulating network delay (can be removed later)
-  static const bool _simulateError = false; // set to true to test error state
-
   InventoryStockReportCubit()
       : super(InventoryStockReportState(
           filters: ReportFilters(
-            startDate: DateTime(2026, 3, 9),
-            endDate: DateTime(2026, 3, 15),
+            // Default: "as of today" – shows all items up to today
+            startDate: DateTime.now(),
+            endDate: DateTime.now(),
             page: 0,
             searchQuery: '',
           ),
-          allItems: const [], // start empty; will be filled by loadInventoryData
-          isLoading: true,    // show spinner immediately
+          allItems: const [],
+          isLoading: true,
         )) {
     loadFavorites();
     _validateFiltersDebounced();
-    loadInventoryData(); // load initial data
+    loadInventoryData();
   }
 
-  // ---------- Data fetching (simulated) ----------
-  /// Simulates an asynchronous fetch of inventory items.
-  /// Replace this with a real Supabase call later.
-  Future<List<ItemData>> _fetchInventoryData() async {
-    // Simulate network delay (500-1000ms)
-    await Future.delayed(const Duration(milliseconds: 800));
+  // ---------- Fetch items: usage_date <= startDate ----------
+  Future<List<ItemData>> _fetchUsageData() async {
+  final start = state.filters.startDate;
+  final adjustedStart = DateTime(start.year, start.month, start.day + 1);
 
-    // Optional: simulate error for testing
-    if (_simulateError) {
-      throw Exception('Simulated network failure');
+  final response = await Supabase.instance.client
+      .from('usage_rates')
+      .select()
+      .lt('usage_date', adjustedStart.toIso8601String().split('T').first)
+      .order('category_name');
+
+  return response.map<ItemData>((row) {
+    final categoryName = row['category_name'] as String? ?? '';
+    final itemName = row['item_name'] as String?;
+    final itemsUsed = (row['items_used'] as int?) ?? 0;
+    final rate = (row['usage_rate_percent'] as int?) ?? 0;
+
+    final displayName = (itemName != null && itemName.isNotEmpty) ? itemName : categoryName;
+
+    // Read the stored status first
+    String status = row['item_status'] as String? ?? '';
+    if (status.isEmpty) {
+      // fallback only if item_status is null or empty
+      if (rate >= 95) {
+        status = 'OUT OF STOCK';
+      } else if (rate >= 80) {
+        status = 'LOW';
+      } else {
+        status = 'OK';
+      }
     }
 
-    // Return the hardcoded demo data
-    //TO DO: REPLACE HARDCODED DATA WITH DATA PULLED FROM BACKEND (potentially also update line 21-22 dates)
-    return const [
-      ItemData('Eggs', 'Food', 18, 'OK'),
-      ItemData('Beans (cans)', 'Food', 15, 'OK'),
-      ItemData('Rice (bags)', 'Food', 1, 'LOW'),
-      ItemData('Meat (packs)', 'Food', 9, 'OK'),
-      ItemData('Cereal (boxes)', 'Food', 0, 'OUT OF STOCK'),
-      ItemData('Bananas', 'Food', 2, 'LOW'),
-      ItemData('Batteries AA', 'Utilities', 25, 'OK'),
-      ItemData('Batteries AAA', 'Utilities', 19, 'OK'),
-      ItemData('Advil (pills)', 'Medicine', 1, 'LOW'),
-      ItemData('Throat lozenges', 'Medicine', 19, 'OK'),
-      ItemData('Laundry detergent', 'Laundry', 0, 'OUT OF STOCK'),
-    ];
-  }
-
-  /// Load inventory data from the (simulated) source.
-  /// Sets loading state, fetches data, and updates state or shows error.
-  Future<void> loadInventoryData() async {
-  // No guard – allow fetching even if already loading
-  emit(state.copyWith(isLoading: true, errorMessage: null));
-
-  try {
-    final items = await _fetchInventoryData();
-    emit(state.copyWith(allItems: items, isLoading: false));
-    _validateFilters();
-  } catch (e) {
-    emit(state.copyWith(
-      allItems: const [],
-      isLoading: false,
-      errorMessage: 'Unable to load inventory data. Please check your connection and try again.',
-    ));
-  }
+    return ItemData(displayName, categoryName, itemsUsed, status);
+  }).toList();
 }
 
-  // ---------- Filter methods ----------
-  void setStartDate(DateTime date) => _updateFilters(state.filters.copyWith(startDate: date));
-  void setEndDate(DateTime date) => _updateFilters(state.filters.copyWith(endDate: date));
-  void setPage(int page) => _updateFilters(state.filters.copyWith(page: page));
-  void setSearchQuery(String query) => _updateFilters(state.filters.copyWith(searchQuery: query));
+  // ---------- Load data ----------
+  Future<void> loadInventoryData() async {
+    emit(state.copyWith(isLoading: true, errorMessage: null, warningMessage: null));
 
-  void _updateFilters(ReportFilters newFilters) {
-    emit(state.copyWith(filters: newFilters));
-    loadInventoryData(); // refetch data with new filters
+    try {
+      final items = await _fetchUsageData();
+      debugPrint('Loaded ${items.length} items (as of ${state.filters.startDate.toIso8601String()})');
+      emit(state.copyWith(allItems: items, isLoading: false));
+      _validateFilters();
+    } catch (e) {
+      debugPrint('Error loading inventory/usage data: $e');
+      emit(state.copyWith(
+        isLoading: false,
+        errorMessage: 'Unable to load usage data. Please check your connection.',
+      ));
+    }
+  }
+
+  // ---------- Filter setters ----------
+  void setStartDate(DateTime date) {
+    _updateFilters(state.filters.copyWith(startDate: date));
+  }
+
+  void setEndDate(DateTime date) {
+    DateTime clamped = date;
+    String? warning;
+    final now = DateTime.now();
+
+    if (date.isAfter(now)) {
+      clamped = now;
+      warning = 'End date cannot be in the future. It has been set to today.';
+    }
+
+    // End date doesn't affect the items query (only start date matters now),
+    // but we keep the field in the state for completeness / possible future use.
+    emit(state.copyWith(filters: state.filters.copyWith(endDate: clamped), warningMessage: warning));
+    // No reload needed because end date is not used in the query.
     _validateFiltersDebounced();
   }
 
-  // ---------- Validation ----------
+  void setPage(int page) => _updateFilters(state.filters.copyWith(page: page));
+  void setSearchQuery(String query) => emit(state.copyWith(filters: state.filters.copyWith(searchQuery: query)));
+
+  void _updateFilters(ReportFilters newFilters) {
+    emit(state.copyWith(filters: newFilters, warningMessage: null));
+    loadInventoryData();   // reload items based on the new start date
+    _validateFiltersDebounced();
+  }
+
+  // ---------- External validation ----------
   void _validateFilters() async {
     final result = await _validator.validate(
       state.filters,
-      totalAvailableItems: state.allItems.length, // use loaded items count
+      totalAvailableItems: state.allItems.length,
     );
     emit(state.copyWith(validationResult: result));
   }
 
   void _validateFiltersDebounced() {
     _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
-      _validateFilters();
-    });
+    _debounceTimer = Timer(const Duration(milliseconds: 500), _validateFilters);
   }
 
   // ---------- Favorites (unchanged) ----------
@@ -147,8 +168,8 @@ class InventoryStockReportCubit extends Cubit<InventoryStockReportState> {
   }
 
   void applyFavorite(ReportFavorite favorite) {
-    emit(state.copyWith(filters: favorite.filters));
-    loadInventoryData(); // load data for the new filters
+    emit(state.copyWith(filters: favorite.filters, warningMessage: null));
+    loadInventoryData();
     _validateFiltersDebounced();
   }
 
