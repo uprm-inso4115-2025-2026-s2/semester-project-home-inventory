@@ -1,0 +1,66 @@
+= Report Filter Conflict Detection Utility
+:author: Fabian L. Velez Ocasio
+:date: 2026-04-05
+:toc: auto
+:icons: font
+
+== Overview
+
+This utility detects and prevents conflicting filter combinations in report screens before they are sent to Supabase. The following sections document the conflict types that have been identified and implemented.
+
+== Conflict Types
+
+=== 1. Temporal Conflicts (Time‑based Issues)
+
+.Temporal Conflicts
+[cols="1,1,2", options="header"]
+|===
+| Conflict | Severity | Detection
+| End before start | Error | Compare `DateTime` objects
+| Range > 90 days | Error | Compute days difference
+| Future end date | Warning | Compare with today’s date
+|===
+
+*Example:* `startDate = 2026-03-15`, `endDate = 2026-03-09`  
+*User feedback:* "End date cannot be before start date."
+
+=== 2. Data Availability Conflicts
+
+.Data Availability Conflicts
+[cols="1,1,2", options="header"]
+|===
+| Conflict | Severity | Detection
+| No matching items | Warning | `totalAvailableItems == 0`
+|===
+
+*Example:* Filters return zero results (e.g., date range with no data)  
+*User feedback:* "No items match your current filters. Widen the date range..."
+
+=== 3. Performance Conflicts
+
+.Performance Conflicts
+[cols="1,1,2", options="header"]
+|===
+| Conflict | Severity | Detection
+| Single‑character search | Warning | `searchQuery.length == 1`
+|===
+
+*Example:* `searchQuery = "a"` (too broad)  
+*User feedback:* "Single‑character search may return too many results..."
+
+== Extensibility
+
+Additional conflict types (too many categories, large date range, unauthorized access, etc.) can be added by extending the `validate()` method with more checks.
+
+== Usage Example
+
+final validator = ReportFilterValidator();
+final result = await validator.validate(
+  filters,
+  totalAvailableItems: 42,
+);
+if (result.hasErrors) {
+  // Disable report generation, show error messages
+} else if (result.hasWarnings) {
+  // Show warning dialog with option to proceed
+}
