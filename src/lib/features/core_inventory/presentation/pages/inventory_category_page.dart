@@ -8,6 +8,7 @@ import 'package:src/features/core_inventory/domain/entities/product.dart';
 import 'package:src/features/core_inventory/domain/entities/stock.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_state.dart';
+import 'package:src/features/core_inventory/presentation/widgets/error_state_widget.dart';  // Add this import
 
 class InventoryCategoryPage extends StatelessWidget {
   const InventoryCategoryPage({super.key});
@@ -25,7 +26,13 @@ class InventoryCategoryPage extends StatelessWidget {
           if (state is InventoryLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is InventoryError) {
-            return Center(child: Text('Error: ${state.message}'));
+            // Use the ErrorStateWidget for user-friendly error display
+            return ErrorStateWidget(
+              error: state.originalError ?? state,
+              onRetry: () {
+                context.read<InventoryCubit>().retryLastOperation();
+              },
+            );
           } else if (state is InventoryLoaded) {
             final inventory = state.inventory;
             final products = filterProductsForCategory(inventory, categoryId);

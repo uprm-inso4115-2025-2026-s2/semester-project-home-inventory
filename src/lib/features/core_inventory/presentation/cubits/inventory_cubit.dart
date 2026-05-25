@@ -6,6 +6,7 @@ import '../../domain/usecases/update_inventory_item.dart';
 import '../../domain/usecases/delete_inventory_item.dart';
 import '../../domain/entities/stock.dart';
 import 'inventory_state.dart';
+import '../utils/error_handler.dart';  // Add this import
 
 class InventoryCubit extends Cubit<InventoryState> {
   final GetInventoryItems _getInventoryItems;
@@ -39,7 +40,15 @@ class InventoryCubit extends Cubit<InventoryState> {
       final inventory = await _getInventoryItems(ownerId);
       emit(InventoryLoaded(inventory));
     } catch (error) {
-      emit(InventoryError(error.toString()));
+      // Convert to user-friendly error state
+      final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
+      emit(InventoryError(
+        message: friendlyError.message,
+        title: friendlyError.title,
+        action: friendlyError.action,
+        errorType: friendlyError.type,
+        originalError: error,
+      ));
     }
   }
 
@@ -59,7 +68,14 @@ class InventoryCubit extends Cubit<InventoryState> {
       final inventory = await _getInventoryItemsByIdentifier(ownerIdentifier);
       emit(InventoryLoaded(inventory));
     } catch (error) {
-      emit(InventoryError(error.toString()));
+      final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
+      emit(InventoryError(
+        message: friendlyError.message,
+        title: friendlyError.title,
+        action: friendlyError.action,
+        errorType: friendlyError.type,
+        originalError: error,
+      ));
     }
   }
 
@@ -70,9 +86,18 @@ class InventoryCubit extends Cubit<InventoryState> {
     StockEntity stock,
   ) async {
     if (_currentOwnerId == null && _currentOwnerIdentifier == null) {
-      emit(const InventoryError("Cannot add stock: Owner ID is unknown."));
+      final error = InventoryErrorHandler.getUserFriendlyMessage(
+        'No owner ID available',
+      );
+      emit(InventoryError(
+        message: error.message,
+        title: error.title,
+        action: error.action,
+        errorType: error.type,
+      ));
       return;
     }
+    
     emit(InventoryLoading());
     try {
       await _addInventoryItem(inventoryId, productId, stock);
@@ -82,7 +107,16 @@ class InventoryCubit extends Cubit<InventoryState> {
         await loadInventoryByAuthId(_currentOwnerIdentifier!);
       }
     } catch (error) {
-      emit(InventoryError(error.toString()));
+      final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
+      emit(InventoryError(
+        message: friendlyError.message,
+        title: friendlyError.title,
+        action: friendlyError.action,
+        errorType: friendlyError.type,
+        originalError: error,
+      ));
+      // Re-throw for snackbar display in UI
+      rethrow;
     }
   }
 
@@ -93,9 +127,18 @@ class InventoryCubit extends Cubit<InventoryState> {
     StockEntity stock,
   ) async {
     if (_currentOwnerId == null && _currentOwnerIdentifier == null) {
-      emit(const InventoryError("Cannot update stock: Owner ID is unknown."));
+      final error = InventoryErrorHandler.getUserFriendlyMessage(
+        'No owner ID available',
+      );
+      emit(InventoryError(
+        message: error.message,
+        title: error.title,
+        action: error.action,
+        errorType: error.type,
+      ));
       return;
     }
+    
     emit(InventoryLoading());
     try {
       await _updateInventoryItem(inventoryId, productId, stock);
@@ -105,16 +148,33 @@ class InventoryCubit extends Cubit<InventoryState> {
         await loadInventoryByAuthId(_currentOwnerIdentifier!);
       }
     } catch (error) {
-      emit(InventoryError(error.toString()));
+      final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
+      emit(InventoryError(
+        message: friendlyError.message,
+        title: friendlyError.title,
+        action: friendlyError.action,
+        errorType: friendlyError.type,
+        originalError: error,
+      ));
+      rethrow;
     }
   }
 
   /// Deletes a stock item and refreshes the inventory.
   Future<void> deleteStock(int inventoryId, int productId, int stockId) async {
     if (_currentOwnerId == null && _currentOwnerIdentifier == null) {
-      emit(const InventoryError("Cannot delete stock: Owner ID is unknown."));
+      final error = InventoryErrorHandler.getUserFriendlyMessage(
+        'No owner ID available',
+      );
+      emit(InventoryError(
+        message: error.message,
+        title: error.title,
+        action: error.action,
+        errorType: error.type,
+      ));
       return;
     }
+    
     emit(InventoryLoading());
     try {
       await _deleteInventoryItem(inventoryId, productId, stockId);
@@ -124,7 +184,24 @@ class InventoryCubit extends Cubit<InventoryState> {
         await loadInventoryByAuthId(_currentOwnerIdentifier!);
       }
     } catch (error) {
-      emit(InventoryError(error.toString()));
+      final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
+      emit(InventoryError(
+        message: friendlyError.message,
+        title: friendlyError.title,
+        action: friendlyError.action,
+        errorType: friendlyError.type,
+        originalError: error,
+      ));
+      rethrow;
+    }
+  }
+  
+  /// Retry the last failed operation
+  Future<void> retryLastOperation() async {
+    if (_currentOwnerId != null) {
+      await loadInventory(_currentOwnerId!);
+    } else if (_currentOwnerIdentifier != null) {
+      await loadInventoryByAuthId(_currentOwnerIdentifier!);
     }
   }
 }

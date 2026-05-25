@@ -9,6 +9,7 @@ import 'package:src/features/core_inventory/domain/entities/stock.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_state.dart';
 import 'package:src/features/core_inventory/presentation/widgets/item_form.dart';
+import 'package:src/features/core_inventory/presentation/utils/error_handler.dart'; // Add this import
 
 class AddItemPage extends StatelessWidget {
   const AddItemPage({super.key});
@@ -42,13 +43,22 @@ class AddItemPage extends StatelessWidget {
         listener: (context, state) {
           if (state is InventoryLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Item added successfully')),
+              const SnackBar(
+                content: Text('Item added successfully'),
+                backgroundColor: Colors.green,
+              ),
             );
             context.pop();
           } else if (state is InventoryError) {
-            ScaffoldMessenger.of(
+            // Use the error handler to show friendly message
+            InventoryErrorHandler.showErrorSnackbar(
               context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
+              state.originalError ?? state,
+              onRetry: () {
+                // Re-attempt the last operation if needed
+                // This would require storing the last attempted stock
+              },
+            );
           }
         },
         child: SafeArea(
@@ -56,38 +66,54 @@ class AddItemPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
             child: ItemForm(
               submitLabel: 'Save Item',
-              onSubmit: (name, details, quantity, expirationDate) {
-                // Parse expiration date
+              onSubmit: (name, details, quantity, expirationDate) async {
                 DateTime? expiration;
                 if (expirationDate.isNotEmpty) {
                   try {
                     expiration = DateTime.parse(expirationDate);
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Invalid expiration date format (use YYYY-MM-DD)',
-                        ),
-                      ),
+                    InventoryErrorHandler.showErrorSnackbar(
+                      context,
+                      Exception('Invalid date format. Use YYYY-MM-DD'),
                     );
                     return;
                   }
                 }
 
-                // Create stock entity
+                if (name.trim().isEmpty) {
+                  InventoryErrorHandler.showErrorSnackbar(
+                    context,
+                    Exception('Name cannot be empty'),
+                  );
+                  return;
+                }
+
+                if (quantity <= 0) {
+                  InventoryErrorHandler.showErrorSnackbar(
+                    context,
+                    Exception('Quantity must be greater than zero'),
+                  );
+                  return;
+                }
+
                 final stock = StockEntity(
                   id: 0, // Will be assigned by backend
-                  brand: details.isNotEmpty ? details : 'Generic',
+                  brand: details.isNotEmpty ? details : name,
                   quantity: quantity,
                   status: Status.UNKNOWN,
                   expirationDate: expiration,
                 );
 
-                context.read<InventoryCubit>().addStock(
-                  safeInventoryId,
-                  productId,
-                  stock,
-                );
+                try {
+                  await context.read<InventoryCubit>().addStock(
+                    safeInventoryId,
+                    productId,
+                    stock,
+                  );
+                } catch (error) {
+                  // Error is already handled by the listener
+                  // This catch prevents unhandled exceptions
+                }
               },
             ),
           ),
