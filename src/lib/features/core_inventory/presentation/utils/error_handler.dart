@@ -67,7 +67,7 @@ class InventoryErrorHandler {
       return InventoryErrorMessage(
         title: 'Missing Information',
         message: 'Please fill in all required fields.',
-        action: 'Check that you\'ve entered a name and description.',
+        action: 'Check that you\'ve entered an item name and quantity.',
         type: ErrorType.validation,
       );
     }
@@ -75,8 +75,8 @@ class InventoryErrorHandler {
     if (errorStr.contains('quantity')) {
       return InventoryErrorMessage(
         title: 'Invalid Quantity',
-        message: 'The quantity must be a positive number.',
-        action: 'Enter a number greater than zero.',
+        message: 'The quantity must be a valid number.',
+        action: 'Enter a number greater than or equal to zero.',
         type: ErrorType.validation,
       );
     }

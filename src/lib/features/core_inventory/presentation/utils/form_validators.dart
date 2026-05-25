@@ -1,5 +1,4 @@
 // lib/features/core_inventory/presentation/utils/form_validators.dart
-import 'package:flutter/material.dart';
 
 class InventoryFormValidators {
   static String? validateName(String? value) {
@@ -23,8 +22,8 @@ class InventoryFormValidators {
     if (quantity == null) {
       return 'Please enter a valid number';
     }
-    if (quantity <= 0) {
-      return 'Quantity must be greater than zero';
+    if (quantity < 0) {
+      return 'Quantity cannot be negative';
     }
     if (quantity > 999999) {
       return 'Quantity is too large';

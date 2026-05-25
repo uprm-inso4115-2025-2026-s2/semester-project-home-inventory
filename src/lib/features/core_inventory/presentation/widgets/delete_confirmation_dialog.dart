@@ -5,7 +5,7 @@ class DeleteConfirmationDialog {
   static Future<bool?> show(
     BuildContext context, {
     required String itemName,
-    required VoidCallback onConfirm,
+    required Future<void> Function() onConfirm,
   }) {
     return showDialog<bool>(
       context: context,
@@ -23,8 +23,7 @@ class DeleteConfirmationDialog {
             onPressed: () async {
               Navigator.of(ctx).pop(true);
               try {
-                // Remove 'await' here since onConfirm returns void, not Future
-                onConfirm();
+                await onConfirm();
               } catch (error) {
                 if (context.mounted) {
                   InventoryErrorHandler.showErrorSnackbar(context, error);

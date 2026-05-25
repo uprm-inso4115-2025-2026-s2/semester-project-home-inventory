@@ -6,7 +6,7 @@ import '../../domain/usecases/update_inventory_item.dart';
 import '../../domain/usecases/delete_inventory_item.dart';
 import '../../domain/entities/stock.dart';
 import 'inventory_state.dart';
-import '../utils/error_handler.dart';  // Add this import
+import '../utils/error_handler.dart';
 
 class InventoryCubit extends Cubit<InventoryState> {
   final GetInventoryItems _getInventoryItems;
@@ -17,6 +17,9 @@ class InventoryCubit extends Cubit<InventoryState> {
 
   int? _currentOwnerId;
   String? _currentOwnerIdentifier;
+  StockEntity? _lastAttemptedStock;
+  int? _lastAttemptedInventoryId;
+  int? _lastAttemptedProductId;
 
   InventoryCubit({
     required GetInventoryItems getInventoryItems,
@@ -40,7 +43,6 @@ class InventoryCubit extends Cubit<InventoryState> {
       final inventory = await _getInventoryItems(ownerId);
       emit(InventoryLoaded(inventory));
     } catch (error) {
-      // Convert to user-friendly error state
       final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
       emit(InventoryError(
         message: friendlyError.message,
@@ -54,7 +56,6 @@ class InventoryCubit extends Cubit<InventoryState> {
 
   /// Attempts to load inventory using an owner identifier (e.g., auth UUID).
   Future<void> loadInventoryByAuthId(String ownerIdentifier) async {
-    // Try parse numeric first
     final numeric = int.tryParse(ownerIdentifier);
     if (numeric != null && numeric > 0) {
       await loadInventory(numeric);
@@ -98,6 +99,11 @@ class InventoryCubit extends Cubit<InventoryState> {
       return;
     }
     
+    // Store for potential retry
+    _lastAttemptedStock = stock;
+    _lastAttemptedInventoryId = inventoryId;
+    _lastAttemptedProductId = productId;
+    
     emit(InventoryLoading());
     try {
       await _addInventoryItem(inventoryId, productId, stock);
@@ -106,6 +112,7 @@ class InventoryCubit extends Cubit<InventoryState> {
       } else if (_currentOwnerIdentifier != null) {
         await loadInventoryByAuthId(_currentOwnerIdentifier!);
       }
+      _lastAttemptedStock = null;
     } catch (error) {
       final friendlyError = InventoryErrorHandler.getUserFriendlyMessage(error);
       emit(InventoryError(
@@ -115,8 +122,6 @@ class InventoryCubit extends Cubit<InventoryState> {
         errorType: friendlyError.type,
         originalError: error,
       ));
-      // Re-throw for snackbar display in UI
-      rethrow;
     }
   }
 
@@ -156,7 +161,6 @@ class InventoryCubit extends Cubit<InventoryState> {
         errorType: friendlyError.type,
         originalError: error,
       ));
-      rethrow;
     }
   }
 
@@ -192,7 +196,6 @@ class InventoryCubit extends Cubit<InventoryState> {
         errorType: friendlyError.type,
         originalError: error,
       ));
-      rethrow;
     }
   }
   
@@ -202,6 +205,19 @@ class InventoryCubit extends Cubit<InventoryState> {
       await loadInventory(_currentOwnerId!);
     } else if (_currentOwnerIdentifier != null) {
       await loadInventoryByAuthId(_currentOwnerIdentifier!);
+    }
+  }
+  
+  /// Retry the last failed add operation
+  Future<void> retryLastAdd() async {
+    if (_lastAttemptedStock != null && 
+        _lastAttemptedInventoryId != null && 
+        _lastAttemptedProductId != null) {
+      await addStock(
+        _lastAttemptedInventoryId!,
+        _lastAttemptedProductId!,
+        _lastAttemptedStock!,
+      );
     }
   }
 }

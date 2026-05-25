@@ -9,21 +9,17 @@ import 'package:src/features/core_inventory/domain/entities/stock.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_state.dart';
 import 'package:src/features/core_inventory/presentation/widgets/item_form.dart';
-import 'package:src/features/core_inventory/presentation/utils/error_handler.dart'; // Add this import
+import 'package:src/features/core_inventory/presentation/utils/error_handler.dart';
 
 class AddItemPage extends StatelessWidget {
   const AddItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Extract productId from route
-    final productId =
-        int.tryParse(
+    final productId = int.tryParse(
           GoRouterState.of(context).pathParameters['productId'] ?? '0',
-        ) ??
-        0;
+        ) ?? 0;
 
-    // Get current user's inventory ID (using auth context)
     final authState = context.read<AuthCubit>().state;
     final inventoryId = authState is AuthAuthenticated
         ? int.tryParse(authState.user.id)
@@ -35,7 +31,7 @@ class AddItemPage extends StatelessWidget {
       );
     }
 
-    final safeInventoryId = inventoryId; // Type narrowing for closure
+    final safeInventoryId = inventoryId;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add Item')),
@@ -50,13 +46,11 @@ class AddItemPage extends StatelessWidget {
             );
             context.pop();
           } else if (state is InventoryError) {
-            // Use the error handler to show friendly message
             InventoryErrorHandler.showErrorSnackbar(
               context,
               state.originalError ?? state,
               onRetry: () {
-                // Re-attempt the last operation if needed
-                // This would require storing the last attempted stock
+                context.read<InventoryCubit>().retryLastAdd();
               },
             );
           }
@@ -66,7 +60,7 @@ class AddItemPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
             child: ItemForm(
               submitLabel: 'Save Item',
-              onSubmit: (name, details, quantity, expirationDate) async {
+              onSubmit: (name, details, quantity, expirationDate) {
                 DateTime? expiration;
                 if (expirationDate.isNotEmpty) {
                   try {
@@ -88,32 +82,27 @@ class AddItemPage extends StatelessWidget {
                   return;
                 }
 
-                if (quantity <= 0) {
+                if (quantity < 0) {
                   InventoryErrorHandler.showErrorSnackbar(
                     context,
-                    Exception('Quantity must be greater than zero'),
+                    Exception('Quantity cannot be negative'),
                   );
                   return;
                 }
 
                 final stock = StockEntity(
-                  id: 0, // Will be assigned by backend
+                  id: 0,
                   brand: details.isNotEmpty ? details : name,
                   quantity: quantity,
                   status: Status.UNKNOWN,
                   expirationDate: expiration,
                 );
 
-                try {
-                  await context.read<InventoryCubit>().addStock(
-                    safeInventoryId,
-                    productId,
-                    stock,
-                  );
-                } catch (error) {
-                  // Error is already handled by the listener
-                  // This catch prevents unhandled exceptions
-                }
+                context.read<InventoryCubit>().addStock(
+                  safeInventoryId,
+                  productId,
+                  stock,
+                );
               },
             ),
           ),

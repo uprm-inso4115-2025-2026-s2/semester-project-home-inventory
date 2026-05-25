@@ -36,8 +36,6 @@ class _ItemFormState extends State<ItemForm> {
   late final TextEditingController _expirationController;
   late int _quantity;
   
-  final _formKey = GlobalKey<FormState>();
-  
   String? _nameError;
   String? _quantityError;
   String? _expirationError;
@@ -82,97 +80,94 @@ class _ItemFormState extends State<ItemForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'Item Name *',
-                border: const OutlineInputBorder(),
-                errorText: _nameError,
-                helperText: 'Required - Name of the product',
-              ),
-              onChanged: (_) => setState(() => _nameError = null),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: 'Item Name *',
+              border: const OutlineInputBorder(),
+              errorText: _nameError,
+              helperText: 'Required - Name of the product',
             ),
-            SizedBox(height: 2.h),
-            TextFormField(
-              controller: _detailsController,
-              decoration: const InputDecoration(
-                labelText: 'Brand/Details',
-                border: OutlineInputBorder(),
-                helperText: 'Optional - Brand name or additional details',
-              ),
-              maxLines: 3,
+            onChanged: (_) => setState(() => _nameError = null),
+          ),
+          SizedBox(height: 2.h),
+          TextFormField(
+            controller: _detailsController,
+            decoration: const InputDecoration(
+              labelText: 'Brand/Details',
+              border: OutlineInputBorder(),
+              helperText: 'Optional - Brand name or additional details',
             ),
-            SizedBox(height: 2.h),
-            Text('Quantity *', style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(height: 1.h),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    if (_quantity > 1) {
-                      setState(() {
-                        _quantity--;
-                        _quantityError = null;
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.remove),
-                ),
-                Container(
-                  width: 60,
-                  alignment: Alignment.center,
-                  child: Text(
-                    '$_quantity',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
+            maxLines: 3,
+          ),
+          SizedBox(height: 2.h),
+          Text('Quantity *', style: Theme.of(context).textTheme.titleMedium),
+          SizedBox(height: 1.h),
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (_quantity > 0) {
                     setState(() {
-                      _quantity++;
+                      _quantity--;
                       _quantityError = null;
                     });
-                  },
-                  icon: const Icon(Icons.add),
-                ),
-              ],
-            ),
-            if (_quantityError != null)
-              Padding(
-                padding: EdgeInsets.only(top: 0.5.h),
+                  }
+                },
+                icon: const Icon(Icons.remove),
+              ),
+              Container(
+                width: 60,
+                alignment: Alignment.center,
                 child: Text(
-                  _quantityError!,
-                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                  '$_quantity',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-            SizedBox(height: 2.h),
-            TextFormField(
-              controller: _expirationController,
-              decoration: InputDecoration(
-                labelText: 'Expiration Date',
-                hintText: 'YYYY-MM-DD',
-                border: const OutlineInputBorder(),
-                errorText: _expirationError,
-                helperText: 'Optional - When does this item expire?',
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _quantity++;
+                    _quantityError = null;
+                  });
+                },
+                icon: const Icon(Icons.add),
               ),
-              onChanged: (_) => setState(() => _expirationError = null),
-            ),
-            SizedBox(height: 3.h),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _validateAndSubmit,
-                child: Text(widget.submitLabel),
+            ],
+          ),
+          if (_quantityError != null)
+            Padding(
+              padding: EdgeInsets.only(top: 0.5.h),
+              child: Text(
+                _quantityError!,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
               ),
             ),
-          ],
-        ),
+          SizedBox(height: 2.h),
+          TextFormField(
+            controller: _expirationController,
+            decoration: InputDecoration(
+              labelText: 'Expiration Date',
+              hintText: 'YYYY-MM-DD',
+              border: const OutlineInputBorder(),
+              errorText: _expirationError,
+              helperText: 'Optional - When does this item expire?',
+            ),
+            onChanged: (_) => setState(() => _expirationError = null),
+          ),
+          SizedBox(height: 3.h),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _validateAndSubmit,
+              child: Text(widget.submitLabel),
+            ),
+          ),
+        ],
       ),
     );
   }
