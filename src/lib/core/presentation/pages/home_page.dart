@@ -15,9 +15,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Home Page",
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium,
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
       body: Center(
@@ -37,7 +35,7 @@ class HomePage extends StatelessWidget {
             buildButton(context, "Alerts", () {
               AppRouter.goTo(context, "alerts_home");
             }),
-            
+
             Text("This is the main page of the app"),
             SizedBox(height: 20),
 

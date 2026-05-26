@@ -26,19 +26,12 @@ const List<MainNavTab> _mainTabs = [
     icon: Icons.bar_chart,
     rootPath: '/home/reports',
   ),
-  MainNavTab(label: 'Alerts', icon: Icons.notifications, rootPath: '/alerts'),
+  MainNavTab(
+    label: 'Alerts',
+    icon: Icons.notifications,
+    rootPath: '/alerts_home',
+  ),
 ];
-
-class _AlertsPageStub extends StatelessWidget {
-  const _AlertsPageStub();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('TO DO: Route Alerts screen')),
-    );
-  }
-}
 
 var mainRoutes = StatefulShellRoute.indexedStack(
   builder: (context, state, navigationShell) {
@@ -72,10 +65,6 @@ var mainRoutes = StatefulShellRoute.indexedStack(
     StatefulShellBranch(routes: [groceryListRoutes]),
     StatefulShellBranch(routes: [inventoryRoutes]),
     StatefulShellBranch(routes: [reportsOverviewRoute]),
-    StatefulShellBranch(
-      routes: [
-        GoRoute(path: '/alerts', builder: (_, __) => const _AlertsPageStub()),
-      ],
-    ),
+    StatefulShellBranch(routes: [alertsFeedRoutes]),
   ],
 );
