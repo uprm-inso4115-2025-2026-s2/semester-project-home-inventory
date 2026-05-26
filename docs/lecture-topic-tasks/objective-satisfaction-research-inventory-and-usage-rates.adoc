@@ -77,39 +77,39 @@ The implementation aimed to satisfy the following key objectives:
 | Objective | Result | Evidence / Comments
 
 | Unified Data Source
-| ✅
+| Pass
 | Both modules exclusively use `usage_rates`; no hardcoded data.
 
 | Household Isolation
-| ✅
+| Pass
 | Guest: `household_id IS NULL`. Authenticated: own household via `profiles` lookup.
 
 | Date‑aware Filtering
-| ✅
+| Pass
 | Inventory: `usage_date ≤ startDate`. Usage Rates: month range. End date clamping works with warning.
 
 | Individual Item Display
-| ✅
+| Pass
 | `_UsageItem` model captures `itemName` from `item_name` column; table shows per‑item rows.
 
 | Per‑Category Charts
-| ✅
+| Pass
 | One chart per category; Y = usage rate, X labels suppressed for readability.
 
 | Stored Status Priority
-| ✅
+| Pass
 | `row['item_status']` read first; fallback computed only if empty/absent.
 
 | Search and Filter
-| ✅
+| Pass
 | Text search on item name/category; category checkboxes hide/show.
 
 | PDF Export
-| ✅
+| Pass
 | First chart captured; complete report exported.
 
 | Error and Loading Handling
-| ✅
+| Pass
 | Loading spinner, error message with retry, warning banner for invalid date.
 
 |===
