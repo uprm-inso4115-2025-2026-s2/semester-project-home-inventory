@@ -1,0 +1,127 @@
+= Objective Satisfaction Result Research for Inventory Stock and Usage Rates
+:author: Fabian L. Velez Ocasio
+:date: 2026-05-25
+:toc: macro
+:toclevels: 3
+
+toc::[]
+
+== 1. Introduction
+
+This document evaluates the implemented Inventory Stock Report and Item Usage Rates features against the defined objectives. The modules rely on the `usage_rates` Supabase table and provide household‑scoped data access, historical filtering, and visualisations.
+
+== 2. Research Objectives
+
+The implementation aimed to satisfy the following key objectives:
+
+1. **Unified Data Source** – Both reports read from the same `usage_rates` table.
+2. **Household Isolation** – Guests see only sample data (`household_id IS NULL`); authenticated users see only their own household’s items.
+3. **Date‑aware Filtering**  
+   * Inventory: historical “as‑of” view (items with `usage_date ≤ startDate`).  
+   * Usage Rates: items within a selected month (`usage_date` between month start and next month start).  
+   * End date cannot exceed today (clamped with a warning).
+4. **Individual Item Display** – The Usage Rates table lists each item (using `item_name`), not just aggregated categories.
+5. **Per‑Category Visualisation** – Usage Rates generates one chart per category, X‑axis labels hidden for cleanliness; Y‑axis = usage rate %.
+6. **Stored Status Priority** – The `item_status` column is used directly; fallback computation from `usage_rate_percent` only when `item_status` is empty.
+7. **Search and Filter** – Text search across item name/category; category checkboxes to show/hide categories.
+8. **PDF Export** – Both reports capture a chart (first chart of the set) and export a complete report.
+9. **Error and Loading Handling** – Proper loading spinners, error messages with retry, and warning banners for invalid date selections.
+
+== 3. Implementation Summary
+
+=== 3.1 Inventory Stock Report (`InventoryStockReportCubit`)
+
+*Data Fetching*  
+- Retrieves `usage_rates` where `usage_date < adjustedStart` (i.e., `≤ startDate`).  
+- Fetches current user via `Supabase.auth.currentUser`.  
+- Guests: `.filter('household_id', 'is', null)`.  
+- Authenticated users: reads `household_id` from `profiles` table, then applies `.eq('household_id', householdId)`.  
+- Maps rows to `ItemData` with priority to `item_status`, falling back to computed status.
+
+*Date Validation*  
+- Start date unrestricted.  
+- End date clamped to today if future; a warning message is emitted.  
+- Only start date drives the query; end date triggers only a validation warning.
+
+*State Management*  
+- `allItems` holds the current result set.  
+- `currentPageData` aggregates quantities by category for the bar chart.  
+- `filteredItems` applies selected categories and search query.  
+- `warningMessage` field added for non‑blocking alerts.
+
+=== 3.2 Item Usage Rates Page (`ItemUsageRatesPage`)
+
+*Data Loading*  
+- Month selection → `usage_date` between month start and next month start.  
+- Same household filter logic as inventory.  
+- If no household found for a logged‑in user, an empty list is returned.  
+- Rows mapped to `_UsageItem` (itemName, categoryName, itemsUsed, usageRatePercent).
+
+*Visualisation*  
+- Items grouped by category.  
+- For each selected category, a `DynamicLineChart` with Y = usage rate %, X‑axis labels suppressed.  
+- Chart keys stored in a `Map<String, GlobalKey>`.
+
+*Table*  
+- Shows all filtered items: columns **Item**, **Category**, **Items Used**, **Usage Rate**.  
+- Search bar filters by item name or category.
+
+*Overlay Filters* – month selector and category checkboxes.
+
+*PDF Export* – uses the first chart and the filtered items list.
+
+== 4. Observed Results
+
+[cols="1,1,2", options="header"]
+|===
+| Objective | Result | Evidence / Comments
+
+| Unified Data Source
+| Pass
+| Both modules exclusively use `usage_rates`; no hardcoded data.
+
+| Household Isolation
+| Pass
+| Guest: `household_id IS NULL`. Authenticated: own household via `profiles` lookup.
+
+| Date‑aware Filtering
+| Pass
+| Inventory: `usage_date ≤ startDate`. Usage Rates: month range. End date clamping works with warning.
+
+| Individual Item Display
+| Pass
+| `_UsageItem` model captures `itemName` from `item_name` column; table shows per‑item rows.
+
+| Per‑Category Charts
+| Pass
+| One chart per category; Y = usage rate, X labels suppressed for readability.
+
+| Stored Status Priority
+| Pass
+| `row['item_status']` read first; fallback computed only if empty/absent.
+
+| Search and Filter
+| Pass
+| Text search on item name/category; category checkboxes hide/show.
+
+| PDF Export
+| Pass
+| First chart captured; complete report exported.
+
+| Error and Loading Handling
+| Pass
+| Loading spinner, error message with retry, warning banner for invalid date.
+
+|===
+
+== 5. Analysis
+
+All objectives have been met without deviation. The architecture ensures data consistency across both reports by sharing the same `usage_rates` table. Household isolation is implemented correctly for both guest and authenticated users, using a reliable `profiles` lookup. Date‑aware logic satisfies the historical “as‑of” requirement for inventory and the monthly window for usage rates, with proper clamping of future dates.
+
+The shift to individual item display in the Usage Rates page enhances granularity, while per‑category charts maintain clarity. Stored status priority respects actual inventory states, and fallback computation guarantees a valid status even when `item_status` is missing.
+
+PDF export functionality and robust error/loading states provide a complete user experience.
+
+== 6. Conclusion
+
+The Inventory Stock Report and Item Usage Rates features successfully satisfy all stated objectives. The implementation delivers a unified, household‑scoped, date‑aware reporting system with individual item visibility, per‑category visualisation, and full export capabilities. No further modifications are required for the current scope.
