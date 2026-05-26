@@ -37,3 +37,118 @@ Some households also keep an informal understanding of spending on essentials. P
 . Some items expire before use; households may discover this late and discard them.
 . Household members may keep informal awareness of spending; when tracked, spending influences replenishment choices and can create shared-vs-personal disputes.
 . Membership changes (move-out) require the household to update who participates and who is informed.
+
+=== Scenario-Based Domain Interactions
+
+==== Scenario 1 — Mateo and the Monthly Pantry Audit
+
+Mateo (see Section 4.2, Persona 1) lives alone while attending university full time. Because his schedule is busy and inconsistent, he often relies on memory to track what food and household supplies are currently available in his apartment.
+
+At the beginning of each month, Mateo performs a pantry audit before grocery shopping. He checks the kitchen pantry, refrigerator, and hallway cabinet to determine which item instances are low, expired, or missing entirely.
+
+During the audit, Mateo discovers several expired yogurt containers pushed behind newer groceries in the refrigerator. He also realizes that he previously purchased another ketchup bottle despite already having unopened item instances stored in a separate location that he forgot to check.
+
+After reviewing the inventory, Mateo updates his restock list / planner to include only the items that actually require replenishment. This reduces unnecessary duplicate purchases and helps him better manage limited grocery spending.
+
+This scenario demonstrates how incomplete inventory awareness, forgotten storage locations, expiration management, and replenishment decisions emerge naturally within small households operating under time and attention constraints.
+
+Relevant terminology:
+* Household
+* Household member
+* Inventory (reality)
+* Location
+* Item type
+* Item instance (package)
+* Restock list / planner
+* Replenishment (restock)
+
+Inventory operations involved:
+* locating items
+* checking inventory availability
+* identifying expired items
+* retiring expired items
+* updating restock list / planner
+* replenishment planning
+
+==== Scenario 2 — Sofia and Duplicate Shared Purchases
+
+Sofia (see Section 4.2, Persona 2) lives with two roommates in a shared apartment near campus. The household informally coordinates replenishment using a group chat and a whiteboard attached to the refrigerator.
+
+Before going grocery shopping, Sofia checks the household inventory and notices that paper towels and dish soap appear to be low. Since these are shared household supplies, she purchases replacements during her shopping trip.
+
+When Sofia returns home, she discovers that another roommate had already purchased bulk paper towels earlier that afternoon but forgot to communicate the update to the rest of the household. The apartment now contains duplicate item instances that occupy unnecessary storage space.
+
+The household inventory became inconsistent because multiple household members attempted replenishment independently using incomplete information about existing inventory availability.
+
+This scenario demonstrates how synchronization failures and duplicate purchases naturally emerge in shared households where inventory coordination relies heavily on memory and informal communication.
+
+Relevant terminology:
+* Household
+* Household member
+* Shared inventory
+* Item type
+* Item instance (package)
+* Restock list / planner
+* Replenishment (restock)
+* Location
+
+Inventory operations involved:
+* checking inventory availability
+* locating item instances
+* reviewing replenishment needs
+* purchasing replacement items
+* identifying duplicate item instances
+* updating shared inventory awareness
+
+==== Scenario 3 — Julian and Specialty Inventory Replenishment
+
+Julian (see Section 4.2, Persona 3) is a student athlete who follows a strict gluten-free, high-protein diet. Because his dietary requirements are highly specific, he depends on maintaining a stable supply of specialty items that are not always available in nearby stores.
+
+While preparing meals for the upcoming week, Julian checks the household inventory and discovers that the final item instance of his preferred gluten-free pasta was consumed several days earlier. Since no replenishment occurred, he can no longer complete his planned meal preparation.
+
+Julian also realizes that several specialty item instances purchased in bulk earlier in the semester expired before they could be consumed. Because inventory quantities and expiration dates were tracked inconsistently, the household inventory no longer accurately reflected what was still usable.
+
+This scenario demonstrates how threshold awareness, expiration management, and replenishment timing become especially important for household members with specialized inventory dependencies and irregular consumption patterns.
+
+Relevant terminology:
+* Household member
+* Inventory (reality)
+* Item type
+* Item instance (package)
+* Expiration date
+* Expired
+* Replenishment (restock)
+* Alert / notification (domain-level)
+
+Inventory operations involved:
+* locating item instances
+* checking remaining inventory quantity
+* identifying depleted inventory
+* monitoring expiration dates
+* retiring expired item instances
+* replenishment planning
+
+==== Scenario 4 — Andrea and Lending a Household Tool
+
+Andrea (see Section 4.2, Persona 4) lives in a shared apartment with three roommates and is typically responsible for organizing household storage areas. One weekend, a neighboring apartment asks to borrow the household power drill for a small repair project.
+
+Before lending the tool, Andrea checks the household inventory to confirm the drill’s current storage location and availability status. After locating the item inside a hallway utility cabinet, she updates the household inventory to indicate that the drill is temporarily unavailable.
+
+Several days later, another roommate searches for the drill while assembling furniture but discovers through the inventory records that the item is currently outside the household. Once the drill is returned, Andrea restores the item to its original storage location and marks it as available again.
+
+This scenario demonstrates how household inventory systems support temporary item transfers, shared item visibility, and inventory location awareness within collaborative household environments.
+
+Relevant terminology:
+* Household
+* Household member
+* Inventory (reality)
+* Item instance (package)
+* Location
+* Shared inventory
+
+Inventory operations involved:
+* locating item instances
+* verifying inventory availability
+* transferring item instances
+* updating item availability status
+* restoring item locations
