@@ -9,20 +9,17 @@ import 'package:src/features/core_inventory/domain/entities/stock.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
 import 'package:src/features/core_inventory/presentation/cubits/inventory_state.dart';
 import 'package:src/features/core_inventory/presentation/widgets/item_form.dart';
+import 'package:src/features/core_inventory/presentation/utils/error_handler.dart';
 
 class AddItemPage extends StatelessWidget {
   const AddItemPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Extract productId from route
-    final productId =
-        int.tryParse(
+    final productId = int.tryParse(
           GoRouterState.of(context).pathParameters['productId'] ?? '0',
-        ) ??
-        0;
+        ) ?? 0;
 
-    // Get current user's inventory ID (using auth context)
     final authState = context.read<AuthCubit>().state;
     final inventoryId = authState is AuthAuthenticated
         ? int.tryParse(authState.user.id)
@@ -34,7 +31,7 @@ class AddItemPage extends StatelessWidget {
       );
     }
 
-    final safeInventoryId = inventoryId; // Type narrowing for closure
+    final safeInventoryId = inventoryId;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add Item')),
@@ -42,13 +39,20 @@ class AddItemPage extends StatelessWidget {
         listener: (context, state) {
           if (state is InventoryLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Item added successfully')),
+              const SnackBar(
+                content: Text('Item added successfully'),
+                backgroundColor: Colors.green,
+              ),
             );
             context.pop();
           } else if (state is InventoryError) {
-            ScaffoldMessenger.of(
+            InventoryErrorHandler.showErrorSnackbar(
               context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
+              state.originalError ?? state,
+              onRetry: () {
+                context.read<InventoryCubit>().retryLastAdd();
+              },
+            );
           }
         },
         child: SafeArea(
@@ -57,27 +61,38 @@ class AddItemPage extends StatelessWidget {
             child: ItemForm(
               submitLabel: 'Save Item',
               onSubmit: (name, details, quantity, expirationDate) {
-                // Parse expiration date
                 DateTime? expiration;
                 if (expirationDate.isNotEmpty) {
                   try {
                     expiration = DateTime.parse(expirationDate);
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Invalid expiration date format (use YYYY-MM-DD)',
-                        ),
-                      ),
+                    InventoryErrorHandler.showErrorSnackbar(
+                      context,
+                      Exception('Invalid date format. Use YYYY-MM-DD'),
                     );
                     return;
                   }
                 }
 
-                // Create stock entity
+                if (name.trim().isEmpty) {
+                  InventoryErrorHandler.showErrorSnackbar(
+                    context,
+                    Exception('Name cannot be empty'),
+                  );
+                  return;
+                }
+
+                if (quantity < 0) {
+                  InventoryErrorHandler.showErrorSnackbar(
+                    context,
+                    Exception('Quantity cannot be negative'),
+                  );
+                  return;
+                }
+
                 final stock = StockEntity(
-                  id: 0, // Will be assigned by backend
-                  brand: details.isNotEmpty ? details : 'Generic',
+                  id: 0,
+                  brand: details.isNotEmpty ? details : name,
                   quantity: quantity,
                   status: Status.UNKNOWN,
                   expirationDate: expiration,
