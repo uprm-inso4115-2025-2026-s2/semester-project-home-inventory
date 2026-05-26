@@ -1,0 +1,145 @@
+= Static vs Dynamic Classification of Core Home Inventory Concepts
+:toc: macro
+:toclevels: 2
+
+_Lecture topic task — issue #579._
+
+toc::[]
+
+== Purpose
+
+Classify each core Home Inventory phenomenon as either *static* (not time-dependent; its identity and defining properties do not change once established) or *dynamic* (changes over time, in response to events, or as a function of system state). This determines whether the concept requires state tracking and change-management machinery in the system-to-be, and which concepts must be carried forward into the dynamic sub-type classification (inert / active / reactive) handled in follow-up issues.
+
+The classification is applied at the *entity level* — i.e., does this concept, as a whole, exhibit time-dependent behavior — and a separate column records property-level nuance where the entity is static but selected properties are dynamic (or vice versa). This addresses the well-known modeling trap where a "static" entity (e.g., a Room) hides dynamic content (e.g., the items it holds).
+
+Terminology aligns with the canonical domain glossary in `docs/2-descriptive/domain-description/terminology/terminology.adoc` and the entity catalog in `docs/2-descriptive/domain-description/entities/entities.adoc`. Where the lecture-task vocabulary differs from the project's canonical vocabulary, the project term is noted in parentheses (e.g., *Room name* → *Location label*).
+
+== Classification criteria
+
+A concept is *static* when:
+
+* Its definition and identifying properties are fixed once established.
+* It does not transition between domain-meaningful states over time.
+* Its semantics do not depend on "now."
+
+A concept is *dynamic* when at least one of the following is true:
+
+* Its set of constituents grows, shrinks, or is reorganized over time (membership change).
+* Its observable state transitions (e.g., active → expired) as a function of time or events.
+* Its value or content is recomputed in response to user or system actions.
+
+Dynamic concepts are flagged for follow-up sub-type classification:
+
+* *Inert* — changes are driven by the passage of time alone, with no system or user action required (e.g., a warranty becoming expired because its end date is in the past).
+* *Active* — the concept itself initiates change (e.g., a scheduled rule that re-evaluates inventory).
+* *Reactive* — changes occur in response to external events or user actions (e.g., adding an item to the inventory).
+
+A concept may exhibit more than one sub-type; the follow-up issues will resolve those mixed cases.
+
+== Static phenomena
+
+[cols="2,3,4",options="header"]
+|===
+|Concept |Project-vocabulary equivalent |Justification
+
+|*Category* (e.g., "Electronics", "Food")
+|*Spending category* / item-type category label
+|A category is a *classification label* used to group items or transactions. Its definition — the name and the meaning of "what belongs in this category" — is stable reference data. The *assignment* of a specific item to a category may change (a user can recategorize), but that is a property of the *Item*, not of the *Category* itself. The Category concept therefore behaves as a static vocabulary entry. Renaming a label is treated as an authoring action on reference data, not a domain state transition.
+
+|*Room name* (location label)
+|*Location* — name/label attribute of the Location entity
+|The *name* of a room (e.g., "Kitchen") is a static label that identifies the location. The room as a *container* is a stable place in the home; its identity persists across days, weeks, and inventory operations. *Caveat (see § Property-level nuance):* the *contents* of a room — which item instances it currently holds — are highly dynamic. The static classification applies to the room's identity and label, not to the membership of its inventory.
+
+|*Unit of measurement* (e.g., kg, L, count)
+|Implicit reference data referenced by *availability/quantity* attributes
+|Measurement units are fixed reference data. The definition of a kilogram does not change. A given item type's chosen unit is a property of the Item type (and can be reauthored), but the unit *itself* — as a concept in the domain — is static. Treating units as static lets the system rely on a stable conversion and display layer.
+|===
+
+== Dynamic phenomena
+
+[cols="2,3,3,3",options="header"]
+|===
+|Concept |Project-vocabulary equivalent |Why dynamic |Sub-type to resolve in follow-up
+
+|*Item* (item instance / package)
+|*Item instance (package)* — entities.adoc
+|Across its lifetime an item instance changes location (moved between rooms), changes availability/quantity (consumed, refilled, partially used), changes condition (fresh → near-expiry → expired), and may change ownership scope (personal ↔ shared). Multiple core attributes transition; the concept cannot be modeled as static without losing essential domain meaning.
+|Mixed: *reactive* for consumption/relocation/edits; *inert* for the expiration-status drift that happens with time alone.
+
+|*Inventory*
+|*Inventory (reality)* — the set of item instances present in the household
+|The inventory is a *set* whose membership changes whenever an item is added (purchase, gift), removed (consumed, discarded, given away), or whose contained instances change state. Identity of "the household's inventory" persists, but the snapshot at time _t_ differs from the snapshot at time _t+1_. Any operation model must treat the inventory as a time-indexed set.
+|Primarily *reactive* (membership changes follow user/system actions); aggregate views (e.g., totals) are derived/reactive.
+
+|*Household member access* (membership state / role)
+|*Membership state* (active / pending / revoked) and *Household admin* role — terminology.adoc
+|A member's relationship to a household has a lifecycle: invitation pending → active member → revoked (moved out), with role transitions (e.g., admin handoff before the previous admin leaves). Access is therefore a stateful concept whose value at any moment depends on prior events.
+|*Reactive* — every transition is driven by an invitation, acceptance, revocation, or admin transfer event.
+
+|*Warranty*
+|Property associated with high-value item instances (not a standalone entity in the current glossary, but a domain-relevant concept for inventory tracking)
+|A warranty has an end date and progresses monotonically toward expiration as time passes. At the moment "now" crosses the end date, the warranty transitions from *active* to *expired* without any user action. Even if the underlying end date is itself a static field, the *status* of the warranty is a time-dependent derivation.
+|*Inert* for the active → expired transition (time alone drives it); *reactive* if the warranty record is edited, voided, or replaced.
+|===
+
+== Property-level nuance (entity static, property dynamic — and vice versa)
+
+Several concepts above are static *as identities* but expose dynamic *properties* (or relationships). Modeling must respect the distinction; otherwise an apparently static entity can silently hide the system's most important state.
+
+[cols="2,3,3",options="header"]
+|===
+|Concept |Static aspect |Dynamic aspect (handled where)
+
+|*Room* (Location)
+|Name/label; existence as a container
+|Set of item instances currently located in it — modeled under *Inventory* (dynamic).
+
+|*Category*
+|Definition and label
+|Membership — which items are *assigned* to the category — modeled under *Item* (dynamic).
+
+|*Unit of measurement*
+|The unit's definition and conversion factor
+|The unit chosen for a particular item type — an editable property of *Item type*.
+
+|*Warranty end date*
+|The date value itself
+|Whether the warranty *is currently active* — a derived, time-dependent status (dynamic, inert).
+|===
+
+This is the resolution to the modeling trap called out in the issue's risk section: classification is anchored to the entity's *identity-defining* properties, with a separate ledger of property-level dynamics that must be picked up by the dynamic sub-type follow-ups.
+
+== Summary
+
+[cols="1,2,4",options="header"]
+|===
+|Count |Concepts |Disposition
+
+|3 static
+|Category, Room name, Unit of measurement
+|Treated as reference data / stable labels. No state-tracking machinery required for the concept itself; ordinary authoring (create/rename/retire) is sufficient.
+
+|4 dynamic
+|Item, Inventory, Household member access, Warranty
+|Forwarded to dynamic sub-type classification (inert / active / reactive) in subsequent issues. Each requires state tracking, transition rules, and operation-model coverage.
+|===
+
+This satisfies the success criteria of at least 3 static and at least 4 dynamic phenomena documented with justification, with the dynamic set explicitly flagged for sub-type classification.
+
+== Implications for system modeling
+
+* Static concepts can be implemented as immutable reference data with lightweight authoring; they do not require an event history, audit trail, or temporal queries.
+* Dynamic concepts require:
+** Explicit state representation (current value plus, where relevant, history).
+** Transition rules tied to events (purchase, consumption, expiration, membership change).
+** Operation-model coverage in the descriptive documentation, including triggers, preconditions, and post-conditions for each transition.
+* The property-level nuance table above is the seed input for the dynamic sub-type follow-ups — each row that lists a dynamic aspect identifies a concrete transition that the next issue must classify as inert, active, or reactive.
+
+[[references]]
+== References
+
+. *Domain terminology* — Canonical vocabulary for Household, Location (Room), Item type, Item instance, Membership state, Household admin, Spending category, etc. `docs/2-descriptive/domain-description/terminology/terminology.adoc`.
+. *Domain entities* — Catalog of entities with key attributes. `docs/2-descriptive/domain-description/entities/entities.adoc`.
+. *Related lecture-task classification* — Attribute-level static/dynamic classification by a teammate. `docs/lecture-topic-tasks/static-vs-dynamic-classification-of-phenomena.adoc`.
+. *Related lecture-task classification* — Entity / event / behavior split for alert-system phenomena (complementary axis to static/dynamic). `docs/lecture-topic-tasks/classification-of-alert-system-phenomena.adoc`.
+. *Lecture topic task* — Objective and success criteria for this document. GitHub issue #579 on the project repository.
