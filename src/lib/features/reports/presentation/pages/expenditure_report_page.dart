@@ -10,6 +10,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
+import '../../../../core/data/services/pdf_share_helper.dart';
 import '../../../../config/theme.dart';
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
@@ -253,6 +254,21 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
     );
   }
 
+  Future<void> _sharePdf(BuildContext context, ExpenditureState state) async {
+    final categories = state.categories
+        .map((c) => {'name': c.name, 'amount': c.amount})
+        .toList();
+    final chartImage = await _captureChart();
+    await PdfShareHelper.shareExpenditureReport(
+      context: context,
+      startDate: state.startDate,
+      endDate: state.endDate,
+      categories: categories,
+      totalAmount: state.totalAmount,
+      chartImage: chartImage,
+    );
+  }
+
   void _showSaveFavoriteDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -379,6 +395,17 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
             onPressed: () => _showSaveFavoriteDialog(context),
             icon: const Icon(Icons.save_alt, color: AppTheme.primaryText),
             tooltip: 'Save current filters',
+          ),
+          const SizedBox(width: 4),
+          // Share PDF button
+          BlocBuilder<ExpenditureCubit, ExpenditureState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () => _sharePdf(context, state),
+                icon: const Icon(Icons.share, color: AppTheme.primaryText),
+                tooltip: 'Share PDF',
+              );
+            },
           ),
           const SizedBox(width: 8),
         ],

@@ -75,9 +75,16 @@ class PdfExportService {
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
             headerDecoration: const pw.BoxDecoration(),
             cellAlignment: pw.Alignment.centerLeft,
+            columnWidths: const {
+              0: pw.FlexColumnWidth(3),
+              1: pw.FlexColumnWidth(1),
+            },
             headers: const ['Category', 'Quantity'],
             data: categories
-                .map((c) => [c['name'], c['quantity'].toString()])
+                .map((c) => [
+                      (c['name'] ?? '').toString(),
+                      (c['quantity'] ?? 0).toString(),
+                    ])
                 .toList(),
           ),
           pw.SizedBox(height: 20),
@@ -93,16 +100,20 @@ class PdfExportService {
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
             headerDecoration: const pw.BoxDecoration(),
             cellAlignment: pw.Alignment.centerLeft,
-            headers: const ['Item', 'Category', 'Quantity', 'Status'],
+            columnWidths: const {
+              0: pw.FlexColumnWidth(3),
+              1: pw.FlexColumnWidth(2),
+              2: pw.FlexColumnWidth(1),
+              3: pw.FlexColumnWidth(2),
+            },
+            headers: const ['Item', 'Category', 'Qty', 'Status'],
             data: items
-                .map(
-                  (i) => [
-                i['name'],
-                i['category'],
-                i['quantity'].toString(),
-                i['status'],
-              ],
-            )
+                .map((i) => [
+                      (i['name'] ?? '').toString(),
+                      (i['category'] ?? '').toString(),
+                      (i['quantity'] ?? 0).toString(),
+                      (i['status'] ?? '').toString(),
+                    ])
                 .toList(),
           ),
         ],
@@ -132,7 +143,7 @@ class PdfExportService {
     );
   }
 
-  Future<void> exportExpenditureReport({
+  Future<Uint8List> generateExpenditureReportPdfBytes({
     required DateTime startDate,
     required DateTime endDate,
     required List<Map<String, dynamic>> categories,
@@ -198,24 +209,47 @@ class PdfExportService {
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
             headerDecoration: const pw.BoxDecoration(),
             cellAlignment: pw.Alignment.centerLeft,
+            columnWidths: const {
+              0: pw.FlexColumnWidth(3),
+              1: pw.FlexColumnWidth(2),
+              2: pw.FlexColumnWidth(2),
+            },
             headers: const ['Category', 'Amount (\$)', '% of Total'],
             data: categories
-                .map((c) => [
-                      c['name'],
-                      (c['amount'] as double).toStringAsFixed(2),
-                      totalAmount > 0
-                          ? '${((c['amount'] as double) / totalAmount * 100).toStringAsFixed(1)}%'
-                          : '0%',
-                    ])
+                .map((c) {
+                  final amount = (c['amount'] as num?)?.toDouble() ?? 0.0;
+                  return [
+                    (c['name'] ?? '').toString(),
+                    amount.toStringAsFixed(2),
+                    totalAmount > 0
+                        ? '${(amount / totalAmount * 100).toStringAsFixed(1)}%'
+                        : '0%',
+                  ];
+                })
                 .toList(),
           ),
         ],
       ),
     );
 
-    await Printing.layoutPdf(
-      onLayout: (format) async => pdf.save(),
+    return pdf.save();
+  }
+
+  Future<void> exportExpenditureReport({
+    required DateTime startDate,
+    required DateTime endDate,
+    required List<Map<String, dynamic>> categories,
+    required double totalAmount,
+    Uint8List? chartImage,
+  }) async {
+    final pdfBytes = await generateExpenditureReportPdfBytes(
+      startDate: startDate,
+      endDate: endDate,
+      categories: categories,
+      totalAmount: totalAmount,
+      chartImage: chartImage,
     );
+    await Printing.layoutPdf(onLayout: (format) async => pdfBytes);
   }
 
   // ======================== Item Usage Rates Report ========================
@@ -284,12 +318,17 @@ class PdfExportService {
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
             headerDecoration: const pw.BoxDecoration(),
             cellAlignment: pw.Alignment.centerLeft,
+            columnWidths: const {
+              0: pw.FlexColumnWidth(3),
+              1: pw.FlexColumnWidth(2),
+              2: pw.FlexColumnWidth(2),
+            },
             headers: const ['Category', 'Items Used', 'Usage Rate (%)'],
             data: categories
                 .map((c) => [
-                      c['name'],
-                      c['itemsUsed'].toString(),
-                      '${c['usageRate']}%',
+                      (c['name'] ?? '').toString(),
+                      (c['itemsUsed'] ?? 0).toString(),
+                      '${c['usageRate'] ?? 0}%',
                     ])
                 .toList(),
           ),
