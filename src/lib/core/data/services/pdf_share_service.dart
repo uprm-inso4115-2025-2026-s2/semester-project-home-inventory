@@ -24,7 +24,8 @@ class PdfShareService {
     int expiresInSeconds = 3600,
   }) async {
     final user = _supabase.auth.currentUser;
-    final ownerFolder = user?.id ?? 'test-user';
+    if (user == null) throw Exception('No authenticated user');
+    final ownerFolder = user.id;
 
     final sanitizedReportType = reportType
         .trim()
