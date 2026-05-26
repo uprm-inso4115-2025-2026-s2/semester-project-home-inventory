@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/features/grocery_list/domain/entities/completed_grocery_item.dart';
 import 'package:src/features/grocery_list/domain/entities/custom_collection_item.dart';
 import 'package:src/features/grocery_list/domain/entities/grocery_list_item.dart';
 import 'package:src/features/grocery_list/presentation/cubits/grocery_list_state.dart';
@@ -86,6 +87,35 @@ class GroceryListCubit extends Cubit<GroceryListState> {
         items: state.items.where((item) => item.id != id).toList(),
       ),
     );
+  }
+
+  bool markAsCompleted(String id) {
+    final index = state.items.indexWhere((item) => item.id == id);
+    if (index < 0) {
+      return false;
+    }
+
+    final item = state.items[index];
+    final completedAt = DateTime.now();
+    final completed = CompletedGroceryItem(
+      id: '${item.id}-$completedAt',
+      name: item.name,
+      quantity: item.quantity,
+      completedAt: completedAt,
+    );
+
+    final updatedHistory = [...state.completedItems, completed]
+      ..sort((a, b) => b.completedAt.compareTo(a.completedAt));
+
+    final updatedItems = [...state.items]..removeAt(index);
+
+    emit(
+      state.copyWith(
+        items: updatedItems,
+        completedItems: updatedHistory,
+      ),
+    );
+    return true;
   }
 
   void _updateQuantity(String id, int delta) {

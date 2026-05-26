@@ -1,8 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
+import 'package:src/features/grocery_list/domain/entities/completed_grocery_item.dart';
+import 'package:src/features/grocery_list/presentation/cubits/grocery_list_cubit.dart';
+import 'package:src/features/grocery_list/presentation/cubits/grocery_list_state.dart';
+import 'package:src/features/grocery_list/presentation/utils/history_date_label.dart';
 import 'package:src/features/grocery_list/presentation/widgets/item_tile.dart';
 import 'package:src/core/presentation/widgets/top.dart';
 
@@ -12,6 +16,7 @@ class History extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w),
         child: Column(
@@ -22,31 +27,59 @@ class History extends StatelessWidget {
               title: "History",
               iconColor: primary,
             ),
-            Expanded(child: historyList()),
+            Expanded(
+              child: BlocBuilder<GroceryListCubit, GroceryListState>(
+                builder: (context, state) => _historyList(state.completedItems),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  static const dates = ['Today', 'Yesterday', 'March 11, 2025'];
-  static const itemsPerDate = 3;
+  Widget _historyList(List<CompletedGroceryItem> completedItems) {
+    if (completedItems.isEmpty) {
+      return Center(
+        child: Text(
+          'No completed items yet.\nMark items as completed from your grocery list.',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
+        ),
+      );
+    }
 
-  Widget historyList() {
+    final grouped = _groupByDate(completedItems);
+
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
       children: [
-        for (final date in dates) ...[
-          dateHeader(date),
-          for (var i = 0; i < itemsPerDate; i++)
-            ItemTile(title: 'title', isHistory: true),
+        for (final entry in grouped.entries) ...[
+          _dateHeader(entry.key),
+          for (final item in entry.value)
+            ItemTile(
+              title: item.name,
+              quantity: item.quantity,
+              isHistory: true,
+            ),
         ],
       ],
     );
   }
 
-  Widget dateHeader(String date) {
+  Map<String, List<CompletedGroceryItem>> _groupByDate(
+    List<CompletedGroceryItem> items,
+  ) {
+    final grouped = <String, List<CompletedGroceryItem>>{};
+    for (final item in items) {
+      final label = historyDateLabel(item.completedAt);
+      grouped.putIfAbsent(label, () => []).add(item);
+    }
+    return grouped;
+  }
+
+  Widget _dateHeader(String date) {
     return Padding(
       padding: EdgeInsets.only(top: 2.h, bottom: 1.h),
       child: Text(
@@ -56,38 +89,6 @@ class History extends StatelessWidget {
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-      ),
-    );
-  }
-
-  Widget searchBar(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w),
-      child: Row(
-        children: [
-          Expanded(
-            child: CupertinoSearchTextField(
-              prefixIcon: Icon(
-                CupertinoIcons.search,
-                color: primary,
-                size: 18.sp,
-              ),
-              placeholder: 'Search an Item',
-              placeholderStyle: TextStyle(
-                fontSize: 16.5.sp,
-                color: Colors.grey[700],
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.2.h),
-              style: TextStyle(color: Colors.black),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(1000),
-                border: Border.all(color: secondary, width: 0.8.w),
-              ),
-              onChanged: (value) {},
-            ),
-          ),
-        ],
       ),
     );
   }

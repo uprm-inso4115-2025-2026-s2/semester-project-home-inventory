@@ -226,8 +226,10 @@ class ItemTile extends StatelessWidget {
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
+              if (groceryItemId != null) {
+                _cubit.markAsCompleted(groceryItemId);
+              }
               sheetContext.pop();
-              // TODO: Mark as completed
             },
             child: const Text('Mark as completed'),
           ),
