@@ -1,0 +1,568 @@
+== Operation Model
+
+=== Purpose
+
+This section specifies the core system operations of the Home Inventory application. An operation is treated as a state-changing service. It receives input state variables, is performed by one responsible agent, and produces output state variables. For each operation, the model distinguishes:
+
+* *Domain preconditions*: descriptive conditions that make the operation meaningful in the household inventory domain.
+* *Required preconditions*: prescriptive permission conditions that must hold before the app allows the operation.
+* *Trigger conditions*: events or states that activate the operation.
+* *Required postconditions*: output-state conditions that must hold after successful execution.
+
+The purpose of this model is to make existing implemented and planned workflows more precise so they can be traced to requirements, validation scenarios, and test cases.
+
+=== Operation Specifications
+
+==== Operation Index
+
+[cols="1,3,3,3", options="header", stripes=even]
+|===
+| ID
+| Operation
+| Primary Performer
+| Main Trace Links
+
+| OP-01
+| `CreateInventoryItem`
+| Flutter mobile app; authenticated household member
+| N1, N2, N3; DG-REQ-01--04; US-INV-01
+
+| OP-02
+| `UpdateItemQuantity`
+| Flutter mobile app / inventory repository
+| N2; DG-REQ-02--04; US-INV-02
+
+| OP-03
+| `DeleteInventoryItem`
+| Flutter mobile app / inventory repository
+| DG-REQ-03; US-INV-01; IR-EC-D
+
+| OP-04
+| `MoveItemToGroceryList`
+| Flutter mobile app or grocery-list auto-generator
+| N3, N5; DG-REQ-05, DG-REQ-08; US-ALT-01
+
+| OP-05
+| `CheckOffGroceryListItem`
+| Flutter mobile app
+| N5; shared coordination goal
+
+| OP-06
+| `FinalizeGroceryRun`
+| Flutter mobile app / grocery-list repository
+| N2, N5; DG-REQ-01, DG-REQ-02; IR-06
+
+| OP-07
+| `GenerateLowStockAlert`
+| Scheduled sweep function / alert service
+| DG-REQ-05, DG-REQ-07, DG-REQ-08; US-ALT-01
+
+| OP-08
+| `GenerateExpirationAlert`
+| Scheduled sweep function / alert service
+| DG-REQ-06, DG-REQ-07, DG-REQ-08; US-ALT-01
+
+| OP-09
+| `AcceptHouseholdInvitation`
+| Flutter mobile app / Supabase backend
+| N4, N5; DG-REQ-09--12
+
+| OP-10
+| `RevokeHouseholdMembership`
+| Household admin UI / Supabase backend / RLS policies
+| N4, N5; DG-REQ-09--12
+
+| OP-11
+| `CreateSpendingEntry`
+| Flutter mobile app / budget repository
+| N5; DG-REQ-11; US-SB-01
+
+| OP-12
+| `GenerateBudgetReport`
+| Reports & Insights module / dashboard service
+| N1, N3, N5; DG-REQ-11; US-RPT-01
+
+|===
+
+==== Operation Details
+
+.OP-01 -- `CreateInventoryItem`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app, activated by an authenticated household member.
+
+| Input variables
+| `userId`, `householdId`, item name or barcode, category, location, quantity, optional low-stock threshold, optional expiration date, shared/personal flag.
+
+| Output variables
+| New or updated `ItemType`, `ItemInstance`, `InventoryRecord`, and optional `QuantityChangeTransaction`.
+
+| Domain preconditions
+| The household has or is acquiring an item that should be represented in the tracked inventory. Quantity may be exact or approximate. Expiration may be present or absent depending on the item.
+
+| Required preconditions
+| User must be authenticated and have permission to add items in the household context. Required item identity fields must be valid. Quantity must be non-negative. If the item is shared, the user must have shared-item update rights.
+
+| Trigger conditions
+| User taps *Add Item*, scans a barcode or enters item information manually, and submits the form.
+
+| Required postconditions
+| A tracked inventory record exists for the item in exactly one household context. Provided quantity, location, threshold, expiration date, and shared/personal status are preserved. The inventory list refreshes and displays the new item.
+
+| Related goal / requirement
+| N1, N2, N3; DG-REQ-01, DG-REQ-02, DG-REQ-03, DG-REQ-04; US-INV-01; IR-01, IR-04, IR-05.
+
+| Related test case
+| Proposed: `TC-OP-INV-01`. Existing overlap: `TC-TXN-01` if creation records an initial quantity transaction.
+
+|===
+
+.OP-02 -- `UpdateItemQuantity`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app / inventory repository, activated by household member.
+
+| Input variables
+| `userId`, `itemInstanceId`, current quantity, new quantity or delta, reason code, timestamp.
+
+| Output variables
+| Updated quantity/availability, appended `QuantityChangeTransaction`, recalculated low-stock state.
+
+| Domain preconditions
+| Consumption, restocking, correction, or adjustment changes item availability. Quantity must never become negative.
+
+| Required preconditions
+| User must be authenticated and authorized to update the item. Target item must be active. New quantity or delta must be valid. Concurrent update conflicts must be rejected, merged, or explicitly resolved.
+
+| Trigger conditions
+| User edits quantity, taps consume/restock, or a grocery finalization updates quantity.
+
+| Required postconditions
+| Item quantity reflects the accepted change. A transaction record is appended with reason and timestamp. Low-stock and out-of-stock state are recomputed. Existing metadata remains stable unless explicitly edited.
+
+| Related goal / requirement
+| N2; DG-REQ-02, DG-REQ-03, DG-REQ-04; US-INV-02; IR-02, IR-04.
+
+| Related test case
+| Existing: `TC-TXN-01`, `TC-ALT-01`. Proposed: `TC-OP-INV-02`.
+
+|===
+
+.OP-03 -- `DeleteInventoryItem`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app / inventory repository, activated by authorized household member.
+
+| Input variables
+| `userId`, `itemInstanceId`, deletion/correction reason, confirmation response.
+
+| Output variables
+| Removed or archived item record, inactive alert conditions, preserved historical records.
+
+| Domain preconditions
+| A household item may be consumed, discarded, mistakenly entered, or no longer tracked. Historical spending and transaction records may still matter after deletion.
+
+| Required preconditions
+| User must be authenticated and authorized to delete or archive the item. If spending entries or alert records are associated with the item, the system must not silently delete financial history.
+
+| Trigger conditions
+| User chooses delete/archive and confirms the action.
+
+| Required postconditions
+| Item no longer appears in active inventory. Existing financial history is preserved unless separately corrected. Outdated expiration or low-stock alerts for the deleted item no longer continue firing.
+
+| Related goal / requirement
+| DG-REQ-03; US-INV-01; IR-EC-D; expiration/alert deduplication behavior.
+
+| Related test case
+| Existing: `TC-EXP-02`. Proposed: `TC-OP-INV-03`.
+
+|===
+
+.OP-04 -- `MoveItemToGroceryList`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app or grocery-list auto-generator.
+
+| Input variables
+| `itemTypeId`, `householdId`, reason, desired quantity, source condition, actor or automation ID.
+
+| Output variables
+| Active `GroceryListItem` or updated existing list entry.
+
+| Domain preconditions
+| A household member or automated rule judges that an item should be replenished because it is low, out, expired, or manually requested.
+
+| Required preconditions
+| User or automation must have permission to modify the household grocery list. An active duplicate entry for the same item and reason should be merged or blocked unless intentionally separate.
+
+| Trigger conditions
+| User taps *Add to Grocery List*, or scheduled automation detects a replenishment condition.
+
+| Required postconditions
+| Grocery list contains an active entry with item, reason, desired quantity, and source. Duplicate low/out/expired entries are not repeatedly created for the same condition.
+
+| Related goal / requirement
+| N3, N5; DG-REQ-05, DG-REQ-08; US-ALT-01; IR-04.
+
+| Related test case
+| Existing overlap: `TC-AUTO-02`. Proposed: `TC-GL-01`.
+
+|===
+
+.OP-05 -- `CheckOffGroceryListItem`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app, activated by household member.
+
+| Input variables
+| `userId`, `groceryListItemId`, checked/in-cart status, timestamp.
+
+| Output variables
+| Updated grocery-list item status.
+
+| Domain preconditions
+| The grocery-list entry exists and represents an item the user intends to buy or has placed in the cart.
+
+| Required preconditions
+| User must be authenticated and have access to the household grocery list. Entry must be active and not already finalized.
+
+| Trigger conditions
+| User checks or unchecks an item while shopping.
+
+| Required postconditions
+| Entry status changes to checked/in-cart or unchecked. The item remains on the grocery list until finalization. Inventory quantity does not change merely because the item is checked off.
+
+| Related goal / requirement
+| N5; shared coordination goal; grocery-list workflow.
+
+| Related test case
+| Proposed: `TC-GL-02`.
+
+|===
+
+.OP-06 -- `FinalizeGroceryRun`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app / grocery-list repository, activated by household member.
+
+| Input variables
+| Checked grocery-list entries, bought quantities, optional expiration dates, optional receipt/spending data, household ID, user ID.
+
+| Output variables
+| Updated inventory records, archived/cleared checked grocery entries, restock log, optional spending entry, refreshed UI.
+
+| Domain preconditions
+| Checked grocery-list items represent items bought during a shopping trip. Some purchased items may need quantity and expiration details before restocking.
+
+| Required preconditions
+| At least one checked item must exist. Bought quantities must be valid and non-negative. User must have permission to update inventory. Required confirmation data must pass validation.
+
+| Trigger conditions
+| User taps *Finalize Grocery Run*, reviews purchase summary, and confirms *Save & Restock*.
+
+| Required postconditions
+| For each confirmed item, inventory is inserted or updated with quantity and expiration data. Checked entries are cleared or archived. A restocking action is logged. Optional spending data is saved. User sees confirmation and updated inventory.
+
+| Related goal / requirement
+| N2, N5; DG-REQ-01, DG-REQ-02; IR-06; grocery-list E2E flow.
+
+| Related test case
+| Proposed: `TC-GL-03`. Existing overlap: `TC-TXN-01`, `TC-RPT-01`.
+
+|===
+
+.OP-07 -- `GenerateLowStockAlert`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Scheduled sweep function / alert service.
+
+| Input variables
+| Household inventory state, quantity/availability, low-stock threshold, alert rules, previous alert history.
+
+| Output variables
+| New or retained `AlertNotification`, optional grocery-list entry.
+
+| Domain preconditions
+| Low-stock judgment is meaningful only when the item has valid quantity/availability data and a configured or default threshold.
+
+| Required preconditions
+| Item must be active. Threshold and quantity data must be valid. Alert rules must be active. A duplicate alert for the same item-condition-recipient group must not already exist in the current reminder period.
+
+| Trigger conditions
+| Quantity crosses the low-stock threshold, or scheduled sweep observes that the item remains below threshold.
+
+| Required postconditions
+| One low-stock alert exists for the item-condition pair within the allowed reminder period. Repeated sweeps do not create spammy duplicates. Alert is visible to authorized household members.
+
+| Related goal / requirement
+| DG-REQ-05, DG-REQ-07, DG-REQ-08; US-ALT-01; IR-04.
+
+| Related test case
+| Existing: `TC-ALT-01`, `TC-ALT-03`, `TC-AUTO-01`, `TC-AUTO-02`.
+
+|===
+
+.OP-08 -- `GenerateExpirationAlert`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Scheduled sweep function / alert service.
+
+| Input variables
+| Item expiration date, current date, near-expiry window, alert rules, previous alert history.
+
+| Output variables
+| New or retained expiration-related `AlertNotification`.
+
+| Domain preconditions
+| Expiration behavior can only be derived for item instances with valid expiration dates. Items without expiration dates must not produce false expiration confidence.
+
+| Required preconditions
+| Item must be active. Expiration date must be present and valid. Alert rules must be active. Deleted or renewed items must not keep emitting outdated alerts. Duplicate alert protection must apply.
+
+| Trigger conditions
+| Current date enters the near-expiry window, reaches expiration date, or scheduled sweep observes an expired item.
+
+| Required postconditions
+| Item state is classified as active, near-expiry, or expired as appropriate. One non-duplicate alert exists for the item-condition pair within the reminder period. Renewed/deleted items stop producing stale alerts.
+
+| Related goal / requirement
+| DG-REQ-06, DG-REQ-07, DG-REQ-08; US-ALT-01; IR-05.
+
+| Related test case
+| Existing: `TC-EXP-01`, `TC-EXP-02`, `TC-AUTO-01`, `TC-AUTO-02`.
+
+|===
+
+.OP-09 -- `AcceptHouseholdInvitation`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app / Supabase backend, activated by invited recipient.
+
+| Input variables
+| `invitationId`, recipient user ID/email, target household, assigned role.
+
+| Output variables
+| Accepted invitation state, active `Membership`, updated household access.
+
+| Domain preconditions
+| A household invitation is a temporary request that may move through sent, accepted, declined, expired, or revoked states. Accepting a valid invitation changes household participation.
+
+| Required preconditions
+| Invitation must be sent, unexpired, not revoked, not already accepted, and addressed to the authenticated recipient. The recipient must not already have conflicting active membership.
+
+| Trigger conditions
+| Invited user taps *Accept Invitation*.
+
+| Required postconditions
+| Invitation status becomes accepted. Membership is created or activated with assigned role. Shared household inventory becomes visible according to role permissions. Duplicate active invitations or memberships are not created.
+
+| Related goal / requirement
+| N4, N5; DG-REQ-09, DG-REQ-10, DG-REQ-11, DG-REQ-12; shared access behavior.
+
+| Related test case
+| Proposed: `TC-SH-01`.
+
+|===
+
+.OP-10 -- `RevokeHouseholdMembership`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Household admin UI / Supabase backend and RLS policies.
+
+| Input variables
+| Acting user ID, target membership ID, household ID, revocation reason.
+
+| Output variables
+| Inactive/revoked membership, updated access permissions, optional audit log.
+
+| Domain preconditions
+| Household participation may change over time. Removed members must no longer retain active access to shared household information.
+
+| Required preconditions
+| Acting user must have admin permission. Target member must be active. If target is the only admin, responsibility must be transferred before removal.
+
+| Trigger conditions
+| Admin revokes access, removes a member, or member leaves the household context.
+
+| Required postconditions
+| Target membership becomes inactive/revoked. Removed user can no longer access shared inventory, shared spending, household alerts, or member-only data. Future alerts are not delivered to removed member.
+
+| Related goal / requirement
+| N4, N5; DG-REQ-09, DG-REQ-10, DG-REQ-11, DG-REQ-12; shared access rules.
+
+| Related test case
+| Proposed: `TC-SH-02`, `TC-RLS-01`.
+
+|===
+
+.OP-11 -- `CreateSpendingEntry`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Flutter mobile app / budget repository, activated by household member or grocery finalization.
+
+| Input variables
+| `householdId`, payer, amount, date, item/category references, personal/shared scope, optional split participants.
+
+| Output variables
+| New `SpendingEntry`, optional split records, recalculated budget status.
+
+| Domain preconditions
+| A household purchase or adjustment may need to be represented historically. Spending records remain associated with the household context in which they occurred.
+
+| Required preconditions
+| User must be authenticated and allowed to log spending. Amount must be valid. Payer must be an active member. Shared splits must reference active household members. Personal/shared scope must be explicit.
+
+| Trigger conditions
+| User logs purchase manually, or grocery finalization includes spending information.
+
+| Required postconditions
+| Spending entry is stored with amount, date, payer, category/item references, and personal/shared scope. Shared split obligations are recorded where applicable. Budget status is recalculated without exposing personal spending to unauthorized users.
+
+| Related goal / requirement
+| N5; DG-REQ-11; US-SB-01; IR-06, IR-07.
+
+| Related test case
+| Existing: `TC-SB-01`, `TC-RPT-01`.
+
+|===
+
+.OP-12 -- `GenerateBudgetReport`
+[cols="1,4", stripes=even]
+|===
+| Field | Specification
+
+| Performer
+| Reports & Insights module / dashboard service, activated by user or data refresh.
+
+| Input variables
+| Household ID, user ID, budget cycle, spending entries, budget settings, inventory summary metrics.
+
+| Output variables
+| Dashboard/report view with item, alert, and spending summaries.
+
+| Domain preconditions
+| Budget status is a derived view of spending compared to configured budget limits within a cycle. Dashboard metrics summarize inventory, low-stock, expiration, and current-period spending.
+
+| Required preconditions
+| User must have permission to view the requested household and spending scope. Budget cycle and filters must be valid. Personal spending must respect visibility rules.
+
+| Trigger conditions
+| User opens dashboard/report screen, changes filters, or synchronized data changes.
+
+| Required postconditions
+| Dashboard displays updated totals, low-stock count, expiring/expired count, current-period spending, and budget status. Aggregates update after synchronized changes. Unauthorized personal/shared data is not exposed.
+
+| Related goal / requirement
+| N1, N3, N5; DG-REQ-11; US-RPT-01; IR-08.
+
+| Related test case
+| Existing: `TC-RPT-01`. Existing overlap: `TC-SB-01`.
+
+|===
+
+=== Operation-Level Consistency Rules
+
+The following consistency rules should be checked during implementation review and final documentation review:
+
+1. *Unique performer rule*: every operation must have one primary performer. Supporting components may participate, but one component or agent is responsible for activating the operation.
+2. *Input/output declaration rule*: every input and output variable used in an operation must correspond to a documented domain concept, database concept, UI state, or service state.
+3. *Authorization rule*: every operation that reads or writes household-scoped data must require an authenticated user and an active household membership or equivalent personal scope.
+4. *Non-negative quantity rule*: operations that create or update quantity must never produce a negative inventory quantity.
+5. *Historical preservation rule*: operations that correct inventory must not silently delete spending history or transaction history.
+6. *Alert deduplication rule*: scheduled alert operations must not create duplicate alerts for the same item-condition-recipient group within the same reminder period.
+7. *Expiration validity rule*: expiration-related operations must only run when expiration data is present and valid.
+8. *Membership revocation rule*: once household membership is revoked, the removed user must no longer access shared household inventory, shared spending, or household alerts.
+9. *Traceability rule*: every operation must trace to at least one goal, requirement, or stakeholder need and at least one existing or proposed test case.
+10. *UI/backend agreement rule*: every user-visible operation must have matching UI behavior, backend persistence behavior, and validation behavior.
+
+=== Follow-Up Test Gaps
+
+[cols="2,5,3", options="header", stripes=even]
+|===
+| Proposed Test ID
+| Purpose
+| Related Operations
+
+| `TC-OP-INV-01`
+| Creating an inventory item persists item identity, household context, location, quantity, optional threshold, and optional expiration date.
+| OP-01
+
+| `TC-OP-INV-02`
+| Updating quantity changes availability, appends a transaction record, and recomputes low-stock state.
+| OP-02
+
+| `TC-OP-INV-03`
+| Deleting or archiving an item removes it from active inventory without deleting spending history or causing stale alerts.
+| OP-03
+
+| `TC-GL-01`
+| Moving an item to the grocery list creates or updates one active grocery-list entry without duplicates.
+| OP-04
+
+| `TC-GL-02`
+| Checking off a grocery-list item changes grocery-list state but does not update inventory until finalization.
+| OP-05
+
+| `TC-GL-03`
+| Finalizing a grocery run restocks inventory, archives checked entries, logs restock action, and optionally records spending.
+| OP-06
+
+| `TC-SH-01`
+| Accepting a valid household invitation creates active membership and grants role-appropriate access.
+| OP-09
+
+| `TC-SH-02`
+| Revoking or removing a household member deactivates membership and prevents further shared data access.
+| OP-10
+
+| `TC-RLS-01`
+| Supabase RLS prevents removed or unauthorized users from reading or writing shared household data.
+| OP-10, OP-11, OP-12
+
+|===
+
+=== Implementation Notes
+
+Some operation specifications are directly supported by the current documentation, especially grocery finalization, alert generation, invitation/membership rules, and the existing validation and verification test cases.
+
+The operations that most need implementation confirmation are:
+
+* `DeleteInventoryItem`: verify whether the app deletes, archives, or soft-deletes records.
+* `CheckOffGroceryListItem`: verify the exact status name used in the database or Cubit state.
+* `AcceptHouseholdInvitation`: verify the implemented invitation state transition and duplicate-invitation handling.
+* `RevokeHouseholdMembership`: verify Supabase RLS behavior after membership removal.
+* `GenerateBudgetReport`: verify whether personal spending is filtered by role before aggregation.
