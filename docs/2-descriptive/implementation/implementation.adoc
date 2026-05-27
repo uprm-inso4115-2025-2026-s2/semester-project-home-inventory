@@ -473,6 +473,343 @@ User selects date range (optional)
 
 ---
 
+=== Implementation Decisions and Trade-offs
+
+This subsection documents the major implementation decisions that shape the Milestone 3 Home Inventory system. The entries are written in a lightweight ADR style so reviewers can understand the selected approach, the alternatives considered, and the consequences of each decision. These decisions focus on major subsystem choices rather than minor implementation details.
+
+Current implementation decisions are separated from planned or feature-dependent decisions where the runtime behavior is not fully implemented or depends on later integration work.
+
+==== ADR-01: Use Flutter for the Mobile Client
+
+**Status:** Accepted — M3 current
+
+**Context / Problem:**
+
+The system needs a mobile-first client that supports inventory capture, household coordination, alerts, grocery-list workflows, reporting screens, barcode scanning, and eventual push-notification handling. The application must support fast UI iteration during the milestone while remaining maintainable for feature teams working on separate screens and flows.
+
+**Selected Option:**
+
+Use **Flutter** with **Dart** as the mobile client framework. The client uses Material 3 UI components, GoRouter for navigation, and Bloc/Cubit for feature state management.
+
+**Alternatives Considered:**
+
+* Native Android and iOS applications using Kotlin/Swift.
+* React Native.
+* A web-first application with responsive mobile layout.
+
+**Rationale:**
+
+Flutter provides a single shared codebase for mobile UI development while still supporting native device features such as camera access, file handling, and push-notification integration. It also fits the current project structure because feature teams can implement screens, widgets, Cubits, routes, and domain/use-case logic in a consistent layered pattern.
+
+**Trade-offs / Consequences:**
+
+* Flutter reduces duplicate mobile development effort compared with separate native apps.
+* Native platform behavior still requires platform-specific configuration for camera permissions, push notifications, builds, and signing.
+* The team must maintain consistent state-management conventions to avoid disconnected feature implementations.
+* Flutter is appropriate for the current milestone, but platform-specific edge cases may still require Android/iOS testing.
+
+**Related Requirements / Constraints:**
+
+Supports Core Inventory (`F-INV`), Alerts (`F-ALERT`), Grocery List (`F-GL-AUTO` / `F-GL-USER`), Reports (`F-SPEND`), barcode fallback capture, mobile-first usage, and reviewer-accessible local execution.
+
+==== ADR-02: Use Supabase as the Backend Platform
+
+**Status:** Accepted — M3 current
+
+**Context / Problem:**
+
+The system requires backend services for authentication, persistent inventory data, household/member data, shared synchronization, alert records, grocery-list data, reporting data, and future media storage. The team needs a backend approach that is quick to set up during the course milestone but still supports real application behavior.
+
+**Selected Option:**
+
+Use **Supabase** as the backend platform, including Supabase Auth, Supabase PostgreSQL, Supabase Realtime, PostgREST access through the Supabase Flutter SDK, and documented support for Supabase Storage and Edge Functions.
+
+**Alternatives Considered:**
+
+* Firebase Authentication, Firestore, Cloud Functions, and Firebase Storage.
+* A custom REST API with Node.js/Express or similar backend framework.
+* A local-only database with no hosted backend.
+* Direct PostgreSQL hosting without Supabase platform services.
+
+**Rationale:**
+
+Supabase provides a PostgreSQL-backed platform with authentication, row-level authorization, realtime subscriptions, storage, and serverless function support in one stack. This reduces backend setup overhead and aligns with the project’s need for household-scoped data, shared inventory updates, and SQL-based relational modeling.
+
+**Trade-offs / Consequences:**
+
+* Supabase accelerates development by providing multiple backend services in one platform.
+* The team becomes dependent on Supabase-specific configuration, SDK behavior, RLS policies, and hosted service availability.
+* Direct SQL/Postgres modeling is stronger for relational data than document-only approaches, but it requires careful schema and policy design.
+* Some current documentation still describes planned or feature-dependent Supabase services, so implementation status must remain explicit.
+
+**Related Requirements / Constraints:**
+
+Supports persistent inventory records, households, memberships, alert records, grocery-list records, reporting data, realtime collaboration, authentication, and authorization requirements such as household-scoped access control.
+
+==== ADR-03: Enforce Access Control with Supabase Auth and Row Level Security
+
+**Status:** Accepted — M3 current / policy configuration-dependent
+
+**Context / Problem:**
+
+Household inventory data must not be visible or modifiable by unauthorized users. Since the system supports shared households, members, roles, invitations, and potentially personal/shared inventory records, authorization cannot rely only on frontend checks.
+
+**Selected Option:**
+
+Use **Supabase Auth** for user identity and JWT sessions, and use **PostgreSQL Row Level Security (RLS)** policies as the database-level authorization boundary.
+
+**Alternatives Considered:**
+
+* Enforce authorization only in Flutter UI logic.
+* Enforce authorization in a custom backend API layer.
+* Use application-level role checks without database-level policies.
+* Use separate databases or tables per household.
+
+**Rationale:**
+
+RLS places authorization close to the data. This is important because multiple client screens and feature modules may query shared backend tables. Supabase Auth provides the authenticated identity, while RLS policies can restrict queries and mutations based on user identity, household membership, and role relationships.
+
+**Trade-offs / Consequences:**
+
+* RLS reduces the risk of accidental data exposure from frontend mistakes.
+* RLS policies must be tested carefully because incorrect policies can either block legitimate access or expose data.
+* Debugging access issues can be harder than debugging ordinary frontend checks.
+* Some sharing behavior is still marked as in progress, so role-based item visibility must not be presented as fully completed until policies and UI behavior are verified end-to-end.
+
+**Related Requirements / Constraints:**
+
+Supports household membership rules, invitation/membership state, shared inventory access, authentication, authorization, and protection of household-scoped data.
+
+==== ADR-04: Store Current Inventory State Directly While Preserving Historical Meaning Separately
+
+**Status:** Accepted — M3 current, with some audit/history behavior still evolving
+
+**Context / Problem:**
+
+The system needs to show current inventory quickly while also preserving enough history to explain changes, support alerts, avoid duplicate purchases, and avoid corrupting financial records when items are removed or archived.
+
+**Selected Option:**
+
+Store current inventory state directly in persistent inventory/stock records, including quantity, status, expiration data, item metadata, and household context. Treat quantity changes, alerts, grocery-list actions, and spending records as related historical or supporting records where implemented or documented.
+
+**Alternatives Considered:**
+
+* Compute current quantity only by replaying all historical transactions.
+* Hard-delete items when they are consumed, discarded, or no longer tracked.
+* Store only qualitative availability and avoid numeric quantity.
+* Store all inventory behavior as unstructured notes or free-text logs.
+
+**Rationale:**
+
+Current inventory screens, reports, alerts, and grocery-list automation need fast access to the current item state. Keeping current state directly available makes UI updates and automated checks simpler. At the same time, the documentation preserves the rule that financial history and important records should not be silently deleted when inventory records are removed or archived.
+
+**Trade-offs / Consequences:**
+
+* Direct current-state storage is simpler and faster for the app.
+* It can drift from reality if users forget to update quantities.
+* Historical traceability requires disciplined logging or audit records; the current implementation and documentation should not imply complete audit coverage where it is not yet implemented.
+* Soft deletion or archival is preferred over hard deletion when other records may still reference an item.
+
+**Related Requirements / Constraints:**
+
+Supports Core Inventory (`F-INV`), low-stock and out-of-stock checks, expiration status, dashboard/report generation, grocery restocking, non-negative quantity rules, and `DR-3` financial immutability.
+
+==== ADR-05: Use Bloc/Cubit for Feature State Management
+
+**Status:** Accepted — M3 current
+
+**Context / Problem:**
+
+The Flutter client needs predictable state handling for inventory loading, validation, success/error feedback, report views, alert interactions, grocery-list screens, and authentication-dependent routes.
+
+**Selected Option:**
+
+Use **flutter_bloc** with **Cubit** classes for feature-level state management.
+
+**Alternatives Considered:**
+
+* Local widget `setState` only.
+* Provider.
+* Riverpod.
+* Redux-style global state management.
+* Direct Supabase calls from UI widgets.
+
+**Rationale:**
+
+Cubit provides a lightweight state-management pattern that fits the project scale. It keeps UI widgets focused on rendering and user interaction while moving feature behavior into state classes, Cubits, use cases, and repositories. This supports clearer testing and avoids embedding backend calls directly into screens.
+
+**Trade-offs / Consequences:**
+
+* Cubit is simpler than full Bloc but still requires consistent separation between UI, state, domain, and data layers.
+* Some simple screens may feel heavier than if they used only local widget state.
+* If each feature team implements Cubits differently, documentation and onboarding can drift.
+* Error/loading states must be modeled explicitly to avoid silent failures.
+
+**Related Requirements / Constraints:**
+
+Supports reliable UI behavior for Core Inventory, Reports, Alerts, Grocery List, authentication flow, error handling, and reviewer-verifiable feature behavior.
+
+==== ADR-06: Use Supabase Realtime for Shared Inventory Synchronization
+
+**Status:** Accepted — M3 current / feature-dependent
+
+**Context / Problem:**
+
+Shared household inventory loses value if users must manually refresh to see changes made by roommates. The system needs a synchronization approach that can keep inventory and household-facing views reasonably current across devices.
+
+**Selected Option:**
+
+Use **Supabase Realtime** subscriptions to receive PostgreSQL change events and update Flutter client state.
+
+**Alternatives Considered:**
+
+* Manual refresh only.
+* Periodic polling from the client.
+* Custom WebSocket server.
+* Push notifications for every shared data change.
+
+**Rationale:**
+
+Supabase Realtime integrates with the selected backend stack and supports live updates without the team maintaining a custom synchronization server. It aligns with the shared-household use case where multiple users may add, edit, or consume items.
+
+**Trade-offs / Consequences:**
+
+* Realtime subscriptions reduce manual refresh needs.
+* Realtime behavior depends on Supabase configuration, table replication settings, RLS policies, and client subscription handling.
+* Realtime updates can create UI churn or race conditions if mutations also trigger full reloads.
+* Offline conflict handling is still a separate concern and must not be treated as solved by Realtime alone.
+
+**Related Requirements / Constraints:**
+
+Supports shared inventory coordination, household visibility, reduced duplicate purchases, realtime list refresh, and synchronization-related implementation requirements.
+
+==== ADR-07: Use Scheduled Backend Checks for Expiration and Stock Automation
+
+**Status:** Accepted — documented / partially implemented
+
+**Context / Problem:**
+
+Low-stock, out-of-stock, near-expiry, and expired conditions should not depend entirely on users opening the app manually. The system needs a way to evaluate inventory conditions and produce alert or grocery-list outputs without constant user interaction.
+
+**Selected Option:**
+
+Use scheduled/backend automation through a cron-style trigger and hosted/Edge Function worker to evaluate stock and expiration conditions, deduplicate alerts, record run information, and create downstream alert or grocery-list outputs.
+
+**Alternatives Considered:**
+
+* Evaluate conditions only when the user opens the app.
+* Evaluate conditions only after each item update.
+* Use device-local background tasks only.
+* Send alerts manually without automated checking.
+
+**Rationale:**
+
+Scheduled backend evaluation is more reliable than depending only on user behavior or local device background execution. It allows expiration and stock checks to run even when a user is not actively viewing the app. It also centralizes deduplication and run logging.
+
+**Trade-offs / Consequences:**
+
+* Backend automation improves reliability for reminders and grocery-list generation.
+* It introduces operational complexity: scheduled triggers, function deployment, privileged database access, retries, logging, and failure recovery.
+* Some behavior is documented or partially implemented, so the documentation must distinguish verified runtime behavior from planned automation design.
+* Scheduled checks must avoid repeated alerts when no meaningful state transition has occurred.
+
+**Related Requirements / Constraints:**
+
+Supports `F-AUTOCHECK`, `F-ALERT`, expiration detection, low-stock detection, deduplication/anti-spam rules, grocery-list auto-generation, and scheduled sweep reliability requirements.
+
+==== ADR-08: Separate Notification Records from Push Delivery
+
+**Status:** Accepted — M3 current / push delivery setup-dependent
+
+**Context / Problem:**
+
+The system needs to represent alerts in a way that supports in-app review, deduplication, read/dismissed state, and possible push delivery. Push notification delivery may depend on platform setup, FCM/APNs configuration, and device permissions.
+
+**Selected Option:**
+
+Model alerts/notifications as persisted notification or alert records, while treating push delivery through FCM/APNs as a delivery mechanism rather than the source of truth.
+
+**Alternatives Considered:**
+
+* Use push notifications only with no persisted alert records.
+* Use only in-app alerts with no push notification support.
+* Store alert state only in local client memory.
+* Send repeated push notifications directly from every automated check.
+
+**Rationale:**
+
+Persisted notification records support traceability, deduplication, read/unread handling, dismissal, and in-app review. Push delivery can then be added or configured as an additional channel without making the push provider the only place where alert state exists.
+
+**Trade-offs / Consequences:**
+
+* Separating records from delivery improves reliability and auditability.
+* It requires additional schema and service logic for statuses such as unread, read, dismissed, or archived.
+* Push delivery remains dependent on mobile platform configuration and permissions.
+* The documentation must avoid implying that every alert record necessarily results in a delivered push notification.
+
+**Related Requirements / Constraints:**
+
+Supports actionable alert states, notification records, deduplication/anti-spam rules, Alerts Center behavior, expiration alerts, low-stock alerts, and future platform push delivery.
+
+==== ADR-09: Use PNG Diagram Fallbacks with Source-Renderable Mermaid Files
+
+**Status:** Accepted — M3 documentation current
+
+**Context / Problem:**
+
+The documentation needs diagrams that display reliably in GitHub and exported documents while also remaining editable by future developers. Mermaid source is useful for maintenance, but rendering support may differ across GitHub, AsciiDoc tooling, and exported formats.
+
+**Selected Option:**
+
+Store each diagram as both a rendered **PNG** and a source-renderable **Mermaid `.mmd`** file. Reference the PNG in `implementation.adoc` and include the source path for maintainability.
+
+**Alternatives Considered:**
+
+* Embed Mermaid directly only.
+* Store only PNG files.
+* Use PlantUML only.
+* Use screenshots from an external diagramming tool with no source file.
+
+**Rationale:**
+
+PNG files render consistently in GitHub and exported documentation. Mermaid source files preserve the diagram logic and make future edits easier. This approach satisfies the documentation requirement for source-renderable diagrams while avoiding fragile rendering behavior.
+
+**Trade-offs / Consequences:**
+
+* Diagram changes require updating both the `.mmd` source and the PNG export.
+* If the PNG and source diverge, reviewers may see inconsistent architecture or lifecycle information.
+* The source path must be documented so future maintainers know where to update the diagram.
+
+**Related Requirements / Constraints:**
+
+Supports the diagram requirements for issue #647 and issue #648, Section 2.3 documentation readability, reviewer accessibility, and long-term maintainability.
+
+==== Planned / Future-Facing Decisions
+
+The following decisions are documented as future-facing or not fully verified in the current M3 runtime. They should not be interpreted as completed implementation unless later evidence confirms them.
+
+[cols="2,3,3", options="header"]
+|===
+| Decision Area
+| Planned Direction
+| Reason for Deferral
+
+| Environment configuration
+| Move Supabase URL and anonymous key out of source code into `.env` or `--dart-define` configuration.
+| Current M3 setup reads Supabase initialization values directly from `injection_dependencies.dart`; a more secure per-environment configuration scheme is planned later.
+
+| Advanced role-based item visibility
+| Enforce complete shared-vs-personal item visibility through finalized membership, role, and RLS policies.
+| Household creation and invitations are documented as implemented, but role-based item filtering remains in progress.
+
+| AI meal planning and ML expiration scoring
+| Add AI/ML services for recipe suggestions, expiration risk scoring, and forecasting.
+| These are post-MVP future features and are not part of the current M3 runtime.
+
+| Grocery delivery integration
+| Connect grocery-list output to external ordering or grocery delivery services.
+| This is future-facing and depends on external provider APIs, account linking, and additional privacy/security review.
+|===
 === Architecture Overview Diagram
 
 The following architecture overview diagram documents the major runtime containers and service boundaries for the Milestone 3 Home Inventory system. The system follows a Flutter-client-plus-Supabase-backend architecture: the Flutter client handles presentation, routing, local interaction, validation, and feature orchestration, while Supabase provides authentication, database persistence, authorization, realtime synchronization, storage support, and documented backend automation.
