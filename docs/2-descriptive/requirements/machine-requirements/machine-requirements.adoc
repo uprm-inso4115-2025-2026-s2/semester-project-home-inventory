@@ -227,3 +227,19 @@ These measurements will inform quantitative machine requirements for subsequent 
 === Out of Scope / Pending for Milestone 3
 
 Production deployment targets, final quantitative performance thresholds, and full release infrastructure are not finalized in this section. These details should be refined as the implementation stabilizes and documented in the build and deployment procedure when applicable.
+
+=== Traceability Matrix
+
+[cols="1,2,1,2,2,1,2", options="header"]
+|===
+| Requirement ID | Source Stakeholder | Validation Activity | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
+
+| MR-01 | End User, System / Dev Team | S1 | TC-ALT-* | AutoCheck process, Alerts & Notification System, Database layer | Gap flagged | Availability metrics collection not implemented
+| MR-02 | End User, System / Dev Team | S1 | TC-INV-* | Inventory module, Dashboard / Reporting | Gap flagged | Reporting performance validation pending
+| MR-03 | End User, System / Dev Team | S2 | TC-INV-+*, TC-AUTO-*+ | Inventory module, Database layer | Gap flagged | Inventory automation stress testing not completed
+| MR-04 | End User, System / Dev Team | S2 | TC-AUTO-* | Household management, Database layer, Alerts & Notification System | Gap flagged | Household automation recovery tests pending
+| MR-05 | Household Manager, End User, System / Dev Team | S2 | TC-AUTO-* | Household management, Database layer, Alerts & Notification System | Gap flagged | Cross-user automation validation incomplete
+| MR-06 | Household Manager, System / Dev Team | S2 | TC-AUTO-* | Database layer, Inventory module, Alerts & Notification System | Gap flagged | Notification resilience testing not implemented
+| MR-07 | End User, System / Dev Team | S1 | TC-ALT-* | Alerts & Notification System, AutoCheck process | Gap flagged | Notification fatigue prevention metrics pending
+| MR-08 | End User, System / Dev Team | S2 | TC-INV-+*, TC-AUTO-*+ | Inventory module, AutoCheck process | Gap flagged | AutoChack synchronization tests not finalized
+|===

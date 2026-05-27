@@ -79,3 +79,39 @@ The following domain requirements were added or revised after the Milestone 3 se
 
 * DR-25 (Pending offline inventory changes): The system shall support pending offline item creation and quantity updates. Pending changes shall be clearly marked until synchronized, and conflicts shall be surfaced to the household member instead of silently overwriting remote updates.
 ** M3 source: M3-QA-08.
+
+=== Traceability Matrix
+
+[cols="1,2,1,2,2,1,2", options="header"]
+|===
+| Requirement ID | Source Stakeholder | Validation Activity | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
+
+| DR-1  | System / Dev Team | S1 | TC-INV-03  | Inventory module | Complete |
+| DR-2  | System / Dev Team | S1 | TC-INV-01  | Inventory module | Complete |
+| DR-3  | System / Dev Team | S2 | TC-SB-03   | Database layer, Spending module | Complete |
+| DR-4  | Household Manager | S2 | TC-HH-01   | Household management | Complete |
+| DR-4A | Household Manager | S2 | TC-HH-02   | Household management | Complete |
+| DR-4B | Household Manager | S2 | TC-HH-03   | Household management | Complete |
+| DR-4C | Household Manager | S2 | TC-AUTH-01 | Authentication & Authorization | Complete |
+| DR-5  | End User | S2 | TC-HH-05   | Household management | Complete |
+| DR-6  | System / Dev Team | S2 | TC-SB-03  | Database layer, Spending module | Complete |
+| DR-7  | System / Dev Team | S1 | TC-INV-04 | Inventory module | Complete |
+| DR-8  | System / Dev Team | S1 | TC-INV-03 | Inventory module | Complete |
+| DR-9  | System / Dev Team | S2 | TC-AUD-01 | Audit process | Complete |
+| DR-10 | Household Manager | S2 | TC-RPT-01 | Dashboard / Reporting | Complete |
+| DR-11 | Household Manager | S2 | TC-SB-02  | Spending module | Complete |
+| DR-12 | End User | S1 | TC-ALT-01 | Alerts & Notification System | Complete |
+| DR-13 | End User | S1 | TC-ALT-02 | Alerts & Notification System | Complete |
+| DR-14 | System / Dev Team | S1 | TC-ALT-03 | Alerts & Notification System | Complete |
+| DR-15 | System / Dev Team | S1 | TC-INV-03 | Inventory module | Complete |
+| DR-16 | System / Dev Team | S2 | TC-SB-01  | Database layer | Complete |
+| DR-17 | System / Dev Team | S1 | TC-INV-03 | Inventory module | Complete |
+| DR-18 | End User | S2 | TC-AUTH-02 | Authentication & Authorization | Complete |
+| DR-19 | Household Manager | S2 | TC-AUTH-03 | Authentication & Authorization | Complete |
+| DR-20 | End User | S1 | TC-INV-06 | Dashboard / Reporting | Complete |
+| DR-21 | End User | S1 | TC-INV-07 | Inventory module | Complete |
+| DR-22 | Household Manager | S2 | TC-SB-04  | Spending module | Complete |
+| DR-23 | System / Dev Team | S2 | TC-ALT-04 | Alerts & Notification System | Complete |
+| DR-24 | End User | S2 | TC-ALT-05 | Alerts & Notification System | Complete |
+| DR-25 | System / Dev Team | S2 | TC-SYNC-01 | Synchronization system | Gap flagged | Synchronization failure recovery tests pending implementation
+|===
