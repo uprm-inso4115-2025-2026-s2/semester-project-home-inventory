@@ -1,0 +1,76 @@
+= Boundary Value Analysis for Inventory Quantity and Expiration Rules
+
+Author: Kaysha Pagan
+
+== Related Test Artifacts
+
+* Lecture Topic Task: LTT_boundary_value_analysis_inventory_rules
+
+== Introduction
+
+This Lecture Topic Task focuses on how the Home Inventory system should behave near important inventory quantity and expiration boundaries. The goal is to make expected behavior clearer for stock status, low stock alerts, expiration tracking, and inventory consistency. This analysis looks at cases where small changes in quantity or expiration date can change how the system classifies an item.
+
+== Boundary Value Table
+
+[cols="2,2", options="header"]
+|===
+|Boundary Condition
+|Expected Behavior
+
+|Quantity is missing
+|Item is treated as in stock according to current stock rules
+
+|Quantity is negative
+|Item is treated as in stock according to current stock rules
+
+|Quantity = 0
+|Item is classified as out of stock
+
+|Quantity changes from 1 to 0
+|Item moves from low stock to out of stock
+
+|Quantity changes from 0 to 1
+|Item moves from out of stock to low stock
+
+|Quantity equals the low stock threshold
+|Item is classified as low stock
+
+|Quantity is below the low stock threshold
+|Item is classified as low stock
+
+|Quantity is above the low stock threshold
+|Item is classified as in stock
+
+|Expiration date is missing
+|Item is considered okay for expiration tracking
+
+|Expiration date is today
+|Item is classified as expired
+
+|Expiration date is in the past
+|Item is classified as expired
+
+|Expiration date is within the reminder threshold
+|Item is classified as near expiration
+
+|Expiration date is outside the reminder threshold
+|Item is classified as okay
+
+|Expiration date changes from future date to today
+|Item status changes to expired
+
+|Expiration date changes from today to future date
+|Item status is recalculated using the updated date
+
+|Item is restocked after a stock alert
+|Stock status is recalculated using the updated quantity
+
+|===
+
+== Analysis
+
+The boundary value table shows how the Home Inventory system should respond when inventory quantities or expiration dates are close to important limits. These cases are important because small value changes can change an item from in stock to low stock, from low stock to out of stock, or from okay to near expiration or expired. Keeping these boundary behaviors documented helps reduce ambiguity in stock management, expiration tracking, and alert related behavior.
+
+== Conclusion
+
+This boundary value analysis helps clarify expected behavior for inventory quantity and expiration rules. By documenting these boundary conditions, the Home Inventory system can keep stock and expiration behavior more consistent across development and testing.
