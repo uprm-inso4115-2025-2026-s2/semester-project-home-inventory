@@ -1,0 +1,272 @@
+= Data Model and Persistence Layer
+:showtitle: true
+:icons: font
+
+== Overview
+
+This document defines the data model and persistence layer for the Digital Home Inventory system as implemented in Milestone 3. The system uses **Supabase PostgreSQL** as the primary database with **Row Level Security (RLS)** for access control and **Supabase Realtime** for live synchronization.
+
+== Core Entities
+
+=== Household
+
+Represents a shared living unit where members manage household essentials.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique household identifier
+| name | TEXT | Household name/label
+| created_by | UUID (FK → auth.users.id) | User who created the household
+| created_at | TIMESTAMPTZ | Creation timestamp
+|===
+
+*Cardinality:* One Household has many Members, many Items, many Budgets.
+
+---
+
+=== Household Member
+
+Links a user to a household with a specific role.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| household_id | UUID (PK/FK → households.id) | Reference to household
+| user_id | UUID (PK/FK → auth.users.id) | Reference to authenticated user
+| role | TEXT | owner, member, or viewer
+| created_at | TIMESTAMPTZ | When membership was established
+|===
+
+*Cardinality:* Many-to-many between User and Household.
+
+---
+
+=== Inventory Item (Item Type)
+
+Defines the logical item type independent of specific packages.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique item identifier
+| household_id | UUID (FK → households.id) | Owning household
+| name | TEXT | Item name (e.g., "Milk")
+| category | TEXT | Optional category label
+| default_unit | TEXT | Unit of measure (ct, lb, oz, L)
+| barcode | TEXT | Optional barcode value
+| threshold | INTEGER | Low-stock threshold value
+| created_at | TIMESTAMPTZ | Creation timestamp
+| updated_at | TIMESTAMPTZ | Last update timestamp
+|===
+
+*Cardinality:* One Inventory Item has many Stock Entries.
+
+---
+
+=== Stock Entry (Item Instance)
+
+Represents a concrete package or unit of an item type.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique stock entry identifier
+| inventory_item_id | UUID (FK → inventory_items.id) | Parent item type
+| quantity | INTEGER | Current quantity (non-negative)
+| expiration_date | DATE | Optional expiration date
+| is_expired | BOOLEAN | Derived expired state
+| is_near_expiration | BOOLEAN | Derived near-expiry state
+| is_low_stock | BOOLEAN | Derived low-stock state
+| created_at | TIMESTAMPTZ | Creation timestamp
+| updated_at | TIMESTAMPTZ | Last update timestamp
+|===
+
+*Cardinality:* Many Stock Entries belong to one Inventory Item.
+
+---
+
+=== Transaction (Quantity Change)
+
+Records quantity changes over time for auditability.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique transaction identifier
+| stock_entry_id | UUID (FK → stock_entries.id) | Related stock entry
+| quantity_change | INTEGER | Positive or negative delta
+| reason | TEXT | restock, consume, adjustment
+| changed_at | TIMESTAMPTZ | When change occurred
+|===
+
+*Cardinality:* Many Transactions belong to one Stock Entry.
+
+---
+
+=== Notification
+
+Stores in-app alerts for users.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique notification identifier
+| recipient_user_id | UUID (FK → auth.users.id) | Target user
+| inventory_item_id | UUID (FK → inventory_items.id) | Related item (optional)
+| stock_entry_id | UUID (FK → stock_entries.id) | Related stock entry (optional)
+| type | ENUM | LOW_STOCK, EXPIRING_SOON, EXPIRED, DUPLICATE_WARNING, SHARED_INVENTORY_UPDATE
+| title | TEXT | Notification title
+| message | TEXT | Notification body
+| priority_level | ENUM | LOW, MEDIUM, HIGH, CRITICAL
+| status | ENUM | UNREAD, READ, ARCHIVED, DISMISSED
+| created_at | TIMESTAMPTZ | Creation timestamp
+| triggered_at | TIMESTAMPTZ | When condition was detected
+| expires_at | TIMESTAMPTZ | Optional expiration
+| is_active | BOOLEAN | Soft delete flag
+|===
+
+*Cardinality:* Many Notifications belong to one User.
+
+---
+
+=== Sweep Run
+
+Audit log for automated daily sweep executions.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique sweep run identifier
+| started_at | TIMESTAMPTZ | Run start time
+| completed_at | TIMESTAMPTZ | Run completion time (nullable)
+| status | TEXT | started, success, failed, partial
+| items_scanned | INTEGER | Number of items checked
+| expired_flagged_count | INTEGER | Expired items found
+| near_expiration_count | INTEGER | Near-expiry items found
+| low_stock_flagged_count | INTEGER | Low-stock items found
+| out_of_stock_count | INTEGER | Out-of-stock items found
+| error_summary | TEXT | Error details if failed (nullable)
+| trigger_source | TEXT | cron, manual, retry
+| run_scope | JSONB | Optional scope metadata
+|===
+
+---
+
+=== Spending Entry (Budget Context)
+
+Records financial transactions.
+
+[cols="1,3,3", options="header"]
+|===
+| Attribute | Type | Description
+| id | UUID (PK) | Unique spending identifier
+| household_id | UUID (FK → households.id) | Associated household
+| created_by_user_id | UUID (FK → auth.users.id) | User who logged the spending
+| paid_by_user_id | UUID (FK → auth.users.id) | User who paid (optional)
+| category_id | UUID | Spending category reference
+| item_id | UUID (FK → inventory_items.id) | Related item (optional)
+| amount | DECIMAL(10,2) | Monetary value
+| transaction_type | ENUM | purchase, refund, adjustment
+| purchase_date | TIMESTAMPTZ | When transaction occurred
+| merchant_name | TEXT | Store/vendor name (optional)
+| description | TEXT | Optional notes
+| created_at | TIMESTAMPTZ | Creation timestamp
+| updated_at | TIMESTAMPTZ | Last update timestamp
+|===
+
+---
+
+=== Entity Relationship Diagram
+
+[cols="1,2,3", options="header"]
+|===
+| Source | Target | Relationship
+| Household | household_members | One-to-Many
+| User | household_members | One-to-Many
+| Household | inventory_items | One-to-Many
+| inventory_items | stock_entries | One-to-Many
+| stock_entries | transactions | One-to-Many
+| inventory_items | notifications | One-to-Many
+| User | notifications | One-to-Many
+|===
+
+== Relationship Summary
+
+[cols="1,2,2,2", options="header"]
+|===
+| Source Entity | Target Entity | Cardinality | Ownership
+| Household | household_members | One-to-Many | Household owns membership records
+| Household | inventory_items | One-to-Many | Household owns its items
+| User | household_members | One-to-Many | User can belong to many households
+| inventory_items | stock_entries | One-to-Many | Item type has many stock instances
+| stock_entries | transactions | One-to-Many | Stock entry has many change records
+| User | notifications | One-to-Many | User owns their notifications
+|===
+
+== Persistence Layer
+
+=== Primary Database: Supabase PostgreSQL
+
+- Hosted PostgreSQL database managed through Supabase
+- All core entities stored as tables
+- Row Level Security (RLS) enforced for all tables
+- Real-time enabled for inventory and household tables
+
+=== Authentication: Supabase Auth
+
+- Users stored in `auth.users` (managed by Supabase)
+- JWT-based session management
+- RLS policies use `auth.uid()` for user identification
+
+=== File Storage: Supabase Storage
+
+- Item images stored in storage buckets
+- Receipt images for spending entries
+- Signed URLs for private assets
+
+=== Local Persistence (Flutter Client)
+
+- SharedPreferences for user preferences and settings
+- In-memory state management via Cubit/Bloc
+- Pending offline changes queued for sync
+
+== Migration Notes (M2 → M3)
+
+The following schema changes were made between Milestone 2 and Milestone 3:
+
+[cols="1,2,2,3", options="header"]
+|===
+| Entity | Change Type | Old Field | New Field / Change
+| inventory_items | Added | — | threshold (for low-stock detection)
+| stock_entries | Added | — | is_expired, is_near_expiration, is_low_stock (derived flags)
+| notifications | Added | — | priority_level, triggered_at, expires_at
+| sweep_runs | New Table | — | Complete audit logging for automated sweeps
+| spending | Renamed | expense_date | purchase_date (clarity)
+|===
+
+**Backward Compatibility:** Soft deletion (`is_active` flags) preserves historical data. No hard deletes are performed on financial or notification records.
+
+== Indexing Strategy
+
+[cols="1,2,3", options="header"]
+|===
+| Table | Indexed Columns | Purpose
+| inventory_items | (household_id) | Household scoping
+| inventory_items | (owner_user_id) | User ownership queries
+| stock_entries | (inventory_item_id) | Parent item lookups
+| stock_entries | (expiration_date) | Expiration sweeps
+| stock_entries | (is_expired, is_low_stock) | Status filtering
+| notifications | (recipient_user_id, created_at) | User notification feed
+| notifications | (recipient_user_id, status) | Unread notification count
+| sweep_runs | (started_at DESC) | Run history audit
+|===
+
+== Traceability
+
+This data model supports:
+
+- *Domain Requirements:* DR-1 through DR-17 (inventory integrity, shared-household rules, duplicate handling)
+- *Interface Requirements:* IR-01 through IR-08 (item initialization, consumption, ownership, thresholds)
+- *Machine Requirements:* MR-01 through MR-08 (availability, response time, offline operation, security)
+
