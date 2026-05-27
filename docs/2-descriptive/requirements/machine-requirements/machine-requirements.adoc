@@ -236,12 +236,12 @@ NOTE: This matrix is the Machine Requirements portion of the centralized Milesto
 |===
 | Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
 
-| MR-01 | End User, System / Dev Team | S1 | TC-ALT-* | AutoCheck process, Alerts & Notification System, Database layer | Gap flagged | Availability metrics collection not implemented
-| MR-02 | End User, System / Dev Team | S1 | TC-INV-* | Inventory module, Dashboard / Reporting | Gap flagged | Reporting performance validation pending
-| MR-03 | End User, System / Dev Team | S2 | TC-INV-*, TC-AUTO-* | Inventory module, Database layer | Gap flagged | Inventory automation stress testing not completed
-| MR-04 | End User, System / Dev Team | S2 | TC-AUTO-* | Household management, Database layer, Alerts & Notification System | Gap flagged | Household automation recovery tests pending
-| MR-05 | Household Manager, End User, System / Dev Team | S2 | TC-AUTO-* | Household management, Database layer, Alerts & Notification System | Gap flagged | Cross-user automation validation incomplete
-| MR-06 | Household Manager, System / Dev Team | S2 | TC-AUTO-* | Database layer, Inventory module, Alerts & Notification System | Gap flagged | Notification resilience testing not implemented
-| MR-07 | End User, System / Dev Team | S1 | TC-ALT-* | Alerts & Notification System, AutoCheck process | Gap flagged | Notification fatigue prevention metrics pending
-| MR-08 | End User, System / Dev Team | S2 | TC-INV-*, TC-AUTO-* | Inventory module, AutoCheck process | Gap flagged | AutoCheck synchronization tests not finalized
+| MR-01 | End User, System / Dev Team | S1 | Pending | AutoCheck process, Alerts & Notification System, Database layer | Gap flagged | Availability metrics collection not implemented. Specific TC IDs pending; planned coverage in the TC-ALT-* family.
+| MR-02 | End User, System / Dev Team | S1 | Pending | Inventory module, Dashboard / Reporting | Gap flagged | Reporting performance validation pending. Specific TC IDs pending; planned coverage in the TC-INV-* family.
+| MR-03 | End User, System / Dev Team | S2 | Pending | Inventory module, Database layer | Gap flagged | Inventory automation stress testing not completed. Specific TC IDs pending; planned coverage in the TC-INV-* and TC-AUTO-* families.
+| MR-04 | End User, System / Dev Team | S2 | Pending | Household management, Database layer, Alerts & Notification System | Gap flagged | Household automation recovery tests pending. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
+| MR-05 | Household Manager, End User, System / Dev Team | S2 | Pending | Household management, Database layer, Alerts & Notification System | Gap flagged | Cross-user automation validation incomplete. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
+| MR-06 | Household Manager, System / Dev Team | S2 | Pending | Database layer, Inventory module, Alerts & Notification System | Gap flagged | Notification resilience testing not implemented. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
+| MR-07 | End User, System / Dev Team | S1 | Pending | Alerts & Notification System, AutoCheck process | Gap flagged | Notification fatigue prevention metrics pending. Specific TC IDs pending; planned coverage in the TC-ALT-* family.
+| MR-08 | End User, System / Dev Team | S2 | Pending | Inventory module, AutoCheck process | Gap flagged | AutoCheck synchronization tests not finalized. Specific TC IDs pending; planned coverage in the TC-INV-* and TC-AUTO-* families.
 |===

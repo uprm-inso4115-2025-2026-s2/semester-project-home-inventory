@@ -213,3 +213,5 @@ NOTE: This matrix is the Interface Requirements portion of the centralized Miles
 | IR-13 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete
 | IR-14 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation
 |===
+
+Edge-case interface requirements IR-EC-A through IR-EC-I are intentionally deferred from this matrix because they remain appendix-scoped edge-case requirements and have not yet been promoted into stable IR-N identifiers. Their future inclusion follows the deferred traceability guidance documented in docs/4-specific-topics/traceability/traceability.adoc.
