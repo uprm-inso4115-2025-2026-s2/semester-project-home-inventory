@@ -474,6 +474,77 @@ User selects date range (optional)
 
 ---
 
+=== Data Model and Persistence Layer
+
+This section documents the current data model and persistence approach used by the implemented Home Inventory system. The purpose is to describe the model that is actually reflected in the codebase, rather than preserving placeholder or outdated data diagrams from earlier documentation revisions.
+
+==== Data Model Diagram
+
+image::data-model-persistence-layer.png[Data Model and Persistence Layer, width=100%]
+
+The diagram above represents the implemented data model and persistence structure currently used by the Home Inventory system.
+
+It shows the relationship between inventory state management, persistence operations, domain entities, and the storage model currently implemented in Supabase. The diagram reflects the current implementation and highlights how inventory data is retrieved, transformed, persisted, and synchronized across the application.
+
+The model documents entity ownership, inventory composition, product references, and the interaction between the application and persistence layers.
+
+==== Core Implemented Entities
+
+[cols="1,2", options="header"]
+|===
+| Entity / Model
+| Responsibility
+
+| InventoryEntity / InventoryModel
+| Represents the inventory aggregate loaded from persistence and exposed to the application.
+
+| StockEntity / StockModel
+| Represents tracked stock information including quantity, expiration data, and ownership metadata.
+
+| Product / ProductModel
+| Represents reusable product information used during inventory operations.
+
+| InventorySupabaseDataSource
+| Handles persistence operations between the application and Supabase.
+
+| InventoryCubit
+| Coordinates inventory state updates and UI synchronization.
+|===
+
+==== Relationships and Ownership
+
+The current implementation treats inventory as an owner-scoped aggregate. Each inventory belongs to one owner identifier, and each inventory contains a stock JSON map keyed by product id. A single inventory can therefore contain multiple stock entries, and each stock entry is associated with a product record.
+
+At the model level, `StockEntity` and `StockModel` include an optional `ownerId`. This supports future ownership-aware behavior, but the current implementation does not yet fully enforce per-item visibility in the presentation layer. For that reason, ownership should be documented as partially implemented at the model/data level rather than as a completed UI access-control feature.
+
+==== Persistence Strategy
+
+The system uses Supabase as the persistence backend for the Core Inventory feature. Inventory data is currently stored as an owner-scoped inventory row containing a stock JSON map. The data source follows a fetch-modify-update pattern:
+
+. Fetch the inventory row for the owner.
+. Convert the stored stock JSON into `StockModel` objects.
+. Add, replace, or remove the affected stock entry.
+. Write the updated stock JSON map back to Supabase.
+. Refresh the inventory state through `InventoryCubit`.
+
+image::persistence-flow.png[Core Inventory Persistence Flow, width=100%]
+
+This approach supports the implemented add, edit, delete, and lookup flows for Core Inventory. It also keeps persistence logic isolated in the data layer, consistent with the project’s Clean Architecture structure.
+
+==== Implementation Notes and Changes
+
+The current implementation replaces earlier placeholder data-model descriptions with the implemented owner-scoped persistence behavior. The main reconciliation points are:
+
+* Inventory persistence is centered on an owner-scoped inventory aggregate.
+* Stock entries are persisted inside a JSON map keyed by product id.
+* `ownerId` exists in the stock model, but item-level visibility is not fully enforced in the UI.
+* The current persistence layer does not create separate transaction or audit rows for every quantity change.
+* Concurrent writes may overwrite intermediate changes because the current strategy uses fetch-modify-update without optimistic locking.
+
+These limitations remain documented so the data model does not appear more complete than the implementation currently supports.
+
+---
+
 === Testing & Verification Strategy
 
 Each completed feature has been verified through:
