@@ -28,22 +28,22 @@ We derive concepts by asking: (1) what phenomena exist in the domain, (2) what i
 
 Examples of abstraction:
 
-* "If it is not on our fridge note, we assume we are out." -
+* "If it is not on our fridge note, we assume we are out." ->
   *Tracked representation* (note/list) vs *reality* (actual item availability), and *assumption under uncertainty*.
 
-* "Rice in two places" -
+* "Rice in two places" ->
   item storage *location*, and the possibility of multiple locations for the same item.
 
-* "when it feels light" / "open the backup" -
+* "when it feels light" / "open the backup" ->
   *low-stock judgment* that is qualitative and strategy-based, and *backup* as a household practice.
 
-* "Milk bought twice in the same week" -
+* "Milk bought twice in the same week" ->
   *duplicate purchase* as a coordination failure, often arising from missing shared understanding.
 
-* "3-5 yogurts thrown away last semester" / medicines expired with unopened box -
+* "3–5 yogurts thrown away last semester" / medicines expired with unopened box ->
   *expiration* and *batches* (same item type can exist in multiple packages with different expiration dates).
 
-* "remove access when someone moves out" -
+* "remove access when someone moves out" ->
   *membership* and *access to shared household information* (domain concept: who belongs to the household at a given time).
 
 === Core domain concepts (derived)
@@ -60,7 +60,7 @@ documents that currently carry the concept.
 |Household
 |A living unit (dorm, apartment, shared house) in which one or more people manage household essentials.
 |`HouseholdEntity`, `HouseholdModel`, `HouseholdRemoteDataSource`, and `SharingRepository.createHousehold/getHouseholdById`; supporting design in `shared-inventory-definition.adoc` and `software-architecture.adoc`.
-|Retained. The M2 "home/group" wording is standardized as *Household* to match the sharing-budget package.
+|Retained. The Milestone 2 "home/group" wording is standardized as *Household* to match the `sharing_budget` package.
 
 |Household member
 |A person who currently belongs to a household and participates in consuming, replenishing, or coordinating around items.
@@ -85,7 +85,7 @@ documents that currently carry the concept.
 |Inventory
 |The collection of household items that exist within a household at a given time.
 |`InventoryEntity`, `InventoryModel`, `InventoryRepository`, `InventorySupabaseDataSource`, `InventoryCubit`, and inventory pages/routes under the `core_inventory` feature.
-|Retained. Current implementation supports owner-based inventory retrieval; shared-household access is represented by sharing-budget entities and architecture docs.
+|Retained. Current implementation supports owner-based inventory retrieval; shared-household access is represented by `sharing_budget` entities and architecture docs.
 
 |Tracked inventory record
 |A representation of item availability used by household members (e.g., fridge note, mental model, list). This may diverge from the real inventory.
@@ -93,9 +93,8 @@ documents that currently carry the concept.
 |Retained. The implementation narrows the rough-sketch concept to the app's persisted digital record.
 
 |Availability
-|A household's current “how much is left” understanding, often qualitative ("full", "almost empty", "backup").
-
-|`StockEntity.quantity`, `Status` enum (`EMPTY`, `LOW`, `HALFWAY`, `FULL`, `UNKNOWN`), `StockStatus`, and `checkStock()`.
+|A household's current "how much is left" understanding, often qualitative ("full", "almost empty", "backup").
+|`StockEntity.quantity`, `Status` enum (`EMPTY`, `LOW`, `HALFWAY`, `FULL`, `EXPIRED`, `DAMAGED`, `UNKNOWN`), `StockStatus`, and `checkStock()`.
 |Retained. Qualitative availability remains in `Status`, while alert automation also computes numeric stock status.
 
 |Quantity (optional formalization)
@@ -104,8 +103,7 @@ documents that currently carry the concept.
 |Retained as implemented. Milestone 3 treats quantity as an implemented field, not only an optional analysis idea.
 
 |Low-stock judgment
-|A decision that an item is running low, derived from strategies like “feels light”, “opened backup”, or a numeric threshold.
-
+|A decision that an item is running low, derived from strategies like "feels light", "opened backup", or a numeric threshold.
 |`checkStock()`, `StockStatus.lowStock/outOfStock`, `automatedCheckStock()`, `StockCheckResult`, `AutomatedGroceryEngine`, and `low-stock-detection-logic.adoc`.
 |Retained with changed abstraction. The domain allows qualitative strategies, but current executable logic uses quantity and a threshold.
 
@@ -138,8 +136,8 @@ documents that currently carry the concept.
 === Deferred or backlog concepts
 
 These concepts remain relevant to the domain model but are not counted as fully
-implemented in Milestone 3. They should not be graded as completed functionality until
-M4 adds stable code, schema support, and verified user flows.
+implemented in Milestone 3. They should not be graded as completed functionality
+until future development adds stable code, schema support, and verified user flows.
 
 [cols="2,3,4",options="header"]
 |===
@@ -162,11 +160,11 @@ M4 adds stable code, schema support, and verified user flows.
 
 To prevent inconsistent usage across documentation, we clarify common ambiguous terms:
 
-* *Inventory* (real-world items in the household) vs *Tracked inventory record* (note/list/memory). The rough sketch shows these diverge (e.g., “not on fridge note - assume out”).
-* *Item type* (“milk”) vs *Item instance/package* (a specific carton). This matters for expiration and “second unopened box”.
-* *Low-stock* is not inherently numeric; in the domain it is often qualitative (“feels light”, “open backup”).
+* *Inventory* (real-world items in the household) vs *Tracked inventory record* (note/list/memory). The rough sketch shows these diverge (e.g., "not on fridge note -> assume out").
+* *Item type* ("milk") vs *Item instance/package* (a specific carton). This matters for expiration and "second unopened box".
+* *Low-stock* is not inherently numeric; in the domain it is often qualitative ("feels light", "open backup").
 * *Backup* is a domain concept (household practice), not an application feature.
-* *Household membership* changes over time (“remove access when someone moves out”): membership is a domain phenomenon; access control is a system concern derived from it.
+* *Household membership* changes over time ("remove access when someone moves out"): membership is a domain phenomenon; access control is a system concern derived from it.
 
 === Relationships (domain model)
 
@@ -178,31 +176,31 @@ not as completed implementation claims.
 |===
 |Concept A |Concept B |Relationship
 
-|Household |Household member
+|Household (`HouseholdEntity`) |Household member (`HouseholdMemberEntity`)
 |A household has one or more members; membership may change over time.
 
-|Household |Inventory
+|Household (`HouseholdEntity`) |Inventory (`InventoryEntity`)
 |A household has an inventory (items that exist in the household).
 
-|Household item |Item type
+|Household item |Item type (`ProductEntity`)
 |Each household item corresponds to an item type.
 
-|Item type |Item instance/package
+|Item type (`ProductEntity`) |Item instance/package (`StockEntity`)
 |An item type may have multiple item instances/packages in the household at once (bulk buying, backup supply).
 
-|Item instance/package |Location
+|Item instance/package (`StockEntity`) |Location (deferred)
 |Deferred implementation relationship. The domain allows item instances to be stored in locations, but Milestone 3 code does not yet persist location on `StockEntity`.
 
-|Item instance/package |Expiration date
+|Item instance/package (`StockEntity`) |Expiration date (`StockEntity.expirationDate`)
 |Some item instances have an expiration date; others do not.
 
-|Household member |Consumption / replenishment
+|Household member (`HouseholdMemberEntity`) |Consumption / replenishment (`InventoryRepository.updateStock/addStock`)
 |Members consume and replenish items; consumption rates vary by context (exam weeks, guests).
 
-|Tracked inventory record |Inventory (reality)
+|Tracked inventory record (`InventoryModel`/`StockModel`) |Inventory (reality)
 |Tracked records approximate reality and may be incomplete, outdated, or wrong.
 
-|Household |Coordination failure
+|Household (`HouseholdEntity`) |Coordination failure (`DuplicateWarningDialog` / invite flows)
 |Coordination failures arise when members act on inconsistent or outdated tracked records.
 |===
 
@@ -210,7 +208,7 @@ not as completed implementation claims.
 
 * Events (instantaneous state changes):
   - An item becomes *out* (unexpected shortage).
-  - An item becomes *low* (as judged by a strategy such as “backup opened”).
+  - An item becomes *low* (as judged by a strategy such as "backup opened").
   - An item expires (or is discovered expired).
 
 * Actions (intentional acts):
@@ -219,7 +217,7 @@ not as completed implementation claims.
   - Replenish an item (buy milk, buy bulk yogurt).
 
 * Behaviors (multi-step ongoing processes):
-  - Household maintenance cycle: consume - notice low/out - decide purchase - replenish - store - repeat.
+  - Household maintenance cycle: consume -> notice low/out -> decide purchase -> replenish -> store -> repeat.
   - Shared-household coordination: negotiate who buys what, or fail and duplicate-buy.
 
 === Invariants (domain rules)
@@ -228,19 +226,19 @@ These invariants describe stable properties of the domain:
 
 * I1: A household has at least one member at any time it is considered active.
 * I2: In the real-world domain, an item instance/package is stored somewhere, but explicit location tracking is deferred until a stable location field or room entity is implemented.
-* I3: Not all household judgments require numeric quantities; qualitative availability (“full”, “almost empty”, “backup”) is valid domain information.
+* I3: Not all household judgments require numeric quantities; qualitative availability ("full", "almost empty", "backup") is valid domain information.
 * I4: If an item instance has an expiration date, it can become expired without being consumed, creating waste.
 * I5: A household may possess multiple instances of the same item type simultaneously (bulk buying, backups).
-* I6: Tracked records can diverge from reality; decisions may be made based on assumptions under uncertainty (“not on note - assume out”).
+* I6: Tracked records can diverge from reality; decisions may be made based on assumptions under uncertainty ("not on note -> assume out").
 
 === Edge cases and risks (from rough sketch)
 
-* E1: Same item type stored in multiple locations (rice in cabinet + hallway bin) - risk of undercounting or duplicate purchase; implementation tracking for this is deferred with the Location concept.
-* E2: Backup supply opened but not recorded - low-stock event is not propagated to shared understanding.
-* E3: Consumption rate varies by context (exam weeks, guests) - replenishment based on “last time” memory becomes unreliable.
-* E4: Multiple expiration dates in a bulk package - motivates future batch-level tracking if expiration awareness requires grouping beyond individual `StockEntity` records.
-* E5: Expiration date unreadable/missing - household cannot reliably judge expiration status.
-* E6: Membership change (move-out) - household needs to update who participates and who is informed.
+* E1: Same item type stored in multiple locations (rice in cabinet + hallway bin) -> risk of undercounting or duplicate purchase; implementation tracking for this is deferred with the Location concept.
+* E2: Backup supply opened but not recorded -> low-stock event is not propagated to shared understanding.
+* E3: Consumption rate varies by context (exam weeks, guests) -> replenishment based on "last time" memory becomes unreliable.
+* E4: Multiple expiration dates in a bulk package -> motivates future batch-level tracking if expiration awareness requires grouping beyond individual `StockEntity` records.
+* E5: Expiration date unreadable/missing -> household cannot reliably judge expiration status.
+* E6: Membership change (move-out) -> household needs to update who participates and who is informed.
 
 === Ownership structures for shared inventory items
 
@@ -260,8 +258,10 @@ In a user-owned structure, an item belongs primarily to an individual participan
 
 Relationship idea:
 
-Item - User +
+----
+Item -> User
 Item associated with Household context
+----
 
 This structure provides strong individual accountability and clear ownership-based authority, but it does not fit shared-household semantics naturally. Collaboration becomes secondary, because the item is conceptually owned first by a person rather than by the shared household context.
 
@@ -273,8 +273,10 @@ In a group-owned structure, an item belongs to the shared household context rath
 
 Relationship idea:
 
-Household - Item +
-Household member - Membership - Household
+----
+Household -> Item
+Household member -> Membership -> Household
+----
 
 This structure supports shared use naturally and aligns well with communal resources. However, it does not provide inherent responsibility attribution. If the domain needs to represent who is primarily responsible for a shared item, that information must be added separately.
 
@@ -286,9 +288,11 @@ In a hybrid structure, an item exists within the shared household context but ma
 
 Relationship idea:
 
-Household - Item +
-Household member - Membership - Household +
-Membership or responsibility relation - Item
+----
+Household -> Item
+Household member -> Membership -> Household
+Membership or responsibility relation -> Item
+----
 
 This structure preserves the shared household context while still allowing responsibility attribution. It supports both collaboration and accountability, though it is conceptually more complex than the other two structures.
 
