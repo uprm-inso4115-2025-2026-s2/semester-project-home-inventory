@@ -46,3 +46,127 @@ This section tracks major updates and documentation changes since the Milestone 
 
 | **4. Specific Topics** | Established inconsistency management standards for document versioning and household item hierarchies. | `inconsistency-management.adoc`, `consistency_hierachy_standards.adoc`, `document-duplicate-prevention-logic.adoc`
 |===
+
+==== Milestone 3 Other Activities Log
+
+This log tracks non-coding effort spent by team members during Milestone 3 — research, meetings, code/document review, training, and time lost to blockers. The intent is to give reviewers an honest picture of where effort actually went beyond the commit history, so team capacity and effort distribution can be assessed alongside delivered artifacts.
+
+*Sources and methodology.* Entries are compiled from the Milestone 3 weekly progress reports in `docs/project-management/weekly-reports/milestone-3/` (weeks 1–4), recurring scrum meetings, team-division meetings, pull-request review activity in this repository, and self-reported blocker time. Hour figures are rough self-estimates rounded to the nearest half hour and should be read as order-of-magnitude effort, not exact time-tracked totals. Pure feature-implementation work is excluded; it is already visible in the git log and the GitHub issues referenced in the team roster in Section 1.1.
+
+*Effort baseline.* Because this is a 3-credit course, the team used an approximate planning baseline of 4 hours of project involvement per member per week. This included recurring project scrum meetings, team-division meetings, and additional project work such as research, documentation, review, implementation, and blocker investigation. The scrum meeting involved the full project team, while team-division meetings were held within each feature/documentation team. Across a four-to-five-week milestone, this gives an expected total project involvement range of roughly 16–20 hours per active member. This Section 1.4 log only reports non-coding activity, so the totals below are not expected to equal the full 16–20 hour range for every member.
+
+*Blocked-time threshold.* For this log, a significant blocker is defined as any blocker that consumed at least 4 hours of one member's time, using a standard 8-hour workday approximation where half a day is about 4 hours. Blockers below that threshold may still be listed if they directly prevented review, testing, or integration work.
+
+.Activity Log — Milestone 3 (non-coding effort)
+[cols="2,3,2,4,1", options="header"]
+|===
+| Date | Member | Activity Type | Activity | Hours
+
+| 2026-05-04 | All teams | Scrum Meeting | Milestone 3 kickoff, milestone expectations, and work distribution (covered in week-1 reports) | 0.5 per attending member
+| 2026-05-04 | Team divisions | Team Meeting | Team-level task division, blockers, and weekly planning | 0.5 per attending member
+| 2026-05-04 | Kaysha L Pagan-Lopez | Project Management | Sprint planning, issue triage, and PR review queue management (issues #439, #441) | 4.0
+| 2026-05-04 | Luis J Cruz-Cruz | Project Management | Sprint planning and PR review for documentation and feature branches (issues #453, #455) | 4.0
+| 2026-05-05 | Alondra S. Arce Perea | Documentation Review | Coordinating documentation team intake and cross-team consistency review | 3.0
+| 2026-05-05 | Januel E. Torres Marquez | Documentation Review | Lecture-topic-task routing, terminology consistency pass (issues #489, #490) | 3.5
+| 2026-05-06 | Kevin Gómez | Research | Reading reference material for core-inventory use case validation (issue #542) | 2.0
+| 2026-05-07 | Solimar Cruz Hernandez | Meeting + Research | Team 2 scrum prep and reactive-behavior research for alerts (LTT #553, #554) | 3.0
+| 2026-05-07 | Andrea Segarra | Meeting | Team 3 weekly coordination on sharing/budget scope | 1.5
+| 2026-05-07 | Fabian Velez | Meeting + Planning | Team 4 weekly coordination and dashboard scope alignment (issue #555) | 2.0
+| 2026-05-08 | Kevin Lara Rodríguez | Research | Glossary quality criteria audit reading (LTT #608) | 2.5
+| 2026-05-08 | Reinaldo J. Martinez Morales | Research | Human-behavior unpredictability literature review (LTT #554) | 2.5
+
+| 2026-05-11 | All teams | Scrum Meeting | Week-2 milestone progress check and blocker discussion (referenced in week-2 reports) | 0.5 per attending member
+| 2026-05-11 | Team divisions | Team Meeting | Week-2 team-level coordination, issue follow-up, and work adjustment | 0.5 per attending member
+| 2026-05-11 | Solimar Cruz Hernandez | Blocked Time | Investigating routing/navigation defect blocking Alerts screen access (issue #654) | 3.0
+| 2026-05-12 | Kemuel Cubero Rosario | Blocked Time | Compilation-error investigation before fix landed (issue #570) | 4.0
+| 2026-05-12 | Aryam Z Diaz Torres | Blocked Time | Compilation-error investigation before fix landed (issue #570) | 4.0
+| 2026-05-13 | Kian-Robert Ramos Vega | Blocked Time | Auth not functional — blocked work on user-bound core-inventory flows (referenced in Team 1 week-2 report) | 5.0
+| 2026-05-13 | Lucas Matos Datiz | Blocked Time | Auth not functional — blocked user-scoped backend integration | 4.0
+| 2026-05-13 | Gerardo Ruiz | Blocked Time | Auth not functional — required workaround using hardcoded test user before fix (PR #696) | 4.0
+| 2026-05-14 | Jorge Rivera | Documentation Review | Operation-model documentation review for core workflows | 3.0
+| 2026-05-14 | Daniella Melero | Research | Domain model and engineering analysis LTT reading | 3.0
+| 2026-05-15 | Yamilette Alemany | Research | Biddable human behavior analysis for budget/sharing LTT (issue #574) | 2.5
+| 2026-05-15 | Devlin Hahn | Research | Shift-left ambiguity detection LTT background reading | 2.0
+
+| 2026-05-18 | All teams | Scrum Meeting | Week-3 milestone progress check and blocker discussion | 0.5 per attending member
+| 2026-05-18 | Team divisions | Team Meeting | Week-3 team-level coordination, task reassignment, and re-planning | 0.5 per attending member
+| 2026-05-18 | Team 1 | Coordination Blocker | Low team participation and lack of domain discussion (logged in week-3 report) — team-wide coordination overhead and re-planning | 6.0 total team impact
+| 2026-05-19 | Adriana Figueroa | Research | LTT research for core-inventory analytic section | 2.5
+| 2026-05-19 | Jorge De León | Research | Product stock page design references (issues #318, #643) | 2.5
+| 2026-05-20 | Natalia S Vera Rivera | Research | LTT documentation reading and write-up planning | 3.0
+| 2026-05-20 | Ernesto S. Soto Rivera | Documentation Review | Sharing/budget cross-team consistency review | 2.0
+| 2026-05-21 | Solimar Cruz Hernandez | Documentation | Compiled Team 2 weekly reports (weeks 1 & 2) and LTT summaries | 3.5
+| 2026-05-21 | Kevin Gómez | Documentation | Compiled Team 1 weekly reports (weeks 1, 2, 3) | 3.0
+| 2026-05-22 | Fabian Velez | Documentation | Compiled Team 4 weekly reports (weeks 1 & 2) | 2.5
+| 2026-05-22 | Daniella Melero | Research | Goal model LTT reading and write-up | 3.0
+| 2026-05-23 | Fabiola Torres | Documentation Review | Cross-team terminology pass for sharing/budget docs | 2.0
+| 2026-05-24 | Devlin Hahn | Research | User-friendly error messages — heuristic reading before implementation | 2.5
+| 2026-05-24 | Yamilette Alemany | Documentation | Domain relationship mapping write-up (issue #339) | 3.0
+| 2026-05-24 | Kevin Gómez | Documentation Review | Core-inventory requirements verification walkthrough (issue #275) | 3.5
+
+| 2026-05-25 | All teams | Scrum Meeting | Week-4 / submission readiness scrum prep | 0.5 per attending member
+| 2026-05-25 | Team divisions | Team Meeting | Final team-level documentation, review, and submission coordination | 0.5 per attending member
+| 2026-05-25 | Jorge Rivera | Documentation | Operation model for core workflows write-up | 2.5
+| 2026-05-25 | Yamilette Alemany | Documentation | M3 narrative scenarios for Section 2.1 | 2.5
+| 2026-05-25 | Fabian Velez | Documentation Review | Lecture-topic-task placement audit and checkmark cleanup | 2.0
+| 2026-05-26 | Januel E. Torres Marquez | Documentation | Static vs dynamic core concepts LTT, terminology consistency fixes | 3.5
+| 2026-05-26 | Kevin Gómez | Documentation Review | Scope-drift, wording, and section-hierarchy review on use-case-validation branch | 3.0
+|===
+
+.Per-member effort summary — Milestone 3 (non-coding hours, retrospective estimate)
+[cols="3,3,2,5", options="header"]
+|===
+| Member | Role | Hours | Primary Activity Types
+
+| Kaysha L Pagan-Lopez       | Manager (Team Lead)         | 8.0  | Project management, meetings
+| Luis J Cruz-Cruz           | Manager (Team Lead)         | 8.0  | Project management, meetings
+| Alondra S. Arce Perea      | Documentation Team Lead     | 7.0  | Documentation review, meetings
+| Januel E. Torres Marquez   | Documentation Team Lead     | 11.0 | Documentation, terminology review, meetings
+| Kevin Gómez                | Team 1 Lead                 | 15.5 | Research, documentation, review, meetings
+| Adriana Figueroa           | Team 1 Designer             | 6.5  | Research, meetings
+| Devlin Hahn                | Team 1 Designer             | 8.5  | Research, meetings
+| Jorge De León              | Team 1 Designer             | 6.5  | Research, meetings
+| Kian-Robert Ramos Vega     | Team 1 Backend              | 9.0  | Blocked time (auth), meetings
+| Lucas Matos Datiz          | Team 1 Backend              | 8.0  | Blocked time (auth), meetings
+| Jorge Rivera               | Team 1 Documentation        | 9.5  | Documentation, review, meetings
+| Solimar Cruz Hernandez     | Team 2 Lead                 | 13.5 | Research, blocked time, documentation, meetings
+| Ronaldo E. Flores Nazario  | Team 2 Designer             | 4.0  | Meetings, research
+| Eliel Hernandez Gonzalez   | Team 2 Designer             | 4.0  | Meetings, research
+| Kemuel Cubero Rosario      | Team 2 Backend              | 8.0  | Blocked time (compile errors), meetings
+| Aryam Z Diaz Torres        | Team 2 Backend              | 8.0  | Blocked time (compile errors), meetings
+| Kevin Lara Rodríguez       | Team 2 Documentation        | 6.5  | Research, meetings
+| Reinaldo J. Martinez Morales | Team 2 Documentation      | 6.5  | Research, meetings
+| Andrea Segarra             | Team 3 Lead                 | 5.5  | Meetings, coordination
+| Daniella Melero            | Team 3 Designer             | 10.0 | Research, documentation, meetings
+| Natalia S Vera Rivera      | Team 3 Designer             | 7.0  | Research, meetings
+| Fernando Castro            | Team 3 Backend              | 4.0  | Meetings
+| Ernesto S. Soto Rivera     | Team 3 Backend              | 6.0  | Documentation review, meetings
+| Fabiola Torres             | Team 3 Documentation        | 6.0  | Documentation review, meetings
+| Yamilette Alemany          | Team 3 Documentation        | 12.0 | Research, documentation, meetings
+| Fabian Velez               | Team 4 Lead                 | 10.5 | Documentation, review, meetings
+| Ian Rivera                 | Team 4 Designer             | 4.0  | Meetings
+| Jayden Sánchez             | Team 4 Designer             | 4.0  | Meetings
+| Jorge Peralta              | Team 4 Backend              | 4.0  | Meetings
+| Samarys Barreiro Melendez  | Team 4 Backend              | 4.0  | Meetings
+| Gerardo Ruiz               | Team 4 Backend              | 8.0  | Blocked time (auth workaround), meetings
+| Nicolás Rivera Batista     | Team 4 Documentation        | 4.0  | Meetings
+| Aliana Figueroa            | Team 4 Documentation        | 1.0  | Meetings (only week-1 attendance recorded)
+|===
+
+===== Significant Blockers (Milestone 3)
+
+The entries below document blockers that either consumed at least half a working day (≥4 hours) of one or more members' time or directly gated downstream verification work during Milestone 3. Entries reference the GitHub issue or pull request that captures the technical problem and its eventual resolution.
+
+. *Authentication not functional — blocked user-scoped flows across Teams 1 and 4.* +
+First flagged in the Team 1 Week 2 report ("Auth is not functional") and again referenced in the Team 1 Week 3 report. Multiple backend members were blocked from completing user-bound flows for core inventory, favorites, and PDF export. The team worked around the issue using a hardcoded `_testUserId` (see https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/pull/696[PR #696]) before the real Supabase auth user-ID wiring landed, and a separate PDF-export workaround landed in https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/pull/697[PR #697]. Estimated total impact: ~13 hours across affected members.
+
+. *Compilation errors blocking Team 2 development.* +
+Captured as https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/570[issue #570] (Fix Compilation Errors) in the Team 2 Week 2 report. Until the fix was approved, two backend members were unable to make forward progress on Alerts & Restock features and spent investigation time bisecting and reproducing the failures. Estimated total impact: ~8 hours.
+
+. *Alerts screen routing/navigation defect.* +
+Captured as https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/654[issue #654] (Add Route and Navigation Link for Alerts & Notifications Screen — marked "Fix Needed" in the Team 2 Week 2 report). Blocked end-to-end verification of the Alerts screen until the routing was corrected. Estimated impact: ~3 hours (below the half-day threshold but recorded because it gated downstream QA work).
+
+. *Low team participation and missing domain discussion — Team 1.* +
+Recorded in the Team 1 Week 1 report ("Not much completion from team members") and the Team 1 Week 3 report ("Low participation from members. Lack of discussion about domain and progress"). Caused re-planning and additional coordination overhead by the team lead and forced re-assignment of several in-progress lecture-topic tasks (e.g. https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/561[#561], https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/542[#542], https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/275[#275]). Estimated total impact: ~6 hours of additional coordination effort.
+
+NOTE: Members not listed individually in the blocker entries above did not report a single blocker that crossed the half-day threshold during Milestone 3. Routine coordination, scrum prep, team-division meetings, and review effort are captured in the activity log and per-member summary above.
