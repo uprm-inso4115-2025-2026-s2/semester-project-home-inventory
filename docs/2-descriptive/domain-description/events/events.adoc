@@ -2,7 +2,7 @@
 
 Domain events represent instantaneous state changes in the domain that matter to stakeholders. Each event is phrased in the past tense to emphasize that a state change has just occurred. Events are independent of any particular system-to-be, even if a later system represents or reacts to them.
 
-[cols=”2,4,4”,options=”header”]
+[cols="2,4,4",options="header"]
 |===
 |Event |Description |Notes / examples
 

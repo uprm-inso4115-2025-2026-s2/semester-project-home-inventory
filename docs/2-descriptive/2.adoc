@@ -3,4 +3,7 @@
 
 include::domain-description/domain-description.adoc[leveloffset=+1]
 include::requirements/requirements.adoc[leveloffset=+1]
+
+:imagesdir: 2-descriptive/implementation
 include::implementation/implementation.adoc[leveloffset=+1]
+:imagesdir:

@@ -6,7 +6,7 @@ Testing is the main verification mechanism for this project. For Milestone 1, th
 
 * *Code review:* all changes to `main` must go through a pull request reviewed by at least one teammate who did not author the change. Reviews check correctness against requirements, edge cases, terminology consistency, and whether tests were added or updated.
 * *Automated tests:* unit, integration, and verification tests run on pull requests and before merge. At minimum, affected tests must pass before changes are merged.
-* *Manual checks:* short repeatable smoke checks are performed after merges for stakeholder-visible behaviors such as item updates, alerts, and shared inventory consistency.
+* *Manual checks:* short repeatable smoke checks are performed after merges for stakeholder-visible behaviors such as item updates, alerts, and shared inventory consistency. Reviewer-grade manual procedures for requirements without automated coverage are checked in under "Manual Test Procedure" in this section.
 
 ==== Supabase integration tests (guidance)
 

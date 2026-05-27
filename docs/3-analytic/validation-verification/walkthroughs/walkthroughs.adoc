@@ -34,7 +34,7 @@ These questions aim to validate mental models and domain assumptions, not measur
 
 === Hypotheses to validate
 
-[cols=”2,4,3”,options=”header”]
+[cols="2,4,3",options="header"]
 |===
 |Hypothesis |What to observe / ask |Expected impact if confirmed
 

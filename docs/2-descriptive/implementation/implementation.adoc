@@ -169,8 +169,8 @@ The implemented Core Inventory feature supports adding, editing, viewing, and qu
 **Visual Evidence:**
 [cols="1a,1a"]
 |===
-| image::screen-designs/Alerts-&-Notifications-Screen/push-notifications-flow-ui.png[Push Notification Flow, width=100%, title="Push Notification & Deep Link"]
-| image::screen-designs/Alerts-&-Notifications-Screen/alerts-center-mockup.png[Alerts Center UI, width=100%, title="Alerts Center Screen"]
+| image::screen-designs/Alerts-&-Notifications-Screen/images/push-notifications-flow-ui.png[Push Notification Flow, width=100%, title="Push Notification & Deep Link"]
+| image::screen-designs/Alerts-&-Notifications-Screen/images/alerts-tab-flow-ui.png[Alerts Tab Flow, width=100%, title="Alerts Tab & Center Screen"]
 |===
 
 **Key Implementation Details:**
@@ -282,7 +282,7 @@ Then, user completes shopping trip and taps "Finalize Grocery Run"
 |===
 | image::../requirements/features/grocery-list/design/images/My Grocery list UI.png[My Grocery List, width=100%, title="Grocery List View"]
 | image::../requirements/features/grocery-list/design/images/Add Costume item UI.png[Add Custom Item, width=100%, title="Add Custom Item"]
-| image::../requirements/features/grocery-list/design/images/grocery-list-during-shopping-trip.png[Shopping Checkout, width=100%, title="Finalize & Restock"]
+| image::../requirements/features/grocery-list/design/images/My Grocery list Action List UI.png[Shopping Checkout, width=100%, title="Finalize & Restock"]
 |===
 
 **Key Implementation Details:**
