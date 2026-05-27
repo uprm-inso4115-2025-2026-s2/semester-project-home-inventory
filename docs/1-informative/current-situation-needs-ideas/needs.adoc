@@ -1,6 +1,6 @@
 == Needs
 
-The needs below describe what students living independently and their roommates must be able to accomplish to manage household essentials reliably. These needs are expressed as outcomes and capabilities (what stakeholders need to achieve), independent of any specific system-to-be.
+The needs below describe what students living independently and their roommates must accomplish to manage household essentials reliably. They are expressed as outcomes and capabilities, independent of any specific system-to-be.
 
 *Needs by actor group*
 
@@ -24,7 +24,7 @@ The needs below describe what students living independently and their roommates 
 
 |N2 |Users must maintain an up-to-date inventory with low ongoing effort
 |High
-|Mitigates abandonment caused by needing high maintainance
+|Mitigates abandonment caused by high maintenance burden
 
 |N3 |Users must quickly verify existing items before purchasing
 |High
@@ -34,16 +34,16 @@ The needs below describe what students living independently and their roommates 
 |Medium
 |Improves coordination in shared living environments
 
-|N5 |Household members must coordinate replenishment of shared items to avoid duplicate or missed purchases
+|N5 |Household members must coordinate replenishment of shared items
 |Medium
 |Reduces miscommunication and duplicate spending in shared living environments
 |===
 
 === Quality Needs (Non-Functional)
 
-* Usability: Household members need to update item tracking with minimal effort and without training.
-* Reliability: Household members need to trust that the tracked inventory matches what is actually available.
-* Performance: Household members need inventory information quickly enough to use it while shopping or planning.
-* Availability: Household members need tracking to remain usable even when connectivity is unreliable.
-* Security/Privacy: Household members need confidence that household data is only visible to intended people.
-* Scalability: Household members need the experience to remain smooth as more items, households, and members are added.
+* Usability: Update item tracking with minimal effort and without training.
+* Reliability: Trust that the tracked inventory matches what is actually available.
+* Performance: Retrieve inventory information quickly enough to use while shopping or planning.
+* Availability: Keep tracking usable even when connectivity is unreliable.
+* Security/Privacy: Ensure household data is only visible to intended people.
+* Scalability: Keep the experience smooth as more items, households, and members are added.

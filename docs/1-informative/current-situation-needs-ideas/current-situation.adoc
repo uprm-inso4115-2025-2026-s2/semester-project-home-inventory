@@ -1,14 +1,9 @@
 == Current Situation
 
-Students living independently often lose track of household items such as groceries, cleaning supplies, toiletries, and sometimes medicine. Tracking is usually ad-hoc (memory, notes, receipts, or messages), so information becomes outdated quickly. As a result, students may buy duplicates, run out of essentials unexpectedly, and sometimes discover expired items during cleanup.
-
-In shared households, the problem is worse: roommates lack visibility into what is already available, which increases duplicate purchases and makes budgeting harder. In many student households there is no consistent shared method for tracking items across people and time; tracking is ad-hoc (memory, notes, messages), so information becomes stale quickly.
+Students living independently often lose track of household items such as groceries, cleaning supplies, toiletries, and medicine. Tracking is usually ad-hoc (memory, notes, receipts, or messages), so information becomes outdated quickly, and students buy duplicates, run out of essentials unexpectedly, or discover expired items during cleanup. In shared households the problem is worse: roommates lack visibility into what is already available, increasing duplicate purchases and making budgeting harder, since there is no consistent shared tracking method across people and time.
 
 === Domain context
-Students and young adults living independently often struggle to keep track of household items, shared supplies, and personal belongings. While several home inventory applications exist, most are designed for insurance documentation or business inventory management rather than lightweight everyday use.
-
-As a result, many users rely on memory, notes, or informal tracking methods, which leads to forgotten purchases, duplicate buying, and poor visibility into shared household resources. Most tools students try (notes, basic lists, or heavier inventory apps) are either too informal to stay accurate over time or too cumbersome for everyday tracking, so shared inventory information quickly becomes unreliable.
-
+Although several home inventory applications exist, most target insurance documentation or business inventory management rather than lightweight everyday use. The tools students try (notes, basic lists, or heavier inventory apps) are either too informal to stay accurate over time or too cumbersome for daily tracking, so shared inventory information quickly becomes unreliable.
 
 === Who is involved (actors)
  * Primary actors: Students and young adults managing personal household items
@@ -16,7 +11,7 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
  * Organizations/systems involved: Existing home inventory mobile applications (e.g., Sortly, PantryCheck)
 
 
-=== Current workflow (as-is) 
+=== Current workflow (as-is)
 . User purchases or owns household items
 . User optionally records items manually in notes or an inventory app
 . Inventory is rarely updated consistently over time
@@ -31,29 +26,29 @@ As a result, many users rely on memory, notes, or informal tracking methods, whi
 
 |Too much of a hassle when adding items
 |Students and casual users
-|User reviews have reported that manual item entry consumes too much time and discourages the continued use of the software.
+|User reviews report that manual item entry consumes too much time and discourages continued use.
 
 |Inventory becomes outdated quickly
 |Almost all users
-|Many users abandon inventory apps after initial setup due to maintainance taking too much time.
+|Many users abandon inventory apps after initial setup because maintenance takes too long.
 
 |Excessive or poorly timed notifications
 |Mobile users
-|Reviews indicate that too many notifications pop up in other applications,  leading users to disabling alerts, one of the main purposes of said apps.
+|Reviews indicate too many notifications, leading users to disable alerts, defeating one of the apps' main purposes.
 
 |Pricing perceived as too high for casual use
 |Students and young adults
-|Premium tiers are often designed for business users rather than individuals, but lock features that could come in handy for individual users.
+|Premium tiers are designed for business users and lock features that individuals could use.
 
 |Lack of effective shared household inventory support
 |Roommates and cohabitants
-|Most existing apps provide limited or no real-time collaboration features, which makes it difficult for multiple household members to maintain a single accurate inventory. This can lead to miscommunication or duplicate purchases for the house/dorm.
+|Most apps offer limited or no real-time collaboration, making it hard for multiple members to maintain one accurate inventory, which causes miscommunication or duplicate purchases.
 |===
 
 
 === Consequences
-* Time/cost impact: Users and students waste money on duplicate purchases and spend extra time checking inventory manually using written lists or other tracking software.
-* Quality/accuracy impact: When tracking relies on tools that are abandoned or partially used (e.g., because advanced features are unavailable or too cumbersome), the record becomes incomplete and therefore untrusted.
+* Time/cost impact: Users waste money on duplicate purchases and spend extra time checking inventory manually.
+* Quality/accuracy impact: When tracking relies on abandoned or partially used tools, the record becomes incomplete and untrusted.
 * User experience impact: Frustration leads to abandonment of existing apps.
 * Organizational impact: Shared households experience coordination inefficiencies.
 

@@ -4,28 +4,26 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 === Behavior patterns
 
-* *Restock cycle:* A household member consumes an item instance -> availability decreases -> low-stock is judged or quantity crosses a threshold -> a replenishment decision is made -> more of the item type is acquired.
-* *Shared purchase flow:* A household member buys a shared item -> the purchase is recorded -> the shared household understands that the cost belongs to the shared context rather than only one person.
-* *Expiration monitoring:* An item instance approaches its expiration date -> the household notices or is informed -> the item is used, discarded, or left in place depending on household practice.
+* *Restock cycle:* A member consumes an item instance -> availability decreases -> low-stock is judged or a threshold is crossed -> a replenishment decision is made -> more of the item type is acquired.
+* *Shared purchase flow:* A member buys a shared item -> the purchase is recorded -> the household understands the cost belongs to the shared context, not only one person.
+* *Expiration monitoring:* An item instance approaches expiration -> the household notices or is informed -> the item is used, discarded, or left in place depending on practice.
 
 === Domain rules
 
 * One barcode corresponds to exactly one *Item type* definition.
-* A duplicate *Item instance* entry submitted within a short window may be treated as an addition to an existing tracked record rather than as a separate new record, unless household members explicitly keep them separate.
+* A duplicate *Item instance* entry submitted within a short window may be treated as an addition to an existing tracked record rather than a separate new record, unless members explicitly keep them separate.
 * *Spending entries* are historical records; inventory corrections should not silently overwrite financial history.
 * A *Household* has one administrative responsibility at a time when that role is formally represented.
-* If that administrative responsibility is transferred, the new responsibility must be established before the previous admin leaves the household context.
+* If that responsibility is transferred, the new one must be established before the previous admin leaves.
 
 === Edge cases
 
 * If an item instance has no expiration date, expiration-based behavior cannot be derived from date information alone.
-* If a household admin attempts to leave without transferring that responsibility, shared-household administration becomes unresolved until another member takes over.
+* If a household admin leaves without transferring responsibility, shared-household administration becomes unresolved until another member takes over.
 
 === Shared-Household Invitation and Membership Changes
 
-In shared households, participation may change over time as new members are invited, current members leave, or access is revoked. Invitation is therefore part of how household membership changes, even though the exact delivery and security mechanism belong to later requirements and implementation sections.
-
-A household invitation is a temporary request that allows a participant to join a household context. At the domain level, the important states are:
+In shared households, participation changes over time as members are invited, leave, or have access revoked. Invitation is therefore part of how membership changes, even though the exact delivery and security mechanism belong to later requirements and implementation sections. A household invitation is a temporary request to join a household context; at the domain level its important states are:
 
 * sent
 * accepted
@@ -33,4 +31,4 @@ A household invitation is a temporary request that allows a participant to join 
 * expired
 * revoked
 
-These states matter because they affect who participates in household coordination and who should continue to receive shared information.
+These states matter because they affect who participates in coordination and who should continue to receive shared information.
