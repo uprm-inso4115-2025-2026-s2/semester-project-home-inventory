@@ -86,3 +86,82 @@ The following checklist was used during inspection sessions.
 The inspection process was completed before final document integration. Findings were resolved directly in the documentation or recorded as implementation limitations where immediate correction was outside project scope.
 
 Only findings that affected interpretation, traceability, consistency, or completeness were included in the inspection log.
+
+=== Validation Activities and Supporting Evidence
+
+Validation activities were conducted throughout the project to confirm that the implemented system addressed the intended user needs and operational scenarios.
+
+For this project, validation refers to confirming that the team built the correct solution for the identified problem domain, while verification refers to confirming that the implemented behavior matched documented requirements and expected system behavior.
+
+Validation evidence was collected from completed project activities rather than standalone validation sessions. Existing artifacts, requirement acquisition work, walkthroughs, stakeholder discussions, and implementation observations were reused to support this section.
+
+==== Validation Log
+
+[cols="1,1,1,1,2,2,2", options="header"]
+|===
+| Activity
+| Period
+| Participants
+| Validation Method
+| Outcome
+| Related Requirements / Scenarios
+| Evidence
+
+| Inventory Lookup Workflow Review
+| M3
+| Documentation + Inventory Team
+| Scenario walkthrough
+| Confirmed need for stronger inventory filtering and lookup behavior.
+| IR-10, DR-20
+| Requirement acquisition findings (M3-QA-03)
+
+| Manual Entry Fallback Review
+| M3
+| Documentation + Inventory Team
+| Workflow validation
+| Confirmed barcode-only inventory entry created friction and justified manual fallback.
+| IR-11, DR-21, MR-08
+| Requirement acquisition findings (M3-QA-04)
+
+| Stakeholder and Ownership Review
+| M3
+| Documentation Team
+| Requirement and scenario review
+| Clarified ownership expectations and visibility behavior.
+| IR-09
+| Stakeholder review and Section 4.1 updates
+|===
+
+==== Validation Outcomes
+
+The completed validation activities influenced requirement refinement, implementation priorities, and documentation updates.
+
+The inventory filtering review confirmed that inventory lookup behavior required stronger support for practical inventory management scenarios.
+
+The inventory-entry review validated the need for manual fallback workflows to reduce dependency on barcode availability.
+
+Stakeholder review activities clarified ownership expectations and improved consistency between stakeholder definitions, requirement descriptions, and implementation decisions.
+
+==== Validation Evidence References
+
+Validation evidence was maintained through existing project artifacts instead of duplicated records.
+
+[cols="1,2", options="header"]
+|===
+| Artifact
+| Purpose
+
+| M3-QA-03
+| Requirement acquisition evidence supporting inventory lookup improvements
+
+| M3-QA-04
+| Requirement acquisition evidence supporting manual inventory entry fallback
+
+| Section 4.1 Stakeholder Identification
+| Evidence for stakeholder validation and ownership decisions
+
+| Section 4.4 Requirements Acquisition
+| Supporting requirement evolution decisions
+|===
+
+Validation records included in this section reflect completed activities and documented outcomes only. Planned or future validation work was intentionally excluded.
