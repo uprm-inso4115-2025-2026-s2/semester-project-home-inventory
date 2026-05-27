@@ -38,8 +38,8 @@ class DashboardCard extends StatelessWidget {
             Text(
               title,
               style: theme.textTheme.displayMedium?.copyWith(
-                fontSize: 16.sp,
                 color: theme.scaffoldBackgroundColor,
+                fontSize: 16.sp,
               ),
             ),
             SizedBox(height: 2.5.h),

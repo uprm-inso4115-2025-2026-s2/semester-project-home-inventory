@@ -118,7 +118,7 @@ class HomeDashboardPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 1.5.h),
+        SizedBox(height: 15.h),
         // Stat Cards Row 1
         Row(
           children: [
@@ -162,11 +162,11 @@ class HomeDashboardPage extends StatelessWidget {
       children: [
         SizedBox(height: 2.h),
         Container(
-          margin: EdgeInsets.only(bottom: 2.h),
+          margin: EdgeInsets.only(bottom: 2.5.h),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: _buildFilters(context),
         ),
@@ -314,65 +314,192 @@ class HomeDashboardPage extends StatelessWidget {
   }
 
   Widget _buildFilters(BuildContext context) {
-    String? selectedCategory;
-    String? selectedRoom;
-    DateTime? startDate;
-    DateTime? endDate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DropdownButtonFormField<String>(
-          decoration: const InputDecoration(labelText: "Category"),
-          items: ["Electronics", "Furniture", "Clothing"]
-              .map(
-                (category) =>
-                    DropdownMenuItem(value: category, child: Text(category)),
-              )
-              .toList(),
-          onChanged: (value) {
-            selectedCategory = value;
-          },
-        ),
+    final theme = Theme.of(context);
+    return BlocBuilder<DashboardCubit, DashboardState>(
+      builder: (context, state) {
+        String? selectedCategory;
+        String? selectedRoom;
 
-        const SizedBox(height: 8),
+        if (state is DashboardLoaded) {
+          selectedCategory = state.selectedCategory;
+          selectedRoom = state.selectedRoom;
+        }
 
-        DropdownButtonFormField<String>(
-          decoration: const InputDecoration(labelText: "Room"),
-          items: ["Living Room", "Bedroom", "Kitchen"]
-              .map((room) => DropdownMenuItem(value: room, child: Text(room)))
-              .toList(),
-          onChanged: (value) {
-            selectedRoom = value;
-          },
-        ),
-
-        const SizedBox(height: 12),
-
-        Row(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                context.read<DashboardCubit>().applyFilters(
-                  category: selectedCategory,
-                  room: selectedRoom,
-                  startDate: startDate,
-                  endDate: endDate,
-                );
+            Text(
+              "Category",
+              style: theme.textTheme.displayMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 14.5.sp,
+              ),
+            ),
+            const SizedBox(height: 4),
+            DropdownButtonFormField<String>(
+              initialValue: selectedCategory,
+              decoration: InputDecoration(
+                labelText: "Select a Category",
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelStyle: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontSize: 15.sp,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
+                fillColor: theme.scaffoldBackgroundColor,
+                filled: true,
+              ),
+              items: ["Electronics", "Furniture", "Clothing"]
+                  .map(
+                    (category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(
+                        category,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return ["Electronics", "Furniture", "Clothing"]
+                    .map(
+                      (category) => Text(
+                        category,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    )
+                    .toList();
               },
-              child: const Text("Apply Filters"),
+              onChanged: (value) {
+                context.read<DashboardCubit>().setCategory(value);
+              },
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(height: 12),
 
-            OutlinedButton(
-              onPressed: () {
-                context.read<DashboardCubit>().clearFilters();
+            Text(
+              "Room",
+              style: theme.textTheme.displayMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 14.5.sp,
+              ),
+            ),
+            const SizedBox(height: 4),
+            DropdownButtonFormField<String>(
+              initialValue: selectedRoom,
+              decoration: InputDecoration(
+                labelText: "Select a Room",
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelStyle: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontSize: 15.sp,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
+                fillColor: theme.scaffoldBackgroundColor,
+                filled: true,
+              ),
+              items: ["Living Room", "Bedroom", "Kitchen"]
+                  .map(
+                    (room) => DropdownMenuItem(
+                      value: room,
+                      child: Text(
+                        room,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return ["Living Room", "Bedroom", "Kitchen"]
+                    .map(
+                      (room) => Text(
+                        room,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    )
+                    .toList();
               },
-              child: const Text("Clear"),
+              onChanged: (value) {
+                context.read<DashboardCubit>().setRoom(value);
+              },
+            ),
+
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<DashboardCubit>().applyFilters(
+                      category: selectedCategory,
+                      room: selectedRoom,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    "Apply Filters",
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.scaffoldBackgroundColor,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                OutlinedButton(
+                  onPressed: () {
+                    context.read<DashboardCubit>().clearFilters();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    "Clear",
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.scaffoldBackgroundColor,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
