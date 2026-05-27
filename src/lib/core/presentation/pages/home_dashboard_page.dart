@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
@@ -38,6 +39,14 @@ class HomeDashboardPage extends StatelessWidget {
                 if (state is DashboardLoaded) {
                   final items = state.items;
 
+                  // Show empty state if isEmpty is true or no items exist
+                  if (isEmpty || items.isEmpty) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: _buildEmptyState(context),
+                    );
+                  }
+
                   final totalItems = items.length;
                   final totalValue = items.fold<double>(
                     0,
@@ -70,10 +79,9 @@ class HomeDashboardPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 2.h),
         Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
+            padding: EdgeInsets.symmetric(vertical: 14.h),
             child: Column(
               children: [
                 Text(
@@ -82,7 +90,7 @@ class HomeDashboardPage extends StatelessWidget {
                     fontSize: 18.sp,
                   ),
                 ),
-                SizedBox(height: 1.h),
+                SizedBox(height: 0.8.h),
                 Text(
                   'Start building your inventory.',
                   style: theme.textTheme.bodyMedium,
@@ -90,7 +98,7 @@ class HomeDashboardPage extends StatelessWidget {
                 SizedBox(height: 3.h),
                 ElevatedButton(
                   onPressed: () {
-                    // Add item action
+                    context.go('/inventory');
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -98,16 +106,13 @@ class HomeDashboardPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    overlayColor: theme.scaffoldBackgroundColor.withOpacity(
-                      0.2,
-                    ),
                     padding: EdgeInsets.symmetric(
                       horizontal: 8.5.w,
                       vertical: 1.3.h,
                     ),
                   ),
                   child: Text(
-                    'Add Item',
+                    'Explore',
                     style: theme.textTheme.displayMedium?.copyWith(
                       fontSize: 16.sp,
                       color: theme.scaffoldBackgroundColor,
@@ -118,33 +123,40 @@ class HomeDashboardPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 15.h),
-        // Stat Cards Row 1
-        Row(
-          children: [
-            Expanded(
-              child: StatCard(label: 'Total Items', value: '0'),
-            ),
-            SizedBox(width: 3.w),
-            Expanded(
-              child: StatCard(label: 'Inventory Value', value: '\$0.00'),
-            ),
-          ],
+        // Blurred Stat Cards
+        ImageFiltered(
+          imageFilter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+          child: Column(
+            children: [
+              // Stat Cards Row 1
+              Row(
+                children: [
+                  Expanded(
+                    child: StatCard(label: 'Total Items', value: '0'),
+                  ),
+                  SizedBox(width: 3.w),
+                  Expanded(
+                    child: StatCard(label: 'Inventory Value', value: '\$0.00'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.5.h),
+              // Stat Cards Row 2
+              Row(
+                children: [
+                  Expanded(
+                    child: StatCard(label: 'Pending Alerts', value: '0'),
+                  ),
+                  SizedBox(width: 3.w),
+                  Expanded(
+                    child: StatCard(label: 'Categories Tracked', value: '0'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2.h),
+            ],
+          ),
         ),
-        SizedBox(height: 1.5.h),
-        // Stat Cards Row 2
-        Row(
-          children: [
-            Expanded(
-              child: StatCard(label: 'Pending Alerts', value: '0'),
-            ),
-            SizedBox(width: 3.w),
-            Expanded(
-              child: StatCard(label: 'Categories Tracked', value: '0'),
-            ),
-          ],
-        ),
-        SizedBox(height: 2.h),
       ],
     );
   }
@@ -155,7 +167,9 @@ class HomeDashboardPage extends StatelessWidget {
     int totalItems,
     double totalValue,
   ) {
-    final reportsNavigate = () => context.go('/home/reports');
+    void reportsNavigate() {
+      context.go('/home/reports');
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

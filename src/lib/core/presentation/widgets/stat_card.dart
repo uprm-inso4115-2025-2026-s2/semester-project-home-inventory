@@ -29,7 +29,7 @@ class StatCard extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
