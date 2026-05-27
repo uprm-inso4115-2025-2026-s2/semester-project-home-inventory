@@ -1,0 +1,139 @@
+= Stakeholder Persona Sharing & Budget
+
+== Overview
+
+This document shows a stakeholder persona for the Sharing & Budget team. The persona is a fictional but realistic
+person that captures the development team's understanding of a key
+stakeholder group, in this case, the household member who actively
+participates in shared budget tracking.
+
+== Persona: Sofia Marrero
+
+=== Personal Background
+
+* *Name:* Sofia Marrero
+* *Age:* 27
+* *Place of residence:* San Juan, Puerto Rico
+* *Interests:* Cooking at home, weekend hiking, tracking personal
+  finances, splitting costs fairly with roommates
+* *Living situation:* Shares an apartment with two other people, a
+  close friend and an acquaintance referred by that friend
+
+Sofia is organized by habit. She keeps a notes app with her monthly
+expenses and checks her bank account every few days. She is not an
+accountant, but she cares about knowing where her money goes and
+whether shared costs are being handled fairly.
+
+---
+
+=== Professional Background
+
+* *Employment:* Graphic designer at a small marketing agency
+* *Position:* Individual contributor, no direct reports
+* *Decision-making responsibility:* Low at work, but high within her
+  household, she is the one who usually brings up conversations about
+  splitting rent, groceries, and utilities
+* *Degree of influence:* Informal household leader on financial matters,
+  the others tend to defer to her when there is a dispute about costs
+
+---
+
+=== Stakeholder Group
+
+Sofia belongs to the *household member* stakeholder group. She joined
+the household in the app after accepting an invitation from her friend,
+who created the household. She did not set up the budget but she
+interacts with it regularly, logging expenses, checking the remaining
+balance, and reviewing what others have spent.
+
+---
+
+=== Key Usage Goals
+
+* Know at a glance how much of the shared budget has been used and
+  how much remains.
+* Log a shared expense quickly after it happens, without navigating
+  through multiple screens.
+* See how an expense was split, who owes what, without having to
+  ask her roommates directly.
+* Trust that the numbers in the app are accurate and up to date.
+
+---
+
+=== Fears
+
+* Afraid of being seen as the one who always brings up money.
+* Afraid of logging an expense incorrectly and causing a dispute.
+* Afraid the app will show outdated data.
+
+---
+
+=== Day-in-the-Life (First Person)
+
+I got back from the grocery store and spent about $45 on shared
+items, things for the kitchen that all three of us use. I open the
+app and log it as a shared expense. I pick the equal split since we
+all use the same stuff. Takes me about thirty seconds.
+
+Later that evening my roommate texts asking if we are close to the
+budget limit this month. I open the app and check we have used
+about 80% of the monthly budget. I screenshot it and send it to the
+group chat.
+
+At the end of the month I look at the breakdown. I logged the most
+expenses but that is just because I am the one who usually does the
+grocery run. The totals look right.
+
+---
+
+=== Attitude Toward Tasks
+
+Sofia approaches budget tracking pragmatically. She does not enjoy
+the process of logging expenses, she sees it as a necessary habit,
+not something she looks forward to. She will use the app consistently
+only if it is fast and gives her information she cannot easily get
+elsewhere. If logging an expense takes too long or the summary is
+hard to read, she will stop using it.
+
+She is comfortable with technology but not forgiving of confusing
+interfaces. She expects the app to be obvious if she has to think
+about what a button does, she considers that a design failure.
+
+---
+
+=== Open-Ended Questions Sofia Would Ask
+
+* "How do I know if this expense was already logged by someone else?"
+* "Can I change the split after I have already saved the expense?"
+* "What happens to the budget if we change the limit in the middle
+  of the month?"
+* "Who can see my individual expenses, just the household, or
+  anyone?"
+
+---
+
+=== Content and Communication Preferences
+
+* *Preferred channel:* Mobile app, push notifications for budget
+  alerts
+* *Tone:* Direct and brief, she does not want explanations, she
+  wants numbers
+* *Style:* Visual summaries preferred over lists of transactions
+* *Voice:* Neutral and informative, she does not want the app to
+  feel like it is judging her spending
+
+---
+
+== What Sofia Tells the Team
+
+Sofia's persona surfaces several concerns that are easy to miss when
+thinking about the feature abstractly:
+
+* The household summary must always reflect the latest data, stale
+  summaries break trust immediately.
+* Expense logging must be fast and forgiving, errors need to be
+  correctable without friction.
+* Split mode selection must be clear at the point of logging, Sofia
+  should not have to remember what each mode means.
+* Privacy within the household matters, Sofia wants to know who can
+  see what before she trusts the system with her financial data.
