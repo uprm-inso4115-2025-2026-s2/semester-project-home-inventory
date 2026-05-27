@@ -189,3 +189,29 @@ The system shall allow authorized household members to remove or snooze auto-add
 Needs: N2, N5 | Goals: AG1, AG3, SG3 | Domain concepts: Restock list / planner, Replenishment, Low-stock judgment, Alert dismissed / deferred
 +
 M3 source: M3-QA-07.
+
+=== Traceability Matrix
+
+NOTE: This matrix is the Interface Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholder, validation, verification, and implementation traceability for IR-* requirements. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
+
+[cols="1,2,1,2,2,1,2", options="header"]
+|===
+| Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
+
+| IR-01 | Household Manager, End User | S1 | TC-INV-01 | Inventory module | Complete |
+| IR-02 | End User | S1 | TC-INV-02 | Inventory module | Complete |
+| IR-03 | End User | S2 | TC-INV-03 | Inventory module, Household management | Complete |
+| IR-04 | Household Manager, End User | S1 | TC-ALT-01, TC-ALT-04 | Alerts & Notification System | Complete |
+| IR-05 | End User | S1 | TC-ALT-02, TC-ALT-05 | Inventory module, Alerts & Notification System | Complete |
+| IR-06 | Household Manager, End User | S2 | TC-SB-01 | Spending module, Database layer | Complete |
+| IR-07 | Household Manager, End User | S2 | TC-SB-02 | Spending module | Complete |
+| IR-08 | End User | S1 | TC-RPT-01 | Dashboard / Reporting | Complete |
+| IR-09 | End User, System / Dev Team | S2 | TC-INV-06, TC-AUTO-01 | Household management, Inventory module | Complete |
+| IR-10 | End User | S1 | TC-INV-07 | Inventory module | Complete |
+| IR-11 | End User | S1 | TC-INV-08 | Inventory module | Complete |
+| IR-12 | End User | S2 | TC-SB-03, TC-ALT-03 | Spending module, Alerts & Notification System | Gap flagged | Spending-alert integration workflow not fully validated
+| IR-13 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete
+| IR-14 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation
+|===
+
+Edge-case interface requirements IR-EC-A through IR-EC-I are intentionally deferred from this matrix because they remain appendix-scoped edge-case requirements and have not yet been promoted into stable IR-N identifiers. Their future inclusion follows the deferred traceability guidance documented in docs/4-specific-topics/traceability/traceability.adoc.
