@@ -82,9 +82,11 @@ The following domain requirements were added or revised after the Milestone 3 se
 
 === Traceability Matrix
 
+NOTE: This matrix is the Domain Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholder, validation, verification, and implementation traceability for DR-* requirements. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
+
 [cols="1,2,1,2,2,1,2", options="header"]
 |===
-| Requirement ID | Source Stakeholder | Validation Activity | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
+| Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
 
 | DR-1  | System / Dev Team | S1 | TC-INV-03  | Inventory module | Complete |
 | DR-2  | System / Dev Team | S1 | TC-INV-01  | Inventory module | Complete |
