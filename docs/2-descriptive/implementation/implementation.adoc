@@ -77,6 +77,29 @@ This section documents the minimal viable set of high-value features that have b
 
 **Completion Status:** Completed — Core add/view/edit operations fully functional. Barcode scanning integrated with fallback manual entry.
 
+==== Item Lifecycle State Diagram
+
+The following state diagram documents how a tracked inventory item changes state after it enters the system. It connects the implemented Core Inventory flow (`F-INV`) with automated stock and expiration evaluation (`F-AUTOCHECK`), alert generation (`F-ALERT`), grocery-list restocking (`F-GL-AUTO` / `F-GL-USER`), and the documented historical-preservation rule for archived items (`DR-3`). The diagram is intentionally focused on item lifecycle state rather than notification lifecycle state.
+
+image::diagrams/item_lifecycle_state_diagram.png[Tracked Inventory Item Lifecycle State Diagram, width=100%]
+
+Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_diagram.mmd`
+
+The diagram shows the tracked inventory item lifecycle from acquisition through active use, alert-worthy states, exception states, disposal, and archival.
+
+**Transition interpretation:**
+
+* `Acquired` begins when a household member adds an item through barcode scanning or manual entry.
+* `InStock`, `LowStock`, and `OutOfStock` are availability states derived from quantity and low-stock threshold rules. Quantity changes are expected to trigger state re-evaluation.
+* `NearExpiry` and `Expired` are expiration states derived from the item's expiration date during scheduled checks.
+* `Discarded` represents a user decision that the physical item is no longer kept or usable.
+* `Archived` is a non-active record state used to keep historical references while excluding the item from active inventory views.
+* `Lent` and `Lost` are marked as conceptual because current documentation recognizes outside-household and lost-item scenarios, but the current implementation evidence does not show them as fully implemented Core Inventory states.
+
+**Implementation alignment:**
+
+The implemented Core Inventory feature supports adding, editing, viewing, and quantity/expiration updates for item records. The automated check logic evaluates low-stock, out-of-stock, near-expiry, and expired conditions, while grocery-list automation can replenish or restock an item after shopping. Archival is modeled as the preferred preservation behavior when an item should no longer appear in active inventory views, especially when financial or alert history may still reference the item. Conceptual states must not be presented as completed functionality until their UI, data model, and operation behavior are implemented and verified.
+
 ---
 
 === Feature 2: Automated Expiration Alerts & Notifications (F-ALERT + F-AUTOCHECK)
@@ -787,6 +810,27 @@ The following decisions are documented as future-facing or not fully verified in
 | Connect grocery-list output to external ordering or grocery delivery services.
 | This is future-facing and depends on external provider APIs, account linking, and additional privacy/security review.
 |===
+=== Architecture Overview Diagram
+
+The following architecture overview diagram documents the major runtime containers and service boundaries for the Milestone 3 Home Inventory system. The system follows a Flutter-client-plus-Supabase-backend architecture: the Flutter client handles presentation, routing, local interaction, validation, and feature orchestration, while Supabase provides authentication, database persistence, authorization, realtime synchronization, storage support, and documented backend automation.
+
+The diagram distinguishes current M3 components from documented or future-facing components. Components marked as planned must not be interpreted as fully implemented runtime behavior.
+
+image::diagrams/architecture_overview_diagram.png[Home Inventory Architecture Overview Diagram, width=100%, title="Home Inventory Architecture Overview Diagram"]
+
+Source file: `docs/2-descriptive/implementation/diagrams/architecture_overview_diagram.mmd`
+
+The diagram shows the current implementation architecture from the mobile client outward:
+
+* **Flutter mobile client (M3 current):** Contains the Material 3 UI screens/forms, GoRouter navigation and deep-link entry points, Bloc/Cubit state management, and feature-level use cases/repositories for validation and Supabase operations.
+* **Supabase client/API boundary (M3 current):** The app communicates with Supabase over HTTPS through the Supabase Flutter SDK for authentication, CRUD queries, storage access when used, and realtime subscriptions.
+* **Authentication and authorization boundary (M3 current):** Supabase Auth issues JWT sessions. Supabase Postgres Row Level Security policies enforce household-scoped access for authenticated users before database rows are returned or modified.
+* **Persistence layer (M3 current):** Supabase PostgreSQL stores persistent records for inventory items, households, members, alerts, grocery-list data, report data, and related metadata.
+* **Realtime synchronization (M3 current):** Supabase Realtime publishes Postgres change events back to subscribed Flutter clients so inventory and household-facing views can update without manual refresh.
+* **Storage support (documented feature-dependent):** Supabase Storage supports product images, receipts, and media assets where the corresponding feature uses uploaded or downloaded files.
+* **Backend automation (documented / partially implemented):** Scheduled jobs and hosted/Edge Function workers support stock checks, expiration checks, alert generation, deduplication, run logging, and grocery restock output.
+* **Device/platform services (M3 current / partially configured):** Camera and barcode scanning support item capture; local file/PDF APIs support exports; push notification delivery is documented as platform-dependent through FCM/APNs.
+* **External services (M3 current / planned):** Barcode/product lookup and email invitation delivery are integration-dependent. Grocery delivery, AI meal planning, and similar services are planned only and are not part of the M3 runtime.
 
 ---
 
