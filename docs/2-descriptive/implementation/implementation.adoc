@@ -87,46 +87,6 @@ Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_di
 
 .Figure 2.3.b: Tracked inventory item lifecycle from acquisition through active use, alert-worthy states, exception states, disposal, and archival.
 
-**Diagram source:**
-
-[source,mermaid]
-----
-stateDiagram-v2
-    direction LR
-
-    [*] --> Acquired: item added / scan / manual entry
-
-    Acquired --> InStock: quantity > threshold
-    Acquired --> LowStock: quantity <= threshold and > 0
-    Acquired --> OutOfStock: quantity = 0
-
-    InStock --> LowStock: quantity updated / threshold reached
-    LowStock --> InStock: restock above threshold
-    LowStock --> OutOfStock: quantity reduced to 0
-    InStock --> OutOfStock: quantity reduced to 0
-    OutOfStock --> InStock: replenished / grocery run finalized
-
-    InStock --> NearExpiry: scheduled sweep enters near-expiry window
-    LowStock --> NearExpiry: scheduled sweep enters near-expiry window
-    NearExpiry --> Expired: expiration date reached
-    NearExpiry --> InStock: expiration date extended / corrected
-    Expired --> InStock: expiration date corrected and item still usable
-
-    InStock --> Lent: item lent [conceptual]
-    Lent --> InStock: item returned [conceptual]
-    Lent --> Lost: item marked lost [conceptual]
-    InStock --> Lost: item marked lost [conceptual]
-    LowStock --> Lost: item marked lost [conceptual]
-
-    Expired --> Discarded: user marks discarded / thrown away
-    Discarded --> Archived: preserve historical record
-    OutOfStock --> Archived: user archives inactive item record
-    Expired --> Archived: user archives expired item record
-    Lost --> Archived: user archives lost item record [conceptual]
-
-    Archived --> [*]: hidden from active inventory views
-----
-
 **Transition interpretation:**
 
 * `Acquired` begins when a household member adds an item through barcode scanning or manual entry.
