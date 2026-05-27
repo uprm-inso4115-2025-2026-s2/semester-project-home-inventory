@@ -1,0 +1,69 @@
+= Decision Table for Shared Inventory and Reporting Scenarios
+
+Author: Kaysha Pagan
+
+== Related Test Artifacts
+
+* Lecture Topic Task: LTT_shared_inventory_reporting_decision_table
+
+== Introduction
+
+This Lecture Topic Task focuses on defining expected system behavior for situations involving shared inventory and reporting features within the Home Inventory System. The goal is to reduce ambiguity and improve consistency when inventory information changes across shared household environments and reporting related activities. This analysis focuses on situations where shared inventory updates may affect reports, summaries, or inventory information viewed by other household users.
+
+== Decision Table
+
+[cols="2,2,2", options="header"]
+|===
+|Scenario
+|Conditions
+|Expected Behavior
+
+|Shared inventory item updated during report review
+|A shared inventory item is modified while another user is viewing reports
+|Future reports reflect the updated inventory information
+
+|Shared inventory item removed after report generation
+|A shared item included in reports is later deleted from inventory
+|New reports use the updated inventory data
+
+|Duplicate shared inventory item added
+|A user attempts to add an item that already exists in shared inventory
+|User receives a duplicate item warning before saving
+
+|Shared inventory quantity updated
+|Quantity of a shared inventory item is modified by one household user
+|Updated quantity is reflected in shared inventory information
+
+|Budget-tracked shared item removed
+|A shared inventory item connected to budgeting information is deleted
+|Budget summaries use current inventory data
+
+|Shared inventory item modified before report generation
+|Inventory information changes before reports are generated
+|Generated reports use the latest inventory information
+
+|Shared inventory category updated
+|Category information for a shared item is modified
+|Future reports reflect the updated category information
+
+|Shared item removed from shared inventory
+|A household user removes an item from shared inventory
+|The item no longer appears in shared inventory information
+
+|Multiple users update shared inventory information
+|More than one household user makes changes to shared inventory information
+|Future reports reflect the latest available inventory information
+
+|Shared inventory item affects budget report
+|A shared item contributes to budget-related reporting
+|Budget reports reflect the current shared inventory data
+
+|===
+
+== Analysis
+
+The decision table helps organize expected behavior for situations where shared inventory and reporting features interact with the same inventory information. These situations are important because inventory changes made by one household user may affect reports, summaries, or shared inventory information viewed by others.
+
+== Conclusion
+
+Defining shared inventory and reporting scenarios helps improve consistency across inventory-sharing and reporting-related features within the Home Inventory System. Organizing these situations into a decision table provides a clearer reference for expected behavior during shared inventory updates and reporting activities.
