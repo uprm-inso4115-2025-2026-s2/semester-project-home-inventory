@@ -1,10 +1,10 @@
 == Stakeholder Identification
 
-This section identifies stakeholders relevant to the domain and summarizes their goals, influence, and concerns.
+This section identifies stakeholders relevant to the domain and summarizes their goals, influence, concerns, and relationship to the system.
 
 === Stakeholder classification updates since M2
 
-Since Milestones 2 and 3, stakeholder identification was updated to reflect actual project engagement. Transient household members, grocery/retail stores, and mobile platform reviewers were added as new stakeholders. Classification changes reflect observed influence and interest based on implementation work, requirements refinement, and feedback from milestone reviews.
+Since Milestones 2 and 3, stakeholder identification was updated to reflect actual project engagement and requirements acquisition activities. Transient household members, grocery/retail stores, and technical maintainers were refined as stakeholders based on implementation reviews, milestone feedback, backend integration work, and requirements acquisition sessions. Stakeholder classifications were also updated to better document each stakeholder’s influence and interest level within the project.
 
 === 1. Primary Stakeholders (Direct Users)
 
@@ -15,34 +15,46 @@ These stakeholders interact with the system daily and their needs dictate the co
 * **Who:** A frequent household supply buyer who naturally organizes the house and does bulk shopping.
 * **Why:** Needs to keep the house stocked and get reimbursed quickly for shared purchases.
 * **How (Relationship):** Heavy, write-intensive usage. Creates shared inventories, logs bulk purchases, and sends reimbursement reminders.
+* **Interest Level:** High
+* **Influence Level:** High
 * **Functional Needs:** Shared digital ledger, rapid data entry for bulk items, verifiable records of consumption, and low-stock alerts.
+* **Traceability:** Related to M3-QA-06 and M3-QA-07 regarding shared alert coordination, inventory planning, and restock management workflows.
 
 ==== The Budget-Conscious Roommate (Persona: Sofia)
 
 * **Who:** A student living in a shared apartment on a strict budget.
 * **Why:** Needs to track shared groceries, split costs fairly, and avoid duplicate purchases.
 * **How (Relationship):** Checks the app while at the store to verify stock and logs personal vs. shared expenses.
+* **Interest Level:** High
+* **Influence Level:** Medium
 * **Functional Needs:** Real-time inventory synchronization, duplicate purchase warnings, and separate tracking of personal vs. shared items.
+* **Traceability:** Related to M3-QA-05 regarding budget tracking, spending entries, and threshold management features.
 
 ==== The Busy Solo Student (Persona: Mateo)
 
 * **Who:** A student living alone with limited time.
 * **Why:** Needs to minimize time spent shopping and avoid wasting expired food.
 * **How (Relationship):** Notification-driven usage; relies on reminders for low-stock or expiring items.
+* **Interest Level:** High
+* **Influence Level:** Medium
 * **Functional Needs:** Automated expiration alerts, simple quick-check UI, and grocery list auto-generation.
+* **Traceability:** Related to M3-QA-07 regarding restock planning and low-stock management workflows.
 
 ==== The Health-Conscious Student (Persona: Julian)
 
 * **Who:** A student with dietary or medical needs keeping inventory separate.
 * **Why:** Needs uninterrupted supply of specialty items.
 * **How (Relationship):** Precision usage with exact thresholds for reordering.
+* **Interest Level:** High
+* **Influence Level:** Medium
 * **Functional Needs:** Adjustable low-stock alerts, strict permission/privacy boundaries.
+* **Traceability:** Related to M3-QA-01 and M3-QA-02 regarding visibility scope, ownership boundaries, and role-scoped permissions for personal inventory items.
 
 === Engagement channels for primary stakeholders
 
-* Household manager and roommates identified through domain discussions and household observations.
-* Budget-conscious and solo student requirements gathered from use-case discussions and workflow analysis.
-* Health-conscious student needs identified through edge-case analysis focusing on dietary and medical requirements.
+* Household manager and roommate requirements identified through requirements acquisition discussions, shared apartment and household usage scenarios, and milestone feedback reviews.
+* Budget-conscious and solo student requirements gathered during implementation reviews, inventory tracking discussions, grocery management scenarios, and feature refinement activities.
+* Health-conscious student requirements identified through edge-case acquisition sessions focusing on dietary restrictions, privacy concerns, and specialized inventory tracking.
 
 === 2. Secondary & Indirect Stakeholders
 
@@ -52,53 +64,75 @@ Stakeholders who interact with the system occasionally or indirectly.
 
 * **Who:** Temporary household members.
 * **Why:** Cause inventory drift or require access modifications.
+* **Interest Level:** Low
+* **Influence Level:** Medium
 * **Functional Needs:** Ownership transfer, easy user removal/invitation, and inventory reconciliation.
+* **Traceability:** Related to M3-QA-02 regarding membership handling and role-scoped permissions within shared households.
 
 ==== Parents / Family Contributors
 
 * **Who:** Family members helping fund the student.
 * **Why:** Want visibility into household needs and contributions.
+* **Interest Level:** Medium
+* **Influence Level:** Low
 * **Functional Needs:** Shareable grocery lists or read-only access.
+* **Traceability:** Supported by grocery contribution and household support acquisition scenarios discussed during requirements acquisition sessions.
 
 ==== Grocery / Retail Stores
 
 * **Who:** Supermarkets and wholesale clubs.
 * **Why:** Provide product and barcode data relied on by the system.
+* **Interest Level:** Medium
+* **Influence Level:** Medium
 * **Functional Needs:** Accurate barcode scanning and fallbacks for unrecognized products.
+* **Traceability:** Related to M3-QA-04 regarding barcode lookup fallback behavior and product metadata acquisition requirements.
 
 === Engagement channels for secondary stakeholders
 
-* Transient members identified during edge-case analysis and lecture topic tasks.
-* Parents/family contributors identified through contribution and support scenarios.
-* Grocery/retail store needs identified during barcode and product metadata implementation.
+* Transient member stakeholder requirements identified through shared inventory ownership discussions and access-management requirement reviews.
+* Parents/family contributor needs identified through grocery contribution and household support acquisition scenarios.
+* Grocery/retail store requirements identified during barcode integration reviews, product metadata discussions, and implementation testing activities.
 
 === 3. External & Technical Stakeholders
 
-==== Development Team & Database Maintainers (INSO4115 Team)
+==== Development Team & Technical Maintainers (INSO4115 Team)
 
 * **Who:** Students building and maintaining the app.
-* **Why:** Need clear requirements and stable backend.
-* **Functional Needs:** Well-documented APIs, robust schema, and maintainable integration.
+* **Why:** Need clear requirements, maintainable architecture, and stable backend functionality.
+* **Interest Level:** High
+* **Influence Level:** High
+* **Functional Needs:** Well-documented APIs, robust schema, maintainable integrations, and stable backend services.
+* **Traceability:** Related to M3-QA-08 regarding synchronization handling, offline queue management, and backend integration requirements.
 
 ==== Project Evaluators (Course Staff)
 
 * **Who:** Instructors evaluating the project.
-* **Why:** Assess requirements coverage and project execution.
-* **Functional Needs:** Documentation, traceability, and milestone feedback.
-
-==== Mobile Platform Reviewers (App Store / Google Play)
-
-* **Who:** App store reviewers.
-* **Why:** Ensure compliance with privacy and UI guidelines.
-* **Functional Needs:** Secure authentication, privacy policies, and stable navigation.
+* **Why:** Assess requirements coverage, documentation quality, and project execution.
+* **Interest Level:** High
+* **Influence Level:** High
+* **Functional Needs:** Documentation, traceability, milestone evidence, and clear requirement justification.
+* **Traceability:** Supported directly through milestone feedback, review comments, and documentation evaluation activities.
 
 === Engagement channels for external and technical stakeholders
 
-* Development and database team identified through implementation work.
-* Project evaluators identified via milestone reviews and feedback.
-* Mobile platform reviewers became relevant during app deployment and privacy compliance checks.
+* Development team and technical maintainer requirements identified through implementation reviews, backend integration work, milestone planning sessions, and schema maintenance discussions.
+* Project evaluator stakeholder requirements identified directly through milestone reviews, QA feedback, and documentation assessment activities.
 
-=== 4. Stakeholder Matrix (Power / Interest Grid)
+=== 4. Potential Future Stakeholders
+
+==== Mobile Platform Reviewers (Future Deployment Stakeholder)
+
+* **Who:** App Store and Google Play reviewers.
+* **Why:** Would evaluate the application if distributed through official mobile marketplaces.
+* **Interest Level:** Low
+* **Influence Level:** High
+* **Functional Needs:** Secure authentication, privacy policies, stable navigation, and compliance with mobile platform requirements.
+
+These stakeholders become relevant if the application is later distributed through official mobile marketplaces such as the Apple App Store or Google Play Store.
+
+=== 5. Stakeholder Matrix (Power / Interest Grid)
+
+The following matrix summarizes stakeholder influence, interest level, management strategy, and associated system modules.
 
 [cols="1,1,1,2,1", options="header"]
 |===
@@ -114,14 +148,19 @@ Stakeholders who interact with the system occasionally or indirectly.
 | **Keep Satisfied:** Ensure reliable sync, duplicate warnings, and expiration alerts.
 | Expiration Alerts, Real-time Sync
 
+| **Health-Conscious Users**
+| High | Medium
+| **Keep Satisfied:** Support privacy boundaries and customizable inventory alerts.
+| Alerts, Permission Controls
+
 | **Project Evaluators** (Course Staff)
 | High | High
 | **Manage Closely:** Follow milestone requirements and documentation standards.
 | Documentation, Traceability
 
-| **DB Maintainers / Dev Team**
+| **Technical Maintainers / Dev Team**
 | High | High
-| **Manage Closely:** Maintain stable backend and secure data practices.
+| **Manage Closely:** Maintain stable backend systems and secure integrations.
 | DB Schema, Security Rules (RLS)
 
 | **Transient Members** (Guests, etc.)
@@ -139,8 +178,8 @@ Stakeholders who interact with the system occasionally or indirectly.
 | **Monitor:** Ensure barcode lookup reliability and product metadata accuracy.
 | Barcode Scanning, Product Metadata
 
-| **Platform Reviewers**
+| **Future Platform Reviewers**
 | Low | High
-| **Keep Satisfied:** Follow platform privacy and UI requirements.
+| **Keep Satisfied:** Follow platform privacy and UI requirements if future deployment occurs.
 | Authentication, App Settings
 |===
