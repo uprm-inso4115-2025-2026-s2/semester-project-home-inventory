@@ -1,0 +1,69 @@
+= Identification of Inert Dynamic Phenomena in the Home Inventory Domain
+
+**AI Disclosure**: This document was developed with the assistance of an AI tool for domain-specific classification and structural engineering principles. All final models, design implications, and architectural boundaries were reviewed and verified by the development team.
+
+== 1. Definition of Inert Dynamic Phenomena
+
+*Inert dynamic phenomena* are attributes that change over time *only when triggered by an external stimulus*. They do not initiate change on their own and cannot self-report updates. Instead, the system requires either *manual user input* or an *external monitoring mechanism* to recognize changes.
+
+Unlike *static phenomena*, inert phenomena *do change*, but only after an external event occurs.
+
+== 2. Identified Inert Dynamic Phenomena
+
+=== 2.1 Item Condition
+
+*Description:* The recorded condition of an item (e.g., _New_, _Good_, _Damaged_, _Broken_).
+
+*External Stimulus:* Physical wear, accidental damage, or maintenance actions performed on the item.
+
+*Detection Method:* *Manual User Input* — a household member must inspect the item and explicitly update its condition in the system.
+
+*Reason for Classification:* The item itself cannot report its own deterioration, so the system remains unchanged until a user provides an update.
+
+=== 2.2 Item Location
+
+*Description:* The physical location where an item is stored.
+
+*External Stimulus:* A household member physically moving the item to another room, shelf, or storage location.
+
+*Detection Method:* *Manual User Input* — a user performs a "Move Item" operation to update the system.
+
+*Reason for Classification:* The system does not automatically know when an item changes location and requires an external update.
+
+=== 2.3 Item Value Estimate
+
+*Description:* The estimated financial or replacement value of an item.
+
+*External Stimulus:* Market depreciation, updated appraisals, or changes in replacement cost.
+
+*Detection Method:* *Manual User Input* — a user or external appraisal must update the value.
+
+*Reason for Classification:* The system does not recalculate or update value estimates automatically.
+
+=== 2.4 Warranty Expiration Status
+
+*Description:* The warranty state of an item (e.g., _Active_, _Expired_).
+
+*External Stimulus:* The passing of time beyond the warranty expiration date.
+
+*Detection Method:* *Automatically Detected by the System* — the system can compare the current date with the stored warranty expiration date.
+
+*Reason for Classification:* The change occurs because of an external time event rather than internal system impulses.
+
+== 3. Potential Risks / Blockers
+
+=== 3.1 Confusing Inert with Static
+
+A common misunderstanding is confusing *inert* with *static*. Static phenomena do not change, while inert phenomena *do change* but only when triggered by an external stimulus.
+
+For example, *Item Condition* is inert because an item may physically deteriorate over time, but the system does not recognize that change until a household member updates it.
+
+=== 3.2 Modeling Item Condition as Reactive Instead of Inert
+
+Although *Item Condition* is practically inert, teams may attempt to model it as *reactive* by automatically calculating deterioration from usage data.
+
+*Inert Approach:* Condition changes only when a household member explicitly updates the item after inspection.
+
+*Reactive Approach:* The system automatically estimates deterioration based on assumptions such as usage frequency.
+
+*Design Implication:* Treating item condition as inert improves accuracy because physical deterioration requires human assessment, while reactive modeling may introduce inaccurate assumptions about an item's actual condition.
