@@ -23,12 +23,4 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 
 === Shared-Household Invitation and Membership Changes
 
-In shared households, participation changes over time as members are invited, leave, or have access revoked. Invitation is therefore part of how membership changes, even though the exact delivery and security mechanism belong to later requirements and implementation sections. A household invitation is a temporary request to join a household context; at the domain level its important states are:
-
-* sent
-* accepted
-* declined
-* expired
-* revoked
-
-These states matter because they affect who participates in coordination and who should continue to receive shared information.
+In shared households, participation changes over time as members are invited, leave, or have access revoked. A household invitation is a temporary request to join a household context whose state (sent, accepted, declined, expired, or revoked) determines who participates in coordination and who should continue to receive shared information. The full lifecycle rules, permissions, and delivery mechanism are specified in the requirements section (Shared-Household Invitations and Access Changes).

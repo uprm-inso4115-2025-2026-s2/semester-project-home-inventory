@@ -24,30 +24,7 @@ This subsection documents how raw observations from the rough sketch were transf
 | Availability (qualitative state: full, almost empty, backup) / Low-stock judgment
 |===
 
-Analyzing these side-by-side: different expressions for "groceries", "items", and "products" are unified under *Household Item*; repeated mentions of duplicates and shortages indicate coordination issues in shared households; and time-based concerns introduce *Expiration Date* tied to specific item instances.
-
-==== Concept Formation Decisions
-
-Abstractions introduced by grouping similar ideas:
-
-- "Groceries", "items", "products" -> *Household Item*
-- Multiple physical units -> *Item Instance*
-- "Extra one" -> *Backup supply*
-- "Expires" -> *Expiration Date*
-- "Running out" -> *Availability* (with qualitative judgments: full, almost empty, backup)
-
-These groupings allow consistent reasoning across different user statements and scenarios.
-
-==== Identifying Concept Relationships
-
-- A *Household Item* may have multiple *Item Instances*.
-- Each *Item Instance* may have an *Expiration Date*.
-- A *Household Item* can be associated with an *Availability* state (full, almost empty, backup).
-- Household members interact with shared items in a common environment.
-
-==== Terminology Alignment
-
-Inconsistencies identified and resolved: "item"/"product"/"groceries" standardized as *Household Item*; "running out" vs "not available" unified under *Availability*; "extra" vs "backup" unified as *Backup supply*.
+Analyzing these side-by-side: different expressions for "groceries", "items", and "products" are unified under *Household Item*; multiple physical units become *Item Instances* (an "extra one" is a *Backup supply*); "expires" introduces *Expiration Date* tied to specific instances; and "running out" maps to *Availability* (with qualitative judgments: full, almost empty, backup). The resulting relationships and standardized terms are carried by the parent concept analysis and the terminology glossary, so they are not restated here.
 
 ==== Domain Scope Note
 

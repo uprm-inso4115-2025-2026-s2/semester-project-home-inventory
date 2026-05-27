@@ -44,8 +44,6 @@ This section documents the minimal viable set of high-value features fully imple
 
 |===
 
-**Detailed User Scenario (Andrea's Onboarding):** Andrea opens the Inventory tab, taps the FAB to add her first item, and scans a pasta box. The system recognizes "Barilla Penne Rigate" and auto-populates name, brand, category, and image. She adjusts quantity to 2 boxes, sets the expiration date to 2026-12-31, taps "Save", and the item appears in the inventory list.
-
 **Components Involved:**
 - **Presentation:** `AddItemPage`, `InventoryPage`, `ItemForm` widgets
 - **State Management:** `InventoryCubit`, `InventoryState`
@@ -133,8 +131,6 @@ Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_di
 
 |===
 
-**Detailed User Scenario (Mateo's Morning Alert):** Mateo receives a push notification ("2 items expiring today or tomorrow": Milk today, Yogurt tomorrow), taps it, and the app opens the Alerts Center. He taps "Consume Now" for Milk (quantity set to 0) and "Extend" for Yogurt (date picker, extended 2 days out). The alert list auto-refreshes and both items leave the list.
-
 **Components Involved:**
 - **Backend:** Supabase Cron Edge Function (TypeScript), Postgres triggers
 - **Frontend Presentation:** Alerts Center screen, push notification handler
@@ -201,8 +197,6 @@ Example: Milk quantity = 0, Bread expired 2 days ago, Pasta below threshold
 | Updated inventory displayed; grocery list cleared of checked items; confirmation shown
 
 |===
-
-**Detailed User Scenario (Andrea's Weekly Shopping Trip):** On Sunday Andrea sees 6 auto-generated items (Milk OUT_OF_STOCK, Bread EXPIRED, Pasta and Eggs LOW_STOCK, plus Cheese and Butter added manually). At the store she checks items off as she carts them, then taps "Finalize Grocery Run". The app shows a review summary listing each item with quantity and expiration date and an optional spend total. She taps "Save & Restock"; Core Inventory updates with the new items and quantities, the grocery list clears (checked items archived), and a confirmation appears ("6 items restocked! Your inventory is up to date.").
 
 **Components Involved:**
 - **Presentation:** `MyGroceryListPage`, `GroceryListTile`, `AddCustomItemPage` widgets
@@ -329,8 +323,6 @@ Example: Milk quantity = 0, Bread expired 2 days ago, Pasta below threshold
 | PDF file generated and ready to share/print
 
 |===
-
-**Detailed User Scenario (Manager's Weekly Review):** Andrea opens the Inventory Stock Report and sees a summary ("28 items total | 18 adequate | 4 low stock | 2 expiring this week"). She expands categories (e.g., Dairy: Milk LOW, Yogurt/Cheese ADEQUATE; Grains: Rice EMPTY), then taps "Export as PDF" to share with the household.
 
 **Components Involved:**
 - **Presentation:** Report screens, charts/tables, PDF preview
@@ -623,27 +615,13 @@ The diagram shows the architecture from the mobile client outward:
 
 ---
 
-=== Architecture & Technical Stack
+=== Technical Stack Versions and Tooling
 
-**Frontend Stack:**
-- **Framework:** Flutter 3.29.0 with Dart 3.7.0
-- **State Management:** Flutter Bloc (Cubit for simple states)
-- **Navigation:** GoRouter with deep-link support
-- **UI Components:** Material 3 design, custom Material/Cupertino widgets
-- **Local Storage:** Shared Preferences (settings), cached product data
-- **Notifications:** Firebase Cloud Messaging (FCM) + platform-specific handling
+The component roles (Flutter client, Bloc/Cubit state management, GoRouter, Material 3, Supabase Auth/PostgreSQL/Realtime/Storage/Edge Functions, FCM/APNs, barcode lookup) are described in the Architecture Overview above. This subsection records only what that overview does not:
 
-**Backend Stack:**
-- **Database:** Supabase PostgreSQL with Realtime subscriptions
-- **Authentication:** Supabase GoTrue (email/password, social)
-- **Backend Functions:** Supabase Edge Functions (TypeScript) for cron jobs
-- **File Storage:** Supabase Storage (product images, receipts)
-- **APIs:** Barcode lookup service (for product data enrichment)
-
-**CI/CD & Deployment:**
-- Version control: Git + GitHub
-- Testing: Dart test framework, mocktail for mocking
-- Linting: flutter_lints, Dart analyzer
+- **Runtime versions:** Flutter and Dart SDK versions are specified authoritatively in Section 2.2.3 (Machine Requirements).
+- **Local storage:** Shared Preferences for settings and cached product data.
+- **CI/CD & tooling:** Git + GitHub for version control; the Dart test framework with `mocktail` for testing; `flutter_lints` and the Dart analyzer for linting.
 
 ---
 

@@ -1,44 +1,23 @@
 == Traceability
 
-This section describes how traceability is established in the Digital Home Inventory project. Traceability means our deliverables are linked so we can answer questions about where requirements come from, which personas they serve, and how they connect to domain concepts, scenarios, and verification artifacts.
-
-=== Overview
-
-Traceability helps us understand relationships between different parts of our documentation. When something changes, we can see what else might be affected. For example, if a requirement is modified, we can identify which personas and needs it supports, which user stories are impacted, and which scenarios/tests should be revisited.
-
-Our approach focuses on creating clear links between artifacts without overcomplicating the documentation (Milestone 1 focuses on progress, not completeness).
+This section describes how traceability is established in the project. Traceability means our deliverables are linked so we can answer where requirements come from, which personas they serve, and how they connect to domain concepts, scenarios, and verification artifacts. When something changes, we can see what else might be affected — for example, modifying a requirement reveals which personas and needs it supports, which user stories are impacted, and which scenarios/tests should be revisited. The approach keeps links clear without overcomplicating the documentation.
 
 === Traceability approach (labels and links)
 
-We maintain traceability through a simple labeling system:
+We maintain traceability through a simple labeling system.
 
 ==== Persona goals
 
-Each persona’s goals are labeled with a short code. (Goal descriptions are kept short to make them easy to reference.)
+Each persona's goals are labeled with a short code.
 
-* **Mateo (M)**
-  * **MG1**: Know what I have without extra effort
-  * **MG2**: Avoid wasting expired food
-  * **MG3**: Avoid running out of daily essentials
-
-* **Sofia (S)**
-  * **SG1**: Stay within a strict budget
-  * **SG2**: Split shared costs fairly
-  * **SG3**: Avoid duplicate purchases
-
-* **Julian (J)**
-  * **JG1**: Avoid running out of specialty items
-  * **JG2**: Avoid waste from bulk purchases
-  * **JG3**: Keep personal items separate
-
-* **Andrea (A)**
-  * **AG1**: Coordinate shared stocking without mental overload
-  * **AG2**: Get reimbursed accurately for shared purchases
-  * **AG3**: Know what is needed before bulk shopping
+* **Mateo (M)**: **MG1** know what I have without extra effort; **MG2** avoid wasting expired food; **MG3** avoid running out of daily essentials.
+* **Sofia (S)**: **SG1** stay within a strict budget; **SG2** split shared costs fairly; **SG3** avoid duplicate purchases.
+* **Julian (J)**: **JG1** avoid running out of specialty items; **JG2** avoid waste from bulk purchases; **JG3** keep personal items separate.
+* **Andrea (A)**: **AG1** coordinate shared stocking without mental overload; **AG2** get reimbursed accurately; **AG3** know what is needed before bulk shopping.
 
 ==== Needs ↔ requirements
 
-Each requirement in Section 2.2 is tagged with which Needs IDs (N1–N5) it supports, and (when helpful) which persona goals it supports.
+Each requirement in Section 2.2 is tagged with which Needs IDs (N1–N5) it supports, and when helpful which persona goals.
 
 .Example
 * **IR-01 (Item Initialization)** → Needs: N1, N2 | Goals: MG1, JG1, AG3
@@ -57,22 +36,18 @@ Each user story in Section 2.2.1 lists which interface requirements it implement
 
 ==== Domain concepts ↔ requirements
 
-Domain concepts from Section 2.1 (Terminology/Entities/Events/Functions) are linked to the requirements that depend on them.
+Domain concepts from Section 2.1 are linked to the requirements that depend on them.
 
 .Example
-* **Item type / Item instance** → Appears in: IR-01, IR-02, IR-05
-* **Household / Household member** → Appears in: IR-03, IR-06, IR-07
-* **Low-stock threshold** → Appears in: IR-04
-* **Expiration date** → Appears in: IR-05
-* **Spending entry / Budget (optional scope)** → Appears in: IR-06, IR-07, IR-08
+* **Item type / Item instance** → IR-01, IR-02, IR-05
+* **Household / Household member** → IR-03, IR-06, IR-07
+* **Low-stock threshold** → IR-04
+* **Expiration date** → IR-05
+* **Spending entry / Budget (optional scope)** → IR-06, IR-07, IR-08
 
 ==== Scenarios/tests ↔ requirements (Milestone 1)
 
-For Milestone 1, traceability is extended to the main validation and verification artifacts:
-
-* Scenario IDs: **S1..Sx** (Section 3.2.1)
-* Test case IDs: **TC-*** (Section 3.2.3)
-* Walkthrough findings: **WF-*** (Section 3.2.2) once real sessions are performed
+Traceability extends to the main V&V artifacts: scenario IDs **S1..Sx** (Section 3.2.1), test case IDs **TC-*** (Section 3.2.3), and walkthrough findings **WF-*** (Section 3.2.2) once real sessions are performed.
 
 .Example
 * **S1 (Low-stock after consumption)** → IR-02, IR-04 → TC-ALT-01, TC-AUTO-01
@@ -121,7 +96,7 @@ For Milestone 1, traceability is extended to the main validation and verificatio
 |Dashboard metrics, Shared visibility
 |===
 
-=== Questions traceability helps answer (kept concise)
+=== Questions traceability helps answer
 
 * Which personas and needs are affected if a requirement changes?
 * Which scenarios/tests must be revisited to verify the changed requirement?
@@ -129,19 +104,19 @@ For Milestone 1, traceability is extended to the main validation and verificatio
 
 === Current traceability status (Milestone 3)
 
-We have established traceability for:
+Traceability is established for:
 
 * Persona goals: all personas have labeled goals (MG*, SG*, JG*, AG*).
 * Needs: core needs N1–N5 are referenced by interface requirements and M3 refinements.
-* Requirements: IR-01 through IR-14, DR-1 through DR-25, and MR-01 through MR-08 are linked to needs, concepts, or Milestone 3 acquisition evidence where applicable.
+* Requirements: IR-01–IR-14, DR-1–DR-25, and MR-01–MR-08 are linked to needs, concepts, or M3 acquisition evidence where applicable.
 * Validation/verification: key scenarios and test cases are linked to the most central requirements.
-* Milestone 3 acquisition evidence: each requirement added or revised during Milestone 3 references a specific M3-QA source in Section 4.4.5.
+* M3 acquisition evidence: each requirement added or revised during Milestone 3 references a specific M3-QA source in Section 4.4.5.
 
 [NOTE]
 ====
-Deferred items for later milestones:
-* Additional edge-case interface requirements captured under “Deferred edge cases (Milestone 2+)” will be traced once they are promoted into explicit IR IDs.
-* Domain requirements (DR-*) will be added to the traceability matrix once the DR list is finalized and terminology is normalized across all requirements.
+Deferred for later milestones:
+* Additional edge-case interface requirements (under "Deferred edge cases (Milestone 2+)") will be traced once promoted into explicit IR IDs.
+* Domain requirements (DR-*) will be added to the matrix once the DR list is finalized and terminology is normalized.
 ====
 
 === Milestone 3 Traceability Matrix Addendum
