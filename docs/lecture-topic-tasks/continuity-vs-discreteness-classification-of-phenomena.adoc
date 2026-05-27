@@ -1,0 +1,137 @@
+= Continuity vs Discreteness Classification of Home Inventory Phenomena
+
+*AI Disclosure*: This document was developed with the assistance of an AI tool for structural guidance and a better understanding of lecture concepts. All classifications, interpretations, and final decisions were reviewed, validated, and finalized by the author.
+
+== Purpose and Framing
+
+In domain modeling, a phenomenon can be classified by *how its values are distributed across its domain of definition* (typically time, but also space, money, or any other continuum). This classification determines the appropriate *abstract model* used to represent the phenomenon in the system.
+
+* *Continuous* — The phenomenon is defined at every point of its domain and changes smoothly, without discrete jumps. It is best modeled as a *function* `f : D → V` over a continuous domain `D` (e.g., real-valued time).
+* *Discrete* — The phenomenon takes values at a *countable* set of points and changes only through explicit *state transitions* triggered by events or inputs. It is best modeled as a *state map* or labeled transition system.
+* *Hybrid* — The phenomenon has *both* a continuous component (typically a smooth drift over time) and a *discrete* component (a threshold crossing, mode switch, or event-driven jump). It is best modeled as a *hybrid automaton* — discrete modes whose internal dynamics are continuous.
+
+This classification is distinct from, and complements, the *static vs dynamic* analysis in
+link:static-vs-dynamic-classification-of-phenomena.adoc[Static vs Dynamic Classification of Home Inventory Phenomena]
+and the *entity / event / behavior* analysis in
+link:classification-of-alert-system-phenomena.adoc[Classification of Alert System Phenomena].
+
+== Classification Table
+
+[cols="2,1,2,3",options="header"]
+|===
+| Domain Phenomenon | Classification | Abstract Model | Justification
+
+| *Item monetary value (depreciation)*
+| Continuous
+| Continuous function `value : Time → ℝ⁺`
+| The real-world value of a tangible item decays gradually with time; at every instant a value exists, and the change between two instants approaches zero as the interval shrinks.
+
+| *Storage-space occupancy of a room*
+| Continuous
+| Continuous function `occupied : Time → [0, capacity]`
+| Physical volume/area occupied by items in a room is a real-valued quantity over a continuous domain; even though the system samples it discretely, the underlying phenomenon is smooth.
+
+| *Item condition*
+| Discrete
+| State map / labeled transition system: `{New, Good, Fair, Poor, Damaged}` with transitions on `inspect`, `use`, `damage`, `repair`
+| Condition takes one of a finite, countable set of labels and only changes when a specific event occurs; there is no meaningful value "between" Good and Fair.
+
+| *Item location*
+| Discrete
+| State map: `location : Item → Room` with transitions on `move(item, room')`
+| Location is drawn from a countable set of named rooms/containers; it changes only via an explicit move operation, never gradually.
+
+| *Inventory record (existence / contents)*
+| Discrete
+| Map `Inventory : ItemID → ItemRecord` with operations `add`, `update`, `delete`
+| The record set is countable and only mutates when a household member executes a CRUD operation; no continuous drift exists between operations.
+
+| *Warranty status*
+| Hybrid
+| Hybrid automaton: continuous remaining-time `r(t) = expiry − t` while in mode `Active`; discrete transition to mode `Expired` when `r(t) = 0`
+| Time-to-expiry evolves continuously, but the categorical status `{Active, Expired}` flips at a single, well-defined instant — a textbook continuous drift plus discrete mode switch.
+
+|===
+
+== Per-Classification Discussion
+
+=== Continuous Phenomena
+
+==== Item monetary value (depreciation)
+* *Domain*: time (`ℝ⁺`) → value (`ℝ⁺`).
+* *Model*: a continuous function such as linear `v(t) = v₀ − k·t` or exponential `v(t) = v₀·e^(−λt)` decay.
+* *Why continuous and not discrete*: the underlying economic phenomenon (loss of resale value, wear) does not "wait" for an inspection event — it accumulates at every instant. The system may *sample* it discretely (e.g., recompute on demand), but the *phenomenon* is continuous. Choosing a discrete model (annual depreciation entries) is a valid *implementation simplification*, but it is not what the phenomenon *is* in the domain.
+
+==== Storage-space occupancy
+* *Domain*: time → real-valued used volume in `[0, capacity]`.
+* *Model*: a continuous function whose value reflects the cumulative physical footprint of items present.
+* *Why continuous*: real items have real volumes; total occupancy is the integral over present items and is well-defined at every moment.
+
+=== Discrete Phenomena
+
+==== Item condition
+* *Domain*: countable label set `{New, Good, Fair, Poor, Damaged}`.
+* *Model*: labeled transition system; transitions triggered by `use`, `damage`, `inspect`, `repair`.
+* *Why discrete*: there is no domain meaning to "47% between Good and Fair"; the household reasons in categorical terms.
+
+==== Item location
+* *Domain*: countable set of named rooms/containers.
+* *Model*: state map updated atomically by `move` operations.
+* *Why discrete*: physical movement is instantaneous from the system's perspective — the item is in room A, then in room B; no intermediate "in-flight" state is tracked.
+
+==== Inventory record
+* *Domain*: countable set of item identifiers.
+* *Model*: associative map with CRUD operations.
+* *Why discrete*: the record set is a finite collection of identified records; it changes only when a household member explicitly executes `add`, `update`, or `delete`.
+
+=== Hybrid Phenomena
+
+==== Warranty status
+* *Continuous component*: remaining warranty time `r(t) = expiry − t` decreases at a constant rate `dr/dt = −1` while warranty is active.
+* *Discrete component*: at the instant `r(t) = 0`, status flips from `Active` to `Expired`; this is a categorical, non-reversible transition.
+* *Why hybrid (not purely discrete)*: ignoring the continuous component loses the ability to express "warranty expires in 7 days" — a continuous-time predicate the alert system relies on. Ignoring the discrete component loses the categorical fact that drives UI badges and lapse-of-coverage rules.
+* *Abstract model*: a *hybrid automaton* with one continuous variable (`r`) and two discrete modes (`Active`, `Expired`); the guard `r ≤ 0` triggers the mode switch.
+
+== Resolving the Continuous-vs-Discrete Choice for Depreciation
+
+The risk noted in the task brief — that depreciation could equally be modeled as discrete annual entries — is acknowledged and resolved here:
+
+* The *phenomenon* is continuous (value loss is a smooth real-world process).
+* A *discrete approximation* (e.g., yearly recomputation, straight-line ledger entries) is a legitimate *implementation strategy* but does not change the underlying classification.
+* This document classifies *phenomena*, not implementations, so depreciation remains *continuous*. Any discrete approximation should be documented as a *sampling decision* in the implementation, not as a reclassification of the domain phenomenon.
+
+== Why This Classification Matters
+
+Choosing the right abstract model has concrete consequences:
+
+* *Continuous* phenomena require *time-parameterized queries* ("what is the value as of today?") and benefit from formulas evaluated on demand rather than persisted state.
+* *Discrete* phenomena require *event-sourced or CRUD* persistence; their state transitions are the natural unit of audit, undo, and history.
+* *Hybrid* phenomena require *both*: a stored discrete mode plus a derivation of the continuous quantity from a timestamp. Modeling them as purely discrete leads to lost time-based predicates; modeling them as purely continuous loses categorical alerts.
+
+This classification therefore feeds directly into:
+
+* Data-model decisions (stored fields vs derived properties).
+* Alert-rule definitions (instantaneous events vs time-windowed predicates).
+* UI representation (numeric/graphical vs categorical badges).
+
+== Success Criteria Coverage
+
+[cols="3,1",options="header"]
+|===
+| Criterion | Status
+
+| At least 2 continuous phenomena | 2 (item value, storage occupancy)
+| At least 3 discrete phenomena | 3 (item condition, item location, inventory record)
+| At least 1 hybrid phenomenon | 1 (warranty status)
+| Each classification labelled with abstract model type | Yes (see Classification Table column 3)
+| Each classification justified in one sentence | Yes (see Classification Table column 4)
+| Document committed to the repository | Tracked in branch `issue578-ltt-continuity-discreteness`
+|===
+
+[[references]]
+== References
+
+. *Static vs Dynamic Classification of Home Inventory Phenomena* — sibling LTT on temporal change classification. `docs/lecture-topic-tasks/static-vs-dynamic-classification-of-phenomena.adoc`.
+. *Classification of Alert System Phenomena (Entity, Event, Behavior)* — complementary structural classification. `docs/lecture-topic-tasks/classification-of-alert-system-phenomena.adoc`.
+. *Domain attributes LTT* — base list of domain attributes used as input. `docs/lecture-topic-tasks/domainAttributesLTT.adoc`.
+. *Lecture topic task (issue #578)* — Objective and success criteria. link:https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/578[GitHub Issue #578].
