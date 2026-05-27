@@ -1,34 +1,33 @@
 == Functions
 
-Major domain functions/capabilities, described independently of UI. Each function includes a signature that names its inputs and outputs so that the effect of the operation can be stated precisely.
+Major domain functions/capabilities, described independently of UI. Each includes a signature naming its inputs and outputs so the effect of the operation can be stated precisely.
 
 === Stock item instance
 
-Introduce new item instance of an item type into a household location, whether as a first stocking action or as replenishment. After stocking, checking the location will show that the given quantity of the item type has been added there.
+Introduce new item instances of an item type into a household location, whether as first stocking or replenishment. Afterward, checking the location shows the added quantity.
 
  stockItem : Household × ItemType × Location × QuantityDelta × ExpirationDate? → Household
 
-* _Location_ determines where the new item instances are placed.
-* _QuantityDelta_ is the number of units added.
-* _ExpirationDate_ is optional; if provided, it is associated with the new item instances.
+* _Location_ determines where the new instances are placed; _QuantityDelta_ is the number of units added.
+* _ExpirationDate_ is optional; if provided, it is associated with the new instances.
 * The returned Household reflects the updated inventory.
 
 === Check location
 
-Inspect a location to determine which item types it contains and in what quantities. This is an observation function.
+Inspect a location to determine which item types it contains and in what quantities (an observation function).
 
  checkLocation : Household × Location → List (ItemType × Quantity)
 
-* Returns all item types stored at the given location along with their current counts.
-* This function enables expressing pre/post-conditions of other functions. For example, after calling `stockItem` with 3 units of rice at the kitchen cabinet, `checkLocation` for the kitchen cabinet will show the rice count increased by 3.
+* Returns all item types stored at the location with their current counts.
+* Enables expressing pre/post-conditions of other functions — e.g., after `stockItem` with 3 units of rice at the kitchen cabinet, `checkLocation` shows the rice count increased by 3.
 
 === Move item instance
 
-Change where an item instance is stored. After moving, checking the old location will no longer show this instance, and checking the new location will include it.
+Change where an item instance is stored. After moving, the old location no longer shows it and the new location includes it.
 
  moveItemInstance : Household × ItemInstance × Location → Household
 
-* _Location_ is the destination where the item instance will be placed.
+* _Location_ is the destination.
 
 === Record consumption
 
@@ -36,26 +35,23 @@ Decrease availability of an item instance due to use.
 
  consume : Household × ItemInstance × QuantityDelta → Household
 
-* _QuantityDelta_ is the number of units consumed.
-* After consumption, the item instance’s quantity is reduced by the delta. If the new quantity reaches zero, the item is considered out-of-stock. If the new quantity falls at or below the low-stock threshold, the item is considered low-stock.
+* _QuantityDelta_ is the number of units consumed. The instance's quantity is reduced by the delta; reaching zero makes it out-of-stock, and falling at or below the low-stock threshold makes it low-stock.
 
 === Judge low-stock
 
-Determine whether an item type is considered low based on household strategy or threshold.
+Determine whether an item type is low based on household strategy or threshold.
 
  isLowStock : ItemType × Availability × Threshold? → Bool
 
-* If a _Threshold_ is provided and _Availability_ is at or below it, returns true.
-* If no threshold is set, the function may rely on qualitative strategies.
+* If a _Threshold_ is provided and _Availability_ is at or below it, returns true; otherwise the function may rely on qualitative strategies.
 
 === Determine expiration status
 
-Classify an item instance’s expiration state when an expiration date exists.
+Classify an item instance's expiration state when an expiration date exists.
 
  expirationStatus : ItemInstance × DateNow → (Active | NearExpiry | Expired | Unknown)
 
-* Returns _Unknown_ when the item instance has no expiration date or the date is unreadable.
-* _NearExpiry_ applies when the item is within the near-expiry window.
+* Returns _Unknown_ when there is no expiration date or it is unreadable; _NearExpiry_ applies within the near-expiry window.
 
 === Create restock entry
 
@@ -63,9 +59,9 @@ Add an item type to the restock list/planner with a reason.
 
  addToRestockList : RestockList × ItemType × Reason → RestockList
 
-* _Reason_ indicates why restocking is needed (LOW_STOCK, OUT_OF_STOCK, EXPIRED).
+* _Reason_ is one of LOW_STOCK, OUT_OF_STOCK, EXPIRED.
 
-=== Defer / dismiss restock entry 
+=== Defer / dismiss restock entry
 
 Allow a household member to postpone or remove an entry from restock planning.
 
@@ -75,16 +71,16 @@ Allow a household member to postpone or remove an entry from restock planning.
 
 === Generate alert
 
-Create an alert record when an actionable state is reache.
+Create an alert record when an actionable state is reached.
 
  generateAlert : AlertLog × AlertType × Target → AlertLog
 
-* _AlertType_ is one of: LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, EXPIRED, BUDGET_THRESHOLD.
+* _AlertType_ is one of LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, EXPIRED, BUDGET_THRESHOLD.
 * _Target_ is the item type, item instance, or budget that triggered the condition.
 
-=== Acknowledge alert 
+=== Acknowledge alert
 
-Record a household member’s decision to dismiss or defer an alert.
+Record a household member's decision to dismiss or defer an alert.
 
  ackAlert : AlertLog × Alert × Action(dismiss|defer) × Until? → AlertLog
 
@@ -100,8 +96,8 @@ Create a spending entry capturing who paid, how much, when, and whether it is sh
 
  recordSpending : Household × Amount × Date × Payer × Scope × ItemType? × Category? → Household
 
-* _Payer_ is the household member who made the purchase; attribution is retained even after inventory corrections.
-* _Scope_ determines whether the spending is shared among household members or personal.
+* _Payer_ is the member who purchased; attribution is retained even after inventory corrections.
+* _Scope_ determines whether spending is shared or personal.
 
 === Adjust spending entry
 
@@ -111,7 +107,7 @@ Correct spending records via adjustment/refund entries rather than destructive e
 
 === Compute budget status
 
-Compute spent-to-date and remaining budget for a household or category within a budget cycle.
+Compute spent-to-date and remaining budget for a household or category within a cycle.
 
  budgetStatus : Budget × List SpendingEntry × DateNow → BudgetStatus
 

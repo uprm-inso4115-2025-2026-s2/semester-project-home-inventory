@@ -1,115 +1,83 @@
 == Machine Requirements
 
-Machine requirements define measurable quality properties for the implementation, together with the supported environment and deployment assumptions needed to run, test, and review the system. Milestone 2 established the initial quality properties (MR-01..MR-08) verified against the prototype, and Milestone 3 extends this section with the environment, platform, runtime, third-party service, and deployment requirements needed for end users, developers, and reviewers. Where specific thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated.
-
-Each requirement includes traceability to relevant Domain Requirements (DR) where applicable.
+Machine requirements define measurable quality properties for the implementation, together with the supported environment and deployment assumptions needed to run, test, and review the system. Milestone 2 established the initial quality properties (MR-01..MR-08) verified against the prototype; Milestone 3 extends this with the environment, platform, runtime, third-party service, and deployment requirements needed for end users, developers, and reviewers. Where thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated. Each requirement traces to relevant Domain Requirements (DR) where applicable.
 
 === Supported Environment and Deployment Requirements
 
-This section documents the minimum environment assumptions needed to run, test, and review the Digital Home Inventory system during Milestone 3. These requirements focus on the machine, platform, and external services needed for the application to operate consistently across development and review environments.
+Minimum environment assumptions for running, testing, and reviewing the system during Milestone 3, focused on the machine, platform, and external services needed for consistent operation across development and review environments.
 
 ==== End-User Device Requirements
 
-The system is intended to run as a mobile application. End users should have:
+The system runs as a mobile application. End users should have:
 
-* A smartphone capable of running the project’s Flutter mobile client.
-* A working device camera for barcode scanning features.
+* A smartphone capable of running the project's Flutter mobile client, on a supported OS compatible with the project's Flutter version.
+* A working device camera for barcode scanning.
 * Internet access for synchronization, authentication, shared household updates, alerts, and backend communication.
-* Sufficient local storage for temporary cached data, pending offline changes, and local application state.
-* A supported mobile operating system compatible with the Flutter version used by the project.
+* Sufficient local storage for cached data, pending offline changes, and local application state.
 
 Barcode scanning and real-time synchronization may be limited or unavailable on devices without camera access, network connectivity, or required platform permissions.
 
 ==== Developer Machine Requirements
 
-Developers and reviewers who need to run the project locally should have:
+Developers and reviewers running the project locally should have:
 
-* Git installed for cloning and managing the repository.
-* Flutter SDK installed and configured.
-* Dart SDK available through the Flutter installation.
-* A supported IDE or editor, such as Visual Studio Code or Android Studio.
-* Android emulator, iOS simulator, or a physical mobile device for testing.
-* Access to the project’s required backend configuration values when testing Supabase-connected features.
-* Stable internet connection for dependency installation, Supabase access, and package downloads.
+* Git, the Flutter SDK, and the Dart SDK (provided through Flutter).
+* A supported IDE/editor (e.g., VS Code or Android Studio).
+* An Android emulator, iOS simulator, or physical device for testing.
+* Access to the project's backend configuration values when testing Supabase-connected features.
+* A stable internet connection for dependency installation, Supabase access, and package downloads.
 
-The main application source is located under the `src/` directory, which contains the Flutter project configuration.
+The main application source is under `src/`, which contains the Flutter project configuration.
 
 ==== Runtime and Framework Dependencies
 
-The project depends on the Flutter/Dart mobile development stack. The current local development environment used for this documentation is:
-
-* Flutter SDK: 3.35.5, stable channel
-* Dart SDK: 3.9.2
-* DevTools: 2.48.0
-
-The Flutter project defines its Dart SDK constraint in `src/pubspec.yaml` as:
+The project depends on the Flutter/Dart mobile stack. The local development environment used for this documentation is Flutter SDK 3.35.5 (stable), Dart SDK 3.9.2, DevTools 2.48.0. The Flutter project defines its Dart SDK constraint in `src/pubspec.yaml`:
 
 ----
 environment:
   sdk: ^3.8.1
 ----
 
-Required package versions and Flutter dependencies are managed through `src/pubspec.yaml`, which is the authoritative dependency file for the mobile client.
+`src/pubspec.yaml` is the authoritative dependency file for the mobile client. At minimum, the local environment must support Flutter execution from `src/`, Dart compatibility with the `^3.8.1` constraint, package resolution via `flutter pub get`, mobile build/run for the target platform, camera permissions for scanning, and network access for backend communication.
 
-At minimum, the local environment must support:
+Important dependencies include:
 
-* Flutter project execution from the `src/` directory.
-* Dart SDK compatibility with the `^3.8.1` SDK constraint.
-* Dart package resolution using `flutter pub get`.
-* Mobile build and run commands for the selected target platform.
-* Device permissions required for camera-based scanning.
-* Network access for backend communication.
+* `supabase_flutter` (Supabase integration)
+* `go_router` (navigation)
+* `flutter_bloc`, `bloc_test`, `mocktail` (state management and testing)
+* `get_it` (dependency injection)
+* `intl` (formatting)
+* `pdf` and `printing` (report/export)
+* `fl_chart` (charting and visual summaries)
 
-Important project dependencies include:
-
-* `supabase_flutter` for Supabase integration.
-* `go_router` for navigation.
-* `flutter_bloc`, `bloc_test`, and `mocktail` for state management and testing support.
-* `get_it` for dependency injection.
-* `intl` for formatting support.
-* `pdf` and `printing` for report/export-related functionality.
-* `fl_chart` for charting and visual summaries.
-
-If dependency versions change, the `src/pubspec.yaml` file should be treated as the authoritative source for Flutter package requirements.
+If dependency versions change, `src/pubspec.yaml` remains the authoritative source.
 
 ==== External Service Requirements
 
-The system relies on external backend services for several core features. These services may include:
+The system relies on external backend services, which may include:
 
-* Supabase database for persistent inventory, household, spending, and notification-related data.
+* Supabase database for persistent inventory, household, spending, and notification data.
 * Supabase Auth for user identity and authenticated access.
 * Supabase Realtime for shared household synchronization.
 * Supabase Storage if item images, receipts, or related files are used.
-* Supabase Edge Functions or scheduled backend logic for automation-related features, when enabled.
-* Push notification services, such as FCM or APNs, if push delivery is enabled in later implementation stages.
+* Supabase Edge Functions or scheduled backend logic for automation features, when enabled.
+* Push notification services (FCM or APNs) if push delivery is enabled later.
 
-Features that depend on these services may not work fully without valid project credentials, service configuration, and network connectivity.
+Features depending on these services may not work fully without valid project credentials, service configuration, and network connectivity.
 
 ==== Deployment Assumptions
 
-For Milestone 3, deployment is treated as a review and testing environment rather than a production release. The project should be runnable locally by developers and reviewers who have access to the required dependencies and configuration.
+For Milestone 3, deployment is a review and testing environment rather than a production release; the project should be runnable locally by developers and reviewers with the required dependencies and configuration. Assumptions:
 
-Deployment-related assumptions include:
-
-* The Flutter client can be run locally from the `src/` directory.
+* The Flutter client can be run locally from `src/`.
 * Backend-connected features require valid Supabase project configuration.
-* Environment-specific secrets or credentials should not be committed to the repository.
-* Any deployment target used for review should be documented separately in the build and deployment procedure.
-* If a production deployment target is not finalized, the documentation should clearly state that deployment remains a future or pending activity.
+* Environment-specific secrets or credentials must not be committed to the repository.
+* Any deployment target used for review should be documented in the build and deployment procedure.
+* If a production deployment target is not finalized, the documentation should state that deployment remains pending.
 
 ==== Environment Configuration
 
-Environment-specific values, such as backend URLs, API keys, and service credentials, should be handled through local configuration files or secure project settings.
-
-Configuration values may include:
-
-* Supabase project URL.
-* Supabase anonymous/public key.
-* Platform-specific configuration for Android or iOS.
-* Notification service configuration, if push notifications are enabled.
-* Any feature flags or environment-specific settings required for testing.
-
-Sensitive keys, private credentials, and service-role secrets must not be committed to version control.
+Environment-specific values (backend URLs, API keys, service credentials) should be handled through local configuration files or secure project settings. These may include the Supabase project URL, Supabase anonymous/public key, Android/iOS platform configuration, notification service configuration (if push is enabled), and any feature flags required for testing. Sensitive keys, private credentials, and service-role secrets must not be committed to version control.
 
 === MR-01: Availability
 
@@ -128,7 +96,7 @@ The system shall respond quickly enough that household members can complete inve
 - All participants shall complete lookup tasks while simulating shopping (standing, holding phone)
 - Item creation shall be completable in under 1 minute (consistent with US-INV-01)
 
-Response time measurements will be collected during walkthroughs to establish baseline for future milestones.
+Response time measurements will be collected during walkthroughs to establish a baseline for future milestones.
 
 *Trace*: DR-7 (short-window duplicates), DR-12 (threshold-driven low-stock)
 
@@ -138,7 +106,7 @@ Response time measurements will be collected during walkthroughs to establish ba
 
 === MR-03: Offline Operation
 
-The mobile client shall support viewing inventory while offline and shall allow pending item creation and quantity updates while disconnected. Pending changes shall be clearly marked in the interface until synchronization succeeds. If the same tracked inventory record is changed remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
+The mobile client shall support viewing inventory while offline and allow pending item creation and quantity updates while disconnected. Pending changes shall be clearly marked until synchronization succeeds. If the same tracked record is changed remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
 
 *Trace*: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)
 
@@ -150,7 +118,7 @@ The mobile client shall support viewing inventory while offline and shall allow 
 
 === MR-04: Synchronization
 
-When multiple household members use the same inventory, changes shall be propagated to all members in real time via Supabase Realtime. Changes shall appear without requiring manual refresh.
+When multiple household members use the same inventory, changes shall propagate to all members in real time via Supabase Realtime, appearing without requiring manual refresh.
 
 *Trace*: DR-4 (household administration), DR-5 (membership independence)
 
@@ -160,7 +128,7 @@ When multiple household members use the same inventory, changes shall be propaga
 
 === MR-05: Security and Privacy
 
-Only authorized household members shall have access to household inventory data. Personal item records shall be hidden from non-owners by default unless explicitly shared. Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views.
+Only authorized household members shall access household inventory data. Personal item records shall be hidden from non-owners by default unless explicitly shared. Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views.
 
 *Trace*: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention), DR-18 (Personal item default privacy), DR-19 (Role-scoped household permissions)
 
@@ -208,7 +176,7 @@ NOTE: Barcode uniqueness is a domain requirement, not a machine requirement. Thi
 
 === Measurement Plan for Milestone 2 Completion
 
-The following measurements will be collected during Milestone 2 validation activities to establish baseline for future milestones:
+The following measurements will be collected during Milestone 2 validation to establish a baseline for future milestones:
 
 |===
 |What to Measure |How |When
@@ -218,7 +186,7 @@ The following measurements will be collected during Milestone 2 validation activ
 |Error occurrences |Log all exceptions during testing |Throughout testing
 |User perception |Participant feedback on speed/friction |During walkthroughs
 |Barcode scanning success rate |Track match vs manual entry ratio |During walkthroughs
-|=== 
+|===
 
 These measurements will inform quantitative machine requirements for subsequent milestones.
 
@@ -226,7 +194,7 @@ These measurements will inform quantitative machine requirements for subsequent 
 
 === Out of Scope / Pending for Milestone 3
 
-Production deployment targets, final quantitative performance thresholds, and full release infrastructure are not finalized in this section. These details should be refined as the implementation stabilizes and documented in the build and deployment procedure when applicable.
+Production deployment targets, final quantitative performance thresholds, and full release infrastructure are not finalized here. These should be refined as the implementation stabilizes and documented in the build and deployment procedure when applicable.
 
 === Traceability Matrix
 
