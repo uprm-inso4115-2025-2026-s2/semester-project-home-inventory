@@ -2,52 +2,24 @@
 
 *Scope*
 
-The project’s scope is to carry out a software engineering project in the domain of student household management. The project will investigate how students living independently (alone or with roommates) keep track of household items and spending, and it will produce a system-to-be plus the supporting deliverables needed to build it responsibly (domain description, requirements, architecture/design, implementation, validation/verification, and documentation). The project targets common pain points caused by relying on memory and informal tracking, and it will support both individual and shared-household workflows. The project will encompass several key areas:
+The project's scope is to carry out a software engineering project in the domain of student household management. It investigates how students living independently (alone or with roommates) track household items and spending, and it produces a system-to-be plus the deliverables needed to build it responsibly (domain description, requirements, architecture/design, implementation, validation/verification, and documentation). It targets pain points caused by relying on memory and informal tracking, and supports both individual and shared-household workflows across these areas:
 
-* ⁠Domain Engineering: Analyze how students currently manage household items, including common breakdowns such as forgetting what is available, inconsistent updates, and poor roommate coordination. Identify the major actors (students living alone, students living with roommates/cohabitants) and the domain concepts (items, categories, locations/rooms, quantities, thresholds, expiration dates, shared responsibility).
+* Domain Engineering: Analyze how students currently manage household items, including breakdowns such as forgetting what is available, inconsistent updates, and poor roommate coordination. Identify the major actors (students living alone or with roommates/cohabitants) and domain concepts (items, categories, locations/rooms, quantities, thresholds, expiration dates, shared responsibility).
 
-* ⁠Requirements Engineering: Define system requirements that support inventory accuracy, fast item updates, and coordination. Requirements will cover core inventory maintenance, item organization, information lookup before purchasing, shared-household coordination, and budget awareness, while also capturing constraints such as busy schedules, low tolerance for complex setup, and the need for privacy controls.
+* Requirements Engineering: Define requirements supporting inventory accuracy, fast updates, and coordination — covering core inventory maintenance, item organization, lookup before purchasing, shared-household coordination, and budget awareness — while capturing constraints such as busy schedules, low tolerance for complex setup, and the need for privacy controls.
 
-* Software Architecture: Develop a high-level architecture that supports mobile use, persistent storage, and shared-household data synchronization. The architecture will identify major components and their responsibilities (client, data storage, synchronization, authentication/authorization, and notifications/reminders) and will be designed to support testability and maintainability.
+* Software Architecture: Develop a high-level architecture supporting mobile use, persistent storage, and shared-household synchronization, identifying major components and responsibilities (client, data storage, synchronization, authentication/authorization, notifications/reminders) with testability and maintainability in mind.
 
-* Software Design: Design workflows that keep inventory maintenance low-friction (capture, update, lookup) and that remain understandable in shared households. Provide clear feedback when items are low, near-expiration, or shared, and present budget summaries in a way that supports planning rather than reactive purchasing.
+* Software Design: Design low-friction workflows for inventory maintenance (capture, update, lookup) that remain understandable in shared households, provide clear feedback when items are low, near-expiration, or shared, and present budget summaries that support planning rather than reactive purchasing.
 
-* ⁠Software Process: The project will follow an Agile, feature-team structure. Each feature team owns its feature end-to-end (research, design collaboration, implementation, testing, and documentation). Work will be tracked and reviewed using a structured issue and pull-request workflow to keep changes traceable and reviewed. Continuous feedback from team walkthroughs and scenario reviews will guide refinement of requirements and UX decisions.
+* Software Process: Follow an Agile, feature-team structure where each team owns its feature end-to-end (research, design, implementation, testing, documentation). Work is tracked through a structured issue and pull-request workflow to keep changes traceable and reviewed, with continuous feedback from team walkthroughs and scenario reviews guiding refinement.
 
 *Span*
 
-The project’s span focuses on typical student living environments (dorms, apartments, shared houses) where household management is informal and time-constrained. The initial span targets small households with a modest inventory and a small number of cohabitants, and it assumes frequent lightweight updates rather than occasional heavy maintenance.
+The project's span focuses on typical student living environments (dorms, apartments, shared houses) where household management is informal and time-constrained. The initial span targets small households with a modest inventory and few cohabitants, assuming frequent lightweight updates rather than occasional heavy maintenance.
 
-* ⁠Specifics of the System: Users can maintain a centralized inventory organized by room and category, update item quantities, and optionally track expiration dates and priorities. Household members can choose how they want to be informed about low-stock and upcoming expirations, like low-stock and upcoming expirations. Shared households can view a common inventory and distinguish between shared and personal items to reduce duplicates and conflict. Budget tracking connects purchases to categories and provides basic spending summaries and reports.
+* Specifics of the System: Users maintain a centralized inventory organized by room and category, update quantities, and optionally track expiration dates and priorities. Members choose how they are informed about low-stock and upcoming expirations. Shared households view a common inventory and distinguish shared from personal items to reduce duplicates and conflict. Budget tracking connects purchases to categories and provides basic spending summaries and reports.
 
-* ⁠Target Audience and Expansion: The initial span targets students living independently, including those living with roommates. Expansion may include richer analytics (usage rates and trends), more advanced report types, optional integrations with external productivity or budgeting tools, and improved automation for restock planning. Any expansion will remain centered on student needs and low-friction maintenance.
+* Target Audience and Expansion: The initial audience is students living independently, including those with roommates. Expansion may include richer analytics (usage rates and trends), more advanced reports, optional integrations with external productivity or budgeting tools, and improved restock-planning automation — always centered on student needs and low-friction maintenance.
 
-* ⁠Methodology and Maintenance: The project will proceed iteratively, refining documentation and implementation through validation and verification activities. Progress will be supported through iterative cycles of documentation, implementation, and validation/verification activities, refining scope and requirements as stakeholder feedback and early testing reveal gaps. The cycle of feedback and refinement will ensure the system remains practical for real student workflows and constraints.
-
-
-
-
-// == 1.3.1 Scope and Span
-
-// [abstract]
-// Define what the project will cover (scope) and the breadth/boundaries of where it applies (span).
-
-// === Scope (in scope)
-// * TODO: In-scope item 1
-// * TODO: In-scope item 2
-// * TODO: In-scope item 3
-
-// === Out of scope (for now)
-// * TODO: Out-of-scope item 1
-// * TODO: Out-of-scope item 2
-
-// === Span (boundaries and breadth)
-// * Target users: TODO
-// * Target environment/context: TODO
-// * Scale assumptions (volume, number of users, frequency): TODO
-// * Operational constraints (policies, time, tools): TODO
-// * Expected evolution (what might expand later): TODO
-
-// === Risks and dependencies
-// * Risks: TODO
-// * Dependencies: TODO (data, stakeholders, tools)
+* Methodology and Maintenance: The project proceeds iteratively, refining scope, requirements, documentation, and implementation through cycles of validation and verification as stakeholder feedback and early testing reveal gaps, ensuring the system remains practical for real student workflows and constraints.
