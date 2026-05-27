@@ -81,7 +81,7 @@ This section documents the minimal viable set of high-value features that have b
 
 The following state diagram documents how a tracked inventory item changes state after it enters the system. It connects the implemented Core Inventory flow (`F-INV`) with automated stock and expiration evaluation (`F-AUTOCHECK`), alert generation (`F-ALERT`), grocery-list restocking (`F-GL-AUTO` / `F-GL-USER`), and the documented historical-preservation rule for archived items (`DR-3`). The diagram is intentionally focused on item lifecycle state rather than notification lifecycle state.
 
-image::diagrams/item_lifecycle_state_diagram.png[Tracked Inventory Item Lifecycle State Diagram, width=100%, title="Tracked Inventory Item Lifecycle State Diagram"]
+image::diagrams/item_lifecycle_state_diagram.png[Tracked Inventory Item Lifecycle State Diagram, width=100%]
 
 Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_diagram.mmd`
 
