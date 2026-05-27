@@ -10,7 +10,6 @@ const kWhite = AppTheme.surfaceColor;
 const kTextDark = AppTheme.primaryText;
 const kTextMuted = AppTheme.mutedText;
 
-
 class Inventory {
   final String id;
   final String name;
@@ -43,32 +42,9 @@ class InventoryItem {
   });
 }
 
-final mockInventories = [
-  const Inventory(id: '1', name: 'Home', itemCount: 142, role: 'Owner'),
-  const Inventory(id: '2', name: "Ana's Apartment", itemCount: 30, role: 'Editor', sharedBy: 'Ana Rivera'),
-  const Inventory(id: '3', name: 'Family House', itemCount: 201, role: 'Viewer', sharedBy: 'Misael M.'),
-];
+final List<Inventory> mockInventories = [];
 
-final mockItems = {
-  '1': [
-    const InventoryItem(id: 'i1', name: 'Couch', qty: 1, room: 'Living Room', purchaseValue: '300.00'),
-    const InventoryItem(id: 'i2', name: 'Coffee Table', qty: 1, room: 'Living Room', purchaseValue: '150.00'),
-    const InventoryItem(id: 'i3', name: 'Chicken', qty: 1, room: 'Kitchen', purchaseValue: '12.00'),
-    const InventoryItem(id: 'i4', name: 'Egg', qty: 12, room: 'Kitchen', purchaseValue: '4.00'),
-  ],
-  '2': [
-    const InventoryItem(id: 'i5', name: 'Couch', qty: 1, room: 'Living Room', purchaseValue: '500.00'),
-    const InventoryItem(id: 'i6', name: 'Coffee Table', qty: 1, room: 'Living Room', purchaseValue: '200.00'),
-    const InventoryItem(id: 'i7', name: 'Chicken', qty: 1, room: 'Kitchen', purchaseValue: '12.00'),
-    const InventoryItem(id: 'i8', name: 'Egg', qty: 12, room: 'Kitchen', purchaseValue: '4.00'),
-  ],
-  '3': [
-    const InventoryItem(id: 'i9', name: 'TV', qty: 1, room: 'Living Room', purchaseValue: '800.00'),
-    const InventoryItem(id: 'i10', name: 'Sofa', qty: 1, room: 'Living Room', purchaseValue: '600.00'),
-    const InventoryItem(id: 'i11', name: 'Pan Set', qty: 3, room: 'Kitchen', purchaseValue: '80.00'),
-    const InventoryItem(id: 'i12', name: 'Egg', qty: 12, room: 'Kitchen', purchaseValue: '4.00'),
-  ],
-};
+final Map<String, List<InventoryItem>> mockItems = {};
 
 // ─── SCREEN 1: MY INVENTORIES LIST ───────────────────────────────────────────
 class MyInventoriesScreen extends StatefulWidget {
@@ -140,7 +116,11 @@ class _MyInventoriesScreenState extends State<MyInventoriesScreen> {
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   hintStyle: GoogleFonts.inter(color: kTextMuted, fontSize: 14),
-                  prefixIcon: const Icon(Icons.search, color: kTextMuted, size: 20),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: kTextMuted,
+                    size: 20,
+                  ),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 12),
                 ),
@@ -160,15 +140,18 @@ class _MyInventoriesScreenState extends State<MyInventoriesScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ..._mine.map((inv) => _InventoryCard(
-                          inventory: inv,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => InventoryItemsScreen(inventory: inv),
-                            ),
+                    ..._mine.map(
+                      (inv) => _InventoryCard(
+                        inventory: inv,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                InventoryItemsScreen(inventory: inv),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 20),
                   ],
                   if (_shared.isNotEmpty) ...[
@@ -181,15 +164,18 @@ class _MyInventoriesScreenState extends State<MyInventoriesScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    ..._shared.map((inv) => _InventoryCard(
-                          inventory: inv,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => InventoryItemsScreen(inventory: inv),
-                            ),
+                    ..._shared.map(
+                      (inv) => _InventoryCard(
+                        inventory: inv,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                InventoryItemsScreen(inventory: inv),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ],
                   if (_filtered.isEmpty)
                     Center(
@@ -288,12 +274,12 @@ class InventoryItemsScreen extends StatefulWidget {
 class _InventoryItemsScreenState extends State<InventoryItemsScreen> {
   String _search = '';
 
-  bool get _isEditor => widget.inventory.role == 'Owner' || widget.inventory.role == 'Editor';
+  bool get _isEditor =>
+      widget.inventory.role == 'Owner' || widget.inventory.role == 'Editor';
 
-  List<InventoryItem> get _items =>
-      (mockItems[widget.inventory.id] ?? [])
-          .where((i) => i.name.toLowerCase().contains(_search.toLowerCase()))
-          .toList();
+  List<InventoryItem> get _items => (mockItems[widget.inventory.id] ?? [])
+      .where((i) => i.name.toLowerCase().contains(_search.toLowerCase()))
+      .toList();
 
   Map<String, List<InventoryItem>> get _grouped {
     final map = <String, List<InventoryItem>>{};
@@ -352,7 +338,11 @@ class _InventoryItemsScreenState extends State<InventoryItemsScreen> {
                 decoration: InputDecoration(
                   hintText: 'Search items...',
                   hintStyle: GoogleFonts.inter(color: kTextMuted, fontSize: 14),
-                  prefixIcon: const Icon(Icons.search, color: kTextMuted, size: 20),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: kTextMuted,
+                    size: 20,
+                  ),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 12),
                 ),
@@ -370,35 +360,39 @@ class _InventoryItemsScreenState extends State<InventoryItemsScreen> {
                 : ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
-                      ..._grouped.entries.map((entry) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 12),
-                              Text(
-                                entry.key.toUpperCase(),
-                                style: GoogleFonts.inter(
-                                  color: kTextMuted,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 1.2,
+                      ..._grouped.entries.map(
+                        (entry) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 12),
+                            Text(
+                              entry.key.toUpperCase(),
+                              style: GoogleFonts.inter(
+                                color: kTextMuted,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            ...entry.value.map(
+                              (item) => _ItemCard(
+                                item: item,
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ItemDetailScreen(
+                                      item: item,
+                                      inventoryName: widget.inventory.name,
+                                      isEditor: _isEditor,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              ...entry.value.map((item) => _ItemCard(
-                                    item: item,
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => ItemDetailScreen(
-                                          item: item,
-                                          inventoryName: widget.inventory.name,
-                                          isEditor: _isEditor,
-                                        ),
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          )),
+                            ),
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       // Read-only notice for Viewer or Add Item for Editor
                       if (_isEditor)
@@ -438,7 +432,10 @@ class _InventoryItemsScreenState extends State<InventoryItemsScreen> {
                       else
                         Container(
                           margin: const EdgeInsets.only(bottom: 16),
-                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 12,
+                          ),
                           decoration: BoxDecoration(
                             color: kGreenLight.withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(10),
@@ -594,8 +591,11 @@ class ItemDetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.grey.shade200),
               ),
-              child: const Icon(Icons.camera_alt_outlined,
-                  color: kTextMuted, size: 32),
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                color: kTextMuted,
+                size: 32,
+              ),
             ),
             const SizedBox(height: 16),
 
@@ -625,7 +625,10 @@ class ItemDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: kGreenLight,
                     borderRadius: BorderRadius.circular(20),
@@ -655,9 +658,10 @@ class ItemDetailScreen extends StatelessWidget {
                   _DetailRow(label: 'Location', value: item.room),
                   _DetailRow(label: 'Purchase date', value: 'Mar 14, 2023'),
                   _DetailRow(
-                      label: 'Purchase Value',
-                      value: '\$${item.purchaseValue}',
-                      isLast: true),
+                    label: 'Purchase Value',
+                    value: '\$${item.purchaseValue}',
+                    isLast: true,
+                  ),
                 ],
               ),
             ),
@@ -676,7 +680,8 @@ class ItemDetailScreen extends StatelessWidget {
                       foregroundColor: kWhite,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     child: Text(
                       'Request',
@@ -695,7 +700,8 @@ class ItemDetailScreen extends StatelessWidget {
                       foregroundColor: kWhite,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     child: Text(
                       'Report Issue',
@@ -733,7 +739,10 @@ class _DetailRow extends StatelessWidget {
             ? null
             : Border(
                 bottom: BorderSide(
-                    color: kGreenLight.withValues(alpha: 0.3), width: 0.5)),
+                  color: kGreenLight.withValues(alpha: 0.3),
+                  width: 0.5,
+                ),
+              ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -778,7 +787,9 @@ class _EditItemScreenState extends State<EditItemScreen> {
     _nameController = TextEditingController(text: widget.item.name);
     _qtyController = TextEditingController(text: widget.item.qty.toString());
     _roomController = TextEditingController(text: widget.item.room);
-    _purchaseValueController = TextEditingController(text: widget.item.purchaseValue);
+    _purchaseValueController = TextEditingController(
+      text: widget.item.purchaseValue,
+    );
   }
 
   @override
@@ -837,7 +848,11 @@ class _EditItemScreenState extends State<EditItemScreen> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppTheme.borderColor),
               ),
-              child: const Icon(Icons.camera_alt_outlined, color: kTextMuted, size: 32),
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                color: kTextMuted,
+                size: 32,
+              ),
             ),
             const SizedBox(height: 16),
             _FormField(label: 'Item Name', controller: _nameController),
@@ -853,7 +868,9 @@ class _EditItemScreenState extends State<EditItemScreen> {
             _FormField(
               label: 'Purchase Value (\$)',
               controller: _purchaseValueController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
             ),
           ],
         ),
@@ -899,7 +916,10 @@ class _FormField extends StatelessWidget {
             style: GoogleFonts.inter(color: kTextDark, fontSize: 14),
             decoration: const InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
             ),
           ),
         ),
