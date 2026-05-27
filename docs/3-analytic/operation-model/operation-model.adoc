@@ -2,14 +2,14 @@
 
 === Purpose
 
-This section specifies the core system operations of the Home Inventory application. An operation is treated as a state-changing service. It receives input state variables, is performed by one responsible agent, and produces output state variables. For each operation, the model distinguishes:
+This section specifies the core system operations of the Home Inventory application. An operation is a state-changing service: it receives input state variables, is performed by one responsible agent, and produces output state variables. For each operation the model distinguishes:
 
-* *Domain preconditions*: descriptive conditions that make the operation meaningful in the household inventory domain.
-* *Required preconditions*: prescriptive permission conditions that must hold before the app allows the operation.
-* *Trigger conditions*: events or states that activate the operation.
+* *Domain preconditions*: descriptive conditions that make the operation meaningful in the domain.
+* *Required preconditions*: prescriptive permission conditions that must hold before the app allows it.
+* *Trigger conditions*: events or states that activate it.
 * *Required postconditions*: output-state conditions that must hold after successful execution.
 
-The purpose of this model is to make existing implemented and planned workflows more precise so they can be traced to requirements, validation scenarios, and test cases.
+The purpose is to make implemented and planned workflows precise enough to trace to requirements, validation scenarios, and test cases.
 
 === Operation Specifications
 
@@ -101,16 +101,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | New or updated `ItemType`, `ItemInstance`, `InventoryRecord`, and optional `QuantityChangeTransaction`.
 
 | Domain preconditions
-| The household has or is acquiring an item that should be represented in the tracked inventory. Quantity may be exact or approximate. Expiration may be present or absent depending on the item.
+| The household has or is acquiring an item that should be tracked. Quantity may be exact or approximate; expiration may be present or absent.
 
 | Required preconditions
-| User must be authenticated and have permission to add items in the household context. Required item identity fields must be valid. Quantity must be non-negative. If the item is shared, the user must have shared-item update rights.
+| User is authenticated and permitted to add items in the household. Required item identity fields are valid, quantity is non-negative, and shared items require shared-item update rights.
 
 | Trigger conditions
-| User taps *Add Item*, scans a barcode or enters item information manually, and submits the form.
+| User taps *Add Item*, scans a barcode or enters item information, and submits the form.
 
 | Required postconditions
-| A tracked inventory record exists for the item in exactly one household context. Provided quantity, location, threshold, expiration date, and shared/personal status are preserved. The inventory list refreshes and displays the new item.
+| A tracked record exists for the item in exactly one household context. Provided quantity, location, threshold, expiration, and shared/personal status are preserved. The inventory list refreshes and shows the new item.
 
 | Related goal / requirement
 | N1, N2, N3; DG-REQ-01, DG-REQ-02, DG-REQ-03, DG-REQ-04; US-INV-01; IR-01, IR-04, IR-05.
@@ -135,10 +135,10 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Updated quantity/availability, appended `QuantityChangeTransaction`, recalculated low-stock state.
 
 | Domain preconditions
-| Consumption, restocking, correction, or adjustment changes item availability. Quantity must never become negative.
+| Consumption, restocking, correction, or adjustment changes availability; quantity must never become negative.
 
 | Required preconditions
-| User must be authenticated and authorized to update the item. Target item must be active. New quantity or delta must be valid. Concurrent update conflicts must be rejected, merged, or explicitly resolved.
+| User is authenticated and authorized to update the item; target item is active; new quantity or delta is valid; concurrent update conflicts are rejected, merged, or explicitly resolved.
 
 | Trigger conditions
 | User edits quantity, taps consume/restock, or a grocery finalization updates quantity.
@@ -169,16 +169,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Removed or archived item record, inactive alert conditions, preserved historical records.
 
 | Domain preconditions
-| A household item may be consumed, discarded, mistakenly entered, or no longer tracked. Historical spending and transaction records may still matter after deletion.
+| A household item may be consumed, discarded, mistakenly entered, or no longer tracked; historical spending and transaction records may still matter after deletion.
 
 | Required preconditions
-| User must be authenticated and authorized to delete or archive the item. If spending entries or alert records are associated with the item, the system must not silently delete financial history.
+| User is authenticated and authorized to delete or archive the item. If spending entries or alert records are associated, the system must not silently delete financial history.
 
 | Trigger conditions
-| User chooses delete/archive and confirms the action.
+| User chooses delete/archive and confirms.
 
 | Required postconditions
-| Item no longer appears in active inventory. Existing financial history is preserved unless separately corrected. Outdated expiration or low-stock alerts for the deleted item no longer continue firing.
+| Item no longer appears in active inventory. Existing financial history is preserved unless separately corrected. Outdated expiration/low-stock alerts for the deleted item stop firing.
 
 | Related goal / requirement
 | DG-REQ-03; US-INV-01; IR-EC-D; expiration/alert deduplication behavior.
@@ -203,16 +203,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Active `GroceryListItem` or updated existing list entry.
 
 | Domain preconditions
-| A household member or automated rule judges that an item should be replenished because it is low, out, expired, or manually requested.
+| A member or automated rule judges that an item should be replenished because it is low, out, expired, or manually requested.
 
 | Required preconditions
-| User or automation must have permission to modify the household grocery list. An active duplicate entry for the same item and reason should be merged or blocked unless intentionally separate.
+| User or automation has permission to modify the household grocery list. An active duplicate entry for the same item and reason is merged or blocked unless intentionally separate.
 
 | Trigger conditions
 | User taps *Add to Grocery List*, or scheduled automation detects a replenishment condition.
 
 | Required postconditions
-| Grocery list contains an active entry with item, reason, desired quantity, and source. Duplicate low/out/expired entries are not repeatedly created for the same condition.
+| The grocery list contains an active entry with item, reason, desired quantity, and source. Duplicate low/out/expired entries are not repeatedly created for the same condition.
 
 | Related goal / requirement
 | N3, N5; DG-REQ-05, DG-REQ-08; US-ALT-01; IR-04.
@@ -237,16 +237,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Updated grocery-list item status.
 
 | Domain preconditions
-| The grocery-list entry exists and represents an item the user intends to buy or has placed in the cart.
+| The entry exists and represents an item the user intends to buy or has placed in the cart.
 
 | Required preconditions
-| User must be authenticated and have access to the household grocery list. Entry must be active and not already finalized.
+| User is authenticated and has access to the household grocery list; the entry is active and not already finalized.
 
 | Trigger conditions
 | User checks or unchecks an item while shopping.
 
 | Required postconditions
-| Entry status changes to checked/in-cart or unchecked. The item remains on the grocery list until finalization. Inventory quantity does not change merely because the item is checked off.
+| Entry status changes to checked/in-cart or unchecked. The item remains on the list until finalization. Inventory quantity does not change merely because the item is checked off.
 
 | Related goal / requirement
 | N5; shared coordination goal; grocery-list workflow.
@@ -268,19 +268,19 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Checked grocery-list entries, bought quantities, optional expiration dates, optional receipt/spending data, household ID, user ID.
 
 | Output variables
-| Updated inventory records, archived/cleared checked grocery entries, restock log, optional spending entry, refreshed UI.
+| Updated inventory records, archived/cleared checked entries, restock log, optional spending entry, refreshed UI.
 
 | Domain preconditions
-| Checked grocery-list items represent items bought during a shopping trip. Some purchased items may need quantity and expiration details before restocking.
+| Checked items represent items bought during a shopping trip; some may need quantity and expiration details before restocking.
 
 | Required preconditions
-| At least one checked item must exist. Bought quantities must be valid and non-negative. User must have permission to update inventory. Required confirmation data must pass validation.
+| At least one checked item exists; bought quantities are valid and non-negative; user has permission to update inventory; required confirmation data passes validation.
 
 | Trigger conditions
-| User taps *Finalize Grocery Run*, reviews purchase summary, and confirms *Save & Restock*.
+| User taps *Finalize Grocery Run*, reviews the purchase summary, and confirms *Save & Restock*.
 
 | Required postconditions
-| For each confirmed item, inventory is inserted or updated with quantity and expiration data. Checked entries are cleared or archived. A restocking action is logged. Optional spending data is saved. User sees confirmation and updated inventory.
+| For each confirmed item, inventory is inserted or updated with quantity and expiration data. Checked entries are cleared or archived, a restocking action is logged, optional spending data is saved, and the user sees confirmation and updated inventory.
 
 | Related goal / requirement
 | N2, N5; DG-REQ-01, DG-REQ-02; IR-06; grocery-list E2E flow.
@@ -308,13 +308,13 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Low-stock judgment is meaningful only when the item has valid quantity/availability data and a configured or default threshold.
 
 | Required preconditions
-| Item must be active. Threshold and quantity data must be valid. Alert rules must be active. A duplicate alert for the same item-condition-recipient group must not already exist in the current reminder period.
+| Item is active; threshold and quantity data are valid; alert rules are active; no duplicate alert exists for the same item-condition-recipient group within the current reminder period.
 
 | Trigger conditions
-| Quantity crosses the low-stock threshold, or scheduled sweep observes that the item remains below threshold.
+| Quantity crosses the low-stock threshold, or a scheduled sweep observes the item remains below threshold.
 
 | Required postconditions
-| One low-stock alert exists for the item-condition pair within the allowed reminder period. Repeated sweeps do not create spammy duplicates. Alert is visible to authorized household members.
+| One low-stock alert exists for the item-condition pair within the allowed reminder period; repeated sweeps do not create spammy duplicates; the alert is visible to authorized members.
 
 | Related goal / requirement
 | DG-REQ-05, DG-REQ-07, DG-REQ-08; US-ALT-01; IR-04.
@@ -339,16 +339,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | New or retained expiration-related `AlertNotification`.
 
 | Domain preconditions
-| Expiration behavior can only be derived for item instances with valid expiration dates. Items without expiration dates must not produce false expiration confidence.
+| Expiration behavior can only be derived for item instances with valid expiration dates; items without dates must not produce false expiration confidence.
 
 | Required preconditions
-| Item must be active. Expiration date must be present and valid. Alert rules must be active. Deleted or renewed items must not keep emitting outdated alerts. Duplicate alert protection must apply.
+| Item is active; expiration date is present and valid; alert rules are active; deleted or renewed items do not keep emitting outdated alerts; duplicate alert protection applies.
 
 | Trigger conditions
-| Current date enters the near-expiry window, reaches expiration date, or scheduled sweep observes an expired item.
+| Current date enters the near-expiry window, reaches the expiration date, or a scheduled sweep observes an expired item.
 
 | Required postconditions
-| Item state is classified as active, near-expiry, or expired as appropriate. One non-duplicate alert exists for the item-condition pair within the reminder period. Renewed/deleted items stop producing stale alerts.
+| Item state is classified active, near-expiry, or expired. One non-duplicate alert exists for the item-condition pair within the reminder period. Renewed/deleted items stop producing stale alerts.
 
 | Related goal / requirement
 | DG-REQ-06, DG-REQ-07, DG-REQ-08; US-ALT-01; IR-05.
@@ -373,16 +373,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Accepted invitation state, active `Membership`, updated household access.
 
 | Domain preconditions
-| A household invitation is a temporary request that may move through sent, accepted, declined, expired, or revoked states. Accepting a valid invitation changes household participation.
+| A household invitation is a temporary request that may move through sent, accepted, declined, expired, or revoked states; accepting a valid invitation changes participation.
 
 | Required preconditions
-| Invitation must be sent, unexpired, not revoked, not already accepted, and addressed to the authenticated recipient. The recipient must not already have conflicting active membership.
+| Invitation is sent, unexpired, not revoked, not already accepted, and addressed to the authenticated recipient, who has no conflicting active membership.
 
 | Trigger conditions
 | Invited user taps *Accept Invitation*.
 
 | Required postconditions
-| Invitation status becomes accepted. Membership is created or activated with assigned role. Shared household inventory becomes visible according to role permissions. Duplicate active invitations or memberships are not created.
+| Invitation status becomes accepted. Membership is created or activated with the assigned role. Shared inventory becomes visible per role permissions. Duplicate active invitations or memberships are not created.
 
 | Related goal / requirement
 | N4, N5; DG-REQ-09, DG-REQ-10, DG-REQ-11, DG-REQ-12; shared access behavior.
@@ -407,16 +407,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Inactive/revoked membership, updated access permissions, optional audit log.
 
 | Domain preconditions
-| Household participation may change over time. Removed members must no longer retain active access to shared household information.
+| Household participation may change over time; removed members must no longer retain active access to shared household information.
 
 | Required preconditions
-| Acting user must have admin permission. Target member must be active. If target is the only admin, responsibility must be transferred before removal.
+| Acting user has admin permission; target member is active; if the target is the only admin, responsibility must be transferred before removal.
 
 | Trigger conditions
-| Admin revokes access, removes a member, or member leaves the household context.
+| Admin revokes access, removes a member, or a member leaves the household.
 
 | Required postconditions
-| Target membership becomes inactive/revoked. Removed user can no longer access shared inventory, shared spending, household alerts, or member-only data. Future alerts are not delivered to removed member.
+| Target membership becomes inactive/revoked. The removed user can no longer access shared inventory, shared spending, household alerts, or member-only data, and future alerts are not delivered to them.
 
 | Related goal / requirement
 | N4, N5; DG-REQ-09, DG-REQ-10, DG-REQ-11, DG-REQ-12; shared access rules.
@@ -441,16 +441,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | New `SpendingEntry`, optional split records, recalculated budget status.
 
 | Domain preconditions
-| A household purchase or adjustment may need to be represented historically. Spending records remain associated with the household context in which they occurred.
+| A household purchase or adjustment may need to be represented historically; spending records remain associated with the household context in which they occurred.
 
 | Required preconditions
-| User must be authenticated and allowed to log spending. Amount must be valid. Payer must be an active member. Shared splits must reference active household members. Personal/shared scope must be explicit.
+| User is authenticated and allowed to log spending; amount is valid; payer is an active member; shared splits reference active members; personal/shared scope is explicit.
 
 | Trigger conditions
-| User logs purchase manually, or grocery finalization includes spending information.
+| User logs a purchase manually, or grocery finalization includes spending information.
 
 | Required postconditions
-| Spending entry is stored with amount, date, payer, category/item references, and personal/shared scope. Shared split obligations are recorded where applicable. Budget status is recalculated without exposing personal spending to unauthorized users.
+| The spending entry is stored with amount, date, payer, category/item references, and personal/shared scope. Shared split obligations are recorded where applicable. Budget status is recalculated without exposing personal spending to unauthorized users.
 
 | Related goal / requirement
 | N5; DG-REQ-11; US-SB-01; IR-06, IR-07.
@@ -475,16 +475,16 @@ The purpose of this model is to make existing implemented and planned workflows 
 | Dashboard/report view with item, alert, and spending summaries.
 
 | Domain preconditions
-| Budget status is a derived view of spending compared to configured budget limits within a cycle. Dashboard metrics summarize inventory, low-stock, expiration, and current-period spending.
+| Budget status is a derived view of spending versus configured limits within a cycle; dashboard metrics summarize inventory, low-stock, expiration, and current-period spending.
 
 | Required preconditions
-| User must have permission to view the requested household and spending scope. Budget cycle and filters must be valid. Personal spending must respect visibility rules.
+| User has permission to view the requested household and spending scope; budget cycle and filters are valid; personal spending respects visibility rules.
 
 | Trigger conditions
-| User opens dashboard/report screen, changes filters, or synchronized data changes.
+| User opens the dashboard/report screen, changes filters, or synchronized data changes.
 
 | Required postconditions
-| Dashboard displays updated totals, low-stock count, expiring/expired count, current-period spending, and budget status. Aggregates update after synchronized changes. Unauthorized personal/shared data is not exposed.
+| The dashboard displays updated totals, low-stock count, expiring/expired count, current-period spending, and budget status. Aggregates update after synchronized changes. Unauthorized personal/shared data is not exposed.
 
 | Related goal / requirement
 | N1, N3, N5; DG-REQ-11; US-RPT-01; IR-08.
@@ -496,18 +496,18 @@ The purpose of this model is to make existing implemented and planned workflows 
 
 === Operation-Level Consistency Rules
 
-The following consistency rules should be checked during implementation review and final documentation review:
+Check the following during implementation review and final documentation review:
 
-1. *Unique performer rule*: every operation must have one primary performer. Supporting components may participate, but one component or agent is responsible for activating the operation.
-2. *Input/output declaration rule*: every input and output variable used in an operation must correspond to a documented domain concept, database concept, UI state, or service state.
-3. *Authorization rule*: every operation that reads or writes household-scoped data must require an authenticated user and an active household membership or equivalent personal scope.
+1. *Unique performer rule*: every operation has one primary performer; supporting components may participate, but one agent activates the operation.
+2. *Input/output declaration rule*: every input and output variable corresponds to a documented domain concept, database concept, UI state, or service state.
+3. *Authorization rule*: every operation that reads or writes household-scoped data requires an authenticated user and an active household membership or equivalent personal scope.
 4. *Non-negative quantity rule*: operations that create or update quantity must never produce a negative inventory quantity.
-5. *Historical preservation rule*: operations that correct inventory must not silently delete spending history or transaction history.
+5. *Historical preservation rule*: operations that correct inventory must not silently delete spending or transaction history.
 6. *Alert deduplication rule*: scheduled alert operations must not create duplicate alerts for the same item-condition-recipient group within the same reminder period.
 7. *Expiration validity rule*: expiration-related operations must only run when expiration data is present and valid.
-8. *Membership revocation rule*: once household membership is revoked, the removed user must no longer access shared household inventory, shared spending, or household alerts.
-9. *Traceability rule*: every operation must trace to at least one goal, requirement, or stakeholder need and at least one existing or proposed test case.
-10. *UI/backend agreement rule*: every user-visible operation must have matching UI behavior, backend persistence behavior, and validation behavior.
+8. *Membership revocation rule*: once membership is revoked, the removed user must no longer access shared household inventory, shared spending, or household alerts.
+9. *Traceability rule*: every operation traces to at least one goal, requirement, or stakeholder need and at least one existing or proposed test case.
+10. *UI/backend agreement rule*: every user-visible operation has matching UI behavior, backend persistence behavior, and validation behavior.
 
 === Follow-Up Test Gaps
 
@@ -530,7 +530,7 @@ The following consistency rules should be checked during implementation review a
 | OP-03
 
 | `TC-GL-01`
-| Moving an item to the grocery list creates or updates one active grocery-list entry without duplicates.
+| Moving an item to the grocery list creates or updates one active entry without duplicates.
 | OP-04
 
 | `TC-GL-02`
@@ -538,7 +538,7 @@ The following consistency rules should be checked during implementation review a
 | OP-05
 
 | `TC-GL-03`
-| Finalizing a grocery run restocks inventory, archives checked entries, logs restock action, and optionally records spending.
+| Finalizing a grocery run restocks inventory, archives checked entries, logs the restock action, and optionally records spending.
 | OP-06
 
 | `TC-SH-01`
@@ -546,7 +546,7 @@ The following consistency rules should be checked during implementation review a
 | OP-09
 
 | `TC-SH-02`
-| Revoking or removing a household member deactivates membership and prevents further shared data access.
+| Revoking or removing a member deactivates membership and prevents further shared data access.
 | OP-10
 
 | `TC-RLS-01`
@@ -557,12 +557,10 @@ The following consistency rules should be checked during implementation review a
 
 === Implementation Notes
 
-Some operation specifications are directly supported by the current documentation, especially grocery finalization, alert generation, invitation/membership rules, and the existing validation and verification test cases.
+Some operation specifications are directly supported by current documentation — especially grocery finalization, alert generation, invitation/membership rules, and existing V&V test cases. The operations that most need implementation confirmation are:
 
-The operations that most need implementation confirmation are:
-
-* `DeleteInventoryItem`: verify whether the app deletes, archives, or soft-deletes records.
-* `CheckOffGroceryListItem`: verify the exact status name used in the database or Cubit state.
-* `AcceptHouseholdInvitation`: verify the implemented invitation state transition and duplicate-invitation handling.
-* `RevokeHouseholdMembership`: verify Supabase RLS behavior after membership removal.
-* `GenerateBudgetReport`: verify whether personal spending is filtered by role before aggregation.
+* `DeleteInventoryItem`: whether the app deletes, archives, or soft-deletes records.
+* `CheckOffGroceryListItem`: the exact status name used in the database or Cubit state.
+* `AcceptHouseholdInvitation`: the implemented invitation state transition and duplicate-invitation handling.
+* `RevokeHouseholdMembership`: Supabase RLS behavior after membership removal.
+* `GenerateBudgetReport`: whether personal spending is filtered by role before aggregation.

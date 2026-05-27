@@ -1,30 +1,28 @@
 == Manual Test Procedure
 
-This section captures the checked-in manual procedures used to verify requirements whose verification field is *not* fully covered by automated tests in `src/test/`. Each procedure is repeatable by a reviewer who has cloned the repository, configured Supabase, and can run the Flutter client on a real or simulated device.
-
-Manual tests live here (and not in a separate document or external tool) so the procedure is recoverable on any tagged commit and runnable without prior team knowledge.
+This section captures the checked-in manual procedures used to verify requirements whose verification field is *not* fully covered by automated tests in `src/test/`. Each procedure is repeatable by a reviewer who has cloned the repository, configured Supabase, and can run the Flutter client on a real or simulated device. Keeping them here (not in a separate document or external tool) makes the procedure recoverable on any tagged commit and runnable without prior team knowledge.
 
 === When to use this procedure
 
-* The verification field for the target requirement explicitly says "manual tests", "usability walkthrough", or "test accounts" (see Section 2.2.3 Machine Requirements and Section 2.2.2 Interface Requirements).
-* No automated test in `src/test/` exercises the requirement end-to-end (cross-checked against the per-requirement coverage in Section 3.2.3).
+* The verification field for the target requirement says "manual tests", "usability walkthrough", or "test accounts" (see Section 2.2.3 Machine Requirements and Section 2.2.2 Interface Requirements).
+* No automated test in `src/test/` exercises the requirement end-to-end (cross-checked against per-requirement coverage in Section 3.2.3).
 
 If an automated test already covers the requirement, prefer running that test instead.
 
 === Setup
 
-These prerequisites apply to every procedure in this section unless overridden.
+These prerequisites apply to every procedure unless overridden.
 
 ==== Environment
 
 * Flutter SDK ≥ 3.35.5, Dart SDK ≥ 3.9.2 (matches MR-02 supported environment).
-* A dedicated Supabase *test* project (never the production project — see "Supabase integration tests (guidance)" in Section 3.2.3).
+* A dedicated Supabase *test* project (never production — see "Supabase integration tests (guidance)" in Section 3.2.3).
 * Android emulator, iOS simulator, or two physical devices when the procedure requires multi-user synchronization.
-* A wired or Wi-Fi internet connection that can be toggled at the OS level (used for offline procedures).
+* An internet connection that can be toggled at the OS level (used for offline procedures).
 
 ==== Test accounts
 
-Create the following Supabase accounts inside the test project before running any role-scoped or shared-household procedure. Account naming uses a `test_` prefix to simplify cleanup.
+Create the following Supabase accounts in the test project before running any role-scoped or shared-household procedure. The `test_` prefix simplifies cleanup.
 
 [cols="1,1,2",options="header"]
 |===
@@ -49,26 +47,20 @@ Create the following Supabase accounts inside the test project before running an
 
 ==== Test data
 
-Seed the test household with the following items before procedures MP-IR-09 through MP-IR-14. Quantities and expiration dates may be adjusted as long as the relative ordering is preserved.
+Seed the test household with the following before procedures MP-IR-09 through MP-IR-14 (quantities and dates may be adjusted as long as relative ordering is preserved):
 
 * *Shared, in-stock*: "Charmin toilet paper", quantity 24, no expiration, low-stock threshold 6.
-* *Shared, low-stock*: "Whole milk", quantity 1, expiration date = today + 5 days, low-stock threshold 2.
-* *Shared, expiring*: "White bread", quantity 1, expiration date = today + 2 days.
+* *Shared, low-stock*: "Whole milk", quantity 1, expiration = today + 5 days, low-stock threshold 2.
+* *Shared, expiring*: "White bread", quantity 1, expiration = today + 2 days.
 * *Personal, owned by `test_owner`*: "Barilla gluten-free elbows", quantity 3, low-stock threshold 2.
 
 ==== Cleanup
 
-After each session, sign in as `test_admin` and delete the test household. The cascade clears items, alerts, and grocery list entries. Auth users may require Supabase admin privileges to remove; if deletion fails, log the resource IDs so the team can clean them up out-of-band.
+After each session, sign in as `test_admin` and delete the test household; the cascade clears items, alerts, and grocery list entries. Auth users may require Supabase admin privileges to remove; if deletion fails, log the resource IDs for out-of-band cleanup.
 
 === Recording results
 
-For each procedure run, record:
-
-* Date, reviewer name, device/OS, commit SHA of the build under test.
-* Pass / fail / blocked for each step.
-* For failures: actual outcome, screenshot or device log excerpt, and a link to the issue opened to track the regression.
-
-A blank results template lives at the end of this section.
+For each run, record: date, reviewer name, device/OS, and commit SHA of the build under test; pass/fail/blocked for each step; and for failures, the actual outcome, a screenshot or device log excerpt, and a link to the tracking issue. A blank template is at the end of this section.
 
 === Procedures
 
@@ -77,15 +69,15 @@ A blank results template lives at the end of this section.
 *Covers*: IR-09, MR-05 (M3-QA-01, M3-QA-02). *Replaces automated test*: none. *Expected duration*: 10 minutes.
 
 . Sign in as `test_owner`. Add the personal item "Barilla gluten-free elbows" with ownership marked *personal*.
-. Sign out. Sign in as `test_member`. Open the inventory list.
+. Sign out; sign in as `test_member`. Open the inventory list.
 +
 *Expected*: "Barilla gluten-free elbows" does *not* appear in any list, search, or filter result.
-. Sign out. Sign in as `test_viewer`. Open the inventory list.
+. Sign out; sign in as `test_viewer`. Open the inventory list.
 +
-*Expected*: The viewer sees shared items in read-only mode. Add Item, Edit Item, and Delete Item controls are either hidden or disabled with an explanatory tooltip.
-. Sign out. Sign in as `test_admin`. Open the household settings.
+*Expected*: The viewer sees shared items in read-only mode; Add/Edit/Delete controls are hidden or disabled with an explanatory tooltip.
+. Sign out; sign in as `test_admin`. Open household settings.
 +
-*Expected*: Remove-member and change-role controls are visible. Sign in as `test_member` and confirm the same controls are *not* visible.
+*Expected*: Remove-member and change-role controls are visible. Confirm these controls are *not* visible to `test_member`.
 
 *Pass criteria*: All four expected outcomes hold. Any visibility leak (personal item shown to non-owner, or admin control shown to non-admin) is a fail.
 
@@ -93,19 +85,19 @@ A blank results template lives at the end of this section.
 
 *Covers*: IR-10 (M3-QA-03). *Replaces automated test*: none. *Expected duration*: 5 minutes.
 
-. Sign in as `test_member`. Open the inventory list with the seeded test data present.
-. Apply the *Stock status = LOW_STOCK* filter.
+. Sign in as `test_member`. Open the inventory list with seeded test data.
+. Apply *Stock status = LOW_STOCK*.
 +
-*Expected*: "Whole milk" appears. "Charmin toilet paper" and "White bread" do not.
-. Clear the filter. Apply *Expiration status = Expiring* (items expiring within 3 days).
+*Expected*: "Whole milk" appears; "Charmin toilet paper" and "White bread" do not.
+. Clear; apply *Expiration status = Expiring* (within 3 days).
 +
-*Expected*: "White bread" appears. "Whole milk" does not (5 days out).
-. Clear the filter. Search the item name "milk".
+*Expected*: "White bread" appears; "Whole milk" does not (5 days out).
+. Clear; search "milk".
 +
-*Expected*: "Whole milk" appears as the only result.
+*Expected*: "Whole milk" is the only result.
 . Apply *Ownership = personal*.
 +
-*Expected*: No items appear for `test_member` (the only personal item belongs to `test_owner`). Sign in as `test_owner` and repeat: "Barilla gluten-free elbows" appears.
+*Expected*: No items appear for `test_member`. Sign in as `test_owner` and repeat: "Barilla gluten-free elbows" appears.
 
 *Pass criteria*: All filters narrow results correctly and clear independently.
 
@@ -114,20 +106,20 @@ A blank results template lives at the end of this section.
 *Covers*: IR-11, MR-08 (M3-QA-04). *Replaces automated test*: none. *Expected duration*: 5 minutes.
 
 . Sign in as `test_member`. Tap *Add Item* and start the barcode scanner.
-. Point the camera at a piece of plain paper for at least 5 seconds, then dismiss the scanner.
+. Point the camera at plain paper for ≥ 5 seconds, then dismiss the scanner.
 +
 *Expected*: The app transitions to a manual-entry form without re-prompting for the camera.
-. In the manual-entry form, enter only the item name "Local pasta" and quantity 2. Leave all other fields blank. Tap *Save*.
+. Enter only item name "Local pasta" and quantity 2; leave other fields blank; tap *Save*.
 +
 *Expected*: The save succeeds and "Local pasta" appears in the inventory list immediately.
-. Open "Local pasta". Edit the expiration date to a future date and save.
+. Open "Local pasta"; edit the expiration date to a future date and save.
 +
 *Expected*: The expiration date is persisted on the existing record without creating a duplicate.
-. Repeat step 1 with an *unrecognized* barcode (a local store-brand product whose UPC is not in the database).
+. Repeat step 1 with an *unrecognized* barcode (a local store-brand UPC not in the database).
 +
-*Expected*: The app shows an "Item not found" message and transitions to the same manual-entry fallback.
+*Expected*: The app shows "Item not found" and transitions to the same manual-entry fallback.
 
-*Pass criteria*: Both the scanner-dismissed path and the unrecognized-barcode path land in manual entry with only name and quantity required.
+*Pass criteria*: Both the scanner-dismissed and unrecognized-barcode paths land in manual entry with only name and quantity required.
 
 ==== MP-IR-12 — Budget Alert Preferences
 
@@ -135,14 +127,14 @@ A blank results template lives at the end of this section.
 
 . Sign in as `test_admin`. Open *Settings → Budget Alerts*.
 +
-*Expected*: Toggle exists for enabling budget alerts. Defaults: enabled, warning threshold 80%, exceeded threshold 100%.
-. Disable budget alerts. Log a purchase that pushes spending above 80% of the active budget.
+*Expected*: A toggle exists for enabling budget alerts. Defaults: enabled, warning 80%, exceeded 100%.
+. Disable budget alerts; log a purchase pushing spending above 80% of the active budget.
 +
 *Expected*: No budget alert is generated.
-. Re-enable budget alerts. Log another purchase that crosses the 80% threshold.
+. Re-enable; log another purchase crossing the 80% threshold.
 +
-*Expected*: One warning alert appears. No second alert is sent if a subsequent purchase keeps spending in the same 80–99% band (deduplication).
-. Log a purchase that crosses 100%.
+*Expected*: One warning alert appears; no second alert if a subsequent purchase keeps spending in the same 80–99% band (deduplication).
+. Log a purchase crossing 100%.
 +
 *Expected*: A second, distinct alert is sent for the 100% crossing.
 
@@ -150,17 +142,17 @@ A blank results template lives at the end of this section.
 
 ==== MP-IR-13 — Shared Alert Audience and Delivery Preferences
 
-*Covers*: IR-13, MR-07 (M3-QA-06). *Replaces automated test*: integration test in `automated_check_expiration_test.dart` exercises deduplication logic but not delivery preferences. *Expected duration*: 10 minutes (requires two devices).
+*Covers*: IR-13, MR-07 (M3-QA-06). *Replaces automated test*: integration test in `automated_check_expiration_test.dart` exercises deduplication but not delivery preferences. *Expected duration*: 10 minutes (two devices).
 
-. On *device A*, sign in as `test_admin`. On *device B*, sign in as `test_member`.
+. On *device A* sign in as `test_admin`; on *device B* sign in as `test_member`.
 . On device A, set `test_member`'s notification preference to *Grouped summary* and `test_admin`'s to *Individual push*.
-. On device A, change "White bread" expiration date to today (forces an Expiring → Expired transition).
+. On device A, change "White bread" expiration to today (forces Expiring → Expired).
 . Trigger the scheduled expiration check (or wait for the next sweep).
 +
-*Expected*: Device A receives an individual push within one sweep cycle. Device B does *not* receive an individual push.
-. Wait for the next grouped summary window (or trigger it via the settings screen).
+*Expected*: Device A receives an individual push within one sweep cycle; device B does *not*.
+. Wait for the next grouped summary window (or trigger it via settings).
 +
-*Expected*: Device B receives one grouped summary that includes "White bread" alongside any other pending alerts.
+*Expected*: Device B receives one grouped summary including "White bread" alongside any other pending alerts.
 . Trigger the same sweep again without changing state.
 +
 *Expected*: Neither device receives a duplicate push for "White bread".
@@ -173,15 +165,15 @@ A blank results template lives at the end of this section.
 
 . Sign in as `test_member`. Decrease "Whole milk" quantity to 0.
 +
-*Expected*: "Whole milk" is auto-added to the grocery list with an indicator showing it was system-added (for example, a "Suggested" badge) and a reason ("Out of stock").
-. Open the grocery list entry. Use *Snooze for 24 hours*.
+*Expected*: "Whole milk" is auto-added to the grocery list with a system-added indicator (e.g., a "Suggested" badge) and a reason ("Out of stock").
+. Open the entry; use *Snooze for 24 hours*.
 +
-*Expected*: The entry is hidden from the active grocery list. Trigger another scheduled sweep within the 24-hour window.
+*Expected*: The entry is hidden from the active list. Trigger another sweep within the 24-hour window.
 . After the next sweep, confirm "Whole milk" has *not* been re-added.
-. Wait for the snooze window to expire (or use a developer override to advance time). Trigger a sweep.
+. Wait for the snooze window to expire (or use a developer override to advance time); trigger a sweep.
 +
-*Expected*: "Whole milk" reappears on the grocery list with the same reason.
-. From the active grocery list, *Remove* "Whole milk" outright. Trigger the next sweep.
+*Expected*: "Whole milk" reappears with the same reason.
+. From the active list, *Remove* "Whole milk" outright; trigger the next sweep.
 +
 *Expected*: "Whole milk" reappears (Remove is one-shot, not a permanent exclusion), but a single subsequent sweep within the same evaluation window does *not* create a duplicate entry.
 
@@ -189,28 +181,28 @@ A blank results template lives at the end of this section.
 
 ==== MP-MR-03 — Offline Operation and Conflict Surfacing
 
-*Covers*: MR-03 (M3-QA-08), DR-25. *Replaces automated test*: connectivity-simulating integration tests are recommended but not yet present. *Expected duration*: 10 minutes (requires two devices).
+*Covers*: MR-03 (M3-QA-08), DR-25. *Replaces automated test*: connectivity-simulating integration tests are recommended but not yet present. *Expected duration*: 10 minutes (two devices).
 
-. On *device A*, sign in as `test_member`. Place the device in airplane mode.
+. On *device A* sign in as `test_member`; place the device in airplane mode.
 . While offline, add a new item "Offline cereal" with quantity 1.
 +
 *Expected*: The item appears in the local inventory list with a pending-sync indicator.
-. While device A remains offline, on *device B* (online, signed in as `test_admin`), add an item with the same name "Offline cereal" and quantity 5.
+. While device A remains offline, on *device B* (online, `test_admin`) add an item with the same name "Offline cereal" and quantity 5.
 . Take device A out of airplane mode and let it synchronize.
 +
-*Expected*: The conflict surface (banner, dialog, or merge view) shows both entries and offers a choice: keep both, keep local, keep remote. The local change is *not* silently overwritten.
-. Resolve the conflict by keeping both. Verify on device B that both entries are present after the next real-time push.
+*Expected*: The conflict surface (banner, dialog, or merge view) shows both entries and offers keep both / keep local / keep remote. The local change is *not* silently overwritten.
+. Resolve by keeping both; verify on device B that both entries are present after the next real-time push.
 
 *Pass criteria*: Pending changes are marked, the conflict is surfaced explicitly, and no data is lost without user acknowledgement.
 
 ==== MP-MR-04 — Real-Time Synchronization Across Members
 
-*Covers*: MR-04. *Replaces automated test*: none (requires two real clients connected to a live Supabase project). *Expected duration*: 5 minutes.
+*Covers*: MR-04. *Replaces automated test*: none (requires two real clients on a live Supabase project). *Expected duration*: 5 minutes.
 
-. On *device A*, sign in as `test_admin`. On *device B*, sign in as `test_member`.
-. On device A, add an item "Sync test". Start a stopwatch when *Save* is tapped.
+. On *device A* sign in as `test_admin`; on *device B* sign in as `test_member`.
+. On device A, add an item "Sync test"; start a stopwatch when *Save* is tapped.
 +
-*Expected*: "Sync test" appears on device B without a manual refresh, within the sync target window (≤ 3 seconds under nominal network conditions).
+*Expected*: "Sync test" appears on device B without manual refresh, within the sync target window (≤ 3 seconds under nominal conditions).
 . On device B, edit the quantity of "Sync test" to 5.
 +
 *Expected*: Device A reflects the new quantity within the same window, also without manual refresh.
@@ -222,9 +214,9 @@ A blank results template lives at the end of this section.
 *Covers*: MR-02. *Replaces automated test*: not applicable — response time is a usability measurement. *Expected duration*: 10 minutes per participant.
 
 . Recruit one walkthrough participant per persona (Mateo, Sofia, Andrea, Julian — see Section 4.1 Personas).
-. Hand the participant a phone with the build under test and ask them to complete the following tasks while standing (simulating a shopping context). Time each task from first tap to confirmation visible:
+. Hand the participant a phone with the build under test and ask them to complete the following while standing (simulating shopping), timing each task from first tap to confirmation visible:
 .. Look up "Whole milk" via the search field.
-.. Add a new item "Greek yogurt" with quantity 2 and expiration date one week out.
+.. Add a new item "Greek yogurt" with quantity 2 and expiration one week out.
 .. Decrease the quantity of "Whole milk" by 1.
 . Record the timing for each task.
 
@@ -256,7 +248,7 @@ MP-MR-02        |                           |
 
 === Coverage summary
 
-Every requirement whose verification field is partially or entirely manual is covered by a procedure above. Mapping:
+Every requirement whose verification field is partially or entirely manual is covered by a procedure above.
 
 [cols="1,2,2",options="header"]
 |===

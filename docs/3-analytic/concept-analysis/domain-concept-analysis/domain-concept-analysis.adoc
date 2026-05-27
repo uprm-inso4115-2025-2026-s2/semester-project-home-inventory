@@ -1,57 +1,39 @@
 == Domain Concept Analysis
 
-This section derives domain concepts from the domain rough sketch (interviews, observations, edge situations). It documents how specific domain statements lead to abstractions (concepts), identifies potential term clashes, and defines relationships and invariants that hold in the domain independent of any system-to-be.
+This section derives domain concepts from the rough sketch (interviews, observations, edge situations), documenting how specific statements lead to abstractions, identifying term clashes, and defining relationships and invariants that hold independent of any system-to-be.
 
 === Starting point: raw statements held side-by-side
 
-The following statements (from the rough sketch) are used as anchors for concept formation:
+The following rough-sketch statements anchor concept formation:
 
 * Shared apartment: "If it is not on our fridge note, we assume we are out."
 * Shared apartment: "Sometimes I check the pantry before leaving, but by the time I get to Walmart I forgot what we needed."
 * Shared apartment: "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway."
 * Shared apartment: "Milk is usually bought twice in the same week at least once per month."
-* Shared apartment: When asked how they know they are 'low': "when it feels light" or "when we open the backup." (and the backup opening is not recorded)
+* Shared apartment: how they know they are 'low': "when it feels light" or "when we open the backup" (and the backup opening is not recorded).
 * Solo student: "If it takes more than a few seconds to log, I won't do it."
 * Solo student: buys in bulk; yogurts sometimes expire; estimated 3–5 thrown away last semester.
 * Household owner: child sometimes uses last item without saying; toilet paper runs out unexpectedly.
-* Household owner: medicines kept separately; expiration dates important; thrown away expired medicine without realizing there was a second unopened box.
+* Household owner: medicines kept separately; expiration dates important; threw away expired medicine without realizing there was a second unopened box.
 * Household owner: wants to remove access when someone moves out.
 * Student athlete: consumption changes by context ("exam weeks"); buys based on memory of how fast it ran out last time.
 * Brainstorming: people describe items as "full", "almost empty", "backup" (rarely with numbers).
 * Edge situations: unreadable/missing expiration date; multiple expiration dates within a bulk package; backup stored in car trunk and forgotten.
 
-These statements motivate the concepts below.
-
 === Concept formation: from statements to abstractions
 
-We derive concepts by asking: (1) what phenomena exist in the domain, (2) what information households use to act, and (3) what changes over time.
+Concepts are derived by asking what phenomena exist, what information households use to act, and what changes over time. Examples:
 
-Examples of abstraction:
-
-* "If it is not on our fridge note, we assume we are out." ->
-  *Tracked representation* (note/list) vs *reality* (actual item availability), and *assumption under uncertainty*.
-
-* "Rice in two places" ->
-  item storage *location*, and the possibility of multiple locations for the same item.
-
-* "when it feels light" / "open the backup" ->
-  *low-stock judgment* that is qualitative and strategy-based, and *backup* as a household practice.
-
-* "Milk bought twice in the same week" ->
-  *duplicate purchase* as a coordination failure, often arising from missing shared understanding.
-
-* "3–5 yogurts thrown away last semester" / medicines expired with unopened box ->
-  *expiration* and *batches* (same item type can exist in multiple packages with different expiration dates).
-
-* "remove access when someone moves out" ->
-  *membership* and *access to shared household information* (domain concept: who belongs to the household at a given time).
+* "If it is not on our fridge note, we assume we are out." -> *tracked representation* (note/list) vs *reality*, and *assumption under uncertainty*.
+* "Rice in two places" -> item storage *location*, and multiple locations for the same item.
+* "when it feels light" / "open the backup" -> qualitative, strategy-based *low-stock judgment*, and *backup* as a household practice.
+* "Milk bought twice in the same week" -> *duplicate purchase* as a coordination failure from missing shared understanding.
+* "3–5 yogurts thrown away" / medicines expired with unopened box -> *expiration* and *batches* (same item type in multiple packages with different expiration dates).
+* "remove access when someone moves out" -> *membership* and *access to shared household information*.
 
 === Core domain concepts (derived)
 
-The Milestone 3 revision adds implementation evidence to each retained concept. Domain
-terms are preserved for analysis, while implementation aliases identify the
-classes, repository contracts, schema entities, API/data modules, or supporting
-documents that currently carry the concept.
+The Milestone 3 revision adds implementation evidence to each retained concept. Domain terms are preserved for analysis, while implementation aliases identify the classes, repository contracts, schema entities, modules, or documents that carry the concept.
 
 [cols="2,3,4,3",options="header"]
 |===
@@ -69,13 +51,13 @@ documents that currently carry the concept.
 
 |Household item
 |A physical good kept for everyday use (e.g., milk, rice, toilet paper, soap, medicine).
-|Implemented as the aggregate of `ProductEntity` plus one or more `StockEntity` records; persistence is mapped by `ProductModel`, `StockModel`, `InventoryModel`, `ProductRepository`, and `InventoryRepository`.
+|Implemented as the aggregate of `ProductEntity` plus one or more `StockEntity` records; persistence mapped by `ProductModel`, `StockModel`, `InventoryModel`, `ProductRepository`, and `InventoryRepository`.
 |Retained with clarified scope. In code, "item" is split into product metadata and concrete stock entries.
 
 |Item type
 |The kind of item (e.g., "milk") independent of any specific package.
 |`ProductEntity` and `ProductModel`; canonical database documentation maps this to `inventory_items` as the logical item definition in `Team2-FinalizedSchema.adoc`.
-|Renamed in implementation as *Product*. Documentation should treat "item type" and `ProductEntity` as the same abstraction.
+|Renamed in implementation as *Product*. Treat "item type" and `ProductEntity` as the same abstraction.
 
 |Item instance / package
 |A concrete package/unit of an item type (e.g., a specific milk carton, a specific box of medicine).
@@ -88,8 +70,8 @@ documents that currently carry the concept.
 |Retained. Current implementation supports owner-based inventory retrieval; shared-household access is represented by `sharing_budget` entities and architecture docs.
 
 |Tracked inventory record
-|A representation of item availability used by household members (e.g., fridge note, mental model, list). This may diverge from the real inventory.
-|`InventoryModel.toJson/fromJson`, `StockModel.toJson/fromJson`, Supabase data sources, and the canonical `inventory_items`/`stock_entries` tables provide the persisted tracked record.
+|A representation of item availability used by household members (fridge note, mental model, list). May diverge from the real inventory.
+|`InventoryModel.toJson/fromJson`, `StockModel.toJson/fromJson`, Supabase data sources, and the canonical `inventory_items`/`stock_entries` tables provide the persisted record.
 |Retained. The implementation narrows the rough-sketch concept to the app's persisted digital record.
 
 |Availability
@@ -109,7 +91,7 @@ documents that currently carry the concept.
 
 |Backup supply
 |A household practice of keeping a spare instance/package to reduce the risk of running out.
-|Represented indirectly by multiple `StockEntity` records for one `ProductEntity`, by `InventoryEntity.stock` as a map from product to stock entries, and by `getStockForProduct()`.
+|Represented indirectly by multiple `StockEntity` records for one `ProductEntity`, by `InventoryEntity.stock` as a product-to-stock map, and by `getStockForProduct()`.
 |Retained as partially implemented. There is no dedicated `BackupSupply` class; backups are modeled as extra stock entries.
 
 |Consumption
@@ -128,16 +110,14 @@ documents that currently carry the concept.
 |Retained. Expiration moved from item-level language to stock-entry-level implementation.
 
 |Coordination failure
-|A situation where household members act on inconsistent information (e.g., duplicate purchase, unexpected shortage).
-|`DuplicateWarningDialog`, `DuplicateItem`, shared-inventory role flows, invite/member repositories, and duplicate-handling documentation under `duplicate-handling-rules.adoc` and `document-duplicate-prevention-logic.adoc`.
-|Retained as a user-facing risk concept. Implementation evidence exists as prevention/detection UI and supporting rules, not as a persistent `CoordinationFailure` entity.
+|A situation where members act on inconsistent information (e.g., duplicate purchase, unexpected shortage).
+|`DuplicateWarningDialog`, `DuplicateItem`, shared-inventory role flows, invite/member repositories, and `duplicate-handling-rules.adoc` / `document-duplicate-prevention-logic.adoc`.
+|Retained as a user-facing risk concept. Evidence exists as prevention/detection UI and supporting rules, not a persistent `CoordinationFailure` entity.
 |===
 
 === Deferred or backlog concepts
 
-These concepts remain relevant to the domain model but are not counted as fully
-implemented in Milestone 3. They should not be graded as completed functionality
-until future development adds stable code, schema support, and verified user flows.
+These concepts remain relevant but are not counted as fully implemented in Milestone 3, and should not be graded as completed until future development adds stable code, schema support, and verified user flows.
 
 [cols="2,3,4",options="header"]
 |===
@@ -145,32 +125,30 @@ until future development adds stable code, schema support, and verified user flo
 
 |Location (storage place)
 |Deferred / partially designed
-|Screen designs and earlier schema notes mention item location, rooms, and item containment, but the current `StockEntity` and `InventoryEntity` do not persist a stable location field.
+|Screen designs and earlier schema notes mention item location and rooms, but `StockEntity` and `InventoryEntity` do not persist a stable location field.
 
 |Item batch
 |Deferred
-|The schema supports multiple `stock_entries` with different expiration dates, but there is no `BatchEntity` or batch-level repository operation. Milestone 3 models each package as an individual stock entry.
+|The schema supports multiple `stock_entries` with different expiration dates, but there is no `BatchEntity` or batch-level operation. Milestone 3 models each package as an individual stock entry.
 
 |Qualitative low-stock strategy
 |Deferred / partially represented
-|Rough-sketch strategies such as "feels light" and "opened backup" remain domain evidence, and `Status` can represent qualitative states. The executable alert logic currently uses numeric quantity thresholds.
+|Strategies such as "feels light" and "opened backup" remain domain evidence and `Status` can represent qualitative states, but the executable alert logic uses numeric quantity thresholds.
 |===
 
 === Term clashes and clarifications
 
-To prevent inconsistent usage across documentation, we clarify common ambiguous terms:
+To prevent inconsistent usage across documentation:
 
-* *Inventory* (real-world items in the household) vs *Tracked inventory record* (note/list/memory). The rough sketch shows these diverge (e.g., "not on fridge note -> assume out").
-* *Item type* ("milk") vs *Item instance/package* (a specific carton). This matters for expiration and "second unopened box".
+* *Inventory* (real-world items) vs *Tracked inventory record* (note/list/memory); the rough sketch shows these diverge ("not on fridge note -> assume out").
+* *Item type* ("milk") vs *Item instance/package* (a specific carton); matters for expiration and "second unopened box".
 * *Low-stock* is not inherently numeric; in the domain it is often qualitative ("feels light", "open backup").
 * *Backup* is a domain concept (household practice), not an application feature.
-* *Household membership* changes over time ("remove access when someone moves out"): membership is a domain phenomenon; access control is a system concern derived from it.
+* *Household membership* changes over time ("remove access when someone moves out"): membership is a domain phenomenon; access control is a derived system concern.
 
 === Relationships (domain model)
 
-Relationship rows inherit the implementation status from the concept tables
-above. Rows involving deferred concepts are kept as domain-analysis evidence,
-not as completed implementation claims.
+Relationship rows inherit implementation status from the concept tables above. Rows involving deferred concepts are domain-analysis evidence, not completed implementation claims.
 
 [cols="2,2,4",options="header"]
 |===
@@ -186,10 +164,10 @@ not as completed implementation claims.
 |Each household item corresponds to an item type.
 
 |Item type (`ProductEntity`) |Item instance/package (`StockEntity`)
-|An item type may have multiple item instances/packages in the household at once (bulk buying, backup supply).
+|An item type may have multiple instances/packages at once (bulk buying, backup supply).
 
 |Item instance/package (`StockEntity`) |Location (deferred)
-|Deferred implementation relationship. The domain allows item instances to be stored in locations, but Milestone 3 code does not yet persist location on `StockEntity`.
+|Deferred relationship. The domain allows item instances stored in locations, but Milestone 3 code does not persist location on `StockEntity`.
 
 |Item instance/package (`StockEntity`) |Expiration date (`StockEntity.expirationDate`)
 |Some item instances have an expiration date; others do not.
@@ -206,87 +184,57 @@ not as completed implementation claims.
 
 === Events, actions, and behaviors (domain-level)
 
-* Events (instantaneous state changes):
-  - An item becomes *out* (unexpected shortage).
-  - An item becomes *low* (as judged by a strategy such as "backup opened").
-  - An item expires (or is discovered expired).
-
-* Actions (intentional acts):
-  - Check availability (pantry check, fridge note check).
-  - Consume an item (use the last roll, eat snacks faster during exams).
-  - Replenish an item (buy milk, buy bulk yogurt).
-
-* Behaviors (multi-step ongoing processes):
-  - Household maintenance cycle: consume -> notice low/out -> decide purchase -> replenish -> store -> repeat.
-  - Shared-household coordination: negotiate who buys what, or fail and duplicate-buy.
+* Events (instantaneous state changes): an item becomes *out* (unexpected shortage); becomes *low* (e.g., "backup opened"); expires or is discovered expired.
+* Actions (intentional acts): check availability (pantry/fridge-note check); consume an item; replenish an item.
+* Behaviors (ongoing processes): household maintenance cycle (consume -> notice low/out -> decide purchase -> replenish -> store -> repeat); shared-household coordination (negotiate who buys what, or fail and duplicate-buy).
 
 === Invariants (domain rules)
 
-These invariants describe stable properties of the domain:
-
-* I1: A household has at least one member at any time it is considered active.
-* I2: In the real-world domain, an item instance/package is stored somewhere, but explicit location tracking is deferred until a stable location field or room entity is implemented.
-* I3: Not all household judgments require numeric quantities; qualitative availability ("full", "almost empty", "backup") is valid domain information.
+* I1: A household has at least one member while it is active.
+* I2: In the real-world domain, an item instance/package is stored somewhere, but explicit location tracking is deferred until a stable location field or room entity exists.
+* I3: Not all judgments require numeric quantities; qualitative availability ("full", "almost empty", "backup") is valid domain information.
 * I4: If an item instance has an expiration date, it can become expired without being consumed, creating waste.
 * I5: A household may possess multiple instances of the same item type simultaneously (bulk buying, backups).
-* I6: Tracked records can diverge from reality; decisions may be made based on assumptions under uncertainty ("not on note -> assume out").
+* I6: Tracked records can diverge from reality; decisions may be made under uncertainty ("not on note -> assume out").
 
 === Edge cases and risks (from rough sketch)
 
-* E1: Same item type stored in multiple locations (rice in cabinet + hallway bin) -> risk of undercounting or duplicate purchase; implementation tracking for this is deferred with the Location concept.
-* E2: Backup supply opened but not recorded -> low-stock event is not propagated to shared understanding.
+* E1: Same item type in multiple locations (rice in cabinet + hallway bin) -> risk of undercounting or duplicate purchase; tracking deferred with the Location concept.
+* E2: Backup supply opened but not recorded -> low-stock event not propagated to shared understanding.
 * E3: Consumption rate varies by context (exam weeks, guests) -> replenishment based on "last time" memory becomes unreliable.
-* E4: Multiple expiration dates in a bulk package -> motivates future batch-level tracking if expiration awareness requires grouping beyond individual `StockEntity` records.
+* E4: Multiple expiration dates in a bulk package -> motivates future batch-level tracking.
 * E5: Expiration date unreadable/missing -> household cannot reliably judge expiration status.
-* E6: Membership change (move-out) -> household needs to update who participates and who is informed.
+* E6: Membership change (move-out) -> household must update who participates and who is informed.
 
 === Ownership structures for shared inventory items
 
-The rough sketch suggests that household items do not all behave the same way in shared environments. Some are treated as clearly shared essentials, while others are managed more personally even within the same household. For that reason, ownership must be analyzed as a domain concept rather than assumed to have only one structure.
-
-Ownership structures are evaluated here based on their ability to:
-
-- support collaborative interaction within a shared household context
-- preserve clear responsibility attribution where needed
-- align with domain invariants governing households, items, and membership
-- support enforceable permission logic
-- represent domain relationships coherently without unnecessary complexity
+The rough sketch shows household items behave differently in shared environments — some are clearly shared essentials, others managed personally — so ownership must be analyzed as a domain concept rather than assumed to have one structure. Structures are evaluated on their ability to support collaborative interaction, preserve clear responsibility attribution, align with domain invariants, support enforceable permission logic, and represent domain relationships coherently without unnecessary complexity.
 
 ==== User-owned structure
 
-In a user-owned structure, an item belongs primarily to an individual participant. Shared use is possible, but it must be added on top of individual ownership.
-
-Relationship idea:
+An item belongs primarily to an individual; shared use is added on top of individual ownership.
 
 ----
 Item -> User
 Item associated with Household context
 ----
 
-This structure provides strong individual accountability and clear ownership-based authority, but it does not fit shared-household semantics naturally. Collaboration becomes secondary, because the item is conceptually owned first by a person rather than by the shared household context.
-
-This structure is most suitable when items are primarily personal contributions that only occasionally appear in a shared environment.
+This provides strong individual accountability and ownership-based authority but does not fit shared-household semantics naturally, since the item is conceptually owned by a person first. Most suitable when items are primarily personal contributions that only occasionally appear in a shared environment.
 
 ==== Group-owned structure
 
-In a group-owned structure, an item belongs to the shared household context rather than to a specific person. Household members interact with the item through membership.
-
-Relationship idea:
+An item belongs to the shared household context rather than a specific person; members interact through membership.
 
 ----
 Household -> Item
 Household member -> Membership -> Household
 ----
 
-This structure supports shared use naturally and aligns well with communal resources. However, it does not provide inherent responsibility attribution. If the domain needs to represent who is primarily responsible for a shared item, that information must be added separately.
-
-This structure is most suitable when items are treated as collective household resources.
+This supports shared use naturally and aligns with communal resources, but provides no inherent responsibility attribution — if the domain needs to represent who is responsible for a shared item, that must be added separately. Most suitable when items are treated as collective household resources.
 
 ==== Hybrid structure
 
-In a hybrid structure, an item exists within the shared household context but may also be associated with a responsible household member when needed.
-
-Relationship idea:
+An item exists within the shared household context but may also be associated with a responsible member when needed.
 
 ----
 Household -> Item
@@ -294,9 +242,7 @@ Household member -> Membership -> Household
 Membership or responsibility relation -> Item
 ----
 
-This structure preserves the shared household context while still allowing responsibility attribution. It supports both collaboration and accountability, though it is conceptually more complex than the other two structures.
-
-This structure is most suitable when the domain must represent both shared items and items with a clearer responsible participant.
+This preserves the shared context while allowing responsibility attribution, supporting both collaboration and accountability, though it is conceptually more complex. Most suitable when the domain must represent both shared items and items with a clearer responsible participant.
 
 ==== Comparative evaluation
 
@@ -329,27 +275,9 @@ This structure is most suitable when the domain must represent both shared items
 
 ==== Recommendation
 
-The hybrid structure provides the strongest overall conceptual fit for the current domain model.
+The hybrid structure provides the strongest overall conceptual fit: it preserves the shared household context, supports collaboration naturally, allows responsibility attribution when needed, aligns with membership-based participation, and provides a flexible basis for later permission and ownership rules. It does not require every item to behave the same way; instead it represents both shared and personal responsibility within one coherent household model.
 
-It should be preferred because it:
-
-- preserves the shared household context
-- supports collaborative interaction naturally
-- allows responsibility attribution when needed
-- aligns with membership-based participation
-- provides a flexible basis for later permission and ownership rules
-
-This recommendation does not require every item to behave the same way. Instead, it provides a conceptual basis for representing both shared and personal responsibility inside one coherent household model.
-
-Implementation evidence for this recommendation is split across current code and
-supporting design artifacts. Shared context is represented by `HouseholdEntity`,
-`HouseholdMemberEntity`, `MemberRole`, and `SharingRepository`; item-level
-responsibility is represented by `StockEntity.ownerId` and the owner fields in
-inventory/sharing models; role-based sharing behavior is documented in
-`shared-inventory-definition.adoc`, `permission-rules-definition.adoc`, and
-`RLSresearch.adoc`. The evaluated *user-owned* and *group-owned* structures are
-therefore treated as analysis alternatives, while the hybrid model is the Milestone 3
-implementation direction.
+Implementation evidence is split across current code and supporting design artifacts: shared context is represented by `HouseholdEntity`, `HouseholdMemberEntity`, `MemberRole`, and `SharingRepository`; item-level responsibility by `StockEntity.ownerId` and owner fields in inventory/sharing models; role-based sharing behavior is documented in `shared-inventory-definition.adoc`, `permission-rules-definition.adoc`, and `RLSresearch.adoc`. The *user-owned* and *group-owned* structures are therefore analysis alternatives, while the hybrid model is the Milestone 3 implementation direction.
 
 include::ownership_effects_on_permissions_and_spending_attribution.adoc[leveloffset=+1]
 include::core-inventory-domain-attribute-classification.adoc[leveloffset=+1]
@@ -357,4 +285,4 @@ include::domain-evidence-concept-analysis.adoc[leveloffset=+1]
 
 === Trace to earlier documentation
 
-This domain concept model is grounded in the domain rough sketch's concrete examples of informal tracking, multiple storage locations, qualitative low-stock judgments, bulk buying, expiration waste, and shared-household coordination failures. It supports the needs described in the informative part (minimizing effort while maintaining reliable availability understanding, and improving shared-household coordination) without committing to specific implementation decisions.
+This domain concept model is grounded in the rough sketch's concrete examples of informal tracking, multiple storage locations, qualitative low-stock judgments, bulk buying, expiration waste, and shared-household coordination failures. It supports the needs in the informative part (minimizing effort while maintaining reliable availability understanding, and improving shared-household coordination) without committing to specific implementation decisions.
