@@ -49,23 +49,46 @@ class ExpenditureState {
     DateTime? endDate,
     //TO DO: REPLACE HARDCODED DATA WITH BACKEND DATA
     this.categories = const [
-      ExpenditureCategory(name: 'Food',      amount: 56.78, color: Color(0xFFF5A623)),
-      ExpenditureCategory(name: 'Kitchen',   amount: 45.87, color: Color(0xFF4ECDC4)),
-      ExpenditureCategory(name: 'Cleaning',  amount: 20.60, color: Color(0xFF4A90D9)),
-      ExpenditureCategory(name: 'Hygiene',   amount: 22.65, color: Color(0xFF7BC67A)),
-      ExpenditureCategory(name: 'Bathroom',  amount: 70.96, color: Color(0xFF7B68EE)),
-      ExpenditureCategory(name: 'Utilities', amount: 61.67, color: Color(0xFFF08080)),
+      ExpenditureCategory(
+        name: 'Food',
+        amount: 56.78,
+        color: Color(0xFFF5A623),
+      ),
+      ExpenditureCategory(
+        name: 'Kitchen',
+        amount: 45.87,
+        color: Color(0xFF4ECDC4),
+      ),
+      ExpenditureCategory(
+        name: 'Cleaning',
+        amount: 20.60,
+        color: Color(0xFF4A90D9),
+      ),
+      ExpenditureCategory(
+        name: 'Hygiene',
+        amount: 22.65,
+        color: Color(0xFF7BC67A),
+      ),
+      ExpenditureCategory(
+        name: 'Bathroom',
+        amount: 70.96,
+        color: Color(0xFF7B68EE),
+      ),
+      ExpenditureCategory(
+        name: 'Utilities',
+        amount: 61.67,
+        color: Color(0xFFF08080),
+      ),
     ],
     this.favorites = const [],
     this.isLoadingFavorites = false,
     this.favoriteError,
     this.isLoading = false,
     this.errorMessage,
-  })  : startDate = startDate ?? DateTime(2026, 3, 9),
-        endDate   = endDate   ?? DateTime(2026, 3, 15);
+  }) : startDate = startDate ?? DateTime(2026, 3, 9),
+       endDate = endDate ?? DateTime(2026, 3, 15);
 
-  double get totalAmount =>
-      categories.fold(0.0, (sum, c) => sum + c.amount);
+  double get totalAmount => categories.fold(0.0, (sum, c) => sum + c.amount);
 
   ExpenditureState copyWith({
     DateTime? startDate,
@@ -92,7 +115,7 @@ class ExpenditureState {
 
 class ExpenditureCubit extends Cubit<ExpenditureState> {
   final FavoritesRepository _favoritesRepository = FavoritesRepository();
-  
+
   // Simulate error for testing (set to true to test error state)
   static const bool _simulateError = false;
 
@@ -111,12 +134,36 @@ class ExpenditureCubit extends Cubit<ExpenditureState> {
     }
     // Return hardcoded demo data
     return const [
-      ExpenditureCategory(name: 'Food',      amount: 56.78, color: Color(0xFFF5A623)),
-      ExpenditureCategory(name: 'Kitchen',   amount: 45.87, color: Color(0xFF4ECDC4)),
-      ExpenditureCategory(name: 'Cleaning',  amount: 20.60, color: Color(0xFF4A90D9)),
-      ExpenditureCategory(name: 'Hygiene',   amount: 22.65, color: Color(0xFF7BC67A)),
-      ExpenditureCategory(name: 'Bathroom',  amount: 70.96, color: Color(0xFF7B68EE)),
-      ExpenditureCategory(name: 'Utilities', amount: 61.67, color: Color(0xFFF08080)),
+      ExpenditureCategory(
+        name: 'Food',
+        amount: 56.78,
+        color: Color(0xFFF5A623),
+      ),
+      ExpenditureCategory(
+        name: 'Kitchen',
+        amount: 45.87,
+        color: Color(0xFF4ECDC4),
+      ),
+      ExpenditureCategory(
+        name: 'Cleaning',
+        amount: 20.60,
+        color: Color(0xFF4A90D9),
+      ),
+      ExpenditureCategory(
+        name: 'Hygiene',
+        amount: 22.65,
+        color: Color(0xFF7BC67A),
+      ),
+      ExpenditureCategory(
+        name: 'Bathroom',
+        amount: 70.96,
+        color: Color(0xFF7B68EE),
+      ),
+      ExpenditureCategory(
+        name: 'Utilities',
+        amount: 61.67,
+        color: Color(0xFFF08080),
+      ),
     ];
   }
 
@@ -127,11 +174,14 @@ class ExpenditureCubit extends Cubit<ExpenditureState> {
       final categories = await _fetchExpenditureData();
       emit(state.copyWith(categories: categories, isLoading: false));
     } catch (e) {
-      emit(state.copyWith(
-        categories: const [],
-        isLoading: false,
-        errorMessage: 'Unable to load expenditure data. Please check your connection and try again.',
-      ));
+      emit(
+        state.copyWith(
+          categories: const [],
+          isLoading: false,
+          errorMessage:
+              'Unable to load expenditure data. Please check your connection and try again.',
+        ),
+      );
     }
   }
 
@@ -151,7 +201,9 @@ class ExpenditureCubit extends Cubit<ExpenditureState> {
       final favs = await _favoritesRepository.getUserFavorites();
       emit(state.copyWith(favorites: favs, isLoadingFavorites: false));
     } catch (e) {
-      emit(state.copyWith(isLoadingFavorites: false, favoriteError: e.toString()));
+      emit(
+        state.copyWith(isLoadingFavorites: false, favoriteError: e.toString()),
+      );
     }
   }
 
@@ -181,10 +233,12 @@ class ExpenditureCubit extends Cubit<ExpenditureState> {
   }
 
   void applyFavorite(ReportFavorite favorite) {
-    emit(state.copyWith(
-      startDate: favorite.filters.startDate,
-      endDate: favorite.filters.endDate,
-    ));
+    emit(
+      state.copyWith(
+        startDate: favorite.filters.startDate,
+        endDate: favorite.filters.endDate,
+      ),
+    );
     loadExpenditureData();
   }
 }
@@ -216,6 +270,21 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
   final GlobalKey _chartKey = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _favoriteNameController = TextEditingController();
+  List<ExpenditureCategory> _filteredCategories = [];
+  String _searchQuery = '';
+
+  void _applySearch(String query, List<ExpenditureCategory> allCategories) {
+    setState(() {
+      _searchQuery = query;
+      _filteredCategories = query.isEmpty
+          ? allCategories
+          : allCategories
+                .where(
+                  (c) => c.name.toLowerCase().contains(query.toLowerCase()),
+                )
+                .toList();
+    });
+  }
 
   @override
   void dispose() {
@@ -227,7 +296,8 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
   Future<Uint8List?> _captureChart() async {
     try {
       final boundary =
-          _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+          _chartKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
       if (boundary == null) return null;
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -289,7 +359,9 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
               final name = _favoriteNameController.text.trim();
               if (name.isEmpty) return;
               try {
-                await context.read<ExpenditureCubit>().saveCurrentAsFavorite(name);
+                await context.read<ExpenditureCubit>().saveCurrentAsFavorite(
+                  name,
+                );
                 _favoriteNameController.clear();
                 if (mounted) Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -298,7 +370,10 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
               } catch (e) {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+                    SnackBar(
+                      content: Text('Error: $e'),
+                      backgroundColor: Colors.red,
+                    ),
                   );
                 }
               }
@@ -323,7 +398,9 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
           ),
           TextButton(
             onPressed: () async {
-              await context.read<ExpenditureCubit>().deleteFavorite(favorite.id);
+              await context.read<ExpenditureCubit>().deleteFavorite(
+                favorite.id,
+              );
               Navigator.pop(ctx);
             },
             child: const Text('Delete', style: TextStyle(color: Colors.red)),
@@ -358,15 +435,31 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
           BlocBuilder<ExpenditureCubit, ExpenditureState>(
             builder: (context, state) {
               return PopupMenuButton<ReportFavorite>(
-                icon: const Icon(Icons.star_border, color: AppTheme.primaryText),
+                icon: const Icon(
+                  Icons.star_border,
+                  color: AppTheme.primaryText,
+                ),
                 tooltip: 'Saved filters',
-                onSelected: (fav) => context.read<ExpenditureCubit>().applyFavorite(fav),
+                onSelected: (fav) =>
+                    context.read<ExpenditureCubit>().applyFavorite(fav),
                 itemBuilder: (ctx) {
                   if (state.isLoadingFavorites) {
-                    return [const PopupMenuItem(child: Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator())))];
+                    return [
+                      const PopupMenuItem(
+                        child: Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                    ];
                   }
                   if (state.favorites.isEmpty) {
-                    return [const PopupMenuItem(child: Text('No saved filters'))];
+                    return [
+                      const PopupMenuItem(child: Text('No saved filters')),
+                    ];
                   }
                   return state.favorites.map((fav) {
                     return PopupMenuItem(
@@ -375,7 +468,11 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                         children: [
                           Expanded(child: Text(fav.name)),
                           IconButton(
-                            icon: const Icon(Icons.delete, size: 18, color: Colors.red),
+                            icon: const Icon(
+                              Icons.delete,
+                              size: 18,
+                              color: Colors.red,
+                            ),
                             onPressed: () {
                               Navigator.pop(ctx);
                               _confirmDeleteFavorite(context, fav);
@@ -430,7 +527,8 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => context.read<ExpenditureCubit>().loadExpenditureData(),
+                    onPressed: () =>
+                        context.read<ExpenditureCubit>().loadExpenditureData(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
                     ),
@@ -454,14 +552,22 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
               ),
             );
           }
-
+          // Sync filtered list when state changes and search is empty
+          if (_filteredCategories.isEmpty || _searchQuery.isEmpty) {
+            _filteredCategories = state.categories;
+          }
+          if (_searchQuery.isEmpty) {
+            _filteredCategories = state.categories;
+          }
           // Normal loaded state
           return Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -473,7 +579,9 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                             child: _DatePickerField(
                               label: 'Start Date',
                               value: state.startDate,
-                              onChanged: (d) => context.read<ExpenditureCubit>().setStartDate(d!),
+                              onChanged: (d) => context
+                                  .read<ExpenditureCubit>()
+                                  .setStartDate(d!),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -481,7 +589,9 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                             child: _DatePickerField(
                               label: 'End Date',
                               value: state.endDate,
-                              onChanged: (d) => context.read<ExpenditureCubit>().setEndDate(d!),
+                              onChanged: (d) => context
+                                  .read<ExpenditureCubit>()
+                                  .setEndDate(d!),
                             ),
                           ),
                         ],
@@ -502,15 +612,31 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
                       // Pie chart using fl_chart
                       RepaintBoundary(
                         key: _chartKey,
-                        child: DynamicPieChart(categories: state.categories),
+                        child: DynamicPieChart(categories: _filteredCategories),
                       ),
                       const SizedBox(height: 20),
                       // Table
                       _ExpenditureTable(
-                        categories: state.categories,
-                        totalAmount: state.totalAmount,
+                        categories: _filteredCategories,
+                        totalAmount: _filteredCategories.fold(
+                          0.0,
+                          (sum, c) => sum + c.amount,
+                        ),
                       ),
-                      const SizedBox(height: 12),
+                      if (_filteredCategories.isEmpty &&
+                          _searchQuery.isNotEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
+                          child: Center(
+                            child: Text(
+                              'No categories match your search.',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: AppTheme.mutedText,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -518,6 +644,7 @@ class _ExpenditureViewState extends State<_ExpenditureView> {
               // Fixed bottom search + export bar
               _BottomBar(
                 controller: _searchController,
+                onSearch: (query) => _applySearch(query, state.categories),
                 onExport: () => _exportPdf(context, state),
               ),
             ],
@@ -534,7 +661,11 @@ class _DatePickerField extends StatelessWidget {
   final String label;
   final DateTime value;
   final ValueChanged<DateTime?> onChanged;
-  const _DatePickerField({required this.label, required this.value, required this.onChanged});
+  const _DatePickerField({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -553,8 +684,14 @@ class _DatePickerField extends StatelessWidget {
           labelText: label,
           filled: true,
           fillColor: Colors.grey[100],
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
+          ),
         ),
         child: Text('${value.toLocal()}'.split(' ')[0]),
       ),
@@ -645,10 +782,7 @@ class _ExpenditureTable extends StatelessWidget {
                   child: Text(
                     '\$${c.amount.toStringAsFixed(2)}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppTheme.primaryText,
-                    ),
+                    style: TextStyle(fontSize: 15, color: AppTheme.primaryText),
                   ),
                 ),
                 Expanded(
@@ -656,10 +790,7 @@ class _ExpenditureTable extends StatelessWidget {
                   child: Text(
                     '$pct%',
                     textAlign: TextAlign.end,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppTheme.primaryText,
-                    ),
+                    style: TextStyle(fontSize: 15, color: AppTheme.primaryText),
                   ),
                 ),
               ],
@@ -675,9 +806,14 @@ class _ExpenditureTable extends StatelessWidget {
 
 class _BottomBar extends StatelessWidget {
   final TextEditingController controller;
+  final ValueChanged<String> onSearch;
   final VoidCallback onExport;
 
-  const _BottomBar({required this.controller, required this.onExport});
+  const _BottomBar({
+    required this.controller,
+    required this.onSearch,
+    required this.onExport,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -698,6 +834,7 @@ class _BottomBar extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
+              onChanged: onSearch,
               style: const TextStyle(color: AppTheme.primaryText),
               decoration: InputDecoration(
                 hintText: 'Type here to search',
@@ -708,7 +845,10 @@ class _BottomBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
               ),
             ),
           ),
