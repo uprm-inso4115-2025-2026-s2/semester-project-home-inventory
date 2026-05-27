@@ -77,6 +77,29 @@ This section documents the minimal viable set of high-value features that have b
 
 **Completion Status:** Completed — Core add/view/edit operations fully functional. Barcode scanning integrated with fallback manual entry.
 
+==== Item Lifecycle State Diagram
+
+The following state diagram documents how a tracked inventory item changes state after it enters the system. It connects the implemented Core Inventory flow (`F-INV`) with automated stock and expiration evaluation (`F-AUTOCHECK`), alert generation (`F-ALERT`), grocery-list restocking (`F-GL-AUTO` / `F-GL-USER`), and the documented historical-preservation rule for archived items (`DR-3`). The diagram is intentionally focused on item lifecycle state rather than notification lifecycle state.
+
+image::diagrams/item_lifecycle_state_diagram.png[Tracked Inventory Item Lifecycle State Diagram, width=100%]
+
+Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_diagram.mmd`
+
+The diagram shows the tracked inventory item lifecycle from acquisition through active use, alert-worthy states, exception states, disposal, and archival.
+
+**Transition interpretation:**
+
+* `Acquired` begins when a household member adds an item through barcode scanning or manual entry.
+* `InStock`, `LowStock`, and `OutOfStock` are availability states derived from quantity and low-stock threshold rules. Quantity changes are expected to trigger state re-evaluation.
+* `NearExpiry` and `Expired` are expiration states derived from the item's expiration date during scheduled checks.
+* `Discarded` represents a user decision that the physical item is no longer kept or usable.
+* `Archived` is a non-active record state used to keep historical references while excluding the item from active inventory views.
+* `Lent` and `Lost` are marked as conceptual because current documentation recognizes outside-household and lost-item scenarios, but the current implementation evidence does not show them as fully implemented Core Inventory states.
+
+**Implementation alignment:**
+
+The implemented Core Inventory feature supports adding, editing, viewing, and quantity/expiration updates for item records. The automated check logic evaluates low-stock, out-of-stock, near-expiry, and expired conditions, while grocery-list automation can replenish or restock an item after shopping. Archival is modeled as the preferred preservation behavior when an item should no longer appear in active inventory views, especially when financial or alert history may still reference the item. Conceptual states must not be presented as completed functionality until their UI, data model, and operation behavior are implemented and verified.
+
 ---
 
 === Feature 2: Automated Expiration Alerts & Notifications (F-ALERT + F-AUTOCHECK)
