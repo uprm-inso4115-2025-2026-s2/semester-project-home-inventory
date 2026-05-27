@@ -450,6 +450,30 @@ User selects date range (optional)
 
 ---
 
+=== Architecture Overview Diagram
+
+The following architecture overview diagram documents the major runtime containers and service boundaries for the Milestone 3 Home Inventory system. The system follows a Flutter-client-plus-Supabase-backend architecture: the Flutter client handles presentation, routing, local interaction, validation, and feature orchestration, while Supabase provides authentication, database persistence, authorization, realtime synchronization, storage support, and documented backend automation.
+
+The diagram distinguishes current M3 components from documented or future-facing components. Components marked as planned must not be interpreted as fully implemented runtime behavior.
+
+image::diagrams/architecture_overview_diagram.png[Home Inventory Architecture Overview Diagram, width=100%, title="Home Inventory Architecture Overview Diagram"]
+
+Source file: `docs/2-descriptive/implementation/diagrams/architecture_overview_diagram.mmd`
+
+The diagram shows the current implementation architecture from the mobile client outward:
+
+* **Flutter mobile client (M3 current):** Contains the Material 3 UI screens/forms, GoRouter navigation and deep-link entry points, Bloc/Cubit state management, and feature-level use cases/repositories for validation and Supabase operations.
+* **Supabase client/API boundary (M3 current):** The app communicates with Supabase over HTTPS through the Supabase Flutter SDK for authentication, CRUD queries, storage access when used, and realtime subscriptions.
+* **Authentication and authorization boundary (M3 current):** Supabase Auth issues JWT sessions. Supabase Postgres Row Level Security policies enforce household-scoped access for authenticated users before database rows are returned or modified.
+* **Persistence layer (M3 current):** Supabase PostgreSQL stores persistent records for inventory items, households, members, alerts, grocery-list data, report data, and related metadata.
+* **Realtime synchronization (M3 current):** Supabase Realtime publishes Postgres change events back to subscribed Flutter clients so inventory and household-facing views can update without manual refresh.
+* **Storage support (documented feature-dependent):** Supabase Storage supports product images, receipts, and media assets where the corresponding feature uses uploaded or downloaded files.
+* **Backend automation (documented / partially implemented):** Scheduled jobs and hosted/Edge Function workers support stock checks, expiration checks, alert generation, deduplication, run logging, and grocery restock output.
+* **Device/platform services (M3 current / partially configured):** Camera and barcode scanning support item capture; local file/PDF APIs support exports; push notification delivery is documented as platform-dependent through FCM/APNs.
+* **External services (M3 current / planned):** Barcode/product lookup and email invitation delivery are integration-dependent. Grocery delivery, AI meal planning, and similar services are planned only and are not part of the M3 runtime.
+
+---
+
 === Architecture & Technical Stack
 
 **Frontend Stack:**
