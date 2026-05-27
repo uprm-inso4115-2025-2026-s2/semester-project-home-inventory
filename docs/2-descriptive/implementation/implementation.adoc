@@ -85,7 +85,7 @@ image::diagrams/item_lifecycle_state_diagram.png[Tracked Inventory Item Lifecycl
 
 Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_diagram.mmd`
 
-.Figure 2.3.b: Tracked inventory item lifecycle from acquisition through active use, alert-worthy states, exception states, disposal, and archival.
+The diagram shows the tracked inventory item lifecycle from acquisition through active use, alert-worthy states, exception states, disposal, and archival.
 
 **Transition interpretation:**
 
