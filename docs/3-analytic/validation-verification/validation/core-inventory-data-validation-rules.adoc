@@ -89,10 +89,7 @@ Validation resides in domain usecases (`AddInventoryItem`, `UpdateInventoryItem`
 
 === Current known limitations
 
-- Per-item visibility: although `ownerId` exists on `StockModel`, the presentation layer does not filter or present per-item ownership.
-- Filtering breadth: UI filtering is limited to category navigation and expiration-focused views; no UI for labels, low-stock thresholds, or range queries.
-- Transaction/audit traces: datasource updates the `stock` JSON in-place without creating separate transaction/audit rows for quantity changes.
-- Concurrency: fetch-modify-update on the `stock` JSON has no optimistic locking or version checks, so concurrent writes may overwrite intermediate changes.
+These match the implementation limitations recorded in Section 2.3 (Data Model and Persistence Layer): per-item `ownerId` is not enforced in the UI; filtering is limited to category and expiration views; quantity changes do not create separate transaction/audit rows; and fetch-modify-update on the `stock` JSON has no optimistic locking, so concurrent writes may overwrite intermediate changes.
 
 === Evidence and pointers
 

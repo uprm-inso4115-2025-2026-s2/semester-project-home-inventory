@@ -1,6 +1,6 @@
 == Acquisition Plan
 
-This section defines how raw domain knowledge and evidence are gathered before being interpreted into stakeholder needs and requirements. Acquisition collects raw observations, examples, and participant accounts; elicitation happens later, interpreting that material into concepts, stories, and requirements.
+This section defines how raw domain knowledge and evidence are gathered before being interpreted into stakeholder needs and requirements (the acquisition/elicitation distinction is established in the parent section above).
 
 === Goals
 * Capture real household practices instead of idealized descriptions.

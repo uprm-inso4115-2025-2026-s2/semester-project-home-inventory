@@ -4,21 +4,7 @@ This section derives domain concepts from the rough sketch (interviews, observat
 
 === Starting point: raw statements held side-by-side
 
-The following rough-sketch statements anchor concept formation:
-
-* Shared apartment: "If it is not on our fridge note, we assume we are out."
-* Shared apartment: "Sometimes I check the pantry before leaving, but by the time I get to Walmart I forgot what we needed."
-* Shared apartment: "We have rice in two places. One bag in the kitchen cabinet and another in a plastic bin in the hallway."
-* Shared apartment: "Milk is usually bought twice in the same week at least once per month."
-* Shared apartment: how they know they are 'low': "when it feels light" or "when we open the backup" (and the backup opening is not recorded).
-* Solo student: "If it takes more than a few seconds to log, I won't do it."
-* Solo student: buys in bulk; yogurts sometimes expire; estimated 3–5 thrown away last semester.
-* Household owner: child sometimes uses last item without saying; toilet paper runs out unexpectedly.
-* Household owner: medicines kept separately; expiration dates important; threw away expired medicine without realizing there was a second unopened box.
-* Household owner: wants to remove access when someone moves out.
-* Student athlete: consumption changes by context ("exam weeks"); buys based on memory of how fast it ran out last time.
-* Brainstorming: people describe items as "full", "almost empty", "backup" (rarely with numbers).
-* Edge situations: unreadable/missing expiration date; multiple expiration dates within a bulk package; backup stored in car trunk and forgotten.
+Concept formation is anchored in the raw observations recorded in the domain rough sketch (Section 2.1) — informal tracking ("not on the fridge note → assume out"), the same item stored in multiple places, qualitative low-stock judgments ("feels light", "opened backup"), duplicate purchases, bulk buying with expiration waste, context-dependent consumption, and membership changes on move-out. Rather than re-listing those statements here, the mapping below derives abstractions from the pivotal ones.
 
 === Concept formation: from statements to abstractions
 
