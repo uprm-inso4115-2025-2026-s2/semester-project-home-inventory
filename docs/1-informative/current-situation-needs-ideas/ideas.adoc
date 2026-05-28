@@ -1,43 +1,30 @@
 == Ideas
 
-Outline candidate solution directions. Ideas are not commitments; they are options to address the needs. The idea below focuses on solution directions and capabilities; implementation technology choices are deferred to later sections.
+Candidate solution directions. Ideas are options to address the needs, not commitments; implementation technology choices are deferred to later sections.
 
 === Lightweight Smart Inventory
 
 * Core concept: A lightweight household inventory tool optimized for very fast item capture and shared visibility in student households, so records stay current with minimal effort.
 * Needs addressed: N1, N2, N3, N4, N5
 * Key capabilities:
-  - Fast item capture with minimal information required at the moment of entry
-  - Shared household view of what items are available and who last updated them
-  - Quick search and filtering to check item availability
-  - Optional prompts to review items that may be running low or expiring (kept low-noise)
+  - Fast item capture with minimal information required at entry
+  - Shared household view of available items and who last updated them
+  - Quick search and filtering to check availability
+  - Optional, low-noise prompts to review items running low or expiring
   - Works during temporary connectivity gaps and reconciles changes when connectivity returns
 
 * Expected benefits:
-  - Reduces the hassle of item entry
-  - Improves long-term inventory accuracy
-  - Prevents duplicate purchases
-  - Enables smooth roommate coordination
+  - Reduces item-entry hassle and improves long-term inventory accuracy
+  - Prevents duplicate purchases and enables smooth roommate coordination
   - Reduces the chance that people disable reminders by keeping prompts minimal and relevant
 
 * Risks / unknowns:
-  - Users may still abandon after initial novelty wears off
-  - Conflicting updates when multiple household members change the same item list around the same time
-  - Temporary connectivity gaps may lead to mismatched inventories until updates reconcile
-  - User adoption of shared features may vary
+  - Users may abandon the app after initial novelty wears off
+  - Conflicting updates when multiple members change the same item around the same time
+  - Connectivity gaps may cause mismatched inventories until updates reconcile
+  - Adoption of shared features may vary
 
 * How we will validate this idea:
   - Run quick usability sessions to see whether people can capture an item fast enough during realistic moments (e.g., after shopping)
-  - Track weekly retention during pilot testing
-  - Test with small shared households (2-4 users)
-  - Observe whether optional prompts are perceived as helpful or disruptive (and whether people disable them)
-
-// === Idea B — <Short name> (optional)
-// * Core concept: TODO
-// * Needs addressed: TODO
-// * Benefits: TODO
-// * Risks/unknowns: TODO
-// * How we will validate this idea: TODO
-
-// === Notes
-// * TODO: Any decision notes or tradeoffs so far
+  - Track weekly retention during pilot testing with small shared households (2-4 users)
+  - Observe whether optional prompts are perceived as helpful or disruptive

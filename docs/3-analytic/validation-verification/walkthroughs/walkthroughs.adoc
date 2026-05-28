@@ -1,24 +1,11 @@
 == Walkthroughs
 
-Walkthroughs are a validation activity: they check whether the team’s understanding of the domain and scenarios matches stakeholder expectations. They do not verify implementation correctness.
+Walkthroughs are a validation activity: they check whether the team's understanding of the domain and scenarios matches stakeholder expectations. They do not verify implementation correctness.
 
 === Walkthrough plan
-* Participants:
-** Development team members.
-** 2–3 prospective users acting as domain informants.
-* Materials:
-** Event table and Important Event Sequences from the domain description.
-** Scenario descriptions
-** Draft UI mockups or simple screen sketches.
-** Terminology list defining key concepts such as household, inventory, item type/item instance, restock list/planner, and spending tracking.
-** Expiration state model summary from `alert-system-states.adoc`.
-** Technical delivery considerations for expiration alerts from `tech-expiration-alert-system.adoc` (used only to sanity-check feasibility; not evaluated with stakeholders).
-* Method:
-** Scenario-driven walkthrough using a think-aloud approach (participants verbalize what they expect and why at each step).
-** Facilitator presents a situation and asks participants to describe what they expect to happen next.
-** Event sequence is compared live against participant expectations and domain terminology.
-** Clarifications and disagreements are documented as validation findings.
-** No implementation details are discussed. The focus remains on domain correctness and stakeholder mental models.
+* Participants: development team members, plus 2–3 prospective users acting as domain informants.
+* Materials: event table and Important Event Sequences from the domain description; scenario descriptions; draft UI mockups or sketches; the terminology list (household, inventory, item type/item instance, restock list/planner, spending tracking); the expiration state model from `alert-system-states.adoc`; and technical delivery considerations from `tech-expiration-alert-system.adoc` (used only to sanity-check feasibility, not evaluated with stakeholders).
+* Method: scenario-driven, think-aloud walkthrough where the facilitator presents a situation and participants describe what they expect next and why. The event sequence is compared live against participant expectations and domain terminology; clarifications and disagreements are documented as validation findings. No implementation details are discussed — the focus is domain correctness and stakeholder mental models.
 
 === Walkthrough questions
 * What part of this process feels different from how you normally manage items at home?
@@ -30,11 +17,11 @@ Walkthroughs are a validation activity: they check whether the team’s understa
 * Is this the order in which these things would normally occur?
 * When would this feature become annoying or unnecessary?
 
-These questions aim to validate mental models and domain assumptions, not measure satisfaction.
+These questions validate mental models and domain assumptions, not satisfaction.
 
 === Hypotheses to validate
 
-[cols=”2,4,3”,options=”header”]
+[cols="2,4,3",options="header"]
 |===
 |Hypothesis |What to observe / ask |Expected impact if confirmed
 
@@ -44,13 +31,13 @@ These questions aim to validate mental models and domain assumptions, not measur
 
 |Expiration does not always imply unavailability.
 |Do participants treat expiration differently by item type? Record evidence with participant code and date.
-|Separate “expired” from “unavailable” states; require a policy for what happens on expiration.
+|Separate "expired" from "unavailable" states; require a policy for what happens on expiration.
 
 |Restock list/planner should allow manual override.
-|Do participants want all low/expired items auto-added, or do they prefer control? Record evidence with participant code and date.
-|Specify rules for manual remove/defer and for auto-add gating to reduce clutter.
+|Do participants want all low/expired items auto-added, or prefer control? Record evidence with participant code and date.
+|Specify rules for manual remove/defer and auto-add gating to reduce clutter.
 
 |Shared-household alerts may be excessive.
-|Do multiple household members receiving redundant alerts perceive them as noisy? Record evidence with participant code and date.
-|Add preferences or scoping; emphasize grouping/deduplication and “transition-only” alerting.
+|Do multiple members receiving redundant alerts perceive them as noisy? Record evidence with participant code and date.
+|Add preferences or scoping; emphasize grouping/deduplication and "transition-only" alerting.
 |===

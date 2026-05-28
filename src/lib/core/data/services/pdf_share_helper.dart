@@ -54,6 +54,88 @@ class PdfShareHelper {
     }
   }
 
+  static Future<void> shareExpenditureReport({
+    required BuildContext context,
+    required DateTime startDate,
+    required DateTime endDate,
+    required List<Map<String, dynamic>> categories,
+    required double totalAmount,
+    Uint8List? chartImage,
+    String fileName = 'expenditure_report.pdf',
+    String reportType = 'expenditure',
+  }) async {
+    try {
+      final pdfExportService = PdfExportService();
+      final pdfShareService = PdfShareService();
+
+      final pdfBytes = await pdfExportService.generateExpenditureReportPdfBytes(
+        startDate: startDate,
+        endDate: endDate,
+        categories: categories,
+        totalAmount: totalAmount,
+        chartImage: chartImage,
+      );
+
+      final result = await pdfShareService.uploadPdfAndCreateSignedUrl(
+        pdfBytes: pdfBytes,
+        fileName: fileName,
+        reportType: reportType,
+        expiresInSeconds: 3600,
+      );
+
+      if (!context.mounted) return;
+
+      await _showShareDialog(context, result.signedUrl);
+    } catch (e) {
+      debugPrint('PDF SHARE ERROR: $e');
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Share failed: $e')),
+      );
+    }
+  }
+
+  static Future<void> shareItemUsageRatesReport({
+    required BuildContext context,
+    required String dateRange,
+    required List<Map<String, dynamic>> categories,
+    Uint8List? chartImage,
+    String fileName = 'item_usage_rates_report.pdf',
+    String reportType = 'item_usage_rates',
+  }) async {
+    try {
+      final pdfExportService = PdfExportService();
+      final pdfShareService = PdfShareService();
+
+      final pdfBytes = await pdfExportService.generateItemUsageRatesReportPdfBytes(
+        dateRange: dateRange,
+        categories: categories,
+        chartImage: chartImage,
+      );
+
+      final result = await pdfShareService.uploadPdfAndCreateSignedUrl(
+        pdfBytes: pdfBytes,
+        fileName: fileName,
+        reportType: reportType,
+        expiresInSeconds: 3600,
+      );
+
+      if (!context.mounted) return;
+
+      await _showShareDialog(context, result.signedUrl);
+    } catch (e) {
+      debugPrint('PDF SHARE ERROR: $e');
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Share failed: $e')),
+      );
+    }
+  }
+
   static Future<void> _showShareDialog(
       BuildContext context,
       String signedUrl,

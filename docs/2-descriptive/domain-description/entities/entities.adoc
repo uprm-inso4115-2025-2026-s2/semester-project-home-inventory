@@ -1,6 +1,6 @@
 == Entities
 
-Key domain entities and artifacts. The entities below follow the terminology established in <<_terminology>> and use a single unified concept vocabulary for the domain.
+Key domain entities and artifacts, following the canonical vocabulary in <<_terminology>>.
 
 [cols="2,4,4",options="header"]
 |===
@@ -13,7 +13,7 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |name (optional label), members, locations, inventory (reality), optional budgets
 
 |Household member
-|A person who belongs to a household and consumes, replenishes, or coordinates around household items.
+|A person belonging to a household who consumes, replenishes, or coordinates around items.
 |name/identifier (domain-level), household reference, informal role
 
 |Location
@@ -33,7 +33,7 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |household reference, item instances
 
 |Tracked inventory record
-|A representation households use to reason about availability. It may diverge from reality.
+|A representation households use to reason about availability; may diverge from reality.
 |artifact type (note/chat/list/memory), item reference (explicit or implicit), last-updated (if recorded)
 
 |Restock list / planner
@@ -61,11 +61,11 @@ Key domain entities and artifacts. The entities below follow the terminology est
 |spent-to-date, remaining, percent used, threshold-crossed flags
 
 |Invitation
-|A temporary request that allows a new participant to join a shared household context.
+|A temporary request allowing a new participant to join a shared household context.
 |sender, recipient, target household, status, expiration timestamp
 
 |Membership
-|The relationship connecting a system participant to a household for coordination and access purposes.
+|The relationship connecting a participant to a household for coordination and access.
 |household reference, participant reference, role, membership state
 |===
 

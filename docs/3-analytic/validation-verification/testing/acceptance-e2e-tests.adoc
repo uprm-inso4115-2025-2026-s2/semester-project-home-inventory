@@ -1,10 +1,10 @@
 == Acceptance and End-to-End (E2E) Testing
 
-To provide concrete evidence of our system's reliability, we conducted formal Acceptance and End-to-End (E2E) tests on our minimal viable feature set. These tests validate the user journey from the perspective of our core personas (**Andrea**, **Mateo**, and **Sofia**) and ensure the application handles not only the "happy path" but also boundary conditions and failure states.
+To provide concrete evidence of reliability, we conducted formal Acceptance and E2E tests on the minimal viable feature set. These validate the user journey from the perspective of our core personas (**Andrea**, **Mateo**, **Sofia**) and ensure the application handles the happy path as well as boundary conditions and failure states.
 
 == Feature 1: Core Inventory & Barcode Scanning
 
-**Testing Objective:** Verify that a user can seamlessly digitize their physical pantry, and that the system safely handles unrecognized items and missing data.
+**Testing Objective:** Verify a user can digitize their physical pantry and that the system safely handles unrecognized items and missing data.
 
 [cols="1,2,1,2,2,1", options="header"]
 |===
@@ -25,10 +25,17 @@ To provide concrete evidence of our system's reliability, we conducted formal Ac
 |  **PASS**
 
 | **TC-1.3**
-| Attempt to save an item with a blank expiration date or negative quantity.
+| Attempt to save an item with a blank expiration date.
+| Happy Path
+| The UI accepts the save and treats expiration as optional/unknown.
+| Blank expiration was accepted and the item saved successfully without an expiration date.
+|  **PASS**
+
+| **TC-1.4**
+| Attempt to save an item with a negative quantity.
 | Failure State
-| The UI prevents the transaction and displays inline validation errors.
-| Save button disabled. Red validation text appeared: "Expiration date is required."
+| The UI blocks the submission and prevents the inventory update from being persisted.
+| Validation rejected the submission because quantity must be greater than zero.
 |  **PASS**
 |===
 

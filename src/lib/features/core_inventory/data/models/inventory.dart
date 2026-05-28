@@ -3,6 +3,7 @@ import 'package:src/features/core_inventory/domain/entities/inventory.dart';
 import 'package:src/features/core_inventory/domain/entities/product.dart';
 import 'package:src/features/core_inventory/domain/entities/stock.dart';
 
+// TODO: Consider adding item-level ownership/visibility metadata (ownerId/visibility) to `StockModel` and `InventoryModel` if requirements require personal vs shared item visibility.
 class InventoryModel {
   final int id;
 

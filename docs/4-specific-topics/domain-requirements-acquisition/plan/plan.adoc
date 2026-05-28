@@ -1,29 +1,27 @@
 == Acquisition Plan
 
-This section defines how raw domain knowledge and evidence are gathered before they are interpreted into stakeholder needs and system requirements.
-
-Requirements acquisition focuses on collecting raw observations, examples, and participant accounts. Elicitation happens later, when that material is interpreted into concepts, stories, and requirements.
+This section defines how raw domain knowledge and evidence are gathered before being interpreted into stakeholder needs and requirements (the acquisition/elicitation distinction is established in the parent section above).
 
 === Goals
 * Capture real household practices instead of idealized descriptions.
-* Understand shared-household coordination, including visibility, duplicates, ownership, and cost splitting.
+* Understand shared-household coordination (visibility, duplicates, ownership, cost splitting).
 * Identify friction points that cause tracking methods to be abandoned.
-* Clarify important edge cases such as bulk purchases, multiple locations, and missing expiration information.
+* Clarify edge cases such as bulk purchases, multiple locations, and missing expiration information.
 * Build a traceable base of raw domain evidence for later elicitation.
 
 === Methods
 
-The following methods are part of requirements acquisition because they gather raw domain data before formal analysis or requirement extraction takes place:
+These methods gather raw domain data before formal analysis or requirement extraction:
 
-* *Questionnaire:* short set of questions used to collect recurring household practices and pain points across participants.
+* *Questionnaire:* short questions collecting recurring household practices and pain points across participants.
 * *Interviews (4–6):* semi-structured interviews with solo students and students in shared households, including at least one student athlete.
-* *Contextual walkthroughs:* participants demonstrate their current tracking methods and explain their shorthand and terminology.
-* *Item analysis:* review of receipts, pantry or fridge photos, and shared shopping messages to understand how items are tracked or forgotten in practice.
-* *Light competitive scan:* review a small set of existing apps to identify repeated friction points such as entry effort and notification fatigue.
+* *Contextual walkthroughs:* participants demonstrate current tracking methods and explain their shorthand and terminology.
+* *Item analysis:* review of receipts, pantry/fridge photos, and shared shopping messages to understand how items are tracked or forgotten.
+* *Light competitive scan:* review a small set of existing apps for repeated friction points such as entry effort and notification fatigue.
 
 [NOTE]
 ====
-Broader surveys and larger quantitative validation may be deferred if time is limited. This milestone prioritizes qualitative evidence that supports domain understanding and early requirements work.
+Broader surveys and larger quantitative validation may be deferred if time is limited. This milestone prioritizes qualitative evidence supporting domain understanding and early requirements work.
 ====
 
 === Schedule
@@ -43,17 +41,10 @@ Broader surveys and larger quantitative validation may be deferred if time is li
 |===
 
 === Risks and Mitigations
-* *Risk:* Participants are too busy for long interviews.
-** *Mitigation:* Keep sessions short and allow asynchronous follow-up.
-
-* *Risk:* Participants describe ideal behavior instead of actual behavior.
-** *Mitigation:* Ask for recent concrete examples and current artifacts such as notes, chats, or receipts.
-
-* *Risk:* Manual-entry tolerance is very low.
-** *Mitigation:* Ask explicitly what minimum information participants are willing to record.
-
-* *Risk:* Acquisition and elicitation are mixed together too early.
-** *Mitigation:* Record raw evidence first, then interpret it later in a separate elicitation step.
+* *Risk:* Participants are too busy for long interviews. — *Mitigation:* keep sessions short and allow asynchronous follow-up.
+* *Risk:* Participants describe ideal rather than actual behavior. — *Mitigation:* ask for recent concrete examples and current artifacts (notes, chats, receipts).
+* *Risk:* Manual-entry tolerance is very low. — *Mitigation:* ask explicitly what minimum information participants will record.
+* *Risk:* Acquisition and elicitation are mixed too early. — *Mitigation:* record raw evidence first, then interpret it in a separate elicitation step.
 
 [[second-round-requirements-acquisition]]
 == #Second-Round Requirements Acquisition#
@@ -220,4 +211,4 @@ Broader surveys and larger quantitative validation may be deferred if time is li
 * #Auto-added grocery-list entries must support manual removal or snooze without immediate re-addition.#
 * #Offline inventory support should include pending item creation and quantity updates, not only view-only access.#
 
-Each requirement added or revised from this acquisition round is marked in Section 2.2.
+Each requirement added or revised from this round is marked in Section 2.2.

@@ -1,8 +1,6 @@
-
-
 == Domain Invariants
 
-This section states a small set of stable domain rules that must remain true across the household inventory domain.
+A small set of stable domain rules that must remain true across the household inventory domain.
 
 === Core invariants
 
@@ -10,13 +8,11 @@ This section states a small set of stable domain rules that must remain true acr
 * An item instance belongs to exactly one household context.
 * An item instance is stored in some location, even if that location is forgotten or described informally.
 * A household may contain multiple item instances of the same item type at the same time.
-* A household member’s participation in a household may change over time.
-* Shared-household coordination depends on knowing which items are shared, which are personal, and who is allowed to view or manage them.
+* A household member's participation in a household may change over time.
+* Shared-household coordination depends on knowing which items are shared, which are personal, and who may view or manage them.
 * If spending is recorded, it remains associated with the household context in which it occurred.
 * If an item instance has an expiration date, it may become expired without being consumed.
 
 === Ownership and participation notes
 
-Ownership and responsibility may vary by household practice. Some item instances are treated as personal, while others are treated as shared. For that reason, the domain must support both personal and shared responsibility without redefining the core concepts of household, household member, item type, and item instance.
-
-Rather than introducing a separate set of competing ownership entities, the document keeps the shared-household context in the concepts of household membership, personal/shared item status, and household coordination.
+Ownership and responsibility vary by household practice: some item instances are treated as personal, others as shared. The domain must therefore support both personal and shared responsibility without redefining the core concepts of household, household member, item type, and item instance. Rather than introducing competing ownership entities, the document keeps shared-household context within household membership, personal/shared item status, and household coordination.

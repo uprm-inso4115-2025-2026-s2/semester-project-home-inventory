@@ -1,13 +1,6 @@
 === Core Inventory: Risk Register and Analysis
 
-The following risk register summarizes the main risks identified for the Core Inventory feature based on requirements, architectural analysis, implementation behavior, and verification coverage. Each entry outlines the affected components, estimated likelihood and impact, and possible mitigation strategies.
-
-Scope:
-
-- UI and Cubit integration for Core Inventory flows
-- Repository and data-source flow for load/add/update/delete operations
-- Use-case coverage and verification blind spots
-- Requirement ambiguity, documentation drift, and known implementation gaps
+This risk register summarizes the main risks identified for the Core Inventory feature based on requirements, architectural analysis, implementation behavior, and verification coverage. Each entry outlines the affected components, estimated likelihood and impact, and possible mitigation strategies. Scope: UI/Cubit integration for Core Inventory flows; repository and data-source flow for load/add/update/delete; use-case coverage and verification blind spots; and requirement ambiguity, documentation drift, and known implementation gaps.
 
 [cols="1,2,4,3,1,1,4,3",options="header"]
 |===
@@ -114,5 +107,5 @@ Scope:
 
 ==== Mitigation tracking notes
 
-- Mitigation notes in this register reflect analysis and recommended actions; recorded mitigation status does not necessarily imply its implementation was completed.
+- Mitigation notes reflect analysis and recommended actions; recorded mitigation status does not necessarily imply implementation was completed.
 - When mitigation actions are taken, the associated requirements, architecture, and verification artifacts should be updated within the same documentation cycle to reduce conceptual drift.

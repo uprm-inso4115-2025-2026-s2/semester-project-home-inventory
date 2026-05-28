@@ -9,15 +9,17 @@ import 'package:src/config/theme.dart';
 import '../../../../core/data/services/pdf_export_service.dart';
 import '../widgets/dynamic_line_chart.dart';
 
-// ======================== Models ========================
+// ======================== Model ========================
 
-class _UsageCategory {
-  final String name;
+class _UsageItem {
+  final String itemName;
+  final String categoryName;
   final int itemsUsed;
   final int usageRatePercent;
 
-  const _UsageCategory({
-    required this.name,
+  const _UsageItem({
+    required this.itemName,
+    required this.categoryName,
     required this.itemsUsed,
     required this.usageRatePercent,
   });
@@ -40,64 +42,48 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
 
   final TextEditingController _searchController = TextEditingController();
 
-  // LayerLink anchors the overlay to the Filters button
   final LayerLink _layerLink = LayerLink();
 
-  // Overlay state: null | 'main' | 'dateRange' | 'categories'
   String? _overlayState;
   OverlayEntry? _overlayEntry;
 
-  // Key for capturing the chart
-  final GlobalKey _chartKey = GlobalKey();
+  final Map<String, GlobalKey> _chartKeys = {};
 
-  List<_UsageCategory> _allCategories = [];
+  List<_UsageItem> _allItems = [];
 
   bool _isLoading = true;
   String? _errorMessage;
 
   static const List<String> _monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
   ];
 
   @override
   void initState() {
     super.initState();
-
     _dateRanges = _generateMonthRanges();
     _selectedDateRange = _formatMonth(DateTime.now());
-
+    _searchController.addListener(() => setState(() {}));
     _loadUsageRates();
   }
 
   @override
   void dispose() {
+    _searchController.removeListener(() {});
     _removeOverlay();
     _searchController.dispose();
     super.dispose();
   }
 
   // ── Date helpers ───────────────────────────────────────────────
-
   List<String> _generateMonthRanges() {
     final now = DateTime.now();
     final ranges = <String>[];
-
     for (int month = 1; month <= 12; month++) {
       final date = DateTime(now.year, month, 1);
       ranges.add(_formatMonth(date));
     }
-
     return ranges;
   }
 
@@ -110,12 +96,10 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
     final monthName = parts[0];
     final year = int.tryParse(parts[1]) ?? DateTime.now().year;
     final month = _monthNames.indexOf(monthName) + 1;
-
     return DateTime(year, month, 1);
   }
 
-  // ── Supabase data loading ──────────────────────────────────────
-
+  // ── Supabase data loading (household filter added) ─────────────
   Future<void> _loadUsageRates() async {
     setState(() {
       _isLoading = true;
@@ -126,28 +110,63 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
       final startDate = _getMonthStart(_selectedDateRange);
       final endDate = DateTime(startDate.year, startDate.month + 1, 1);
 
-      final data = await Supabase.instance.client
+      // 1. Get current user
+      final user = Supabase.instance.client.auth.currentUser;
+
+      // 2. Build base query with date filters
+      var query = Supabase.instance.client
           .from('usage_rates')
           .select()
           .gte('usage_date', startDate.toIso8601String().split('T').first)
-          .lt('usage_date', endDate.toIso8601String().split('T').first)
-          .order('category_name');
+          .lt('usage_date', endDate.toIso8601String().split('T').first);
 
-      final categories = data.map<_UsageCategory>((row) {
-        return _UsageCategory(
-          name: row['category_name'] ?? '',
-          itemsUsed: row['items_used'] ?? 0,
-          usageRatePercent: row['usage_rate_percent'] ?? 0,
+      // 3. Apply household filter
+      if (user == null) {
+        // Guest – only items with household_id IS NULL
+        query = query.filter('household_id', 'is', null);
+      } else {
+        // Logged in – get user's household_id from profiles table
+        final profile = await Supabase.instance.client
+            .from('profiles')
+            .select('household_id')
+            .eq('id', user.id)
+            .single();
+
+        if (profile != null && profile['household_id'] != null) {
+          final householdId = profile['household_id'] as int;
+          query = query.eq('household_id', householdId);
+        } else {
+          // No household assigned – return no items
+          setState(() {
+            _allItems = [];
+            _selectedCategories.clear();
+            _isLoading = false;
+          });
+          return;
+        }
+      }
+
+      // 4. Execute query with ordering
+      final data = await query.order('category_name');
+
+      final items = data.map<_UsageItem>((row) {
+        final catName = row['category_name'] as String? ?? '';
+        final itemName = row['item_name'] as String?;
+        final displayName =
+            (itemName != null && itemName.isNotEmpty) ? itemName : catName;
+        return _UsageItem(
+          itemName: displayName,
+          categoryName: catName,
+          itemsUsed: (row['items_used'] as int?) ?? 0,
+          usageRatePercent: (row['usage_rate_percent'] as int?) ?? 0,
         );
       }).toList();
 
       setState(() {
-        _allCategories = categories;
-
+        _allItems = items;
         _selectedCategories
           ..clear()
-          ..addAll(categories.map((category) => category.name));
-
+          ..addAll(items.map((item) => item.categoryName).toSet());
         _isLoading = false;
       });
     } catch (_) {
@@ -159,7 +178,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   }
 
   // ── Overlay management ─────────────────────────────────────────
-
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;
@@ -173,7 +191,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   void _showOverlay(String state) {
     _removeOverlay();
     setState(() => _overlayState = state);
-
     final entry = OverlayEntry(builder: (_) => _buildOverlayEntry());
     _overlayEntry = entry;
     Overlay.of(context).insert(entry);
@@ -184,12 +201,9 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
     _overlayEntry?.markNeedsBuild();
   }
 
-  // ── Build overlay widget tree ──────────────────────────────────
-
   Widget _buildOverlayEntry() {
     return Stack(
       children: [
-        // Full-screen tap barrier to dismiss
         Positioned.fill(
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
@@ -197,7 +211,6 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
             child: const SizedBox.expand(),
           ),
         ),
-        // Overlay anchored to the Filters button (bottom-right aligned)
         CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
@@ -235,7 +248,8 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
         );
       case 'categories':
         return _CategoriesOverlay(
-          allCategories: _allCategories.map((c) => c.name).toSet().toList(),
+          allCategories:
+              _allItems.map((i) => i.categoryName).toSet().toList(),
           selected: _selectedCategories,
           onToggle: (name) {
             setState(() {
@@ -255,12 +269,13 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
     }
   }
 
-  // ── Chart capture for PDF ───────────────────────────────────────
-
+  // ── Chart capture for PDF (first chart) ─────────────────────────
   Future<Uint8List?> _captureChart() async {
+    if (_chartKeys.isEmpty) return null;
     try {
-      final boundary =
-      _chartKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      final firstKey = _chartKeys.values.first;
+      final boundary = firstKey.currentContext?.findRenderObject()
+          as RenderRepaintBoundary?;
       if (boundary == null) return null;
       final image = await boundary.toImage(pixelRatio: 3.0);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -271,25 +286,22 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   }
 
   // ── PDF export ─────────────────────────────────────────────────
-
   Future<void> _exportPdf() async {
     final pdfService = PdfExportService();
-    final categories = _filteredCategories
-        .map((c) => {
-      'name': c.name,
-      'itemsUsed': c.itemsUsed,
-      'usageRate': c.usageRatePercent,
-    })
+    final items = _filteredItems
+        .map((i) => {
+              'name': i.itemName,
+              'category': i.categoryName,
+              'itemsUsed': i.itemsUsed,
+              'usageRate': i.usageRatePercent,
+            })
         .toList();
-
     final chartImage = await _captureChart();
-
     await pdfService.exportItemUsageRatesReport(
       dateRange: _selectedDateRange,
-      categories: categories,
+      categories: items,
       chartImage: chartImage,
     );
-
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('PDF exported successfully')),
@@ -298,24 +310,38 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
   }
 
   // ── Helpers ────────────────────────────────────────────────────
+  List<_UsageItem> get _filteredItems {
+    var items = _allItems
+        .where((item) => _selectedCategories.contains(item.categoryName))
+        .toList();
 
-  List<_UsageCategory> get _filteredCategories => _allCategories
-      .where((c) => _selectedCategories.contains(c.name))
-      .toList();
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isNotEmpty) {
+      items = items
+          .where((item) =>
+              item.itemName.toLowerCase().contains(query) ||
+              item.categoryName.toLowerCase().contains(query))
+          .toList();
+    }
+    return items;
+  }
 
-  List<double> get _filteredChartPoints => _filteredCategories
-      .map((category) => category.usageRatePercent.toDouble())
-      .toList();
-
-  List<String> get _filteredChartLabels =>
-      _filteredCategories.map((category) => category.name).toList();
+  Map<String, List<_UsageItem>> get _itemsByCategory {
+    final map = <String, List<_UsageItem>>{};
+    for (final item in _filteredItems) {
+      map.putIfAbsent(item.categoryName, () => []);
+      map[item.categoryName]!.add(item);
+    }
+    return map;
+  }
 
   // ======================== Build ========================
-
   @override
   Widget build(BuildContext context) {
-    final canShowChart = _filteredChartPoints.length >= 2 &&
-        _filteredChartPoints.length == _filteredChartLabels.length;
+    _chartKeys.clear();
+    for (final cat in _itemsByCategory.keys) {
+      _chartKeys[cat] = GlobalKey();
+    }
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
@@ -339,142 +365,163 @@ class _ItemUsageRatesPageState extends State<ItemUsageRatesPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
-          ? Center(
-        child: Text(
-          _errorMessage!,
-          style: const TextStyle(color: AppTheme.primaryText),
-        ),
-      )
-          : Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Date range + Filters button row
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Date range display
-                      Text(
-                        _selectedDateRange,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.primaryText,
+              ? Center(
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: AppTheme.primaryText),
+                  ),
+                )
+              : Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
                         ),
-                      ),
-                      const Spacer(),
-                      // Filters button — anchored with CompositedTransformTarget
-                      CompositedTransformTarget(
-                        link: _layerLink,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_overlayState != null) {
-                              _closeOverlay();
-                            } else {
-                              _showOverlay('main');
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Filters',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
+                                Text(
+                                  _selectedDateRange,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.primaryText,
                                   ),
                                 ),
-                                const SizedBox(width: 4),
-                                Icon(
-                                  _overlayState != null
-                                      ? Icons.arrow_drop_up
-                                      : Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                  size: 20,
+                                const Spacer(),
+                                CompositedTransformTarget(
+                                  link: _layerLink,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (_overlayState != null) {
+                                        _closeOverlay();
+                                      } else {
+                                        _showOverlay('main');
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 8,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.primaryColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text(
+                                            'Filters',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Icon(
+                                            _overlayState != null
+                                                ? Icons.arrow_drop_up
+                                                : Icons.arrow_drop_down,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 16),
+                            if (_allItems.isEmpty)
+                              const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 40),
+                                  child: Text(
+                                    'No usage rate data available for this month.',
+                                    style: TextStyle(
+                                      color: AppTheme.primaryText,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            else ...[
+                              if (_itemsByCategory.isNotEmpty) ...[
+                                for (final entry in _itemsByCategory.entries)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          entry.key,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.primaryText,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        SizedBox(
+                                          height: 200,
+                                          child: RepaintBoundary(
+                                            key: _chartKeys[entry.key],
+                                            child: DynamicLineChart(
+                                              points: entry.value
+                                                  .map((i) =>
+                                                      i.usageRatePercent
+                                                          .toDouble())
+                                                  .toList(),
+                                              days: List<String>.filled(
+                                                  entry.value.length, ''),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ] else
+                                const Center(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 24),
+                                    child: Text(
+                                      'Select at least one category to display charts.',
+                                      style: TextStyle(
+                                        color: AppTheme.primaryText,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              const SizedBox(height: 20),
+                              _UsageTable(items: _filteredItems),
+                              const SizedBox(height: 12),
+                            ],
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  if (_allCategories.isEmpty)
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 40),
-                        child: Text(
-                          'No usage rate data available for this month.',
-                          style: TextStyle(
-                            color: AppTheme.primaryText,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    )
-                  else ...[
-                    // Line chart
-                    if (canShowChart)
-                      RepaintBoundary(
-                        key: _chartKey,
-                        child: DynamicLineChart(
-                          points: _filteredChartPoints,
-                          days: _filteredChartLabels,
-                        ),
-                      )
-                    else
-                      const Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
-                          child: Text(
-                            'Add at least 2 usage rate entries to display the chart.',
-                            style: TextStyle(
-                              color: AppTheme.primaryText,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 20),
-                    // Table
-                    _UsageTable(categories: _filteredCategories),
-                    const SizedBox(height: 12),
+                    ),
+                    _BottomBar(
+                      controller: _searchController,
+                      onExport: _exportPdf,
+                    ),
                   ],
-                ],
-              ),
-            ),
-          ),
-          _BottomBar(
-            controller: _searchController,
-            onExport: _exportPdf,
-          ),
-        ],
-      ),
+                ),
     );
   }
 }
 
 // ======================== Overlay Widgets ========================
 
-/// First level: "Date Range ▶" and "Show Categories ▶"
 class _MainFilterOverlay extends StatelessWidget {
   final VoidCallback onDateRange;
   final VoidCallback onCategories;
@@ -500,7 +547,6 @@ class _MainFilterOverlay extends StatelessWidget {
   }
 }
 
-/// Second level: mutually exclusive date range selection
 class _DateRangeOverlay extends StatelessWidget {
   final List<String> dateRanges;
   final String selected;
@@ -547,8 +593,9 @@ class _DateRangeOverlay extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13,
                               color: AppTheme.primaryText,
-                              fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.normal,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
                             ),
                           ),
                         ),
@@ -571,7 +618,6 @@ class _DateRangeOverlay extends StatelessWidget {
   }
 }
 
-/// Second level: multi-select category checkboxes
 class _CategoriesOverlay extends StatelessWidget {
   final List<String> allCategories;
   final Set<String> selected;
@@ -610,7 +656,7 @@ class _CategoriesOverlay extends StatelessWidget {
                             onChanged: (_) => onToggle(name),
                             activeColor: AppTheme.primaryColor,
                             materialTapTargetSize:
-                            MaterialTapTargetSize.shrinkWrap,
+                                MaterialTapTargetSize.shrinkWrap,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -634,7 +680,6 @@ class _CategoriesOverlay extends StatelessWidget {
   }
 }
 
-/// Shared card container for all overlay levels
 class _OverlayCard extends StatelessWidget {
   final Widget child;
   const _OverlayCard({required this.child});
@@ -653,7 +698,6 @@ class _OverlayCard extends StatelessWidget {
   }
 }
 
-/// A single menu item button inside the main filter overlay
 class _FilterMenuButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
@@ -691,8 +735,8 @@ class _FilterMenuButton extends StatelessWidget {
 // ======================== Usage Table ========================
 
 class _UsageTable extends StatelessWidget {
-  final List<_UsageCategory> categories;
-  const _UsageTable({required this.categories});
+  final List<_UsageItem> items;
+  const _UsageTable({required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -706,10 +750,10 @@ class _UsageTable extends StatelessWidget {
         children: [
           _tableHeader(),
           const Divider(height: 1, color: AppTheme.borderColor),
-          ...categories.map(
-                (cat) => Column(
+          ...items.map(
+            (item) => Column(
               children: [
-                _tableRow(cat),
+                _tableRow(item),
                 const Divider(height: 1, color: AppTheme.borderColor),
               ],
             ),
@@ -727,7 +771,19 @@ class _UsageTable extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
+              'Item',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
               'Category',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
@@ -764,7 +820,7 @@ class _UsageTable extends StatelessWidget {
     );
   }
 
-  Widget _tableRow(_UsageCategory cat) {
+  Widget _tableRow(_UsageItem item) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: Row(
@@ -772,7 +828,7 @@ class _UsageTable extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              cat.name,
+              item.itemName,
               style: const TextStyle(
                 fontSize: 13,
                 color: AppTheme.primaryText,
@@ -782,7 +838,7 @@ class _UsageTable extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              '${cat.itemsUsed}',
+              item.categoryName,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 13,
@@ -793,7 +849,18 @@ class _UsageTable extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              '${cat.usageRatePercent}%',
+              '${item.itemsUsed}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppTheme.primaryText,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              '${item.usageRatePercent}%',
               textAlign: TextAlign.end,
               style: const TextStyle(
                 fontSize: 13,
@@ -852,7 +919,6 @@ class _BottomBar extends StatelessWidget {
                   vertical: 12,
                 ),
               ),
-              // TO DO: Wire up search to filter table rows
             ),
           ),
           const SizedBox(width: 8),

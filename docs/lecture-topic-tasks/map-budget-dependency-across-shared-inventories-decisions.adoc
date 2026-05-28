@@ -1,0 +1,325 @@
+= Map Budget Dependency Relationships Across Shared Inventory Decisions
+
+// Author: @andreasegarra
+// Issue #590
+
+== Objective
+
+The objective of this analysis is to examine how budget constraints and financial dependencies influence decision-making within the Sharing & Budget subsystem of the Digital Home Inventory System.
+
+This document explores how shared financial responsibilities, reimbursement coordination, and spending priorities impact household collaboration and inventory management. It also identifies risks caused by financial dependency relationships and proposes mitigation and domain modeling strategies for improving coordination reliability.
+
+== Budget Dependency Relationships in Shared Systems
+
+Shared budgeting systems rely on coordination between multiple users who contribute to household expenses and purchasing decisions. In collaborative households, financial decisions are often interconnected, meaning that one user’s spending behavior or delayed action may directly affect other household members.
+
+Budget dependency relationships emerge when:
+
+* Multiple users contribute to shared expenses
+* Purchasing decisions depend on available household funds
+* Shared financial responsibilities are unevenly distributed
+* Reimbursements affect future spending capacity
+* Users prioritize different household needs
+
+These dependencies can significantly influence the reliability and efficiency of shared inventory management.
+
+== Sharing & Budget Workflow Analysis
+
+=== Shared Purchase Approval Workflows
+
+Many shared household purchases require approval or agreement between roommates before spending occurs.
+
+Potential dependency issues include:
+
+* One roommate delaying purchase approval
+* Disagreements regarding purchase necessity
+* Different spending priorities between household members
+* Lack of confirmation before purchases occur
+
+Possible consequences:
+
+* Delayed purchasing decisions
+* Household tension regarding expenses
+* Inconsistent budgeting records
+* Missing essential household items
+
+=== Budget Allocation Decisions
+
+Households often distribute limited financial resources across different inventory categories.
+
+Examples include:
+
+* Groceries
+* Cleaning supplies
+* Shared appliances
+* Emergency household items
+
+Potential dependency issues include:
+
+* Users prioritizing different spending categories
+* Limited funds preventing purchases
+* One category consuming disproportionate budget resources
+* Conflicts regarding budget allocation fairness
+
+Possible consequences:
+
+* Resource allocation imbalances
+* Reduced purchasing efficiency
+* Budget inconsistencies
+* Inventory shortages
+
+=== Expense Splitting Processes
+
+Shared expenses typically require coordination between household members.
+
+Potential dependency issues include:
+
+* Unequal financial contributions
+* Missing or delayed payments
+* Disputes regarding fair cost distribution
+* Untracked shared purchases
+
+Possible consequences:
+
+* Financial coordination failures
+* Budget tracking inaccuracies
+* Household conflict
+* Reduced accountability
+
+=== Reimbursement Coordination
+
+Reimbursement workflows create financial dependencies between users.
+
+Examples include:
+
+* One roommate purchasing shared groceries
+* Another roommate delaying repayment
+* Shared expenses remaining unresolved
+
+Potential dependency issues include:
+
+* Delayed reimbursements affecting future purchases
+* Users forgetting repayment obligations
+* Lack of reimbursement tracking
+* Financial imbalance between members
+
+Possible consequences:
+
+* Household budgeting disruptions
+* Reduced trust between users
+* Spending limitations for some members
+* Accountability concerns
+
+=== Shared Item Prioritization
+
+Household members may prioritize inventory needs differently depending on their preferences or financial situations.
+
+Potential dependency issues include:
+
+* Conflicting opinions regarding essential purchases
+* Users prioritizing personal items over shared necessities
+* Budget limitations forcing trade-offs
+* Delayed purchasing due to unresolved priorities
+
+Possible consequences:
+
+* Shared spending conflicts
+* Inefficient inventory management
+* Reduced household coordination
+* Resource shortages
+
+== Examples of Financial Coordination Conflicts
+
+=== Scenario 1 — Delayed Reimbursement
+
+One roommate purchases shared groceries expecting reimbursement from other household members. Repayments are delayed, reducing the purchaser’s ability to contribute to future shared expenses.
+
+Resulting issues:
+
+* Financial imbalance
+* Reduced trust
+* Delayed future purchases
+
+=== Scenario 2 — Conflicting Spending Priorities
+
+One user prioritizes purchasing cleaning supplies while another prioritizes entertainment-related expenses.
+
+Resulting issues:
+
+* Budget allocation disputes
+* Delayed household purchases
+* Coordination inefficiencies
+
+=== Scenario 3 — Budget Limit Restrictions
+
+The household budget reaches its spending limit before all required inventory items are purchased.
+
+Resulting issues:
+
+* Essential items remain unavailable
+* Users compete for limited resources
+* Financial stress increases
+
+=== Scenario 4 — Untracked Shared Purchases
+
+A household member purchases items informally without recording the expense in the system.
+
+Resulting issues:
+
+* Inaccurate spending records
+* Expense splitting conflicts
+* Budget inconsistencies
+
+== Risks Introduced by Financial Dependencies
+
+=== Budget Inconsistencies
+
+Financial dependencies may cause discrepancies between recorded and actual household spending.
+
+Examples include:
+
+* Missing reimbursements
+* Untracked purchases
+* Delayed expense updates
+* Incorrect budget calculations
+
+=== Financial Coordination Issues
+
+Shared budgeting requires continuous coordination between users.
+
+Potential risks include:
+
+* Delayed approvals
+* Conflicting priorities
+* Unequal participation
+* Miscommunication regarding expenses
+
+=== Delayed Purchasing Decisions
+
+Dependency relationships may slow inventory-related decisions.
+
+Examples include:
+
+* Waiting for purchase approval
+* Insufficient available funds
+* Delayed reimbursements
+* Unresolved spending disputes
+
+=== Shared Spending Conflicts
+
+Differences in spending expectations may create disagreements between users.
+
+Examples include:
+
+* Disputes over fair contributions
+* Disagreement regarding purchase importance
+* Unequal financial burden distribution
+
+=== Resource Allocation Problems
+
+Limited budgets may force households to prioritize some inventory needs over others.
+
+Examples include:
+
+* Essential item shortages
+* Overspending in one category
+* Neglected household needs
+
+== Mitigation and Domain Modeling Strategies
+
+=== Shared Budget Visibility
+
+Providing transparent household budget information may improve financial coordination.
+
+Possible features:
+
+* Shared spending dashboards
+* Household contribution summaries
+* Realtime budget tracking
+* Expense category breakdowns
+
+=== Approval and Confirmation Workflows
+
+Shared purchases may require explicit confirmations before approval.
+
+Examples include:
+
+* Purchase approval requests
+* Budget threshold alerts
+* Multi-user spending confirmations
+
+=== Automated Expense Splitting
+
+The system may automate shared expense calculations.
+
+Potential strategies include:
+
+* Equal expense distribution
+* Percentage-based contributions
+* Shared reimbursement tracking
+* Automatic balance calculations
+
+=== Reimbursement Tracking Systems
+
+Tracking repayment workflows may improve accountability.
+
+Possible features:
+
+* Pending reimbursement reminders
+* Payment history logs
+* Outstanding balance indicators
+* Automated repayment notifications
+
+=== Budget Constraint Notifications
+
+The system may proactively notify users when financial risks emerge.
+
+Examples include:
+
+* Low budget alerts
+* Overspending warnings
+* Spending category limits
+* Dependency conflict notifications
+
+=== Priority-Based Resource Allocation
+
+The subsystem may support prioritization mechanisms for essential inventory needs.
+
+Possible strategies include:
+
+* Essential item tagging
+* Household priority voting
+* Emergency purchase overrides
+* Dynamic budget allocation recommendations
+
+== Domain Modeling Considerations
+
+The Sharing & Budget subsystem should incorporate financial dependency relationships into the domain model.
+
+Important modeling considerations include:
+
+* Shared financial responsibility relationships
+* Reimbursement dependency tracking
+* Purchase approval states
+* Budget allocation constraints
+* Contribution history tracking
+* Spending priority management
+* Dependency conflict handling
+
+These considerations help ensure that the subsystem can support realistic collaborative budgeting behaviors within shared households.
+
+== Conclusion
+
+Budget constraints and financial dependency relationships significantly influence shared inventory management and household coordination. Delayed reimbursements, conflicting spending priorities, unequal participation, and budget limitations may introduce risks such as financial inconsistencies, purchasing delays, and coordination failures.
+
+By incorporating budgeting transparency, approval workflows, automated expense tracking, and dependency-aware domain modeling strategies, the Sharing & Budget subsystem can improve reliability, accountability, and collaboration efficiency within shared household environments.
+
+== References
+
+- [[[1]]] Malone, T. W., & Crowston, K. *The Interdisciplinary Study of Coordination*. ACM Computing Surveys, 1994.
+
+- [[[2]]] Sommerville, I. *Software Engineering*. 10th Edition. Pearson, 2015.
+
+- [[[3]]] Preece, J., Rogers, Y., & Sharp, H. *Interaction Design: Beyond Human-Computer Interaction*. Wiley, 2019.
+
+- [[[4]]] Olson, G. M., & Olson, J. S. *Distance Matters*. Human-Computer Interaction Journal, 2000.

@@ -1,63 +1,51 @@
 == Domain Attributes Classification for Core Inventory
 
-This section applies the lecture topic Domain Attributes to the Core Inventory subsystem by classifying key domain entities and behaviors according to their attributes (Static, Dynamic, Dynamic Inert, Dynamic Active, Discrete).
-
+This section applies the Domain Attributes lecture topic to the Core Inventory subsystem, classifying key domain entities and behaviors by their attributes (Static, Dynamic, Dynamic Inert, Dynamic Active, Discrete).
 
 === 1. Item Type
 
-Represents an item definition (e.g., "Clorox Bleach 64oz Original").
+An item definition (e.g., "Clorox Bleach 64oz Original").
 
-Classification:
-*Static
-*Discrete
+Classification: *Static, *Discrete
 
-An item type’s definition does not change over time once created. Its properties (name, barcode, brand, size) remain constant — a "Clorox Bleach 64oz Original" will remain the same regardless of the passage of time, thus it is classified as Static. It is also Discrete because each item type is its own distinct entity in the system.
+An item type's definition (name, barcode, brand, size) does not change once created, so it is Static; each item type is its own distinct entity, so it is Discrete.
 
 === 2. Item Instance (Package)
 
-Represents a specific purchase or concrete unit of an item type, including information such as date of purchase, storage location, and date of expiration if applicable.
+A specific purchase or concrete unit of an item type (purchase date, storage location, expiration date if applicable).
 
-Classification:
-*Dynamic Inert
-*Discrete
+Classification: *Dynamic Inert, *Discrete
 
-An item instance changes only due to external actions such as household member updates, consumption, or location change. Since it is changed via external stimuli from the household member it is considered Dynamic Inert. Each item instance has a separate record in the system, making it Discrete.
+An item instance changes only through external actions (member updates, consumption, location change), making it Dynamic Inert; each instance has a separate record, making it Discrete.
 
 === 3. Household
 
-Represents a living unit that groups locations and inventory items.
+A living unit grouping locations and inventory items.
 
-Classification:
-*Static
-*Discrete
+Classification: *Static, *Discrete
 
-A household is a structural entity within the system and does not change state over time since it serves as a container for other entities. Each household is unique making it Discrete.
+A household is a structural container that does not change state over time (Static), and each household is unique (Discrete).
 
 === 4. Location
 
-Represents a storage place within a household (e.g., kitchen cabinet, pantry, fridge, bathroom closet).
+A storage place within a household (e.g., kitchen cabinet, pantry, fridge, bathroom closet).
 
-Classification:
-*Static
-*Discrete
+Classification: *Static, *Discrete
 
-Locations are structural subdivisions of a household and do not change autonomously, meaning that they are Static entities. Each location is uniquely represented, so it is Discrete.
+Locations are structural subdivisions that do not change autonomously (Static) and are uniquely represented (Discrete).
 
 === 5. Household Member
 
-Represents a person who belongs to a household and participates in consuming, replenishing, or coordinating around items.
+A person who belongs to a household and participates in consuming, replenishing, or coordinating around items.
 
-Classification:
-*Static
-*Discrete
+Classification: *Static, *Discrete
 
-A household member’s identity does not change over time; while item associations may change, the household member entity itself remains stable so it is Static. Each household member is their own distinct entity, making it Discrete.
+A member's identity remains stable over time even as item associations change (Static), and each member is a distinct entity (Discrete).
 
 === 6. Duplicate Detection Logic
 
-System logic that determines whether a new entry is a duplicate at either the item type or the item instance level.
+System logic that determines whether a new entry is a duplicate at the item-type or item-instance level.
 
-Classification:
-*Dynamic Active
+Classification: *Dynamic Active
 
-Duplicate detection executes a rule-based behavior when household members add or scan items. It responds to system events and applies programmed rule conditions. Therefore, the Duplicate Detection Logic is classified as Dynamic Active since it can change via internally programmed rules and various conditions.
+Duplicate detection executes rule-based behavior when members add or scan items, responding to system events and applying programmed conditions, so it is Dynamic Active (it changes via internally programmed rules and conditions).

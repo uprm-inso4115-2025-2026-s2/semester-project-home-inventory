@@ -29,7 +29,7 @@ class StatCard extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
@@ -41,8 +41,8 @@ class StatCard extends StatelessWidget {
               label,
               textAlign: TextAlign.center,
               style: theme.textTheme.displayMedium?.copyWith(
-                fontSize: 16.sp,
                 color: theme.scaffoldBackgroundColor,
+                fontSize: 16.sp,
               ),
             ),
             // Spacer to push value to vertical center

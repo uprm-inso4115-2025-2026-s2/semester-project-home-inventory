@@ -1,6 +1,6 @@
 == Resources
 
-This subsection lists supporting materials and evidence sources used during requirements acquisition. These resources support the acquisition process, but they are not a substitute for the questionnaire, interview protocol, or participant-coded raw evidence.
+This subsection lists supporting materials and evidence sources used during requirements acquisition. They support the process but do not substitute for the questionnaire, interview protocol, or participant-coded raw evidence.
 
 === External Sources (selected)
 * Household food waste research: supports the importance of visibility and expiration awareness in student households.

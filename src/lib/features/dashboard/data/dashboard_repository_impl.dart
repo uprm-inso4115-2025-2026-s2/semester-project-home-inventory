@@ -5,25 +5,8 @@ import '../domain/entities/dashboard_metrics.dart';
 class DashboardRepositoryImpl implements DashboardRepository {
   @override
   Future<List<Item>> fetchAllItems() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return [
-      Item(
-        id: '1',
-        name: 'TV',
-        category: 'Electronics',
-        room: 'Living Room',
-        value: 500.0,
-        createdAt: DateTime.now(),
-      ),
-      Item(
-        id: '2',
-        name: 'Sofa',
-        category: 'Furniture',
-        room: 'Living Room',
-        value: 800.0,
-        createdAt: DateTime.now(),
-      ),
-    ];
+    // TO DO: Implement real data fetching logic with backend
+    return [];
   }
 
   @override
@@ -33,30 +16,13 @@ class DashboardRepositoryImpl implements DashboardRepository {
     DateTime? startDate,
     DateTime? endDate,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return [
-      Item(
-        id: '1',
-        name: 'TV',
-        category: 'Electronics',
-        room: 'Living Room',
-        value: 500.0,
-        createdAt: DateTime.now(),
-      ),
-      Item(
-        id: '2',
-        name: 'Sofa',
-        category: 'Furniture',
-        room: 'Living Room',
-        value: 800.0,
-        createdAt: DateTime.now(),
-      ),
-    ];
+    // TO DO: Implement real filtering logic with backend
+    return [];
   }
 
   @override
   Future<DashboardMetrics> fetchMetrics() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    // TO DO: Connect to real backend metrics
     return DashboardMetrics();
   }
 }

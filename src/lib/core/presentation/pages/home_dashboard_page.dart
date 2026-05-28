@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
@@ -38,6 +39,14 @@ class HomeDashboardPage extends StatelessWidget {
                 if (state is DashboardLoaded) {
                   final items = state.items;
 
+                  // Show empty state if isEmpty is true or no items exist
+                  if (isEmpty || items.isEmpty) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: _buildEmptyState(context),
+                    );
+                  }
+
                   final totalItems = items.length;
                   final totalValue = items.fold<double>(
                     0,
@@ -70,10 +79,9 @@ class HomeDashboardPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 2.h),
         Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
+            padding: EdgeInsets.symmetric(vertical: 14.h),
             child: Column(
               children: [
                 Text(
@@ -82,7 +90,7 @@ class HomeDashboardPage extends StatelessWidget {
                     fontSize: 18.sp,
                   ),
                 ),
-                SizedBox(height: 1.h),
+                SizedBox(height: 0.8.h),
                 Text(
                   'Start building your inventory.',
                   style: theme.textTheme.bodyMedium,
@@ -90,7 +98,7 @@ class HomeDashboardPage extends StatelessWidget {
                 SizedBox(height: 3.h),
                 ElevatedButton(
                   onPressed: () {
-                    // Add item action
+                    context.go('/inventory');
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -98,16 +106,13 @@ class HomeDashboardPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    overlayColor: theme.scaffoldBackgroundColor.withOpacity(
-                      0.2,
-                    ),
                     padding: EdgeInsets.symmetric(
                       horizontal: 8.5.w,
                       vertical: 1.3.h,
                     ),
                   ),
                   child: Text(
-                    'Add Item',
+                    'Explore',
                     style: theme.textTheme.displayMedium?.copyWith(
                       fontSize: 16.sp,
                       color: theme.scaffoldBackgroundColor,
@@ -118,33 +123,40 @@ class HomeDashboardPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 1.5.h),
-        // Stat Cards Row 1
-        Row(
-          children: [
-            Expanded(
-              child: StatCard(label: 'Total Items', value: '0'),
-            ),
-            SizedBox(width: 3.w),
-            Expanded(
-              child: StatCard(label: 'Inventory Value', value: '\$0.00'),
-            ),
-          ],
+        // Blurred Stat Cards
+        ImageFiltered(
+          imageFilter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+          child: Column(
+            children: [
+              // Stat Cards Row 1
+              Row(
+                children: [
+                  Expanded(
+                    child: StatCard(label: 'Total Items', value: '0'),
+                  ),
+                  SizedBox(width: 3.w),
+                  Expanded(
+                    child: StatCard(label: 'Inventory Value', value: '\$0.00'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 1.5.h),
+              // Stat Cards Row 2
+              Row(
+                children: [
+                  Expanded(
+                    child: StatCard(label: 'Pending Alerts', value: '0'),
+                  ),
+                  SizedBox(width: 3.w),
+                  Expanded(
+                    child: StatCard(label: 'Categories Tracked', value: '0'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2.h),
+            ],
+          ),
         ),
-        SizedBox(height: 1.5.h),
-        // Stat Cards Row 2
-        Row(
-          children: [
-            Expanded(
-              child: StatCard(label: 'Pending Alerts', value: '0'),
-            ),
-            SizedBox(width: 3.w),
-            Expanded(
-              child: StatCard(label: 'Categories Tracked', value: '0'),
-            ),
-          ],
-        ),
-        SizedBox(height: 2.h),
       ],
     );
   }
@@ -155,18 +167,20 @@ class HomeDashboardPage extends StatelessWidget {
     int totalItems,
     double totalValue,
   ) {
-    final reportsNavigate = () => context.go('/home/reports');
+    void reportsNavigate() {
+      context.go('/home/reports');
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 2.h),
         Container(
-          margin: EdgeInsets.only(bottom: 2.h),
+          margin: EdgeInsets.only(bottom: 2.5.h),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: _buildFilters(context),
         ),
@@ -314,65 +328,192 @@ class HomeDashboardPage extends StatelessWidget {
   }
 
   Widget _buildFilters(BuildContext context) {
-    String? selectedCategory;
-    String? selectedRoom;
-    DateTime? startDate;
-    DateTime? endDate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DropdownButtonFormField<String>(
-          decoration: const InputDecoration(labelText: "Category"),
-          items: ["Electronics", "Furniture", "Clothing"]
-              .map(
-                (category) =>
-                    DropdownMenuItem(value: category, child: Text(category)),
-              )
-              .toList(),
-          onChanged: (value) {
-            selectedCategory = value;
-          },
-        ),
+    final theme = Theme.of(context);
+    return BlocBuilder<DashboardCubit, DashboardState>(
+      builder: (context, state) {
+        String? selectedCategory;
+        String? selectedRoom;
 
-        const SizedBox(height: 8),
+        if (state is DashboardLoaded) {
+          selectedCategory = state.selectedCategory;
+          selectedRoom = state.selectedRoom;
+        }
 
-        DropdownButtonFormField<String>(
-          decoration: const InputDecoration(labelText: "Room"),
-          items: ["Living Room", "Bedroom", "Kitchen"]
-              .map((room) => DropdownMenuItem(value: room, child: Text(room)))
-              .toList(),
-          onChanged: (value) {
-            selectedRoom = value;
-          },
-        ),
-
-        const SizedBox(height: 12),
-
-        Row(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                context.read<DashboardCubit>().applyFilters(
-                  category: selectedCategory,
-                  room: selectedRoom,
-                  startDate: startDate,
-                  endDate: endDate,
-                );
+            Text(
+              "Category",
+              style: theme.textTheme.displayMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 14.5.sp,
+              ),
+            ),
+            const SizedBox(height: 4),
+            DropdownButtonFormField<String>(
+              initialValue: selectedCategory,
+              decoration: InputDecoration(
+                labelText: "Select a Category",
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelStyle: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontSize: 15.sp,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
+                fillColor: theme.scaffoldBackgroundColor,
+                filled: true,
+              ),
+              items: ["Electronics", "Furniture", "Clothing"]
+                  .map(
+                    (category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(
+                        category,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return ["Electronics", "Furniture", "Clothing"]
+                    .map(
+                      (category) => Text(
+                        category,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    )
+                    .toList();
               },
-              child: const Text("Apply Filters"),
+              onChanged: (value) {
+                context.read<DashboardCubit>().setCategory(value);
+              },
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(height: 12),
 
-            OutlinedButton(
-              onPressed: () {
-                context.read<DashboardCubit>().clearFilters();
+            Text(
+              "Room",
+              style: theme.textTheme.displayMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontSize: 14.5.sp,
+              ),
+            ),
+            const SizedBox(height: 4),
+            DropdownButtonFormField<String>(
+              initialValue: selectedRoom,
+              decoration: InputDecoration(
+                labelText: "Select a Room",
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelStyle: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontSize: 15.sp,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
+                fillColor: theme.scaffoldBackgroundColor,
+                filled: true,
+              ),
+              items: ["Living Room", "Bedroom", "Kitchen"]
+                  .map(
+                    (room) => DropdownMenuItem(
+                      value: room,
+                      child: Text(
+                        room,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return ["Living Room", "Bedroom", "Kitchen"]
+                    .map(
+                      (room) => Text(
+                        room,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    )
+                    .toList();
               },
-              child: const Text("Clear"),
+              onChanged: (value) {
+                context.read<DashboardCubit>().setRoom(value);
+              },
+            ),
+
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<DashboardCubit>().applyFilters(
+                      category: selectedCategory,
+                      room: selectedRoom,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    "Apply Filters",
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.scaffoldBackgroundColor,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                OutlinedButton(
+                  onPressed: () {
+                    context.read<DashboardCubit>().clearFilters();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    "Clear",
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.scaffoldBackgroundColor,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 

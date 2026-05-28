@@ -1,0 +1,45 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Documentation Team 
+:issue-base-url: https://github.com/uprm-inso4115-2025-2026-s2/semester-project-home-inventory/issues/
+
+# {milestone} Week 1 — {team} Progress Report
+
+## Objective
+
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+## What the Team Accomplished This Week
+
+* Reviewed Milestone 3 guidelines and deliverable expectations
+* Organized documentation responsibilities and planning efforts
+* Created a centralized document containing proposed Milestone 3 documentation issues
+* Identified documentation gaps, traceability needs, and validation requirements based on milestone instructions
+* Began coordinating documentation priorities and assignment planning
+
+## Tasks Completed / Issues Closed
+
+* Internal preparation and organization of Milestone 3 documentation tasks
+* Creation of the Milestone 3 documentation issue list
+
+## What Is Currently In Progress
+
+* Assignment of documentation issues to team members
+* Review of milestone requirements and documentation scope
+* Preparation of sprint planning and documentation workflow coordination
+
+## Blockers or Challenges
+
+* Initial uncertainty regarding final milestone expectations
+* Coordination of documentation workload distribution across team members
+* Pending clarification of some milestone deliverables
+
+## Plans for Next Week
+
+* Create Lecture Topic Tasks and sprint items
+* Begin assigning documentation issues to team members
+* Continue organizing milestone documentation workflow
+
+## Documentation Links
+
+* Available throughout pull requests and issues mentioned above

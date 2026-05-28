@@ -4,7 +4,7 @@
 
 == Purpose
 
-Systematically identify, categorize, and resolve inconsistencies within the current system requirements. This includes detecting clashes such as terminology inconsistencies, timing conflicts, overlapping features, or contradictions between functional and non-functional requirements. This is specific to section 3.1 of the documentation.
+Systematically identify, categorize, and resolve inconsistencies within the current system requirements — terminology inconsistencies, timing conflicts, overlapping features, and contradictions between functional and non-functional requirements. This is specific to Section 3.1 of the documentation.
 
 == Terminology Inconsistencies
 
@@ -23,39 +23,24 @@ Systematically identify, categorize, and resolve inconsistencies within the curr
 
 === Problem
 
-Different documents use different terminology to refer to similar concepts:
-- Item instead of item type or item instance (package)
-- Stock change instead of transaction (quantity change)
-- Inventory item instead of item type or item instance (package)
-- Stock item instead of tracked inventory record, item type, or item instance (package), depending on context
-- Product instead of item type
-- Grocery item instead of item type
-- Grocery list instead of restock list / planner
-- User instead of household member
-Notification record/event instead of alert / notification record
-
-This creates ambiguity about whether these represent different entities or the same entity in different contexts. While some terms are used interchangeably, it is unclear if they are meant to be distinct, so it is better to standardize terminology in all sections.
+Different documents use different terms for similar concepts: "item" vs item type/item instance; "stock change" vs transaction (quantity change); "inventory item"; "stock item"; "product" vs item type; "grocery item" vs item type; "grocery list" vs restock list/planner; "user" vs household member; "notification record/event" vs alert/notification record. This creates ambiguity about whether these are different entities or the same entity in different contexts.
 
 === Resolution
 
-Revise the official terminology list in `terminology.adoc` to ensure consistent use of terms across all documents. Make changes needed within the documents so they align with the standardized terminology. For example: in all documents pertaining to Section 3.1, change all instances of "user" to "household member".
+Revise the official terminology list in `terminology.adoc` and align all documents to it (for example, change all "user" to "household member" in Section 3.1 documents).
 
 === Final Decision
 
-All documents in Section 3.1 must use the standardized terminology defined in `terminology.adoc`.
-Synonyms such as "inventory item", "stock change", "product", "grocery item", and "user"
-will be replaced with the official terms:
+All documents in Section 3.1 must use the standardized terminology defined in `terminology.adoc`. Synonyms such as "inventory item", "stock change", "product", "grocery item", and "user" are replaced with the official terms:
 - tracked inventory record
 - transaction
 - item type
 - item instance
 - household member
-- restock list / planner (terms may be used interchangeably depending on context)
-- alert / notification record (terms may be used interchangeably depending on context)
+- restock list / planner (used interchangeably depending on context)
+- alert / notification record (used interchangeably depending on context)
 
-Terminology definitions will exist only in `terminology.adoc`, and other documents
-must use the terms without redefining them.
-
+Terminology definitions exist only in `terminology.adoc`; other documents use the terms without redefining them.
 
 == Timing Conflicts
 
@@ -65,33 +50,23 @@ must use the terms without redefining them.
 - evaluationOfNotification.adoc
 - low-stock-research-strategies.adoc
 
-
 === Problem
 
-Some documents describe:
-- Real-time detection
-- Scheduled daily sweeps
-- Cron jobs
-- Polling mechanisms
-
-This creates ambiguity about when alerts should be generated and when automation logic should run.
+Some documents describe real-time detection, scheduled daily sweeps, cron jobs, and polling mechanisms, creating ambiguity about when alerts should be generated and when automation logic should run.
 
 === Resolution
 
-Take the already defined rules and ensure consistency across all documents. Make any additions or modifications needed to clarify when sweeps happen and when alerts are generated. For example, in `definition-expiration-alert-system.adoc`, clarify that expiration and near-expiry conditions are evaluated during the scheduled sweep, and that alerts are only generated when a state transition occurs.
+Apply the already-defined rules consistently across documents and clarify when sweeps happen and when alerts are generated (e.g., in `definition-expiration-alert-system.adoc`, expiration and near-expiry conditions are evaluated during the scheduled sweep, and alerts are only generated on a state transition).
 
 === Final Decision
 
-The system will follow a hybrid timing model:
+The system follows a hybrid timing model:
 
-- Immediate evaluation occurs after each transaction to detect low-stock and out-of-stock state transitions.
-- A scheduled sweep runs once per day to evaluate expiration, near-expiry, and low-stock conditions
-  for items that have not recently changed.
-- Alert / notification records are generated only when a state transition is detected,
-  not continuously while a condition remains true.
+- Immediate evaluation after each transaction detects low-stock and out-of-stock state transitions.
+- A scheduled sweep runs once per day to evaluate expiration, near-expiry, and low-stock conditions for items that have not recently changed.
+- Alert / notification records are generated only when a state transition is detected, not continuously while a condition remains true.
 
-This timing model must be reflected consistently across all automation,
-expiration, and notification documents.
+This model must be reflected consistently across all automation, expiration, and notification documents.
 
 == Overlapping Feature Responsibilities
 
@@ -103,33 +78,22 @@ expiration, and notification documents.
 
 === Problem
 
-Low stock detection, expiration alerts, grocery auto-add, and notifications overlap in responsibilities.  
-It is unclear which subsystem is responsible for triggering each action.
-
-For example:
-- Low stock triggers alerts
-- Low stock triggers restock list auto-add
-- Expired items trigger notifications
-- Expired items may also trigger restock list auto-add
-
-This creates feature overlap and unclear system boundaries.
+Low-stock detection, expiration alerts, grocery auto-add, and notifications overlap in responsibilities, so it is unclear which subsystem triggers each action (e.g., low stock triggers both alerts and restock auto-add; expired items trigger both notifications and auto-add). This creates unclear system boundaries.
 
 === Resolution
 
-In each feature document, clearly define the responsibility boundary for that feature. For example, in `definition-expiration-alert-system.adoc`, clarify that expiration-related state detection belongs to the Automation System, while creation of alert / notification records belongs to the Notification Service.
+In each feature document, clearly define the responsibility boundary (e.g., expiration-related state detection belongs to the Automation System, while creation of alert/notification records belongs to the Notification Service).
 
 === Final Decision
 
 System responsibilities are separated as follows:
 
-- Transactions are responsible only for recording quantity changes and updating tracked inventory records.
-- The Automation System is responsible for evaluating low-stock, near-expiry, expired, and out-of-stock conditions
-  and detecting state transitions.
-- The Notification Service is responsible for creating alert / notification records.
-- The Restock List / Planner system is responsible for adding item types to the restock list
-  when specific state transitions occur.
+- Transactions only record quantity changes and update tracked inventory records.
+- The Automation System evaluates low-stock, near-expiry, expired, and out-of-stock conditions and detects state transitions.
+- The Notification Service creates alert / notification records.
+- The Restock List / Planner system adds item types to the restock list when specific state transitions occur.
 
-Each subsystem must only perform its defined responsibility to avoid feature overlap.
+Each subsystem performs only its defined responsibility to avoid overlap.
 
 == Data Model vs Transaction Model Conflict
 
@@ -139,32 +103,15 @@ Each subsystem must only perform its defined responsibility to avoid feature ove
 
 === Problem
 
-The system includes:
-- tracked inventory records that store current quantity
-- transaction (quantity change) records that track quantity history
-
-It is unclear whether:
-- current quantity is stored directly in the tracked inventory record, or
-- current quantity is derived by applying all transaction (quantity change) records
-
-This creates ambiguity in the data model and may lead to inconsistent implementation, testing, and automation behavior.
+The system includes tracked inventory records that store current quantity and transaction (quantity change) records that track history. It is unclear whether current quantity is stored directly or derived by replaying all transactions, creating ambiguity in the data model.
 
 === Resolution
 
-Define the following rule:
-
-Tracked inventory records store the current quantity and are updated whenever a transaction (quantity change) is recorded.
-
-Transaction (quantity change) records serve as append-only historical records that explain how the current quantity was reached over time. They are not the primary source used to compute current quantity during normal operation.
+Tracked inventory records store the current quantity and are updated whenever a transaction is recorded. Transaction records are append-only historical records explaining how the current quantity was reached, not the primary source for computing current quantity during normal operation.
 
 === Final Decision
 
-Tracked inventory records will store the current quantity directly.
-Transactions are append-only historical records that explain how the current quantity was reached.
-When a transaction is recorded, the tracked inventory record quantity is updated immediately.
-
-Current quantity will not be computed by replaying all transactions during normal operation.
-Transactions are used for history, auditing, and analytics, not for real-time quantity calculation.
+Tracked inventory records store the current quantity directly; transactions are append-only historical records explaining how it was reached. When a transaction is recorded, the tracked inventory record quantity is updated immediately. Current quantity is not computed by replaying all transactions during normal operation — transactions are used for history, auditing, and analytics.
 
 == Notification System Responsibility Conflict
 
@@ -176,42 +123,24 @@ Transactions are used for history, auditing, and analytics, not for real-time qu
 
 === Problem
 
-It is unclear which subsystem is responsible for creating alert / notification records after low-stock, near-expiry, expired, or out-of-stock conditions are detected.
-
-Different documents can be interpreted as assigning this responsibility to:
-- the Automation System
-- database triggers
-- the expiration or low-stock logic
-- a Notification Service
-
-This creates unclear system responsibility boundaries.
+It is unclear which subsystem creates alert/notification records after conditions are detected; different documents assign this to the Automation System, database triggers, the expiration/low-stock logic, or a Notification Service, creating unclear responsibility boundaries.
 
 === Resolution
 
-In all relevant documents, clarify that the Automation System is responsible for evaluating low-stock, near-expiry, and expired conditions and detecting state transitions. When a new relevant state transition is detected, the Automation System triggers downstream notification handling. The Automation System does not own notification delivery. Creation of alert / notification records belongs to the Notification Service. In-app notification records are then displayed through the application interface. Push delivery, if enabled later, belongs to the Push Service.
+Clarify that the Automation System evaluates conditions and detects state transitions, then triggers downstream notification handling (without owning delivery). The Notification Service creates alert/notification records, the application displays in-app records, and push delivery (if enabled later) belongs to the Push Service.
 
 === Final Decision
 
-The Automation System is responsible for detecting state transitions
-such as LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, and EXPIRED.
+The Automation System detects state transitions (LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY, EXPIRED) and, on a relevant transition, triggers the Notification Service. The Notification Service creates alert / notification records; the application interface displays in-app notifications; and push delivery, if implemented later, is handled by a separate Push Service. This separation ensures clear boundaries and prevents overlap.
 
-When a relevant state transition is detected, the Automation System triggers
-the Notification Service.
+=== Requirement Concept Overlap
 
-The Notification Service is responsible for creating alert / notification records.
-The application interface is responsible for displaying in-app notifications.
-Push delivery, if implemented later, will be handled by a separate Push Service.
-
-This separation ensures clear system boundaries and prevents overlapping responsibilities.
-
-=== Requirement Concept Overlap 
-
-Concept overlaps were fixed while addressing the problems with the other categories. For example, the concept of "state transition" was clarified in the context of both low-stock and expiration detection, which resolves overlaps between those features and their associated alerts and notifications.
+Concept overlaps were fixed while addressing the other categories — for example, "state transition" was clarified for both low-stock and expiration detection, resolving overlaps between those features and their alerts and notifications.
 
 == Conclusion
 
-Based on the identified problems,the system architecture should follow this flow:
+Based on the identified problems, the system architecture should follow this flow:
 
 Tracked Inventory Records → Transactions (Quantity Changes) → State Evaluation → Automation → Alert / Notification Records + Restock List / Planner Auto-Add
 
-Defining subsystem responsibilities and terminology will resolve most requirement clashes.
+Defining subsystem responsibilities and terminology resolves most requirement clashes.

@@ -1,6 +1,6 @@
 == Implemented End-to-End Features
 
-This section documents the minimal viable set of high-value features that have been fully implemented in the current release. For each feature, the end-to-end user flow is mapped from initial input through processing to final output. This enables reviewers to verify functionality and understand the core system behavior without needing to compile or run the application.
+This section documents the minimal viable set of high-value features fully implemented in the current release. For each feature, the end-to-end user flow is mapped from input through processing to output, so reviewers can verify functionality and understand core behavior without compiling or running the application.
 
 **Status Legend:** Completed | In Progress | Planned
 
@@ -8,7 +8,7 @@ This section documents the minimal viable set of high-value features that have b
 
 === Feature 1: Core Inventory Management (F-INV)
 
-**User Value:** Eliminates tedious manual data entry by enabling quick item capture via barcode scanning with fallback manual entry. Reduces onboarding friction for household managers like Andrea.
+**User Value:** Eliminates tedious manual data entry through quick item capture via barcode scanning with manual-entry fallback, reducing onboarding friction for household managers like Andrea.
 
 **Primary Users:** Household managers, kitchen coordinators
 
@@ -36,22 +36,13 @@ This section documents the minimal viable set of high-value features that have b
 - Insert into Supabase `products` table
 - Trigger Bloc/Cubit state update
 - Stream listener broadcasts real-time update to inventory list
-| Item appears instantly in Core Inventory list; list view refreshes via Flutter Bloc state management
+| Item appears instantly in Core Inventory list; list refreshes via Flutter Bloc state management
 
 | User views inventory list (sorted by category/status)
 | Supabase real-time stream continuously syncs inventory state across all connected listeners
 | Live inventory display with current quantities, expiration status, and item metadata
 
 |===
-
-**Detailed User Scenario (Andrea's Onboarding):**
-1. Andrea opens the app and navigates to the "Inventory" tab
-2. She taps the floating action button (FAB) to add her first item
-3. Camera opens; she scans a pasta box
-4. System recognizes it as "Barilla Penne Rigate" with product image
-5. Auto-populated form shows: name, brand, category, image
-6. She adjusts quantity to 2 boxes, sets expiration date to 2026-12-31
-7. She taps "Save" and the item appears in the inventory list
 
 **Components Involved:**
 - **Presentation:** `AddItemPage`, `InventoryPage`, `ItemForm` widgets
@@ -68,18 +59,39 @@ This section documents the minimal viable set of high-value features that have b
 |===
 
 **Key Implementation Details:**
-- **Real-Time Sync:** Uses Supabase Postgres Realtime subscriptions to push updates to all clients instantly
-- **Validation:** Client-side validation ensures data integrity before submission; server-side triggers enforce constraints
-- **Barcode Fallback:** If barcode scanning fails or is unavailable, users can manually search and select from a product catalog
-- **Category Management:** Items are automatically categorized based on product metadata; users can override if needed
+- **Real-Time Sync:** Supabase Postgres Realtime subscriptions push updates to all clients instantly.
+- **Validation:** Client-side validation ensures data integrity before submission; server-side triggers enforce constraints.
+- **Barcode Fallback:** If scanning fails or is unavailable, users can manually search and select from a product catalog.
+- **Category Management:** Items are auto-categorized from product metadata; users can override.
+- **User-Friendly Error Handling:** Technical exceptions (network, Supabase, validation) are mapped to actionable user-friendly messages with retry options via `InventoryErrorHandler`, not raw stack traces.
+- **Inline Form Validation:** Real-time per-field feedback prevents invalid data before submission.
 
-**Completion Status:** Completed — Core add/view/edit operations fully functional. Barcode scanning integrated with fallback manual entry.
+**Completion Status:** Completed — Core add/view/edit operations fully functional; barcode scanning integrated with fallback manual entry.
+
+==== Item Lifecycle State Diagram
+
+The following state diagram documents how a tracked inventory item changes state after entering the system. It connects the implemented Core Inventory flow (`F-INV`) with automated stock and expiration evaluation (`F-AUTOCHECK`), alert generation (`F-ALERT`), grocery-list restocking (`F-GL-AUTO` / `F-GL-USER`), and the historical-preservation rule for archived items (`DR-3`). It focuses on item lifecycle state rather than notification lifecycle state.
+
+image::diagrams/item_lifecycle_state_diagram.png[Tracked Inventory Item Lifecycle State Diagram, width=100%]
+
+Source file: `docs/2-descriptive/implementation/diagrams/item_lifecycle_state_diagram.mmd`
+
+**Transition interpretation:**
+
+* `Acquired` begins when a member adds an item via barcode scanning or manual entry.
+* `InStock`, `LowStock`, and `OutOfStock` are availability states derived from quantity and low-stock threshold rules; quantity changes trigger state re-evaluation.
+* `NearExpiry` and `Expired` are expiration states derived from the item's expiration date during scheduled checks.
+* `Discarded` represents a user decision that the physical item is no longer kept or usable.
+* `Archived` is a non-active record state that keeps historical references while excluding the item from active inventory views.
+* `Lent` and `Lost` are conceptual: documentation recognizes outside-household and lost-item scenarios, but current implementation evidence does not show them as fully implemented states.
+
+**Implementation alignment:** The implemented feature supports adding, editing, viewing, and quantity/expiration updates. Automated check logic evaluates low-stock, out-of-stock, near-expiry, and expired conditions, while grocery-list automation can replenish an item after shopping. Archival is the preferred preservation behavior when an item should leave active views but financial or alert history may still reference it. Conceptual states must not be presented as completed functionality until their UI, data model, and behavior are implemented and verified.
 
 ---
 
 === Feature 2: Automated Expiration Alerts & Notifications (F-ALERT + F-AUTOCHECK)
 
-**User Value:** Prevents food waste by proactively alerting users before items spoil. Removes the mental burden of manual fridge checks, especially critical for busy users like Mateo.
+**User Value:** Prevents food waste by proactively alerting users before items spoil, removing the mental burden of manual fridge checks — especially for busy users like Mateo.
 
 **Primary Users:** All household members (push notifications), household admin (alert configuration)
 
@@ -108,30 +120,16 @@ This section documents the minimal viable set of high-value features that have b
 
 | User taps push notification on mobile device
 | App route handles deep link and navigates to the "Alerts Center" tab to highlight expiring items
-| Alerts Center screen displays:
-- List of expiring items sorted by urgency
-- Recommended actions (consume, donate, discard, extend date)
-- Quick action buttons
+| Alerts Center screen displays expiring items sorted by urgency, recommended actions (consume, donate, discard, extend date), and quick action buttons
 
 | User taps "Mark as Consumed" or "Extend Expiration" for an item
-| 1. If Mark Consumed: delete or reduce quantity to 0
-2. If Extend: show date picker, update expiration date
+| 1. Mark Consumed: delete or reduce quantity to 0
+2. Extend: show date picker, update expiration date
 3. Trigger state update via Bloc
 4. Log action in `alert_log` to prevent duplicate notifications
 | Item removed from or updated in inventory; alert cleared; confirmation shown
 
 |===
-
-**Detailed User Scenario (Mateo's Morning Alert):**
-1. Mateo receives a push notification: "2 items expiring today or tomorrow"
-2. Notification shows: "Milk (expires today)", "Yogurt (expires tomorrow)"
-3. He taps the notification and the app opens and navigates to Alerts Center
-4. He sees:
-   - **Milk** | Expires: Today | Action: Consume Now / Discard
-   - **Yogurt** | Expires: Tomorrow | Action: Consume Today / Extend to [date]
-5. He taps "Consume Now" next to Milk and the item is marked consumed with quantity set to 0
-6. For Yogurt, he taps "Extend" and the date picker appears; he extends it to 2 days out
-7. Alerts list auto-refreshes; both items are now off the alert list
 
 **Components Involved:**
 - **Backend:** Supabase Cron Edge Function (TypeScript), Postgres triggers
@@ -144,23 +142,23 @@ This section documents the minimal viable set of high-value features that have b
 **Visual Evidence:**
 [cols="1a,1a"]
 |===
-| image::screen-designs/Alerts-&-Notifications-Screen/push-notifications-flow-ui.png[Push Notification Flow, width=100%, title="Push Notification & Deep Link"]
-| image::screen-designs/Alerts-&-Notifications-Screen/alerts-center-mockup.png[Alerts Center UI, width=100%, title="Alerts Center Screen"]
+| image::screen-designs/Alerts-&-Notifications-Screen/images/push-notifications-flow-ui.png[Push Notification Flow, width=100%, title="Push Notification & Deep Link"]
+| image::screen-designs/Alerts-&-Notifications-Screen/images/alerts-tab-flow-ui.png[Alerts Tab Flow, width=100%, title="Alerts Tab & Center Screen"]
 |===
 
 **Key Implementation Details:**
-- **Deduplication Logic:** Alert log stored in Supabase prevents notification spam; same item is not re-notified within 24 hours unless status changes
-- **Threshold Flexibility:** Thresholds are configurable per household (e.g., some families want 7-day warnings, others 1-day)
-- **Timezone Handling:** Cron job runs in UTC; expiration date comparison uses user's local timezone
-- **Offline Handling:** If user is offline, Android/iOS queues notification locally; it displays when device reconnects
+- **Deduplication Logic:** An alert log in Supabase prevents notification spam; the same item is not re-notified within 24 hours unless status changes.
+- **Threshold Flexibility:** Thresholds are configurable per household (e.g., 7-day vs 1-day warnings).
+- **Timezone Handling:** The cron job runs in UTC; expiration comparison uses the user's local timezone.
+- **Offline Handling:** If the user is offline, Android/iOS queues the notification locally and displays it on reconnect.
 
-**Completion Status:** Completed — Alert generation logic, deduplication, and notification dispatch fully implemented. Alerts screen integrated with deep-link handling.
+**Completion Status:** Completed — Alert generation, deduplication, and notification dispatch fully implemented; Alerts screen integrated with deep-link handling.
 
 ---
 
 === Feature 3: Smart Grocery List Management (F-GL-AUTO + F-GL-USER)
 
-**User Value:** Closes the inventory lifecycle loop. Auto-generates shopping lists based on inventory state, then enables quick shopping trip management (check off items, restock on return).
+**User Value:** Closes the inventory lifecycle loop — auto-generates shopping lists from inventory state, then enables quick shopping-trip management (check off items, restock on return).
 
 **Primary Users:** Shoppers, household managers
 
@@ -173,99 +171,54 @@ This section documents the minimal viable set of high-value features that have b
 | **Processing**
 | **Output**
 
-| Automated daily check (from Feature 2) runs and identifies inventory gaps
-Example: Milk quantity = 0, Bread expired 2 days ago, Pasta stock below threshold
-| 1. Process AutoCheck output (items with status: OUT_OF_STOCK, EXPIRED, LOW_STOCK)
-2. Apply priority order:
-   - Priority 1: OUT_OF_STOCK items
-   - Priority 2: EXPIRED items
-   - Priority 3: LOW_STOCK items
-   - Priority 4: Frequently used + low/out
-3. Skip items already on active grocery list
+| Automated daily check (Feature 2) runs and identifies inventory gaps
+Example: Milk quantity = 0, Bread expired 2 days ago, Pasta below threshold
+| 1. Process AutoCheck output (OUT_OF_STOCK, EXPIRED, LOW_STOCK)
+2. Apply priority order: (1) OUT_OF_STOCK, (2) EXPIRED, (3) LOW_STOCK, (4) frequently used + low/out
+3. Skip items already on the active grocery list
 4. Log auto-additions to `grocery_list_log`
 | Grocery list auto-updated with prioritized items (e.g., Milk [OUT_OF_STOCK], Bread [EXPIRED])
 
 | User navigates to "My Grocery List" screen
-| App fetches active grocery list from Supabase; displays items grouped by category
-Options shown:
-- Checkbox to mark item as "in cart"
-- Edit quantity / notes
-- Remove item
-- Add custom item (manual entry)
-| Grocery list displayed with auto-generated items + any user-added custom items
+| App fetches active list from Supabase; displays items grouped by category with options to mark "in cart", edit quantity/notes, remove, or add a custom item
+| Grocery list displayed with auto-generated items plus user-added custom items
 
-| User is at supermarket; checks off items as they enter cart
-Then, user completes shopping trip and taps "Finalize Grocery Run"
-| 1. For each checked item:
-   - Prompt for quantity bought (default = inventory gap amount)
-   - Prompt for expiration date (if perishable)
-2. Collect receipt info (optional: total spent, payment method)
+| User checks off items at the supermarket, then taps "Finalize Grocery Run"
+| 1. For each checked item: prompt for quantity bought (default = inventory gap) and expiration date (if perishable)
+2. Collect optional receipt info (total spent, payment method)
 3. Validate entries
-| Dialog/form shown for final confirmation + quantity/expiration entry
+| Confirmation form shown for final quantity/expiration entry
 
 | User confirms and taps "Save & Restock"
-| 1. For each item, update/insert into Core Inventory with new quantities and expiration dates
-2. Clear checked items from grocery list (or archive)
+| 1. Update/insert each item into Core Inventory with new quantities and expiration dates
+2. Clear checked items from the grocery list (or archive)
 3. Log restocking action in `grocery_list_log`
 4. Trigger inventory state update (Bloc)
-| Updated inventory displayed in Core Inventory screen; grocery list cleared of checked items; confirmation message shown
+| Updated inventory displayed; grocery list cleared of checked items; confirmation shown
 
 |===
-
-**Detailed User Scenario (Andrea's Weekly Shopping Trip):**
-1. Andrea opens the app on Sunday; she sees the Grocery List tab shows 6 auto-generated items:
-   - Milk (OUT_OF_STOCK) — Qty: 1
-   - Bread (EXPIRED) — Qty: 1
-   - Pasta (LOW_STOCK) — Qty: 2
-   - Eggs (LOW_STOCK) — Qty: 3
-   - Cheese (added manually by Andrea)
-   - Butter (added manually by Andrea)
-2. Andrea heads to the supermarket
-3. She checks off items as she places them in her cart:
-   - Milk (1 liter)
-   - Bread (2 loaves)
-   - Pasta (2 boxes)
-   - Eggs (1 dozen)
-   - Cheese (500g)
-   - Butter (500g)
-4. At checkout, she taps "Finalize Grocery Run"
-5. System shows a summary dialog:
-   ```
-   Review your purchases:
-   - Milk [1 box] | Expires: 2026-04-20
-   - Bread [2 loaves] | Expires: 2026-04-08
-   - Pasta [2 boxes] | Expires: 2027-04-07
-   - Eggs [1 dozen] | Expires: 2026-05-01
-   - Cheese [500g] | Expires: 2026-06-15
-   - Butter [500g] | Expires: 2026-05-01
-   [Spent: $--]  [Save & Restock]
-   ```
-6. She taps "Save & Restock"
-7. App updates Core Inventory with new items and quantities
-8. Grocery list is cleared (checked items archived)
-9. Confirmation: "6 items restocked! Your inventory is up to date."
 
 **Components Involved:**
 - **Presentation:** `MyGroceryListPage`, `GroceryListTile`, `AddCustomItemPage` widgets
 - **State Management:** `GroceryListCubit` (if implemented) or stream-based updates
 - **Data Layer:** Grocery list repositories and data sources, expense tracking
 - **Domain:** Grocery list use cases for generation and update
-- **Auto-Generation:** Scheduled function that runs daily AutoCheck output processing
+- **Auto-Generation:** Scheduled function running daily AutoCheck output processing
 
 **Visual Evidence:**
 [cols="1a,1a,1a"]
 |===
 | image::../requirements/features/grocery-list/design/images/My Grocery list UI.png[My Grocery List, width=100%, title="Grocery List View"]
 | image::../requirements/features/grocery-list/design/images/Add Costume item UI.png[Add Custom Item, width=100%, title="Add Custom Item"]
-| image::../requirements/features/grocery-list/design/images/grocery-list-during-shopping-trip.png[Shopping Checkout, width=100%, title="Finalize & Restock"]
+| image::../requirements/features/grocery-list/design/images/My Grocery list Action List UI.png[Shopping Checkout, width=100%, title="Finalize & Restock"]
 |===
 
 **Key Implementation Details:**
-- **Priority Queue:** Auto-generation respects priority order to prevent overwhelming users with too many items
-- **Prevent Duplicates:** Items already on the active list are not re-added by AutoCheck
-- **Custom Items:** Users can manually add items (e.g., "Olive Oil" if not in product database)
-- **Quantity Flexibility:** When restocking, users can adjust quantities based on actual needs/availability
-- **Expense Integration:** Optional capture of spending per trip (supports budgeting feature)
+- **Priority Queue:** Auto-generation respects priority order to avoid overwhelming users.
+- **Prevent Duplicates:** Items already on the active list are not re-added by AutoCheck.
+- **Custom Items:** Users can manually add items not in the product database (e.g., "Olive Oil").
+- **Quantity Flexibility:** When restocking, users can adjust quantities to actual needs.
+- **Expense Integration:** Optional capture of spending per trip (supports budgeting).
 
 **Completion Status:** Completed — Auto-generation via priority queue, user review/edit flow, and restocking (update to core inventory) all implemented.
 
@@ -277,7 +230,7 @@ Then, user completes shopping trip and taps "Finalize Grocery Run"
 
 **Primary Users:** All household members
 
-**Current Status:** 
+**Current Status:**
 - Household creation & member invitation: Implemented
 - Role-based item visibility: In Progress
 - Shared vs. personal items: In Progress
@@ -291,30 +244,26 @@ Then, user completes shopping trip and taps "Finalize Grocery Run"
 | **Processing**
 | **Output**
 
-| User creates a new household during onboarding
-User enters: Household name, description
+| User creates a new household during onboarding (enters name, description)
 | 1. Validate input (non-empty name, max 100 chars)
 2. Insert into `households` table with user as owner
 3. Create initial role assignment (user = OWNER)
 4. Initialize household settings (notification preferences, etc.)
 | Household created; user becomes owner; household ID returned
 
-| Owner navigates to Settings and selects Invite Members
-Owner enters: Roommate email, role (MEMBER, ADMIN, VIEWER)
+| Owner opens Settings → Invite Members (enters roommate email, role: MEMBER/ADMIN/VIEWER)
 | 1. Generate unique invite token
 2. Send email with invite link + token
 3. Store invite record in `invitations` table
 4. Log invitation action
-| Invite email sent to roommate with deep link to accept/decline
+| Invite email sent with deep link to accept/decline
 
-| Roommate receives email and taps invite link
-App opens to invitation screen showing: Household name, owner, role, permissions summary
-Roommate taps "Accept"
-| 1. Validate invite token (not expired, not already used)
-2. Create user in `household_members` table with provided role
-3. Mark invitation as accepted
+| Roommate taps invite link; invitation screen shows household name, owner, role, permissions; taps "Accept"
+| 1. Validate invite token (not expired, not used)
+2. Create user in `household_members` table with the role
+3. Mark invitation accepted
 4. Trigger Bloc update for household members list
-| Roommate added to household; can now see shared items; confirmation shown
+| Roommate added to household; can see shared items; confirmation shown
 
 |===
 
@@ -332,7 +281,7 @@ Roommate taps "Accept"
 | image::View-roommate-invitation-screen/invitation_acceptance_mockup.png[Accept Invite, width=100%, title="Accept Invite UI"]
 |===
 
-**Completion Status:** In Progress — Household creation and member invitation fully implemented. Role-based item filtering and shared vs. personal item logic progressing.
+**Completion Status:** In Progress — Household creation and member invitation fully implemented; role-based item filtering and shared vs. personal item logic progressing.
 
 ---
 
@@ -355,38 +304,25 @@ Roommate taps "Accept"
 | **Processing**
 | **Output**
 
-| User navigates to Reports and selects Inventory Stock Report
-User selects date range (optional)
-| 1. Query `products` table for all items in household
+| User opens Reports → Inventory Stock Report (optional date range)
+| 1. Query `products` table for all household items
 2. Calculate stock levels (full, halfway, low, empty)
 3. Identify expiring items (next 7 days)
 4. Group by category
 5. Generate summary stats (total items, critical items, etc.)
-| Report view populated with:
-- Summary cards (total items, by stock level, expiring count)
-- Grouped table (category, items, stock status)
+| Report view with summary cards (total items, by stock level, expiring count) and a grouped table (category, items, stock status)
 
-| User taps category to expand
+| User taps a category to expand
 | Filter/expand logic in UI
 | Items in category displayed with details (quantity, threshold, expiration)
 
 | User taps "Export as PDF"
 | 1. Fetch data
-2. Render PDF using pdf library with charts/tables
+2. Render PDF using the `pdf` library with charts/tables
 3. Save to device storage
 | PDF file generated and ready to share/print
 
 |===
-
-**Detailed User Scenario (Manager's Weekly Review):**
-1. Andrea opens Reports and selects Inventory Stock Report
-2. She sees summary: "28 items total | 18 adequate | 4 low stock | 2 expiring this week"
-3. She expands categories:
-   - **Dairy:** Milk (LOW), Yogurt (ADEQUATE), Cheese (ADEQUATE)
-   - **Grains:** Bread (ADEQUATE), Pasta (ADEQUATE), Rice (EMPTY)
-   - **Proteins:** Eggs (ADEQUATE)
-4. She taps "Export as PDF" to share with household and groceries list
-5. PDF downloaded and ready to view/print
 
 **Components Involved:**
 - **Presentation:** Report screens, charts/tables, PDF preview
@@ -395,7 +331,7 @@ User selects date range (optional)
 - **Domain:** Report generation use cases
 - **External:** PDF library, file sharing APIs
 
-**Completion Status:** In Progress — Basic stock reports implemented; expenditure reports and analytics features progressing.
+**Completion Status:** In Progress — Basic stock reports implemented; expenditure reports and analytics progressing.
 
 ---
 
@@ -411,7 +347,7 @@ User selects date range (optional)
 | F-INV
 | Inventory Management (Add/View/Edit items)
 | Completed
-| AddItemPage, InventoryCubit, ProductDataSource, Barcode Scanner
+| AddItemPage, InventoryCubit, ProductDataSource, Barcode Scanner, Error Handling Utilities
 
 | F-ALERT
 | Alert Generation & Notifications
@@ -447,27 +383,310 @@ User selects date range (optional)
 
 ---
 
-=== Architecture & Technical Stack
+=== Implementation Decisions and Trade-offs
 
-**Frontend Stack:**
-- **Framework:** Flutter 3.29.0 with Dart 3.7.0
-- **State Management:** Flutter Bloc (Cubit for simple states)
-- **Navigation:** GoRouter with deep-link support
-- **UI Components:** Material 3 design, custom Material/Cupertino widgets
-- **Local Storage:** Shared Preferences (settings), cached product data
-- **Notifications:** Firebase Cloud Messaging (FCM) + platform-specific handling
+This subsection documents the major implementation decisions shaping the Milestone 3 system in a lightweight ADR style, so reviewers can understand the selected approach, alternatives considered, and consequences. Current decisions are separated from planned or feature-dependent decisions whose runtime behavior is not fully implemented.
 
-**Backend Stack:**
-- **Database:** Supabase PostgreSQL with Realtime subscriptions
-- **Authentication:** Supabase GoTrue (email/password, social)
-- **Backend Functions:** Supabase Edge Functions (TypeScript) for cron jobs
-- **File Storage:** Supabase Storage (product images, receipts)
-- **APIs:** Barcode lookup service (for product data enrichment)
+==== ADR-01: Use Flutter for the Mobile Client
 
-**CI/CD & Deployment:**
-- Version control: Git + GitHub
-- Testing: Dart test framework, mocktail for mocking
-- Linting: flutter_lints, Dart analyzer
+**Status:** Accepted — M3 current
+
+**Context:** The system needs a mobile-first client for inventory capture, household coordination, alerts, grocery-list workflows, reporting, barcode scanning, and eventual push handling, supporting fast UI iteration while staying maintainable across feature teams.
+
+**Selected Option:** Flutter with Dart, using Material 3 components, GoRouter for navigation, and Bloc/Cubit for feature state.
+
+**Alternatives Considered:** Native Android/iOS (Kotlin/Swift); React Native; a web-first responsive app.
+
+**Rationale:** Flutter provides a single shared codebase while supporting native features (camera, file handling, push), and fits the layered screen/widget/Cubit/use-case structure feature teams use.
+
+**Trade-offs:**
+* Reduces duplicate mobile effort versus separate native apps.
+* Still requires platform-specific config for camera permissions, push, builds, and signing.
+* Requires consistent state-management conventions to avoid disconnected implementations.
+* Platform-specific edge cases may still require Android/iOS testing.
+
+**Related Requirements:** Core Inventory (`F-INV`), Alerts (`F-ALERT`), Grocery List (`F-GL-AUTO`/`F-GL-USER`), Reports (`F-SPEND`), barcode fallback, mobile-first usage, reviewer-accessible local execution.
+
+==== ADR-02: Use Supabase as the Backend Platform
+
+**Status:** Accepted — M3 current
+
+**Context:** The system requires backend services for authentication, persistent inventory/household/member data, shared synchronization, alert and grocery-list records, reporting data, and future media storage — quick to set up during the milestone but supporting real behavior.
+
+**Selected Option:** Supabase, including Supabase Auth, PostgreSQL, Realtime, PostgREST via the Supabase Flutter SDK, and documented support for Storage and Edge Functions.
+
+**Alternatives Considered:** Firebase (Auth/Firestore/Functions/Storage); a custom Node.js/Express REST API; a local-only database; direct PostgreSQL hosting without Supabase services.
+
+**Rationale:** Supabase provides a PostgreSQL-backed platform with auth, row-level authorization, realtime, storage, and serverless functions in one stack, reducing setup overhead and fitting household-scoped, SQL-based relational modeling.
+
+**Trade-offs:**
+* Accelerates development by bundling backend services.
+* Creates dependence on Supabase-specific configuration, SDK behavior, RLS policies, and hosted availability.
+* SQL/Postgres modeling is stronger for relational data than document-only approaches but requires careful schema and policy design.
+* Some documented Supabase services remain planned, so implementation status must stay explicit.
+
+**Related Requirements:** Persistent inventory, households, memberships, alert and grocery-list records, reporting data, realtime collaboration, authentication, and household-scoped access control.
+
+==== ADR-03: Enforce Access Control with Supabase Auth and Row Level Security
+
+**Status:** Accepted — M3 current / policy configuration-dependent
+
+**Context:** Household inventory data must not be visible or modifiable by unauthorized users. With shared households, members, roles, invitations, and personal/shared records, authorization cannot rely only on frontend checks.
+
+**Selected Option:** Supabase Auth for identity and JWT sessions, with PostgreSQL Row Level Security (RLS) policies as the database-level authorization boundary.
+
+**Alternatives Considered:** Authorization only in Flutter UI logic; in a custom backend API layer; application-level role checks without database policies; or separate databases/tables per household.
+
+**Rationale:** RLS places authorization close to the data, important because multiple screens and modules query shared tables. Supabase Auth supplies the authenticated identity while RLS restricts queries/mutations by identity, household membership, and role.
+
+**Trade-offs:**
+* Reduces the risk of accidental data exposure from frontend mistakes.
+* Policies must be tested carefully — incorrect ones can block legitimate access or expose data.
+* Debugging access issues is harder than ordinary frontend checks.
+* Role-based item visibility is still in progress and must not be presented as fully completed until verified end-to-end.
+
+**Related Requirements:** Household membership rules, invitation/membership state, shared inventory access, authentication, authorization, and protection of household-scoped data.
+
+==== ADR-04: Store Current Inventory State Directly While Preserving Historical Meaning Separately
+
+**Status:** Accepted — M3 current, with some audit/history behavior still evolving
+
+**Context:** The system needs to show current inventory quickly while preserving enough history to explain changes, support alerts, avoid duplicate purchases, and avoid corrupting financial records when items are removed or archived.
+
+**Selected Option:** Store current inventory state directly in persistent records (quantity, status, expiration, metadata, household context), treating quantity changes, alerts, grocery-list actions, and spending as related historical/supporting records where implemented or documented.
+
+**Alternatives Considered:** Compute current quantity only by replaying all transactions; hard-delete consumed/discarded items; store only qualitative availability; or store inventory as unstructured notes.
+
+**Rationale:** Current inventory screens, reports, alerts, and grocery automation need fast access to current state. Keeping it directly available simplifies UI updates and checks, while documentation preserves the rule that financial history must not be silently deleted on removal/archival.
+
+**Trade-offs:**
+* Simpler and faster for the app.
+* Can drift from reality if users forget to update quantities.
+* Historical traceability requires disciplined logging; documentation should not imply complete audit coverage where not implemented.
+* Soft deletion/archival is preferred over hard deletion when other records may reference an item.
+
+**Related Requirements:** Core Inventory (`F-INV`), low/out-of-stock checks, expiration status, dashboard/report generation, grocery restocking, non-negative quantity rules, and `DR-3` financial immutability.
+
+==== ADR-05: Use Bloc/Cubit for Feature State Management
+
+**Status:** Accepted — M3 current
+
+**Context:** The Flutter client needs predictable state handling for inventory loading, validation, success/error feedback, report views, alert interactions, grocery-list screens, and auth-dependent routes.
+
+**Selected Option:** `flutter_bloc` with Cubit classes for feature-level state.
+
+**Alternatives Considered:** Local widget `setState` only; Provider; Riverpod; Redux-style global state; or direct Supabase calls from widgets.
+
+**Rationale:** Cubit is a lightweight pattern fitting the project scale, keeping widgets focused on rendering while moving behavior into state classes, Cubits, use cases, and repositories — supporting testing and avoiding backend calls in screens.
+
+**Trade-offs:**
+* Simpler than full Bloc but still requires consistent UI/state/domain/data separation.
+* Simple screens may feel heavier than local widget state.
+* Inconsistent per-team Cubit implementations can cause drift.
+* Error/loading states must be modeled explicitly to avoid silent failures.
+
+**Related Requirements:** Reliable UI behavior for Core Inventory, Reports, Alerts, Grocery List, auth flow, error handling, and reviewer-verifiable behavior.
+
+==== ADR-06: Use Supabase Realtime for Shared Inventory Synchronization
+
+**Status:** Accepted — M3 current / feature-dependent
+
+**Context:** Shared household inventory loses value if users must manually refresh to see roommates' changes; the system needs to keep inventory and household views reasonably current across devices.
+
+**Selected Option:** Supabase Realtime subscriptions to receive PostgreSQL change events and update Flutter client state.
+
+**Alternatives Considered:** Manual refresh only; periodic client polling; a custom WebSocket server; or push notifications for every shared change.
+
+**Rationale:** Realtime integrates with the selected backend and supports live updates without maintaining a custom sync server, fitting the shared-household use case where multiple users add, edit, or consume items.
+
+**Trade-offs:**
+* Reduces manual refresh needs.
+* Depends on Supabase configuration, table replication, RLS policies, and client subscription handling.
+* Can create UI churn or race conditions if mutations also trigger full reloads.
+* Offline conflict handling is a separate concern not solved by Realtime alone.
+
+**Related Requirements:** Shared inventory coordination, household visibility, reduced duplicate purchases, realtime list refresh, and synchronization requirements.
+
+==== ADR-07: Use Scheduled Backend Checks for Expiration and Stock Automation
+
+**Status:** Accepted — documented / partially implemented
+
+**Context:** Low-stock, out-of-stock, near-expiry, and expired conditions should not depend on users opening the app; the system needs to evaluate conditions and produce alert or grocery-list outputs without constant interaction.
+
+**Selected Option:** Scheduled/backend automation via a cron-style trigger and hosted/Edge Function worker to evaluate stock and expiration conditions, deduplicate alerts, record run information, and create downstream alert or grocery-list outputs.
+
+**Alternatives Considered:** Evaluate only when the user opens the app; only after each item update; device-local background tasks only; or send alerts manually without automated checking.
+
+**Rationale:** Scheduled backend evaluation is more reliable than depending on user behavior or local background execution, allowing checks to run even when the app is closed and centralizing deduplication and run logging.
+
+**Trade-offs:**
+* Improves reliability for reminders and grocery-list generation.
+* Adds operational complexity (scheduled triggers, function deployment, privileged DB access, retries, logging, failure recovery).
+* Partly documented/implemented, so verified runtime behavior must be distinguished from planned design.
+* Scheduled checks must avoid repeated alerts when no meaningful state transition occurred.
+
+**Related Requirements:** `F-AUTOCHECK`, `F-ALERT`, expiration/low-stock detection, deduplication/anti-spam rules, grocery-list auto-generation, and scheduled sweep reliability.
+
+==== ADR-08: Separate Notification Records from Push Delivery
+
+**Status:** Accepted — M3 current / push delivery setup-dependent
+
+**Context:** The system needs to represent alerts to support in-app review, deduplication, read/dismissed state, and possible push delivery, which may depend on platform setup, FCM/APNs configuration, and device permissions.
+
+**Selected Option:** Model alerts/notifications as persisted records, treating push delivery via FCM/APNs as a delivery mechanism rather than the source of truth.
+
+**Alternatives Considered:** Push only with no persisted records; in-app alerts only with no push; alert state only in local client memory; or repeated push notifications directly from every automated check.
+
+**Rationale:** Persisted records support traceability, deduplication, read/unread handling, dismissal, and in-app review, so push can be added as an additional channel without becoming the only place alert state exists.
+
+**Trade-offs:**
+* Improves reliability and auditability.
+* Requires additional schema/service logic for statuses (unread, read, dismissed, archived).
+* Push delivery still depends on platform configuration and permissions.
+* Documentation must not imply every alert record results in a delivered push.
+
+**Related Requirements:** Actionable alert states, notification records, deduplication/anti-spam rules, Alerts Center behavior, expiration and low-stock alerts, and future platform push delivery.
+
+==== ADR-09: Use PNG Diagram Fallbacks with Source-Renderable Mermaid Files
+
+**Status:** Accepted — M3 documentation current
+
+**Context:** Documentation needs diagrams that display reliably in GitHub and exported documents while remaining editable. Mermaid source aids maintenance, but rendering support varies across GitHub, AsciiDoc tooling, and exports.
+
+**Selected Option:** Store each diagram as both a rendered PNG and a source-renderable Mermaid `.mmd` file; reference the PNG in `implementation.adoc` and include the source path.
+
+**Alternatives Considered:** Embed Mermaid only; store only PNGs; use PlantUML only; or use external-tool screenshots with no source file.
+
+**Rationale:** PNGs render consistently in GitHub and exports, while Mermaid source preserves diagram logic and eases future edits — satisfying the source-renderable requirement without fragile rendering.
+
+**Trade-offs:**
+* Diagram changes require updating both the `.mmd` source and the PNG export.
+* Divergence between PNG and source can show inconsistent information.
+* The source path must be documented for future maintainers.
+
+**Related Requirements:** Diagram requirements for issues #647 and #648, Section 2.3 readability, reviewer accessibility, and long-term maintainability.
+
+==== Planned / Future-Facing Decisions
+
+The following are future-facing or not fully verified in the current M3 runtime and should not be interpreted as completed implementation unless later evidence confirms them.
+
+[cols="2,3,3", options="header"]
+|===
+| Decision Area
+| Planned Direction
+| Reason for Deferral
+
+| Environment configuration
+| Move Supabase URL and anonymous key out of source code into `.env` or `--dart-define` configuration.
+| Current M3 setup reads Supabase initialization values directly from `injection_dependencies.dart`; a more secure per-environment scheme is planned later.
+
+| Advanced role-based item visibility
+| Enforce complete shared-vs-personal item visibility through finalized membership, role, and RLS policies.
+| Household creation and invitations are implemented, but role-based item filtering remains in progress.
+
+| AI meal planning and ML expiration scoring
+| Add AI/ML services for recipe suggestions, expiration risk scoring, and forecasting.
+| Post-MVP future features, not part of the current M3 runtime.
+
+| Grocery delivery integration
+| Connect grocery-list output to external ordering or delivery services.
+| Future-facing; depends on external provider APIs, account linking, and additional privacy/security review.
+|===
+
+=== Architecture Overview Diagram
+
+The following architecture overview documents the major runtime containers and service boundaries for the Milestone 3 system, which follows a Flutter-client-plus-Supabase-backend architecture: the Flutter client handles presentation, routing, local interaction, validation, and feature orchestration, while Supabase provides authentication, persistence, authorization, realtime synchronization, storage support, and documented backend automation. The diagram distinguishes current M3 components from documented/future-facing ones; components marked planned must not be interpreted as fully implemented.
+
+image::diagrams/architecture_overview_diagram.png[Home Inventory Architecture Overview Diagram, width=100%, title="Home Inventory Architecture Overview Diagram"]
+
+Source file: `docs/2-descriptive/implementation/diagrams/architecture_overview_diagram.mmd`
+
+The diagram shows the architecture from the mobile client outward:
+
+* **Flutter mobile client (M3 current):** Material 3 UI screens/forms, GoRouter navigation and deep-link entry points, Bloc/Cubit state management, and feature-level use cases/repositories for validation and Supabase operations.
+* **Supabase client/API boundary (M3 current):** The app communicates with Supabase over HTTPS through the Supabase Flutter SDK for authentication, CRUD queries, storage access, and realtime subscriptions.
+* **Authentication and authorization boundary (M3 current):** Supabase Auth issues JWT sessions; Postgres RLS policies enforce household-scoped access for authenticated users before rows are returned or modified.
+* **Persistence layer (M3 current):** Supabase PostgreSQL stores inventory items, households, members, alerts, grocery-list data, report data, and related metadata.
+* **Realtime synchronization (M3 current):** Supabase Realtime publishes Postgres change events to subscribed clients so inventory and household views update without manual refresh.
+* **Storage support (documented feature-dependent):** Supabase Storage supports product images, receipts, and media assets where the feature uses uploaded/downloaded files.
+* **Backend automation (documented / partially implemented):** Scheduled jobs and hosted/Edge Function workers support stock/expiration checks, alert generation, deduplication, run logging, and grocery restock output.
+* **Device/platform services (M3 current / partially configured):** Camera and barcode scanning support item capture; local file/PDF APIs support exports; push delivery is platform-dependent via FCM/APNs.
+* **External services (M3 current / planned):** Barcode/product lookup and email invitation delivery are integration-dependent; grocery delivery and AI meal planning are planned only.
+
+---
+
+=== Technical Stack Versions and Tooling
+
+The component roles (Flutter client, Bloc/Cubit state management, GoRouter, Material 3, Supabase Auth/PostgreSQL/Realtime/Storage/Edge Functions, FCM/APNs, barcode lookup) are described in the Architecture Overview above. This subsection records only what that overview does not:
+
+- **Runtime versions:** Flutter and Dart SDK versions are specified authoritatively in Section 2.2.3 (Machine Requirements).
+- **Local storage:** Shared Preferences for settings and cached product data.
+- **CI/CD & tooling:** Git + GitHub for version control; the Dart test framework with `mocktail` for testing; `flutter_lints` and the Dart analyzer for linting.
+
+---
+
+=== Data Model and Persistence Layer
+
+This section documents the current data model and persistence approach actually reflected in the codebase, rather than placeholder or outdated diagrams from earlier revisions.
+
+==== Data Model Diagram
+
+image::data-model-persistence-layer.png[Data Model and Persistence Layer, width=100%]
+
+The diagram represents the implemented data model and persistence structure: the relationship between inventory state management, persistence operations, domain entities, and the Supabase storage model. It reflects how inventory data is retrieved, transformed, persisted, and synchronized, and documents entity ownership, inventory composition, product references, and the application/persistence interaction.
+
+==== Core Implemented Entities
+
+[cols="1,2", options="header"]
+|===
+| Entity / Model
+| Responsibility
+
+| InventoryEntity / InventoryModel
+| Represents the inventory aggregate loaded from persistence and exposed to the application.
+
+| StockEntity / StockModel
+| Represents tracked stock information including quantity, expiration data, and ownership metadata.
+
+| Product / ProductModel
+| Represents reusable product information used during inventory operations.
+
+| InventorySupabaseDataSource
+| Handles persistence operations between the application and Supabase.
+
+| InventoryCubit
+| Coordinates inventory state updates and UI synchronization.
+|===
+
+==== Relationships and Ownership
+
+The implementation treats inventory as an owner-scoped aggregate: each inventory belongs to one owner identifier and contains a stock JSON map keyed by product id, so one inventory can hold multiple stock entries, each associated with a product record. `StockEntity`/`StockModel` include an optional `ownerId` that supports future ownership-aware behavior, but the current implementation does not yet fully enforce per-item visibility in the presentation layer; ownership is therefore partially implemented at the model/data level rather than a completed UI access-control feature.
+
+==== Persistence Strategy
+
+The system uses Supabase as the persistence backend for Core Inventory. Inventory data is stored as an owner-scoped row containing a stock JSON map, using a fetch-modify-update pattern:
+
+. Fetch the inventory row for the owner.
+. Convert the stored stock JSON into `StockModel` objects.
+. Add, replace, or remove the affected stock entry.
+. Write the updated stock JSON map back to Supabase.
+. Refresh the inventory state through `InventoryCubit`.
+
+image::persistence-flow.png[Core Inventory Persistence Flow, width=100%]
+
+This supports the implemented add, edit, delete, and lookup flows and keeps persistence logic isolated in the data layer, consistent with the project's Clean Architecture structure.
+
+==== Implementation Notes and Changes
+
+The current implementation replaces earlier placeholder data-model descriptions with the implemented owner-scoped persistence behavior. Main reconciliation points:
+
+* Inventory persistence is centered on an owner-scoped inventory aggregate.
+* Stock entries are persisted inside a JSON map keyed by product id.
+* `ownerId` exists in the stock model, but item-level visibility is not fully enforced in the UI.
+* The persistence layer does not create separate transaction or audit rows for every quantity change.
+* Concurrent writes may overwrite intermediate changes because the strategy uses fetch-modify-update without optimistic locking.
+
+These limitations remain documented so the data model does not appear more complete than the implementation supports.
 
 ---
 
@@ -480,13 +699,7 @@ Each completed feature has been verified through:
 3. **Integration Tests:** End-to-end flows on emulator/physical device
 4. **Manual QA:** Cross-device testing (Android, iOS), network conditions (offline, slow)
 
-Example verification for F-INV (Inventory Management):
-- Add item via barcode scanning
-- Add item via manual entry fallback
-- Edit existing item (quantity, expiration, category)
-- Delete item
-- Real-time list refresh on other device when item added
-- Validation (no negative quantities, future expiration dates)
+Example verification for F-INV (Inventory Management): add via barcode scanning; add via manual-entry fallback; edit existing item (quantity, expiration, category); delete item; real-time list refresh on another device when an item is added; validation (no negative quantities, future expiration dates).
 
 ---
 

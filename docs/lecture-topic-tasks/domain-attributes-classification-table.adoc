@@ -1,0 +1,159 @@
+= Domain Attributes Classification Table — Home Inventory Phenomena
+:toc:
+:toc-placement: preamble
+
+== Purpose
+
+This document applies the Domain Attributes framework (continuity/discreteness/chaos, statics/dynamics, tangibility, dimensionality) to the core phenomena of the Home Inventory system. The classification is intended to be used as a shared reference when modeling each concept — it directly informs schema design, event vs. state modeling, UI affordances, and concurrency strategy.
+
+It is scoped to the six core concepts identified in issue #577:
+
+* *Item* — a single physical object tracked by the inventory.
+* *Room* — a labeled physical location that contains items.
+* *Category* — a classification label applied to items (e.g., "Pantry", "Cleaning Supplies").
+* *Household Member* — a human user belonging to a household, interacting with the inventory.
+* *Inventory Operation* — a discrete change applied to inventory state (add, remove, update quantity, move, consume, restock).
+* *Supporting Document* — auxiliary artifacts attached to items (receipts, warranties, manuals, photos).
+
+== Attribute Dimensions Recap
+
+[cols="1,3", options="header"]
+|===
+| Dimension | Values used here
+
+| Continuity / Discreteness / Chaos
+| *Continuous* (changes gradually over time), *Discrete* (changes only via events), *Hybrid* (both — continuous in reality, discrete in representation), *Chaotic* (unpredictable, hard to formalize).
+
+| Statics / Dynamics
+| *Static* (does not change in normal operation), *Dynamic* (changes over time). For dynamic phenomena we additionally note the subtype: *Inert* (changes only on external input), *Reactive* (changes in response to a condition), *Biddable* (depends on human behavior), or *Autonomous* (changes without external stimulus, e.g., time-driven).
+
+| Tangibility
+| *Physically tangible* (exists in the real world, can be touched), *Humanly tangible* (a person — tangible but with intent and behavior), *Intangible-precise* (digital, formal, well-defined), *Intangible-imprecise* (perception, intent, sentiment).
+
+| Dimensionality
+| *Zero-dimensional / Atomic* (a single value or label), *One-dimensional / Linear* (a sequence, ordered list, or timeline), *Multi-dimensional* (multiple independent axes of variation, typically requires relationships).
+|===
+
+== Classification Table
+
+[cols="2,2,2,2,2", options="header"]
+|===
+| Concept | Continuity / Discreteness / Chaos | Statics / Dynamics | Tangibility | Dimensionality
+
+| Item
+| Hybrid — discrete in the data model (quantity, location, status are discrete), but the underlying physical condition (wear, depletion, ageing toward expiration) is continuous in reality.
+| Dynamic — Inert + Autonomous. Most changes are user-driven (Inert), but expiration progresses without external input (Autonomous).
+| Physically tangible.
+| Multi-dimensional — identity, quantity, location (room), category, owner, purchase/expiration dates, condition, attached documents.
+
+| Room
+| Discrete — a finite, enumerable set of labeled containers. A room either exists in the inventory or it does not; there is no partial state.
+| Static — Room definitions are stable. Renaming or restructuring is rare and explicit.
+| Physically tangible — a real space in the home.
+| Multi-dimensional — bounds a 3D physical space and aggregates items, but is *modeled* primarily by identity + name + parent household. See rationale for the modeling tension.
+
+| Category
+| Discrete — a finite vocabulary of labels.
+| Static — categories are configuration data; they change only through deliberate administrative action.
+| Intangible-precise — a formal classification with no physical embodiment.
+| Zero-dimensional / Atomic — modeled as a labeled value (id + name). Hierarchical categories would push this toward one-dimensional, but the current domain treats categories as flat.
+
+| Household Member
+| Discrete — membership is binary (a person is a member of a household or they are not).
+| Dynamic — Biddable. State (active, invited, removed) and behavior (responding to alerts, performing operations) depend on human choice and are not fully predictable by the system.
+| Humanly tangible — a real person with intent. Distinguished from "physically tangible" because behavior, not just existence, matters for the domain.
+| Multi-dimensional — identity, role, household membership, permissions, notification preferences, activity history.
+
+| Inventory Operation
+| Discrete — each operation is an atomic event at a single point in time. Borderline *chaotic* when concurrent operations interleave across shared inventories: ordering, conflict resolution, and intent are not always recoverable from the event log alone.
+| Dynamic — Inert (always triggered by an external actor — a user or an integration).
+| Intangible-precise — a digital record describing a real-world change.
+| One-dimensional / Linear — operations form an ordered log over time per item/household. The log itself becomes multi-dimensional only when aggregated across items, members, and operation types.
+
+| Supporting Document
+| Discrete — each document is a distinct artifact.
+| Mostly Static once attached (the file content does not mutate), but the *set* of documents on an item is Dynamic Inert (users add and remove attachments).
+| Hybrid tangibility — the original artifact (paper receipt, printed manual) is physically tangible; the stored representation (PDF scan, photo) is intangible-precise. The system handles the intangible form.
+| Multi-dimensional — type (receipt, warranty, manual, photo), owning item, upload timestamp, file metadata, expiration (warranties).
+|===
+
+== Rationale for Edge-Case and Non-Obvious Classifications
+
+=== Item — why "Hybrid" continuity instead of plain "Discrete"
+
+Item *quantity* and *location* are discrete state changes, but two underlying properties are continuous in the real world:
+
+* *Condition / wear* — a tool degrades gradually; the system snaps this to discrete states (new, used, broken) only when a user reports it.
+* *Time-to-expiration* — passes continuously, but the system samples it on a schedule.
+
+Because the model must bridge continuous reality and discrete representation, expiration logic in particular cannot be purely event-driven — it needs a time-based scan or a scheduled check. Classifying Item as Hybrid (rather than Discrete) makes this implication explicit.
+
+=== Room — why "Multi-dimensional" rather than "Zero-dimensional"
+
+A room *as stored* (id + name + household) looks atomic, and one could reasonably classify it as zero-dimensional. We chose multi-dimensional because the room's role in the domain is to *aggregate* items along a spatial axis: it is the intersection of physical space, ownership, and item grouping. Treating it as atomic would obscure the fact that queries like "items in the kitchen below threshold" rely on the room being an indexable dimension, not just a label.
+
+If the team prefers to model Room as a flat label (zero-dimensional, like Category), update the table — but then "location" must be promoted to an explicit dimension on Item.
+
+=== Category — why "Zero-dimensional" while Room is "Multi-dimensional"
+
+Both are discrete static labels, but Category currently carries no internal structure (no hierarchy, no nested categories) in the Home Inventory domain. Room, in contrast, sits in a hierarchy (household → room → item) and represents real spatial extent. If we later introduce category hierarchies (e.g., Food → Pantry → Canned), Category should be reclassified as one-dimensional.
+
+=== Household Member — why "Humanly tangible" and "Biddable"
+
+A household member is a person, not a record. "Humanly tangible" distinguishes them from inert tangible objects (Items) and from intangible records (Operations). The *Biddable* dynamics subtype is critical: the system cannot assume a member will accept an invite, acknowledge an alert, or perform a restock. Any feature that depends on a member's action must tolerate non-response, delays, or refusal — this is a direct modeling implication of the classification.
+
+=== Inventory Operation — why "borderline chaotic"
+
+A single operation is fully discrete and well-defined. The chaotic edge appears in shared households where multiple members operate on the same item concurrently — e.g., two members each report consuming the last unit, or one adds while another moves. Strict event ordering recovers the *what* but not the *intent*. We classify Operations as Discrete with an explicit chaotic edge so that:
+
+* The system must record per-operation actor + timestamp + before/after state.
+* Conflict resolution rules need to be a deliberate design choice, not an emergent behavior.
+
+=== Supporting Document — why "Hybrid tangibility"
+
+The original (a paper receipt, a printed warranty) is physically tangible; the stored representation is an intangible digital file. The system manipulates only the digital form, but UX must acknowledge the tangible origin: scanning, OCR errors, and the possibility that a user has the paper but not yet the file all stem from this hybrid nature. Documents also have a "mostly static, dynamic at the set level" pattern: the content of a single PDF does not mutate, but the *collection* of documents attached to an item grows and shrinks over the item's life.
+
+== Modeling Implications
+
+The classification surfaces a small number of concrete design constraints:
+
+* *Items need both event-driven and time-driven handling.* Hybrid continuity + Autonomous expiration means a purely event-sourced model is insufficient — a scheduled job is required for expiration sweeps.
+* *Operations are the unit of historical truth.* As the only Linear/one-dimensional concept, the operation log is what makes every other dynamic concept reconstructable. Schema and APIs should preserve full operation history.
+* *Household Member behavior cannot be assumed.* Biddable dynamics mean every feature triggered by a member action needs a fallback path (timeout, escalation, or graceful no-op).
+* *Concurrent operations need an explicit conflict policy.* The chaotic edge on Inventory Operation means the team must decide — and document — last-writer-wins, append-only with reconciliation, or CRDT-style merging.
+* *Categories and Rooms should not share a model.* Despite both being "labels", their dimensionality differs (atomic vs. spatial-aggregating), and conflating them in code will leak through queries and UI.
+* *Documents need tangibility-aware UX.* Because the origin is physical, the upload flow must tolerate missing/poor scans and let users update or replace the stored representation.
+
+== Review Process
+
+Per the success criteria of issue #577, this table is *draft until reviewed*. To finalize:
+
+1. Each team member reviews the classifications and flags any concept where they would choose a different attribute value.
+2. Flagged items are discussed in the next domain modeling meeting; the rationale section is updated to record the resolution.
+3. Once at least two team members have signed off (recorded below), the table is considered the working reference for downstream modeling work.
+
+=== Reviewer Sign-off
+
+[cols="2,2,2,3", options="header"]
+|===
+| Reviewer | Date | Status | Notes / Disagreements
+
+|
+|
+|
+|
+
+|
+|
+|
+|
+
+|===
+
+== Related Documents
+
+* `domainAttributesLTT.adoc` — narrative-style application of the same framework to the broader domain.
+* `dimensionality_of_domain.adoc` — deeper treatment of the dimensionality axis across phenomena.
+* `static-vs-dynamic-classification-of-phenomena.adoc` — companion analysis on the statics/dynamics axis.
+* `tangibility_of_domain.adoc` — companion analysis on the tangibility axis.
+* `LTTClassifyTeam3DomainConcepts.adoc` — equivalent table for the Sharing & Budget feature; useful for cross-feature consistency.

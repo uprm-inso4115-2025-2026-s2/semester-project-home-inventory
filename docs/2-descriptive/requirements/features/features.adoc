@@ -1,6 +1,6 @@
 === Features
 
-Features describe user-visible capabilities of the system-to-be at a level above individual requirements. The list below is intentionally concise for Milestone 1 and is grounded in the alert/grocery-list artifacts (auto-check output, trigger priorities, and the grocery list user flow).
+Features describe user-visible capabilities of the system-to-be above the level of individual requirements. The list is intentionally concise for Milestone 1 and grounded in the alert/grocery-list artifacts (auto-check output, trigger priorities, grocery list user flow).
 
 [cols="1,3,2,3",options="header"]
 |===
@@ -13,13 +13,13 @@ Features describe user-visible capabilities of the system-to-be at a level above
 
 |F-ALERT
 |Alert generation from actionable state changes
-|Notifies household members when tracked conditions become actionable (e.g., LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY/EXPIRED), with deduplication based on state transitions.
-|Supports US-ALT-* and the “alert trigger logic” notes. Delivery method can be in-app initially; push may be later.
+|Notifies members when tracked conditions become actionable (e.g., LOW_STOCK, OUT_OF_STOCK, NEAR_EXPIRY/EXPIRED), with deduplication based on state transitions.
+|Supports US-ALT-* and the "alert trigger logic" notes. Delivery can be in-app initially; push may be later.
 
 |F-AUTOCHECK
 |Automated daily check (AutoCheck) over inventory
-|Produces an “AutoCheck Output” (items + status results) used to drive alerts and grocery list updates without requiring the user to manually inspect everything.
-|Grounded in the AutoCheck/alert artifacts. Verification focuses on boundary cases (threshold equality, expiration date boundaries) and idempotency.
+|Produces an "AutoCheck Output" (items + status results) that drives alerts and grocery list updates without manual inspection.
+|Grounded in the AutoCheck/alert artifacts. Verification focuses on boundary cases (threshold equality, expiration boundaries) and idempotency.
 
 |F-GL-AUTO
 |Auto-generated grocery list from AutoCheck Output
@@ -28,16 +28,16 @@ Features describe user-visible capabilities of the system-to-be at a level above
 
 |F-GL-USER
 |Grocery list review and editing flow
-|Users can review auto-added items, then remove/edit/add items manually; updated list is saved automatically.
+|Users review auto-added items, then remove/edit/add items manually; the updated list is saved automatically.
 |Based on the grocery list user flow artifacts. Emphasizes user override and preventing clutter.
 
 |F-SPEND (optional scope if budgeting is in Milestone 1)
 |Spending capture and basic summaries
-|Allows household members to record spending and view simple period summaries (shared vs personal), supporting budget awareness.
+|Lets members record spending and view simple period summaries (shared vs personal), supporting budget awareness.
 |Supports US-SB-* and US-RPT-* (basic reporting). Detailed finance flows can be deferred if needed.
 |===
 
 [NOTE]
 ====
-Feature F-GL-AUTO and F-GL-USER are based on the provided grocery list generator flow and user flow artifacts. Implementation details such as UI layout and backend scheduling are deferred to Section 2.3; here we capture only the user-visible capability and the trigger/priority semantics.
+F-GL-AUTO and F-GL-USER are based on the provided grocery list generator and user flow artifacts. Implementation details such as UI layout and backend scheduling are deferred to Section 2.3; here we capture only the user-visible capability and the trigger/priority semantics.
 ====

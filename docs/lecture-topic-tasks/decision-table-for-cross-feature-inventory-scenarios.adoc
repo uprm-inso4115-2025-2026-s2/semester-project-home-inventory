@@ -1,0 +1,101 @@
+= Decision Table for Cross-Feature Inventory Scenarios
+
+Author: Kaysha Pagan
+
+== Related Test Artifacts
+
+* Lecture Topic Task: LTT-441_decision_table_cross_feature_inventory
+
+== Introduction
+
+This Lecture Topic Task #441 focuses on defining how the Home Inventory system should respond when different inventory features interact at the same time. The goal is to organize expected system behavior across features such as inventory management, alerts, budgeting, notifications, reporting, and shared inventory access. This analysis focuses on realistic situations where multiple conditions happen together and may affect the same inventory item or workflow.
+
+== Decision Table
+
+[cols="1,2,2", options="header"]
+|===
+|Scenario
+|Conditions
+|Expected Behavior
+
+|Low stock shared item
+|Shared item falls below low stock threshold
+|Low stock alert is shown to users with access
+
+|Duplicate item added
+|User adds item already stored in inventory
+|System warns user before saving duplicate item
+
+|Budget exceeded during restock
+|Restock update exceeds configured budget limit
+|Budget warning is displayed before confirmation
+
+|Restocked item with active alert
+|Previously low stock item is replenished
+|Low stock alert is removed
+
+|Shared inventory item updated
+|One user updates a shared inventory item
+|Updated information becomes visible to shared users
+
+|Deleted item included in reports
+|Deleted item exists in inventory reports
+|Reports refresh using updated inventory data
+
+|Expired item with notifications enabled
+|Inventory item reaches expiration date
+|Expiration notification is displayed
+
+|Duplicate barcode detected
+|Entered barcode already exists in inventory
+|User is warned about duplicate barcode
+
+|Missing required inventory information
+|User submits incomplete inventory item form
+|Item is not saved until required fields are completed
+
+|Budget recalculation after item removal
+|Item tied to budget tracking is removed
+|Budget summaries update automatically
+
+|Low stock item removed from inventory
+|Deleted item has active low stock alert
+|Associated low stock alert is removed
+
+|Expiration date updated after notification
+|User updates expiration date after notification
+|Expiration tracking information is updated
+
+|Inventory quantity updated after report generation
+|Inventory values change after reports are generated
+|Future reports reflect updated inventory data
+
+|Shared item deleted by one user
+|One household user removes shared item
+|Item is removed from shared inventory views
+
+|Low stock item exceeds budget during restock
+|Restock resolves low stock but exceeds budget
+|Low stock condition is resolved and budget warning is shown
+
+|Notification triggered for deleted item
+|Deleted item still has pending notification
+|Pending notifications are canceled
+
+|Duplicate item added to shared inventory
+|Shared inventory already contains matching item
+|User receives duplicate item warning
+
+|Expired shared inventory item
+|Shared inventory item reaches expiration date
+|Expiration notification is shown to shared users
+
+|===
+
+== Analysis
+
+The decision table helps organize expected behavior for situations where multiple inventory features types interact at the same time. Many inventory actions affect more than one feature area, including alerts, budgeting, notifications, reporting, and shared inventory management. Documenting these situations helps reduce inconsistent behavior during inventory updates, restocking actions, item deletion, duplicate detection, and expiration tracking. It also provides a clearer reference for how the Home Inventory system should respond when different conditions occur together.
+
+== Conclusion
+
+Defining cross feature inventory scenarios helps improve consistency across the Home Inventory system. Organizing these interactions into a decision table makes expected behavior easier to review, understand, and validate during development and testing activities.

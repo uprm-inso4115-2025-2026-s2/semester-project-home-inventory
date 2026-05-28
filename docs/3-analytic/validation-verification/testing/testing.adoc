@@ -4,27 +4,27 @@ Testing is the main verification mechanism for this project. For Milestone 1, th
 
 === Verification Strategy
 
-* *Code review:* all changes to `main` must go through a pull request reviewed by at least one teammate who did not author the change. Reviews check correctness against requirements, edge cases, terminology consistency, and whether tests were added or updated.
-* *Automated tests:* unit, integration, and verification tests run on pull requests and before merge. At minimum, affected tests must pass before changes are merged.
-* *Manual checks:* short repeatable smoke checks are performed after merges for stakeholder-visible behaviors such as item updates, alerts, and shared inventory consistency.
+* *Code review:* all changes to `main` go through a pull request reviewed by at least one teammate who did not author the change, checking correctness against requirements, edge cases, terminology consistency, and whether tests were added or updated.
+* *Automated tests:* unit, integration, and verification tests run on pull requests and before merge; at minimum, affected tests must pass before merging.
+* *Manual checks:* short repeatable smoke checks run after merges for stakeholder-visible behaviors (item updates, alerts, shared inventory consistency). Reviewer-grade manual procedures for requirements without automated coverage are in "Manual Test Procedure".
 
 ==== Supabase integration tests (guidance)
 
-* Run Supabase integration tests only against a dedicated test project or schema; never run destructive tests against production.
-* Track all created resources (users, inventories, products) during tests and call a centralized `cleanup()` in `tearDownAll()` to delete them.
-* Be aware: deleting auth users may require elevated/admin privileges; tests should handle failures gracefully and log resources for manual cleanup if needed.
-* Prefer idempotent test data and explicit resource naming (test_ prefix) to avoid collisions and simplify cleanup.
+* Run integration tests only against a dedicated test project or schema; never run destructive tests against production.
+* Track all created resources (users, inventories, products) and call a centralized `cleanup()` in `tearDownAll()`.
+* Deleting auth users may require elevated privileges; handle failures gracefully and log resources for manual cleanup if needed.
+* Prefer idempotent test data and explicit naming (`test_` prefix) to avoid collisions and simplify cleanup.
 
 === Test Types
 
-* *Unit tests:* verify isolated rules such as threshold crossing, expiration handling, ownership changes, state transitions, and transaction creation.
-* *Integration tests:* verify persistence, retrieval, synchronization, and automation behavior across connected components.
-* *End-to-end tests:* verify complete workflows such as adding/editing items, triggering low-stock conditions, and generating alerts without duplication.
-* *UI tests:* verify that key screens present the correct state and controls for milestone features.
+* *Unit tests:* isolated rules such as threshold crossing, expiration handling, ownership changes, state transitions, and transaction creation.
+* *Integration tests:* persistence, retrieval, synchronization, and automation behavior across connected components.
+* *End-to-end tests:* complete workflows such as adding/editing items, triggering low-stock conditions, and generating alerts without duplication.
+* *UI tests:* that key screens present the correct state and controls for milestone features.
 
 === State Model Coverage
 
-Verification uses the same alert and state vocabulary defined elsewhere in the project:
+Verification uses the same alert and state vocabulary defined elsewhere:
 
 * Stock-related states: `NORMAL` / `IN_STOCK`, `LOW_STOCK`, `OUT_OF_STOCK`
 * Expiration-related states: `Active`, `Expiring`, `Expired`, `Renewed`, `Deleted`

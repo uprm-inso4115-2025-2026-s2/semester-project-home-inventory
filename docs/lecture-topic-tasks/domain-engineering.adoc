@@ -1,0 +1,156 @@
+= Domain Model & Domain Engineering Process
+:toc:
+:toclevels: 2
+:sectnums:
+:icons: font
+
+This document applies a Domain Engineering approach to the Home Inventory System. It records the shared domain model, a formal domain description (entities, functions, events, behaviors), and a set of domain-theory claims justified by the model.
+
+== 1. Scope and Purpose
+
+*Scope:* Household inventory management for students and shared households.
+
+*Purpose:* Create a common conceptual model to guide requirements, design, and validation activities.
+
+== 2. Domain Entities
+
+=== User
+* *Attributes:* `user_id`, `name`, `email`, `role` {owner, member, guest, admin}
+* *Relationships:* belongs_to → Household
+
+=== Household
+* *Attributes:* `household_id`, `name`, `timezone`, `currency`
+* *Relationships:* has_many → Users, has_many → Locations, has_many → InventoryItems
+
+=== InventoryItem
+* *Attributes:* `item_id`, `name`, `description`, `quantity`, `unit`, `owner_user_id`, `household_id`, `category_id`, `location_id`, `expiration_date` (optional), `barcode` (optional)
+* *Relationships:* belongs_to → Household, optional belongs_to → User (owner), belongs_to → Category, located_in → Location
+
+=== Category
+* *Attributes:* `category_id`, `name`, `parent_category_id` (optional)
+* *Relationships:* categorizes → InventoryItem
+
+=== Location _(room, shelf, container)_
+* *Attributes:* `location_id`, `name`, `parent_location_id` (optional)
+* *Relationships:* contains → InventoryItem
+
+=== Transaction / ConsumptionRecord
+* *Attributes:* `transaction_id`, `item_id`, `user_id`, `delta_quantity`, `timestamp`, `note`
+* *Relationships:* modifies → InventoryItem
+
+=== Alert / Notification
+* *Attributes:* `alert_id`, `household_id`, `item_id` (optional), `type` {low_stock, expiration, reconciliation}, `created_at`, `read_by_user_ids`
+
+=== Export / Report
+* *Attributes:* `export_id`, `household_id`, `generated_by_user_id`, `format`, `generated_at`, `content_ref`
+
+== 3. Domain Functions (Capabilities)
+
+* *Create / Log Item* — Add a new `InventoryItem` to a `Household`.
+* *Update Item* — Modify quantity, metadata, location, or ownership.
+* *Record Consumption* — Create a `Transaction` decreasing an item's quantity.
+* *Transfer Ownership* — Change `owner_user_id` and adjust visibility.
+* *Adjust Permissions* — Set roles and access control at Household or Item granularity.
+* *Generate Report / Export* — Produce a shareable `Export` summarizing items and values.
+* *Notify Stakeholders* — Send `Alert`(s) when thresholds or events occur.
+* *Reconcile Inventory* — Provide workflows to resolve shrinkage and orphaned items.
+* *Search / Browse* — Query `InventoryItems` by name, category, location, or barcode.
+
+== 4. Domain Events
+
+Events are named, observable domain-level state changes:
+
+* `ItemAdded(item_id, user_id, household_id)`
+* `ItemUpdated(item_id, changes, user_id)`
+* `ConsumptionRecorded(transaction_id, item_id, delta_quantity, user_id)`
+* `OwnershipTransferred(item_id, old_owner_id, new_owner_id)`
+* `LowStockDetected(item_id, household_id, computed_quantity)`
+* `ExpirationImminent(item_id, household_id, expiration_date)`
+* `ReportGenerated(export_id, household_id, user_id)`
+* `UserInvited(household_id, invited_user_id, inviter_user_id)`
+
+== 5. Behaviors (System Responses)
+
+For each event, the system should behave according to well-defined policies:
+
+=== On `ItemAdded`
+* Persist the new `InventoryItem`.
+* Update Household aggregates (total item counts, category counts).
+* Optionally trigger `LowStockDetected` if initial quantity is below the minimum threshold.
+* Log provenance (`created_by`, `created_at`) for transparency.
+
+=== On `ItemUpdated`
+* Validate changes against business rules (e.g., `quantity >= 0`).
+* Apply optimistic concurrency / last-writer-wins or conflict resolution when concurrent edits occur.
+* Append change to audit trail and notify watchers if relevant fields changed (location, expiration).
+
+=== On `ConsumptionRecorded`
+* Reduce `InventoryItem.quantity` by `delta_quantity`.
+* Create a `Transaction` record for traceability.
+* Recompute low-stock and expiration windows; dispatch `LowStockDetected` or `ExpirationImminent` alerts if thresholds are crossed.
+
+=== On `OwnershipTransferred`
+* Update `InventoryItem.owner_user_id` and adjust visibility per the new owner's privacy settings.
+* Notify both old and new owners.
+* Where relevant, create a `Transaction` or note documenting the transfer.
+
+=== On `LowStockDetected` or `ExpirationImminent`
+* Generate `Alert` objects targeted to household watchers per notification preferences.
+* Offer one-click actions in UI: "Add to grocery list", "Mark as consumed", or "Ignore until X".
+
+=== On `ReportGenerated`
+* Lock the export artifact and store metadata for provenance.
+* Ensure only authorized users can access or share the export.
+
+=== On `UserInvited`
+* Create pending membership and send invitation email or in-app notification.
+* Limit guest role capabilities until invitation is accepted.
+
+== 6. Domain Invariants and Constraints
+
+* Every `InventoryItem` belongs to exactly one `Household` (invariant).
+* `InventoryItem.quantity` is a non-negative numeric value.
+* `Transaction.delta_quantity` must follow the sign convention (negative for consumption, positive for restock) and cannot cause `quantity < 0` unless the reconciliation policy allows negative provisional balances.
+* An `Export` is generated by an authorized user and is scoped to a `Household`.
+
+== 7. Domain Theory: Key Claims and Justifications
+
+=== Claim 1: Every item belongs to at least one category or location
+
+*Justification:* Categorization or location enables discovery and prevents orphaned inventory. Search and alerts rely on at least one of these attributes to operate effectively.
+
+=== Claim 2: An item must have a location
+
+*Justification:* Location is essential for retrieval in the physical domain and helps distinguish identical item names across storage areas. Features like "where is it" and reconciliation presume a location attribute.
+
+=== Claim 3: Accurate low-stock alerts require timely consumption records
+
+*Justification:* Low-stock detection computes inventory by aggregating `InventoryItem.quantity` and `Transaction` history. If consumption updates are delayed or missing, alerts will be false positives or negatives, undermining trust in the system.
+
+=== Claim 4: Permissioned visibility increases data utility in shared households while protecting personal items
+
+*Justification:* Role-based access (owner vs. member vs. guest) allows social coordination without exposing private consumption patterns. Separating personal items preserves privacy while keeping shared stock visible.
+
+=== Claim 5: Exported reports are authoritative only if provenance metadata is captured
+
+*Justification:* Insurance and property management stakeholders require evidence (timestamps, `generated_by`, item valuations) to accept reports as trustworthy. Lacking provenance reduces the report's utility for external claims.
+
+=== Claim 6: Reconciliation workflows are necessary to correct drift caused by transient actors
+
+*Justification:* Guests, unrecorded consumption, and owner mistakes produce inventory drift. Reconciliation tools (audit lists, discrepancy reports, ownership claim flows) are required to restore model accuracy.
+
+== 8. Validation and Next Steps
+
+* Validate claims and invariants with representative stakeholders (household managers, frequent buyers, guests) via walkthroughs and scenario testing.
+* Convert key behaviors into acceptance test cases (e.g., _"When consumption is recorded, quantity decreases and a low-stock alert triggers if the threshold is crossed"_).
+* Map domain entities to data schema and API contract drafts.
+
+== 9. Appendix: Representative Examples
+
+=== Example 1
+
+Andrea (owner) logs a bulk purchase of toilet paper (`ItemAdded`, quantity 24). The system creates the item, sets location to "Bathroom Closet", assigns category "Toiletries", and updates household aggregates.
+
+=== Example 2
+
+Sofia (roommate) consumes 1 unit of milk but forgets to record the consumption. The low-stock alert may not trigger; reconciliation later shows a discrepancy between the physical count and the system quantity.

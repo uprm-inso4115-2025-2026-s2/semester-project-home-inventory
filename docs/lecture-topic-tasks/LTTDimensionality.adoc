@@ -1,0 +1,129 @@
+==== Dimensionality Classification of Home Inventory Phenomena
+
+:author: @kian-robert 
+
+**AI Disclosure:** Portions of this lecture topic task were drafted and refined with the assistance of AI tools. The final content, classifications, and project alignment were reviewed and verified by the assigned developer.
+
+This lecture topic task classifies core Home Inventory phenomena by dimensionality. Dimensionality helps determine whether a phenomenon should be modeled as an atomic value, a linear sequence, or a structured multi-dimensional object. This distinction is important because it affects the data structures, database schema, and UI representation used by the system.
+
+===== Classification Criteria
+
+For this analysis, phenomena are classified using the following criteria:
+
+* *Zero-dimensional / atomic phenomena* are single, indivisible values. They are modeled using primitive or simple abstract data types such as strings, numbers, Booleans, dates, or enumerated values.
+* *One-dimensional / linear phenomena* are flat collections or ordered sequences. They are modeled using lists, sets, tuples, or timestamp-ordered logs.
+* *Multi-dimensional / structured phenomena* are composite entities with multiple related attributes, nested references, or relationships to other entities. They are modeled using records, relational tables, object structures, or graph-like relationships.
+
+===== Dimensionality Classification Table
+
+[cols="3,2,3,5", options="header"]
+|===
+| Home Inventory Phenomenon | Dimensionality | Abstract Model Type | Justification
+
+| Item name | Zero-dimensional / Atomic | String | The item name is a single text value, such as "Laptop", "Microwave", or "Desk Chair". It does not contain internal structure that the system needs to model separately.
+
+| Item purchase price | Zero-dimensional / Atomic | Number / Decimal | The purchase price is a single numeric value. Although it may be displayed with currency formatting, the underlying phenomenon is one value.
+
+| Item condition | Zero-dimensional / Atomic | Enumerated value | The condition of an item can be represented as one value from a limited set, such as new, good, fair, poor, or damaged.
+
+| Category name | Zero-dimensional / Atomic | String | A category name is a single label, such as "Electronics", "Kitchen", or "Furniture". The label itself is atomic.
+
+| Room name | Zero-dimensional / Atomic | String | A room name is a single text value, such as "Bedroom", "Kitchen", or "Living Room".
+
+| Warranty expiration date | Zero-dimensional / Atomic | Date | The warranty expiration date is a single date value. The system may compare it against the current date, but the stored value itself is atomic.
+
+| Item history | One-dimensional / Linear | Timestamp-ordered list | Item history is a chronological sequence of changes to an item, such as location updates, condition updates, or quantity changes. The entries are ordered by time.
+
+| Category list | One-dimensional / Linear | List or set of category labels/references | The category list is a flat collection of available inventory categories. It may be displayed alphabetically or by creation order, but it remains a one-dimensional collection.
+
+| Audit log | One-dimensional / Linear | Timestamp-ordered event log | The audit log is a sequence of inventory operations, such as item created, item edited, item deleted, or stock updated. The main structure is a linear timeline.
+
+| Notification list | One-dimensional / Linear | List of notification records | Notifications can be shown as a flat list ordered by date, priority, or unread status. Each notification may have attributes, but the list itself is linear.
+
+| Item | Multi-dimensional / Structured | Record / Object / Relational entity | An item is a composite phenomenon with multiple attributes, including name, category, room, purchase date, purchase price, condition, serial number, warranty information, and supporting documents.
+
+| Home Inventory | Multi-dimensional / Structured | Collection of related entities / Graph-like structure | The home inventory is not just a list of names. It connects items, rooms, categories, owners, stock entries, documents, alerts, and reports. These relationships create a structured model.
+
+| Room | Multi-dimensional / Structured | Record with item references | A room has its own attributes, such as name or description, and it can contain references to many items. This makes it more than an atomic label.
+
+| Stock entry | Multi-dimensional / Structured | Record / Object | A stock entry contains structured information such as item reference, quantity, expiration date, purchase date, and location. It combines multiple fields into one modeled entity.
+
+| Supporting document | Multi-dimensional / Structured | Record with file metadata | A document may include a file name, file type, upload date, linked item, storage path, and description. It is a structured entity connected to inventory items.
+
+| Report | Multi-dimensional / Structured | Aggregated data object | A report combines inventory data, item counts, stock levels, expenditures, and usage patterns. It is derived from multiple related records rather than being a single value.
+
+| Shared household or user group | Multi-dimensional / Structured | Graph-like relationship model | A shared household connects users, permissions, items, rooms, and ownership responsibilities. The relationships between users and inventory data make it multi-dimensional.
+|===
+
+===== Atomic Phenomena
+
+Atomic phenomena are the simplest values in the Home Inventory domain. They should be represented using primitive types or simple enumerations.
+
+Examples include:
+
+* *Item name* — modeled as a string.
+* *Item purchase price* — modeled as a decimal number.
+* *Item condition* — modeled as an enumerated value.
+* *Category name* — modeled as a string.
+* *Warranty expiration date* — modeled as a date.
+
+These values should not be over-modeled as separate complex entities unless the system later needs additional metadata about them. For example, "item condition" can remain an enum if the system only needs values such as new, good, fair, poor, or damaged. However, if the system later tracks condition inspection history, photos, and reviewer comments, that inspection history would become a structured phenomenon.
+
+===== Linear Phenomena
+
+Linear phenomena represent ordered or flat collections. They are not single values, but they also do not require nested relationships or graph-like structures by themselves.
+
+Examples include:
+
+* *Item history* — a chronological list of changes for one item.
+* *Category list* — a flat list or set of categories.
+* *Audit log* — a timestamp-ordered sequence of inventory operations.
+* *Notification list* — a list of alerts shown to the user.
+
+These phenomena are usually modeled using arrays, lists, sets, or database query results ordered by timestamp or name. Their key characteristic is that the system can process them as sequences.
+
+===== Multi-Dimensional Phenomena
+
+Multi-dimensional phenomena are the most important structures in the Home Inventory domain because they combine several attributes and relationships.
+
+Examples include:
+
+* *Item* — combines name, category, room, condition, purchase price, purchase date, warranty, stock, and documents.
+* *Home Inventory* — connects items, categories, rooms, users, reports, and notifications.
+* *Room* — contains its own attributes and references to items.
+* *Stock entry* — connects an item to quantity, purchase date, expiration date, and storage location.
+* *Supporting document* — connects uploaded files or receipts to inventory items.
+* *Shared household or user group* — connects multiple users to shared inventory data and permissions.
+
+These phenomena should not be over-atomized. For example, an item should not be treated only as a group of unrelated fields. It should be modeled as a composite entity because its attributes work together to represent one real-world object in the inventory.
+
+===== Representation Challenge: Linearizing Multi-Dimensional Data
+
+Although many Home Inventory phenomena are multi-dimensional, the system still needs to present them through linear user interfaces and textual documentation. This means the app must linearize structured data for display.
+
+Examples of this linearization include:
+
+* *Inventory list views* — the full home inventory is a structured collection of items, categories, rooms, and stock entries, but the UI displays it as a scrollable list of item cards.
+* *Category filters* — the relationship between items and categories is structured, but the user sees it as a simple list of selectable categories.
+* *Room-based navigation* — rooms contain item references, but the interface can display one room at a time and list the items inside that room.
+* *Item detail pages* — an item is multi-dimensional, but the UI presents its fields in a readable vertical order, such as name, category, room, price, condition, warranty, and documents.
+* *Audit logs and histories* — item changes may involve multiple entities, but they are displayed as a chronological sequence of events.
+* *Reports* — reports aggregate multi-dimensional data, but they are shown as tables, charts, summaries, or downloadable documents.
+
+This linearization is necessary because users cannot view the entire graph of inventory relationships at once. Instead, the system uses lists, drill-down pages, filters, and detail views to make structured data understandable.
+
+===== Modeling Implications
+
+The dimensionality classification suggests the following modeling decisions:
+
+* Atomic values should be stored as simple fields in database tables or entity models.
+* Linear phenomena should be represented as lists, sets, or timestamp-ordered query results.
+* Multi-dimensional phenomena should be represented as structured entities with clear relationships.
+* Composite concepts like `Item`, `Room`, `StockEntry`, and `HomeInventory` should not be reduced to disconnected fields.
+* UI screens should linearize structured data through list views, filters, tabs, and detail pages.
+
+===== Summary
+
+The Home Inventory domain contains all three dimensionality levels. Atomic phenomena represent simple values such as item names, prices, and conditions. Linear phenomena represent sequences such as item history, category lists, and audit logs. Multi-dimensional phenomena represent structured concepts such as items, rooms, stock entries, documents, reports, and the full home inventory.
+
+This classification helps guide schema design by showing which concepts should remain simple fields, which should be represented as lists, and which require full structured entities with relationships.

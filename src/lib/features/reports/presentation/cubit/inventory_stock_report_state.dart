@@ -1,5 +1,3 @@
-// TO DO: REPLACE HARDCODED DATA WITH REAL DATA PULLED FROM BACKEND (SEE LINE 57)
-
 import '../../domain/entities/report_filters.dart';
 import '../../domain/repositories/favorites_repository.dart';
 import '../../domain/entities/report_filter_validator.dart';
@@ -11,10 +9,10 @@ class CategoryData {
 }
 
 class ItemData {
-  final String name;
-  final String category;
-  final int quantity;
-  final String status;
+  final String name;     // item_name (or category_name if missing)
+  final String category; // category_name
+  final int quantity;    // items_used
+  final String status;   // derived from usage_rate_percent
   const ItemData(this.name, this.category, this.quantity, this.status);
 }
 
@@ -25,10 +23,9 @@ class InventoryStockReportState {
   final ValidationResult? validationResult;
   final bool isLoadingFavorites;
   final String? favoriteError;
-
-  // NEW: loading and error states for inventory data
   final bool isLoading;
   final String? errorMessage;
+  final String? warningMessage;
 
   const InventoryStockReportState({
     required this.filters,
@@ -39,9 +36,10 @@ class InventoryStockReportState {
     this.favoriteError,
     this.isLoading = false,
     this.errorMessage,
+    this.warningMessage,
   });
 
-  // No category filter – only search query
+  // Filtered items by search query
   List<ItemData> get filteredItems {
     var items = allItems;
     if (filters.searchQuery.isNotEmpty) {
@@ -54,19 +52,15 @@ class InventoryStockReportState {
     return items;
   }
 
-  // TO DO: REPLACE HARDCODED DATA HERE AND IN inventory_stock_report_cubit.dart
+  // Aggregated by category for the bar chart
   List<CategoryData> get currentPageData {
-    // Return ALL categories for scrolling instead of pagination
-    return const [
-      CategoryData('Food', 44),
-      CategoryData('Kitchen', 20),
-      CategoryData('Cleaning', 38),
-      CategoryData('Hygiene', 24),
-      CategoryData('Bathroom', 30),
-      CategoryData('Utilities', 64),
-      CategoryData('Medicine', 20),
-      CategoryData('Laundry', 0),
-    ];
+    final Map<String, int> categoryTotals = {};
+    for (final item in allItems) {
+      categoryTotals[item.category] = (categoryTotals[item.category] ?? 0) + item.quantity;
+    }
+    return categoryTotals.entries
+        .map((e) => CategoryData(e.key, e.value))
+        .toList();
   }
 
   InventoryStockReportState copyWith({
@@ -78,6 +72,7 @@ class InventoryStockReportState {
     String? favoriteError,
     bool? isLoading,
     String? errorMessage,
+    String? warningMessage,
   }) {
     return InventoryStockReportState(
       filters: filters ?? this.filters,
@@ -88,6 +83,7 @@ class InventoryStockReportState {
       favoriteError: favoriteError ?? this.favoriteError,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
+      warningMessage: warningMessage ?? this.warningMessage,
     );
   }
 }

@@ -124,4 +124,36 @@ class DashboardCubit extends Cubit<DashboardState> {
       emit(DashboardError("Failed to refresh dashboard"));
     }
   }
+
+  void setCategory(String? category) {
+    _category = category;
+    if (state is DashboardLoaded) {
+      final currentState = state as DashboardLoaded;
+      emit(
+        DashboardLoaded(
+          currentState.items,
+          selectedCategory: _category,
+          selectedRoom: _room,
+          startDate: _startDate,
+          endDate: _endDate,
+        ),
+      );
+    }
+  }
+
+  void setRoom(String? room) {
+    _room = room;
+    if (state is DashboardLoaded) {
+      final currentState = state as DashboardLoaded;
+      emit(
+        DashboardLoaded(
+          currentState.items,
+          selectedCategory: _category,
+          selectedRoom: _room,
+          startDate: _startDate,
+          endDate: _endDate,
+        ),
+      );
+    }
+  }
 }

@@ -2,24 +2,24 @@
 
 === Primary Derived Goals
 
-In addition to the primary goal already established by the current situation and needs, this project pursues several secondary outcomes that guide decision-making across milestones. A key derived goal is to encourage more sustainable household routines among students by reducing avoidable waste over time—such as items expiring unused or being repurchased unnecessarily—through better day-to-day awareness of what is already on hand. Another derived goal is to improve adoption and continued use: the project should support habits that remain realistic under busy student schedules, so the practice of keeping track of essentials does not collapse after an initial setup period.
+Beyond the primary goal established by the current situation and needs, the project pursues several secondary outcomes that guide decision-making across milestones. One is to encourage more sustainable household routines by reducing avoidable waste over time—items expiring unused or repurchased unnecessarily—through better awareness of what is already on hand. Another is to improve adoption and continued use: the project should support habits that stay realistic under busy student schedules, so tracking essentials does not collapse after initial setup.
 
-A further derived goal is to strengthen coordination and trust in shared households. Even when people share expenses and supplies, misunderstandings about what is available and who will replenish items can create friction; the project aims to reduce these coordination breakdowns as a secondary social outcome of improved household awareness. Where budget awareness is in scope, an additional derived goal is to help students reflect on spending patterns around household essentials, supporting more informed planning rather than reactive purchases.
+A further goal is to strengthen coordination and trust in shared households. Even when people share expenses and supplies, misunderstandings about availability and replenishment create friction; the project aims to reduce these breakdowns as a secondary social outcome. Where budget awareness is in scope, an additional goal is to help students reflect on spending patterns around essentials, supporting informed planning over reactive purchases.
 
-Finally, the project has internal quality goals that support sustainable progress across milestones. The team aims to maintain stable terminology and consistent documentation so decisions remain understandable and traceable over time, reducing rework and concept drift. The project will also emphasize evidence-based development by using validation and verification activities—such as personas, scenarios, walkthroughs, and testing—to continually check that the team's understanding matches stakeholder reality and that key behaviors work as intended.
+Finally, the project has internal quality goals that support sustainable progress: maintaining stable terminology and consistent documentation so decisions stay understandable and traceable (reducing rework and concept drift), and emphasizing evidence-based development through validation and verification activities (personas, scenarios, walkthroughs, testing) to keep the team's understanding aligned with stakeholder reality.
 
 === Competing Goals and Resolutions
 
-Although the project's derived goals reinforce one another in many ways, some of them also create natural tensions that must be handled explicitly. Identifying these tensions helps the team avoid inconsistent design decisions and produces derived requirements that clarify how the system should behave when important goals compete.
+The derived goals reinforce one another in many ways but also create natural tensions that must be handled explicitly. Identifying them helps the team avoid inconsistent design decisions and produces derived requirements clarifying how the system should behave when important goals compete.
 
 ==== 1. Low-effort use vs. inventory accuracy and reliability
 
 *Competing goal A:* Keep the system lightweight enough that students can realistically maintain it under busy schedules. +
 *Competing goal B:* Preserve inventory information with enough accuracy and completeness for reminders, shared coordination, and planning to remain trustworthy.
 
-These goals compete because reducing friction often means reducing the amount of information required at entry time, but requiring too little information can make the inventory incomplete, stale, or unreliable. The project already emphasizes both low-effort maintenance and accurate inventory visibility, so the system must balance continued adoption with dependable data quality.
+These compete because reducing friction often means requiring less information at entry, but requiring too little makes the inventory incomplete, stale, or unreliable. The system must balance continued adoption with dependable data quality.
 
-*Resolution policy:* The system should minimize required user effort during common workflows, but it must still collect and preserve the minimum information needed to support accurate inventory state and reliable system behavior.
+*Resolution policy:* The system should minimize required user effort during common workflows, but still collect and preserve the minimum information needed to support accurate inventory state and reliable behavior.
 
 *Derived requirements:*
 
@@ -35,9 +35,9 @@ These goals compete because reducing friction often means reducing the amount of
 *Competing goal A:* Ensure users are reminded in time about low-stock and expiration conditions. +
 *Competing goal B:* Avoid excessive or poorly timed alerts that cause frustration, desensitization, or notification disablement.
 
-These goals compete because a highly proactive reminder strategy may reduce the chance that important conditions are missed, but it also risks overwhelming users and undermining trust in the system. The project goals explicitly include automated low-stock reminders, expiration alerts, and customizable thresholds, while also emphasizing that notifications should remain helpful and relevant.
+These compete because a highly proactive reminder strategy reduces missed conditions but risks overwhelming users and undermining trust. The project includes automated low-stock reminders, expiration alerts, and customizable thresholds, while emphasizing that notifications stay helpful and relevant.
 
-*Resolution policy:* The system should favor timely reminders for important conditions, but it must rate-limit and deduplicate recurring alerts so persistent states remain visible without becoming spam.
+*Resolution policy:* The system should favor timely reminders for important conditions, but rate-limit and deduplicate recurring alerts so persistent states stay visible without becoming spam.
 
 *Derived requirements:*
 
@@ -51,9 +51,9 @@ These goals compete because a highly proactive reminder strategy may reduce the 
 ==== 3. Shared household visibility vs. privacy and least privilege
 
 *Competing goal A:* Increase household coordination by making shared inventory visible to cohabitants. +
-*Competing goal B:* Protect user-specific or sensitive information by exposing only the information necessary for coordination.
+*Competing goal B:* Protect user-specific or sensitive information by exposing only what is necessary for coordination.
 
-These goals compete because coordination improves when household members can see what is available and what needs replenishment, but excessive visibility can expose ownership, spending, or personal-item information that not everyone should access. The project scope includes both shared inventory coordination and privacy/security needs, so the system must support collaboration without ignoring access boundaries.
+These compete because coordination improves when members can see what is available and what needs replenishment, but excessive visibility can expose ownership, spending, or personal-item information that not everyone should access. The system must support collaboration without ignoring access boundaries.
 
 *Resolution policy:* The system should expose the minimum shared information required for household coordination while restricting user-specific metadata to the appropriate scope and permissions.
 

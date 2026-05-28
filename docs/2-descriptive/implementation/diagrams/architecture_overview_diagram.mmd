@@ -1,0 +1,69 @@
+flowchart LR
+    %% Architecture Overview Diagram for M3 Home Inventory System
+    %% Current components are marked [M3 current]. Planned or partial components are explicitly marked.
+
+    subgraph Client["Flutter Mobile Client [M3 current]"]
+        UI["UI screens and forms<br/>Flutter / Material 3<br/>Inventory, alerts, grocery list, reports"]
+        State["State management<br/>flutter_bloc / Cubit<br/>Loading, error, and feature state"]
+        Domain["Use cases + repositories<br/>Dart domain/data layers<br/>Validation and Supabase calls"]
+        Router["Navigation<br/>GoRouter<br/>Tabs and deep-link entry points"]
+    end
+
+    subgraph Device["Device / Platform Services"]
+        Scanner["Camera + barcode scanner<br/>Mobile scanner / camera plugin<br/>Barcode capture; manual fallback"]
+        LocalFiles["PDF + file APIs<br/>Flutter file/PDF libraries<br/>Report export and sharing"]
+        Push["Push delivery [documented / setup-dependent]<br/>FCM / APNs<br/>Device notification delivery"]
+    end
+
+    subgraph Backend["Supabase Backend [M3 current]"]
+        Auth["Supabase Auth / GoTrue<br/>User identity, sessions, JWTs"]
+        API["Supabase Client API / PostgREST<br/>Authenticated CRUD access"]
+        RLS["Authorization boundary<br/>PostgreSQL RLS policies<br/>Household-scoped access control"]
+        DB[("Supabase PostgreSQL<br/>Persistent products, stock, households,<br/>alerts, grocery lists, report data")]
+        Realtime["Supabase Realtime<br/>Postgres change streams<br/>Live inventory/list updates"]
+        Storage["Supabase Storage [documented / feature-dependent]<br/>Product images, receipts, media assets"]
+    end
+
+    subgraph Automation["Backend Automation [documented / partially implemented]"]
+        Cron["Scheduled trigger / cron<br/>Daily inventory checks"]
+        Worker["Edge Function / hosted worker<br/>TypeScript server-side logic<br/>Expiration + stock evaluation"]
+        Audit["Run / alert logs<br/>Deduplication, audit, recovery"]
+    end
+
+    subgraph External["External Services"]
+        ProductAPI["Barcode/product lookup [M3 current / fallback-dependent]<br/>Product metadata enrichment"]
+        Email["Email service [integration-dependent]<br/>Household invitation delivery"]
+        Future["Future integrations [planned only]<br/>Grocery delivery, AI meal planning,<br/>ML expiration scoring"]
+    end
+
+    UI --> State
+    State --> Domain
+    UI --> Router
+    UI --> Scanner
+    UI --> LocalFiles
+
+    Domain -->|"HTTPS via Supabase Flutter SDK"| Auth
+    Domain -->|"HTTPS CRUD queries"| API
+    Domain -->|"media upload/download when used"| Storage
+    Domain -->|"subscribe to DB changes"| Realtime
+    Domain -->|"barcode lookup over HTTPS"| ProductAPI
+    Domain -->|"invite request / link delivery"| Email
+
+    Auth -->|"JWT session"| RLS
+    API -->|"authorized SQL operations"| RLS
+    RLS --> DB
+    DB -->|"Postgres change feed"| Realtime
+    Realtime -->|"stream updates to Cubits"| State
+
+    Cron -->|"scheduled invocation"| Worker
+    Worker -->|"controlled privileged DB access"| DB
+    Worker -->|"write alert/restock outputs"| DB
+    Worker -->|"record run status + dedupe"| Audit
+    Audit --> DB
+    Worker -->|"push payload when configured"| Push
+    Push -->|"OS-level notification"| UI
+
+    Email -->|"invite link opens app route"| Router
+    ProductAPI -->|"name, brand, image, category"| Domain
+
+    Future -. "planned only; not part of M3 runtime" .-> Domain
