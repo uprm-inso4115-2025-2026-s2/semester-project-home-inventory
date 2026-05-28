@@ -2,6 +2,11 @@
 
 Major domain functions/capabilities, described independently of UI. Each includes a signature naming its inputs and outputs so the effect of the operation can be stated precisely.
 
+[NOTE]
+====
+The action names used here (e.g., *Consumption*, *Replenishment*, *Low-stock judgment*, *Transaction (quantity change)*) are defined in <<_terminology>>. This section is operational: it adds formal signatures and pre-/post-conditions on top of those terms, not new definitions. If a function introduces a new action name, that name must also be added to the terminology table.
+====
+
 === Stock item instance
 
 Introduce new item instances of an item type into a household location, whether as first stocking or replenishment. Afterward, checking the location shows the added quantity.

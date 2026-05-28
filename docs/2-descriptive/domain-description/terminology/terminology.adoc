@@ -146,6 +146,24 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | A household practice of keeping a spare instance or package to reduce the risk of running out.
 | Often used instead of numeric tracking.
 
+| Restock cycle
+| Pattern
+| Domain
+| The recurring flow: a household member consumes an item instance → availability decreases → a low-stock judgment is made or a threshold is crossed → a replenishment decision is made → more of the item type is acquired.
+| Composite flow built from *Consumption*, *Low-stock judgment*, *Replenishment decided*, and *Item replenished*.
+
+| Shared purchase flow
+| Pattern
+| Domain
+| The recurring flow in shared households: a member buys a shared item → the spending entry is recorded → the household recognizes the cost belongs to the shared context, not only the buyer.
+| Composite flow built from *Item acquired*, *Spending entry*, and shared-household coordination.
+
+| Expiration monitoring
+| Pattern
+| Domain
+| The recurring practice in which an item instance approaches its expiration date → the household notices or is informed → the item is used, discarded, or left in place depending on household policy.
+| Composite flow built from *Item approaching expiration*, *Item expired*, and *Item discarded*.
+
 | Consumption
 | Action
 | Domain
