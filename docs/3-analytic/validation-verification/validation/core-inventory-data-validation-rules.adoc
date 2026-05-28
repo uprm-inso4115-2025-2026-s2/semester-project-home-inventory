@@ -13,39 +13,39 @@ Integrity concerns relevant to verification:
 
 These matter because incorrect stored data would invalidate later behaviors such as low-stock detection, expiration handling, synchronization, transaction history, and shared-household coordination. They are checked through tests and reviews such as: quantity updates do not produce invalid states; expiration handling behaves correctly when dates are present, missing, or unreadable; quantity-changing actions preserve append-only transaction history; synchronization does not break household, location, or membership relationships; and shared and personal purchase data remain distinguishable. Detailed field-level and schema-oriented constraints are documented in the corresponding design and data-model material.
 
-== Core Inventory Verification Summary
+== #Core Inventory Verification Summary#
 
-This subsection summarizes the current Core Inventory implementation as observed in the repository (not a full field- or schema-level specification, which remains in the design and data-model material). The notes describe behavior at the time of writing on May 24, 2026, focusing on add/edit/remove flows, expiration handling, ownership visibility, and inventory lookup. The "Evidence / notes" column references specific code components and observations from testing and code review.
+#This subsection summarizes the current Core Inventory implementation as observed in the repository (not a full field- or schema-level specification, which remains in the design and data-model material). The notes describe behavior at the time of writing on May 24, 2026, focusing on add/edit/remove flows, expiration handling, ownership visibility, and inventory lookup. The "Evidence / notes" column references specific code components and observations from testing and code review.#
 
 === Core Inventory — Implementation Report
 
 [cols="1,2,2",options="header"]
 |===
-| Area | Current Status | Evidence / notes
+| #Area# | #Current Status# | #Evidence / notes#
 
-| Item creation and editing
-| Implemented
-| `AddItemPage`, `EditItemPage`, `ItemForm`, `AddInventoryItem`, `UpdateInventoryItem`, and `InventoryCubit` implement add/edit flows. Domain usecases validate inputs; repositories/datasources perform persistence.
+| #Item creation and editing#
+| #Implemented#
+| #`AddItemPage`, `EditItemPage`, `ItemForm`, `AddInventoryItem`, `UpdateInventoryItem`, and `InventoryCubit` implement add/edit flows. Domain usecases validate inputs; repositories/datasources perform persistence.#
 
-| Expiration handling
-| Implemented
-| Expiration is optional: missing dates are treated as unknown. Domain usecases reject dates earlier than the current moment when provided. Parsing and basic format checking occur in the UI form.
+| #Expiration handling#
+| #Implemented#
+| #Expiration is optional: missing dates are treated as unknown. Domain usecases reject dates earlier than the current moment when provided. Parsing and basic format checking occur in the UI form.#
 
-| Remove/delete stock
-| Implemented
-| `InventoryCubit.deleteStock`, `DeleteInventoryItem`, and `InventorySupabaseDataSource.deleteStockFromInventory` remove stock entries and update the inventory `stock` map in Supabase.
+| #Remove/delete stock#
+| #Implemented#
+| #`InventoryCubit.deleteStock`, `DeleteInventoryItem`, and `InventorySupabaseDataSource.deleteStockFromInventory` remove stock entries and update the inventory `stock` map in Supabase.#
 
-| Ownership / role visibility
-| Partially implemented (model only)
-| `StockEntity` and `StockModel` include an optional `ownerId` field; JSON parsing/serialization is tolerant. Presentation-layer visibility and filters do not currently act on per-item ownership.
+| #Ownership / role visibility#
+| #Partially implemented (model only)#
+| #`StockEntity` and `StockModel` include an optional `ownerId` field; JSON parsing/serialization is tolerant. Presentation-layer visibility and filters do not currently act on per-item ownership.#
 
-| Inventory lookup and filtering
-| Basic filters implemented
-| UI exposes category navigation and an expiration-based view. Server-side query support exists for owner-scoped loading; richer lookup/filtering (labels, low-stock thresholds, ranges) is not surfaced in the UI.
+| #Inventory lookup and filtering#
+| #Basic filters implemented#
+| #UI exposes category navigation and an expiration-based view. Server-side query support exists for owner-scoped loading; richer lookup/filtering (labels, low-stock thresholds, ranges) is not surfaced in the UI.#
 
-| Schema and persistence
-| Owner-scoped inventory aggregate
-| Inventories are stored per-owner in Supabase with a `stock` JSON map keyed by product id. Datasource operations fetch-modify-update the `stock` JSON and write the full map back to the row.
+| #Schema and persistence#
+| #Owner-scoped inventory aggregate#
+| #Inventories are stored per-owner in Supabase with a `stock` JSON map keyed by product id. Datasource operations fetch-modify-update the `stock` JSON and write the full map back to the row.#
 |===
 
 === Implemented use cases
