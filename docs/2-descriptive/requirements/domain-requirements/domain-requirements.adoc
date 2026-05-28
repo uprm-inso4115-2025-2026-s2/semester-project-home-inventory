@@ -84,7 +84,7 @@ _Domain property behind this requirement:_ In the domain, low-stock is a judgmen
 
 #NOTE: This matrix is the Domain Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholder, validation, verification, and implementation traceability for DR-* requirements. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.#
 
-[cols="1,2,1,2,2,1,2", options="header"]
+[cols="1,2,1,2,2,1,2,1,2,1", options="header"]
 |===
 | #Requirement ID# | #Source Stakeholder# | #Validation Scenario# | #Verification Artifact# | #Implementation Locus# | #Traceability Status# | #Gap Reason#
 

@@ -1,0 +1,180 @@
+= Classification of Autonomous and Programmable Behaviors in the Home Inventory System
+
+**AI Disclosure**: This document was brainstormed with the assistance of an AI tool for behavior classification, domain analysis, and system modeling. All classifications, examples, and implementation mappings were reviewed and verified against the Home Inventory System documentation and implementation.
+
+== 1. Introduction
+
+The Home Inventory System contains several dynamic behaviors that evolve over time through either automated internal system activity or deterministic programmed workflows. According to the domain engineering lecture material, these phenomena can be classified as *autonomous* or *programmable* dynamic-active behaviors.
+
+*Autonomous behaviors* are system activities that execute independently once configured or triggered by system state conditions. They do not require continuous user interaction during execution.
+
+*Programmable behaviors* are deterministic workflows whose future behavior can be accurately prescribed through explicit rules, conditions, and processing logic.
+
+This document classifies major Home Inventory behaviors according to these concepts.
+
+== 2. Autonomous Behaviors
+
+=== 2.1 Expiration Monitoring
+
+*Description:* The system continuously evaluates stored inventory expiration dates to identify items approaching expiration.
+
+*Autonomous Characteristic:* Once inventory data exists, expiration evaluation occurs without requiring manual inspection by the user.
+
+*Observed Behavior:*
+- Inventory expiration status changes over time.
+- Alert generation depends on system-side evaluation.
+- Notifications may be triggered automatically when thresholds are reached.
+
+*Reason for Classification:* The system independently evaluates temporal conditions after configuration and inventory registration.
+
+=== 2.2 Low-Stock Detection
+
+*Description:* The application evaluates inventory quantity values against predefined low-stock conditions.
+
+*Autonomous Characteristic:* Inventory alerts can be generated automatically after quantity changes occur.
+
+*Observed Behavior:*
+- Quantity updates trigger reevaluation.
+- Threshold rules are processed internally.
+- Users receive notifications without manually performing alert analysis.
+
+*Reason for Classification:* The behavior operates independently after stock modifications occur.
+
+=== 2.3 Real-Time Inventory Synchronization
+
+*Description:* The application synchronizes inventory changes through Supabase realtime updates.
+
+*Autonomous Characteristic:* Synchronization occurs automatically when persistence-layer updates are detected.
+
+*Observed Behavior:*
+- Inventory lists refresh automatically.
+- State updates propagate between application layers.
+- Synchronization does not require repeated user refresh actions.
+
+*Reason for Classification:* The synchronization mechanism executes independently after persistence events occur.
+
+=== 2.4 Report Data Aggregation
+
+*Description:* Inventory statistics and report summaries are generated from stored inventory records.
+
+*Autonomous Characteristic:* The report-generation workflow internally calculates summaries and statistics after the export process begins.
+
+*Observed Behavior:*
+- Inventory records are aggregated automatically.
+- Statistical summaries are generated without manual calculations.
+- Export-ready data is produced internally.
+
+*Reason for Classification:* Once initiated, report-processing behavior executes independently through internal logic.
+
+== 3. Programmable Behaviors
+
+=== 3.1 Barcode Scanning Workflow
+
+*Description:* The application processes barcode scans and attempts product lookup operations.
+
+*Programmable Characteristic:* The workflow follows deterministic branching behavior.
+
+*Observed Logic:*
+- If barcode exists → query product service.
+- If lookup succeeds → populate inventory fields.
+- If lookup fails → activate manual-entry fallback.
+
+*Reason for Classification:* The workflow behavior is explicitly prescribed by predefined logic rules.
+
+=== 3.2 Inventory Validation Rules
+
+*Description:* Inventory operations enforce validation constraints before persistence.
+
+*Programmable Characteristic:* Validation behavior follows deterministic conditions.
+
+*Observed Rules:*
+- Quantity must remain non-negative.
+- Required inventory fields must exist.
+- Expiration dates must follow valid date formatting.
+
+*Reason for Classification:* Validation outcomes are fully determined by programmed rule evaluation.
+
+=== 3.3 PDF Export Formatting
+
+*Description:* Inventory reports are converted into structured PDF documents.
+
+*Programmable Characteristic:* Export generation follows predefined formatting templates and rendering behavior.
+
+*Observed Behavior:*
+- Report sections are generated sequentially.
+- Inventory statistics follow fixed formatting logic.
+- Export structure remains deterministic.
+
+*Reason for Classification:* Output behavior can be accurately predicted through programmed rendering rules.
+
+=== 3.4 Inventory Filtering and Search
+
+*Description:* Inventory queries apply filters such as category, location, ownership, and expiration status.
+
+*Programmable Characteristic:* Filtering operations follow explicit conditional logic.
+
+*Observed Behavior:*
+- Matching inventory records are selected deterministically.
+- Filter combinations produce predictable results.
+- Query execution follows predefined search logic.
+
+*Reason for Classification:* The filtering process is rule-driven and computationally deterministic.
+
+== 4. Comparative Classification Table
+
+[cols="2,1,3", options="header"]
+|===
+| System Behavior
+| Classification
+| Reason
+
+| Expiration Monitoring
+| Autonomous
+| Evaluates temporal conditions independently after inventory registration.
+
+| Low-Stock Detection
+| Autonomous
+| Generates alerts automatically after quantity changes.
+
+| Realtime Inventory Synchronization
+| Autonomous
+| Executes automatically after persistence updates occur.
+
+| Report Data Aggregation
+| Autonomous
+| Internally computes summaries and statistics once started.
+
+| Barcode Workflow
+| Programmable
+| Follows deterministic branching logic.
+
+| Inventory Validation
+| Programmable
+| Enforces predefined rule evaluation.
+
+| PDF Export Formatting
+| Programmable
+| Produces deterministic formatted output.
+
+| Inventory Filtering
+| Programmable
+| Applies explicit conditional query logic.
+|===
+
+== 5. Architectural Implications
+
+Distinguishing autonomous and programmable behaviors improves understanding of system responsibilities and architectural boundaries.
+
+Autonomous behaviors typically require:
+- background processing,
+- event propagation,
+- realtime synchronization,
+- and periodic reevaluation mechanisms.
+
+Programmable behaviors benefit from:
+- deterministic testing,
+- explicit validation rules,
+- workflow traceability,
+- and predictable execution paths.
+
+This classification also supports future scalability decisions by identifying which behaviors are event-driven versus strictly rule-driven.
