@@ -625,68 +625,68 @@ The component roles (Flutter client, Bloc/Cubit state management, GoRouter, Mate
 
 ---
 
-=== Data Model and Persistence Layer
+=== #Data Model and Persistence Layer#
 
-This section documents the current data model and persistence approach actually reflected in the codebase, rather than placeholder or outdated diagrams from earlier revisions.
+#This section documents the current data model and persistence approach actually reflected in the codebase, rather than placeholder or outdated diagrams from earlier revisions.#
 
-==== Data Model Diagram
+==== #Data Model Diagram#
 
 image::data-model-persistence-layer.png[Data Model and Persistence Layer, width=100%]
 
-The diagram represents the implemented data model and persistence structure: the relationship between inventory state management, persistence operations, domain entities, and the Supabase storage model. It reflects how inventory data is retrieved, transformed, persisted, and synchronized, and documents entity ownership, inventory composition, product references, and the application/persistence interaction.
+#The diagram represents the implemented data model and persistence structure: the relationship between inventory state management, persistence operations, domain entities, and the Supabase storage model. It reflects how inventory data is retrieved, transformed, persisted, and synchronized, and documents entity ownership, inventory composition, product references, and the application/persistence interaction.#
 
-==== Core Implemented Entities
+==== #Core Implemented Entities#
 
 [cols="1,2", options="header"]
 |===
-| Entity / Model
-| Responsibility
+| #Entity / Model#
+| #Responsibility#
 
-| InventoryEntity / InventoryModel
-| Represents the inventory aggregate loaded from persistence and exposed to the application.
+| #InventoryEntity / InventoryModel#
+| #Represents the inventory aggregate loaded from persistence and exposed to the application.#
 
-| StockEntity / StockModel
-| Represents tracked stock information including quantity, expiration data, and ownership metadata.
+| #StockEntity / StockModel#
+| #Represents tracked stock information including quantity, expiration data, and ownership metadata.#
 
-| Product / ProductModel
-| Represents reusable product information used during inventory operations.
+| #Product / ProductModel#
+| #Represents reusable product information used during inventory operations.#
 
-| InventorySupabaseDataSource
-| Handles persistence operations between the application and Supabase.
+| #InventorySupabaseDataSource#
+| #Handles persistence operations between the application and Supabase.#
 
-| InventoryCubit
-| Coordinates inventory state updates and UI synchronization.
+| #InventoryCubit#
+| #Coordinates inventory state updates and UI synchronization.#
 |===
 
-==== Relationships and Ownership
+==== #Relationships and Ownership#
 
-The implementation treats inventory as an owner-scoped aggregate: each inventory belongs to one owner identifier and contains a stock JSON map keyed by product id, so one inventory can hold multiple stock entries, each associated with a product record. `StockEntity`/`StockModel` include an optional `ownerId` that supports future ownership-aware behavior, but the current implementation does not yet fully enforce per-item visibility in the presentation layer; ownership is therefore partially implemented at the model/data level rather than a completed UI access-control feature.
+#The implementation treats inventory as an owner-scoped aggregate: each inventory belongs to one owner identifier and contains a stock JSON map keyed by product id, so one inventory can hold multiple stock entries, each associated with a product record. `StockEntity`/`StockModel` include an optional `ownerId` that supports future ownership-aware behavior, but the current implementation does not yet fully enforce per-item visibility in the presentation layer; ownership is therefore partially implemented at the model/data level rather than a completed UI access-control feature.#
 
-==== Persistence Strategy
+==== #Persistence Strategy#
 
-The system uses Supabase as the persistence backend for Core Inventory. Inventory data is stored as an owner-scoped row containing a stock JSON map, using a fetch-modify-update pattern:
+#The system uses Supabase as the persistence backend for Core Inventory. Inventory data is stored as an owner-scoped row containing a stock JSON map, using a fetch-modify-update pattern:#
 
-. Fetch the inventory row for the owner.
-. Convert the stored stock JSON into `StockModel` objects.
-. Add, replace, or remove the affected stock entry.
-. Write the updated stock JSON map back to Supabase.
-. Refresh the inventory state through `InventoryCubit`.
+. #Fetch the inventory row for the owner.#
+. #Convert the stored stock JSON into `StockModel` objects.#
+. #Add, replace, or remove the affected stock entry.#
+. #Write the updated stock JSON map back to Supabase.#
+. #Refresh the inventory state through `InventoryCubit`.#
 
 image::persistence-flow.png[Core Inventory Persistence Flow, width=100%]
 
-This supports the implemented add, edit, delete, and lookup flows and keeps persistence logic isolated in the data layer, consistent with the project's Clean Architecture structure.
+#This supports the implemented add, edit, delete, and lookup flows and keeps persistence logic isolated in the data layer, consistent with the project's Clean Architecture structure.#
 
-==== Implementation Notes and Changes
+==== #Implementation Notes and Changes#
 
-The current implementation replaces earlier placeholder data-model descriptions with the implemented owner-scoped persistence behavior. Main reconciliation points:
+#The current implementation replaces earlier placeholder data-model descriptions with the implemented owner-scoped persistence behavior. Main reconciliation points:#
 
-* Inventory persistence is centered on an owner-scoped inventory aggregate.
-* Stock entries are persisted inside a JSON map keyed by product id.
-* `ownerId` exists in the stock model, but item-level visibility is not fully enforced in the UI.
-* The persistence layer does not create separate transaction or audit rows for every quantity change.
-* Concurrent writes may overwrite intermediate changes because the strategy uses fetch-modify-update without optimistic locking.
+* #Inventory persistence is centered on an owner-scoped inventory aggregate.#
+* #Stock entries are persisted inside a JSON map keyed by product id.#
+* #`ownerId` exists in the stock model, but item-level visibility is not fully enforced in the UI.#
+* #The persistence layer does not create separate transaction or audit rows for every quantity change.#
+* #Concurrent writes may overwrite intermediate changes because the strategy uses fetch-modify-update without optimistic locking.#
 
-These limitations remain documented so the data model does not appear more complete than the implementation supports.
+#These limitations remain documented so the data model does not appear more complete than the implementation supports.#
 
 ---
 
