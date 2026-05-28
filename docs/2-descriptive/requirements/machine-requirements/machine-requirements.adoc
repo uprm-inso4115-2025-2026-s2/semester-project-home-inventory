@@ -81,82 +81,94 @@ Environment-specific values (backend URLs, API keys, service credentials) should
 
 === MR-01: Availability
 
-The system shall remain operational during supervised usability testing. No unplanned downtime requiring restart shall occur during testing sessions.
+The system shall remain operational during supervised usability testing and ordinary household use. During active testing sessions lasting up to 2 continuous hours, no unplanned restart or unrecoverable application failure shall occur. The application shall maintain at least 99% session availability during supervised validation sessions.
 
-*Trace*: DR-12 (threshold-driven low-stock), DR-13 (expiration status)
+Trace: DR-12 (threshold-driven low-stock), DR-13 (expiration status)
 
-*Verification*: Session logs; test coordinator observation.
+Verification: Session logs; crash monitoring; test coordinator observation.
 
 ---
 
 === MR-02: Response Time
 
-The system shall respond quickly enough that household members can complete inventory tasks without waiting. During usability walkthroughs:
-- No participant shall abandon a task due to perceived slowness
-- All participants shall complete lookup tasks while simulating shopping (standing, holding phone)
-- Item creation shall be completable in under 1 minute (consistent with US-INV-01)
+The system shall respond quickly enough that household members can complete inventory tasks without disruptive delays.
 
-Response time measurements will be collected during walkthroughs to establish a baseline for future milestones.
+Inventory lookup and filtering operations for inventories containing up to 5,000 tracked items shall return visible results within 1 second under normal mobile-network conditions.
+Dashboard summary information shall render within 2 seconds after opening the dashboard view.
+Item creation workflows shall remain completable in under 1 minute during usability walkthroughs.
+Barcode lookup results or manual-entry fallback transitions shall appear within 3 seconds after successful barcode capture.
 
-*Trace*: DR-7 (short-window duplicates), DR-12 (threshold-driven low-stock)
+Trace: DR-7 (short-window duplicates), DR-12 (threshold-driven low-stock)
 
-*Verification*: Usability walkthrough observations; timing recorded for each task.
+Verification: Timed usability walkthroughs; integration tests; recorded performance measurements.
 
 ---
 
 === MR-03: Offline Operation
 
-The mobile client shall support viewing inventory while offline and allow pending item creation and quantity updates while disconnected. Pending changes shall be clearly marked until synchronization succeeds. If the same tracked record is changed remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
+The mobile client shall support viewing inventory while offline and allow pending item creation and quantity updates while disconnected. Pending changes shall remain locally recoverable for at least 24 hours or until synchronization succeeds.
 
-*Trace*: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)
+Pending offline changes shall be visibly marked until synchronization completes successfully. If the same tracked record is modified remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
 
-*Milestone 3 source*: M3-QA-08.
+Trace: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)
 
-*Verification*: Integration tests with connectivity simulation; manual tests creating and updating items offline, then reconnecting.
+Milestone 3 source: M3-QA-08.
+
+Verification: Integration tests with connectivity simulation; manual offline modification and recovery tests.
 
 ---
 
 === MR-04: Synchronization
 
-When multiple household members use the same inventory, changes shall propagate to all members in real time via Supabase Realtime, appearing without requiring manual refresh.
+When multiple household members use the same inventory, successfully persisted inventory changes shall propagate to synchronized household devices within 5 seconds under normal connectivity conditions.
 
-*Trace*: DR-4 (household administration), DR-5 (membership independence)
+Synchronization updates shall appear without requiring manual refresh actions.
 
-*Verification*: Automated tests verifying real-time delivery; manual tests with 2-3 concurrent users confirming changes appear instantly.
+Trace: DR-4 (household administration), DR-5 (membership independence)
+
+Verification: Automated synchronization tests; multi-user manual tests with concurrent household sessions.
 
 ---
 
 === MR-05: Security and Privacy
 
-Only authorized household members shall access household inventory data. Personal item records shall be hidden from non-owners by default unless explicitly shared. Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views.
+Only authorized household members shall access household inventory data. Personal item records shall remain hidden from non-owners by default unless explicitly shared.
 
-*Trace*: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention), DR-18 (Personal item default privacy), DR-19 (Role-scoped household permissions)
+Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views. Unauthorized access attempts using invalid credentials or insufficient permissions shall be rejected in all tested validation scenarios.
 
-*Milestone 3 source*: M3-QA-01, M3-QA-02.
+Trace: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention), DR-18 (Personal item default privacy), DR-19 (Role-scoped household permissions)
 
-*Verification*: Access control tests using owner/member/viewer/admin test accounts.
+Milestone 3 source: M3-QA-01, M3-QA-02.
+
+Verification: Access-control tests using owner/member/viewer/admin test accounts.
 
 ---
 
 === MR-06: Auditability
 
-Quantity changes shall be logged with timestamp, user ID, item, and previous value.
+Inventory quantity modifications shall generate audit records containing timestamp, acting user identifier, affected item reference, previous value, and updated value.
 
-*Trace*: DR-8 (ambiguity guard), DR-9 (auditability of corrections)
+Audit records shall remain retrievable for at least 30 days during normal system operation.
 
-*Verification*: Schema validation; manual log inspection.
+Trace: DR-8 (ambiguity guard), DR-9 (auditability of corrections)
+
+Verification: Schema validation; manual audit-log inspection; integration tests verifying audit-record generation.
 
 ---
 
 === MR-07: Notification Quality
 
-Repeated automated checks without meaningful state changes shall not generate duplicate alert records or repeated push notifications. Shared household alerts shall support household-level in-app visibility while respecting individual delivery preferences.
+Repeated automated evaluations without changed triggering conditions shall not generate duplicate alert records or repeated push notifications for the same household-item-condition combination within a 24-hour period.
 
-*Trace*: DR-14 (deduplicated alerting), DR-23 (Shared alert audience control)
+Low-stock and expiration-condition evaluations shall execute at least once every 15 minutes while the application is active or during scheduled synchronization cycles.
 
-*Milestone 3 source*: M3-QA-06.
+Shared household alerts shall support household-level visibility while respecting individual delivery preferences.
 
-*Verification*: Integration tests with repeated triggers, shared-household accounts, and different notification preferences.
+Trace: DR-14 (deduplicated alerting), DR-23 (Shared alert audience control)
+
+Milestone 3 source: M3-QA-06.
+
+Verification: Integration tests with repeated triggers, shared-household accounts, and different notification preferences.
 
 ---
 
