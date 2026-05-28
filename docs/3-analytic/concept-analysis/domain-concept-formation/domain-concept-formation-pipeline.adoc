@@ -278,6 +278,12 @@ See: link:inconsistency-detection.adoc[Inconsistency Detection Report]
 
 The detector scans all DDUs and existing domain documents for direct P / not-P conflicts (one unit asserts a property another negates), scope conflicts (a rule constrains what another exempts), completeness gaps (a concept referenced but never fully defined), and terminology drift (the same phenomenon under two names).
 
+AI-assisted analysis tools were used during documentation inspection and inconsistency-detection activities to help identify potential terminology conflicts, traceability gaps, duplicate requirements, and cross-section inconsistencies requiring further review.
+
+All AI-generated observations were reviewed and validated by team members before acceptance. Final responsibility for all documentation changes, conflict-resolution decisions, and project artifacts remained with the project team.
+
+See <<ai-disclosure,Generative AI Disclosure>> for the project's complete AI usage and verification statement.
+
 === Conflict Enforcement Policy
 
 To preserve consistency across requirements, architecture, implementation, testing, and traceability artifacts, all future additions to the project documentation and codebase must comply with the project's established consistency criteria before approval or integration.
