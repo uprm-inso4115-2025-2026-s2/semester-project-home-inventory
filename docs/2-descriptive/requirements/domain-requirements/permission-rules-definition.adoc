@@ -4,24 +4,14 @@
 Establish clear role-based permission rules so system actions are consistent and prevent unauthorized changes.
 
 === Core Concepts
-- Define key terms used in this doc (e.g., Household, Member, Owner, Role, Permission, Action, Resource, RLS, Invite).
 
-Role
-Membership
-Permission
-Action
-Resource
-
+All term definitions used in this document — *Household*, *Member*, *Owner*, *Viewer*, *Membership*, *Membership state*, *Permission rule*, *Invitation*, *Row Level Security (RLS)* — are maintained in <<_terminology>>. This document does not redefine those terms; it specifies role hierarchy, action catalogs, and conflict-resolution rules that build on them.
 
 === Roles Model
 
 ==== Primary Roles
 
-The primary roles in the application are:
-
-- Owner: Oftentimes the creator of the household, with full permissions to manage the household and its members. Owners can invite/remove members, change permissions, and delete the household.
-- Member: A member of the household with permissions to interact with shared inventory. Members lack administrative capabilities such as managing permissions, but can send invitation and add/edit/ delete inventory items with the right permissions.
-- Viewer: A read-only role that can view shared inventory but cannot make changes or send invitations.
+The roles *Owner*, *Member*, and *Viewer* are defined in <<_terminology>>; refer to those entries for their meaning. This subsection records only how those roles are organized within the system.
 
 ==== Role Hierarchy
 
@@ -35,9 +25,7 @@ All permissions of a lower role are included in the higher role. For example, an
 
 ==== Membership States
 
-- Active: The user is an active member of the household and has the permissions associated with their role.
-- Removed: The user has been removed from the household and no longer has access to any resources or permissions.
-- Pending Invite: The user has been invited to join the household but has not yet accepted the invitation. They do not have any permissions until they accept the invite and become an active member.
+The membership-state values *active*, *removed*, and *pending* are defined in <<_terminology>> under *Membership state*. They are not redefined here.
 
 === Actions Catalog
 

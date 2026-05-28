@@ -29,8 +29,8 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Invitation
 | Entity / Event
 | Domain
-| A temporary request that allows a participant to join a shared household context.
-| Important states may include sent, accepted, declined, expired, or revoked.
+| A temporary request that allows a participant to join a shared household context. Canonical lifecycle states: *pending* (the invitation has been sent but not yet acted on), *accepted* (the invitee accepted and a Membership is established), *declined* (the invitee declined), *expired* (the invitation aged out without a response), and *revoked* (the inviter withdrew it before acceptance).
+| Earlier drafts used "sent" for the initial state; "pending" is the canonical identifier and replaces it. Invitation states are distinct from *Membership state* values; an accepted invitation produces a *Membership* whose state is then tracked separately.
 
 | Membership
 | Relationship / Concept
@@ -320,17 +320,29 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | A person who interacts with the system-to-be through its interface. Corresponds to a household member in the domain.
 | "User" is the system-facing term; "Household member" is the domain-facing term.
 
-| Household admin
+| Owner
 | Role
 | Requirements
-| The single household member with administrative responsibility at a given time. Transferable before the admin leaves.
-| Domain equivalent: informal "household manager" role.
+| The single household member with full administrative responsibility for a household at a given time. The Owner can invite or remove members, change permissions, transfer ownership, and delete the household. Owner privileges include all Member and Viewer privileges. Ownership must be transferred to another Member before the current Owner leaves.
+| Canonical Requirements / Implementation role name. Also referred to as "Household admin" in earlier domain-level documents and "admin" in some requirements (e.g., DR-19); all three names refer to the same role.
+
+| Member
+| Role
+| Requirements
+| A household participant with read/write access to the shared inventory. A Member may add, edit, and delete inventory items (subject to the household's ownership model), send invitations when permitted, view and manage their own membership, and leave the household. A Member does not have administrative capabilities.
+| Member privileges include all Viewer privileges. See *Owner* for the administrative role.
+
+| Viewer
+| Role
+| Requirements
+| A read-only household participant. A Viewer may inspect the shared inventory and membership information but cannot create, edit, or delete items, send invitations, or change household settings.
+| Optional role; sometimes called "Guest". Lowest tier in the role hierarchy *Owner > Member > Viewer*.
 
 | Membership state
 | Property
 | Requirements
-| The status of a user's participation in a household (active, pending, revoked).
-| No direct domain artifact.
+| The status of a user's participation in a household. Canonical values: *active* (the user is an active member with their role's permissions), *pending* (the user has been invited but has not yet accepted, and holds no household permissions until acceptance), and *removed* (the user has been removed from the household and no longer has access to its resources).
+| No direct domain artifact. The value *revoked* (used in earlier drafts) is treated as a synonym for *removed*. Membership states are distinct from invitation lifecycle states (see *Invitation*).
 
 | Reorder point (threshold)
 | Rule / Property

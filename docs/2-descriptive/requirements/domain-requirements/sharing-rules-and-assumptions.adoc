@@ -39,34 +39,23 @@ Clarify system-wide assumptions and documentation rules so future implementation
 - Permissions must be enforced at backend level.
 
 === Naming & Terminology Conventions
+
 ==== Entity Naming Conventions
+
+These are coding conventions, not domain definitions. The meaning of each entity is defined in <<_terminology>>; this subsection only specifies how the names are spelled in code and data.
+
 - Use singular nouns for database entities ("Household", "membership", "inventory_item", ...).
 - Use snake_case for database tables.
 - Use camelCase for frontend variables.
-- Roles must use consistent naming: "owner", "member", "viewer".
+- Role identifiers in code must use the canonical names: "owner", "member", "viewer" (see *Owner*, *Member*, *Viewer* in <<_terminology>>).
 
 ==== Domain Terminology Rules
 
-Official terms must be used consistently across documentation and implementation:
-- "Household" is the official term for a shared inventory group.
-- "Member" refers to an active household participant.
-- "Owner" refers to the user with full permissions and administrative control over the household.
-- "Invite" refers only to pending membership access.
-- "Item" refers to inventory entries, not user profiles or other entities.
-- "Inventory" refers to the collection of items within a household, not individual items.
-
+All domain term definitions are maintained in <<_terminology>> and must not be redefined in this or any other document. When a term is referenced in this document — including *Household*, *Member*, *Owner*, *Invitation*, *Item type*, *Item instance*, *Inventory (reality)*, *Tracked inventory*, and *Shared inventory* — its meaning is the one stated in the terminology table.
 
 ==== Status Naming Conventions
 
-Invite status should be standardized as follows:
-- "pending": The invite has been sent but not yet accepted or declined.
-- "accepted": The invite has been accepted and the user is now a member of the household.
-- "declined": The invite has been declined by the user.
-- "expired": The invite has expired after a certain period without response.
-- "revoked": The invite has been revoked by the inviter before it was accepted.
+The full meaning of each status value is defined in <<_terminology>> under *Invitation* (invitation lifecycle) and *Membership state* (membership lifecycle). This subsection only fixes the canonical spelling of the values used in code and data.
 
-Membership status should be standardized as follows:
-
-- "active": The user is an active member of the household with assigned role permissions.
-- "removed": The user has been removed from the household and no longer has access to any resources or permissions.
-- "pending": The user has been invited to join the household but has not yet accepted the invitation. They do not have any permissions until they accept the invite and become an active member.
+* Invitation status identifiers: `pending`, `accepted`, `declined`, `expired`, `revoked`.
+* Membership status identifiers: `active`, `pending`, `removed`.
