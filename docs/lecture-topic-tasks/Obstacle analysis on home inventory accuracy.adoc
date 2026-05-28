@@ -1,0 +1,231 @@
+= Obstacle Analysis on Home Inventory Accuracy
+//:author: Disclosure: AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. The author @Programian has taken into account ideas and feedback provided by AI, but the final document accurately represents the work of the author crossed-checked with both AI tools and the relevant lecture slides.
+:toc:
+:icons: font
+
+== Introduction
+
+The project's A3 identifies lack of coordination and communication between roommates as a core problem leading to duplicate purchases and waste. A key goal for the Digital Home Inventory system is maintaining `InventoryAccuracy`, which means that the digital inventory accurately reflects actual items, their quantities, expiration dates, and ownership status at all times. However, various factors can obstruct this goal. This document applies the obstacle analysis framework from van Lamsweerde's Chapter 9 lecture slides "Modeling What Could Go Wrong" to:
+
+1. Identify obstacles to `InventoryAccuracy`
+2. Build AND/OR refinement trees showing how leaf obstacles refine the root obstacle
+3. Assess likelihood and criticality for each leaf obstacle
+4. Propose countermeasure goals using resolution tactics
+
+== Goal Definition
+
+**Goal:** `Maintain [InventoryAccuracy]`
+
+**Definition:** The digital inventory of a household shall accurately reflect the actual items present, their quantities, their expiration dates, and their ownership status at all times.
+
+**Formal (informal):** For every item physically present in the household, there exists a corresponding entry in the digital inventory with correct quantity, expiration date, and owner. Conversely, no digital entry exists for an item not physically present.
+
+== Root Obstacle
+
+The root obstacle `not InventoryAccuracy` is the negation of the goal. 
+
+That is: The digital inventory does NOT accurately reflect actual items, quantities, expiration dates, or ownership status.
+
+== Obstacle Identification
+
+Using the lecture methods (tautology-based refinement, necessary conditions analysis, and obstacle categories), the following obstacles to `InventoryAccuracy` were identified.
+
+=== Obstacle 1: Consumption Not Logged (Dissatisfaction)
+
+**Description:** A household member consumes an item but fails to log the consumption in the system.
+
+**Category:** Dissatisfaction (human fails to perform expected action)
+
+**Root cause:** Human error, busy schedule, forgetfulness, or assumption that "someone else will log it"
+
+**Manifestation examples:**
+- Roommate drinks last of the milk, does not log it
+- Someone uses up the last toilet paper roll, does not mark it as out of stock
+- Roommate takes a snack from shared pantry without logging
+
+=== Obstacle 2: Purchase Not Logged (Dissatisfaction)
+
+**Description:** A household member purchases and adds an item to the household but fails to log it in the system.
+
+**Category:** Dissatisfaction
+
+**Root cause:** Forgetting to scan receipt, assuming the item was already logged, or being in a hurry
+
+**Manifestation examples:**
+- Roommate buys milk on way home, forgets to add it to the inventory after coming back
+- Bulk purchase from Costco partially logged or not logged at all
+- Item received as a gift added to the physical household inventory without being logged
+
+=== Obstacle 3: Guest Consumes Without Logging (Threat/Dissatisfaction)
+
+**Description:** A guest or visitor consumes an item during their stay without logging the consumption.
+
+**Category:** Threat (external non-user) / Dissatisfaction
+
+**Root cause:** Guest has no system access, guest does not know they should log, guest does not care
+
+**Manifestation examples:**
+- Friend visits, eats snacks, leaves without logging
+- Family member stays overnight, uses toiletries without logging
+- Party guest consumes beverages, none are logged
+
+
+
+=== Obstacle 4: Expired Item Not Removed (Inaccuracy)
+
+**Description:** An item reaches its expiration date but remains in the digital inventory despite being discarded physically.
+
+**Category:** Inaccuracy
+
+**Root cause:** User forgets to remove expired item, user does not check expiration dates regularly, user assumes system will auto-remove
+
+**Manifestation examples:**
+- Expired yogurt thrown away but still listed as available
+- Medicine expires, user discards but does not remove from inventory
+- Food item spoils, thrown out, inventory not updated
+
+=== Obstacle 5: Duplicate Simultaneous Updates (Inaccuracy)
+
+**Description:** Two roommates add or update the same item at approximately the same time, resulting in inconsistent state.
+
+**Category:** Inaccuracy
+
+**Root cause:** Lack of real-time synchronization, race condition in update logic, no conflict resolution mechanism
+
+**Manifestation examples:**
+- Both roommates add milk to shopping list simultaneously, leading to duplicate entries
+- Roommate A logs milk as "low" while Roommate B logs milk as "full" within same second
+- Two users mark the same item as purchased at the same time
+
+=== Obstacle 6: User Dismisses Alert Without Action (Dissatisfaction)
+
+**Description:** A user receives a low-stock or expiration alert but dismisses it without taking corrective action.
+
+**Category:** Dissatisfaction
+
+**Root cause:** Alert fatigue, user is busy and plans to "deal with it later" (never does), alert perceived as unimportant
+
+**Manifestation examples:**
+- "Milk is low" alert dismissed, milk runs out next day
+- Expiration alert for eggs dismissed, eggs spoil unnoticed
+- Restock reminder dismissed multiple times, item never replenished
+
+== Obstacle Diagram (AND/OR Refinement Tree)
+
+The root obstacle `not InventoryAccuracy` is refined as an OR-refinement into seven leaf obstacles:
+
+- **Obs1:** Consumption not logged (Leaf)
+- **Obs2:** Purchase not logged (Leaf)
+- **Obs3:** Guest consumes without logging (Leaf)
+
+- **Obs4:** Expired item not removed (Leaf)
+- **Obs5:** Duplicate simultaneous updates (Leaf)
+- **Obs6:** Alert dismissed without action (Leaf)
+
+Each obstacle above is treated as a leaf obstacle for the primary analysis.
+
+**Detailed refinement of Obs1 (Consumption Not Logged):**
+
+Obs1 OR-refines into:
+- User forgets to log (primary failure)
+- User assumes someone else will log it
+
+**Detailed refinement of Obs3 (Guest Consumes Without Logging):**
+
+Obs3 OR-refines into:
+- Guest has no access to log
+- Guest chooses not to log
+
+For the scope of this analysis, we treat the seven obstacles as leaf obstacles with the following likelihood and criticality estimates.
+
+== Likelihood and Criticality Assessment
+
+[cols="1,1,1,4", options="header"]
+|===
+| Obstacle | Likelihood | Criticality | Justification
+| Obs1: Consumption not logged | Very Likely | High | Students are busy, forgetful; happens frequently in shared housing
+| Obs2: Purchase not logged | Likely | Moderate | Forgetting to log after shopping is common, but less frequent than consumption
+| Obs3: Guest consumes without logging | Likely | Moderate | Guests are common in student housing; most won't think to log
+
+| Obs4: Expired item not removed | Likely | High | Users rarely check expiration dates; can lead to health risks
+| Obs5: Duplicate simultaneous updates | Unlikely | Low | Requires precise timing; system design can mitigate with locks
+| Obs6: Alert dismissed without action | Very Likely | Moderate | Alert fatigue is real; users may ignore repeated notifications
+|===
+
+== Countermeasure Goals
+
+Based on the analysis above, the following countermeasure goals are proposed for the most critical obstacles.
+
+=== Countermeasure for Obs1 (Consumption Not Logged)
+
+**Resolution Tactic:** Obstacle mitigation + goal restoration
+
+**New Goal:** `Maintain [ConsumptionLoggingOpportunity]`
+
+**Definition:** The system shall provide multiple, low-friction ways for users to log consumption, including:
+- Quick-log via voice command ("Hey app, I finished the milk")
+- Barcode scanning at point of consumption
+- Batch logging at end of day ("What did you consume today?")
+- Passive detection prompts ("We noticed the milk is gone. Did you finish it?")
+
+**Traceability:** Addresses Obs1 by reducing friction and providing reminders.
+
+=== Countermeasure for Obs3 (Guest Consumes Without Logging)
+
+**Resolution Tactic:** Obstacle prevention
+
+**New Goal:** `Maintain [GuestLoggingAccessible]`
+
+**Definition:** The system shall provide guests with a lightweight, no-account way to log consumption, such as:
+- QR code on refrigerator that opens a guest logging page
+- NFC tag near consumables that guests can tap
+- Shared device with guest mode toggle
+
+**Traceability:** Addresses Obs3 by removing the "no access" barrier.
+
+=== Countermeasure for Obs4 (Expired Item Not Removed)
+
+**Resolution Tactic:** Obstacle prevention + goal restoration
+
+**New Goal:** `Maintain [ExpirationDateProactive]`
+
+**Definition:** The system shall:
+- Send expiration warnings at 7 days, 3 days, and 1 day before expiration
+- Automatically flag items as "Expired" after the expiration date passes
+- Prompt users weekly to audit expired items ("Scan your fridge for expired items")
+- Allow one-tap removal of all expired items in a category
+
+**Traceability:** Addresses Obs4 by moving from reactive to proactive expiration management.
+
+=== Countermeasure for Obs6 (Alert Dismissed Without Action)
+
+**Resolution Tactic:** Obstacle mitigation
+
+**New Goal:** `Maintain [AlertEscalation]`
+
+**Definition:** The system shall implement an escalation policy for dismissed alerts:
+- First dismissal: Reminder after 4 hours
+- Second dismissal: Reminder with stronger language ("Milk is critically low!")
+- Third dismissal: Notify another household member
+- After 3 dismissals on same item: Auto-add to shopping list
+
+**Traceability:** Addresses Obs6 by preventing indefinite dismissal and distributing responsibility.
+
+== Summary
+
+[cols="1,1,1,2", options="header"]
+|===
+| Obstacle | Likelihood | Criticality | Countermeasure
+| Obs1: Consumption not logged | Very Likely | High | ConsumptionLoggingOpportunity
+| Obs2: Purchase not logged | Likely | Moderate | (Deferred—lower priority)
+| Obs3: Guest consumes without logging | Likely | Moderate | GuestLoggingAccessible
+| Obs4: Expired item not removed | Likely | High | ExpirationDateProactive
+| Obs5: Duplicate simultaneous updates | Unlikely | Low | (Deferred—implementation concern)
+| Obs6: Alert dismissed without action | Very Likely | Moderate | AlertEscalation
+|===
+
+== References
+
+- van Lamsweerde, A. (2009). Chapter 9: Modeling What Could Go Wrong: Risk Analysis on Goal Models. In *Requirements Engineering: From System Goals to UML Models to Software Specifications*. Wiley.
+- Sorrentini, L. (2024). Digital Home Inventory A3. INSO 4115 Project Document.
+- Deepseek AI was used for formatting and structuring the text properly for the asciidoc or .adoc format as well as ensuring that the text is properly written and laid out. I @Programian the author have taken into account ideas and feedback provided by AI, but the final document accurately represents my work crossed-checked with both AI tools and the relevant lecture slides.
