@@ -1,0 +1,74 @@
+= Potential UI-Related Goal Conflicts in Home Inventory
+
+*AI Disclosure*: This document was developed with the assistance of an AI tool for structural guidance and a better understanding of lecture concepts. All classifications, interpretations, and final decisions were reviewed, validated, and finalized by the author.
+
+This document identifies possible UI-related goal conflicts in the implemented Home Inventory dashboard and related screens.
+
+The goal is to review the current interface and identify situations where two useful system goals may compete with each other. These conflicts do not mean the implementation is wrong. They help document design tradeoffs that should be considered when improving or maintaining the system.
+
+== Conflict Areas Reviewed
+
+* Dashboard simplicity vs. detailed information
+* Alert visibility vs. notification overload
+* Fast loading vs. report previews
+* Shared household use vs. user privacy
+* Customization vs. interface consistency
+* Simple navigation vs. multiple main features
+
+== Potential Goal Conflicts
+
+=== Dashboard Simplicity vs. Detailed Information
+
+The implemented dashboard shows summary cards, report previews, alerts, and navigation options. One goal is to keep the dashboard simple and easy to understand. Another goal is to provide enough useful information so users can quickly understand their inventory status.
+
+These goals may conflict because adding too much information to the dashboard can make the interface feel crowded or harder to scan.
+
+Possible resolution: *The dashboard should continue showing only high-level summary information by default. More detailed inventory data should remain available through the Inventory and Reports sections.*
+
+=== Alerts Visibility vs. Notification Overload
+
+The system includes alerts as an important feature for inventory tracking. One goal is to make alerts visible so users notice low-stock or important inventory problems. Another goal is to avoid overwhelming the user with too many warnings or notifications.
+
+These goals may conflict if alerts become too frequent or if minor alerts are shown with the same importance as urgent ones.
+
+Possible resolution: *Alerts should be prioritized by importance, and the interface should avoid showing too many alerts at once unless they require user attention.*
+
+=== Fast Loading vs. Report Previews
+
+The dashboard includes report preview areas such as Inventory Value Trend and Category Distribution. One goal is to show visual information that helps users understand inventory patterns. Another goal is to keep the dashboard fast and responsive.
+
+These goals may conflict because charts and calculated report data can slow down the interface if too much information loads at the same time.
+
+Possible resolution: *The dashboard should load the most important summary data first and keep more detailed charts or calculations in the Reports section.*
+
+=== Shared Household Use vs. User Privacy
+
+The Home Inventory system may support shared household inventory data. One goal is to make collaboration easier by allowing users to track shared items, rooms, and categories. Another goal is to protect user privacy when some items or ownership details should not be visible to everyone.
+
+These goals may conflict if shared inventory information exposes personal item details.
+
+Possible resolution: *The system should clearly define which item information is shared and which information can remain private or user-specific.*
+
+=== Customization vs. Consistent Interface
+
+Users may want to customize what appears on the dashboard, such as cards, alerts, or report previews. One goal is to give users flexibility. Another goal is to keep the interface consistent and easy to maintain.
+
+These goals may conflict because too much customization can make the dashboard harder to test, document, and support.
+
+Possible resolution: *The system should allow limited customization while keeping the main dashboard structure consistent for all users.*
+
+=== Simple Navigation vs. Multiple Main Features
+
+The implemented interface includes several main sections, such as Home, Grocery, Inventory, Reports, and Alerts. One goal is to make navigation simple. Another goal is to give users quick access to all major system features.
+
+These goals may conflict because adding more navigation options can make the interface feel more complex.
+
+Possible resolution: *The bottom navigation should focus on the main sections only, while secondary actions should remain inside the appropriate screens.*
+
+== Summary of Findings
+
+The implemented Home Inventory interface already supports several important goals, including dashboard visibility, reporting, alerts, navigation, and shared inventory use.
+
+The main potential conflicts involve balancing simplicity, detail, performance, privacy, customization, and ease of navigation. These conflicts should be considered when updating the dashboard or adding new UI features.
+
+Documenting these tradeoffs helps the team keep the current implementation understandable, usable, and easier to improve over time.
