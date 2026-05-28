@@ -1,0 +1,147 @@
+= Formulating Domain Theory for Shared Household Inventory Operations
+
+**AI Disclosure**: This document was brainstormed with the assistance of an AI tool for domain-theory formulation, invariant analysis, and conceptual modeling. All rules, assumptions, and implications were reviewed and validated against the implemented Home Inventory System documentation.
+
+== 1. Introduction
+
+Domain theory formation defines the logical rules, assumptions, constraints, and invariants that govern a problem domain. In the Home Inventory System, domain theory provides a conceptual foundation for understanding how inventory operations, ownership, alerts, and household coordination behave within the system.
+
+The purpose of this document is to formalize key operational rules and identify the assumptions that influence implementation and validation decisions.
+
+== 2. Core Domain Assumptions
+
+=== 2.1 Shared Household Assumption
+
+The system assumes that multiple household members may interact with the same inventory dataset.
+
+*Implications:*
+- Inventory changes may affect multiple users simultaneously.
+- Ownership visibility may require access-control constraints.
+- Synchronization conflicts may occur during concurrent updates.
+
+=== 2.2 Persistent Inventory Assumption
+
+Inventory records persist over time until explicitly removed or modified.
+
+*Implications:*
+- Historical inventory states may influence alerts and reporting.
+- Expiration tracking requires temporal persistence.
+- Deleted or consumed items affect reporting accuracy.
+
+=== 2.3 User-Managed Accuracy Assumption
+
+The system assumes users are responsible for maintaining accurate inventory information.
+
+*Implications:*
+- Quantity inaccuracies may occur from missing updates.
+- Expired inventory may remain visible until manually corrected.
+- Incorrect categorization may affect filtering and reports.
+
+== 3. Domain Invariants
+
+=== 3.1 Inventory Ownership Invariant
+
+Every inventory aggregate belongs to exactly one owner or household scope.
+
+*Constraint:*
+- Inventory data cannot exist without an associated ownership context.
+
+*Validation Rule:*
+- Inventory creation requires a valid owner identifier.
+
+=== 3.2 Inventory Item Identity Invariant
+
+Every inventory item must maintain a unique identity within its inventory scope.
+
+*Constraint:*
+- Duplicate item identifiers cannot exist simultaneously within the same inventory aggregate.
+
+*Validation Rule:*
+- Item insertion validates uniqueness before persistence.
+
+=== 3.3 Quantity Integrity Invariant
+
+Inventory quantities cannot become negative.
+
+*Constraint:*
+- Consumption or subtraction operations cannot reduce quantity below zero.
+
+*Validation Rule:*
+- Quantity updates reject invalid subtraction operations.
+
+=== 3.4 Category Association Invariant
+
+Every inventory item belongs to exactly one primary category.
+
+*Constraint:*
+- Uncategorized items reduce filtering and reporting consistency.
+
+*Validation Rule:*
+- Item creation requires category assignment.
+
+=== 3.5 Expiration-State Invariant
+
+Expired inventory cannot be considered fully consumable inventory.
+
+*Constraint:*
+- Expired items must remain distinguishable from normal inventory state.
+
+*Validation Rule:*
+- Expiration comparisons update inventory status and alerts.
+
+== 4. Operational Rules
+
+=== 4.1 Inventory Modification Rule
+
+Inventory modifications must propagate through the persistence layer before synchronization occurs.
+
+*Logical Implication:*
+- UI state cannot become authoritative before persistence succeeds.
+
+=== 4.2 Alert Generation Rule
+
+Alert generation depends on inventory threshold evaluation.
+
+*Logical Implication:*
+- Alerts cannot exist independently from inventory state conditions.
+
+=== 4.3 Report Consistency Rule
+
+Generated reports reflect the currently persisted inventory state.
+
+*Logical Implication:*
+- Report accuracy depends on synchronization and persistence integrity.
+
+=== 4.4 Manual Recovery Rule
+
+Manual inventory entry must remain available when automated barcode lookup fails.
+
+*Logical Implication:*
+- Barcode infrastructure cannot become a single point of operational failure.
+
+== 5. Validation Implications
+
+The identified domain rules influence both validation and implementation decisions throughout the Home Inventory System.
+
+Examples include:
+
+- Inventory validation logic enforcing quantity integrity.
+- Expiration workflows supporting alert generation.
+- Ownership-aware inventory persistence behavior.
+- Synchronization mechanisms maintaining report consistency.
+- Manual-entry workflows improving operational resilience.
+
+These rules also help identify implementation limitations and future scalability concerns.
+
+== 6. Domain Theory Summary
+
+The Home Inventory domain combines:
+- shared ownership behavior,
+- inventory persistence,
+- realtime synchronization,
+- alert-driven monitoring,
+- and rule-based validation.
+
+The resulting domain theory provides a conceptual structure for understanding how inventory entities, operational workflows, and validation constraints interact throughout the system.
+
+Formalizing these assumptions and invariants improves consistency between requirements, implementation behavior, and future architectural evolution.
