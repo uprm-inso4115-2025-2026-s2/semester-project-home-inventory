@@ -207,4 +207,4 @@ Production deployment targets, final quantitative performance thresholds, and fu
 | MR-05 | Household Manager, End User, System / Dev Team | S2 | Pending | Household management, Database layer, Alerts & Notification System | Gap flagged | Cross-user automation validation incomplete. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
 | MR-06 | Household Manager, System / Dev Team | S2 | Pending | Database layer, Inventory module, Alerts & Notification System | Gap flagged | Notification resilience testing not implemented. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
 | MR-07 | End User, System / Dev Team | S1 | Pending | Alerts & Notification System, AutoCheck process | Gap flagged | Notification fatigue prevention metrics pending. Specific TC IDs pending; planned coverage in the TC-ALT-* family.
-===
+|===
