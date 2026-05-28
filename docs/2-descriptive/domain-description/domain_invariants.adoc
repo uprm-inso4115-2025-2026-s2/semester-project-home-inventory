@@ -15,4 +15,4 @@ A small set of stable domain rules that must remain true across the household in
 
 === Ownership and participation notes
 
-Ownership and responsibility vary by household practice: some item instances are treated as personal, others as shared. The domain must therefore support both personal and shared responsibility without redefining the core concepts of household, household member, item type, and item instance. Rather than introducing competing ownership entities, the document keeps shared-household context within household membership, personal/shared item status, and household coordination.
+Ownership and responsibility vary by household practice: some inventory items are personal while others are shared. The domain therefore supports both personal and shared responsibility without introducing separate ownership entities. Ownership behavior is represented through household membership, personal/shared item status, and household coordination rules.
