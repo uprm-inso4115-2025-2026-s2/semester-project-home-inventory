@@ -323,8 +323,8 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Deduplication / anti-spam rule
 | Rule
 | Requirements
-| A constraint preventing repeated alerts or repeated restock-list additions when no meaningful state change has occurred.
-| Operationalizes the domain's "should not cause repeated alerts."
+| A constraint that prevents the system from creating another alert or auto-added restock entry for the same household, item, condition type, and triggering state while that condition remains unchanged. A repeated scheduled check, page refresh, or synchronization event is not enough to create a duplicate. A new alert or restock entry is allowed only when the underlying actionable state changes, the user explicitly snoozes/clears the previous entry and the snooze period expires, or the condition is resolved and later becomes true again.
+| Operationalizes the domain concern that repeated checks should not create alert spam or duplicate restock work.
 
 | Actionable state
 | Concept
