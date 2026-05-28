@@ -1,89 +1,154 @@
 == Personas
 
-Personas represent key user/stakeholder types and are the single source of truth for all requirements, user stories, and features. Each includes goals, frustrations, behaviors, constraints, and a short scenario. The persona-to-needs trace table at the end links each persona to specific needs (N1, N2, etc.) referenced throughout requirements for justification and traceability.
+Personas represent the people the project is for. Each one is described as a *person with a life* — their broader goals, context, identity, daily reality, and relationships — so that requirements and design decisions can be grounded in lived experience rather than in feature interactions. Household-supply management is included as one piece of that life, not as the centerpiece.
+
+A persona-to-needs trace at the end of this section links each persona to the specific needs (N1, N2, …) referenced throughout requirements, so that the broader context here remains traceable into the more software-facing artifacts.
 
 === Persona 1: Mateo, The Busy Solo Student
-* *Role:* Student living alone
-* *Background:* A full-time engineering student who also works part-time, lives alone in a small apartment near campus, and has little free time or mental energy for household management.
-* *Goals:*
-** Minimize time spent grocery shopping.
-** Avoid throwing away expired perishable food.
-** Keep meal prep quick, simple, and predictable.
-* *Frustrations:*
-** Frequently forgets what ingredients he already has.
-** Buys produce or meat that goes bad before he cooks it.
-** Morning stress when he realizes he is out of coffee or milk.
-* *Typical behaviors:*
-** Shops sporadically, usually only when the fridge is empty.
-** Relies entirely on memory for his inventory.
-** Orders expensive takeout when overwhelmed by a disorganized kitchen.
-* *Constraints:*
-** Severe time constraints from a heavy class and work schedule.
-** Limited mental bandwidth; relies on his smartphone for organization.
-* *Scenario:*
-Mateo comes home late and plans to pan-fry chicken he bought earlier in the week, only to find he actually bought it a week and a half ago and it has spoiled. He orders expensive pizza (breaking his budget) and later finds three open bottles of ketchup in the pantry. Success looks like an alert (delivery TBD / in-app baseline) the day before his chicken expires, and quickly checking the app at the store to confirm he doesn't need a fourth ketchup bottle.
+
+==== Role
+Full-time engineering student, lives alone.
+
+==== Broader context
+Mateo is in his third year of a mechanical engineering program, carrying 18 credits this semester. He works part-time at the campus IT help desk to cover rent and groceries; his family covers tuition but not living costs. He lives in a 350-square-foot studio off campus because it was the cheapest unit within walking distance to the engineering building. He lost his mother to a long illness during his second year, and "eating real food" is something he associates with her — he wants to cook, but most days it doesn't happen. His sister, a senior in high school, calls him on weekends and he tries to sound less tired than he feels.
+
+==== Goals in his life
+* Finish the semester with a GPA high enough to keep his place in his program.
+* Hold his work-study job — losing it would mean dropping a class.
+* Not burn out before finals.
+* Cook for himself at least sometimes, both because it's cheaper and because it ties him to home.
+* Send his sister something for her birthday.
+
+==== Daily reality
+Up at 6:30, three classes back-to-back, lunch from a vending machine, lab in the afternoon, work shift from 4 to 8, exam prep at the library until midnight. By the time he gets home he is too tired to cook. He eats takeout three or four nights a week even though he can't afford to. His fridge typically holds half-eaten leftovers, a few sad vegetables he meant to use, and a rotating cast of condiments.
+
+==== Values and relationships
+Independence is a strong value — he resists asking his family for help even when he should. Practical efficiency is another: anything that lowers cognitive load is worth its weight. He values his sister's calls and the memory of his mother's cooking. He is friendly with two classmates who study with him but does not have close friends in town.
+
+==== Constraints in his life
+* Severe time scarcity — every weekday is over-allocated before it begins.
+* Limited mental bandwidth; he forgets things he didn't write down.
+* A tight monthly budget that takeout is steadily eroding.
+* No car — he shops at the small grocery store within walking distance.
+
+==== Household supplies in his life
+For Mateo, household supplies are part of a broader category of "small failures of household management" he juggles badly — laundry, dishes, mail. He'd genuinely rather not think about inventory. He throws out perishables more often than he wants to admit, and the morning he runs out of coffee is a bad morning. He has tried two productivity apps and abandoned both; anything that demands a chunk of attention will not survive.
+
+==== A day in his life
+On a Tuesday in November, Mateo gets home at 10:40 PM after a long shift and a lab he had to make up. He plans to pan-fry the chicken he bought "earlier in the week" — except it turns out he bought it a week and a half ago, and the package smells off. He orders pizza he can't afford, finds three open ketchup bottles while looking for napkins, and decides he'll deal with all of it on Saturday. Saturday will not happen the way he plans.
 
 === Persona 2: Sofia, The Budget-Conscious Roommate
-* *Role:* Student living with roommates; budget-conscious
-* *Background:* Lives in a shared apartment with two other students and pays her own expenses using financial aid and a strict monthly budget.
-* *Goals:*
-** Keep grocery and household supply costs as low as possible.
-** Ensure communal items like toilet paper and dish soap are split fairly.
-** Avoid buying duplicates of items the apartment already has.
-* *Frustrations:*
-** Roommates using her more expensive dietary items without asking.
-** Running out of money before month-end due to poor collective planning.
-** Wasting limited storage space on duplicate bulk items.
-* *Behaviors:*
-** Shops with a strict list and a calculator app open.
-** Uses a fridge whiteboard for shared needs, but roommates forget to update it.
-* *Constraints:*
-** Extremely limited budget; shared storage that fills up quickly; reliant on uncooperative roommates to update the whiteboard.
-* *Scenario:*
-Sofia shops on a strict $50 budget, checks the shared whiteboard, and buys toilet paper and dish soap. On returning she finds a roommate had already bought bulk toilet paper that afternoon but forgot to erase it — leaving no storage space and Sofia short on cash. Success looks like a synchronized app where changes are recorded so everyone sees updated shared inventory and purchases, preventing duplicate spending.
+
+==== Role
+Public-policy major living with two roommates.
+
+==== Broader context
+Sofia is in her second year of a public-policy program. She holds a Pell grant, a small private scholarship, and a 20-hour-a-week work-study job at the campus library. She sends $200 home to her family every month — her younger brother is in high school and her mother is doing seasonal warehouse work. Sofia made a private rule for herself her freshman year: she will not take on student debt beyond what the federal program already covers. She lives in a three-bedroom apartment with two roommates she was matched with through the university's housing portal. They are polite, not friends.
+
+==== Goals in her life
+* Make rent every month without dipping into emergency savings.
+* Keep her loan balance under a self-imposed cap of $25,000 at graduation.
+* Build a reputation in her major as a serious student so she can land a Capitol Hill internship next summer.
+* Maintain workable peace with her roommates for one more academic year.
+* Send what she can to her family without becoming a martyr about it.
+
+==== Daily reality
+Up at 6:15 to study before class. Three classes Monday/Wednesday/Friday, two on Tuesday/Thursday, library shifts in between. She meal-preps on Sundays — frozen vegetables, beans, rice, eggs — and brings every meal to campus. She almost never eats out. Every Friday night she opens a spreadsheet, reconciles the week, and decides whether anything needs to be cut.
+
+==== Values and relationships
+Fairness is the value she organizes her life around. Financial autonomy comes second. She has a sharp eye for when she's being taken advantage of and an aversion to confrontation that lets resentment build instead of being addressed. She keeps two close friends from high school via video call. Her parents are proud of her and worry about her.
+
+==== Constraints in her life
+* Very narrow margin for unplanned expenses — a $40 surprise reshapes the week.
+* Shared physical space — the apartment's pantry and fridge are small and routinely contested.
+* Shared social space — she cannot easily move out, and shared spending is part of the rent agreement.
+* Time pressure during the academic year that limits her ability to be the household's record-keeper too.
+
+==== Household supplies in her life
+For Sofia, shared groceries are a financial flashpoint disguised as a logistical one. A roommate eating her $14 protein-rich cereal feels, viscerally, like an extra library shift. She wants shared items to be genuinely shared and personal items to stay personal. She has tried a fridge whiteboard; one roommate forgets to update it and the other thinks it's passive-aggressive. She wants the household to coordinate; she does not want to be its accountant.
+
+==== A day in her life
+A Saturday in October. Sofia has $50 in the grocery budget. She walks to the supermarket, checks the whiteboard before leaving (it says "toilet paper, dish soap"), and buys both, eating into her budget. When she gets home, an unopened 12-pack of toilet paper is sitting on the floor of the pantry — a roommate bought bulk earlier and forgot to erase the whiteboard. Sofia is now short $8.99 for the week and has nowhere to put the extra pack. She does not say anything. She makes a note in her spreadsheet and skips eating out with friends that night.
 
 === Persona 3: Julian, The Health-Conscious Student
-* *Role:* Student with dietary or medical needs
-* *Background:* A student athlete on a strict high-protein, gluten-free diet who lives with roommates but keeps his food separate due to nutritional requirements and cross-contamination concerns.
-* *Goals:*
-** Maintain a consistent, uninterrupted supply of specialized dietary items.
-** Track consumption rates of expensive supplements to budget for reorders.
-* *Frustrations:*
-** Running out of core meal-prep ingredients mid-week.
-** Disorganized pantry spaces making items hard to find.
-** Specialty items expiring after bulk online purchases.
-* *Behaviors:*
-** Buys non-perishables in bulk online; does heavy meal prep every Sunday.
-** Tracks macronutrients religiously but struggles to translate that into a grocery inventory.
-* *Constraints:*
-** Strict dietary policies with no substitutions; limited local availability of his brands.
-* *Scenario:*
-During Sunday meal prep, Julian reaches for his special gluten-free pasta and finds he used the last box on Wednesday and forgot to reorder; since the local store doesn't carry his brand, his meal plan is ruined. Success looks like threshold-based, adjustable low-stock alerts that remind him to reorder specialty items before he runs out.
+
+==== Role
+Student athlete with a medically required restrictive diet.
+
+==== Broader context
+Julian was diagnosed with celiac disease at sixteen. He has been a mid-distance runner since high school and is on his school's club cross-country team this year, trying to make the varsity roster next year. He lives in a campus apartment with three other student athletes who eat normally. His parents cover his tuition and send him an allowance for specialty groceries; he does not want to push that allowance higher than it needs to be. His coach watches macro intake closely and has flagged that distance runners can drift toward disordered eating — Julian works with the campus nutritionist to keep that boundary clear.
+
+==== Goals in his life
+* Earn a varsity team spot next season.
+* Maintain his GPA at the level his academic scholarship requires.
+* Manage celiac without restricting further than necessary.
+* Stay on good terms with roommates without being "the difficult one."
+* Save enough over the summer to move into a smaller, gluten-free-only apartment senior year.
+
+==== Daily reality
+5:30 AM workouts six days a week, classes during the day, secondary workouts some afternoons, recovery and study in the evening. He meal-preps every Sunday — non-negotiable. He logs macros in MyFitnessPal after each meal. He uses the apartment kitchen at off-peak hours to lower cross-contamination risk, washes shared surfaces before cooking, and stores his food on a dedicated shelf the roommates have agreed not to touch.
+
+==== Values and relationships
+Discipline. Athletic identity is central — he sees himself as a runner first and a student second. Self-reliance about his diet is non-negotiable; he was on his own with it through most of high school. He is wary of asking roommates for accommodation because he does not want to be remembered as the celiac guy who policed the kitchen. He is close to his older sister (a nurse) who helped him learn to manage the diagnosis.
+
+==== Constraints in his life
+* Non-substitutable ingredients — many of his brands are not stocked locally and require three-day online shipping.
+* A training schedule that does not flex around grocery runs.
+* A finite parental allowance that he treats as a hard ceiling.
+* Cross-contamination risk that makes shared storage and shared cooking surfaces a constant background problem.
+
+==== Household supplies in his life
+For Julian, the line between "groceries" and "training inputs" is thinner than for his roommates. A missed reorder of his gluten-free pasta isn't an inconvenience — it derails a week of meal prep, which derails his training, which can cost him a workout the coach is watching. He keeps his food separate, tracks his consumption mentally, and re-orders on a rolling schedule. He has spreadsheets for this; he would prefer not to maintain them.
+
+==== A day in his life
+A Sunday afternoon in early February. Julian opens the cabinet to start meal prep and finds the Barilla gluten-free elbows box he was sure he had two boxes of — turns out he used the second one on Wednesday in a hurry and never replaced it. The local grocery doesn't carry his brand. The online order will arrive Wednesday at the earliest. His meal plan for the week is now improvised around rice, which he doesn't tolerate as well. By Tuesday his stomach is unhappy and his Monday workout was worse than it should have been.
 
 === Persona 4: Andrea, The Unofficial Household Manager
-* *Role:* Frequent household supply buyer; roommate who shares purchases
-* *Background:* Lives with three other students and, being the most organized and the one with a car, became the "unofficial house manager," doing the bulk of shopping at wholesale clubs.
-* *Goals:*
-** Keep the house stocked with shared essentials without all the mental labor.
-** Get reimbursed quickly and accurately by roommates.
-* *Frustrations:*
-** Constantly texting the group chat about what they're out of, getting no replies.
-** Getting stuck paying when shared items are consumed but nobody admits to finishing them.
-* *Behaviors:*
-** Uses a chaotic mix of WhatsApp, scattered receipts, and Apple Notes to track needs.
-** Frequently sends money requests after a shopping trip.
-* *Constraints:*
-** Coordinates across three uncooperative roommate schedules; needs unarguable proof of consumption for reimbursements.
-* *Scenario:*
-Andrea plans a wholesale-club trip, texts roommates, and gets one reply; she guesses on the rest. The shared snacks disappear fast and arguments break out over who ate them, while the house runs out of trash bags she assumed they had. Success looks like a transparent shared digital ledger where roommates log what they finish and request items, making reimbursements unarguable and keeping the house stocked.
+
+==== Role
+Senior in a public-health program; the "default mom" of her four-roommate household.
+
+==== Broader context
+Andrea is in her final year of a Public Health undergraduate program and is applying to MPH programs for the fall. She grew up as the oldest of four kids in a household where her mother worked two jobs and Andrea was the household helper from age ten — laundry, lunches, school forms. She lives in an off-campus duplex with three other women, the only one of them with a car (a 2009 SUV she bought used). She works fifteen hours a week as a paid peer health educator and holds a leadership role in a student organization. Her younger brother is graduating high school in May; she has promised herself she will be there.
+
+==== Goals in her life
+* Get into a strong MPH program — top choice is fully funded, second choice is partial.
+* Stay close to the three women she lives with *after* they all graduate; her senior year shouldn't end on bad blood.
+* Save the airfare and one week of expenses to fly home for her brother's graduation in May.
+* Sleep more than six hours per night, at least sometimes.
+* Stop being the default executive function of every group she joins.
+
+==== Daily reality
+Classes 8 to noon, clinical rotation or fieldwork two afternoons a week, peer-educator office hours, student-org meeting Tuesday evenings, MCAT-equivalent prep for one of her grad-school applications. She makes a grocery list during her last class on Friday and drives to Costco every other Saturday morning. She brings two roommates sometimes; usually she goes alone. She gets home, hauls everything in, and waits for the conversation about who owes what.
+
+==== Values and relationships
+Responsibility, organization, and a quiet pride in being relied on. She is genuinely good at logistics. She also resents being treated as the household's free executive function — she has noticed her grades slipping in semesters when she's the only one running things. She is closest to one of the four roommates and friendly with the other two. Her family in another state is proud of her and assumes she's doing fine.
+
+==== Constraints in her life
+* Three other people's schedules and shopping preferences to coordinate around.
+* Real cash flow — she fronts $150 to $250 per Costco trip and waits days or weeks for reimbursement.
+* Senior-year academic load that does not leave slack for chasing payments.
+* A car she cannot afford to replace if it dies.
+
+==== Household supplies in her life
+For Andrea, household supplies are entangled with social labor. The shopping itself is not the hard part — she's good at it. The hard part is asking people what they want, waiting for replies that don't come, fronting the money, asking again for reimbursement, and being the only one whose mental list includes things like *we are running low on trash bags*. She would not call herself the household manager out loud; everyone else would.
+
+==== A day in her life
+A Saturday in late March. Andrea texts the roommate group chat Thursday night asking for shared items. By Saturday morning she has one reply ("eggs??"). She drives to Costco, guesses on the rest, and spends $213. The big bag of shared snacks is gone by Tuesday and a small argument breaks out over who ate them. By Friday the trash bag count is zero and somebody — not Andrea — finally notices.
 
 === Persona-to-needs trace
+
+The table below preserves traceability from each persona to the specific needs (N1–N5) that are referenced throughout the requirements documents. The persona narratives above provide the *why*; the needs below are the *what the system must support* derived from that why.
+
 [cols="2,4",options="header"]
 |===
 |Persona |Key needs
 
-|Mateo |Know what food is currently in stock; receive expiration alerts before items spoil; avoid running out of essential daily items
-|Sofia |Prevent duplicate purchases in shared households; split shared costs fairly; stay within a strict monthly budget
-|Julian |Maintain an uninterrupted supply of specialty dietary items; predict restocking needs using adjustable threshold alerts; keep personal items separate from shared inventory
-|Andrea |Coordinate shared household stocking without carrying all the mental load; obtain accurate, verifiable records for roommate reimbursement; know what is needed before a bulk shopping trip
+|Mateo |Know what perishable food is currently on hand (N1); receive warnings before items spoil (N2); avoid running out of routine essentials (N1) — all under heavy time and attention constraints.
+
+|Sofia |Prevent duplicate purchases in a shared apartment (N3); separate personal items from shared ones (N4); keep visible track of who paid for what so the budget stays honest (N5).
+
+|Julian |Maintain an uninterrupted supply of non-substitutable specialty items (N1); detect low-stock early enough to absorb three-day shipping (N2); keep personal items strictly separate from shared inventory (N4).
+
+|Andrea |Coordinate shared-household stocking without holding all of it in her head (N3); record purchases and reimbursements with enough fidelity that arguments stop happening (N5); know what's needed before a bulk shopping trip (N1, N3).
 |===
