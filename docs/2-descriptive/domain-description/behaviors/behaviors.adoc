@@ -5,6 +5,8 @@ Recurring behaviors or rules in the domain: patterns, policies, and "how things 
 [NOTE]
 ====
 Every term referenced in this section (e.g., *Restock cycle*, *Shared purchase flow*, *Expiration monitoring*, *Item type*, *Item instance*, *Spending entry*, *Household*) is defined in <<_terminology>>. This section composes those terms into recurring flows and rules; it does not redefine them. Any new behavior name introduced here must also be added to the terminology table to prevent divergence.
+
+The behavior patterns listed below are exercised end-to-end in <<_terminology_walkthroughs>> (e.g., the *Restock cycle* in Scenario A, the *Shared purchase flow* in Scenario B, *Expiration monitoring* in Scenario C). See that section for findings on which steps had no glossary term to anchor them.
 ====
 
 === Behavior patterns

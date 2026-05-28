@@ -3,6 +3,8 @@
 [NOTE]
 ====
 Entity definitions live in <<_terminology>>, which is the single source of truth for domain vocabulary. This section adds only the structural information that the terminology table does not carry: the *attribute schema* associated with each entity. If a term appears below that is not in the terminology table, it must be added there rather than defined locally.
+
+The entities catalogued here are exercised by scenario traces in <<_terminology_walkthroughs>>; see that section for the gaps each entity surfaced when used in a real domain scenario.
 ====
 
 === Entity attribute schemas

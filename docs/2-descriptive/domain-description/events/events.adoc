@@ -7,6 +7,8 @@ Domain events represent instantaneous state changes in the domain that matter to
 The full list of domain events — together with their definitions and notes — is maintained as part of <<_terminology>> under the rows tagged *Event* or *State / Event*. There is no separate event definition table here, in order to avoid divergence between the two lists.
 
 If a domain event is added, renamed, or refined, the change must be made directly in <<_terminology>>. This section only describes how events are used; it does not redefine their names.
+
+Worked-out event sequences for standard domain scenarios appear in <<_terminology_walkthroughs>>; see that section for the cases where two events were found to describe the same transition (e.g., *Item approaching expiration* and *Near-expiry*) and the recommended consolidations.
 ====
 
 === Event categories

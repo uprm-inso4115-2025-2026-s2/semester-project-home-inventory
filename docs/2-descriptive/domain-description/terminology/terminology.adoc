@@ -2,6 +2,11 @@
 
 This section consolidates the domain's ubiquitous language into a single annotated reference. Every term is tagged with two pieces of metadata: the *phase* in which it was first introduced, and the *phenomenon type* that determines how it is interpreted and how its definition is phrased.
 
+[NOTE]
+====
+This glossary is exercised by the *Terminology walkthroughs* in <<_terminology_walkthroughs>>, where standard domain scenarios are traced step by step using only the terms defined below. That walkthrough is the canonical place to look for *gaps* and *fuzzy* terms surfaced by attempting to execute scenarios with this vocabulary.
+====
+
 === Phase tags
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)

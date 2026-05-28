@@ -5,6 +5,8 @@ Major domain functions/capabilities, described independently of UI. Each include
 [NOTE]
 ====
 The action names used here (e.g., *Consumption*, *Replenishment*, *Low-stock judgment*, *Transaction (quantity change)*) are defined in <<_terminology>>. This section is operational: it adds formal signatures and pre-/post-conditions on top of those terms, not new definitions. If a function introduces a new action name, that name must also be added to the terminology table.
+
+The functions defined below are invoked as steps inside the scenario traces in <<_terminology_walkthroughs>>. That section identifies *Actions that should exist but don't* — every Event in <<_terminology>> should have a paired Action with explicit *Takes / Produces* — and lists the specific missing Actions (e.g., add-to-restock-list, record spending, discard, configure budget) as fixes for the next milestone.
 ====
 
 === Stock item instance
