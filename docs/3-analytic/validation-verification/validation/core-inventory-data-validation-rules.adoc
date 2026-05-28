@@ -17,7 +17,7 @@ These matter because incorrect stored data would invalidate later behaviors such
 
 #This subsection summarizes the current Core Inventory implementation as observed in the repository (not a full field- or schema-level specification, which remains in the design and data-model material). The notes describe behavior at the time of writing on May 24, 2026, focusing on add/edit/remove flows, expiration handling, ownership visibility, and inventory lookup. The "Evidence / notes" column references specific code components and observations from testing and code review.#
 
-=== Core Inventory — Implementation Report
+=== #Core Inventory — Implementation Report#
 
 [cols="1,2,2",options="header"]
 |===
@@ -48,51 +48,51 @@ These matter because incorrect stored data would invalidate later behaviors such
 | #Inventories are stored per-owner in Supabase with a `stock` JSON map keyed by product id. Datasource operations fetch-modify-update the `stock` JSON and write the full map back to the row.#
 |===
 
-=== Implemented use cases
+=== #Implemented use cases#
 
-- Get inventory by owner (positive integer id or identifier): `GetInventoryItems` and `GetInventoryItemsByIdentifier` return an `InventoryEntity` assembled from `InventoryModel` and `Product` lookups.
-- Add stock to product: `AddInventoryItem` enforces validation (ids > 0, non-empty brand, quantity > 0, non-expired expiration) and appends a `StockModel` to the `stock` JSON.
-- Update stock: `UpdateInventoryItem` enforces validation (stock id > 0, non-negative quantity, expiration not in past) and replaces the matching stock entry.
-- Delete stock: `DeleteInventoryItem` removes the matching stock id and updates the inventory row.
+- #Get inventory by owner (positive integer id or identifier): `GetInventoryItems` and `GetInventoryItemsByIdentifier` return an `InventoryEntity` assembled from `InventoryModel` and `Product` lookups.#
+- #Add stock to product: `AddInventoryItem` enforces validation (ids > 0, non-empty brand, quantity > 0, non-expired expiration) and appends a `StockModel` to the `stock` JSON.#
+- #Update stock: `UpdateInventoryItem` enforces validation (stock id > 0, non-negative quantity, expiration not in past) and replaces the matching stock entry.#
+- #Delete stock: `DeleteInventoryItem` removes the matching stock id and updates the inventory row.#
 
-All flows are exposed via `InventoryCubit`, which emits `InventoryLoading`, `InventoryLoaded`, and `InventoryError` and refreshes inventory after write operations.
+#All flows are exposed via `InventoryCubit`, which emits `InventoryLoading`, `InventoryLoaded`, and `InventoryError` and refreshes inventory after write operations.#
 
-=== Validations enforced in code
+=== #Validations enforced in code#
 
-- Identifier validation: inventory, product, and stock ids must be positive integers (usecases throw `Exception` on invalid ids).
-- Quantity validation: add requires `quantity > 0`; update allows `quantity >= 0`.
-- Expiration validation: when provided, expiration dates must not be earlier than the current moment.
-- Brand validation: `brand` must not be empty on add/update.
+- #Identifier validation: inventory, product, and stock ids must be positive integers (usecases throw `Exception` on invalid ids).#
+- #Quantity validation: add requires `quantity > 0`; update allows `quantity >= 0`.#
+- #Expiration validation: when provided, expiration dates must not be earlier than the current moment.#
+- #Brand validation: `brand` must not be empty on add/update.#
 
-Validation resides in domain usecases (`AddInventoryItem`, `UpdateInventoryItem`, `GetInventoryItems`); repositories/datasources re-validate as defense-in-depth.
+#Validation resides in domain usecases (`AddInventoryItem`, `UpdateInventoryItem`, `GetInventoryItems`); repositories/datasources re-validate as defense-in-depth.#
 
-=== UI behavior and interactions
+=== #UI behavior and interactions#
 
-- Routes: inventory pages under `/inventory`; product add/edit use `add/:productId` and `edit/:productId/:stockId` path parameters.
-- `AddItemPage`: reads `productId` from route, derives `inventoryId` from `AuthCubit` (numeric or identifier), parses expiration input, constructs `StockEntity`, and calls `InventoryCubit.addStock`.
-- `EditItemPage`: reads `productId` and `stockId` from route, locates the existing `StockEntity` in `InventoryLoaded` state to pre-fill the form, and calls `InventoryCubit.updateStock` on submit.
-- UI surfaces parsing errors (expiration format) and uses `SnackBar` to show success/error messages from cubit state transitions.
+- #Routes: inventory pages under `/inventory`; product add/edit use `add/:productId` and `edit/:productId/:stockId` path parameters.#
+- #`AddItemPage`: reads `productId` from route, derives `inventoryId` from `AuthCubit` (numeric or identifier), parses expiration input, constructs `StockEntity`, and calls `InventoryCubit.addStock`.#
+- #`EditItemPage`: reads `productId` and `stockId` from route, locates the existing `StockEntity` in `InventoryLoaded` state to pre-fill the form, and calls `InventoryCubit.updateStock` on submit.#
+- #UI surfaces parsing errors (expiration format) and uses `SnackBar` to show success/error messages from cubit state transitions.#
 
-=== Backend / data-layer behavior
+=== #Backend / data-layer behavior#
 
-- `InventorySupabaseDataSource` is the sole Supabase client usage point, performing:
-* `fetchInventoryByOwnerId` / `fetchInventoryByOwnerIdentifier` (SELECT)
-* `addStockToInventory` (fetch, append `StockModel`, UPDATE `stock` JSON)
-* `updateStockInInventory` (fetch, replace matching id, UPDATE)
-* `deleteStockFromInventory` (fetch, remove id, UPDATE)
-- Models: `InventoryModel.fromJson` tolerantly parses `ownerId` (int or numeric string) and converts stock JSON into `StockModel` objects; `StockModel` includes optional `ownerId` with `fromJson`/`toJson` that handle a missing ownerId.
+- #`InventorySupabaseDataSource` is the sole Supabase client usage point, performing:#
+* #`fetchInventoryByOwnerId` / `fetchInventoryByOwnerIdentifier` (SELECT)#
+* #`addStockToInventory` (fetch, append `StockModel`, UPDATE `stock` JSON)#
+* #`updateStockInInventory` (fetch, replace matching id, UPDATE)#
+* #`deleteStockFromInventory` (fetch, remove id, UPDATE)#
+- #Models: `InventoryModel.fromJson` tolerantly parses `ownerId` (int or numeric string) and converts stock JSON into `StockModel` objects; `StockModel` includes optional `ownerId` with `fromJson`/`toJson` that handle a missing ownerId.#
 
-=== Error handling and state transitions
+=== #Error handling and state transitions#
 
-- Supabase exceptions (`PostgrestException`) are wrapped as `DataSourceException`; repositories wrap datasource failures as `RepositoryException` so usecases/cubit can surface user-facing messages.
-- `InventoryCubit` emits `InventoryLoading` before operations and `InventoryLoaded` or `InventoryError` after; the UI reacts to these states.
+- #Supabase exceptions (`PostgrestException`) are wrapped as `DataSourceException`; repositories wrap datasource failures as `RepositoryException` so usecases/cubit can surface user-facing messages.#
+- #`InventoryCubit` emits `InventoryLoading` before operations and `InventoryLoaded` or `InventoryError` after; the UI reacts to these states.#
 
-=== Current known limitations
+=== #Current known limitations#
 
-These match the implementation limitations recorded in Section 2.3 (Data Model and Persistence Layer): per-item `ownerId` is not enforced in the UI; filtering is limited to category and expiration views; quantity changes do not create separate transaction/audit rows; and fetch-modify-update on the `stock` JSON has no optimistic locking, so concurrent writes may overwrite intermediate changes.
+#These match the implementation limitations recorded in Section 2.3 (Data Model and Persistence Layer): per-item `ownerId` is not enforced in the UI; filtering is limited to category and expiration views; quantity changes do not create separate transaction/audit rows; and fetch-modify-update on the `stock` JSON has no optimistic locking, so concurrent writes may overwrite intermediate changes.#
 
-=== Evidence and pointers
+=== #Evidence and pointers#
 
-- Presentation: `src/lib/features/core_inventory/presentation/pages/add_item_page.dart`, `edit_item_page.dart`, `inventory_category_page.dart`, `presentation/cubits/inventory_cubit.dart`
-- Domain: `src/lib/features/core_inventory/domain/usecases/add_inventory_item.dart`, `update_inventory_item.dart`, `get_inventory_items.dart`
-- Data: `src/lib/features/core_inventory/data/data_sources/inventory_supabase_datasource.dart`, `data/models/stock.dart`, `data/models/inventory.dart`
+- #Presentation: `src/lib/features/core_inventory/presentation/pages/add_item_page.dart`, `edit_item_page.dart`, `inventory_category_page.dart`, `presentation/cubits/inventory_cubit.dart`#
+- #Domain: `src/lib/features/core_inventory/domain/usecases/add_inventory_item.dart`, `update_inventory_item.dart`, `get_inventory_items.dart`#
+- #Data: `src/lib/features/core_inventory/data/data_sources/inventory_supabase_datasource.dart`, `data/models/stock.dart`, `data/models/inventory.dart`#
