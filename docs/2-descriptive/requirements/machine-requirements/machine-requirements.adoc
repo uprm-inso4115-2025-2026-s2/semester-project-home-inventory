@@ -2,6 +2,11 @@
 
 Machine requirements define measurable quality properties for the implementation, together with the supported environment and deployment assumptions needed to run, test, and review the system. Milestone 2 established the initial quality properties (MR-01..MR-07) verified against the prototype; Milestone 3 extends this with the environment, platform, runtime, third-party service, and deployment requirements needed for end users, developers, and reviewers. Where thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated. Each requirement traces to relevant Domain Requirements (DR) where applicable.
 
+[NOTE]
+====
+This MR set was inspected against the defect-driven *Requirements Inspection Checklist*; the per-MR findings (with severity and proposed fix) are catalogued in <<applied-inspection-review-log>>. The most notable finding is `RQA-015` on MR-05's role list ("owner/member/viewer/admin") — *Owner* and *admin* are synonyms in the canonical terminology and should not be listed as distinct test accounts. MR-04's 5-second cross-device sync bound is also cited (`RQA-001`, `RQA-018`) as a candidate fit-criterion source for currently unmeasurable IR / DR latency promises.
+====
+
 === Supported Environment and Deployment Requirements
 
 Minimum environment assumptions for running, testing, and reviewing the system during Milestone 3, focused on the machine, platform, and external services needed for consistent operation across development and review environments.

@@ -71,3 +71,275 @@ Use this checklist to review requirement statements, identify defects, classify 
 
 * Each team should apply this checklist at least once per sprint to active requirements.
 * Findings should be linked to GitHub issues or PR comments for traceability.
+
+=== Applied Inspection — Milestone 3
+
+This section records the *actual* application of the checklist above to the project's requirement set, not just the framework. Every entry in <<applied-inspection-review-log>> is an inspection finding produced by walking the requirements against the defect categories.
+
+==== Scope
+
+Inspected:
+
+* *Domain Requirements*: <<_domain_requirements,DR-1 through DR-25>>.
+* *Interface Requirements*: <<_interface_requirements,IR-01 through IR-15>> and the deferred edge-case set IR-EC-A through IR-EC-I.
+* *Machine Requirements*: <<_machine_requirements,MR-01 through MR-07>>.
+
+==== Method
+
+. The Requirements walkthroughs in <<_requirements_walkthroughs>> were re-read and every `[REQ-GAP]` / `[REQ-FUZZY]` finding was re-classified against the defect categories above (Omissions, Contradictions, Ambiguities, Unmeasurability, Noise, Overspecification, Poor Structuring, Opacity / Modifiability). The walkthroughs produce *execution-driven* findings — what fails when a real scenario is run. Re-classifying them through the inspection checklist produces *defect-typed* findings that map to the same fixes.
+. Each requirement that was not exercised by a walkthrough was inspected directly against the checklist; this surfaced findings that the scenario approach could not have caught (e.g., wording contradictions between MR-05 and the canonical terminology, unmeasurability inside DR-12, opacity of DR-24's dependencies).
+. Findings were assigned severity per the *Severity Guide*: *Critical* (blocks implementation/testing), *Major* (significant ambiguity / inconsistency / traceability), *Minor* (clarity / structure).
+. Each finding received an `RQA-###` identifier, a proposed fix, and an owner placeholder (a role rather than a specific person — assignment happens during sprint planning).
+
+==== Findings by defect category
+
+===== Omissions
+
+Requirements set is silent on behavior the user stories or downstream requirements depend on.
+
+* `RQA-001` — Post-save same-device update of the inventory list is in the US-INV-01 acceptance criteria ("After saving, the item appears in the inventory list without a manual refresh") but no DR / IR commits to it. MR-04 covers *cross-device* synchronization; the *same-device, post-local-save* case is uncovered. *Severity: Major.*
+* `RQA-002` — DR-12 ends at "make this status visible." Auto-add to the *Restock list / planner* on the NORMAL→LOW_STOCK transition is presupposed by DR-24 but not required upstream. *Severity: Major.*
+* `RQA-003` — IR-15 covers snooze for *restock entries*; alert snooze (named in DR-14 as a re-alerting trigger) has no IR. *Severity: Major.*
+* `RQA-004` — Cross-view consistency of derived item-state (low-stock, near-expiry, expired) across inventory list, *Restock list / planner*, and dashboard is in the US-ALT-01 acceptance criteria but no DR formalizes it. *Severity: Major.*
+* `RQA-005` — DR-18 / IR-09 cover the *change* case for personal↔shared visibility but not the *initial-creation* case. *Severity: Major.*
+* `RQA-006` — No IR dedicated to the *ownership-modification workflow*. IR-03 covers marking; the decomposed user story US-INV-02B has no requirement fulfilling it. *Severity: Major.*
+* `RQA-007` — No DR/IR specifies what happens to *historical* views (spending history, past dashboards) when an item transitions personal↔shared. *Severity: Minor.*
+* `RQA-008` — No DR/IR specifies the cost-split algorithm beyond "default equal, adjustable." Rounding rule and treatment of mid-cycle membership changes are unhandled. *Severity: Major.*
+* `RQA-009` — No IR for editing an existing *Spending entry*. Edge-case IRs (IR-EC-D, IR-EC-E) hint at adjustment / refund but are deferred. *Severity: Major.*
+* `RQA-010` — DR-1 / DR-17 cover the *barcode-keyed* uniqueness invariant. Duplicate handling for manually-created item types *without a barcode* has no clean coverage; DR-15 normalization is the closest hook but is framed for detection, not for the manual-no-barcode case. *Severity: Major.*
+
+===== Ambiguities
+
+Statements can be read more than one way.
+
+* `RQA-011` — Neither DR-1 nor IR-12 specifies what the system displays on a *successful* barcode match (prefill the full item type? show a confirmation? auto-add?). *Severity: Major.*
+* `RQA-012` — IR-06 says "line items (or the purchase) as shared vs personal." Per-line vs per-purchase granularity is left to implementation choice. *Severity: Major.*
+* `RQA-013` — IR-07 says "indicate reimbursement status" — a display-only verb. The user story expects user input to *mark* something paid. *Severity: Major.*
+* `RQA-014` — IR-03 says "provide a means to mark" — same display-leaning verb pattern as IR-07; stakeholder expectation in US-INV-02B is an explicit *edit* flow. *Severity: Major.*
+
+===== Contradictions
+
+Wording disagrees with other requirements or with the canonical terminology.
+
+* `RQA-015` — MR-05 mentions "owner/member/viewer/admin test accounts" — treats *Owner* and *admin* as distinct roles. Post-deduplication, <<_terminology>> defines *Owner* as the canonical role with *admin* as a synonym. *Severity: Minor.*
+* `RQA-016` — DR-19 uses "admin" while the canonical Requirements role name is *Owner*. Consistent with MR-05's wording but inconsistent with the terminology table. *Severity: Minor.*
+
+===== Unmeasurability
+
+Requirement lacks a fit criterion or pass/fail condition.
+
+* `RQA-017` — DR-12: "make this status visible to household members" — no latency bound. MR-02 / MR-04 cover lookup and cross-device sync but neither attaches to DR-12's visibility promise directly. *Severity: Major.*
+* `RQA-018` — IR-08 (dashboard summaries) and US-RPT-01 acceptance criterion ("update after changes are recorded and synchronized — no stale information") have no time bound; closest is MR-04's 5-second cross-device sync, which is not explicitly cited from IR-08. *Severity: Minor.*
+
+===== Noise
+
+Content that does not drive system behavior.
+
+* `RQA-019` — DR-3's parenthetical example list "(delete/archive/merge/split/adjust)" mixes the rule with illustrative examples. The rule itself is clear; the example list belongs in a notes column to reduce sentence noise. *Severity: Minor.*
+
+===== Overspecification
+
+Forces a design decision earlier than necessary.
+
+* `RQA-020` — DR-7 hard-codes "a short window (initially 30 seconds)" into a domain-language requirement. The "initially" hedge signals the team knows this is provisional; the value should still be reviewed once implementation data is available, and the constraint may belong in interface or machine requirements rather than domain. *Severity: Minor.*
+
+===== Opacity and Modifiability
+
+Inter-requirement dependencies are not made explicit.
+
+* `RQA-021` — DR-24 (Restock auto-add override) depends on DR-12 (threshold detection) and DR-14 (deduplication) but does not reference either. A change to either upstream requirement would silently affect DR-24's intended behavior. *Severity: Major.*
+* `RQA-022` — DR-22 (default warning levels at 80% and 100%) depends on IR-13 (budget alert preferences) for user-facing configurability; the linkage is implicit. *Severity: Minor.*
+
+===== Poor Structuring
+
+Requirement located ambiguously or mixed with other concerns.
+
+* `RQA-023` — Interface Requirements has a `Milestone 3 Additional Interface Requirements` subsection holding IR-09..IR-15 separately from IR-01..IR-08, which appears in the main list. The split makes sense historically (milestone-driven addition) but readers looking at the IR set must know to read both. *Severity: Minor.*
+
+[[applied-inspection-review-log]]
+==== Consolidated Review Log
+
+The full inspection log, in the format defined by the *Review Log Template* above:
+
+[cols="1,2,2,1,3,2",options="header"]
+|===
+|ID |Requirement Ref |Defect Type |Severity |Proposed Fix |Owner
+
+|RQA-001
+|US-INV-01 vs IR/DR set; cf. MR-04
+|Omission
+|Major
+|Add an IR for post-save inventory-list update latency on the same device, distinct from MR-04 (which covers cross-device sync only).
+|@RequirementsLead
+
+|RQA-002
+|DR-12; cf. DR-24
+|Omission
+|Major
+|Add DR-12A: on a NORMAL→LOW_STOCK transition, the system shall auto-add the affected item to the *Restock list / planner* with reason `LOW_STOCK`.
+|@AlertsLead
+
+|RQA-003
+|IR-15; cf. DR-14
+|Omission
+|Major
+|Extend IR-15 to cover alert snooze, or add a sibling IR for alert dismiss / snooze.
+|@AlertsLead
+
+|RQA-004
+|US-ALT-01 acceptance criterion; no covering DR
+|Omission
+|Major
+|Add a DR stating that derived item-state values (low-stock, near-expiry, expired) shall be computed once per evaluation cycle and presented consistently across views.
+|@AlertsLead
+
+|RQA-005
+|DR-18, IR-09
+|Omission
+|Major
+|Extend DR-18 / IR-09 to cover initial-creation visibility, not only the personal↔shared *change* case.
+|@SharingLead
+
+|RQA-006
+|IR-03; US-INV-02B has no covering IR
+|Omission
+|Major
+|Add an IR for the ownership-modification workflow, mirroring how IR-02 separates consumption from initial creation.
+|@SharingLead
+
+|RQA-007
+|US-INV-02; no covering DR
+|Omission
+|Minor
+|Add a DR specifying the historical-view policy after a personal↔shared transition (retain original visibility, or retroactively adopt new scope).
+|@SharingLead
+
+|RQA-008
+|US-SB-01B; no covering DR/IR
+|Omission
+|Major
+|Add a DR or IR for cost-split algorithm: rounding rule, treatment of mid-cycle membership changes, attribution under partial participation.
+|@BudgetLead
+
+|RQA-009
+|IR-EC-D, IR-EC-E (deferred); no main-line IR
+|Omission
+|Major
+|Promote a non-edge-case IR for *Spending entry* adjustments, consistent with DR-3 (append-only correction).
+|@BudgetLead
+
+|RQA-010
+|DR-1, DR-17, DR-15
+|Omission
+|Major
+|Extend DR-15 (or add DR-15A) to cover normalization / dedupe for manually-created item types with no barcode.
+|@CoreInventoryLead
+
+|RQA-011
+|DR-1, IR-12
+|Ambiguity
+|Major
+|Sharpen IR-12 success path: specify whether a barcode match prefills the item-type fields, shows a confirmation, or auto-creates.
+|@CoreInventoryLead
+
+|RQA-012
+|IR-06; US-SB-01A
+|Ambiguity
+|Major
+|Sharpen IR-06 to specify whether split granularity is per-line-item or per-purchase. Recommendation: per-line-item, matching the user story.
+|@BudgetLead
+
+|RQA-013
+|IR-07; US-SB-01C
+|Ambiguity
+|Major
+|Extend IR-07 to require a user-facing means to record reimbursement (read / write), not only "indicate reimbursement status" (read-only).
+|@BudgetLead
+
+|RQA-014
+|IR-03; US-INV-02B
+|Ambiguity
+|Major
+|Sharpen IR-03 to explicitly require an *editing* workflow for ownership status, not only the "mark" verb.
+|@SharingLead
+
+|RQA-015
+|MR-05
+|Contradiction
+|Minor
+|Replace "owner/member/viewer/admin test accounts" with "owner/member/viewer test accounts", noting in a sibling sentence that *admin* is a synonym for *Owner* per the terminology table.
+|@DocsLead
+
+|RQA-016
+|DR-19
+|Contradiction
+|Minor
+|Either rename DR-19's "admin" to "Owner" for consistency with the canonical Requirements role name, or add an inline note pointing to <<_terminology>>.
+|@DocsLead
+
+|RQA-017
+|DR-12
+|Unmeasurability
+|Major
+|Add a latency bound on "make this status visible" (e.g., "within N seconds of the transition"), or reference MR-02 / MR-04 explicitly as the fit criterion.
+|@AlertsLead
+
+|RQA-018
+|IR-08; US-RPT-01 AC
+|Unmeasurability
+|Minor
+|Cite MR-04's 5-second propagation bound explicitly from IR-08, or add a per-IR latency bound.
+|@ReportsLead
+
+|RQA-019
+|DR-3
+|Noise
+|Minor
+|Move the parenthetical example list "(delete/archive/merge/split/adjust)" to a Notes column or footnote; keep the requirement sentence focused on the rule.
+|@DocsLead
+
+|RQA-020
+|DR-7
+|Overspecification
+|Minor
+|Review the 30-second window once implementation data is available; consider whether the constraint belongs in interface or machine requirements rather than domain.
+|@CoreInventoryLead
+
+|RQA-021
+|DR-24; depends on DR-12, DR-14
+|Opacity
+|Major
+|Add an explicit "Depends on: DR-12, DR-14" trace beneath DR-24 so changes to either upstream requirement do not silently break the override behavior DR-24 specifies.
+|@DocsLead
+
+|RQA-022
+|DR-22; depends on IR-13
+|Opacity
+|Minor
+|Make the IR-13 ↔ DR-22 linkage explicit (cite IR-13 from DR-22 or vice versa).
+|@DocsLead
+
+|RQA-023
+|IR-09..IR-15 ("Milestone 3 Additional Interface Requirements" subsection)
+|Poor Structuring
+|Minor
+|Either merge the Milestone 3 IRs into the main IR list (preserving their M3-QA-\* traces) or add a heading note at the start of IR-01..IR-08 explaining the split.
+|@DocsLead
+|===
+
+==== Severity rollup
+
+[cols="1,1,1,1",options="header"]
+|===
+|Severity |Omission |Other categories |Total
+|Major |8 |6 |14
+|Minor |1 |8 |9
+|Critical |0 |0 |0
+|===
+
+No findings at *Critical* severity. The dominant defect class is *Omission* at *Major* severity — eight cases where a user story or downstream requirement makes a promise that no upstream DR / IR formalizes. This matches the *Implications for the requirements set* call-out in <<_requirements_walkthroughs>>: the requirement gaps are concentrated at the boundary between user-story acceptance criteria and the formal DR / IR set, not within the existing requirements themselves.
+
+==== Cross-references
+
+* The walkthrough-driven findings are stated in execution terms in <<_requirements_walkthroughs>>; the entries here re-classify them by defect type without changing the underlying issue.
+* Each RQA finding identifies a specific DR / IR / MR or user story; the owner role placeholder is meant to be replaced with a specific assignee during sprint planning, at which point the finding should also be linked to a GitHub issue per the *Minimum Team Usage Rule* above.
