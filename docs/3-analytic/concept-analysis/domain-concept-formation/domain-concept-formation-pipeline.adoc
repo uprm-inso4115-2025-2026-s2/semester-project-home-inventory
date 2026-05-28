@@ -278,6 +278,22 @@ See: link:inconsistency-detection.adoc[Inconsistency Detection Report]
 
 The detector scans all DDUs and existing domain documents for direct P / not-P conflicts (one unit asserts a property another negates), scope conflicts (a rule constrains what another exempts), completeness gaps (a concept referenced but never fully defined), and terminology drift (the same phenomenon under two names).
 
+=== Conflict Enforcement Policy
+
+To preserve consistency across requirements, architecture, implementation, testing, and traceability artifacts, all future additions to the project documentation and codebase must comply with the project's established consistency criteria before approval or integration.
+
+The team applies the following enforcement rules:
+
+* Terminology used in requirements, domain models, test cases, and implementation documentation must remain consistent with the approved project glossary and domain definitions.
+* New requirements must maintain traceability to stakeholder needs, goals, validation activities, and verification artifacts.
+* Interface Requirements (IRs) shall describe user-facing behavior only and must not contain backend implementation or domain-processing logic.
+* Machine Requirements (MRs) shall remain measurable and include explicit quantitative targets whenever performance, timing, storage, or scalability constraints are specified.
+* Domain-model changes must preserve established abstractions, including the distinction between uniquely tracked item instances and cumulative inventory quantities.
+* New test cases, traceability references, and requirement identifiers must remain synchronized with repository artifacts and implementation evidence.
+* Any detected conflict, contradiction, duplicate requirement, or unresolved traceability gap must be resolved before the associated change is approved or merged.
+
+The following of these rules is verified through documentation inspections, peer review, pull-request review, traceability verification, and milestone integration reviews. Changes that don't follow the project's consistency criteria shall not be considered complete until the conflict has been documented and resolved.
+
 === Milestone 3 Acquisition Feedback Integrated into Concept Formation
 
 The Milestone 3 acquisition round added implementation-driven evidence, refining the relationship between requirements and domain concepts discovered during M2 implementation.
