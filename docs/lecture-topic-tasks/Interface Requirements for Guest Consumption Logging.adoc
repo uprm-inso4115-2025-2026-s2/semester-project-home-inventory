@@ -116,7 +116,7 @@ A phone number is designated for the household (e.g., a Google Voice number or a
 | Guest types wrong command | Likely | Provide help message; support common variations
 | SMS delivery delay | Possible | Use reliable provider; confirm message with "Logged" reply
 | Phone number privacy concerns | Low | Use dedicated number not linked to personal numbers
-| Guest does not know command format | Likely | Message the number to get a help message with instructions; help command
+| Guest does not know command format | Likely | Message the number to get a help message with instructions; send `help` text to use the relevant command
 |===
 
 == Comparison of Options
