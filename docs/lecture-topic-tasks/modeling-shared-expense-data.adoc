@@ -1,0 +1,174 @@
+= Modeling Shared Expense Data: Continuous vs Discrete Attributes
+
+// Author: @FabiolaZTorres
+// Date: 2026/05/28
+// Issue #689
+
+== Purpose
+
+The goal of this document is to classify key financial and budgeting attributes as discrete, continuous, or hybrid, and explain how those classifications influence system behavior, updating rules, display logic, performance, and accuracy.
+
+The budgeting subsystem supports household coordination around shared purchases, personal purchases, spending visibility, and budget awareness. Spending events are tied to household activity and may affect derived budget states and notifications.
+
+== Attribute Type Definitions
+
+* *Continuous*: They represent values that change gradually over time and are typically modeled using continuous functions. Continuous phenomena can be described as behaviors that can be viewed as continuously evolving across a domain, often time.
+
+* *Discrete*: They represent separate, countable states or events. Discrete phenomena may be modeled as mappings over countable sets, where state transitions occur at identifiable moments.
+
+* *Hybrid*: These combine both continuous and discrete characteristics. Hybrid phenomena are systems that are partly continuous and partly discrete.
+
+== Shared Budgeting Domain Context
+
+The Home Inventory system includes shared spending and budget functionality intended to reduce duplicate purchases, improve roommate coordination, and support budget awareness in student households. Shared households may track purchases together, distinguish between shared and personal expenses, and monitor spending relative to budget thresholds.
+
+Examples include:
+
+* Shared grocery purchases
+* Household supply replenishment
+* Budget threshold alerts
+* Shared versus personal expense attribution
+* Spending summaries and reports
+
+Scenario S2 demonstrates how shared inventory awareness prevents unnecessary duplicate purchases and helps preserve limited household budgets.
+
+== Domain Attribute Classification for Shared Expense Data
+
+=== 1. Spending Entry
+
+Represents a single financial transaction event recorded within a household (e.g., "Andrea bought Dawn dish soap for $6.49”, “Sofia purchased toilet paper for the shared household”).
+
+Relevant attributes: amount, payer, date/time, transaction type, scope (shared or personal), category
+
+Classification: *Discrete*
+
+A spending entry is classified as Discrete because each transaction exists as an individual event with its own identity and history. Every purchase, refund, or adjustment is stored separately and must remain traceable over time.
+
+Impact on system behavior:
+
+* Updates occur as separate append-only records rather than overwriting previous data.
+* Refunds and corrections create new adjustment entries instead of modifying history.
+* Individual entries can trigger budget recalculations or alerts.
+
+Impact on display behavior:
+
+* Transactions are displayed as itemized entries in spending history views.
+* Shared and personal purchases can be filtered independently.
+
+Impact on performance and accuracy:
+
+* Discrete storage improves auditability and accountability.
+* Historical traceability reduces risk of losing financial context.
+* Large transaction histories may require pagination or indexed queries for performance.
+
+Shared budgeting example:
+A roommate purchases shared groceries for the apartment. The system stores the purchase as its own spending event so all household members can later review who paid and how much was spent.
+
+=== 2. Budget Limit
+
+Represents the maximum amount allowed within a budget cycle (e.g., Weekly grocery budget of $50, Monthly cleaning supplies budget of $30).
+
+Relevant attributes: limit amount, budget scope, budget cycle, threshold percentages
+
+Classification: *Continuous*
+
+A budget limit is classified as Continuous because it represents a numeric monetary range rather than a single isolated event. The value participates in arithmetic comparisons and supports gradual spending progression over time.
+
+Impact on system behavior:
+
+* Spending continuously affects the remaining available budget.
+* Threshold detection compares current spending against percentage boundaries.
+* Budgets are reevaluated whenever new spending occurs.
+
+Impact on display behavior:
+
+* Budgets are often shown using progress bars, percentages, or remaining-balance indicators.
+* Visualization depends on proportional relationships rather than isolated records.
+
+Impact on performance and accuracy:
+
+* Continuous calculations require consistent numeric precision.
+* Currency rounding errors must be minimized to avoid incorrect threshold alerts.
+* Efficient aggregation queries are important when calculating totals across many spending entries.
+
+Shared budgeting example:
+Sofia has a $50 weekly grocery budget. After spending $41.01, the system continuously computes the remaining balance and determines that only $8.99 remains available.
+
+=== 3. Remaining Budget Balance
+
+Represents the amount of money still available within the active budget cycle (e.g., “$12.43 remaining” is continuous numeric data, “Budget threshold crossed” is a discrete state transition event).
+
+Relevant attributes: spent-to-date, remaining amount, percent used, threshold flags
+
+Classification: *Hybrid (Continuous + Derived Discrete State)*
+
+The remaining balance is Hybrid because the monetary value itself changes continuously as spending increases, while system states triggered by that value are discrete events.
+
+Impact on system behavior:
+
+* Every spending entry recalculates the remaining balance.
+* Certain percentage boundaries trigger discrete alert states.
+* The system must avoid repeatedly triggering the same threshold alert.
+
+Impact on display behavior:
+
+* The numeric balance updates continuously.
+* Warning states appear only when crossing specific thresholds.
+
+Impact on performance and accuracy:
+
+* Derived values require aggregation across transaction records.
+* Cached summaries may improve performance for large households.
+* Incorrect recalculation logic could create duplicate notifications or inaccurate reports.
+
+Shared budgeting example:
+A household budget reaches 80% utilization. The remaining balance continues decreasing continuously, but the threshold-crossing alert occurs only once when the boundary is crossed.
+
+=== 4. User Contribution Share
+
+Represents the portion of a shared expense attributed to a specific household member (e.g., Three roommates splitting a $24 grocery purchase equally, One roommate paying 70% while another pays 30%).
+
+Relevant attributes: contribution percentage, reimbursement amount, member allocation, shared responsibility status
+
+Classification: *Hybrid*
+
+User contribution share is Hybrid because it combines continuous monetary proportions and discrete ownership or participation relationships. The monetary portion changes numerically, while the participation relationship itself is categorical (“member participates in shared expense” versus “does not participate”).
+
+Impact on system behavior:
+
+* Shared expenses may require proportional cost calculations.
+* Changes in household membership may affect future allocations.
+* Contribution logic must preserve payer attribution even when costs are shared.
+
+Impact on display behavior:
+
+* Interfaces may display both percentages and participant lists.
+* Shared purchases must clearly distinguish who paid from who owes.
+
+Impact on performance and accuracy:
+
+* Fractional splits require careful rounding behavior.
+* Uneven distributions may create precision inconsistencies if handled improperly.
+* Reimbursement calculations become more complex as household size increases.
+
+Shared budgeting example:
+Andrea buys shared cleaning supplies costing $18.00. The system records Andrea as the payer while splitting responsibility evenly across three roommates.
+
+== Why These Classifications Matter
+
+Correct classification of budgeting attributes improves the consistency and reliability of the domain model.
+
+Discrete attributes are important for preserving transaction history, traceability, event detection, and accountability.
+
+Continuous attributes are important for financial calculations, budget monitoring, percentage tracking, and threshold evaluation.
+
+Hybrid attributes are important because budgeting systems frequently combine numeric financial progression and discrete behavioral state changes.
+
+This distinction directly affects:
+
+* how updates propagate through the system,
+* how alerts are triggered,
+* how information is displayed to household members,
+* and how the system balances performance with financial accuracy.
+
+The Home Inventory system especially benefits from hybrid modeling because budgeting and shared-household coordination depend on both event-driven behaviors and continuously changing financial values.
