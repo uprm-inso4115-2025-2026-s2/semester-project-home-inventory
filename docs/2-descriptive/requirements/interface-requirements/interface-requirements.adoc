@@ -152,24 +152,24 @@ M3 source: M3-QA-07.
 
 This matrix is the Interface Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholders, validation, verification, implementation, ownership, feature alignment, and requirement coverage traceability for IR-* requirements. Requirements marked as gap flagged include documented rationale and planned validation coverage where applicable. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
 
-[cols="1,2,1,2,2,1,2,1,2,2", options="header"]
+[cols="1,2,1,2,2,1,2,1,2,1", options="header"]
 |===
 | Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason | Priority | Owner | Linked Feature 
 
-| IR-01 | Household Manager, End User | S1 | TC-INV-01 | Inventory module | Complete | | High | Core Inventory Team | F-INV Inventory Creation Interface
-| IR-02 | End User | S1 | TC-INV-02 | Inventory module | Complete | | High | Core Inventory Team | F-INV Item Editing Interface
-| IR-03 | End User | S2 | TC-INV-03 | Inventory module, Household management | Complete | | High | Sharing & Budget Team | F-SHARING Shared Inventory Synchronization
-| IR-04 | Household Manager, End User | S1 | TC-ALT-01, TC-ALT-04 | Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT Notification Delivery Interface
-| IR-05 | End User | S1 | TC-ALT-02, TC-ALT-05 | Inventory module, Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT Expiration Notification Workflow
-| IR-06 | Household Manager, End User | S2 | TC-SB-01 | Spending module, Database layer | Complete | | High | Sharing & Budget Team | F-SPEND Spending Entry Interface
-| IR-07 | Household Manager, End User | S2 | TC-SB-02 | Spending module | Complete | | Medium | Sharing & Budget Team | F-SPEND Budget Reporting Interface
-| IR-08 | End User | S1 | TC-RPT-01 | Dashboard / Reporting | Complete | | Medium | Reports & Insights Team | F-RPT Dashboard Visualization Interface
-| IR-09 | End User, System / Dev Team | S2 | TC-INV-06, TC-AUTO-01 | Household management, Inventory module | Complete | | Medium | Core Inventory Team | F-AUTOCHECK Automated Inventory Sync Interface
-| IR-10 | End User | S1 | TC-INV-07 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV Barcode Scanning Interface
-| IR-11 | End User | S1 | TC-INV-08 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV Inventory Search Interface
-| IR-12 | End User | S2 | TC-SB-03, TC-ALT-03 | Spending module, Alerts & Notification System | Gap flagged | Spending-alert integration workflow not fully validated | High | Sharing & Budget Team | F-SPEND Spending Alert Integration
-| IR-13 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete | Medium | Alerts & Restock Team | F-ALERT Alert Deduplication Interface
-| IR-14 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation | High | Core Inventory Team | F-INV Cross-Module Inventory Integration
+| IR-01 | Household Manager, End User | S1 | TC-INV-01 | Inventory module | Complete | | High | Core Inventory Team | F-INV
+| IR-02 | End User | S1 | TC-INV-02 | Inventory module | Complete | | High | Core Inventory Team | F-INV
+| IR-03 | End User | S2 | TC-INV-03 | Inventory module, Household management | Complete | | High | Sharing & Budget Team | F-INV
+| IR-04 | Household Manager, End User | S1 | TC-ALT-01, TC-ALT-04 | Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT
+| IR-05 | End User | S1 | TC-ALT-02, TC-ALT-05 | Inventory module, Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT
+| IR-06 | Household Manager, End User | S2 | TC-SB-01 | Spending module, Database layer | Complete | | High | Sharing & Budget Team | F-SPEND
+| IR-07 | Household Manager, End User | S2 | TC-SB-02 | Spending module | Complete | | Medium | Sharing & Budget Team | F-SPEND
+| IR-08 | End User | S1 | TC-RPT-01 | Dashboard / Reporting | Complete | | Medium | Reports & Insights Team | F-SPEND
+| IR-09 | End User, System / Dev Team | S2 | TC-INV-06, TC-AUTO-01 | Household management, Inventory module | Complete | | Medium | Core Inventory Team | F-AUTOCHECK
+| IR-10 | End User | S1 | TC-INV-07 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV
+| IR-11 | End User | S1 | TC-INV-08 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV
+| IR-12 | End User | S2 | TC-SB-03, TC-ALT-03 | Spending module, Alerts & Notification System | Gap flagged | Spending-alert integration workflow not fully validated | High | Sharing & Budget Team | F-SPEND
+| IR-13 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete | Medium | Alerts & Restock Team | F-ALERT
+| IR-14 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation | High | Core Inventory Team | F-INV
 |===
 
 Edge-case interface requirements IR-EC-A through IR-EC-I are intentionally deferred from this matrix because they remain appendix-scoped edge-case requirements and have not yet been promoted into stable IR-N identifiers. Their future inclusion follows the deferred traceability guidance documented in docs/4-specific-topics/traceability/traceability.adoc.
