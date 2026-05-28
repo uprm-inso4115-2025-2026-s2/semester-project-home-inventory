@@ -27,7 +27,7 @@ class DashboardCard extends StatelessWidget {
       height: height ?? 22.h,
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: padding ?? EdgeInsets.all(3.5.w),
@@ -38,8 +38,8 @@ class DashboardCard extends StatelessWidget {
             Text(
               title,
               style: theme.textTheme.displayMedium?.copyWith(
-                fontSize: 16.sp,
                 color: theme.scaffoldBackgroundColor,
+                fontSize: 16.sp,
               ),
             ),
             SizedBox(height: 2.5.h),
