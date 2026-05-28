@@ -1,149 +1,149 @@
-= Core Inventory Form Validation Rules
+= #Core Inventory Form Validation Rules#
 :showtitle: true
 :icons: font
 
-== Overview
+== #Overview#
 
-This document defines the explicit validation rules implemented in the Core Inventory feature's form validation logic (`form_validators.dart`). These rules make implicit domain concepts explicit and ensure consistent data entry across the application.
+#This document defines the explicit validation rules implemented in the Core Inventory feature's form validation logic (`form_validators.dart`). These rules make implicit domain concepts explicit and ensure consistent data entry across the application.#
 
-== Form Validation Rules
+== #Form Validation Rules#
 
-=== Item Name Validation
-
-[cols="1,4", options="header"]
-|===
-| Rule | Description
-
-| Required
-| Item name must not be empty.
-
-| Minimum Length
-| Item name must be at least 2 characters.
-
-| Maximum Length
-| Item name must be less than 100 characters.
-
-| Domain Rationale
-| Names shorter than 2 characters are likely typos or placeholders. Names longer than 100 characters exceed typical product name lengths and may indicate data entry errors.
-|===
-
-=== Quantity Validation
+=== #Item Name Validation#
 
 [cols="1,4", options="header"]
 |===
-| Rule | Description
+| #Rule# | #Description#
 
-| Required
-| Quantity must be provided.
+| #Required#
+| #Item name must not be empty.#
 
-| Numeric
-| Quantity must be a valid integer number.
+| #Minimum Length#
+| #Item name must be at least 2 characters.#
 
-| Non-Negative
-| Quantity cannot be negative.
+| #Maximum Length#
+| #Item name must be less than 100 characters.#
 
-| Maximum
-| Quantity cannot exceed 999,999 units.
-
-| Domain Rationale
-| Zero quantity is allowed to represent out-of-stock items (Status.EMPTY). Negative quantities would indicate inventory reduction below zero, which is physically impossible. The upper limit prevents accidental absurd entries.
+| #Domain Rationale#
+| #Names shorter than 2 characters are likely typos or placeholders. Names longer than 100 characters exceed typical product name lengths and may indicate data entry errors.#
 |===
 
-=== Expiration Date Validation
+=== #Quantity Validation#
 
 [cols="1,4", options="header"]
 |===
-| Rule | Description
+| #Rule# | #Description#
 
-| Optional
-| Expiration date is not required.
+| #Required#
+| #Quantity must be provided.#
 
-| Format
-| Must follow YYYY-MM-DD format.
+| #Numeric#
+| #Quantity must be a valid integer number.#
 
-| Future Date
-| Expiration date cannot be in the past (excluding current date).
+| #Non-Negative#
+| #Quantity cannot be negative.#
 
-| Domain Rationale
-| Expiration dates are optional because not all items expire. Past dates are rejected because they would already be expired upon entry, which should be handled through the expiration alert system instead.
+| #Maximum#
+| #Quantity cannot exceed 999,999 units.#
+
+| #Domain Rationale#
+| #Zero quantity is allowed to represent out-of-stock items (Status.EMPTY). Negative quantities would indicate inventory reduction below zero, which is physically impossible. The upper limit prevents accidental absurd entries.#
 |===
 
-=== Brand/Details Validation
+=== #Expiration Date Validation#
 
 [cols="1,4", options="header"]
 |===
-| Rule | Description
+| #Rule# | #Description#
 
-| Optional
-| Brand field is not required.
+| #Optional#
+| #Expiration date is not required.#
 
-| Maximum Length
-| Brand name must be less than 200 characters.
+| #Format#
+| #Must follow YYYY-MM-DD format.#
 
-| Domain Rationale
-| Brand information helps distinguish between similar item types (e.g., "Clorox Bleach" vs "Great Value Bleach") but is not required for basic item tracking.
+| #Future Date#
+| #Expiration date cannot be in the past (excluding current date).#
+
+| #Domain Rationale#
+| #Expiration dates are optional because not all items expire. Past dates are rejected because they would already be expired upon entry, which should be handled through the expiration alert system instead.#
 |===
 
-== Error Message Mapping
+=== #Brand/Details Validation#
 
-The following table maps validation failures to user-facing messages:
+[cols="1,4", options="header"]
+|===
+| #Rule# | #Description#
+
+| #Optional#
+| #Brand field is not required.#
+
+| #Maximum Length#
+| #Brand name must be less than 200 characters.#
+
+| #Domain Rationale#
+| #Brand information helps distinguish between similar item types (e.g., "Clorox Bleach" vs "Great Value Bleach") but is not required for basic item tracking.#
+|===
+
+== #Error Message Mapping#
+
+#The following table maps validation failures to user-facing messages:#
 
 [cols="1,3", options="header"]
 |===
-| Validation Failure | User Message
+| #Validation Failure# | #User Message#
 
-| Empty name
-| "Please enter an item name"
+| #Empty name#
+| #"Please enter an item name"#
 
-| Name too short
-| "Name must be at least 2 characters"
+| #Name too short#
+| #"Name must be at least 2 characters"#
 
-| Name too long
-| "Name must be less than 100 characters"
+| #Name too long#
+| #"Name must be less than 100 characters"#
 
-| Empty quantity
-| "Please enter a quantity"
+| #Empty quantity#
+| #"Please enter a quantity"#
 
-| Invalid number
-| "Please enter a valid number"
+| #Invalid number#
+| #"Please enter a valid number"#
 
-| Negative quantity
-| "Quantity cannot be negative"
+| #Negative quantity#
+| #"Quantity cannot be negative"#
 
-| Quantity too large
-| "Quantity is too large"
+| #Quantity too large#
+| #"Quantity is too large"#
 
-| Invalid date format
-| "Use format: YYYY-MM-DD"
+| #Invalid date format#
+| #"Use format: YYYY-MM-DD"#
 
-| Past expiration date
-| "Expiration date cannot be in the past"
+| #Past expiration date#
+| #"Expiration date cannot be in the past"#
 
-| Empty brand (if required by context)
-| "Please enter a brand or product name"
+| #Empty brand (if required by context)#
+| #"Please enter a brand or product name"#
 
-| Brand too long
-| "Brand name is too long"
+| #Brand too long#
+| #"Brand name is too long"#
 |===
 
-== Implementation Location
+== #Implementation Location#
 
-These validation rules are implemented in:
+#These validation rules are implemented in:#
 
-- `src/lib/features/core_inventory/presentation/utils/form_validators.dart` — Core validation functions
-- `src/lib/features/core_inventory/presentation/widgets/item_form.dart` — UI integration with real-time error display
+- #`src/lib/features/core_inventory/presentation/utils/form_validators.dart` — Core validation functions#
+- #`src/lib/features/core_inventory/presentation/widgets/item_form.dart` — UI integration with real-time error display#
 
-== Traceability
+== #Traceability#
 
-These validation rules support the following derived goals and requirements:
+#These validation rules support the following derived goals and requirements:#
 
-- *DG-REQ-01*: Create an item record with minimal required information
-- *DG-REQ-04*: Routine item updates remain lightweight
-- *IR-01*: Item initialization with name and quantity/availability
-- *IR-11*: Fast manual entry after barcode failure
+- #*DG-REQ-01*: Create an item record with minimal required information#
+- #*DG-REQ-04*: Routine item updates remain lightweight#
+- #*IR-01*: Item initialization with name and quantity/availability#
+- #*IR-11*: Fast manual entry after barcode failure#
 
-== Related Documents
+== #Related Documents#
 
-- `docs/3-analytic/concept-analysis/requirements-concept-analysis/requirements-concept-analysis.adoc` — Fast capture and tracked record concepts
-- `docs/3-analytic/validation-verification/validation/core-inventory-data-validation-rules.adoc` — Integrity concerns for verification
-- `docs/4-specific-topics/verification/acceptance-e2e-tests.adoc` — E2E test scenarios
+- #`docs/3-analytic/concept-analysis/requirements-concept-analysis/requirements-concept-analysis.adoc` — Fast capture and tracked record concepts#
+- #`docs/3-analytic/validation-verification/validation/core-inventory-data-validation-rules.adoc` — Integrity concerns for verification#
+- #`docs/4-specific-topics/verification/acceptance-e2e-tests.adoc` — E2E test scenarios#

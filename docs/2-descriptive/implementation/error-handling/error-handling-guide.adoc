@@ -1,81 +1,81 @@
-= User-Friendly Error Handling Guide
+= #User-Friendly Error Handling Guide#
 :showtitle: true
 :icons: font
 
-== Overview
+== #Overview#
 
-This document describes the reusable error handling components implemented in the Core Inventory feature. These components can be used by other features to provide consistent, user-friendly error messages across the application.
+#This document describes the reusable error handling components implemented in the Core Inventory feature. These components can be used by other features to provide consistent, user-friendly error messages across the application.#
 
-== Components
+== #Components#
 
-=== InventoryErrorHandler
+=== #InventoryErrorHandler#
 
-**Location:** `src/lib/features/core_inventory/presentation/utils/error_handler.dart`
+#**Location:** `src/lib/features/core_inventory/presentation/utils/error_handler.dart`#
 
-**Purpose:** Converts technical exceptions into user-friendly error messages with titles, actions, and error types.
+#**Purpose:** Converts technical exceptions into user-friendly error messages with titles, actions, and error types.#
 
-**Public Methods:**
+#**Public Methods:**#
 
 [cols="1,3", options="header"]
 |===
-| Method | Description
+| #Method# | #Description#
 
-| `getUserFriendlyMessage(error)`
-| Returns an `InventoryErrorMessage` with title, message, action, and error type.
+| #`getUserFriendlyMessage(error)`#
+| #Returns an `InventoryErrorMessage` with title, message, action, and error type.#
 
-| `showErrorSnackbar(context, error, {onRetry})`
-| Displays a user-friendly error snackbar with optional retry action.
+| #`showErrorSnackbar(context, error, {onRetry})`#
+| #Displays a user-friendly error snackbar with optional retry action.#
 
-| `showErrorDialog(context, error, {onRetry, onDismiss})`
-| Displays a modal error dialog for critical failures.
+| #`showErrorDialog(context, error, {onRetry, onDismiss})`#
+| #Displays a modal error dialog for critical failures.#
 |===
 
-**Error Type Mapping:**
+#**Error Type Mapping:**#
 
 [cols="1,2,2", options="header"]
 |===
-| Technical Error Pattern | User-Friendly Title | Suggested Action
+| #Technical Error Pattern# | #User-Friendly Title# | #Suggested Action#
 
-| SocketException, network, connection, timeout
-| "Connection Issue"
-| "Check your Wi-Fi or mobile data and try again."
+| #SocketException, network, connection, timeout#
+| #"Connection Issue"#
+| #"Check your Wi-Fi or mobile data and try again."#
 
-| PostgrestException (permission, unauthorized)
-| "Access Denied"
-| "Please contact support if you think this is a mistake."
+| #PostgrestException (permission, unauthorized)#
+| #"Access Denied"#
+| #"Please contact support if you think this is a mistake."#
 
-| PostgrestException (duplicate, unique)
-| "Duplicate Entry"
-| "Try using different details or edit the existing item."
+| #PostgrestException (duplicate, unique)#
+| #"Duplicate Entry"#
+| #"Try using different details or edit the existing item."#
 
-| PostgrestException (other)
-| "Server Error"
-| "Please try again in a moment."
+| #PostgrestException (other)#
+| #"Server Error"#
+| #"Please try again in a moment."#
 
-| RepositoryException (not found)
-| "Not Found"
-| "It may have been deleted. Refresh the page."
+| #RepositoryException (not found)#
+| #"Not Found"#
+| #"It may have been deleted. Refresh the page."#
 
-| Validation (cannot be empty)
-| "Missing Information"
-| "Check that you've entered an item name and quantity."
+| #Validation (cannot be empty)#
+| #"Missing Information"#
+| #"Check that you've entered an item name and quantity."#
 
-| Validation (quantity)
-| "Invalid Quantity"
-| "Enter a number greater than or equal to zero."
+| #Validation (quantity)#
+| #"Invalid Quantity"#
+| #"Enter a number greater than or equal to zero."#
 
-| Validation (expiration date)
-| "Invalid Date"
-| "Please select a future date for expiration."
+| #Validation (expiration date)#
+| #"Invalid Date"#
+| #"Please select a future date for expiration."#
 |===
 
-=== ErrorStateWidget
+=== #ErrorStateWidget#
 
-**Location:** `src/lib/features/core_inventory/presentation/widgets/error_state_widget.dart`
+#**Location:** `src/lib/features/core_inventory/presentation/widgets/error_state_widget.dart`#
 
-**Purpose:** Displays a full-screen or inline error state with retry functionality.
+#**Purpose:** Displays a full-screen or inline error state with retry functionality.#
 
-**Usage Example:**
+#**Usage Example:**#
 
 [source,dart]
 ----
@@ -89,19 +89,19 @@ if (state is InventoryError) {
 }
 ----
 
-**Properties:**
+#**Properties:**#
 
-- `error` — The original exception or error object
-- `onRetry` — Callback executed when user taps "Try Again"
-- `fullScreen` — If true, wraps content in a Scaffold
+- #`error` — The original exception or error object#
+- #`onRetry` — Callback executed when user taps "Try Again"#
+- #`fullScreen` — If true, wraps content in a Scaffold#
 
-=== DeleteConfirmationDialog
+=== #DeleteConfirmationDialog#
 
-**Location:** `src/lib/features/core_inventory/presentation/widgets/delete_confirmation_dialog.dart`
+#**Location:** `src/lib/features/core_inventory/presentation/widgets/delete_confirmation_dialog.dart`#
 
-**Purpose:** Provides a consistent confirmation dialog before destructive actions.
+#**Purpose:** Provides a consistent confirmation dialog before destructive actions.#
 
-**Usage Example:**
+#**Usage Example:**#
 
 [source,dart]
 ----
@@ -114,9 +114,9 @@ await DeleteConfirmationDialog.show(
 );
 ----
 
-== Integration with Cubit
+== #Integration with Cubit#
 
-The `InventoryCubit` includes error handling that emits structured `InventoryError` states:
+#The `InventoryCubit` includes error handling that emits structured `InventoryError` states:#
 
 [source,dart]
 ----
@@ -132,9 +132,9 @@ catch (error) {
 }
 ----
 
-== Retry Pattern
+== #Retry Pattern#
 
-Cubits should implement a `retryLastOperation()` method to allow users to recover from transient failures:
+#Cubits should implement a `retryLastOperation()` method to allow users to recover from transient failures:#
 
 [source,dart]
 ----
@@ -145,18 +145,18 @@ Future<void> retryLastOperation() async {
 }
 ----
 
-== Best Practices
+== #Best Practices#
 
-. **Never show raw exceptions to users** — Always use `InventoryErrorHandler`
-. **Log technical details** — Use `debugPrint()` or proper logging for debugging
-. **Provide retry options** — For recoverable errors (network, timeout)
-. **Use inline validation** — For form errors, show messages under the relevant field
-. **Confirm destructive actions** — Always use `DeleteConfirmationDialog`
+. #**Never show raw exceptions to users** — Always use `InventoryErrorHandler`#
+. #**Log technical details** — Use `debugPrint()` or proper logging for debugging#
+. #**Provide retry options** — For recoverable errors (network, timeout)#
+. #**Use inline validation** — For form errors, show messages under the relevant field#
+. #**Confirm destructive actions** — Always use `DeleteConfirmationDialog`#
 
-== Traceability
+== #Traceability#
 
-This error handling implementation supports:
+#This error handling implementation supports:#
 
-- *MR-07*: Notification Quality — prevents raw error exposure
-- *US-INV-01/02*: User stories requiring clear feedback
-- *DG-REQ-08*: Reminders favor relevance over volume
+- #*MR-07*: Notification Quality — prevents raw error exposure#
+- #*US-INV-01/02*: User stories requiring clear feedback#
+- #*DG-REQ-08*: Reminders favor relevance over volume#
