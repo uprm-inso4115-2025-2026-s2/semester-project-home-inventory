@@ -62,6 +62,12 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | The set of item instances that physically exist in the household at a given time.
 | Real-world state, not a list or record.
 
+| Tracked inventory
+| Concept
+| Domain
+| The household's collective view of what is on hand, as represented through tracked inventory records rather than direct observation. It is the system-facing counterpart to *Inventory (reality)* and is what household members consult when they cannot physically check a location. Tracked inventory may diverge from reality whenever a consumption, restock, or discard event occurs without being recorded.
+| Used as shorthand for the union of all tracked inventory records for a household. Use *Tracked inventory record* when referring to one specific entry, and *Inventory (reality)* when referring to the actual physical state.
+
 | Spending category
 | Entity / Label
 | Domain
@@ -107,14 +113,14 @@ This section consolidates the domain's ubiquitous language into a single annotat
 | Availability
 | Property
 | Domain
-| A household's current understanding of how much of an item is left, often qualitative ("full", "almost empty", "backup").
-| May later be represented as quantity.
+| A household's current understanding of how much of an item is left for use. Availability may be expressed qualitatively ("full", "almost empty", "backup opened"), quantitatively as a *Quantity*, or as a system-recognized *Actionable state* (e.g., LOW_STOCK, OUT_OF_STOCK). It describes what household members believe is on hand, which may differ from the *Inventory (reality)*.
+| Distinct from *Quantity* (a numeric measure) and *Actionable state* (a system-computed condition). Availability is the broader human-facing concept; the other two are specific representations of it.
 
 | Quantity
 | Property
 | Domain
-| A more precise measure of availability (count or units). Can be unknown or approximate; must never be negative.
-| —
+| A numeric measure of availability for an item type or item instance, expressed as a count (e.g., 3 cartons) or in units (e.g., 500 g). May be exact, approximate, or unknown, but never negative. Quantity is the precise representation of *Availability* that the system uses to evaluate thresholds and detect actionable states.
+| Distinct from *Availability* (which may be qualitative) and *Low-stock threshold* / *Reorder point* (which are the boundaries quantity is compared against).
 
 | Expiration date
 | Property
