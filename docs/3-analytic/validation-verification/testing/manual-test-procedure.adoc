@@ -103,7 +103,7 @@ For each run, record: date, reviewer name, device/OS, and commit SHA of the buil
 
 ==== MP-IR-11 — Fast Manual Entry After Barcode Failure
 
-*Covers*: IR-11, MR-08 (M3-QA-04). *Replaces automated test*: none. *Expected duration*: 5 minutes.
+*Covers*: IR-11, IR-12 (M3-QA-04). *Replaces automated test*: none. *Expected duration*: 5 minutes.
 
 . Sign in as `test_member`. Tap *Add Item* and start the barcode scanner.
 . Point the camera at plain paper for ≥ 5 seconds, then dismiss the scanner.
@@ -262,7 +262,7 @@ Every requirement whose verification field is partially or entirely manual is co
 |MP-IR-10
 |M3-QA-03
 
-|IR-11, MR-08
+|IR-11, IR-12
 |MP-IR-11
 |M3-QA-04
 

@@ -108,7 +108,7 @@ Traceability is established for:
 
 * Persona goals: all personas have labeled goals (MG*, SG*, JG*, AG*).
 * Needs: core needs N1–N5 are referenced by interface requirements and M3 refinements.
-* Requirements: IR-01–IR-14, DR-1–DR-25, and MR-01–MR-08 are linked to needs, concepts, or M3 acquisition evidence where applicable.
+* Requirements: IR-01–IR-15, DR-1–DR-25, and MR-01–MR-07 are linked to needs, concepts, or M3 acquisition evidence where applicable.
 * Validation/verification: key scenarios and test cases are linked to the most central requirements.
 * M3 acquisition evidence: each requirement added or revised during Milestone 3 references a specific M3-QA source in Section 4.4.5.
 
@@ -144,7 +144,7 @@ Deferred for later milestones:
 | Add UI/integration tests for inventory filters.
 
 | M3-QA-04
-| DR-21, IR-11, US-INV-01, MR-08
+| DR-21, IR-11, US-INV-01, IR-12
 | N1, N2
 | Fast fallback capture, Item type, Quantity
 | Add fallback manual-entry tests for failed barcode lookup.

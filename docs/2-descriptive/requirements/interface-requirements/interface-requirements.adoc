@@ -124,7 +124,6 @@ When edge-case resolutions modify inventory state, the system shall generate an 
 === Milestone 3 Additional Interface Requirements
 
 * IR-09: Role-Based Visibility and Permission Controls
-
 When household members interact with shared inventory, they need interface behavior that reflects ownership visibility and household permissions.
 
 *The system shall provide interface behavior reflecting household role and ownership rules. Personal items shall be hidden from non-owners by default, while shared items and administrative controls shall be visually separated according to household permissions.*
@@ -133,8 +132,8 @@ Needs: N4, N5 | Goals: SG3, JG3, AG2 | Domain concepts: Household member, Member
 +
 M3 source: M3-QA-01, M3-QA-02.
 
-* IR-10: Filtered Inventory Lookup
 
+* IR-10: Filtered Inventory Lookup
 When household members search for inventory information, they need filtering and lookup controls supporting rapid inventory access.
 
 *The system shall provide inventory lookup controls for item name, category, location, ownership scope, stock status, and expiration status.*
@@ -143,10 +142,8 @@ Needs: N1, N3, N4 | Goals: MG1, SG3, AG3 | Domain concepts: Item type, Location,
 +
 M3 source: M3-QA-03.
 
+
 * IR-11: Fast Manual Entry After Barcode Failure
-
-
-
 When barcode scanning fails or is unavailable, household members need a fast fallback workflow for manual inventory entry.
 +
 *The system shall provide a manual-entry fallback allowing users to save inventory items with only item name and quantity or availability required. Optional information may be entered immediately or deferred until later editing.*
@@ -155,10 +152,18 @@ Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance
 +
 M3 source: M3-QA-04.
 
-* IR-12: Budget Alert Preferences
+
+* IR-12: Barcode Scanning and Manual Entry Fallback
+When household members add inventory items using barcode scanning, they need a reliable fallback workflow if scanning fails or no matching product is found.
++
+*The system shall provide barcode-scanning functionality using the device camera for item identification. If barcode scanning fails, is unavailable, or produces no matching product result, the interface shall immediately transition to a manual-entry workflow requiring only item name and quantity or availability to create a minimum viable inventory record. Optional information may be entered immediately or deferred until later editing.*
++
+Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Barcode, Quantity, Availability
++
+M3 source: M3-QA-04.
 
 
-
+* IR-13: Budget Alert Preferences
 When household members manage spending goals, they need interface controls for reviewing and adjusting budget-related notifications.
 +
 *The system shall provide controls for enabling or disabling budget threshold alerts. Household members shall be able to review warning thresholds and adjust notification preferences through the interface.*
@@ -167,10 +172,8 @@ Needs: N5 | Goals: SG1, AG2 | Domain concepts: Budget, Budget cycle, Budget thre
 +
 M3 source: M3-QA-05.
 
-* IR-13: Shared Alert Audience and Delivery Preferences
 
-
-
+* IR-14: Shared Alert Audience and Delivery Preferences
 When household members receive shared alerts, they need visibility into those alerts and control over how notifications are presented.
 +
 *The system shall provide a means for authorized household members to view shared household alerts and configure delivery preferences such as push notifications or grouped summaries. The interface shall support reviewing and dismissing visible alerts.*
@@ -179,10 +182,8 @@ Needs: N2, N4, N5 | Goals: MG2, AG1, SG3 | Domain concepts: Alert / notification
 +
 M3 source: M3-QA-06.
 
-* IR-14: Restock List Override Controls
 
-
-
+* IR-15: Restock List Override Controls
 When automatically generated restock recommendations appear, household members need interface controls for managing those entries.
 +
 *The system shall provide controls allowing authorized household members to remove, dismiss, or snooze restock list entries. The interface shall indicate whether a restock entry was manually created or automatically generated.*
@@ -210,9 +211,10 @@ NOTE: This matrix is the Interface Requirements portion of the centralized Miles
 | IR-09 | End User, System / Dev Team | S2 | TC-INV-06, TC-AUTO-01 | Household management, Inventory module | Complete |
 | IR-10 | End User | S1 | TC-INV-07 | Inventory module | Complete |
 | IR-11 | End User | S1 | TC-INV-08 | Inventory module | Complete |
-| IR-12 | End User | S2 | TC-SB-03, TC-ALT-03 | Spending module, Alerts & Notification System | Gap flagged | Spending-alert integration workflow not fully validated
-| IR-13 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete
-| IR-14 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation
+| IR-12 | End User | S1 | TC-INV-08 | Inventory module | Complete |
+| IR-13 | End User | S2 | TC-SB-03, TC-ALT-03 | Spending module, Alerts & Notification System | Gap flagged | Spending-alert integration workflow not fully validated
+| IR-14 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete
+| IR-15 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation
 |===
 
 Edge-case interface requirements IR-EC-A through IR-EC-I are intentionally deferred from this matrix because they remain appendix-scoped edge-case requirements and have not yet been promoted into stable IR-N identifiers. Their future inclusion follows the deferred traceability guidance documented in docs/4-specific-topics/traceability/traceability.adoc.

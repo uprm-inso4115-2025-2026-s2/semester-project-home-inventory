@@ -106,7 +106,7 @@ This second round focused on gaps and ambiguities found during implementation, c
 | High
 | Barcode scanning works for common products, but many items still require manual entry.
 | When lookup fails, what is the minimum information users will enter before the workflow is too much effort?
-| US-INV-01, IR-01, MR-08
+| US-INV-01, IR-01, IR-12
 
 | OQ-M3-05
 | Medium
@@ -165,7 +165,7 @@ This second round focused on gaps and ambiguities found during implementation, c
 | When barcode lookup fails, what is the minimum acceptable manual-entry flow?
 | M3-P01 and M3-P04 would abandon the workflow if too many fields were required. Minimum acceptable: item name and quantity/availability; location and expiration optional or editable later. M3-P03 wanted to save quickly and complete details afterward.
 | Barcode fallback must not block capture; manual entry allows a minimum viable record, with richer metadata added later.
-| DR-21, IR-11, US-INV-01, MR-08
+| DR-21, IR-11, US-INV-01, IR-12
 
 | M3-QA-05
 | Medium
