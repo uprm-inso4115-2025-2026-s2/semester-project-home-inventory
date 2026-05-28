@@ -2,150 +2,150 @@
 :icons: font
 
 
-== Data Model and Persistence Layer (Milestone 3)
+== #Data Model and Persistence Layer (Milestone 3)#
 
-This document defines the data model and persistence layer for the Digital Home Inventory system as implemented in Milestone 3. The system uses **Supabase PostgreSQL** as the primary database with **Row Level Security (RLS)** for access control and **Supabase Realtime** for live synchronization.
+#This document defines the data model and persistence layer for the Digital Home Inventory system as implemented in Milestone 3. The system uses **Supabase PostgreSQL** as the primary database with **Row Level Security (RLS)** for access control and **Supabase Realtime** for live synchronization.#
 
-This documentation reflects the actual Dart model implementations. For auto-generation and verification, refer to the <<regeneration_script, regeneration script>>.
-
----
-
-== Core Entities
-
-=== Household
-
-Represents a shared living unit where members manage household essentials.
-
-[cols="1,2,3", options="header"]
-|===
-| Attribute | Type | Description
-| id | INT (PK) | Unique household identifier (auto-increment)
-| name | TEXT | Household name/label
-| owner_id | INT (FK → households.owner_id) | User who owns the household
-|===
-
-**Cardinality:** One Household has many Members, many Inventories, many Expenses.
-
-**Source:** `src/lib/features/sharing_budget/data/models/household_model.dart`
+#This documentation reflects the actual Dart model implementations. For auto-generation and verification, refer to the <<regeneration_script, regeneration script>>.#
 
 ---
 
-=== Household Member
+== #Core Entities#
 
-Links a user to a household with a specific role (owner, member, viewer).
+=== #Household#
+
+#Represents a shared living unit where members manage household essentials.#
 
 [cols="1,2,3", options="header"]
 |===
-| Attribute | Type | Description
-| id | INT (PK) | Unique member record identifier
-| household_id | INT (PK/FK → households.id) | Reference to household
-| user_id | INT (PK/FK) | Reference to authenticated user
-| role | ENUM | owner, member, or viewer (MemberRole enum)
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique household identifier (auto-increment)#
+| #name# | #TEXT# | #Household name/label#
+| #owner_id# | #INT (FK → households.owner_id)# | #User who owns the household#
 |===
 
-**Cardinality:** Many-to-many between User and Household.
+#**Cardinality:** One Household has many Members, many Inventories, many Expenses.#
 
-**Source:** `src/lib/features/sharing_budget/data/models/household_member_model.dart`
+#**Source:** `src/lib/features/sharing_budget/data/models/household_model.dart`#
 
 ---
 
-=== Product
+=== #Household Member#
 
-Defines a product type (independent of inventory instances). Products are shared catalog items with metadata.
+#Links a user to a household with a specific role (owner, member, viewer).#
 
 [cols="1,2,3", options="header"]
 |===
-| Attribute | Type | Description
-| id | INT (PK) | Unique product identifier
-| name | TEXT | Product name (e.g., "Milk")
-| description | TEXT | Product description
-| tags | TEXT[] | Optional tags (Tag enum values: BEVERAGES, SNACKS, DAIRY, PROTEINS, VEGETABLES, etc.)
-| unit | TEXT | Unit of measure (ct, lb, oz, L, etc.) — optional
-| imageUrl | TEXT | Optional URL to product image
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique member record identifier#
+| #household_id# | #INT (PK/FK → households.id)# | #Reference to household#
+| #user_id# | #INT (PK/FK)# | #Reference to authenticated user#
+| #role# | #ENUM# | #owner, member, or viewer (MemberRole enum)#
 |===
 
-**Cardinality:** One Product has many Stock Entries.
+#**Cardinality:** Many-to-many between User and Household.#
 
-**Source:** `src/lib/features/core_inventory/data/models/product.dart`
+#**Source:** `src/lib/features/sharing_budget/data/models/household_member_model.dart`#
 
 ---
 
-=== Inventory
+=== #Product#
 
-Represents a container (room, household) that holds stock of products.
+#Defines a product type (independent of inventory instances). Products are shared catalog items with metadata.#
 
 [cols="1,2,3", options="header"]
 |===
-| Attribute | Type | Description
-| id | INT (PK) | Unique inventory identifier
-| owner_id | INT | Owner ID (room, household, or user identifier)
-| stock | JSONB | Map of product_id → List<Stock> (stores stock instances)
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique product identifier#
+| #name# | #TEXT# | #Product name (e.g., "Milk")#
+| #description# | #TEXT# | #Product description#
+| #tags# | #TEXT[]# | #Optional tags (Tag enum values: BEVERAGES, SNACKS, DAIRY, PROTEINS, VEGETABLES, etc.)#
+| #unit# | #TEXT# | #Unit of measure (ct, lb, oz, L, etc.) — optional#
+| #imageUrl# | #TEXT# | #Optional URL to product image#
 |===
 
-**Cardinality:** One Inventory holds stock entries for many Products.
+#**Cardinality:** One Product has many Stock Entries.#
 
-**Source:** `src/lib/features/core_inventory/data/models/inventory.dart`
+#**Source:** `src/lib/features/core_inventory/data/models/product.dart`#
 
 ---
 
-=== Stock
+=== #Inventory#
 
-Represents a single instance (package/unit) of a product in an inventory.
+#Represents a container (room, household) that holds stock of products.#
 
 [cols="1,2,3", options="header"]
 |===
-| Attribute | Type | Description
-| id | INT (PK) | Unique stock entry identifier
-| brand | TEXT | Brand/manufacturer of the stock
-| quantity | INT | Current quantity (must be > 0)
-| status | ENUM | Status.EMPTY, Status.LOW, Status.NORMAL, Status.FULL, Status.EXPIRED
-| owner_id | INT | Optional owner ID for personal vs. shared visibility
-| expiration_date | TIMESTAMPTZ | Optional expiration date
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique inventory identifier#
+| #owner_id# | #INT# | #Owner ID (room, household, or user identifier)#
+| #stock# | #JSONB# | #Map of product_id → List<Stock> (stores stock instances)#
 |===
 
-**Cardinality:** Many Stock Entries belong to one Inventory and one Product.
+#**Cardinality:** One Inventory holds stock entries for many Products.#
 
-**Source:** `src/lib/features/core_inventory/data/models/stock.dart`
+#**Source:** `src/lib/features/core_inventory/data/models/inventory.dart`#
 
 ---
 
-=== Expense
+=== #Stock#
 
-Records financial transactions for households (shared spending tracking).
+#Represents a single instance (package/unit) of a product in an inventory.#
 
 [cols="1,2,3", options="header"]
 |===
-| Attribute | Type | Description
-| id | INT (PK) | Unique expense identifier
-| household_id | INT (FK → households.id) | Associated household
-| user_id | INT | User who logged the spending (optional)
-| amount | DECIMAL(10,2) | Monetary value
-| category | TEXT | Spending category (optional)
-| description | TEXT | Optional notes/description
-| incurred_on | TIMESTAMPTZ | When transaction occurred
-| created_at | TIMESTAMPTZ | Record creation timestamp
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique stock entry identifier#
+| #brand# | #TEXT# | #Brand/manufacturer of the stock#
+| #quantity# | #INT# | #Current quantity (must be > 0)#
+| #status# | #ENUM# | #Status.EMPTY, Status.LOW, Status.NORMAL, Status.FULL, Status.EXPIRED#
+| #owner_id# | #INT# | #Optional owner ID for personal vs. shared visibility#
+| #expiration_date# | #TIMESTAMPTZ# | #Optional expiration date#
 |===
 
-**Cardinality:** Many Expenses belong to one Household. Many Expenses belong to one User.
+#**Cardinality:** Many Stock Entries belong to one Inventory and one Product.#
 
-**Source:** `src/lib/features/sharing_budget/data/models/expense_model.dart`
+#**Source:** `src/lib/features/core_inventory/data/models/stock.dart`#
 
 ---
 
-== Entity Relationship Diagram
+=== #Expense#
+
+#Records financial transactions for households (shared spending tracking).#
 
 [cols="1,2,3", options="header"]
 |===
-| Source Entity | Target Entity | Cardinality | Ownership
-| Household | HouseholdMember | One-to-Many | Household owns membership records
-| HouseholdMember | User | Many-to-Many | Users can belong to many households
-| Household | Expense | One-to-Many | Household owns expense records
-| Household | Inventory | One-to-Many | Household owns inventories
-| Inventory | Product | Many-to-Many (via Stock) | Inventory contains stock of multiple products
-| Product | Stock | One-to-Many | Product has many stock instances
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique expense identifier#
+| #household_id# | #INT (FK → households.id)# | #Associated household#
+| #user_id# | #INT# | #User who logged the spending (optional)#
+| #amount# | #DECIMAL(10,2)# | #Monetary value#
+| #category# | #TEXT# | #Spending category (optional)#
+| #description# | #TEXT# | #Optional notes/description#
+| #incurred_on# | #TIMESTAMPTZ# | #When transaction occurred#
+| #created_at# | #TIMESTAMPTZ# | #Record creation timestamp#
 |===
 
-=== ASCII ER Diagram
+#**Cardinality:** Many Expenses belong to one Household. Many Expenses belong to one User.#
+
+#**Source:** `src/lib/features/sharing_budget/data/models/expense_model.dart`#
+
+---
+
+== #Entity Relationship Diagram#
+
+[cols="1,2,3", options="header"]
+|===
+| #Source Entity# | #Target Entity# | #Cardinality# | #Ownership#
+| #Household# | #HouseholdMember# | #One-to-Many# | #Household owns membership records#
+| #HouseholdMember# | #User# | #Many-to-Many# | #Users can belong to many households#
+| #Household# | #Expense# | #One-to-Many# | #Household owns expense records#
+| #Household# | #Inventory# | #One-to-Many# | #Household owns inventories#
+| #Inventory# | #Product# | #Many-to-Many (via Stock)# | #Inventory contains stock of multiple products#
+| #Product# | #Stock# | #One-to-Many# | #Product has many stock instances#
+|===
+
+=== #ASCII ER Diagram#
 
 ....
 ┌─────────────┐
@@ -205,18 +205,18 @@ Records financial transactions for households (shared spending tracking).
 
 ---
 
-== Persistence Layer
+== #Persistence Layer#
 
-=== Primary Database: Supabase PostgreSQL
+=== #Primary Database: Supabase PostgreSQL#
 
-- Hosted PostgreSQL database managed through Supabase
-- All core entities stored as tables with integer primary keys
-- Row Level Security (RLS) enforced for all tables (planned)
-- Real-time enabled for households and inventory tables (planned)
+- #Hosted PostgreSQL database managed through Supabase#
+- #All core entities stored as tables with integer primary keys#
+- #Row Level Security (RLS) enforced for all tables (planned)#
+- #Real-time enabled for households and inventory tables (planned)#
 
-=== Table Schema
+=== #Table Schema#
 
-==== households
+==== #households#
 [source,sql]
 ----
 CREATE TABLE households (
@@ -227,7 +227,7 @@ CREATE TABLE households (
 );
 ----
 
-==== household_members
+==== #household_members#
 [source,sql]
 ----
 CREATE TABLE household_members (
@@ -239,7 +239,7 @@ CREATE TABLE household_members (
 );
 ----
 
-==== products
+==== #products#
 [source,sql]
 ----
 CREATE TABLE products (
@@ -252,7 +252,7 @@ CREATE TABLE products (
 );
 ----
 
-==== inventories
+==== #inventories#
 [source,sql]
 ----
 CREATE TABLE inventories (
@@ -262,7 +262,7 @@ CREATE TABLE inventories (
 );
 ----
 
-==== expenses
+==== #expenses#
 [source,sql]
 ----
 CREATE TABLE expenses (
@@ -277,107 +277,107 @@ CREATE TABLE expenses (
 );
 ----
 
-=== Authentication: Supabase Auth
+=== #Authentication: Supabase Auth#
 
-- Users authenticated via Supabase Auth (JWT-based)
-- RLS policies use authenticated user ID for access control
-- Session management handled by Supabase Flutter SDK
+- #Users authenticated via Supabase Auth (JWT-based)#
+- #RLS policies use authenticated user ID for access control#
+- #Session management handled by Supabase Flutter SDK#
 
-=== File Storage: Supabase Storage
+=== #File Storage: Supabase Storage#
 
-- Product images stored in storage buckets (future implementation)
-- Signed URLs for private assets
+- #Product images stored in storage buckets (future implementation)#
+- #Signed URLs for private assets#
 
-=== Local Persistence (Flutter Client)
+=== #Local Persistence (Flutter Client)#
 
-- SharedPreferences for user preferences and settings
-- In-memory state management via Cubit/Bloc
-- Pending offline changes queued for sync
-
----
-
-== Unimplemented Entities (Planned for Future Milestones)
-
-The following entities have been designed but do not have Dart model implementations yet:
-
-=== Notification *(planned)*
-
-In-app alerts for users triggered by inventory events.
-
-[cols="1,2,3", options="header"]
-|===
-| Attribute | Type | Description
-| id | INT (PK) | Unique notification identifier
-| recipient_user_id | INT (FK) | Target user
-| type | ENUM | LOW_STOCK, EXPIRING_SOON, EXPIRED, DUPLICATE_WARNING, SHARED_INVENTORY_UPDATE
-| title | TEXT | Notification title
-| message | TEXT | Notification body
-| priority_level | ENUM | LOW, MEDIUM, HIGH, CRITICAL
-| status | ENUM | UNREAD, READ, ARCHIVED, DISMISSED
-| created_at | TIMESTAMPTZ | Creation timestamp
-| triggered_at | TIMESTAMPTZ | When condition was detected
-| expires_at | TIMESTAMPTZ | Optional expiration
-| is_active | BOOLEAN | Soft delete flag
-|===
-
-**Status:** No Dart model in `src/`. Awaiting implementation.
-
-=== Sweep Run *(planned)*
-
-Audit log for automated daily sweep executions that check for expired/low-stock items.
-
-[cols="1,2,3", options="header"]
-|===
-| Attribute | Type | Description
-| id | INT (PK) | Unique sweep run identifier
-| started_at | TIMESTAMPTZ | Run start time
-| completed_at | TIMESTAMPTZ | Run completion time (nullable)
-| status | TEXT | started, success, failed, partial
-| items_scanned | INT | Number of items checked
-| expired_flagged_count | INT | Expired items found
-| near_expiration_count | INT | Near-expiry items found
-| low_stock_flagged_count | INT | Low-stock items found
-| out_of_stock_count | INT | Out-of-stock items found
-| error_summary | TEXT | Error details if failed (nullable)
-| trigger_source | TEXT | cron, manual, retry
-| run_scope | JSONB | Optional scope metadata
-|===
-
-**Status:** No Dart model in `src/`. Awaiting implementation.
+- #SharedPreferences for user preferences and settings#
+- #In-memory state management via Cubit/Bloc#
+- #Pending offline changes queued for sync#
 
 ---
 
-== Migration Notes (M2 → M3)
+== #Unimplemented Entities (Planned for Future Milestones)#
 
-The following changes were made between Milestone 2 and Milestone 3 to align the data model with actual implementation:
+#The following entities have been designed but do not have Dart model implementations yet:#
+
+=== #Notification *(planned)*#
+
+#In-app alerts for users triggered by inventory events.#
+
+[cols="1,2,3", options="header"]
+|===
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique notification identifier#
+| #recipient_user_id# | #INT (FK)# | #Target user#
+| #type# | #ENUM# | #LOW_STOCK, EXPIRING_SOON, EXPIRED, DUPLICATE_WARNING, SHARED_INVENTORY_UPDATE#
+| #title# | #TEXT# | #Notification title#
+| #message# | #TEXT# | #Notification body#
+| #priority_level# | #ENUM# | #LOW, MEDIUM, HIGH, CRITICAL#
+| #status# | #ENUM# | #UNREAD, READ, ARCHIVED, DISMISSED#
+| #created_at# | #TIMESTAMPTZ# | #Creation timestamp#
+| #triggered_at# | #TIMESTAMPTZ# | #When condition was detected#
+| #expires_at# | #TIMESTAMPTZ# | #Optional expiration#
+| #is_active# | #BOOLEAN# | #Soft delete flag#
+|===
+
+#**Status:** No Dart model in `src/`. Awaiting implementation.#
+
+=== #Sweep Run *(planned)*#
+
+#Audit log for automated daily sweep executions that check for expired/low-stock items.#
+
+[cols="1,2,3", options="header"]
+|===
+| #Attribute# | #Type# | #Description#
+| #id# | #INT (PK)# | #Unique sweep run identifier#
+| #started_at# | #TIMESTAMPTZ# | #Run start time#
+| #completed_at# | #TIMESTAMPTZ# | #Run completion time (nullable)#
+| #status# | #TEXT# | #started, success, failed, partial#
+| #items_scanned# | #INT# | #Number of items checked#
+| #expired_flagged_count# | #INT# | #Expired items found#
+| #near_expiration_count# | #INT# | #Near-expiry items found#
+| #low_stock_flagged_count# | #INT# | #Low-stock items found#
+| #out_of_stock_count# | #INT# | #Out-of-stock items found#
+| #error_summary# | #TEXT# | #Error details if failed (nullable)#
+| #trigger_source# | #TEXT# | #cron, manual, retry#
+| #run_scope# | #JSONB# | #Optional scope metadata#
+|===
+
+#**Status:** No Dart model in `src/`. Awaiting implementation.#
+
+---
+
+== #Migration Notes (M2 → M3)#
+
+#The following changes were made between Milestone 2 and Milestone 3 to align the data model with actual implementation:#
 
 [cols="1,2,3,4", options="header"]
 |===
-| Entity | Change Type | Details | Notes
-| Household | ID Type | Changed from UUID to INT | All IDs now use auto-increment integers
-| HouseholdMember | ID Type | Changed from UUID to INT | Composite PK (id) with FK references
-| HouseholdMember | Schema Alignment | Removed created_at if not in M2 | Basic entity with id, household_id, user_id, role
-| Product | New Entity | Extracted from InventoryItem concept | ProductModel represents the product catalog entry
-| Inventory | Restructured | Now holds stock Map<String, List<Stock>> | Stock is embedded in JSONB, not separate table
-| Stock | Renamed/Added | Status enum (EMPTY, LOW, NORMAL, FULL, EXPIRED) | New field: brand, status; removed threshold
-| Expense | Schema | Uses incurred_on not purchase_date or expense_date | Simplified: id, household_id, user_id, amount, category, description, incurred_on, created_at
-| Expense | Removed Fields | No transaction_type, merchant_name, paid_by_user_id, item_id | M3 expense is simpler; detailed expense tracking deferred
-| Notification | Planned | No Dart model yet | SQL schema designed but not implemented
-| SweepRun | Planned | No Dart model yet | Audit logging designed but not implemented
+| #Entity# | #Change Type# | #Details# | #Notes#
+| #Household# | #ID Type# | #Changed from UUID to INT# | #All IDs now use auto-increment integers#
+| #HouseholdMember# | #ID Type# | #Changed from UUID to INT# | #Composite PK (id) with FK references#
+| #HouseholdMember# | #Schema Alignment# | #Removed created_at if not in M2# | #Basic entity with id, household_id, user_id, role#
+| #Product# | #New Entity# | #Extracted from InventoryItem concept# | #ProductModel represents the product catalog entry#
+| #Inventory# | #Restructured# | #Now holds stock Map<String, List<Stock>># | #Stock is embedded in JSONB, not separate table#
+| #Stock# | #Renamed/Added# | #Status enum (EMPTY, LOW, NORMAL, FULL, EXPIRED)# | #New field: brand, status; removed threshold#
+| #Expense# | #Schema# | #Uses incurred_on not purchase_date or expense_date# | #Simplified: id, household_id, user_id, amount, category, description, incurred_on, created_at#
+| #Expense# | #Removed Fields# | #No transaction_type, merchant_name, paid_by_user_id, item_id# | #M3 expense is simpler; detailed expense tracking deferred#
+| #Notification# | #Planned# | #No Dart model yet# | #SQL schema designed but not implemented#
+| #SweepRun# | #Planned# | #No Dart model yet# | #Audit logging designed but not implemented#
 |===
 
-**Backward Compatibility:**
+#**Backward Compatibility:**#
 
-- If migrating from M2: **Create new tables** (integer-based schema) and run data transformation scripts
-- Soft deletion not yet implemented; deletes are hard (can be added in M4)
-- Stock status is derived from quantity and expiration logic; not auto-migrated
+- #If migrating from M2: **Create new tables** (integer-based schema) and run data transformation scripts#
+- #Soft deletion not yet implemented; deletes are hard (can be added in M4)#
+- #Stock status is derived from quantity and expiration logic; not auto-migrated#
 
 ---
 
 [[regeneration_script]]
-== Regeneration Script
+== #Regeneration Script#
 
-To keep the data model documentation in sync with the codebase, run the following script to auto-generate an updated diagram and entity summary:
+#To keep the data model documentation in sync with the codebase, run the following script to auto-generate an updated diagram and entity summary:#
 
 [source,bash]
 ----
@@ -405,7 +405,7 @@ echo "✓ Generated $OUTPUT"
 echo "✓ Review and merge findings into docs/DATA_MODEL_M3.adoc manually"
 ----
 
-**Running the script:**
+#**Running the script:**#
 
 [source,bash]
 ----
@@ -413,58 +413,58 @@ chmod +x scripts/regenerate_data_model.sh
 ./scripts/regenerate_data_model.sh
 ----
 
-**To verify alignment:**
+#**To verify alignment:**#
 
-1. Run the regeneration script: `./scripts/regenerate_data_model.sh`
-2. Compare output against DATA_MODEL_M3.adoc
-3. Update DATA_MODEL_M3.adoc if new models are added or fields change
-4. Commit both the script output and the documentation update
-
----
-
-== Traceability
-
-This data model supports:
-
-- *Domain Requirements:* DR-1 through DR-17 (inventory integrity, shared-household rules, duplicate handling)
-- *Interface Requirements:* IR-01 through IR-08 (item initialization, consumption, ownership, thresholds)
-- *Machine Requirements:* MR-01 through MR-08 (availability, response time, offline operation, security)
+1. #Run the regeneration script: `./scripts/regenerate_data_model.sh`#
+2. #Compare output against DATA_MODEL_M3.adoc#
+3. #Update DATA_MODEL_M3.adoc if new models are added or fields change#
+4. #Commit both the script output and the documentation update#
 
 ---
 
-== Key Implementation Notes
+== #Traceability#
 
-=== Stock Status Enum
+#This data model supports:#
 
-The `Status` enum in `StockModel` is used to track inventory state:
-
-- `EMPTY`: Quantity is zero
-- `LOW`: Quantity below household threshold
-- `NORMAL`: Quantity in acceptable range
-- `FULL`: Quantity at or above max capacity
-- `EXPIRED`: Expiration date has passed
-
-=== Inventory as JSONB
-
-The `stock` field in `InventoryModel` is a `Map<String, List<StockModel>>` stored as JSONB in Postgres. Key is product ID (as string); value is list of stock instances. This design allows:
-
-- Flexible handling of multiple brands/batches per product
-- Efficient nested filtering in Supabase
-- Atomic updates via Postgres JSONB operators
-
-=== Product vs. Stock
-
-- **Product:** Shared catalog item (name, description, tags, unit, image)
-- **Stock:** Individual instance in an inventory (brand, quantity, status, expiration)
-
-A household may have multiple Stock entries for the same Product (different brands, batches).
+- #*Domain Requirements:* DR-1 through DR-17 (inventory integrity, shared-household rules, duplicate handling)#
+- #*Interface Requirements:* IR-01 through IR-08 (item initialization, consumption, ownership, thresholds)#
+- #*Machine Requirements:* MR-01 through MR-08 (availability, response time, offline operation, security)#
 
 ---
 
-== Open Issues for End of Milestone
+== #Key Implementation Notes#
 
-1. **Notification & SweepRun Implementation** — Design complete, models pending
-2. **RLS Policies** — Security policies for row-level access control
-3. **Offline Sync Strategy** — Local caching and conflict resolution
-4. **Composite Keys** — Clarify HouseholdMember identity (id vs. household_id + user_id)
-5. **Data Audit Trail** — Soft deletes and timestamp tracking for financial records
+=== #Stock Status Enum#
+
+#The `Status` enum in `StockModel` is used to track inventory state:#
+
+- #`EMPTY`: Quantity is zero#
+- #`LOW`: Quantity below household threshold#
+- #`NORMAL`: Quantity in acceptable range#
+- #`FULL`: Quantity at or above max capacity#
+- #`EXPIRED`: Expiration date has passed#
+
+=== #Inventory as JSONB#
+
+#The `stock` field in `InventoryModel` is a `Map<String, List<StockModel>>` stored as JSONB in Postgres. Key is product ID (as string); value is list of stock instances. This design allows:#
+
+- #Flexible handling of multiple brands/batches per product#
+- #Efficient nested filtering in Supabase#
+- #Atomic updates via Postgres JSONB operators#
+
+=== #Product vs. Stock#
+
+- #**Product:** Shared catalog item (name, description, tags, unit, image)#
+- #**Stock:** Individual instance in an inventory (brand, quantity, status, expiration)#
+
+#A household may have multiple Stock entries for the same Product (different brands, batches).#
+
+---
+
+== #Open Issues for End of Milestone#
+
+1. #**Notification & SweepRun Implementation** — Design complete, models pending#
+2. #**RLS Policies** — Security policies for row-level access control#
+3. #**Offline Sync Strategy** — Local caching and conflict resolution#
+4. #**Composite Keys** — Clarify HouseholdMember identity (id vs. household_id + user_id)#
+5. #**Data Audit Trail** — Soft deletes and timestamp tracking for financial records#
