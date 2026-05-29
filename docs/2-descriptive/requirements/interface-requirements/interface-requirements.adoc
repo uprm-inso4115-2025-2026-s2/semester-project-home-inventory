@@ -1,102 +1,132 @@
 == Interface Requirements
 
-Interface requirements describe how domain phenomena and concepts are represented inside the system-to-be, how they are initialized, and how they are kept in sync when the real world changes. They were derived through elicitation techniques including semi-structured interviews with students and lightweight story mapping, used to identify important user interactions, edge cases, and system behaviors grounded in real household scenarios.
+Interface requirements describe how domain phenomena and concepts are represented within the system, how users interact with those representations, and how important system state changes become visible through the user interface. These requirements were derived through elicitation activities including semi-structured interviews, lightweight story mapping, and scenario walkthroughs focused on realistic shared-household inventory behavior.
 
-=== IR-01: Item Initialization
-When a household member acquires a new item, they must be able to create a corresponding representation in the system.
+[NOTE]
+====
+The IRs below are mapped against concrete user-story executions in <<_requirements_walkthroughs>>. Two systematic findings affect this set in particular: (1) several IRs use *display-only* verbs ("indicate reimbursement status" in IR-07, "provide a means to mark" in IR-03) where the user story actually needs read/write — see findings REQ-FUZZY-R4c, REQ-GAP-R3b; and (2) IR-15's snooze coverage names *restock entries* but not *alerts*, even though DR-14 references an alert snooze period — see REQ-FUZZY-R2b. The consolidated findings table at the end of that walkthrough lists every fix recommended against this IR set.
 
-*The system shall provide a means for household members to add new items to their tracked inventory, including name, quantity/availability, category, location, ownership status (personal/shared), and optional expiration date.*
+This IR set was also formally inspected against the defect-driven *Requirements Inspection Checklist*; the per-IR findings (with severity and proposed fix) are catalogued in <<applied-inspection-review-log>>. IRs explicitly cited there include IR-03, IR-06, IR-07, IR-08, IR-09, IR-12, IR-13, IR-15, plus the M3-additional grouping (IR-09..IR-15) as a structural finding.
+====
+
+* IR-01: Item Initialization
+
+
+
+When a household member acquires a new item, they need a way to create a corresponding representation in the system.
++
+*The system shall provide a means for household members to add new inventory items, including item name, quantity or availability, category, storage location, ownership status (personal or shared), and optional expiration date information.*
 
 Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Location
 
-=== IR-02: Item Update on Consumption
-When a household member consumes part of an item, the tracked representation must be updated to reflect new availability.
+* IR-02: Item Update on Consumption
 
-*The system shall provide a means for household members to record consumption by decreasing recorded quantity/availability or marking an item as finished/out-of-stock.*
 
+When a household member consumes part of an item, they need a way to update the tracked representation to reflect the remaining availability.
++
+*The system shall provide a means for household members to record consumption by decreasing recorded quantity or availability values, or by marking an item as finished or out-of-stock.*
++
 Needs: N1, N2 | Goals: MG1, MG3, JG1 | Domain concepts: Item instance, Quantity, Consumption
 
-=== IR-03: Ownership Specification
-In shared households, members need to know whether an item is personal or shared.
+* IR-03: Ownership Specification
 
-*The system shall provide a means to mark an item as personal or shared, and if personal, associate it with a household member.*
 
+
+When inventory is shared among multiple household members, users need visibility into whether items are personal or shared.
++
+*The system shall provide a means to mark inventory items as personal or shared and, when applicable, associate personal items with a specific household member.*
++
 Needs: N4 | Goals: SG3, JG3 | Domain concepts: Household member, Item instance, Membership
 
-=== IR-04: Low-Stock Threshold Definition
-Households define "low" differently per item. This requirement covers the interface aspect: entering a threshold when creating an item and changing it when editing. Storage and evaluation of thresholds is addressed by DR-12.
+* IR-04: Low-Stock Threshold Definition
 
-*The system shall provide a means to set low-stock thresholds for individual items: a threshold field on the item creation screen, a threshold field on the item edit screen, and optionally a quick-edit affordance when an item is flagged as low-stock.*
 
+
+When household members manage inventory levels, they need interface controls for defining low-stock thresholds for individual items.
++
+*The system shall provide controls for entering and editing low-stock threshold values during item creation and item-editing workflows. The interface may also provide quick-edit controls when an item is currently flagged as low-stock.*
++
 Needs: N2 | Goals: MG3, JG1, AG1 | Domain concepts: Low-stock threshold, Item type
 
-=== IR-05: Expiration Date Entry
-Some items have expiration dates that must be captured to support expiration awareness.
+* IR-05: Expiration Date Entry
 
-*The system shall provide a means to enter and edit expiration dates for items that expire; items without expiration dates must be supported.*
 
+
+When household members manage perishable items, they need a way to record and edit expiration-date information.
++
+*The system shall provide a means to enter and edit expiration dates for inventory items that expire while also supporting items without expiration-date information.*
++
 Needs: N2 | Goals: MG2, JG2 | Domain concepts: Item instance, Expiration date
 
-=== IR-06: Purchase Logging
-When a household member spends money on household items, that transaction must be representable in the system.
+* IR-06: Purchase Logging
 
-*The system shall provide a means to log purchases, including items bought (or categories), total cost, date of purchase, and whether the purchase was personal or shared.*
 
+
+When household members spend money on household items, they need a way to record those purchases in the system.
++
+*The system shall provide a means to log purchases, including purchased items or categories, total cost, purchase date, and whether the purchase was personal or shared.*
++
 Needs: N5 | Goals: SG1, AG2 | Domain concepts: Spending entry, Spending category
 
-=== IR-07: Cost Splitting
-For shared purchases, costs may need to be divided among household members.
+* IR-07: Cost Splitting
 
-*The system shall provide a means to split shared purchase costs among selected household members and track who owes what.*
 
+
+When household members record shared purchases, they need an interface for viewing participant selections and reimbursement information.
++
+*The system shall provide a means to record shared purchases, display participant selections, show split summaries, indicate reimbursement status, and allow users to review or update shared purchase information through the interface.*
++
 Needs: N5 | Goals: SG2, AG2 | Domain concepts: Spending entry, Household member, Membership
 
-=== IR-08: Dashboard Metric Overview
-Household members need a high-level overview without searching through details.
+* IR-08: Dashboard Metric Overview
 
-*The system shall provide a dashboard view summarizing key metrics such as total items, low-stock items, expiring/expired items, and current-period spending.*
 
+
+When household members review household inventory status, they need a high-level overview without navigating through multiple detailed views.
++
+*The system shall provide a dashboard view summarizing key inventory and household metrics such as total tracked items, low-stock items, expiring or expired items, and current-period spending information.*
++
 Needs: N1, N3 | Goals: MG1, AG1, AG3 | Domain concepts: Inventory, Budget status, Low-stock threshold, Expiration date
 
 === Appendix A: Edge-Case Interface Requirements
 
-The following edge-case interface requirements are recognized but deferred for detailed specification in later milestones. They are captured here, separate from core IRs, to preserve scope awareness and support future traceability.
+The following edge-case interface requirements are recognized but deferred for detailed specification in later milestones. They are captured separately from the core interface requirements to preserve scope awareness and future traceability.
 
 ==== IR-EC-A: Near-Duplicate Variant Disambiguation
 
-When a user adds an item whose name matches an existing item type but whose size, variant, or brand differs, the system must present the conflicting attribute highlighted and require the user to choose: "This is a different variant" or "Use existing item type." Same-name/different-size entries shall be treated as separate item type definitions by default and must not be auto-merged.
+When a user adds an item whose name matches an existing item type but whose size, variant, or brand differs, the system shall highlight the conflicting attribute and require the user to choose between creating a different variant or using the existing item type. Same-name items with different variants shall not be automatically merged by default.
 
 ==== IR-EC-B: Stock Entry Separation by Expiration and Location
 
-When a user attempts to merge two item instances of the same item type that have different expiration dates or storage locations, the system must warn that merging will lose expiration/location tracking. The default action must be "Keep separate"; merging must require explicit confirmation.
+When a user attempts to merge item instances that have different expiration dates or storage locations, the system shall warn that merging may remove expiration or location tracking information. The default action shall preserve separate entries unless explicit confirmation is provided.
 
 ==== IR-EC-C: Import Idempotency and Duplicate Spend Prevention
 
-When a user uploads a CSV import file that was previously imported, the system must default to "Review before apply" and present a summary of potential duplicate transactions. Per-row, if a transaction fingerprint matches a previously imported record, the system must skip spend event creation by default and require an explicit "Import anyway" override.
+When a user uploads a CSV import file that was previously imported, the system shall default to a review workflow and display a summary of potential duplicate transactions. Matching transactions shall require explicit confirmation before duplicate import actions occur.
 
 ==== IR-EC-D: Inventory Correction Without Budget Impact
 
-When a user deletes or merges an inventory entry that has associated spend events, the system must present two independent controls: "Remove from inventory" and "Also mark purchase as mistake — exclude from budget". Inventory correction must never delete spend events automatically. Both actions must be logged separately in the audit trail.
+When a user deletes or merges inventory entries associated with spending records, the system shall present separate controls for inventory correction and budget correction. Inventory adjustments shall not automatically remove spending-history records.
 
 ==== IR-EC-E: Refund and Return Flow
 
-When a user returns a purchased item, the system must provide a refund flow that decrements inventory quantity, creates a negative spend entry linked to the original where possible, and requires amount refunded, date, and an optional link to the original receipt or spend event.
+When a user returns a purchased item, the system shall provide a refund workflow supporting inventory adjustment, refund amount entry, refund date entry, and optional linkage to the original receipt or spending record.
 
 ==== IR-EC-F: Waste and Shrinkage Adjustment
 
-When a user removes expired, lost, or consumed items outside a normal purchase/return flow, the system must allow inventory adjustment without altering any spend event, require an adjustment reason, and offer an optional "Add to waste report" checkbox. Waste metrics must be reported separately from spending.
+When a user removes expired, lost, or consumed inventory outside standard purchase or return workflows, the system shall provide adjustment controls requiring an adjustment reason and optionally allowing the adjustment to appear in waste reporting views.
 
 ==== IR-EC-G: Shared Household Budget Attribution Prompt
 
-When a user adds an item in a shared inventory, the system must prompt "Who bought this?" with the current user as default. Selecting another household member must require confirmation. Cross-user inventory merges are permitted for quantity counts, but each spend event must retain its original buyer attribution.
+When a user adds inventory items within a shared household, the system shall prompt for purchaser attribution and require confirmation before assigning purchases to another household member.
 
 ==== IR-EC-H: Undo for Auto-Merge Actions
 
-Every auto-merge of inventory quantities must be reversible within 10 seconds via an undo control. Undo must revert quantity changes and record the undo in the audit log.
+When inventory quantities are automatically merged, the system shall provide an undo control allowing users to reverse the merge operation within a limited time window.
 
 ==== IR-EC-I: Audit Trail for Edge-Case Resolutions
 
-Every edge-case resolution that modifies inventory state must generate a log entry containing at minimum: timestamp, user, household, source, action type, item type reference, item instance reference, spending entry reference, reason, and a reference to the previous state. This log must be accessible to the household admin.
+When edge-case resolutions modify inventory state, the system shall generate an audit log entry containing relevant inventory, user, household, and action metadata accessible to authorized household administrators.
 
 === #Milestone 3 Additional Interface Requirements#
 
@@ -116,33 +146,51 @@ Every edge-case resolution that modifies inventory state must generate a log ent
 +
 #M3 source: M3-QA-03.#
 
-* #IR-11: Fast Manual Entry After Barcode Failure#
+
+* IR-11: Fast Manual Entry After Barcode Failure
+When barcode scanning fails or is unavailable, household members need a fast fallback workflow for manual inventory entry.
 +
-#When barcode scanning fails, scanning is unavailable, or no product match is found, the system shall transition directly to a manual-entry fallback that allows saving an item with only item name and quantity/availability required. Optional details may be added immediately or later.#
+*The system shall provide a manual-entry fallback allowing users to save inventory items with only item name and quantity or availability required. Optional information may be entered immediately or deferred until later editing.*
 +
 #Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Quantity, Availability#
 +
 #M3 source: M3-QA-04.#
 
-* #IR-12: Budget Alert Preferences#
+
+* IR-12: Barcode Scanning and Manual Entry Fallback
+When household members add inventory items using barcode scanning, they need a reliable fallback workflow if scanning fails or no matching product is found.
 +
-#The system shall provide controls for enabling or disabling budget threshold alerts. When enabled, household members shall be able to review or configure warning thresholds, with default thresholds at 80% and 100% of the active budget.#
+*The system shall provide barcode-scanning functionality using the device camera for item identification. If barcode scanning fails, is unavailable, or produces no matching product result, the interface shall immediately transition to a manual-entry workflow requiring only item name and quantity or availability to create a minimum viable inventory record. Optional information may be entered immediately or deferred until later editing.*
++
+Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Barcode, Quantity, Availability
++
+M3 source: M3-QA-04.
+
+
+* IR-13: Budget Alert Preferences
+When household members manage spending goals, they need interface controls for reviewing and adjusting budget-related notifications.
++
+*The system shall provide controls for enabling or disabling budget threshold alerts. Household members shall be able to review warning thresholds and adjust notification preferences through the interface.*
 +
 #Needs: N5 | Goals: SG1, AG2 | Domain concepts: Budget, Budget cycle, Budget threshold crossing, Spending entry#
 +
 #M3 source: M3-QA-05.#
 
-* #IR-13: Shared Alert Audience and Delivery Preferences#
+
+* IR-14: Shared Alert Audience and Delivery Preferences
+When household members receive shared alerts, they need visibility into those alerts and control over how notifications are presented.
 +
-#The system shall show shared household alert records in-app to authorized household members while allowing individual delivery preferences for push notifications or grouped summaries. Repeated alerts for unchanged conditions shall be suppressed.#
+*The system shall provide a means for authorized household members to view shared household alerts and configure delivery preferences such as push notifications or grouped summaries. The interface shall support reviewing and dismissing visible alerts.*
 +
 #Needs: N2, N4, N5 | Goals: MG2, AG1, SG3 | Domain concepts: Alert / notification record, Household, Household member, Actionable state#
 +
 #M3 source: M3-QA-06.#
 
-* #IR-14: Restock List Override Controls#
+
+* IR-15: Restock List Override Controls
+When automatically generated restock recommendations appear, household members need interface controls for managing those entries.
 +
-#The system shall allow authorized household members to remove or snooze auto-added restock list entries. The interface shall indicate when an entry was system-added and why it was added.#
+*The system shall provide controls allowing authorized household members to remove, dismiss, or snooze restock list entries. The interface shall indicate whether a restock entry was manually created or automatically generated.*
 +
 #Needs: N2, N5 | Goals: AG1, AG3, SG3 | Domain concepts: Restock list / planner, Replenishment, Low-stock judgment, Alert dismissed / deferred#
 +

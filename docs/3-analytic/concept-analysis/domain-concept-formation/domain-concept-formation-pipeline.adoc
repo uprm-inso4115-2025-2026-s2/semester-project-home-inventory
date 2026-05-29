@@ -271,7 +271,7 @@ NOTE: The rule that determines whether an Expenditure falls within a Budget Peri
 
 == Stage 3 — Narrative Rewrite
 
-See: link:unified-domain-narrative.adoc[Unified Domain Narrative]
+See the accompanying Unified Domain Narrative artifact included in the project files.
 
 The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with their corresponding Stage 2 concept names. All terminology is drawn exclusively from the project's Ubiquitous Language dictionary (`docs/2-descriptive/domain-description/terminology/terminology.adoc`).
 
@@ -279,9 +279,31 @@ The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with
 
 == Stage 4 — Inconsistency Detection
 
-See: link:inconsistency-detection.adoc[Inconsistency Detection Report]
+See the accompanying Inconsistency Detection Report artifact included in the project files.
 
 The detector scans all DDUs and existing domain documents for direct P / not-P conflicts (one unit asserts a property another negates), scope conflicts (a rule constrains what another exempts), completeness gaps (a concept referenced but never fully defined), and terminology drift (the same phenomenon under two names).
+
+AI-assisted analysis tools were used during documentation inspection and inconsistency-detection activities to help identify potential terminology conflicts, traceability gaps, duplicate requirements, and cross-section inconsistencies requiring further review.
+
+All AI-generated observations were reviewed and validated by team members before acceptance. Final responsibility for all documentation changes, conflict-resolution decisions, and project artifacts remained with the project team.
+
+See <<ai-disclosure,Generative AI Disclosure>> for the project's complete AI usage and verification statement.
+
+=== Conflict Enforcement Policy
+
+To preserve consistency across requirements, architecture, implementation, testing, and traceability artifacts, all future additions to the project documentation and codebase must comply with the project's established consistency criteria before approval or integration.
+
+The team applies the following enforcement rules:
+
+* Terminology used in requirements, domain models, test cases, and implementation documentation must remain consistent with the approved project glossary and domain definitions.
+* New requirements must maintain traceability to stakeholder needs, goals, validation activities, and verification artifacts.
+* Interface Requirements (IRs) shall describe user-facing behavior only and must not contain backend implementation or domain-processing logic.
+* Machine Requirements (MRs) shall remain measurable and include explicit quantitative targets whenever performance, timing, storage, or scalability constraints are specified.
+* Domain-model changes must preserve established abstractions, including the distinction between uniquely tracked item instances and cumulative inventory quantities.
+* New test cases, traceability references, and requirement identifiers must remain synchronized with repository artifacts and implementation evidence.
+* Any detected conflict, contradiction, duplicate requirement, or unresolved traceability gap must be resolved before the associated change is approved or merged.
+
+The following of these rules is verified through documentation inspections, peer review, pull-request review, traceability verification, and milestone integration reviews. Changes that don't follow the project's consistency criteria shall not be considered complete until the conflict has been documented and resolved.
 
 === Milestone 3 Acquisition Feedback Integrated into Concept Formation
 
@@ -309,7 +331,7 @@ The Milestone 3 acquisition round added implementation-driven evidence, refining
 | M3-QA-04
 | Barcode fallback behavior needed a clearer low-friction minimum.
 | Fast fallback capture
-| DR-21, IR-11, MR-08
+| DR-21, IR-11, IR-12
 
 | M3-QA-05
 | Budget alerts were in scope conceptually but lacked user preference rules.

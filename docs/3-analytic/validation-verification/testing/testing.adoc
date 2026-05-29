@@ -8,6 +8,105 @@ Testing is the main verification mechanism for this project. For Milestone 1, th
 * *Automated tests:* unit, integration, and verification tests run on pull requests and before merge; at minimum, affected tests must pass before merging.
 * #*Manual checks:* short repeatable smoke checks run after merges for stakeholder-visible behaviors (item updates, alerts, shared inventory consistency). Reviewer-grade manual procedures for requirements without automated coverage are in "Manual Test Procedure".#
 
+=== Test Case Repository Synchronization
+
+The documented test case identifiers were reviewed against the repository test suites to verify that verification labels used throughout the documentation correspond to implemented automated tests, integration tests, or documented manual verification activities.
+
+[cols="1,2,3,1", options="header"]
+|===
+| Test Case ID
+| Verification Scope
+| Repository Artifact
+| Status
+
+| TC-INV-01
+| Add inventory item
+| `test/features/core_inventory/domain/usecases/add_inventory_item_test.dart`
+| Linked
+
+| TC-INV-02
+| Retrieve inventory items
+| `test/features/core_inventory/domain/usecases/get_inventory_items_test.dart`
+| Linked
+
+| TC-INV-03
+| Core inventory integration workflow
+| `test/features/core_inventory/integration/core_inventory_integration_test.dart`
+| Linked
+
+| TC-INV-04
+| Inventory state-management behavior
+| `test/features/core_inventory/presentation/cubits/inventory_cubit_test.dart`
+| Partial
+
+| TC-INV-05
+| Ownership visibility and personal/shared item behavior
+| No direct automated repository artifact identified
+| Manual / Gap
+
+| TC-INV-06
+| Authenticated inventory access and user-scoped behavior
+| `test/features/core_inventory/auth/auth_flow_test.dart`
+| Partial
+
+| TC-INV-07
+| Inventory persistence and synchronization behavior
+| `test/features/core_inventory/supabase/supabase_integration_test.dart`
+| Partial
+
+| TC-INV-08
+| Barcode scanning and manual-entry fallback
+| No direct automated repository artifact identified
+| Manual / Gap
+
+| TC-ALT-01
+| Low-stock threshold evaluation
+| `test/features/alerts_restock/domain/usecases/check_stock_test.dart`
+| Linked
+
+| TC-ALT-02
+| Expiration-status evaluation
+| `test/features/alerts_restock/domain/usecases/check_expiration_test.dart`
+| Linked
+
+| TC-ALT-03
+| Alert deduplication behavior
+| No direct automated repository artifact identified
+| Manual / Gap
+
+| TC-AUTO-01
+| Automated low-stock checks
+| `test/features/alerts_restock/domain/usecases/automated_check_stock_test.dart`
+| Linked
+
+| TC-AUTO-02
+| Automated expiration checks
+| `test/features/alerts_restock/domain/automated_check_expiration_test.dart`
+| Linked
+
+| TC-GL-01
+| Automated grocery-list generation
+| `test/features/grocery_list/automated_grocery_list_engine_test.dart`
+| Linked
+
+| TC-SB-01
+| Sharing & Budget domain entities
+| `test/features/sharing_budget/sharing_budget_entities_test.dart`
+| Linked
+
+| TC-SB-02
+| Sharing & Budget data-model behavior
+| `test/features/sharing_budget/sharing_budget_models_test.dart`
+| Linked
+
+| TC-RPT-01
+| Dashboard and reporting summaries
+| No direct automated repository artifact identified
+| Manual / Gap
+|===
+
+Repository synchronization identified that several documented test case identifiers correspond directly to implemented automated test suites, while others currently rely on integration testing, manual verification procedures, or higher-level feature validation. Entries marked as *Linked* have direct repository evidence. Entries marked as *Partial* provide related automated coverage but do not fully verify the documented behavior on their own. Entries marked as *Manual / Gap* should be supported by manual test procedures or future automated test suites if full repository traceability is required.
+
 ==== Supabase integration tests (guidance)
 
 * Run integration tests only against a dedicated test project or schema; never run destructive tests against production.

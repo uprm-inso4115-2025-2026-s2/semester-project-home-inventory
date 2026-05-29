@@ -1,3 +1,4 @@
+[[appendix-inconsistency-detection-report]]
 = Inconsistency Detection Report
 :toc:
 :toc-title: Table of Contents

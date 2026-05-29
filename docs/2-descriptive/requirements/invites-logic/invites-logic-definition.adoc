@@ -2,17 +2,7 @@
 
 === Core Concepts
 
-==== Invitation
-
-An *invitation* is a temporary request made by an Owner or authorized Member, that allows a user to join a household or shared inventory group.
-
-Each invitation contains:
-
-- Sender
-- Recipient
-- Target household or group
-- Status
-- Expiration timestamp
+The terms *Invitation*, *Owner*, *Member*, *Household*, *Membership*, and *Permission rule* are defined in <<_terminology>>. The attribute schema for an *Invitation* (sender, recipient, target household, status, expiration timestamp) is documented in the entities section. This document does not redefine those terms; it specifies invitation-permission policy, lifecycle behavior, and validation rules built on them.
 
 ==== Invitation Permissions
 
@@ -28,32 +18,29 @@ Users with the appropriate permissions can include:
 
 By default, invite permissions can only be made by Owners, unless Member permissions are expanded.
 
-=== Invitation Lifecycle States
+=== Invitation Lifecycle Behavior
 
-==== Sent
-- Invitation has been created and delivered.
-- Awaiting recipient response.
-- Editable or revocable by sender.
+The canonical invitation lifecycle states — *pending*, *accepted*, *declined*, *expired*, *revoked* — are defined under *Invitation* in <<_terminology>>. The subsections below describe only the operational behavior of the system in each state.
 
-==== Accepted
-- Recipient has joined the household.
-- Invitation is marked as accepted and becomes inactive.
-- Permissions are assigned based on role configuraton.
+==== pending
+- Invitation has been created and delivered; awaiting recipient response.
+- Editable or revocable by the sender.
 
-==== Declined
-- Recipient declines the invitation.
-- Invitation is marked as declined and becomes inactive.
-- Sender may resend a new invitation.
+==== accepted
+- Recipient has joined the household; the invitation becomes inactive.
+- Permissions are assigned based on the role configured at acceptance.
 
-==== Expired
-- Invitation exceeded its time limit.
-- Cannot be accepted and is marked as inactive.
-- Requires a new invitation to be sent.
+==== declined
+- Invitation becomes inactive.
+- Sender may issue a new invitation.
 
-==== Revoked
+==== expired
+- Cannot be accepted; the invitation is automatically marked inactive.
+- A new invitation must be sent to re-invite the recipient.
+
+==== revoked
 - Sender or Owner cancels the invitation before acceptance.
-- Recipient loses the ability to join using that instance of the invitation.
-- Marked as revoked and becomes inactive.
+- The recipient can no longer join using that invitation; it becomes inactive.
 
 === Validation Rules
 

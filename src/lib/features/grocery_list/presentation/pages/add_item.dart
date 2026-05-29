@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/config/injection_dependencies.dart';
 import 'package:src/core/presentation/widgets/button.dart';
+import 'package:src/core/presentation/widgets/snack_bar.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 import 'package:src/core/presentation/widgets/text_field.dart';
 import 'package:src/core/presentation/widgets/top.dart';
 import 'package:src/core/presentation/widgets/upload_image.dart';
+import 'package:src/features/grocery_list/presentation/cubits/grocery_list_cubit.dart';
+import 'package:src/features/grocery_list/presentation/widgets/category_grid_tile.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({super.key, this.isCustom = false});
@@ -23,7 +27,41 @@ class _AddItemState extends State<AddItem> {
   File? itemImage;
 
   @override
+  void dispose() {
+    name.dispose();
+    super.dispose();
+  }
+
+  void _onSubmit(BuildContext context) {
+    if (widget.isCustom) {
+      context.pop();
+      return;
+    }
+
+    final added = sl<GroceryListCubit>().addCustomCollectionItem(
+      name.text,
+      imagePath: itemImage?.path,
+    );
+
+    if (!added) {
+      MySnackBar().showFailure(
+        context: context,
+        message: 'Enter a unique item name to add to Custom.',
+      );
+      return;
+    }
+
+    MySnackBar().showSuccess(
+      context: context,
+      message: 'Saved to $customCollectionName collection.',
+    );
+    context.pop();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final previewName = name.text.trim().isEmpty ? 'Item' : name.text.trim();
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: ListView(
@@ -36,7 +74,7 @@ class _AddItemState extends State<AddItem> {
             iconColor: primary,
           ),
           SizedBox(height: 2.h),
-          itemTile(),
+          itemPreview(previewName),
           SizedBox(height: 2.h),
           BuildTextField(
             label: 'Name',
@@ -46,6 +84,7 @@ class _AddItemState extends State<AddItem> {
             required: true,
             padding: false,
             isDarkMode: true,
+            onChange: (_) => setState(() {}),
           ),
           SizedBox(height: 2.h),
           UploadImage(
@@ -60,40 +99,48 @@ class _AddItemState extends State<AddItem> {
       ),
       bottomNavigationBar: Button(
         buttonText: widget.isCustom ? "Edit Item" : "Add Item",
+        onPressed: () => _onSubmit(context),
       ),
     );
   }
 
-  Widget itemTile() {
+  Widget itemPreview(String title) {
+    if (itemImage != null) {
+      return Align(
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.file(
+                itemImage!,
+                width: 45.w,
+                height: 20.h,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 1.h),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: primary,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      );
+    }
+
     return Align(
       alignment: Alignment.center,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+      child: IgnorePointer(
         child: SizedBox(
           width: 45.w,
-          height: 20.h,
-          child: Container(
-            decoration: BoxDecoration(
-              color: primary,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(height: 1.h),
-                Container(color: Colors.red, width: 20.w, height: 10.h),
-                Text(
-                  "Item",
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: backgroundColor,
-                  ),
-                ),
-                SizedBox(height: 1.h),
-              ],
-            ),
-          ),
+          child: CategoryGridTile(name: title, onTap: () {}),
         ),
       ),
     );

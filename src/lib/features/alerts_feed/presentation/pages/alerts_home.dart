@@ -18,7 +18,8 @@ class AlertsHome extends StatelessWidget {
           children: [
             Top(
               color: Colors.black,
-              leftButton: () => Navigator.pop(context),
+              leftButton: () {},
+              leftButtonText: " ",
               title: "Alerts",
               textStyle: Theme.of(context).textTheme.displayLarge,
               iconColor: AppTheme.primaryColor,

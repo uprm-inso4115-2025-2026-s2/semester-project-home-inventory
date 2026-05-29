@@ -13,38 +13,7 @@ The purpose of this document is to define and describe:
 
 == Core Concepts
 
-=== Household
-
-A *household* represents a grouping of users that share or manage one or more inventories. A household may consist of a single user or multiple members. Each household must have:
-
-- Owner (creator)
-
-can have:
-
-- Members list with roles (Owner, Member, Guest)
-- Shared inventory visibility
-
-=== Inventory
-
-An *inventory* is a collection of stock entries associated with a household or an individual user. The term inventory will be all encompassing for both shared and personal inventories, with the distinction being ownership and visibility.
-
-=== Roles
-
-Roles determine what actions a user can perform:
-
-* Owner
-** Invite or remove members
-** Change permissions
-** Delete household
-
-* Member
-** Add / edit / delete items
-** View shared inventory
-
-* Guest (optional)
-** View only
-
-*Note*: Owners possess Member permissions in addition to Owner-specific ones.
+The terms used in this document — *Household*, *Inventory*, *Owner*, *Member*, *Viewer* (Guest), *Shared inventory*, *Invitation*, *Membership* — are defined in <<_terminology>>. This document does not redefine them; it specifies how they interact in the context of shared inventory and how the system shall behave when household members use them. If you encounter an unfamiliar term while reading this section, consult <<_terminology>>.
 
 == Ownership Models
 
@@ -105,7 +74,7 @@ When a user creates a household:
 == Visibility Rules
 
 - All members can view shared inventory unless restricted by role.
-- Guests (if enabled) have read-only access.
+- Viewers (if enabled) have read-only access.
 - Personal inventories remain private unless explicitly shared.
 
 == Technical Implementation Overview
