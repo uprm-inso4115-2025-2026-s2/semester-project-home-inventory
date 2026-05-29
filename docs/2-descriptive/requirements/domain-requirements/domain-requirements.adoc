@@ -59,68 +59,66 @@ _Domain property behind this requirement:_ In the domain, low-stock is a judgmen
 * DR-12..DR-14 support low-stock/expiry awareness with notification quality.
 * DR-15..DR-17 support duplicate prevention and data integrity.
 
-=== #Added and Refined Domain Requirements#
+=== Added and Refined Domain Requirements
 
-#The following domain requirements were added or revised after the Milestone 3 second-round requirements acquisition documented in <<second-round-requirements-acquisition,Second-Round Requirements Acquisition>>.#
+The following domain requirements were added or revised after the Milestone 3 second-round requirements acquisition documented in <<second-round-requirements-acquisition,Second-Round Requirements Acquisition>>.
 
-* #DR-18 (Personal item default privacy): Personal item records shall be visible only to the owning household member by default, unless the owner explicitly shares the item with the household.#
-** #M3 source: M3-QA-01.#
+* DR-18 (Personal item default privacy): Personal item records shall be visible only to the owning household member by default, unless the owner explicitly shares the item with the household.
+** M3 source: M3-QA-01.
 
-* #DR-19 (Role-scoped household permissions): Household access shall distinguish at minimum between viewer, member, and admin capabilities. Viewers may inspect shared household information; members may update shared inventory records; admins may invite, remove, and manage household members and roles.#
-** #M3 source: M3-QA-02.#
+* DR-19 (Role-scoped household permissions): Household access shall distinguish at minimum between viewer, member, and admin capabilities. Viewers may inspect shared household information; members may update shared inventory records; admins may invite, remove, and manage household members and roles.
+** M3 source: M3-QA-02.
 
-* #DR-20 (Essential inventory lookup filters): The system shall support filtering or searching inventory by item name, location, category, ownership/scope, stock status, and expiration status.#
-** #M3 source: M3-QA-03.#
+* DR-20 (Essential inventory lookup filters): The system shall support filtering or searching inventory by item name, location, category, ownership/scope, stock status, and expiration status.
+** M3 source: M3-QA-03.
 
-* #DR-21 (Minimal barcode fallback capture): If barcode scanning fails or no product match is found, the system shall allow a household member to create a minimum viable item record using item name and quantity/availability, with location, category, ownership, cost, and expiration date editable later.#
-** #M3 source: M3-QA-04.#
+* DR-21 (Minimal barcode fallback capture): If barcode scanning fails or no product match is found, the system shall allow a household member to create a minimum viable item record using item name and quantity/availability, with location, category, ownership, cost, and expiration date editable later.
+** M3 source: M3-QA-04.
 
-* #DR-22 (Opt-in budget threshold alerts): Budget threshold alerts shall be optional and shall support configurable warning levels, including default warning levels at 80% and 100% of the active budget when budget tracking is enabled.#
-** #M3 source: M3-QA-05.#
+* DR-22 (Opt-in budget threshold alerts): Budget threshold alerts shall be optional and shall support configurable warning levels, including default warning levels at 80% and 100% of the active budget when budget tracking is enabled.
+** M3 source: M3-QA-05.
 
-* #DR-23 (Shared alert audience control): Shared household alerts shall be represented as household-level alert records. Delivery to individual members shall respect notification preferences and shall avoid repeated notifications for unchanged conditions.#
-** #M3 source: M3-QA-06.#
+* DR-23 (Shared alert audience control): Shared household alerts shall be represented as household-level alert records. Delivery to individual members shall respect notification preferences and shall avoid repeated notifications for unchanged conditions. Deduplication shall be evaluated at the household alert-record level before individual delivery preferences are applied, so the system does not create multiple alert records for the same unchanged household-item-condition combination.
 
-* #DR-24 (Restock auto-add override): Auto-added restock list entries shall be removable or snoozable by an authorized household member. The system shall not immediately re-add a removed or snoozed entry unless a new qualifying state transition occurs or the snooze period expires.#
-** #M3 source: M3-QA-07.#
+* DR-24 (Restock auto-add override): Auto-added restock list entries shall be removable or snoozable by an authorized household member. The system shall not immediately re-add a removed or snoozed entry unless a new qualifying state transition occurs, the original condition is resolved and later reoccurs, or the snooze period expires. Repeated scheduled checks alone shall not recreate the entry.
 
-* #DR-25 (Pending offline inventory changes): The system shall support pending offline item creation and quantity updates. Pending changes shall be clearly marked until synchronized, and conflicts shall be surfaced to the household member instead of silently overwriting remote updates.#
-** #M3 source: M3-QA-08.#
+* DR-25 (Pending offline inventory changes): The system shall support pending offline item creation and quantity updates. Pending changes shall be clearly marked until synchronized, and conflicts shall be surfaced to the household member instead of silently overwriting remote updates.
+** M3 source: M3-QA-08.
 
-=== #Traceability Matrix#
+=== Traceability Matrix
 
-#NOTE: This matrix is the Domain Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholder, validation, verification, and implementation traceability for DR-* requirements. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.#
+This matrix is the Domain Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholders, validation, verification, implementation, ownership, feature alignment, and requirement coverage traceability for DR-* requirements. Requirements marked as gap flagged include documented rationale and planned validation coverage where applicable. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
 
 [cols="1,2,1,2,2,1,2,1,2,1", options="header"]
 |===
-| #Requirement ID# | #Source Stakeholder# | #Validation Scenario# | #Verification Artifact# | #Implementation Locus# | #Traceability Status# | #Gap Reason#
+| Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason | Priority | Owner | Linked Feature
 
-| #DR-1#  | #System / Dev Team# | #S1# | #TC-INV-03#  | #Inventory module# | #Complete# |
-| #DR-2#  | #System / Dev Team# | #S1# | #TC-INV-01#  | #Inventory module# | #Complete# |
-| #DR-3#  | #System / Dev Team# | #S2# | #TC-SB-03#   | #Database layer, Spending module# | #Complete# |
-| #DR-4#  | #Household Manager# | #S2# | #TC-HH-01#   | #Household management# | #Complete# |
-| #DR-4A# | #Household Manager# | #S2# | #TC-HH-02#   | #Household management# | #Complete# |
-| #DR-4B# | #Household Manager# | #S2# | #TC-HH-03#   | #Household management# | #Complete# |
-| #DR-4C# | #Household Manager# | #S2# | #TC-AUTH-01# | #Authentication & Authorization# | #Complete# |
-| #DR-5#  | #End User# | #S2# | #TC-HH-05#   | #Household management# | #Complete# |
-| #DR-6#  | #System / Dev Team# | #S2# | #TC-SB-03#  | #Database layer, Spending module# | #Complete# |
-| #DR-7#  | #System / Dev Team# | #S1# | #TC-INV-04# | #Inventory module# | #Complete# |
-| #DR-8#  | #System / Dev Team# | #S1# | #TC-INV-03# | #Inventory module# | #Complete# |
-| #DR-9#  | #System / Dev Team# | #S2# | #TC-AUD-01# | #Audit process# | #Complete# |
-| #DR-10# | #Household Manager# | #S2# | #TC-RPT-01# | #Dashboard / Reporting# | #Complete# |
-| #DR-11# | #Household Manager# | #S2# | #TC-SB-02#  | #Spending module# | #Complete# |
-| #DR-12# | #End User# | #S1# | #TC-ALT-01# | #Alerts & Notification System# | #Complete# |
-| #DR-13# | #End User# | #S1# | #TC-ALT-02# | #Alerts & Notification System# | #Complete# |
-| #DR-14# | #System / Dev Team# | #S1# | #TC-ALT-03# | #Alerts & Notification System# | #Complete# |
-| #DR-15# | #System / Dev Team# | #S1# | #TC-INV-03# | #Inventory module# | #Complete# |
-| #DR-16# | #System / Dev Team# | #S2# | #TC-SB-01#  | #Database layer# | #Complete# |
-| #DR-17# | #System / Dev Team# | #S1# | #TC-INV-03# | #Inventory module# | #Complete# |
-| #DR-18# | #End User# | #S2# | #TC-AUTH-02# | #Authentication & Authorization# | #Complete# |
-| #DR-19# | #Household Manager# | #S2# | #TC-AUTH-03# | #Authentication & Authorization# | #Complete# |
-| #DR-20# | #End User# | #S1# | #TC-INV-06# | #Dashboard / Reporting# | #Complete# |
-| #DR-21# | #End User# | #S1# | #TC-INV-07# | #Inventory module# | #Complete# |
-| #DR-22# | #Household Manager# | #S2# | #TC-SB-04#  | #Spending module# | #Complete# |
-| #DR-23# | #System / Dev Team# | #S2# | #TC-ALT-04# | #Alerts & Notification System# | #Complete# |
-| #DR-24# | #End User# | #S2# | #TC-ALT-05# | #Alerts & Notification System# | #Complete# |
-| #DR-25# | #System / Dev Team# | #S2# | #TC-SYNC-01# | #Synchronization system# | #Gap flagged# | #Synchronization failure recovery tests pending implementation#
+| DR-1  | System / Dev Team | S1 | TC-INV-03  | Inventory module | Complete | | High | Core Inventory Team | F-INV
+| DR-2  | System / Dev Team | S1 | TC-INV-01  | Inventory module | Complete | | High | Core Inventory Team | F-INV
+| DR-3  | System / Dev Team | S2 | TC-SB-03   | Database layer, Spending module | Complete | | High | Sharing & Budget Team | F-SPEND
+| DR-4  | Household Manager | S2 | TC-HH-01   | Household management | Complete | | High | Sharing & Budget Team | F-INV
+| DR-4A | Household Manager | S2 | TC-HH-02   | Household management | Complete | | Medium | Sharing & Budget Team | F-INV
+| DR-4B | Household Manager | S2 | TC-HH-03   | Household management | Complete | | Medium | Sharing & Budget Team | F-INV
+| DR-4C | Household Manager | S2 | TC-AUTH-01 | Authentication & Authorization | Complete | | High | Sharing & Budget Team | F-INV
+| DR-5  | End User | S2 | TC-HH-05 | Household management | Complete | | Medium | Sharing & Budget Team | F-INV
+| DR-6  | System / Dev Team | S2 | TC-SB-03  | Database layer, Spending module | Complete | | High | Sharing & Budget Team | F-SPEND
+| DR-7  | System / Dev Team | S1 | TC-INV-04 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV
+| DR-8  | System / Dev Team | S1 | TC-INV-03 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV
+| DR-9  | System / Dev Team | S2 | TC-AUD-01 | Audit process | Complete | | Medium | Documentation / Backend Team | F-INV
+| DR-10 | Household Manager | S2 | TC-RPT-01 | Dashboard / Reporting | Complete | | Medium | Reports & Insights Team | F-SPEND
+| DR-11 | Household Manager | S2 | TC-SB-02  | Spending module | Complete | | Medium | Sharing & Budget Team | F-SPEND
+| DR-12 | End User | S1 | TC-ALT-01 | Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT
+| DR-13 | End User | S1 | TC-ALT-02 | Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT
+| DR-14 | System / Dev Team | S1 | TC-ALT-03 | Alerts & Notification System | Complete | | High | Alerts & Restock Team | F-ALERT
+| DR-15 | System / Dev Team | S1 | TC-INV-03 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV
+| DR-16 | System / Dev Team | S2 | TC-SB-01  | Database layer | Complete | | High | Sharing & Budget Team | F-SPEND
+| DR-17 | System / Dev Team | S1 | TC-INV-03 | Inventory module | Complete | | High | Core Inventory Team | F-INV
+| DR-18 | End User | S2 | TC-AUTH-02 | Authentication & Authorization | Complete | | High | Sharing & Budget Team | F-INV
+| DR-19 | Household Manager | S2 | TC-AUTH-03 | Authentication & Authorization | Complete | | High | Sharing & Budget Team | F-INV
+| DR-20 | End User | S1 | TC-INV-06 | Dashboard / Reporting | Complete | | Medium | Reports & Insights Team | F-SPEND
+| DR-21 | End User | S1 | TC-INV-07 | Inventory module | Complete | | Medium | Core Inventory Team | F-INV
+| DR-22 | Household Manager | S2 | TC-SB-04  | Spending module | Complete | | Medium | Sharing & Budget Team | F-SPEND
+| DR-23 | System / Dev Team | S2 | TC-ALT-04 | Alerts & Notification System | Complete | | Medium | Alerts & Restock Team | F-AUTOCHECK
+| DR-24 | End User | S2 | TC-ALT-05 | Alerts & Notification System | Complete | | Medium | Alerts & Restock Team | F-GL-AUTO
+| DR-25 | System / Dev Team | S2 | TC-SYNC-01 | Synchronization system | Gap flagged | Synchronization failure recovery tests pending implementation | High | Core Inventory Team | F-AUTOCHECK
 |===

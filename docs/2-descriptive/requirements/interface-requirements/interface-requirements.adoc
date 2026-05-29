@@ -128,23 +128,26 @@ When inventory quantities are automatically merged, the system shall provide an 
 
 When edge-case resolutions modify inventory state, the system shall generate an audit log entry containing relevant inventory, user, household, and action metadata accessible to authorized household administrators.
 
-=== #Milestone 3 Additional Interface Requirements#
+=== Milestone 3 Additional Interface Requirements
 
-* #IR-09: Role-Based Visibility and Permission Controls#
-+
-#The system shall provide interface behavior that reflects household role and ownership rules. Personal items shall be hidden from non-owners by default, shared items shall be visible to household members according to their role, and admin-only actions such as removing members or changing roles shall be visually separated from ordinary inventory actions.#
-+
-#Needs: N4, N5 | Goals: SG3, JG3, AG2 | Domain concepts: Household member, Membership, Ownership, Item instance#
-+
-#M3 source: M3-QA-01, M3-QA-02.#
+* IR-09: Role-Based Visibility and Permission Controls
+When household members interact with shared inventory, they need interface behavior that reflects ownership visibility and household permissions.
 
-* #IR-10: Filtered Inventory Lookup#
+*The system shall provide interface behavior reflecting household role and ownership rules. Personal items shall be hidden from non-owners by default, while shared items and administrative controls shall be visually separated according to household permissions.*
 +
-#The system shall provide inventory lookup controls for item name, location, category, ownership/scope, stock status, and expiration status. These controls shall support quick use while shopping or planning restock actions.#
+Needs: N4, N5 | Goals: SG3, JG3, AG2 | Domain concepts: Household member, Membership, Ownership, Item instance
 +
-#Needs: N1, N3, N4 | Goals: MG1, SG3, AG3 | Domain concepts: Item type, Location, Availability, Ownership#
+M3 source: M3-QA-01, M3-QA-02.
+
+
+* IR-10: Filtered Inventory Lookup
+When household members search for inventory information, they need filtering and lookup controls supporting rapid inventory access.
+
+*The system shall provide inventory lookup controls for item name, category, location, ownership scope, stock status, and expiration status.*
 +
-#M3 source: M3-QA-03.#
+Needs: N1, N3, N4 | Goals: MG1, SG3, AG3 | Domain concepts: Item type, Location, Availability, Ownership
++
+M3 source: M3-QA-03.
 
 
 * IR-11: Fast Manual Entry After Barcode Failure
@@ -152,9 +155,9 @@ When barcode scanning fails or is unavailable, household members need a fast fal
 +
 *The system shall provide a manual-entry fallback allowing users to save inventory items with only item name and quantity or availability required. Optional information may be entered immediately or deferred until later editing.*
 +
-#Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Quantity, Availability#
+Needs: N1, N2 | Goals: MG1, JG1, AG3 | Domain concepts: Item type, Item instance, Quantity, Availability
 +
-#M3 source: M3-QA-04.#
+M3 source: M3-QA-04.
 
 
 * IR-12: Barcode Scanning and Manual Entry Fallback
@@ -172,9 +175,9 @@ When household members manage spending goals, they need interface controls for r
 +
 *The system shall provide controls for enabling or disabling budget threshold alerts. Household members shall be able to review warning thresholds and adjust notification preferences through the interface.*
 +
-#Needs: N5 | Goals: SG1, AG2 | Domain concepts: Budget, Budget cycle, Budget threshold crossing, Spending entry#
+Needs: N5 | Goals: SG1, AG2 | Domain concepts: Budget, Budget cycle, Budget threshold crossing, Spending entry
 +
-#M3 source: M3-QA-05.#
+M3 source: M3-QA-05.
 
 
 * IR-14: Shared Alert Audience and Delivery Preferences
@@ -182,9 +185,9 @@ When household members receive shared alerts, they need visibility into those al
 +
 *The system shall provide a means for authorized household members to view shared household alerts and configure delivery preferences such as push notifications or grouped summaries. The interface shall support reviewing and dismissing visible alerts.*
 +
-#Needs: N2, N4, N5 | Goals: MG2, AG1, SG3 | Domain concepts: Alert / notification record, Household, Household member, Actionable state#
+Needs: N2, N4, N5 | Goals: MG2, AG1, SG3 | Domain concepts: Alert / notification record, Household, Household member, Actionable state
 +
-#M3 source: M3-QA-06.#
+M3 source: M3-QA-06.
 
 
 * IR-15: Restock List Override Controls
@@ -192,32 +195,33 @@ When automatically generated restock recommendations appear, household members n
 +
 *The system shall provide controls allowing authorized household members to remove, dismiss, or snooze restock list entries. The interface shall indicate whether a restock entry was manually created or automatically generated.*
 +
-#Needs: N2, N5 | Goals: AG1, AG3, SG3 | Domain concepts: Restock list / planner, Replenishment, Low-stock judgment, Alert dismissed / deferred#
+Needs: N2, N5 | Goals: AG1, AG3, SG3 | Domain concepts: Restock list / planner, Replenishment, Low-stock judgment, Alert dismissed / deferred
 +
-#M3 source: M3-QA-07.#
+M3 source: M3-QA-07.
 
-=== #Traceability Matrix#
+=== Traceability Matrix
 
-#NOTE: This matrix is the Interface Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholder, validation, verification, and implementation traceability for IR-* requirements. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.#
+This matrix is the Interface Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholders, validation, verification, implementation, ownership, feature alignment, and requirement coverage traceability for IR-* requirements. Requirements marked as gap flagged include documented rationale and planned validation coverage where applicable. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
 
 [cols="1,2,1,2,2,1,2,1,2,1", options="header"]
 |===
-| #Requirement ID# | #Source Stakeholder# | #Validation Scenario# | #Verification Artifact# | #Implementation Locus# | #Traceability Status# | #Gap Reason#
+| Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
 
-| #IR-01# | #Household Manager, End User# | #S1# | #TC-INV-01# | #Inventory module# | #Complete# |
-| #IR-02# | #End User# | #S1# | #TC-INV-02# | #Inventory module# | #Complete# |
-| #IR-03# | #End User# | #S2# | #TC-INV-03# | #Inventory module, Household management# | #Complete# |
-| #IR-04# | #Household Manager, End User# | #S1# | #TC-ALT-01, TC-ALT-04# | #Alerts & Notification System# | #Complete# |
-| #IR-05# | #End User# | #S1# | #TC-ALT-02, TC-ALT-05# | #Inventory module, Alerts & Notification System# | #Complete# |
-| #IR-06# | #Household Manager, End User# | #S2# | #TC-SB-01# | #Spending module, Database layer# | #Complete# |
-| #IR-07# | #Household Manager, End User# | #S2# | #TC-SB-02# | #Spending module# | #Complete# |
-| #IR-08# | #End User# | #S1# | #TC-RPT-01# | #Dashboard / Reporting# | #Complete# |
-| #IR-09# | #End User, System / Dev Team# | #S2# | #TC-INV-06, TC-AUTO-01# | #Household management, Inventory module# | #Complete# |
-| #IR-10# | #End User# | #S1# | #TC-INV-07# | #Inventory module# | #Complete# |
-| #IR-11# | #End User# | #S1# | #TC-INV-08# | #Inventory module# | #Complete# |
-| #IR-12# | #End User# | #S2# | #TC-SB-03, TC-ALT-03# | #Spending module, Alerts & Notification System# | #Gap flagged# | #Spending-alert integration workflow not fully validated#
-| #IR-13# | #End User# | #S2# | #TC-ALT-04# | #Alerts & Notification System# | #Gap flagged# | #Alert deduplication edge-case testing incomplete#
-| #IR-14# | #Household Manager, End User# | #S1# | #TC-INV-09, TC-ALT-05# | #Inventory module, Alerts & Notification System# | #Gap flagged# | #Cross-module inventory/alert integration tests pending implementation#
+| IR-01 | Household Manager, End User | S1 | TC-INV-01 | Inventory module | Complete |
+| IR-02 | End User | S1 | TC-INV-02 | Inventory module | Complete |
+| IR-03 | End User | S2 | TC-INV-03 | Inventory module, Household management | Complete |
+| IR-04 | Household Manager, End User | S1 | TC-ALT-01, TC-ALT-04 | Alerts & Notification System | Complete |
+| IR-05 | End User | S1 | TC-ALT-02, TC-ALT-05 | Inventory module, Alerts & Notification System | Complete |
+| IR-06 | Household Manager, End User | S2 | TC-SB-01 | Spending module, Database layer | Complete |
+| IR-07 | Household Manager, End User | S2 | TC-SB-02 | Spending module | Complete |
+| IR-08 | End User | S1 | TC-RPT-01 | Dashboard / Reporting | Complete |
+| IR-09 | End User, System / Dev Team | S2 | TC-INV-06, TC-AUTO-01 | Household management, Inventory module | Complete |
+| IR-10 | End User | S1 | TC-INV-07 | Inventory module | Complete |
+| IR-11 | End User | S1 | TC-INV-08 | Inventory module | Complete |
+| IR-12 | End User | S1 | TC-INV-08 | Inventory module | Complete |
+| IR-13 | End User | S2 | TC-SB-03, TC-ALT-03 | Spending module, Alerts & Notification System | Gap flagged | Spending-alert integration workflow not fully validated
+| IR-14 | End User | S2 | TC-ALT-04 | Alerts & Notification System | Gap flagged | Alert deduplication edge-case testing incomplete
+| IR-15 | Household Manager, End User | S1 | TC-INV-09, TC-ALT-05 | Inventory module, Alerts & Notification System | Gap flagged | Cross-module inventory/alert integration tests pending implementation
 |===
 
-#Edge-case interface requirements IR-EC-A through IR-EC-I are intentionally deferred from this matrix because they remain appendix-scoped edge-case requirements and have not yet been promoted into stable IR-N identifiers. Their future inclusion follows the deferred traceability guidance documented in docs/4-specific-topics/traceability/traceability.adoc.#
+Edge-case interface requirements IR-EC-A through IR-EC-I are intentionally deferred from this matrix because they remain appendix-scoped edge-case requirements and have not yet been promoted into stable IR-N identifiers. Their future inclusion follows the deferred traceability guidance documented in docs/4-specific-topics/traceability/traceability.adoc.

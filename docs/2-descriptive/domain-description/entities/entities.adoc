@@ -1,75 +1,63 @@
 == Entities
 
-Key domain entities and artifacts, following the canonical vocabulary in <<_terminology>>.
+[NOTE]
+====
+Entity definitions live in <<_terminology>>, which is the single source of truth for domain vocabulary. This section adds only the structural information that the terminology table does not carry: the *attribute schema* associated with each entity. If a term appears below that is not in the terminology table, it must be added there rather than defined locally.
 
-[cols="2,4,4",options="header"]
+The entities catalogued here are exercised by scenario traces in <<_terminology_walkthroughs>>; see that section for the gaps each entity surfaced when used in a real domain scenario.
+====
+
+=== Entity attribute schemas
+
+The following table lists the key attributes associated with each domain entity. For the meaning of each entity, see the corresponding row in <<_terminology>>.
+
+[cols="2,4",options="header"]
 |===
-|Entity
-|Description
+|Entity (defined in <<_terminology>>)
 |Key attributes
 
 |Household
-|A living unit where household essentials and spending are managed.
 |name (optional label), members, locations, inventory (reality), optional budgets
 
 |Household member
-|A person belonging to a household who consumes, replenishes, or coordinates around items.
 |name/identifier (domain-level), household reference, informal role
 
 |Location
-|A storage place within a household where items are kept.
 |name/label, optional purpose
 
 |Item type
-|A definition of an item independent of a specific package or purchase.
 |name, optional category, optional brand/size/variant, optional barcode
 
 |Item instance (package)
-|A concrete package or unit of an item type that exists in the household.
-|item type reference, location reference, #ownership status# (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
+|item type reference, location reference, ownership status (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
 
 |Inventory (reality)
-|The set of item instances that physically exist in the household at a given time.
 |household reference, item instances
 
 |Tracked inventory record
-|A representation households use to reason about availability; may diverge from reality.
 |artifact type (note/chat/list/memory), item reference (explicit or implicit), last-updated (if recorded)
 
 |Restock list / planner
-|A list of #item types# judged to need replenishment soon.
 |entries (item types), reason (low/out/expired), optional responsibility marker, status (active/deferred)
 
-|Alert / notification record
-|A record of an alert-worthy condition presented to household members.
+|Notification record
 |type (low/out/near-expiry/expired/budget), target (item type/instance or budget), created time, read/unread, dismissed/deferred
 
 |Spending entry
-|A logged financial transaction event within a household.
 |amount, date/time, payer (household member), scope (shared/personal), optional item type reference, category, notes, transaction type (purchase/refund/adjustment)
 
 |Spending category
-|A grouping label used to organize spending by type or purpose.
 |name, optional description
 
 |Budget
-|A spending limit defined for a period.
 |scope (household/category), limit amount, cycle (period), thresholds (warning levels), visibility rules
 
 |Budget status (derived)
-|A derived view of spending versus budget within a cycle.
 |spent-to-date, remaining, percent used, threshold-crossed flags
 
 |Invitation
-|A temporary request allowing a new participant to join a shared household context.
 |sender, recipient, target household, status, expiration timestamp
 
 |Membership
-|The relationship connecting a participant to a household for coordination and access.
 |household reference, participant reference, role, membership state
 |===
-
-[NOTE]
-====
-#This section uses the canonical vocabulary defined in the terminology glossary. Deprecated vocabulary from earlier drafts has been consolidated into the current terms, such as *Household*, *Location*, *Item type*, *Item instance (package)*, and *Household member*.#
-====

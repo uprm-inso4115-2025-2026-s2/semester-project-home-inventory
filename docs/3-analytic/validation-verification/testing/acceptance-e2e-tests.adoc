@@ -25,18 +25,18 @@ To provide concrete evidence of reliability, we conducted formal Acceptance and 
 |  **PASS**
 
 | **TC-1.3**
-| #Attempt to save an item with a blank expiration date.#
-| #Happy Path#
-| #The UI accepts the save and treats expiration as optional/unknown.#
-| #Blank expiration was accepted and the item saved successfully without an expiration date.#
+| Attempt to save an item with a blank expiration date.
+| Happy Path
+| The UI accepts the save and treats expiration as optional/unknown.
+| Blank expiration was accepted and the item saved successfully without an expiration date.
 |  **PASS**
 
-| #**TC-1.4**#
-| #Attempt to save an item with a negative quantity.#
-| #Failure State#
-| #The UI blocks the submission and prevents the inventory update from being persisted.#
-| #Validation rejected the submission because quantity must be greater than zero.#
-| #**PASS**#
+| **TC-1.4**
+| Attempt to save an item with a negative quantity.
+| Failure State
+| The UI blocks the submission and prevents the inventory update from being persisted.
+| Validation rejected the submission because quantity must be greater than zero.
+|  **PASS**
 |===
 
 
