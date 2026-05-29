@@ -1,0 +1,143 @@
+= iStar Actors and Their Links
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+:source highlighter: highlight.js
+
+== Objective
+
+This document covers the social layer of iStar 2.0 goal modeling as introduced in slides 18–23 of the tutorial: who the active participants are, how they are classified, and how they relate to each other — before any goals or tasks enter the picture. The Digital Home Inventory's personas and roles serve as the working example throughout.
+
+== Actors in iStar 2.0
+
+=== What an Actor Is
+
+An actor is an *active, autonomous entity* that pursues goals through its own judgment and in coordination with others. Autonomy is the defining trait: actors are not passive system recipients — they have intentions, make decisions, and depend on other actors to fulfill those intentions.
+
+Visually, every actor is drawn as a circle. The boundary is left closed unless the modeler wants to expose the intentional elements inside (goals, tasks, qualities, resources).
+
+=== Project Actors
+
+[cols="1,3", options="header"]
+|===
+| Actor | Why it qualifies
+
+| Mateo
+| Solo student with goals around avoiding expired food and minimizing shopping trips. His behavior is shaped by a heavy class schedule and smartphone driven, sporadic shopping.
+
+| Sofia
+| Shared apartment occupant with a strict budget and active coordination habits (calculator app, shared cost tracking). Depends on roommates to keep shared data accurate.
+
+| Julian
+| Deliberate planner with medically grounded dietary constraints (high protein, gluten free). His primary goal is keeping personal inventory isolated from shared space.
+
+| Andrea
+| De facto household organizer whose role emerged from circumstance — she has the car. Manages shared shopping and reimbursements without any formal agreement in place.
+
+| Household Member
+| Abstract behavioral role: any occupant who reads shared inventory, logs consumption, or responds to alerts. Multiple concrete agents play this role.
+
+| Household Admin
+| Abstract behavioral role: the occupant who creates the household, manages membership, configures thresholds, and carries the coordination burden. Andrea is currently its only agent.
+
+| Home Inventory System
+| The software actor: processes inputs, maintains state, and delivers alerts. iStar 2.0 treats software systems as legitimate actors — other actors depend on them for goals they cannot achieve alone.
+|===
+
+== Agent vs. Role
+
+=== Definitions
+
+iStar 2.0 distinguishes two actor subtypes:
+
+* *Agent* — a concrete entity with physical instantiation: a specific person, organization, or deployed software system.
+* *Role* — an abstract characterization of behavior within a given context. It defines a set of responsibilities without naming who carries them out.
+
+The decision is straightforward:
+
+* Concrete individual or system? → *Agent*
+* Abstract behavioral class? → *Role*
+* Not yet determined, or irrelevant at this stage? → *Actor* (leave unsubtyped)
+
+=== Actor Classification
+
+[cols="1,1,3", options="header"]
+|===
+| Actor | iStar Type | Rationale
+
+| Mateo
+| Agent
+| Named individual with person specific constraints: heavy class schedule, smartphone reliance, small apartment, sporadic shopping.
+
+| Sofia
+| Agent
+| Named individual with person specific constraints: strict monthly budget from financial aid, shared apartment, duplicate purchase sensitivity.
+
+| Julian
+| Agent
+| Named individual with medically grounded constraints (high protein, gluten free, cross contamination risk). Personal inventory isolation is an identity level requirement, not a general role behavior.
+
+| Andrea
+| Agent
+| Named individual whose organizational function arose from circumstance. She carries specific frustrations (unanswered group chats, disputed reimbursements) that are hers alone — not properties of the Household Admin role.
+
+| Household Member
+| Role
+| Abstract: any household occupant who logs consumption, views shared stock, and responds to alerts. No specific agent required by definition.
+
+| Household Admin
+| Role
+| Abstract: the actor responsible for household level configuration and coordination. Its responsibilities persist regardless of which agent currently holds the role.
+
+| Home Inventory System
+| Agent
+| Concrete, deployable software. Other actors depend on it to execute tasks they cannot perform independently.
+|===
+
+== Actor Links: Is A and Participates In
+
+=== Overview
+
+iStar 2.0 provides two directed link types for connecting actors before goals are modeled.
+
+[cols="1,3", options="header"]
+|===
+| Link | Meaning
+
+| *is a*
+| Generalization / specialization. The source is a more specific version of the target; it inherits all of the target's responsibilities and dependencies. Valid between roles (or same type actors). *Not* valid for agents — agents are instances, not generalizations.
+
+| *participates in*
+| Any non is a association between actors: an agent playing a role, a component belonging to a larger actor, or any other association the modeler needs. Semantics are interpreted from the types of the connected elements, not the link label alone.
+|===
+
+=== Is A Links
+
+*Household Admin is a Household Member*
+
+Every Household Admin is already a Household Member — they carry all standard member responsibilities (logging consumption, viewing inventory, responding to alerts) plus the additional administrative ones (managing membership, configuring thresholds, coordinating purchases). This inheritance has a direct design consequence: any feature built for Household Member is automatically available to Household Admin without re specification.
+
+=== Participates In Links
+
+*Mateo, Sofia, Julian participates in Household Member* +
+Each plays the Household Member role with slightly different interaction profiles: Mateo is solo and de facto admin; Sofia interacts through a shared apartment lens; Julian uses only personal inventory features. All three map to the same role at the abstract level.
+
+*Andrea participates in Household Admin* +
+Andrea plays the Household Admin role. Representing this as participates in (rather than collapsing Andrea into the role) keeps the responsibilities role defined and agent independent. Because Household Admin is a Household Member, Andrea also implicitly participates in the Household Member role through inheritance — no separate link is needed.
+
+*Home Inventory System participates in Household* +
+The system is part of the household's operational infrastructure, not an external service. The participates in link captures this part of relationship and embeds the software actor in the socio technical model where it belongs.
+
+== Key Design Implications
+
+The agent/role distinction and the two link types together force three non obvious decisions.
+
+. *Role transfer must be supported.* Because Household Admin is a role and not a person, the system must allow a new agent to assume it without data loss or manual migration. Any design that hard codes Andrea's identity into administrative functions contradicts the model.
+
+. *Julian's isolation is a personal constraint, not a member feature.* Scoping personal inventory isolation to the Household Member role would imply all members can activate it. The correct scope is Julian's agent boundary — the feature exists because of his specific needs, not because the role demands it.
+
+. *Member features inherit upward.* Because Household Admin is a Household Member, a permission model that treats them as entirely separate profiles contradicts the is a link. Administrative access should be an additive overlay on member access — same base features, additional admin only capabilities on top.
+
+
+   
