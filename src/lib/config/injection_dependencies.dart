@@ -55,6 +55,8 @@ import 'package:src/features/sharing_budget/domain/usecases/reject_roommate_invi
 import 'package:src/features/sharing_budget/domain/usecases/remove_household_member.dart';
 import 'package:src/features/sharing_budget/domain/usecases/send_roommate_invite.dart';
 import 'package:src/features/sharing_budget/domain/usecases/validate_household_membership.dart';
+import 'package:src/features/sharing_budget/presentation/cubits/household_cubit.dart';
+import 'package:src/features/sharing_budget/presentation/cubits/invitation_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -219,6 +221,28 @@ Future<void> initializeDependencies() async {
   );
   sl.registerLazySingleton<ValidateHouseholdMembership>(
     () => ValidateHouseholdMembership(sl()),
+  );
+
+  // Cubits
+  sl.registerLazySingleton<HouseholdCubit>(
+    () => HouseholdCubit(
+      createHousehold: sl(),
+      getHouseholdById: sl(),
+      getHouseholdMembers: sl(),
+      addHouseholdMember: sl(),
+      removeHouseholdMember: sl(),
+      validateHouseholdMembership: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<InvitationCubit>(
+    () => InvitationCubit(
+      sendRoommateInvite: sl(),
+      getInviteById: sl(),
+      getHouseholdInvites: sl(),
+      acceptRoommateInvite: sl(),
+      rejectRoommateInvite: sl(),
+    ),
   );
 
   /// Reports and Insights
