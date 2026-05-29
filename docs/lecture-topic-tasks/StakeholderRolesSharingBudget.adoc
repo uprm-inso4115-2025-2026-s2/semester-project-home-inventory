@@ -1,0 +1,98 @@
+= Stakeholder Roles for Sharing & Budget 
+
+== Overview
+
+This document serves as an open stakeholder catalog for the Sharing &
+Budget team. Each stakeholder
+group is identified, their role is defined, and their
+dependency on the feature is described.
+
+
+== Stakeholder Groups
+
+=== Household Owner
+
+*Role:* +
+The household owner is the member who created the household. They are
+responsible for configuring the shared budget, setting the limit
+amount, the budget period, and the start date. They may also manage
+household membership by inviting or removing members.
+
+*Dependency on the feature:* +
+The household owner depends on the feature to give them control over
+the household's financial boundaries. They need to be able to create
+and update budgets, review total spending across all members, and
+maintain oversight of who belongs to the household.
+
+*How the team accounts for them:* +
+The `BudgetRemoteDataSource` supports `createBudget` and `updateBudget`
+operations that serve the owner's need to configure and adjust budgets.
+The household owner is the primary actor for budget setup workflows.
+
+---
+
+=== Household Member
+
+*Role:* +
+A household member is any user who has accepted an invitation to join
+a household. They can log expenses, view the shared budget, and see
+allocations assigned to them.
+
+*Dependency on the feature:* +
+Household members depend on the feature to track their contributions
+to shared expenses and to understand how costs are being split. They
+need transparency into budget usage and their own allocations.
+
+*How the team accounts for them:* +
+The `ExpenseRemoteDataSource` supports `fetchExpensesByUser` so that
+a member can retrieve their own spending records. The allocation model
+ties each expense split back to a specific user, giving members
+visibility into what they owe or have contributed.
+
+---
+
+=== Invited User
+
+*Role:* +
+An invited user is someone who has received an invitation to join a
+household but has not yet accepted. They are a transitional stakeholder they exist in the system through an invite token but have no access
+to budget or expense data until membership is confirmed.
+
+*Dependency on the feature:* +
+The invited user depends on the invitation mechanism being reliable and
+clear. They need to know what household they are being invited to and
+what accepting means for their participation in shared budgets.
+
+*How the team accounts for them:* +
+The `InvitationRemoteDataSource` manages invite tokens that represent
+pending memberships. The system must handle the case where a token
+expires before the user responds, which is an identified risk in the
+domain model.
+
+*Note overlap with Household Member:* +
+An invited user becomes a household member upon acceptance. These two
+groups overlap at the moment of transition. The system must treat them
+as distinct until acceptance is confirmed, since an invited user has
+no financial access and a household member does.
+
+---
+
+=== Development Team (Sharing & Budget)
+
+*Role:* +
+The development team is responsible for implementing and maintaining
+the Sharing & Budget features. They are a stakeholder because decisions
+made during domain engineering and requirements directly affect what
+they build and how they structure the system.
+
+*Dependency on the feature:* +
+The team depends on a clear domain model to avoid building a system
+that does not reflect how households actually manage shared budgets.
+Ambiguous concepts like how split modes are applied or when a budget
+period resets directly translate into implementation inconsistencies
+if not resolved at the domain level.
+
+*How the team accounts for themselves:* +
+In domain engineering, the attribute
+classification, and the tangibility analysis are produced by the team
+to make their own understanding explicit and reviewable.
