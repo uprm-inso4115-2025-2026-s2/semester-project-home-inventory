@@ -1,0 +1,47 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Team 3
+
+# {milestone} Week 2 — {team} Progress Report
+
+## Objective
+
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+## What the Team Accomplished This Week
+
+* Transitioned from documentation-heavy work into implementation tasks
+* Continued frontend UI and backend architecture preparation
+* Advanced use case and Cubit planning for Sharing & Budget
+* Expanded domain documentation and stakeholder analysis
+
+## Tasks Completed / Issues Closed
+
+* {issue-base-url}650[Expand Domain Description with Use Scenarios]
+* {issue-base-url}689[Modeling Shared Expense Data — Continuous vs Discrete Attributes]
+* {issue-base-url}705[Stakeholder Roles for the Sharing & Budget Feature]
+* {issue-base-url}706[Stakeholder Persona for Sharing & Budget]
+
+## What Is Currently In Progress
+
+* {issue-base-url}576[Implement Profile Page Screen]
+* {issue-base-url}672[Implement Sharing Use Cases]
+* {issue-base-url}673[Implement Sharing Cubits for State Management]
+* {issue-base-url}661[Strengthen Functional Requirements Coverage]
+* {issue-base-url}662[Build a Requirements Traceability Matrix]
+
+## Blockers or Challenges
+
+* Some implementation tasks are progressing slower due to ongoing documentation refinement
+* UI integration depends on finalized design validation
+
+## Plans for Next Week
+
+* Complete Sharing and Budget backend implementation tasks
+* Continue Profile and Budget screen development
+* Finalize requirements and traceability documentation
+* Prepare milestone deliverables for review
+
+## Documentation Links
+
+* Available throughout pull requests and issues mentioned above

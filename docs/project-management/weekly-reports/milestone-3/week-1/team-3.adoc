@@ -1,0 +1,52 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Team 3
+
+# {milestone} Week 1 — {team} Progress Report
+
+## Objective
+
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+## What the Team Accomplished This Week
+
+* Distributed milestone responsibilities among team members
+* Began domain engineering and documentation tasks for the Sharing & Budget subsystem
+* Started planning architecture and UI implementation tasks
+* Continued completing Lecture Topic Tasks (LTTs)
+
+## Tasks Completed / Issues Closed
+
+* {issue-base-url}544[Create Elicitation Questions for Roommate Purchase Coordination]
+* {issue-base-url}565[Identify and Document Domain Facets — Sharing Inventory & Budget Feature]
+* {issue-base-url}575[Modeling Chaotic and Unpredictable Behavior in Shared Budget Systems]
+* {issue-base-url}589[Analyze Emergent Collaboration Patterns in Shared Household Inventory Management]
+* {issue-base-url}590[Map Budget Dependency Relationships Across Shared Inventory Decisions]
+* {issue-base-url}591[Identify Communication Breakdowns in Shared Inventory Notification Flows]
+* {issue-base-url}597[Tangibility of Sharing & Budget Domain Concepts]
+* {issue-base-url}602[Domain to Feature Alignment Review]
+
+## What Is Currently In Progress
+
+* {issue-base-url}576[Implement Profile Page Screen]
+* {issue-base-url}572[Budget Analyzer Temporal Modeling]
+* {issue-base-url}571[Budget Analyzer Domain Acquisition]
+* {issue-base-url}574[Analyze Biddable Human Behavior in Sharing & Budget Coordination]
+* {issue-base-url}566[Develop Goal Model for the Home Inventory System]
+* {issue-base-url}562[Document the Domain Model and Domain Engineering Process]
+
+## Blockers or Challenges
+
+* Some implementation tasks are dependent on documentation feedback from Milestone 2
+* Team members are balancing documentation and implementation simultaneously
+
+## Plans for Next Week
+
+* Begin implementation of Sharing and Budget use cases
+* Continue Profile and Budget UI development
+* Finalize pending LTT documentation
+* Improve milestone coordination and documentation coverage
+
+## Documentation Links
+
+* Available throughout pull requests and issues mentioned above
