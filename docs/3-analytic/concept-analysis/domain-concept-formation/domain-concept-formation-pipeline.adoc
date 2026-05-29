@@ -284,21 +284,21 @@ All AI-generated observations were reviewed and validated by team members before
 
 See <<ai-disclosure,Generative AI Disclosure>> for the project's complete AI usage and verification statement.
 
-=== Conflict Enforcement Policy
+=== #Conflict Enforcement Policy#
 
-To preserve consistency across requirements, architecture, implementation, testing, and traceability artifacts, all future additions to the project documentation and codebase must comply with the project's established consistency criteria before approval or integration.
+#To preserve consistency across requirements, architecture, implementation, testing, and traceability artifacts, all future additions to the project documentation and codebase must comply with the project's established consistency criteria before approval or integration.#
 
-The team applies the following enforcement rules:
+#The team applies the following enforcement rules:#
 
-* Terminology used in requirements, domain models, test cases, and implementation documentation must remain consistent with the approved project glossary and domain definitions.
-* New requirements must maintain traceability to stakeholder needs, goals, validation activities, and verification artifacts.
-* Interface Requirements (IRs) shall describe user-facing behavior only and must not contain backend implementation or domain-processing logic.
-* Machine Requirements (MRs) shall remain measurable and include explicit quantitative targets whenever performance, timing, storage, or scalability constraints are specified.
-* Domain-model changes must preserve established abstractions, including the distinction between uniquely tracked item instances and cumulative inventory quantities.
-* New test cases, traceability references, and requirement identifiers must remain synchronized with repository artifacts and implementation evidence.
-* Any detected conflict, contradiction, duplicate requirement, or unresolved traceability gap must be resolved before the associated change is approved or merged.
+* #Terminology used in requirements, domain models, test cases, and implementation documentation must remain consistent with the approved project glossary and domain definitions.#
+* #New requirements must maintain traceability to stakeholder needs, goals, validation activities, and verification artifacts.#
+* #Interface Requirements (IRs) shall describe user-facing behavior only and must not contain backend implementation or domain-processing logic.#
+* #Machine Requirements (MRs) shall remain measurable and include explicit quantitative targets whenever performance, timing, storage, or scalability constraints are specified.#
+* #Domain-model changes must preserve established abstractions, including the distinction between uniquely tracked item instances and cumulative inventory quantities.#
+* #New test cases, traceability references, and requirement identifiers must remain synchronized with repository artifacts and implementation evidence.#
+* #Any detected conflict, contradiction, duplicate requirement, or unresolved traceability gap must be resolved before the associated change is approved or merged.#
 
-The following of these rules is verified through documentation inspections, peer review, pull-request review, traceability verification, and milestone integration reviews. Changes that don't follow the project's consistency criteria shall not be considered complete until the conflict has been documented and resolved.
+#The following of these rules is verified through documentation inspections, peer review, pull-request review, traceability verification, and milestone integration reviews. Changes that don't follow the project's consistency criteria shall not be considered complete until the conflict has been documented and resolved.#
 
 === Milestone 3 Acquisition Feedback Integrated into Concept Formation
 
