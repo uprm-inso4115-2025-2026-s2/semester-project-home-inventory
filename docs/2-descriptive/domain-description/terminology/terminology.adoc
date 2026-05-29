@@ -81,11 +81,11 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | #The full set of *Item instances* that physically exist in a household at a given moment. A real-world thing, observable by walking through the house, not a list or record.#
 | Real-world state, not a representation.
 
-| Tracked inventory
-| Entity
-| Domain
-| The household's collective system-facing view of what is on hand, materialized as the union of all *Tracked inventory records* for that household. A concrete artifact that household members consult when they cannot physically check a location, and that may diverge from *Inventory (reality)*.
-| Used as shorthand for the set of all tracked inventory records. Use *Tracked inventory record* for one specific entry and *Inventory (reality)* for the physical state.
+| #Tracked inventory#
+| #Entity#
+| #Domain#
+| #The household's collective system-facing view of what is on hand, materialized as the union of all *Tracked inventory records* for that household. A concrete artifact that household members consult when they cannot physically check a location, and that may diverge from *Inventory (reality)*.#
+| #Used as shorthand for the set of all tracked inventory records. Use *Tracked inventory record* for one specific entry and *Inventory (reality)* for the physical state.#
 
 | Tracked inventory record
 | Entity (Artifact)
@@ -132,14 +132,14 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Availability
 | Property
 | Domain
-| A household's current understanding of how much of an item is left for use. May be qualitative ("full", "almost empty", "backup opened"), quantitative as a *Quantity*, or expressed as an *Actionable state*.
-| Distinct from *Quantity* (numeric measure) and *Actionable state* (system-computed condition). Availability is the broader human-facing concept.
+| #A household's current understanding of how much of an item is left for use. May be qualitative ("full", "almost empty", "backup opened"), quantitative as a *Quantity*, or expressed as an *Actionable state*.#
+| #Distinct from *Quantity* (numeric measure) and *Actionable state* (system-computed condition). Availability is the broader human-facing concept.#
 
 | Quantity
 | Property
 | Domain
-| A numeric measure of availability for an item type or item instance, expressed as a count (e.g., 3 cartons) or in units (e.g., 500 g). May be exact, approximate, or unknown, but never negative.
-| Distinct from *Availability* (which may be qualitative) and from *Low-stock threshold* / *Reorder point* (the boundaries quantity is compared against).
+| #A numeric measure of availability for an item type or item instance, expressed as a count (e.g., 3 cartons) or in units (e.g., 500 g). May be exact, approximate, or unknown, but never negative.#
+| #Distinct from *Availability* (which may be qualitative) and from *Low-stock threshold* / *Reorder point* (the boundaries quantity is compared against).#
 
 | Expiration date
 | Property
