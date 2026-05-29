@@ -47,166 +47,166 @@ Broader surveys and larger quantitative validation may be deferred if time is li
 * *Risk:* Acquisition and elicitation are mixed too early. — *Mitigation:* record raw evidence first, then interpret it in a separate elicitation step.
 
 [[second-round-requirements-acquisition]]
-== Second-Round Requirements Acquisition
+== #Second-Round Requirements Acquisition#
 
-This second round focused on gaps and ambiguities found during implementation, clarifying implementation-driven uncertainties around shared-household visibility, role-based permissions, budget alerts, search/filter behavior, barcode fallback, notification fatigue, grocery-list automation, and offline synchronization. It simulated short follow-up interviews and lightweight walkthroughs with ChatGPT acting as a participant, showing current app behaviors and asking targeted questions about ambiguous cases.
+#This second round focused on gaps and ambiguities found during implementation, clarifying implementation-driven uncertainties around shared-household visibility, role-based permissions, budget alerts, search/filter behavior, barcode fallback, notification fatigue, grocery-list automation, and offline synchronization. It simulated short follow-up interviews and lightweight walkthroughs with ChatGPT acting as a participant, showing current app behaviors and asking targeted questions about ambiguous cases.#
 
-=== Simulated Participants
+=== #Simulated Participants#
 
 [cols="1,2,3"]
 |===
-| Participant code | Role / profile | Reason included
+| #Participant code# | #Role / profile# | #Reason included#
 
-| M3-P01
-| Busy solo student
-| Low-friction item capture, expiration awareness, offline lookup needs.
+| #M3-P01#
+| #Busy solo student#
+| #Low-friction item capture, expiration awareness, offline lookup needs.#
 
-| M3-P02
-| Budget-conscious roommate
-| Shared inventory, duplicate purchase prevention, spending/budget concerns.
+| #M3-P02#
+| #Budget-conscious roommate#
+| #Shared inventory, duplicate purchase prevention, spending/budget concerns.#
 
-| M3-P03
-| Unofficial household manager
-| Shared-household coordination, household administration, grocery-list review, role management.
+| #M3-P03#
+| #Unofficial household manager#
+| #Shared-household coordination, household administration, grocery-list review, role management.#
 
-| M3-P04
-| Health-conscious student with personal dietary items
-| Personal item privacy, threshold alerts, uninterrupted supply needs.
+| #M3-P04#
+| #Health-conscious student with personal dietary items#
+| #Personal item privacy, threshold alerts, uninterrupted supply needs.#
 
-| M3-P05
-| Shared-household member / occasional contributor
-| Lightweight participation, viewer/member permissions, notification tolerance.
+| #M3-P05#
+| #Shared-household member / occasional contributor#
+| #Lightweight participation, viewer/member permissions, notification tolerance.#
 |===
 
-=== Open Questions
+=== #Open Questions#
 
 [cols="1,1,3,3,2"]
 |===
-| Open question ID | Priority | M2 implementation trigger | Acquisition question | Related requirement area
+| #Open question ID# | #Priority# | #M2 implementation trigger# | #Acquisition question# | #Related requirement area#
 
-| OQ-M3-01
-| High
-| Shared Inventory & Household Management in progress; role-based item visibility not yet enforced.
-| What should members see or edit when an item is personal, shared, or owned by another member?
-| IR-03, MR-05, DR-4C
+| #OQ-M3-01#
+| #High#
+| #Shared Inventory & Household Management in progress; role-based item visibility not yet enforced.#
+| #What should members see or edit when an item is personal, shared, or owned by another member?#
+| #IR-03, MR-05, DR-4C#
 
-| OQ-M3-02
-| High
-| Invitations implemented, but permission behavior for viewer/member/admin roles remained ambiguous.
-| What role distinctions matter in daily use, and which actions should be admin-only?
-| DR-4, DR-4A, DR-4B, DR-4C, MR-05
+| #OQ-M3-02#
+| #High#
+| #Invitations implemented, but permission behavior for viewer/member/admin roles remained ambiguous.#
+| #What role distinctions matter in daily use, and which actions should be admin-only?#
+| #DR-4, DR-4A, DR-4B, DR-4C, MR-05#
 
-| OQ-M3-03
-| Medium
-| Complex searches by location, owner, and expiration range deferred to post-MVP.
-| Which filters are essential for realistic use while shopping or planning?
-| IR-08, US-RPT-01
+| #OQ-M3-03#
+| #Medium#
+| #Complex searches by location, owner, and expiration range deferred to post-MVP.#
+| #Which filters are essential for realistic use while shopping or planning?#
+| #IR-08, US-RPT-01#
 
-| OQ-M3-04
-| High
-| Barcode scanning works for common products, but many items still require manual entry.
-| When lookup fails, what is the minimum information users will enter before the workflow is too much effort?
-| US-INV-01, IR-01, IR-12
+| #OQ-M3-04#
+| #High#
+| #Barcode scanning works for common products, but many items still require manual entry.#
+| #When lookup fails, what is the minimum information users will enter before the workflow is too much effort?#
+| #US-INV-01, IR-01, IR-12#
 
-| OQ-M3-05
-| Medium
-| Budget alerts not yet implemented, though spending and budget reporting were in scope.
-| Do users want budget alerts, and should they be push, in-app, or dashboard indicators?
-| IR-06, IR-07, US-SB-01, US-RPT-01
+| #OQ-M3-05#
+| #Medium#
+| #Budget alerts not yet implemented, though spending and budget reporting were in scope.#
+| #Do users want budget alerts, and should they be push, in-app, or dashboard indicators?#
+| #IR-06, IR-07, US-SB-01, US-RPT-01#
 
-| OQ-M3-06
-| High
-| Notification deduplication implemented, but shared-household alert audience rules unclear.
-| When a shared item is low, expired, or out of stock, who should receive the alert and how often?
-| US-ALT-01, DR-14, MR-07
+| #OQ-M3-06#
+| #High#
+| #Notification deduplication implemented, but shared-household alert audience rules unclear.#
+| #When a shared item is low, expired, or out of stock, who should receive the alert and how often?#
+| #US-ALT-01, DR-14, MR-07#
 
-| OQ-M3-07
-| Medium
-| Grocery-list auto-add implemented, but user override behavior needed clarification.
-| Should auto-added items be removable, snoozable, or protected from immediate re-addition?
-| F-GL-AUTO, F-GL-USER, DR-14
+| #OQ-M3-07#
+| #Medium#
+| #Grocery-list auto-add implemented, but user override behavior needed clarification.#
+| #Should auto-added items be removable, snoozable, or protected from immediate re-addition?#
+| #F-GL-AUTO, F-GL-USER, DR-14#
 
-| OQ-M3-08
-| Medium
-| Offline inventory viewing supported; offline item creation and quantity updates deferred.
-| Is offline viewing enough, or do users need pending inventory updates while disconnected?
-| MR-03, MR-04
+| #OQ-M3-08#
+| #Medium#
+| #Offline inventory viewing supported; offline item creation and quantity updates deferred.#
+| #Is offline viewing enough, or do users need pending inventory updates while disconnected?#
+| #MR-03, MR-04#
 |===
 
-=== Acquisition Q&A Table
+=== #Acquisition Q&A Table#
 
 [cols="1,1,3,4,4,3"]
 |===
-| Q&A ID | Priority | Question asked | Answer / evidence summary | Outcome | Requirements added or revised
+| #Q&A ID# | #Priority# | #Question asked# | #Answer / evidence summary# | #Outcome# | #Requirements added or revised#
 
-| M3-QA-01
-| High
-| When an item is marked personal, what should other members see?
-| M3-P02 and M3-P04: personal items should not appear in the shared inventory by default. M3-P03: managers may need to know storage is occupied, but not see payer, cost, notes, or consumption details. Common expectation: shared items visible to the household; personal items visible only to the owner unless explicitly shared.
-| Personal item visibility defaults to private; shared coordination should not expose personal details unnecessarily.
-| DR-18, IR-09, MR-05
+| #M3-QA-01#
+| #High#
+| #When an item is marked personal, what should other members see?#
+| #M3-P02 and M3-P04: personal items should not appear in the shared inventory by default. M3-P03: managers may need to know storage is occupied, but not see payer, cost, notes, or consumption details. Common expectation: shared items visible to the household; personal items visible only to the owner unless explicitly shared.#
+| #Personal item visibility defaults to private; shared coordination should not expose personal details unnecessarily.#
+| #DR-18, IR-09, MR-05#
 
-| M3-QA-02
-| High
-| What should viewer, member, and admin roles be allowed to do?
-| M3-P03: admins invite/remove members, change roles, resolve household-level items. M3-P05: viewers see shared needs but cannot edit quantities. M3-P02: members update shared items but cannot remove other members or change others' personal items.
-| Role behavior must be explicit enough to support implementation and testing.
-| DR-19, IR-09, MR-05
+| #M3-QA-02#
+| #High#
+| #What should viewer, member, and admin roles be allowed to do?#
+| #M3-P03: admins invite/remove members, change roles, resolve household-level items. M3-P05: viewers see shared needs but cannot edit quantities. M3-P02: members update shared items but cannot remove other members or change others' personal items.#
+| #Role behavior must be explicit enough to support implementation and testing.#
+| #DR-19, IR-09, MR-05#
 
-| M3-QA-03
-| Medium
-| Which filters are essential when checking inventory at the store?
-| M3-P02 prioritized search by name, shared/personal ownership, and low/out-of-stock status; M3-P03 prioritized location and category; M3-P01 wanted "expiring soon" visible without searching. Owner/location/status filters mattered more than advanced date-range search.
-| Lookup must support minimum filters for shopping/planning: name, location, category, ownership/scope, stock/expiration status.
-| DR-20, IR-10, US-RPT-01
+| #M3-QA-03#
+| #Medium#
+| #Which filters are essential when checking inventory at the store?#
+| #M3-P02 prioritized search by name, shared/personal ownership, and low/out-of-stock status; M3-P03 prioritized location and category; M3-P01 wanted "expiring soon" visible without searching. Owner/location/status filters mattered more than advanced date-range search.#
+| #Lookup must support minimum filters for shopping/planning: name, location, category, ownership/scope, stock/expiration status.#
+| #DR-20, IR-10, US-RPT-01#
 
-| M3-QA-04
-| High
-| When barcode lookup fails, what is the minimum acceptable manual-entry flow?
-| M3-P01 and M3-P04 would abandon the workflow if too many fields were required. Minimum acceptable: item name and quantity/availability; location and expiration optional or editable later. M3-P03 wanted to save quickly and complete details afterward.
-| Barcode fallback must not block capture; manual entry allows a minimum viable record, with richer metadata added later.
-| DR-21, IR-11, US-INV-01, IR-12
+| #M3-QA-04#
+| #High#
+| #When barcode lookup fails, what is the minimum acceptable manual-entry flow?#
+| #M3-P01 and M3-P04 would abandon the workflow if too many fields were required. Minimum acceptable: item name and quantity/availability; location and expiration optional or editable later. M3-P03 wanted to save quickly and complete details afterward.#
+| #Barcode fallback must not block capture; manual entry allows a minimum viable record, with richer metadata added later.#
+| #DR-21, IR-11, US-INV-01, IR-12#
 
-| M3-QA-05
-| Medium
-| Do users want budget alerts, and how should they be delivered?
-| M3-P02 wanted warnings around 80% and 100% of a weekly budget; M3-P03 preferred dashboard/in-app indicators over push. Budget alerts should be opt-in since not every household tracks spending strictly.
-| Budget alerts should be optional, threshold-based, and in-app by default, with push only by user preference.
-| DR-22, IR-12, US-SB-01, US-RPT-01
+| #M3-QA-05#
+| #Medium#
+| #Do users want budget alerts, and how should they be delivered?#
+| #M3-P02 wanted warnings around 80% and 100% of a weekly budget; M3-P03 preferred dashboard/in-app indicators over push. Budget alerts should be opt-in since not every household tracks spending strictly.#
+| #Budget alerts should be optional, threshold-based, and in-app by default, with push only by user preference.#
+| #DR-22, IR-12, US-SB-01, US-RPT-01#
 
-| M3-QA-06
-| High
-| When a shared item is low, expired, or out of stock, who should receive the alert?
-| M3-P02 and M3-P03: everyone should see the alert in-app, but push should not go to every member every time. M3-P05 preferred grouped daily summaries. Participants rejected repeated alerts for unchanged conditions.
-| Shared alerts create one household-level record, visible in-app, with push/digest delivery controlled by preference and deduplication.
-| DR-23, IR-13, MR-07
+| #M3-QA-06#
+| #High#
+| #When a shared item is low, expired, or out of stock, who should receive the alert?#
+| #M3-P02 and M3-P03: everyone should see the alert in-app, but push should not go to every member every time. M3-P05 preferred grouped daily summaries. Participants rejected repeated alerts for unchanged conditions.#
+| #Shared alerts create one household-level record, visible in-app, with push/digest delivery controlled by preference and deduplication.#
+| #DR-23, IR-13, MR-07#
 
-| M3-QA-07
-| Medium
-| Should auto-added grocery-list items be removable or snoozable?
-| M3-P03 liked auto-add but wanted to remove/snooze irrelevant items; M3-P02 said the system should not immediately re-add a removed item unless quantity/status changes again.
-| Auto-added restock items must stay user-controllable; removing/snoozing suppresses re-addition until a new qualifying transition or the snooze expires.
-| DR-24, IR-14
+| #M3-QA-07#
+| #Medium#
+| #Should auto-added grocery-list items be removable or snoozable?#
+| #M3-P03 liked auto-add but wanted to remove/snooze irrelevant items; M3-P02 said the system should not immediately re-add a removed item unless quantity/status changes again.#
+| #Auto-added restock items must stay user-controllable; removing/snoozing suppresses re-addition until a new qualifying transition or the snooze expires.#
+| #DR-24, IR-14#
 
-| M3-QA-08
-| Medium
-| Is offline viewing enough, or are offline updates needed?
-| M3-P01 and M3-P02: offline viewing is useful, but users may need to record quick quantity changes in a poor-connection store or right after unloading groceries. Pending/sync status is acceptable if the app makes clear which changes are unsynced.
-| Offline support revised from view-only to queued pending updates for item creation and quantity changes, with clear sync status and conflict handling.
-| MR-03, DR-25
+| #M3-QA-08#
+| #Medium#
+| #Is offline viewing enough, or are offline updates needed?#
+| #M3-P01 and M3-P02: offline viewing is useful, but users may need to record quick quantity changes in a poor-connection store or right after unloading groceries. Pending/sync status is acceptable if the app makes clear which changes are unsynced.#
+| #Offline support revised from view-only to queued pending updates for item creation and quantity changes, with clear sync status and conflict handling.#
+| #MR-03, DR-25#
 |===
 
-=== Outcome
+=== #Outcome#
 
-The acquisition round produced these requirement decisions:
+#The acquisition round produced these requirement decisions:#
 
-* Personal items are private by default unless explicitly shared.
-* Household roles must define clear permissions for viewing, editing, inviting, removing, and administering shared inventory.
-* Store-use lookup requires practical filters: name, location, category, ownership/scope, stock status, expiration status.
-* Barcode fallback must support fast manual capture with minimal required fields.
-* Budget alerts should be opt-in, threshold-based, and in-app by default.
-* Shared alerts should be household-level records with configurable delivery, not repeated push to every member.
-* Auto-added grocery-list entries must support manual removal or snooze without immediate re-addition.
-* Offline support should include pending item creation and quantity updates, not only view-only access.
+* #Personal items are private by default unless explicitly shared.#
+* #Household roles must define clear permissions for viewing, editing, inviting, removing, and administering shared inventory.#
+* #Store-use lookup requires practical filters: name, location, category, ownership/scope, stock status, expiration status.#
+* #Barcode fallback must support fast manual capture with minimal required fields.#
+* #Budget alerts should be opt-in, threshold-based, and in-app by default.#
+* #Shared alerts should be household-level records with configurable delivery, not repeated push to every member.#
+* #Auto-added grocery-list entries must support manual removal or snooze without immediate re-addition.#
+* #Offline support should include pending item creation and quantity updates, not only view-only access.#
 
-Each requirement added or revised from this round is marked in Section 2.2.
+#Each requirement added or revised from this round is marked in Section 2.2.#

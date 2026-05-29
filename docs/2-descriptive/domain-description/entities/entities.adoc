@@ -2,18 +2,18 @@
 
 [NOTE]
 ====
-Entity definitions live in <<_terminology>>, which is the single source of truth for domain vocabulary. This section adds only the structural information that the terminology table does not carry: the *attribute schema* associated with each entity. If a term appears below that is not in the terminology table, it must be added there rather than defined locally.
+#Entity definitions live in <<_terminology>>, which is the single source of truth for domain vocabulary. This section adds only the structural information that the terminology table does not carry: the *attribute schema* associated with each entity. If a term appears below that is not in the terminology table, it must be added there rather than defined locally.#
 
-The entities catalogued here are exercised by scenario traces in <<_terminology_walkthroughs>>; see that section for the gaps each entity surfaced when used in a real domain scenario.
+#The entities catalogued here are exercised by scenario traces in <<_terminology_walkthroughs>>; see that section for the gaps each entity surfaced when used in a real domain scenario.#
 ====
 
-=== Entity attribute schemas
+=== #Entity attribute schemas#
 
-The following table lists the key attributes associated with each domain entity. For the meaning of each entity, see the corresponding row in <<_terminology>>.
+#The following table lists the key attributes associated with each domain entity. For the meaning of each entity, see the corresponding row in <<_terminology>>.#
 
 [cols="2,4",options="header"]
 |===
-|Entity (defined in <<_terminology>>)
+| #Entity (defined in <<_terminology>>)#
 |Key attributes
 
 |Household
@@ -29,7 +29,7 @@ The following table lists the key attributes associated with each domain entity.
 |name, optional category, optional brand/size/variant, optional barcode
 
 |Item instance (package)
-|item type reference, location reference, ownership status (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
+|item type reference, location reference, #ownership status# (personal/shared), quantity/availability, optional purchase date, optional expiration date, optional notes
 
 |Inventory (reality)
 |household reference, item instances
@@ -38,7 +38,7 @@ The following table lists the key attributes associated with each domain entity.
 |artifact type (note/chat/list/memory), item reference (explicit or implicit), last-updated (if recorded)
 
 |Restock list / planner
-|entries (item types), reason (low/out/expired), optional responsibility marker, status (active/deferred)
+|entries (#item types#), reason (low/out/expired), optional responsibility marker, status (active/deferred)
 
 |Notification record
 |type (low/out/near-expiry/expired/budget), target (item type/instance or budget), created time, read/unread, dismissed/deferred

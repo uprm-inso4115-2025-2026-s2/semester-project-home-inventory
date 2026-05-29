@@ -1,215 +1,215 @@
 == Machine Requirements
 
-Machine requirements define measurable quality properties for the implementation, together with the supported environment and deployment assumptions needed to run, test, and review the system. Milestone 2 established the initial quality properties (MR-01..MR-07) verified against the prototype; Milestone 3 extends this with the environment, platform, runtime, third-party service, and deployment requirements needed for end users, developers, and reviewers. Where thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated. Each requirement traces to relevant Domain Requirements (DR) where applicable.
+#Machine requirements define measurable quality properties for the implementation, together with the supported environment and deployment assumptions needed to run, test, and review the system. Milestone 2 established the initial quality properties (MR-01..MR-07) verified against the prototype; Milestone 3 extends this with the environment, platform, runtime, third-party service, and deployment requirements needed for end users, developers, and reviewers. Where thresholds are not yet known, the requirement defines what will be measured and how success will be evaluated. Each requirement traces to relevant Domain Requirements (DR) where applicable.#
 
 [NOTE]
 ====
-This MR set was inspected against the defect-driven *Requirements Inspection Checklist*; the per-MR findings (with severity and proposed fix) are catalogued in <<applied-inspection-review-log>>. The most notable finding is `RQA-015` on MR-05's role list ("owner/member/viewer/admin") — *Owner* and *admin* are synonyms in the canonical terminology and should not be listed as distinct test accounts. MR-04's 5-second cross-device sync bound is also cited (`RQA-001`, `RQA-018`) as a candidate fit-criterion source for currently unmeasurable IR / DR latency promises.
+#This MR set was inspected against the defect-driven *Requirements Inspection Checklist*; the per-MR findings (with severity and proposed fix) are catalogued in <<applied-inspection-review-log>>. The most notable finding is `RQA-015` on MR-05's role list ("owner/member/viewer/admin") — *Owner* and *admin* are synonyms in the canonical terminology and should not be listed as distinct test accounts. MR-04's 5-second cross-device sync bound is also cited (`RQA-001`, `RQA-018`) as a candidate fit-criterion source for currently unmeasurable IR / DR latency promises.#
 ====
 
-=== Supported Environment and Deployment Requirements
+=== #Supported Environment and Deployment Requirements#
 
-Minimum environment assumptions for running, testing, and reviewing the system during Milestone 3, focused on the machine, platform, and external services needed for consistent operation across development and review environments.
+#Minimum environment assumptions for running, testing, and reviewing the system during Milestone 3, focused on the machine, platform, and external services needed for consistent operation across development and review environments.#
 
-==== End-User Device Requirements
+==== #End-User Device Requirements#
 
-The system runs as a mobile application. End users should have:
+#The system runs as a mobile application. End users should have:#
 
-* A smartphone capable of running the project's Flutter mobile client, on a supported OS compatible with the project's Flutter version.
-* A working device camera for barcode scanning.
-* Internet access for synchronization, authentication, shared household updates, alerts, and backend communication.
-* Sufficient local storage for cached data, pending offline changes, and local application state.
+* #A smartphone capable of running the project's Flutter mobile client, on a supported OS compatible with the project's Flutter version.#
+* #A working device camera for barcode scanning.#
+* #Internet access for synchronization, authentication, shared household updates, alerts, and backend communication.#
+* #Sufficient local storage for cached data, pending offline changes, and local application state.#
 
-Barcode scanning and real-time synchronization may be limited or unavailable on devices without camera access, network connectivity, or required platform permissions.
+#Barcode scanning and real-time synchronization may be limited or unavailable on devices without camera access, network connectivity, or required platform permissions.#
 
-==== Developer Machine Requirements
+==== #Developer Machine Requirements#
 
-Developers and reviewers running the project locally should have:
+#Developers and reviewers running the project locally should have:#
 
-* Git, the Flutter SDK, and the Dart SDK (provided through Flutter).
-* A supported IDE/editor (e.g., VS Code or Android Studio).
-* An Android emulator, iOS simulator, or physical device for testing.
-* Access to the project's backend configuration values when testing Supabase-connected features.
-* A stable internet connection for dependency installation, Supabase access, and package downloads.
+* #Git, the Flutter SDK, and the Dart SDK (provided through Flutter).#
+* #A supported IDE/editor (e.g., VS Code or Android Studio).#
+* #An Android emulator, iOS simulator, or physical device for testing.#
+* #Access to the project's backend configuration values when testing Supabase-connected features.#
+* #A stable internet connection for dependency installation, Supabase access, and package downloads.#
 
-The main application source is under `src/`, which contains the Flutter project configuration.
+#The main application source is under `src/`, which contains the Flutter project configuration.#
 
-==== Runtime and Framework Dependencies
+==== #Runtime and Framework Dependencies#
 
-The project depends on the Flutter/Dart mobile stack. The local development environment used for this documentation is Flutter SDK 3.35.5 (stable), Dart SDK 3.9.2, DevTools 2.48.0. The Flutter project defines its Dart SDK constraint in `src/pubspec.yaml`:
+#The project depends on the Flutter/Dart mobile stack. The local development environment used for this documentation is Flutter SDK 3.35.5 (stable), Dart SDK 3.9.2, DevTools 2.48.0. The Flutter project defines its Dart SDK constraint in `src/pubspec.yaml`:#
 
 ----
 environment:
   sdk: ^3.8.1
 ----
 
-`src/pubspec.yaml` is the authoritative dependency file for the mobile client. At minimum, the local environment must support Flutter execution from `src/`, Dart compatibility with the `^3.8.1` constraint, package resolution via `flutter pub get`, mobile build/run for the target platform, camera permissions for scanning, and network access for backend communication.
+#`src/pubspec.yaml` is the authoritative dependency file for the mobile client. At minimum, the local environment must support Flutter execution from `src/`, Dart compatibility with the `^3.8.1` constraint, package resolution via `flutter pub get`, mobile build/run for the target platform, camera permissions for scanning, and network access for backend communication.#
 
-Important dependencies include:
+#Important dependencies include:#
 
-* `supabase_flutter` (Supabase integration)
-* `go_router` (navigation)
-* `flutter_bloc`, `bloc_test`, `mocktail` (state management and testing)
-* `get_it` (dependency injection)
-* `intl` (formatting)
-* `pdf` and `printing` (report/export)
-* `fl_chart` (charting and visual summaries)
+* #`supabase_flutter` (Supabase integration)#
+* #`go_router` (navigation)#
+* #`flutter_bloc`, `bloc_test`, `mocktail` (state management and testing)#
+* #`get_it` (dependency injection)#
+* #`intl` (formatting)#
+* #`pdf` and `printing` (report/export)#
+* #`fl_chart` (charting and visual summaries)#
 
-If dependency versions change, `src/pubspec.yaml` remains the authoritative source.
+#If dependency versions change, `src/pubspec.yaml` remains the authoritative source.#
 
-==== External Service Requirements
+==== #External Service Requirements#
 
-The system relies on external backend services, which may include:
+#The system relies on external backend services, which may include:#
 
-* Supabase database for persistent inventory, household, spending, and notification data.
-* Supabase Auth for user identity and authenticated access.
-* Supabase Realtime for shared household synchronization.
-* Supabase Storage if item images, receipts, or related files are used.
-* Supabase Edge Functions or scheduled backend logic for automation features, when enabled.
-* Push notification services (FCM or APNs) if push delivery is enabled later.
+* #Supabase database for persistent inventory, household, spending, and notification data.#
+* #Supabase Auth for user identity and authenticated access.#
+* #Supabase Realtime for shared household synchronization.#
+* #Supabase Storage if item images, receipts, or related files are used.#
+* #Supabase Edge Functions or scheduled backend logic for automation features, when enabled.#
+* #Push notification services (FCM or APNs) if push delivery is enabled later.#
 
-Features depending on these services may not work fully without valid project credentials, service configuration, and network connectivity.
+#Features depending on these services may not work fully without valid project credentials, service configuration, and network connectivity.#
 
-==== Deployment Assumptions
+==== #Deployment Assumptions#
 
-For Milestone 3, deployment is a review and testing environment rather than a production release; the project should be runnable locally by developers and reviewers with the required dependencies and configuration. Assumptions:
+#For Milestone 3, deployment is a review and testing environment rather than a production release; the project should be runnable locally by developers and reviewers with the required dependencies and configuration. Assumptions:#
 
-* The Flutter client can be run locally from `src/`.
-* Backend-connected features require valid Supabase project configuration.
-* Environment-specific secrets or credentials must not be committed to the repository.
-* Any deployment target used for review should be documented in the build and deployment procedure.
-* If a production deployment target is not finalized, the documentation should state that deployment remains pending.
+* #The Flutter client can be run locally from `src/`.#
+* #Backend-connected features require valid Supabase project configuration.#
+* #Environment-specific secrets or credentials must not be committed to the repository.#
+* #Any deployment target used for review should be documented in the build and deployment procedure.#
+* #If a production deployment target is not finalized, the documentation should state that deployment remains pending.#
 
-==== Environment Configuration
+==== #Environment Configuration#
 
-Environment-specific values (backend URLs, API keys, service credentials) should be handled through local configuration files or secure project settings. These may include the Supabase project URL, Supabase anonymous/public key, Android/iOS platform configuration, notification service configuration (if push is enabled), and any feature flags required for testing. Sensitive keys, private credentials, and service-role secrets must not be committed to version control.
+#Environment-specific values (backend URLs, API keys, service credentials) should be handled through local configuration files or secure project settings. These may include the Supabase project URL, Supabase anonymous/public key, Android/iOS platform configuration, notification service configuration (if push is enabled), and any feature flags required for testing. Sensitive keys, private credentials, and service-role secrets must not be committed to version control.#
 
-=== MR-01: Availability
+=== #MR-01: Availability#
 
-The system shall remain operational during supervised usability testing and ordinary household use. During active testing sessions lasting up to 2 continuous hours, no unplanned restart or unrecoverable application failure shall occur. The application shall maintain at least 99% session availability during supervised validation sessions.
+#The system shall remain operational during supervised usability testing and ordinary household use. During active testing sessions lasting up to 2 continuous hours, no unplanned restart or unrecoverable application failure shall occur. The application shall maintain at least 99% session availability during supervised validation sessions.#
 
-Trace: DR-12 (threshold-driven low-stock), DR-13 (expiration status)
+#Trace: DR-12 (threshold-driven low-stock), DR-13 (expiration status)#
 
-Verification: Session logs; crash monitoring; test coordinator observation.
-
----
-
-=== MR-02: Response Time
-
-The system shall respond quickly enough that household members can complete inventory tasks without disruptive delays.
-
-Inventory lookup and filtering operations for inventories containing up to 5,000 tracked items shall return visible results within 1 second under normal mobile-network conditions.
-Dashboard summary information shall render within 2 seconds after opening the dashboard view.
-Item creation workflows shall remain completable in under 1 minute during usability walkthroughs.
-Barcode lookup results or manual-entry fallback transitions shall appear within 3 seconds after successful barcode capture.
-
-Trace: DR-7 (short-window duplicates), DR-12 (threshold-driven low-stock)
-
-Verification: Timed usability walkthroughs; integration tests; recorded performance measurements.
+#Verification: Session logs; crash monitoring; test coordinator observation.#
 
 ---
 
-=== MR-03: Offline Operation
+=== #MR-02: Response Time#
 
-The mobile client shall support viewing inventory while offline and allow pending item creation and quantity updates while disconnected. Pending changes shall remain locally recoverable for at least 24 hours or until synchronization succeeds.
+#The system shall respond quickly enough that household members can complete inventory tasks without disruptive delays.#
 
-Pending offline changes shall be visibly marked until synchronization completes successfully. If the same tracked record is modified remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.
+#Inventory lookup and filtering operations for inventories containing up to 5,000 tracked items shall return visible results within 1 second under normal mobile-network conditions.#
+#Dashboard summary information shall render within 2 seconds after opening the dashboard view.#
+#Item creation workflows shall remain completable in under 1 minute during usability walkthroughs.#
+#Barcode lookup results or manual-entry fallback transitions shall appear within 3 seconds after successful barcode capture.#
 
-Trace: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)
+#Trace: DR-7 (short-window duplicates), DR-12 (threshold-driven low-stock)#
 
-Milestone 3 source: M3-QA-08.
-
-Verification: Integration tests with connectivity simulation; manual offline modification and recovery tests.
-
----
-
-=== MR-04: Synchronization
-
-When multiple household members use the same inventory, successfully persisted inventory changes shall propagate to synchronized household devices within 5 seconds under normal connectivity conditions.
-
-Synchronization updates shall appear without requiring manual refresh actions.
-
-Trace: DR-4 (household administration), DR-5 (membership independence)
-
-Verification: Automated synchronization tests; multi-user manual tests with concurrent household sessions.
+#Verification: Timed usability walkthroughs; integration tests; recorded performance measurements.#
 
 ---
 
-=== MR-05: Security and Privacy
+=== #MR-03: Offline Operation#
 
-Only authorized household members shall access household inventory data. Personal item records shall remain hidden from non-owners by default unless explicitly shared.
+#The mobile client shall support viewing inventory while offline and allow pending item creation and quantity updates while disconnected. Pending changes shall remain locally recoverable for at least 24 hours or until synchronization succeeds.#
 
-Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views. Unauthorized access attempts using invalid credentials or insufficient permissions shall be rejected in all tested validation scenarios.
+#Pending offline changes shall be visibly marked until synchronization completes successfully. If the same tracked record is modified remotely before synchronization, the system shall surface the conflict instead of silently overwriting data.#
 
-Trace: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention), DR-18 (Personal item default privacy), DR-19 (Role-scoped household permissions)
+#Trace: DR-9 (Auditability of corrections), DR-25 (Pending offline inventory changes)#
 
-Milestone 3 source: M3-QA-01, M3-QA-02.
+#Milestone 3 source: M3-QA-08.#
 
-Verification: Access-control tests using owner/member/viewer/admin test accounts.
-
----
-
-=== MR-06: Auditability
-
-Inventory quantity modifications shall generate audit records containing timestamp, acting user identifier, affected item reference, previous value, and updated value.
-
-Audit records shall remain retrievable for at least 30 days during normal system operation.
-
-Trace: DR-8 (ambiguity guard), DR-9 (auditability of corrections)
-
-Verification: Schema validation; manual audit-log inspection; integration tests verifying audit-record generation.
+#Verification: Integration tests with connectivity simulation; manual offline modification and recovery tests.#
 
 ---
 
-=== MR-07: Notification Quality
+=== #MR-04: Synchronization#
 
-Repeated automated evaluations without changed triggering conditions shall not generate duplicate alert records or repeated push notifications for the same household-item-condition combination within a 24-hour period.
+#When multiple household members use the same inventory, successfully persisted inventory changes shall propagate to synchronized household devices within 5 seconds under normal connectivity conditions.#
 
-Low-stock and expiration-condition evaluations shall execute at least once every 15 minutes while the application is active or during scheduled synchronization cycles.
+#Synchronization updates shall appear without requiring manual refresh actions.#
 
-Shared household alerts shall support household-level visibility while respecting individual delivery preferences.
+#Trace: DR-4 (household administration), DR-5 (membership independence)#
 
-Trace: DR-14 (deduplicated alerting), DR-23 (Shared alert audience control)
-
-Milestone 3 source: M3-QA-06.
-
-Verification: Integration tests with repeated triggers, shared-household accounts, and different notification preferences.
+#Verification: Automated synchronization tests; multi-user manual tests with concurrent household sessions.#
 
 ---
 
-=== Measurement Plan for Milestone 2 Completion
+=== #MR-05: Security and Privacy#
 
-The following measurements will be collected during Milestone 2 validation to establish a baseline for future milestones:
+#Only authorized household members shall access household inventory data. Personal item records shall remain hidden from non-owners by default unless explicitly shared.#
+
+#Household role permissions shall be enforced consistently across inventory, alerts, spending, and membership-management views. Unauthorized access attempts using invalid credentials or insufficient permissions shall be rejected in all tested validation scenarios.#
+
+#Trace: DR-4 (household administration), DR-5 (membership independence), DR-6 (attribution retention), DR-18 (Personal item default privacy), DR-19 (Role-scoped household permissions)#
+
+#Milestone 3 source: M3-QA-01, M3-QA-02.#
+
+#Verification: Access-control tests using owner/member/viewer/admin test accounts.#
+
+---
+
+=== #MR-06: Auditability#
+
+#Inventory quantity modifications shall generate audit records containing timestamp, acting user identifier, affected item reference, previous value, and updated value.#
+
+#Audit records shall remain retrievable for at least 30 days during normal system operation.#
+
+#Trace: DR-8 (ambiguity guard), DR-9 (auditability of corrections)#
+
+#Verification: Schema validation; manual audit-log inspection; integration tests verifying audit-record generation.#
+
+---
+
+=== #MR-07: Notification Quality#
+
+#Repeated automated evaluations without changed triggering conditions shall not generate duplicate alert records or repeated push notifications for the same household-item-condition combination within a 24-hour period.#
+
+#Low-stock and expiration-condition evaluations shall execute at least once every 15 minutes while the application is active or during scheduled synchronization cycles.#
+
+#Shared household alerts shall support household-level visibility while respecting individual delivery preferences.#
+
+#Trace: DR-14 (deduplicated alerting), DR-23 (Shared alert audience control)#
+
+#Milestone 3 source: M3-QA-06.#
+
+#Verification: Integration tests with repeated triggers, shared-household accounts, and different notification preferences.#
+
+---
+
+=== #Measurement Plan for Milestone 2 Completion#
+
+#The following measurements will be collected during Milestone 2 validation to establish a baseline for future milestones:#
 
 |===
-|What to Measure |How |When
+| #What to Measure# | #How# | #When#
 
-|Response times |Record during usability walkthroughs |Post-prototype
-|Sync behavior |Verify real-time propagation via Supabase |During multi-user testing
-|Error occurrences |Log all exceptions during testing |Throughout testing
-|User perception |Participant feedback on speed/friction |During walkthroughs
-|Barcode scanning success rate |Track match vs manual entry ratio |During walkthroughs
+| #Response times# | #Record during usability walkthroughs# | #Post-prototype#
+| #Sync behavior# | #Verify real-time propagation via Supabase# | #During multi-user testing#
+| #Error occurrences# | #Log all exceptions during testing# | #Throughout testing#
+| #User perception# | #Participant feedback on speed/friction# | #During walkthroughs#
+| #Barcode scanning success rate# | #Track match vs manual entry ratio# | #During walkthroughs#
 |===
 
-These measurements will inform quantitative machine requirements for subsequent milestones.
+#These measurements will inform quantitative machine requirements for subsequent milestones.#
 
 ---
 
-=== Out of Scope / Pending for Milestone 3
+=== #Out of Scope / Pending for Milestone 3#
 
-Production deployment targets, final quantitative performance thresholds, and full release infrastructure are not finalized here. These should be refined as the implementation stabilizes and documented in the build and deployment procedure when applicable.
+#Production deployment targets, final quantitative performance thresholds, and full release infrastructure are not finalized here. These should be refined as the implementation stabilizes and documented in the build and deployment procedure when applicable.#
 
-=== Traceability Matrix
+=== #Traceability Matrix#
 
 [cols="1,2,1,2,2,1,2", options="header"]
 |===
-| Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
+| #Requirement ID# | #Source Stakeholder# | #Validation Scenario# | #Verification Artifact# | #Implementation Locus# | #Traceability Status# | #Gap Reason#
 
-| MR-01 | End User, System / Dev Team | S1 | Pending | AutoCheck process, Alerts & Notification System, Database layer | Gap flagged | Availability metrics collection not implemented. Specific TC IDs pending; planned coverage in the TC-ALT-* family.
-| MR-02 | End User, System / Dev Team | S1 | Pending | Inventory module, Dashboard / Reporting | Gap flagged | Reporting performance validation pending. Specific TC IDs pending; planned coverage in the TC-INV-* family.
-| MR-03 | End User, System / Dev Team | S2 | Pending | Inventory module, Database layer | Gap flagged | Inventory automation stress testing not completed. Specific TC IDs pending; planned coverage in the TC-INV-* and TC-AUTO-* families.
-| MR-04 | End User, System / Dev Team | S2 | Pending | Household management, Database layer, Alerts & Notification System | Gap flagged | Household automation recovery tests pending. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
-| MR-05 | Household Manager, End User, System / Dev Team | S2 | Pending | Household management, Database layer, Alerts & Notification System | Gap flagged | Cross-user automation validation incomplete. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
-| MR-06 | Household Manager, System / Dev Team | S2 | Pending | Database layer, Inventory module, Alerts & Notification System | Gap flagged | Notification resilience testing not implemented. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.
-| MR-07 | End User, System / Dev Team | S1 | Pending | Alerts & Notification System, AutoCheck process | Gap flagged | Notification fatigue prevention metrics pending. Specific TC IDs pending; planned coverage in the TC-ALT-* family.
+| #MR-01# | #End User, System / Dev Team# | #S1# | #Pending# | #AutoCheck process, Alerts & Notification System, Database layer# | #Gap flagged# | #Availability metrics collection not implemented. Specific TC IDs pending; planned coverage in the TC-ALT-* family.#
+| #MR-02# | #End User, System / Dev Team# | #S1# | #Pending# | #Inventory module, Dashboard / Reporting# | #Gap flagged# | #Reporting performance validation pending. Specific TC IDs pending; planned coverage in the TC-INV-* family.#
+| #MR-03# | #End User, System / Dev Team# | #S2# | #Pending# | #Inventory module, Database layer# | #Gap flagged# | #Inventory automation stress testing not completed. Specific TC IDs pending; planned coverage in the TC-INV-* and TC-AUTO-* families.#
+| #MR-04# | #End User, System / Dev Team# | #S2# | #Pending# | #Household management, Database layer, Alerts & Notification System# | #Gap flagged# | #Household automation recovery tests pending. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.#
+| #MR-05# | #Household Manager, End User, System / Dev Team# | #S2# | #Pending# | #Household management, Database layer, Alerts & Notification System# | #Gap flagged# | #Cross-user automation validation incomplete. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.#
+| #MR-06# | #Household Manager, System / Dev Team# | #S2# | #Pending# | #Database layer, Inventory module, Alerts & Notification System# | #Gap flagged# | #Notification resilience testing not implemented. Specific TC IDs pending; planned coverage in the TC-AUTO-* family.#
+| #MR-07# | #End User, System / Dev Team# | #S1# | #Pending# | #Alerts & Notification System, AutoCheck process# | #Gap flagged# | #Notification fatigue prevention metrics pending. Specific TC IDs pending; planned coverage in the TC-ALT-* family.#
 |===

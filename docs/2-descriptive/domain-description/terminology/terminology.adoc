@@ -11,7 +11,7 @@ This glossary is exercised by the *Terminology walkthroughs* in <<_terminology_w
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)
 * *Requirements* — introduced when specifying capabilities of the system-to-be
-* *Implementation* — introduced during M2/M3 software design, architecture, and deployment work
+* #*Implementation* — introduced during M2/M3 software design, architecture, and deployment work#
 
 === Phenomenon-type tags
 
@@ -66,19 +66,19 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Item type
 | Entity
 | Domain
-| The kind of an item, independent of any specific package: a definition that names what the thing is and (optionally) its category, brand, size, and barcode. "Milk", "Dish soap", and "Toilet paper" are item types.
-| Previously "Product." Avoid "Asset" / "Belonging" for this; use *Item type* for the kind and *Item instance* for a specific physical package.
+| #The kind of an item, independent of any specific package: a definition that names what the thing is and (optionally) its category, brand, size, and barcode. "Milk", "Dish soap", and "Toilet paper" are item types.#
+| #Previously "Product." Avoid "Asset" / "Belonging" for this; use *Item type* for the kind and *Item instance* for a specific physical package.#
 
 | Item instance (package)
 | Entity
 | Domain
 | A concrete package or unit of an *Item type* that physically exists in the household — one specific milk carton, one specific medicine box. Distinguishable by being a particular physical object stored in a particular *Location*.
-| Previously "Stock." *Item instance* is preferred over "Asset" / "Belonging" when referring to a specific physical object/package.
+| #Previously "Stock." *Item instance* is preferred over "Asset" / "Belonging" when referring to a specific physical object/package.#
 
-| Inventory (reality)
-| Entity
-| Domain
-| The full set of *Item instances* that physically exist in a household at a given moment. A real-world thing, observable by walking through the house, not a list or record.
+| #Inventory (reality)#
+| #Entity#
+| #Domain#
+| #The full set of *Item instances* that physically exist in a household at a given moment. A real-world thing, observable by walking through the house, not a list or record.#
 | Real-world state, not a representation.
 
 | Tracked inventory
@@ -411,11 +411,11 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | A constraint that prevents the system from creating another alert or auto-added restock entry for the same (household, item, condition type, triggering state) tuple while the condition remains unchanged. A repeated scheduled check, page refresh, or sync event is not enough to create a duplicate. A new alert or restock entry is allowed only when the underlying actionable state changes, the user explicitly snoozes / clears the previous entry and the snooze period expires, or the condition is resolved and later becomes true again.
 | Operationalizes the domain concern that repeated checks should not create alert spam or duplicate restock work.
 
-| Permission rule
-| Rule
-| Requirements
-| A constraint that defines what actions a user or household member is allowed to perform within a household or shared inventory.
-| Examples include viewing items, editing items, inviting members, removing members, or managing shared household data.
+| #Permission rule#
+| #Rule#
+| #Requirements#
+| #A constraint that defines what actions a user or household member is allowed to perform within a household or shared inventory.#
+| #Examples include viewing items, editing items, inviting members, removing members, or managing shared household data.#
 
 | Validation rule
 | Rule
