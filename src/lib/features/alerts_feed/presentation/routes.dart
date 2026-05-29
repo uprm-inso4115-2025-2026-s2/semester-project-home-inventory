@@ -6,10 +6,5 @@ import 'pages/alerts_home.dart';
 
 var alertsFeedRoutes = GoRoute(
   path: '/alerts_home',
-  builder: (_, __) {
-    return MultiBlocProvider(
-      providers: [BlocProvider.value(value: sl<TodoCubit>())],
-      child: AlertsHome(),
-    );
-  },
+  builder: (_, __) => const AlertsHome(),
 );
