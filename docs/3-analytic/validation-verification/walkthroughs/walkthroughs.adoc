@@ -237,313 +237,313 @@ These questions validate mental models and domain assumptions, not satisfaction.
 
 #The walkthroughs confirm that *Entities* and *Properties* in <<_terminology>> are largely well-covered: every scenario found a noun for every thing. The systematic gaps are in *Actions* — wherever the project documents an *Event* (e.g., *Restock entry created / updated*, *Spending recorded*, *Item discarded*, *Household membership changed*), there should be a paired *Action* whose *Produces* clause matches the *Event*. The project commits to that Action-Event pairing for *Consumption* ↔ *Item consumed* and *Replenishment* ↔ *Item replenished*; the missing pairings above are the most actionable terminology refinements for the next milestone.#
 
-=== Requirements walkthroughs
+=== #Requirements walkthroughs#
 
-A *requirements walkthrough* is the requirements-engineering counterpart to the terminology walkthrough above. The team takes a concrete user-story scenario, walks through what would actually have to happen in the system, step by step, and for each step asks: *which Domain Requirement (DR-\*), Interface Requirement (IR-\*), or Machine Requirement (MR-\*) covers this?* A step that has no covering requirement is a `[REQ-GAP]`; a step covered by a requirement whose wording leaves the behavior ambiguous is `[REQ-FUZZY]`. The goal is to verify the requirement set is *complete and clear enough to support actual execution* of the user stories.
+#A *requirements walkthrough* is the requirements-engineering counterpart to the terminology walkthrough above. The team takes a concrete user-story scenario, walks through what would actually have to happen in the system, step by step, and for each step asks: *which Domain Requirement (DR-\*), Interface Requirement (IR-\*), or Machine Requirement (MR-\*) covers this?* A step that has no covering requirement is a `[REQ-GAP]`; a step covered by a requirement whose wording leaves the behavior ambiguous is `[REQ-FUZZY]`. The goal is to verify the requirement set is *complete and clear enough to support actual execution* of the user stories.#
 
-==== Method
+==== #Method#
 
-For each walkthrough:
+#For each walkthrough:#
 
-1. Name the user story (and decomposed sub-stories where relevant) being executed.
-2. State the scenario as a concrete instance using one of the project personas.
-3. Walk the scenario as a numbered sequence of *user-visible* and *system-internal* steps that must occur for the story to be fulfilled. Each step is one observable action or system response.
-4. After each step, list the requirement IDs that cover it under `Covered by:`, or mark `[REQ-GAP: …]` / `[REQ-FUZZY: …]`.
-5. End with a findings list per walkthrough.
+1. #Name the user story (and decomposed sub-stories where relevant) being executed.#
+2. #State the scenario as a concrete instance using one of the project personas.#
+3. #Walk the scenario as a numbered sequence of *user-visible* and *system-internal* steps that must occur for the story to be fulfilled. Each step is one observable action or system response.#
+4. #After each step, list the requirement IDs that cover it under `Covered by:`, or mark `[REQ-GAP: …]` / `[REQ-FUZZY: …]`.#
+5. #End with a findings list per walkthrough.#
 
-Requirement sources used: <<_domain_requirements,Domain Requirements>> (DR-\*), <<_interface_requirements,Interface Requirements>> (IR-\*), <<_machine_requirements,Machine Requirements>> (MR-\*), and the acceptance criteria attached to each <<_user_stories,user story>>. Italicized term names refer to <<_terminology>>.
+#Requirement sources used: <<_domain_requirements,Domain Requirements>> (DR-\*), <<_interface_requirements,Interface Requirements>> (IR-\*), <<_machine_requirements,Machine Requirements>> (MR-\*), and the acceptance criteria attached to each <<_user_stories,user story>>. Italicized term names refer to <<_terminology>>.#
 
-==== Walkthrough R1 — Add an item using barcode scan (US-INV-01 / US-INV-01B)
+==== #Walkthrough R1 — Add an item using barcode scan (US-INV-01 / US-INV-01B)#
 
-*Scenario.* Mateo (busy solo student) returns home from the supermarket with a carton of oat milk and a brand he has never bought before. He opens the app from the home screen and adds both items, first by barcode scan (oat milk), then by manual entry after a barcode miss (the unfamiliar brand).
+#*Scenario.* Mateo (busy solo student) returns home from the supermarket with a carton of oat milk and a brand he has never bought before. He opens the app from the home screen and adds both items, first by barcode scan (oat milk), then by manual entry after a barcode miss (the unfamiliar brand).#
 
-*Execution trace.*
+#*Execution trace.*#
 
-. Mateo opens the inventory view; a prominent "Add Item" entry point is visible.
+. #Mateo opens the inventory view; a prominent "Add Item" entry point is visible.#
 +
-*Covered by:* IR-01 (the system "shall provide a means for household members to add new inventory items"); reinforced by the US-INV-01 acceptance criterion "A prominent 'Add Item' entry point is available from the inventory view."
+#*Covered by:* IR-01 (the system "shall provide a means for household members to add new inventory items"); reinforced by the US-INV-01 acceptance criterion "A prominent 'Add Item' entry point is available from the inventory view."#
 
-. Mateo chooses "Add by barcode"; the device camera opens.
+. #Mateo chooses "Add by barcode"; the device camera opens.#
 +
-*Covered by:* IR-12 (barcode scanning with manual-entry fallback "using the device camera").
+#*Covered by:* IR-12 (barcode scanning with manual-entry fallback "using the device camera").#
 
-. The camera reads the oat-milk barcode and the system resolves it against the *Item type* catalog.
+. #The camera reads the oat-milk barcode and the system resolves it against the *Item type* catalog.#
 +
-*Covered by:* IR-12 (identification), DR-1 ("A single barcode shall map to exactly one *Item type*"), DR-17 (enforcement at persistence).
+#*Covered by:* IR-12 (identification), DR-1 ("A single barcode shall map to exactly one *Item type*"), DR-17 (enforcement at persistence).#
 +
-`[REQ-FUZZY-R1a]` Neither DR-1 nor IR-12 specifies what the system shall *display* when a barcode match is found — does it prefill the full *Item type*, only the name, or simply show a confirmation? The acceptance criteria for US-INV-01 don't pin this down either. Two engineers reading these requirements could implement the success-path UI differently.
+#`[REQ-FUZZY-R1a]` Neither DR-1 nor IR-12 specifies what the system shall *display* when a barcode match is found — does it prefill the full *Item type*, only the name, or simply show a confirmation? The acceptance criteria for US-INV-01 don't pin this down either. Two engineers reading these requirements could implement the success-path UI differently.#
 
-. Mateo confirms the quantity (1 carton), location (fridge), and ownership (personal).
+. #Mateo confirms the quantity (1 carton), location (fridge), and ownership (personal).#
 +
-*Covered by:* IR-01 (quantity, location, ownership are listed required/optional fields); IR-03 (ownership specification); IR-11 (minimum viable record is name + quantity / availability).
+#*Covered by:* IR-01 (quantity, location, ownership are listed required/optional fields); IR-03 (ownership specification); IR-11 (minimum viable record is name + quantity / availability).#
 
-. Mateo taps "Save"; the new *Item instance* is created and persisted.
+. #Mateo taps "Save"; the new *Item instance* is created and persisted.#
 +
-*Covered by:* DR-2 ("Every *Item instance* shall reference an existing *Item type* at the time it is recorded"), IR-01.
+#*Covered by:* DR-2 ("Every *Item instance* shall reference an existing *Item type* at the time it is recorded"), IR-01.#
 
-. The item appears in the inventory list without a manual refresh.
+. #The item appears in the inventory list without a manual refresh.#
 +
-`[REQ-GAP-R1b]` The user-story acceptance criterion is explicit ("the item appears in the inventory list without a manual refresh"), but no DR or IR commits the system to live updates after a local save. DR-25 covers *offline / pending* state and conflict resolution but not the normal-path "save → list updates" guarantee. MR-01 covers session availability, not update latency. The behavior the acceptance criterion promises is not formalized as a requirement.
+#`[REQ-GAP-R1b]` The user-story acceptance criterion is explicit ("the item appears in the inventory list without a manual refresh"), but no DR or IR commits the system to live updates after a local save. DR-25 covers *offline / pending* state and conflict resolution but not the normal-path "save → list updates" guarantee. MR-01 covers session availability, not update latency. The behavior the acceptance criterion promises is not formalized as a requirement.#
 
-. Mateo selects "Add by barcode" again for the unfamiliar brand; the scan returns no match.
+. #Mateo selects "Add by barcode" again for the unfamiliar brand; the scan returns no match.#
 +
-*Covered by:* IR-12 ("If barcode scanning fails… the interface shall immediately transition to a manual-entry workflow"), DR-21 (minimal fallback capture allowed).
+#*Covered by:* IR-12 ("If barcode scanning fails… the interface shall immediately transition to a manual-entry workflow"), DR-21 (minimal fallback capture allowed).#
 
-. Mateo types the item name and quantity; the system creates a minimum viable record.
+. #Mateo types the item name and quantity; the system creates a minimum viable record.#
 +
-*Covered by:* IR-11 (manual fallback with only name and quantity required), DR-21.
+#*Covered by:* IR-11 (manual fallback with only name and quantity required), DR-21.#
 
-. The new *Item type* is created because no existing one matched the unknown brand.
+. #The new *Item type* is created because no existing one matched the unknown brand.#
 +
-`[REQ-FUZZY-R1c]` DR-1 / DR-17 govern the *barcode → item type* mapping. The case of a manually-created item type *with no barcode at all* is not covered: can two unrelated households independently create the same item type by name, and does the system attempt to dedupe by name? DR-15 (normalization before comparison) hints at this but is written for duplicate detection, not for the manual-no-barcode case.
+#`[REQ-FUZZY-R1c]` DR-1 / DR-17 govern the *barcode → item type* mapping. The case of a manually-created item type *with no barcode at all* is not covered: can two unrelated households independently create the same item type by name, and does the system attempt to dedupe by name? DR-15 (normalization before comparison) hints at this but is written for duplicate detection, not for the manual-no-barcode case.#
 
-. Mateo can immediately edit either record to fill in optional fields (category, expiration).
+. #Mateo can immediately edit either record to fill in optional fields (category, expiration).#
 +
-*Covered by:* IR-01 (optional fields supported), IR-05 (expiration date entry), US-INV-01 acceptance criterion on editing.
+#*Covered by:* IR-01 (optional fields supported), IR-05 (expiration date entry), US-INV-01 acceptance criterion on editing.#
 
-*Findings — R1.*
+#*Findings — R1.*#
 
-* `[REQ-GAP-R1b]` The "no manual refresh" promise in the US-INV-01 acceptance criteria has no covering DR / IR. *Recommended fix:* add an IR that the inventory list shall reflect locally saved items within a stated latency, distinct from the offline-sync rules of DR-25.
-* `[REQ-FUZZY-R1a]` What the system displays on a successful barcode match is unspecified.
-* `[REQ-FUZZY-R1c]` Duplicate handling for *manually-created item types without a barcode* is not explicit. DR-1 / DR-17 specify the *barcode-keyed* invariant; DR-15 normalization is the closest hook but is framed for detection, not for the manual-no-barcode case.
+* #`[REQ-GAP-R1b]` The "no manual refresh" promise in the US-INV-01 acceptance criteria has no covering DR / IR. *Recommended fix:* add an IR that the inventory list shall reflect locally saved items within a stated latency, distinct from the offline-sync rules of DR-25.#
+* #`[REQ-FUZZY-R1a]` What the system displays on a successful barcode match is unspecified.#
+* #`[REQ-FUZZY-R1c]` Duplicate handling for *manually-created item types without a barcode* is not explicit. DR-1 / DR-17 specify the *barcode-keyed* invariant; DR-15 normalization is the closest hook but is framed for detection, not for the manual-no-barcode case.#
 
-==== Walkthrough R2 — Low-stock warning after consumption (US-ALT-01 / US-ALT-01B)
+==== #Walkthrough R2 — Low-stock warning after consumption (US-ALT-01 / US-ALT-01B)#
 
-*Scenario.* Julian (diet-constrained student) consumed two boxes of his preferred Barilla gluten-free elbows during meal prep, leaving 1 box. His low-stock threshold for this item is 2. The system must flag the item, notify him, and update the *Restock list / planner* — without re-flagging on every subsequent inventory check until something changes.
+#*Scenario.* Julian (diet-constrained student) consumed two boxes of his preferred Barilla gluten-free elbows during meal prep, leaving 1 box. His low-stock threshold for this item is 2. The system must flag the item, notify him, and update the *Restock list / planner* — without re-flagging on every subsequent inventory check until something changes.#
 
-*Execution trace.*
+#*Execution trace.*#
 
-. Julian had previously set a per-item *Reorder point* of 2 boxes during item editing.
+. #Julian had previously set a per-item *Reorder point* of 2 boxes during item editing.#
 +
-*Covered by:* IR-04 (Low-Stock Threshold Definition — controls for entering and editing thresholds during creation and edit).
+#*Covered by:* IR-04 (Low-Stock Threshold Definition — controls for entering and editing thresholds during creation and edit).#
 
-. Julian opens the item and decreases the *Quantity* from 3 to 1.
+. #Julian opens the item and decreases the *Quantity* from 3 to 1.#
 +
-*Covered by:* IR-02 (Item Update on Consumption — record consumption by decreasing quantity).
+#*Covered by:* IR-02 (Item Update on Consumption — record consumption by decreasing quantity).#
 
-. The system compares the new quantity (1) against the per-item *Reorder point* (2) and classifies the item as *LOW_STOCK*.
+. #The system compares the new quantity (1) against the per-item *Reorder point* (2) and classifies the item as *LOW_STOCK*.#
 +
-*Covered by:* DR-12 (Threshold-driven low-stock — "When quantity falls at or below the threshold, the system shall flag the item type as low-stock").
+#*Covered by:* DR-12 (Threshold-driven low-stock — "When quantity falls at or below the threshold, the system shall flag the item type as low-stock").#
 
-. The item is added to the *Restock list / planner* with reason `LOW_STOCK`.
+. #The item is added to the *Restock list / planner* with reason `LOW_STOCK`.#
 +
-`[REQ-FUZZY-R2a]` DR-24 (Restock auto-add override) presupposes that auto-add happens but does not itself *require* that the system auto-add an item to the *Restock list / planner* on a low-stock transition. DR-12 ends at "make this status visible to household members"; it doesn't mandate the restock-list entry. The acceptance criterion for US-ALT-01 says "Low-stock status remains consistent across views (inventory list, restock list/planner, dashboard summaries)" — which only requires *consistency*, not auto-creation. The auto-add step is performed by the implementation but not formally required.
+#`[REQ-FUZZY-R2a]` DR-24 (Restock auto-add override) presupposes that auto-add happens but does not itself *require* that the system auto-add an item to the *Restock list / planner* on a low-stock transition. DR-12 ends at "make this status visible to household members"; it doesn't mandate the restock-list entry. The acceptance criterion for US-ALT-01 says "Low-stock status remains consistent across views (inventory list, restock list/planner, dashboard summaries)" — which only requires *consistency*, not auto-creation. The auto-add step is performed by the implementation but not formally required.#
 
-. An *Alert / notification* of type `LOW_STOCK` is generated and recorded as a *Notification record*.
+. #An *Alert / notification* of type `LOW_STOCK` is generated and recorded as a *Notification record*.#
 +
-*Covered by:* DR-14 (Deduplicated alerting — alerts are created on transitions, deduplicated against same household + item + condition + state).
+#*Covered by:* DR-14 (Deduplicated alerting — alerts are created on transitions, deduplicated against same household + item + condition + state).#
 
-. Julian later returns to the inventory list and pulls down to refresh; the *Scheduled sweep* (Action) also runs in the background.
+. #Julian later returns to the inventory list and pulls down to refresh; the *Scheduled sweep* (Action) also runs in the background.#
 +
-*Covered by:* DR-14 explicitly forbids the re-running check from producing a duplicate alert: "Repeated checks without a changed condition shall not create a new alert."
+#*Covered by:* DR-14 explicitly forbids the re-running check from producing a duplicate alert: "Repeated checks without a changed condition shall not create a new alert."#
 
-. Julian opens the alert and selects "Snooze for 24 hours."
+. #Julian opens the alert and selects "Snooze for 24 hours."#
 +
-*Covered by:* IR-15 (Restock List Override Controls — "controls allowing authorized household members to remove, dismiss, or snooze restock list entries").
+#*Covered by:* IR-15 (Restock List Override Controls — "controls allowing authorized household members to remove, dismiss, or snooze restock list entries").#
 +
-`[REQ-FUZZY-R2b]` IR-15 covers snooze for *restock list entries* but the snooze action in this step applies to an *alert*. DR-14 mentions a "user-controlled snooze/defer period" but does not separately require an *interface* for snoozing an alert. The user story acceptance criterion mentions grouping/summarizing alerts, not snoozing. Snooze coverage for alerts (vs. restock entries) is implied but not explicit.
+#`[REQ-FUZZY-R2b]` IR-15 covers snooze for *restock list entries* but the snooze action in this step applies to an *alert*. DR-14 mentions a "user-controlled snooze/defer period" but does not separately require an *interface* for snoozing an alert. The user story acceptance criterion mentions grouping/summarizing alerts, not snoozing. Snooze coverage for alerts (vs. restock entries) is implied but not explicit.#
 
-. Twenty-four hours later, the snooze period expires and the system re-evaluates: the *Item type* is still at quantity 1 (≤ threshold) and still in `LOW_STOCK` state.
+. #Twenty-four hours later, the snooze period expires and the system re-evaluates: the *Item type* is still at quantity 1 (≤ threshold) and still in `LOW_STOCK` state.#
 +
-*Covered by:* DR-14 ("A new alert may be created only if… a user-controlled snooze / defer period expires").
+#*Covered by:* DR-14 ("A new alert may be created only if… a user-controlled snooze / defer period expires").#
 
-. Julian sees the same item now reflected as low-stock in the inventory list, the *Restock list / planner*, and the dashboard.
+. #Julian sees the same item now reflected as low-stock in the inventory list, the *Restock list / planner*, and the dashboard.#
 +
-*Covered by:* US-ALT-01 acceptance criterion (cross-view consistency); IR-08 (dashboard summarizes low-stock); IR-10 (filtered inventory lookup by stock status).
+#*Covered by:* US-ALT-01 acceptance criterion (cross-view consistency); IR-08 (dashboard summarizes low-stock); IR-10 (filtered inventory lookup by stock status).#
 +
-`[REQ-GAP-R2c]` No DR or IR formally requires the *cross-view* consistency. The user story says it; the dashboard / list / lookup requirements each cover their own view. There is no requirement that says *the* low-stock state computed once is the same value each view must read. In practice this is satisfied if each view reads the same record, but the consistency property is not stated as a requirement.
+#`[REQ-GAP-R2c]` No DR or IR formally requires the *cross-view* consistency. The user story says it; the dashboard / list / lookup requirements each cover their own view. There is no requirement that says *the* low-stock state computed once is the same value each view must read. In practice this is satisfied if each view reads the same record, but the consistency property is not stated as a requirement.#
 
-*Findings — R2.*
+#*Findings — R2.*#
 
-* `[REQ-FUZZY-R2a]` Auto-creation of a *Restock list / planner* entry on a low-stock transition is presupposed by DR-24 and the US-ALT-01 cross-view consistency criterion but never *required* by DR-12 or DR-24 themselves. *Recommended fix:* extend DR-12 (or add a DR-12A) to require auto-add to the Restock list/planner on the NORMAL→LOW_STOCK transition, mirroring how DR-13 splits expiration-status derivation from unknown handling.
-* `[REQ-FUZZY-R2b]` Snooze for *alerts* (as opposed to *restock entries*) is only implicit. IR-15 names restock entries; DR-14 mentions a snooze period. *Recommended fix:* extend IR-15 to explicitly include alert snoozing, or add a sibling IR for alert dismiss / snooze.
-* `[REQ-GAP-R2c]` Cross-view consistency of derived stock status (inventory list, restock list, dashboard) is in the user story but unrequired.
+* #`[REQ-FUZZY-R2a]` Auto-creation of a *Restock list / planner* entry on a low-stock transition is presupposed by DR-24 and the US-ALT-01 cross-view consistency criterion but never *required* by DR-12 or DR-24 themselves. *Recommended fix:* extend DR-12 (or add a DR-12A) to require auto-add to the Restock list/planner on the NORMAL→LOW_STOCK transition, mirroring how DR-13 splits expiration-status derivation from unknown handling.#
+* #`[REQ-FUZZY-R2b]` Snooze for *alerts* (as opposed to *restock entries*) is only implicit. IR-15 names restock entries; DR-14 mentions a snooze period. *Recommended fix:* extend IR-15 to explicitly include alert snoozing, or add a sibling IR for alert dismiss / snooze.#
+* #`[REQ-GAP-R2c]` Cross-view consistency of derived stock status (inventory list, restock list, dashboard) is in the user story but unrequired.#
 
-==== Walkthrough R3 — Personal vs shared item visibility (US-INV-02 / US-INV-02A / US-INV-02B)
+==== #Walkthrough R3 — Personal vs shared item visibility (US-INV-02 / US-INV-02A / US-INV-02B)#
 
-*Scenario.* Sofia (budget-conscious roommate) joins a four-person household. She wants her premium shampoo to remain personal (invisible to roommates) but to mark the rice she just bought as shared. Later she changes her mind and converts the shampoo to shared.
+#*Scenario.* Sofia (budget-conscious roommate) joins a four-person household. She wants her premium shampoo to remain personal (invisible to roommates) but to mark the rice she just bought as shared. Later she changes her mind and converts the shampoo to shared.#
 
-*Execution trace.*
+#*Execution trace.*#
 
-. Sofia opens the new-item dialog and adds the shampoo.
+. #Sofia opens the new-item dialog and adds the shampoo.#
 +
-*Covered by:* IR-01.
+#*Covered by:* IR-01.#
 
-. Sofia sets ownership to *personal*.
+. #Sofia sets ownership to *personal*.#
 +
-*Covered by:* IR-03 (mark items as personal or shared, associate personal with a member).
+#*Covered by:* IR-03 (mark items as personal or shared, associate personal with a member).#
 
-. The shampoo record is hidden from other household members by default.
+. #The shampoo record is hidden from other household members by default.#
 +
-*Covered by:* DR-18 (Personal item default privacy — "visible only to the owning household member by default"), IR-09 (interface reflects ownership visibility — "Personal items shall be hidden from non-owners by default").
+#*Covered by:* DR-18 (Personal item default privacy — "visible only to the owning household member by default"), IR-09 (interface reflects ownership visibility — "Personal items shall be hidden from non-owners by default").#
 
-. Sofia adds the rice and sets ownership to *shared*.
+. #Sofia adds the rice and sets ownership to *shared*.#
 +
-*Covered by:* IR-03, IR-01.
+#*Covered by:* IR-03, IR-01.#
 
-. The rice appears in the *Shared inventory* for all members.
+. #The rice appears in the *Shared inventory* for all members.#
 +
-*Covered by:* IR-09 ("shared items… shall be visually separated according to household permissions"); user story acceptance criterion ("Every item in a shared household includes an ownership indicator").
+#*Covered by:* IR-09 ("shared items… shall be visually separated according to household permissions"); user story acceptance criterion ("Every item in a shared household includes an ownership indicator").#
 +
-`[REQ-FUZZY-R3a]` Neither DR-18 nor IR-09 specifies *when* a newly added shared item becomes visible to other members. The acceptance criterion under US-INV-02 says "Changing ownership (personal ↔ shared) updates the tracked record and becomes visible to members after synchronization" — for the *change* case — but the *initial creation as shared* case has no equivalent latency / synchronization guarantee. Compare to DR-25 (offline / pending), which mentions "pending offline item creation" but not online creation.
+#`[REQ-FUZZY-R3a]` Neither DR-18 nor IR-09 specifies *when* a newly added shared item becomes visible to other members. The acceptance criterion under US-INV-02 says "Changing ownership (personal ↔ shared) updates the tracked record and becomes visible to members after synchronization" — for the *change* case — but the *initial creation as shared* case has no equivalent latency / synchronization guarantee. Compare to DR-25 (offline / pending), which mentions "pending offline item creation" but not online creation.#
 
-. Sofia later edits the shampoo and changes ownership to *shared*.
+. #Sofia later edits the shampoo and changes ownership to *shared*.#
 +
-*Covered by:* US-INV-02 acceptance criterion ("user can set ownership to personal or shared" during add/edit); IR-03 implicitly.
+#*Covered by:* US-INV-02 acceptance criterion ("user can set ownership to personal or shared" during add/edit); IR-03 implicitly.#
 +
-`[REQ-GAP-R3b]` Editing ownership is implied by IR-03 ("provide a means to mark") but not separately required. There is no IR for the *ownership-modification workflow* analogous to IR-01 / IR-02. The user-story decomposition created US-INV-02B "Modify ownership status" but no IR fulfills it.
+#`[REQ-GAP-R3b]` Editing ownership is implied by IR-03 ("provide a means to mark") but not separately required. There is no IR for the *ownership-modification workflow* analogous to IR-01 / IR-02. The user-story decomposition created US-INV-02B "Modify ownership status" but no IR fulfills it.#
 
-. After synchronization, the other household members can now see the shampoo.
+. #After synchronization, the other household members can now see the shampoo.#
 +
-*Covered by:* US-INV-02 acceptance criterion (becomes visible after synchronization); IR-09.
+#*Covered by:* US-INV-02 acceptance criterion (becomes visible after synchronization); IR-09.#
 +
-`[REQ-GAP-R3c]` No requirement specifies *what the previously hidden record looks like when it appears*. Specifically: does it appear retroactively in spending views, in past dashboards? US-INV-02 mentions separating personal vs shared *spending* views (acceptance criterion) but the privacy boundary for *historical* views is not stated.
+#`[REQ-GAP-R3c]` No requirement specifies *what the previously hidden record looks like when it appears*. Specifically: does it appear retroactively in spending views, in past dashboards? US-INV-02 mentions separating personal vs shared *spending* views (acceptance criterion) but the privacy boundary for *historical* views is not stated.#
 
-. The shampoo's *Spending entry* attribution remains with Sofia even after the visibility change.
+. #The shampoo's *Spending entry* attribution remains with Sofia even after the visibility change.#
 +
-*Covered by:* DR-6 (Attribution retention — "Spending entries shall remain attributed to the household member who made the purchase… when items are marked shared/personal").
+#*Covered by:* DR-6 (Attribution retention — "Spending entries shall remain attributed to the household member who made the purchase… when items are marked shared/personal").#
 
-*Findings — R3.*
+#*Findings — R3.*#
 
-* `[REQ-FUZZY-R3a]` Visibility latency for *newly created* shared items is unstated; only the *change* case is covered.
-* `[REQ-GAP-R3b]` There is no IR specifically for the *ownership-modification workflow* (US-INV-02B). IR-03 covers marking but not the dedicated edit flow.
-* `[REQ-GAP-R3c]` Historical-view treatment of items that transitioned from personal to shared (or vice versa) is unrequired. Affects spending views, past dashboards, and audit records.
+* #`[REQ-FUZZY-R3a]` Visibility latency for *newly created* shared items is unstated; only the *change* case is covered.#
+* #`[REQ-GAP-R3b]` There is no IR specifically for the *ownership-modification workflow* (US-INV-02B). IR-03 covers marking but not the dedicated edit flow.#
+* #`[REQ-GAP-R3c]` Historical-view treatment of items that transitioned from personal to shared (or vice versa) is unrequired. Affects spending views, past dashboards, and audit records.#
 
-==== Walkthrough R4 — Record a shared purchase and split costs (US-SB-01 / US-SB-01A / US-SB-01B)
+==== #Walkthrough R4 — Record a shared purchase and split costs (US-SB-01 / US-SB-01A / US-SB-01B)#
 
-*Scenario.* Andrea (unofficial household manager) bought a shopping trip's worth of household groceries for $84. She wants to record the purchase, mark most line items as shared between herself, Sofia, Mateo, and Julian (skipping Mateo on the beer line item per his request), and have the system compute the split.
+#*Scenario.* Andrea (unofficial household manager) bought a shopping trip's worth of household groceries for $84. She wants to record the purchase, mark most line items as shared between herself, Sofia, Mateo, and Julian (skipping Mateo on the beer line item per his request), and have the system compute the split.#
 
-*Execution trace.*
+#*Execution trace.*#
 
-. Andrea opens the purchase entry flow and enters total cost ($84.00), date, and purchaser (herself).
+. #Andrea opens the purchase entry flow and enters total cost ($84.00), date, and purchaser (herself).#
 +
-*Covered by:* IR-06 (Purchase Logging — "total cost, purchase date, and whether the purchase was personal or shared").
+#*Covered by:* IR-06 (Purchase Logging — "total cost, purchase date, and whether the purchase was personal or shared").#
 
-. Andrea adds each line item with cost; on each, she selects *shared* or *personal* and (for shared) selects the members included in the split.
+. #Andrea adds each line item with cost; on each, she selects *shared* or *personal* and (for shared) selects the members included in the split.#
 +
-*Covered by:* IR-06 (line items, personal/shared per item), IR-07 (Cost Splitting — "display participant selections, show split summaries").
+#*Covered by:* IR-06 (line items, personal/shared per item), IR-07 (Cost Splitting — "display participant selections, show split summaries").#
 +
-`[REQ-FUZZY-R4a]` IR-06 says "line items (or the purchase) as shared vs personal." It is ambiguous whether per-line-item participant-selection (excluding Mateo only from beer) is required behavior or optional. US-SB-01 acceptance criterion says "The system can compute a split for shared items among selected members (default equal split; adjustable)" — the adjustability covers Mateo's exclusion, but the *granularity* (per-purchase vs per-line) is not pinned down. The implementation has to make a call.
+#`[REQ-FUZZY-R4a]` IR-06 says "line items (or the purchase) as shared vs personal." It is ambiguous whether per-line-item participant-selection (excluding Mateo only from beer) is required behavior or optional. US-SB-01 acceptance criterion says "The system can compute a split for shared items among selected members (default equal split; adjustable)" — the adjustability covers Mateo's exclusion, but the *granularity* (per-purchase vs per-line) is not pinned down. The implementation has to make a call.#
 
-. Andrea selects "Save"; the *Spending entry* is created.
+. #Andrea selects "Save"; the *Spending entry* is created.#
 +
-*Covered by:* IR-06, DR-2 (item-instance integrity if line items reference *Item types*), DR-16 (spend attachment after duplicate resolution).
+#*Covered by:* IR-06, DR-2 (item-instance integrity if line items reference *Item types*), DR-16 (spend attachment after duplicate resolution).#
 
-. The system computes the per-member split for each shared line item.
+. #The system computes the per-member split for each shared line item.#
 +
-*Covered by:* IR-07 ("show split summaries"), US-SB-01 acceptance criterion (compute split, default equal, adjustable).
+#*Covered by:* IR-07 ("show split summaries"), US-SB-01 acceptance criterion (compute split, default equal, adjustable).#
 +
-`[REQ-GAP-R4b]` No DR or IR specifies the *algorithm* for splitting beyond "default equal split; adjustable." Edge cases — rounding direction (Andrea owes 1¢ more than each roommate?), member who was added mid-trip, member who left — are unspecified. The user story leaves these to implementation choice.
+#`[REQ-GAP-R4b]` No DR or IR specifies the *algorithm* for splitting beyond "default equal split; adjustable." Edge cases — rounding direction (Andrea owes 1¢ more than each roommate?), member who was added mid-trip, member who left — are unspecified. The user story leaves these to implementation choice.#
 
-. Sofia, Mateo, and Julian can each see how much they owe Andrea for their shares.
+. #Sofia, Mateo, and Julian can each see how much they owe Andrea for their shares.#
 +
-*Covered by:* IR-07 ("display participant selections, show split summaries"); US-SB-01 acceptance criterion (members can view breakdown of shared purchase).
+#*Covered by:* IR-07 ("display participant selections, show split summaries"); US-SB-01 acceptance criterion (members can view breakdown of shared purchase).#
 
-. Mateo marks his portion as paid via the reimbursement view.
+. #Mateo marks his portion as paid via the reimbursement view.#
 +
-*Covered by:* IR-07 ("indicate reimbursement status"); US-SB-01 acceptance criterion ("Payments can be marked paid/unpaid").
+#*Covered by:* IR-07 ("indicate reimbursement status"); US-SB-01 acceptance criterion ("Payments can be marked paid/unpaid").#
 +
-`[REQ-FUZZY-R4c]` IR-07 says the system shall "indicate reimbursement status" — read-only verb. It does not explicitly require the *user action* of *marking* something paid. The user-story acceptance criterion does. *Recommended fix:* either reword IR-07 or add a sibling IR that requires a means to record reimbursement (user input), not just display it.
+#`[REQ-FUZZY-R4c]` IR-07 says the system shall "indicate reimbursement status" — read-only verb. It does not explicitly require the *user action* of *marking* something paid. The user-story acceptance criterion does. *Recommended fix:* either reword IR-07 or add a sibling IR that requires a means to record reimbursement (user input), not just display it.#
 
-. Andrea is correcting an earlier mistake: the actual receipt was $86, not $84. She edits the *Spending entry* total.
+. #Andrea is correcting an earlier mistake: the actual receipt was $86, not $84. She edits the *Spending entry* total.#
 +
-`[REQ-GAP-R4d]` Editing a *Spending entry* after creation is not explicitly required by any IR. IR-06 covers logging; IR-07 covers display and (per the user story) marking paid. Spending entry edit has no IR. The only related DR is DR-3 (financial immutability of removals when items are deleted), which suggests adjustments should be append-only — but the requirement to *support* adjustments at all is not stated. IR-EC-D and IR-EC-E (refund and adjustment edge-case IRs) hint at this but are deferred edge cases.
+#`[REQ-GAP-R4d]` Editing a *Spending entry* after creation is not explicitly required by any IR. IR-06 covers logging; IR-07 covers display and (per the user story) marking paid. Spending entry edit has no IR. The only related DR is DR-3 (financial immutability of removals when items are deleted), which suggests adjustments should be append-only — but the requirement to *support* adjustments at all is not stated. IR-EC-D and IR-EC-E (refund and adjustment edge-case IRs) hint at this but are deferred edge cases.#
 
-. The household budget is at $342 / $400 (85.5%) after this purchase. The system fires a *Budget threshold crossing* alert because the 80% threshold was crossed by this entry.
+. #The household budget is at $342 / $400 (85.5%) after this purchase. The system fires a *Budget threshold crossing* alert because the 80% threshold was crossed by this entry.#
 +
-*Covered by:* DR-22 (Opt-in budget threshold alerts — "default warning levels at 80% and 100%"), DR-14 (deduplicated alerting), IR-13 (Budget Alert Preferences).
+#*Covered by:* DR-22 (Opt-in budget threshold alerts — "default warning levels at 80% and 100%"), DR-14 (deduplicated alerting), IR-13 (Budget Alert Preferences).#
 
-. The alert appears in Andrea's notification list.
+. #The alert appears in Andrea's notification list.#
 +
-*Covered by:* IR-14 (Shared Alert Audience and Delivery Preferences — view shared alerts), DR-23 (shared alert audience control).
+#*Covered by:* IR-14 (Shared Alert Audience and Delivery Preferences — view shared alerts), DR-23 (shared alert audience control).#
 
-*Findings — R4.*
+#*Findings — R4.*#
 
-* `[REQ-FUZZY-R4a]` Per-line-item vs per-purchase split granularity is not pinned down.
-* `[REQ-GAP-R4b]` Split *algorithm* details (rounding, mid-trip membership change) are unspecified.
-* `[REQ-FUZZY-R4c]` IR-07 says "indicate reimbursement status" but the user-input side of marking paid is not explicitly required.
-* `[REQ-GAP-R4d]` Editing an existing *Spending entry* (total, payer, line items) has no covering IR. IR-EC-D and IR-EC-E hint at adjustment / refund flows but are deferred. *Recommended fix:* promote a non-edge-case IR for spending-entry adjustments, or explicitly cite DR-3 as the operating constraint and require an append-only adjustment workflow.
+* #`[REQ-FUZZY-R4a]` Per-line-item vs per-purchase split granularity is not pinned down.#
+* #`[REQ-GAP-R4b]` Split *algorithm* details (rounding, mid-trip membership change) are unspecified.#
+* #`[REQ-FUZZY-R4c]` IR-07 says "indicate reimbursement status" but the user-input side of marking paid is not explicitly required.#
+* #`[REQ-GAP-R4d]` Editing an existing *Spending entry* (total, payer, line items) has no covering IR. IR-EC-D and IR-EC-E hint at adjustment / refund flows but are deferred. *Recommended fix:* promote a non-edge-case IR for spending-entry adjustments, or explicitly cite DR-3 as the operating constraint and require an append-only adjustment workflow.#
 
-==== Consolidated requirements-walkthrough findings
+==== #Consolidated requirements-walkthrough findings#
 
 [cols="1,1,1,3,3",options="header"]
 |===
-| ID | Kind | User story | What the walkthrough surfaced | Recommended fix
+| #ID# | #Kind# | #User story# | #What the walkthrough surfaced# | #Recommended fix#
 
-| REQ-GAP-R1b | Missing IR
-| US-INV-01
-| "Item appears in inventory list without manual refresh" is in the acceptance criteria but no DR / IR commits the system to live local-save updates.
-| Add an IR for post-save inventory-list update latency, distinct from offline-sync (DR-25).
+| #REQ-GAP-R1b# | #Missing IR#
+| #US-INV-01#
+| #"Item appears in inventory list without manual refresh" is in the acceptance criteria but no DR / IR commits the system to live local-save updates.#
+| #Add an IR for post-save inventory-list update latency, distinct from offline-sync (DR-25).#
 
-| REQ-FUZZY-R1a | Underspecified IR
-| US-INV-01 / US-INV-01B
-| On successful barcode match, neither DR-1 nor IR-12 specifies what the system shall display.
-| Extend IR-12 to specify the success-path behavior (prefilled item type confirmation).
+| #REQ-FUZZY-R1a# | #Underspecified IR#
+| #US-INV-01 / US-INV-01B#
+| #On successful barcode match, neither DR-1 nor IR-12 specifies what the system shall display.#
+| #Extend IR-12 to specify the success-path behavior (prefilled item type confirmation).#
 
-| REQ-FUZZY-R1c | Underspecified DR
-| US-INV-01 / US-INV-01A
-| DR-1 / DR-17 cover barcode-keyed item types. Duplicate handling for *manually-created item types with no barcode* has no clean coverage.
-| Extend DR-15 (or add DR-15A) to cover normalization / dedupe for manual-no-barcode item types.
+| #REQ-FUZZY-R1c# | #Underspecified DR#
+| #US-INV-01 / US-INV-01A#
+| #DR-1 / DR-17 cover barcode-keyed item types. Duplicate handling for *manually-created item types with no barcode* has no clean coverage.#
+| #Extend DR-15 (or add DR-15A) to cover normalization / dedupe for manual-no-barcode item types.#
 
-| REQ-FUZZY-R2a | Underspecified DR
-| US-ALT-01
-| DR-12 ends at "make status visible"; auto-add to the *Restock list / planner* on NORMAL→LOW_STOCK transition is assumed by DR-24 but never required.
-| Add DR-12A: on a NORMAL→LOW_STOCK transition, the system shall auto-add the affected item to the *Restock list / planner* with reason `LOW_STOCK`.
+| #REQ-FUZZY-R2a# | #Underspecified DR#
+| #US-ALT-01#
+| #DR-12 ends at "make status visible"; auto-add to the *Restock list / planner* on NORMAL→LOW_STOCK transition is assumed by DR-24 but never required.#
+| #Add DR-12A: on a NORMAL→LOW_STOCK transition, the system shall auto-add the affected item to the *Restock list / planner* with reason `LOW_STOCK`.#
 
-| REQ-FUZZY-R2b | Underspecified IR
-| US-ALT-01
-| IR-15 covers snooze for *restock entries*; snooze for *alerts* (named in DR-14) has no IR.
-| Extend IR-15 to include alert snooze, or add a sibling IR for alert dismiss / snooze.
+| #REQ-FUZZY-R2b# | #Underspecified IR#
+| #US-ALT-01#
+| #IR-15 covers snooze for *restock entries*; snooze for *alerts* (named in DR-14) has no IR.#
+| #Extend IR-15 to include alert snooze, or add a sibling IR for alert dismiss / snooze.#
 
-| REQ-GAP-R2c | Missing DR
-| US-ALT-01
-| Cross-view consistency (list, restock list, dashboard) of low-stock state is in the user-story acceptance criteria but unrequired.
-| Add a DR stating that derived item-state values (low-stock, near-expiry, expired) shall be computed once per evaluation cycle and presented consistently across views.
+| #REQ-GAP-R2c# | #Missing DR#
+| #US-ALT-01#
+| #Cross-view consistency (list, restock list, dashboard) of low-stock state is in the user-story acceptance criteria but unrequired.#
+| #Add a DR stating that derived item-state values (low-stock, near-expiry, expired) shall be computed once per evaluation cycle and presented consistently across views.#
 
-| REQ-FUZZY-R3a | Underspecified DR/IR
-| US-INV-02
-| Visibility latency for *newly created* shared items is unstated (only the *change* case is in the acceptance criteria).
-| Either extend DR-18 / IR-09 to cover both initial creation and change, or add an IR explicitly.
+| #REQ-FUZZY-R3a# | #Underspecified DR/IR#
+| #US-INV-02#
+| #Visibility latency for *newly created* shared items is unstated (only the *change* case is in the acceptance criteria).#
+| #Either extend DR-18 / IR-09 to cover both initial creation and change, or add an IR explicitly.#
 
-| REQ-GAP-R3b | Missing IR
-| US-INV-02B
-| No IR dedicated to the *ownership-modification workflow*; IR-03 covers marking but not the edit flow.
-| Add an IR for ownership-modification UX, mirroring how IR-02 separates consumption from initial creation.
+| #REQ-GAP-R3b# | #Missing IR#
+| #US-INV-02B#
+| #No IR dedicated to the *ownership-modification workflow*; IR-03 covers marking but not the edit flow.#
+| #Add an IR for ownership-modification UX, mirroring how IR-02 separates consumption from initial creation.#
 
-| REQ-GAP-R3c | Missing DR/IR
-| US-INV-02
-| Historical-view treatment after a personal↔shared transition (spending history, past dashboards) is unrequired.
-| Add a DR specifying the policy: do past states retain their original visibility, or do they retroactively adopt the new scope? (Either is acceptable; the *absence of a policy* is the gap.)
+| #REQ-GAP-R3c# | #Missing DR/IR#
+| #US-INV-02#
+| #Historical-view treatment after a personal↔shared transition (spending history, past dashboards) is unrequired.#
+| #Add a DR specifying the policy: do past states retain their original visibility, or do they retroactively adopt the new scope? (Either is acceptable; the *absence of a policy* is the gap.)#
 
-| REQ-FUZZY-R4a | Underspecified IR
-| US-SB-01A
-| IR-06 leaves per-line-item vs per-purchase split granularity ambiguous.
-| Sharpen IR-06 (or IR-07) to specify granularity.
+| #REQ-FUZZY-R4a# | #Underspecified IR#
+| #US-SB-01A#
+| #IR-06 leaves per-line-item vs per-purchase split granularity ambiguous.#
+| #Sharpen IR-06 (or IR-07) to specify granularity.#
 
-| REQ-GAP-R4b | Underspecified policy
-| US-SB-01B
-| No DR / IR specifies the split algorithm beyond "default equal, adjustable." Rounding and mid-trip membership changes are unhandled.
-| Add a DR or IR for split-algorithm policy (rounding rule, treatment of membership changes during a budget cycle).
+| #REQ-GAP-R4b# | #Underspecified policy#
+| #US-SB-01B#
+| #No DR / IR specifies the split algorithm beyond "default equal, adjustable." Rounding and mid-trip membership changes are unhandled.#
+| #Add a DR or IR for split-algorithm policy (rounding rule, treatment of membership changes during a budget cycle).#
 
-| REQ-FUZZY-R4c | Underspecified IR
-| US-SB-01C
-| IR-07 says "indicate reimbursement status" (display); the *user input* to mark something paid is implicit.
-| Extend IR-07 (or add an IR) requiring a user-facing means to record reimbursement.
+| #REQ-FUZZY-R4c# | #Underspecified IR#
+| #US-SB-01C#
+| #IR-07 says "indicate reimbursement status" (display); the *user input* to mark something paid is implicit.#
+| #Extend IR-07 (or add an IR) requiring a user-facing means to record reimbursement.#
 
-| REQ-GAP-R4d | Missing IR
-| US-SB-01 (correction case)
-| No IR for editing an existing *Spending entry*. Edge-case IRs (IR-EC-D, IR-EC-E) hint at adjustment / refund but are deferred.
-| Promote a non-edge-case IR for spending-entry adjustments, consistent with DR-3 (append-only correction).
+| #REQ-GAP-R4d# | #Missing IR#
+| #US-SB-01 (correction case)#
+| #No IR for editing an existing *Spending entry*. Edge-case IRs (IR-EC-D, IR-EC-E) hint at adjustment / refund but are deferred.#
+| #Promote a non-edge-case IR for spending-entry adjustments, consistent with DR-3 (append-only correction).#
 |===
 
-==== Implications for the requirements set
+==== #Implications for the requirements set#
 
-The walkthroughs surface three systematic patterns:
+#The walkthroughs surface three systematic patterns:#
 
-. *User-story acceptance criteria carry behavior not reflected in any DR / IR.* The clearest cases are R1b (no-refresh save), R2c (cross-view consistency), R3c (historical-view policy), and R4b (split algorithm). These are real promises the team has made to stakeholders that the requirement set does not back up.
+. #*User-story acceptance criteria carry behavior not reflected in any DR / IR.* The clearest cases are R1b (no-refresh save), R2c (cross-view consistency), R3c (historical-view policy), and R4b (split algorithm). These are real promises the team has made to stakeholders that the requirement set does not back up.#
 
-. *Interface verbs are read-only when the user story needs read / write.* IR-07 "indicate reimbursement status" and IR-03 "provide a means to mark" both lean toward display; the user-input action behind them is implicit. Each such IR should explicitly name the user input it requires.
+. #*Interface verbs are read-only when the user story needs read / write.* IR-07 "indicate reimbursement status" and IR-03 "provide a means to mark" both lean toward display; the user-input action behind them is implicit. Each such IR should explicitly name the user input it requires.#
 
-. *Auto-system behavior is presupposed by downstream requirements without being explicitly required upstream.* DR-24 presupposes that *Restock list / planner* auto-add happens, but DR-12 never requires it (R2a). Similarly, DR-22 presupposes thresholds get computed, but no requirement specifies *when* the budget-status computation runs.
+. #*Auto-system behavior is presupposed by downstream requirements without being explicitly required upstream.* DR-24 presupposes that *Restock list / planner* auto-add happens, but DR-12 never requires it (R2a). Similarly, DR-22 presupposes thresholds get computed, but no requirement specifies *when* the budget-status computation runs.#
 
-The recommended fixes above cluster into three batches of work that map cleanly onto next-milestone requirements refinement: (1) one IR per "no-manual-refresh / synchronization-latency" promise; (2) cross-view consistency DRs paired to each automation cluster (low-stock, expiration, budget); and (3) extending IRs that currently use display-only verbs to cover the user-input side.
+#The recommended fixes above cluster into three batches of work that map cleanly onto next-milestone requirements refinement: (1) one IR per "no-manual-refresh / synchronization-latency" promise; (2) cross-view consistency DRs paired to each automation cluster (low-stock, expiration, budget); and (3) extending IRs that currently use display-only verbs to cover the user-input side.#
