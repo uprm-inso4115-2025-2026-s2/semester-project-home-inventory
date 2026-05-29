@@ -1,0 +1,103 @@
+== 1. Objective
+
+This lecture topic task applies state-based modeling to the Expenditure Report filter workflow. The goal is to clarify how report filters move from their default state, through user selection, validation, report refresh, and export.
+
+== 2. Existing Documentation Used
+
+This task is based on the following project documentation:
+
+* `docs/2-descriptive/implementation/screen-designs/Expenditure-Report-Screen/expenditure_report_screen.adoc`
+* `docs/lecture-topic-tasks/domain_analysis_materialized_views.adoc`
+* `docs/2-descriptive/domain-description/entities/spending schema fields/spending-schema-fields.adoc`
+* `docs/2-descriptive/domain-description/functions/spending_tracking_logic.adoc`
+
+== 3. Issue Framing
+
+The Expenditure Report screen currently documents the chart, category breakdown, PDF export, and future filter work. However, the filter behavior is still described mostly as a UI placeholder.
+
+A statechart helps clarify:
+
+- what the default report state should display
+- how selected filters become active
+- what happens when a user selects an invalid date range
+- when the report data should be refreshed
+- whether PDF export should use the current filtered state
+
+This makes the reporting behavior easier to implement and test because the filter lifecycle is represented as a formal model instead of scattered UI notes.
+
+== 4. Proposed UML Statechart
+
+[mermaid]
+....
+stateDiagram-v2
+    [*] --> DefaultReport: Open Expenditure Report
+
+    DefaultReport --> FilterPanelOpen: Tap Filters
+    FilterPanelOpen --> FilterDraft: Select date range or categories
+    FilterPanelOpen --> DefaultReport: Dismiss without changes
+
+    FilterDraft --> InvalidFilter: End date before start date or no valid option
+    InvalidFilter --> FilterDraft: Correct filter values
+
+    FilterDraft --> ApplyingFilter: Apply valid filters
+    ApplyingFilter --> FilteredReport: Report data refreshed
+
+    FilteredReport --> FilterPanelOpen: Edit filters
+    FilteredReport --> DefaultReport: Clear filters
+    FilteredReport --> ExportReady: Tap PDF export
+
+    DefaultReport --> ExportReady: Tap PDF export
+    ExportReady --> Exporting: Generate PDF with current report state
+    Exporting --> FilteredReport: Export complete and filters active
+    Exporting --> DefaultReport: Export complete and no filters active
+....
+
+== 5. State Definitions
+
+[cols="1,2", options="header"]
+|===
+| State
+| Meaning
+
+| `DefaultReport`
+| The screen shows the default date range and all available spending categories.
+
+| `FilterPanelOpen`
+| The user has opened the filter control but has not committed changes.
+
+| `FilterDraft`
+| The user is selecting a date range, category set, or other report filter options.
+
+| `InvalidFilter`
+| The selected filter values are not usable, such as an end date before the start date.
+
+| `ApplyingFilter`
+| The system is recalculating totals, category percentages, and chart data from the selected filter.
+
+| `FilteredReport`
+| The screen shows report results constrained by the active filter state.
+
+| `ExportReady`
+| The current report state is ready to be captured for PDF export.
+
+| `Exporting`
+| The PDF export service is generating the report output from the current chart and category breakdown.
+|===
+
+== 6. Validation Questions
+
+The model supports the following review questions:
+
+* Does clearing filters always return the report to the documented default state?
+* Are invalid date ranges blocked before report totals are recalculated?
+* Does the PDF export use the same report state the user is viewing?
+* Can filter edits be dismissed without changing the current report?
+* Are category totals and percentages recalculated after every valid filter change?
+
+== 7. Why This Representation Helps
+
+* Clarifies filter behavior before the future filter UI is implemented.
+* Connects report concepts such as spending category and budget cycle to screen behavior.
+* Supports test cases for default reports, filtered reports, invalid filter selections, clearing filters, and PDF export.
+* Helps ensure the visual chart, category breakdown, and exported PDF all represent the same filtered data.
+
