@@ -8,7 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repositories.dart';
 import 'package:src/config/injection_dependencies.dart';
+import 'package:src/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:src/features/auth/presentation/cubit/auth_state.dart';
 import 'package:src/features/auth/presentation/routes.dart';
+import 'package:src/features/profile_screens/presentation/routes.dart';
 
 /// Home page displaying the inventory dashboard with charts and statistics
 class HomeDashboardPage extends StatelessWidget {
@@ -288,7 +291,12 @@ class HomeDashboardPage extends StatelessWidget {
           child: Center(
             child: IconButton(
               onPressed: () {
-                context.push(AuthRoutes.landingPath);
+                final authState = sl<AuthCubit>().state;
+                if (authState is AuthAuthenticated) {
+                  context.push(ProfileRoutes.menuPath);
+                } else {
+                  context.push(AuthRoutes.landingPath);
+                }
               },
               icon: Icon(
                 Icons.account_circle,
@@ -351,7 +359,7 @@ class HomeDashboardPage extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             DropdownButtonFormField<String>(
-              initialValue: selectedCategory,
+              value: selectedCategory,
               decoration: InputDecoration(
                 labelText: "Select a Category",
                 floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -413,7 +421,7 @@ class HomeDashboardPage extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             DropdownButtonFormField<String>(
-              initialValue: selectedRoom,
+              value: selectedRoom,
               decoration: InputDecoration(
                 labelText: "Select a Room",
                 floatingLabelBehavior: FloatingLabelBehavior.never,
