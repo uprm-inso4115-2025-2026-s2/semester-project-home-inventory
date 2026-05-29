@@ -266,7 +266,7 @@ NOTE: The rule that determines whether an Expenditure falls within a Budget Peri
 
 == Stage 3 — Narrative Rewrite
 
-See the accompanying Unified Domain Narrative artifact included in the project files.
+#See the accompanying Unified Domain Narrative artifact included in the project files.#
 
 The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with their corresponding Stage 2 concept names. All terminology is drawn exclusively from the project's Ubiquitous Language dictionary (`docs/2-descriptive/domain-description/terminology/terminology.adoc`).
 
@@ -274,7 +274,7 @@ The unified narrative replaces all raw entity lists (DDU-10 through DDU-22) with
 
 == Stage 4 — Inconsistency Detection
 
-See the accompanying Inconsistency Detection Report artifact included in the project files.
+#See the accompanying Inconsistency Detection Report artifact included in the project files.#
 
 The detector scans all DDUs and existing domain documents for direct P / not-P conflicts (one unit asserts a property another negates), scope conflicts (a rule constrains what another exempts), completeness gaps (a concept referenced but never fully defined), and terminology drift (the same phenomenon under two names).
 
