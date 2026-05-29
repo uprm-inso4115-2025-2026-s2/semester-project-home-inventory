@@ -1,0 +1,61 @@
+= Stakeholder-Specific Concept Boundaries for Shared Inventory
+
+This lecture topic task documents how different stakeholder groups interpret shared-inventory concepts in the Digital Home Inventory System. It summarizes and cross-references existing documentation instead of replacing the current ownership or permission model.
+
+Related documents:
+
+* `docs/4-specific-topics/stakeholder-identification/stakeholder-identification.adoc`
+* `docs/4-specific-topics/stakeholder-identification/initial-stakeholders/initial-stakeholders.adoc`
+* `docs/4-specific-topics/stakeholder-identification/additional-stakeholders/additional-stakeholders.adoc`
+* `docs/2-descriptive/domain-description/terminology/terminology.adoc`
+* `docs/2-descriptive/requirements/domain-requirements/shared-inventory-definition.adoc`
+* `docs/2-descriptive/requirements/domain-requirements/permission-rules-definition.adoc`
+
+== Stakeholder Views
+
+[cols="2,4,4", options="header"]
+|===
+| Stakeholder group
+| Concepts emphasized
+| Concept-boundary concern
+
+| Household managers / frequent supply buyers
+| Shared inventory, household admin, permission role, alert responsibility, restock list
+| They may act as the informal organizer, but that does not automatically make them the formal Owner role in the system. Their practical responsibility for restocking may also exceed their formal permissions.
+
+| Budget-conscious roommates / roommates who share purchases
+| Shared item, personal item, owner tag, spending entry, duplicate warning
+| They need shared visibility for coordination, but shared visibility is not the same as shared ownership or permission to edit every item.
+
+| Health-conscious students / users with dietary or medical needs
+| Personal item, privacy boundary, permission rule, low-stock threshold, alert
+| Their items may exist in the same household context while remaining personally owned, privately visible, or more tightly controlled than ordinary shared goods.
+
+| Transient household members
+| Membership, membership state, ownership transfer, removal, reconciliation
+| Moving in, visiting, or moving out changes household participation without automatically changing historical ownership, item responsibility, or past spending records.
+
+| Parents / family contributors
+| Grocery list, read-only access, external contribution, alert recipient
+| They may need enough visibility to help fund or buy supplies, but they are not necessarily household members or system users with full shared-inventory permissions.
+|===
+
+== Boundary Distinctions
+
+* *Household member vs. system user:* A household member is the domain participant who consumes, replenishes, or coordinates around items. A user is the system-facing actor who interacts with the application. Most active users correspond to household members, but contributors or future invitees may not fit both categories at the same time.
+
+* *Membership vs. permission role:* Membership connects a person to a household context. A permission role, such as Owner, Member, Viewer, or Guest, defines allowed actions. A person can belong to the household socially while having pending, limited, revoked, or read-only system access.
+
+* *Informal household role vs. formal system role:* The unofficial household manager may organize purchases, notice shortages, and remind others, but the formal Owner role controls administrative actions such as inviting members, removing members, changing permissions, or transferring ownership.
+
+* *Personal ownership vs. shared household visibility:* An item can be visible in a shared inventory without being group-owned. The shared-inventory definition keeps both group-owned inventory and user-owned-within-group models available, so visibility, edit rights, and accountability should remain separate.
+
+* *Alert recipient vs. restock-responsible person:* A low-stock or duplicate warning may be delivered to one or more users, but receiving the alert does not necessarily mean that person is responsible for buying, paying for, or recording the item.
+
+* *Item owner vs. spending contributor:* The person tagged as an item owner may differ from the person who paid for the item, the person expected to replenish it, or the person allowed to edit the record. Spending entries should preserve financial accountability without redefining item ownership.
+
+== Requirements Implications
+
+The terminology document should remain the source for domain vocabulary such as Household member, Membership, Shared inventory, Permission rule, Alert, Restock list / planner, and User. The shared-inventory and permission-rule documents should remain the source for ownership models, roles, membership states, and action permissions.
+
+Future requirements should state which boundary is intended. For example, a requirement about "members" should clarify whether it means real household participants, authenticated users, or active members with a specific permission role. A requirement about "responsibility" should clarify whether it refers to receiving an alert, editing an item, paying for a purchase, or restocking the household.

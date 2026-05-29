@@ -201,9 +201,9 @@ M3 source: M3-QA-07.
 
 === Traceability Matrix
 
-NOTE: This matrix is the Interface Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholder, validation, verification, and implementation traceability for IR-* requirements. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
+This matrix is the Interface Requirements portion of the centralized Milestone 2+ traceability system. It focuses on stakeholders, validation, verification, implementation, ownership, feature alignment, and requirement coverage traceability for IR-* requirements. Requirements marked as gap flagged include documented rationale and planned validation coverage where applicable. Earlier analytical matrices elsewhere in the documentation are retained as complementary historical snapshots and do not represent conflicting sources of truth.
 
-[cols="1,2,1,2,2,1,2", options="header"]
+[cols="1,2,1,2,2,1,2,1,2,1", options="header"]
 |===
 | Requirement ID | Source Stakeholder | Validation Scenario | Verification Artifact | Implementation Locus | Traceability Status | Gap Reason
 

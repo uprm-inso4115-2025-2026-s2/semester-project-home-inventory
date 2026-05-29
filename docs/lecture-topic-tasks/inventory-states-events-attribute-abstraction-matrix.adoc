@@ -1,0 +1,93 @@
+= Attribute Abstraction Matrix for Inventory States and Events
+
+This lecture topic task applies domain attribute analysis to common inventory states and events in the Digital Home Inventory System. It focuses on how lower-level observations, such as quantity changes, dates, thresholds, and user actions, become reusable domain abstractions.
+
+Related documents:
+
+* `docs/2-descriptive/domain-description/events/events.adoc`
+* `docs/2-descriptive/domain-description/terminology/terminology.adoc`
+* `docs/lecture-topic-tasks/static-vs-dynamic-classification-of-phenomena.adoc`
+* `docs/lecture-topic-tasks/dimensionality_of_domain.adoc`
+
+== Attribute Matrix
+
+[cols="2,1,1,1,3,4", options="header"]
+|===
+| Inventory state or event
+| Static / dynamic
+| Tangibility
+| Discreteness
+| Main dimensions
+| Abstraction note
+
+| Low-stock judged
+| Dynamic
+| Intangible
+| Hybrid
+| Time, quantity, threshold, responsibility
+| A low-stock condition may be based on a continuous quantity trend, a qualitative judgment, or a threshold crossing, but the judgment itself becomes a discrete domain event.
+
+| Out-of-stock reached
+| Dynamic
+| Hybrid
+| Discrete
+| Time, quantity, item type, location
+| The physical absence of stock is tangible, while the recognized out-of-stock state is an intangible domain classification created when availability reaches zero or is judged empty.
+
+| Item instance reached near-expiry
+| Dynamic
+| Intangible
+| Hybrid
+| Time, expiration date, near-expiry window, item instance
+| Calendar time changes continuously, but the item entering the near-expiry window is modeled as a discrete event for alerts and planning.
+
+| Item instance expired
+| Dynamic
+| Intangible
+| Hybrid
+| Time, expiration date, item condition, item instance
+| Expiration depends on time passing, but the domain treats "expired" as a state transition that can trigger discard, alert, or use decisions.
+
+| Backup opened
+| Dynamic
+| Tangible
+| Discrete
+| Time, quantity, item instance, location, actor
+| A household member physically starts using a backup supply. The event is useful as an abstraction because it often implies low stock even when exact quantity is not recorded.
+
+| Alert generated
+| Dynamic
+| Intangible
+| Discrete
+| Time, alert type, recipient, actionable state, responsibility
+| The alert is a communication event derived from another condition, such as low stock or expiration. Delivery method is separate from the domain event.
+
+| Restock entry created or updated
+| Dynamic
+| Intangible
+| Discrete
+| Time, item type, quantity need, threshold, responsibility
+| The restock entry abstracts a decision or detected need into a reusable planning artifact. It should not be confused with the later act of purchasing or replenishing the item.
+
+| Replenishment decided
+| Dynamic
+| Intangible
+| Discrete
+| Time, item type, responsible member, trigger condition
+| The decision to replenish is a human coordination event. It may follow an alert, but it is distinct from the system generating the alert or the physical act of buying the item.
+
+| Item instance consumed
+| Dynamic
+| Tangible
+| Hybrid
+| Time, quantity, item instance, actor, location
+| Consumption is a physical process that can be gradual, but inventory documentation often records it as one or more discrete quantity-change events.
+|===
+
+== Why These Abstractions Help
+
+Attribute classification helps prevent ambiguous requirements by separating the physical phenomenon from the modeled domain concept. For example, an item running out is tied to tangible inventory reality, but "Out-of-stock reached" is a recognized state transition that may need a timestamp, location, and item type.
+
+Hybrid classifications are especially important. Near-expiry and expiration depend on continuous time, while the system and documentation usually treat them as discrete events once a configured window or date boundary is crossed. Low-stock judgments can also be hybrid because they may come from exact quantity, threshold rules, or household practices such as opening the backup supply.
+
+These abstractions support clearer future implementation because each event row identifies the dimensions that must be represented or derived. Quantity-driven events need quantity and threshold data, time-driven events need dates or windows, and coordination events need responsibility or recipient dimensions. Keeping these dimensions explicit reduces confusion between domain observations, system-generated records, and user responsibilities.
