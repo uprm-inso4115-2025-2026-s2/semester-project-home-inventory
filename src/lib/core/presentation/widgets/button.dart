@@ -5,18 +5,17 @@ import 'package:sizer/sizer.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
 
 class Button extends StatelessWidget {
-  const Button({super.key, required this.buttonText});
+  const Button({super.key, required this.buttonText, this.onPressed});
 
   final String buttonText;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 5.h),
       child: CupertinoButton(
-        onPressed: () {
-          context.pop();
-        },
+        onPressed: onPressed ?? () => context.pop(),
         color: primary,
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
         borderRadius: BorderRadius.circular(15),

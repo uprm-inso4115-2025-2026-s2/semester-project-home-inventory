@@ -1,130 +1,84 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:src/config/injection_dependencies.dart';
 import 'package:src/config/router.dart';
 import 'package:src/features/grocery_list/data/constants.dart';
+import 'package:src/features/grocery_list/presentation/cubits/grocery_list_cubit.dart';
 
-class ItemTile extends StatefulWidget {
+class ItemTile extends StatelessWidget {
   const ItemTile({
     super.key,
     required this.title,
     this.isHistory = false,
     this.isCustom = false,
+    this.itemId,
+    this.quantity = 0,
+    this.imageUrl,
+    this.onRemove,
   });
+
   final String title;
   final bool isHistory;
   final bool isCustom;
+  final String? itemId;
+  final int quantity;
+  final String? imageUrl;
+  final VoidCallback? onRemove;
 
-  @override
-  _ItemTileState createState() => _ItemTileState();
-}
+  bool get _usesGroceryListState => itemId != null && !isHistory && !isCustom;
+  bool get _hasImage => imageUrl != null && imageUrl!.isNotEmpty;
 
-class _ItemTileState extends State<ItemTile> {
-  int quantity = 0;
+  GroceryListCubit get _cubit => sl<GroceryListCubit>();
 
-  void incrementQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void decrementQuantity() {
-    setState(() {
-      quantity--;
-    });
+  String get _initial {
+    final trimmed = title.trim();
+    if (trimmed.isEmpty) return '?';
+    return trimmed[0].toUpperCase();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.isCustom
-          ? AppRouter.goTo(context, "edit_item")
-          : showActionSheet(context, widget.title),
+      onTap: () {
+        if (isCustom) {
+          AppRouter.goTo(context, "edit_item");
+          return;
+        }
+        if (_usesGroceryListState) {
+          _showActionSheet(context, title);
+        }
+      },
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 1.5.h),
+        padding: EdgeInsets.symmetric(vertical: 1.h),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 6.w),
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
           width: double.infinity,
-          height: 13.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: primary,
+            border: Border.all(color: secondary.withValues(alpha: 0.5)),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 20.w,
-                    height: 8.h,
-                    decoration: BoxDecoration(color: secondary),
+              _buildLeading(),
+              SizedBox(width: 3.w),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: backgroundColor,
                   ),
-                  SizedBox(width: 6.w),
-                  Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: backgroundColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (!widget.isHistory && !widget.isCustom)
-                    GestureDetector(
-                      onTap: () {
-                        decrementQuantity();
-                      },
-                      child: Icon(
-                        CupertinoIcons.minus_circle_fill,
-                        size: 25.sp,
-                        color: secondary,
-                      ),
-                    ),
-                  if (!widget.isCustom)
-                    SizedBox(
-                      width: 13.w,
-                      child: Center(
-                        child: Text(
-                          quantity.toString(),
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            color: backgroundColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  if (widget.isCustom)
-                    GestureDetector(
-                      onTap: () => _showDeleteDialog(context),
-                      child: Icon(
-                        CupertinoIcons.xmark_circle_fill,
-                        size: 25.sp,
-                        color: secondary,
-                      ),
-                    ),
-                  if (widget.isHistory || widget.isCustom)
-                    SizedBox(width: 9.5.w),
-                  if (!widget.isHistory && !widget.isCustom)
-                    GestureDetector(
-                      onTap: () {
-                        incrementQuantity();
-                      },
-                      child: Icon(
-                        CupertinoIcons.plus_circle_fill,
-                        size: 25.sp,
-                        color: secondary,
-                      ),
-                    ),
-                ],
-              ),
+              _buildTrailing(context),
             ],
           ),
         ),
@@ -132,22 +86,122 @@ class _ItemTileState extends State<ItemTile> {
     );
   }
 
+  Widget _buildLeading() {
+    if (_hasImage) {
+      final source = imageUrl!;
+      final isNetwork = source.startsWith('http');
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: isNetwork
+            ? Image.network(
+                source,
+                width: 14.w,
+                height: 14.w,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _buildInitialAvatar(),
+              )
+            : Image.file(
+                File(source),
+                width: 14.w,
+                height: 14.w,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _buildInitialAvatar(),
+              ),
+      );
+    }
+    return _buildInitialAvatar();
+  }
+
+  Widget _buildInitialAvatar() {
+    return CircleAvatar(
+      radius: 6.w,
+      backgroundColor: secondary,
+      child: Text(
+        _initial,
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+          color: primary,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTrailing(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (!isHistory && !isCustom)
+          GestureDetector(
+            onTap: _decrement,
+            child: Icon(
+              CupertinoIcons.minus_circle_fill,
+              size: 25.sp,
+              color: secondary,
+            ),
+          ),
+        if (!isCustom)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.w),
+            child: Text(
+              quantity.toString(),
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: backgroundColor,
+              ),
+            ),
+          ),
+        if (isCustom)
+          GestureDetector(
+            onTap: () => _showDeleteDialog(context),
+            child: Icon(
+              CupertinoIcons.xmark_circle_fill,
+              size: 25.sp,
+              color: secondary,
+            ),
+          ),
+        if (!isHistory && !isCustom)
+          GestureDetector(
+            onTap: _increment,
+            child: Icon(
+              CupertinoIcons.plus_circle_fill,
+              size: 25.sp,
+              color: secondary,
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _increment() {
+    if (_usesGroceryListState) {
+      _cubit.incrementQuantity(itemId!);
+    }
+  }
+
+  void _decrement() {
+    if (_usesGroceryListState) {
+      _cubit.decrementQuantity(itemId!);
+    }
+  }
+
   void _showDeleteDialog(BuildContext context) {
     showCupertinoDialog<void>(
       context: context,
-      builder: (context) => CupertinoAlertDialog(
+      builder: (dialogContext) => CupertinoAlertDialog(
         title: const Text('Remove item'),
-        content: Text('Remove "${widget.title}" from custom items?'),
+        content: Text('Remove "$title" from custom items?'),
         actions: [
           CupertinoDialogAction(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(dialogContext).pop(),
             child: const Text('Cancel'),
           ),
           CupertinoDialogAction(
             isDestructiveAction: true,
             onPressed: () {
-              Navigator.of(context).pop();
-              // TODO: delete item when backend is ready
+              Navigator.of(dialogContext).pop();
+              onRemove?.call();
             },
             child: const Text('Remove'),
           ),
@@ -156,10 +210,12 @@ class _ItemTileState extends State<ItemTile> {
     );
   }
 
-  void showActionSheet(BuildContext context, String itemTitle) {
+  void _showActionSheet(BuildContext context, String itemTitle) {
+    final groceryItemId = itemId;
+
     showCupertinoModalPopup<void>(
       context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
+      builder: (sheetContext) => CupertinoActionSheet(
         title: Text(
           itemTitle,
           style: TextStyle(
@@ -170,23 +226,25 @@ class _ItemTileState extends State<ItemTile> {
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
-              context.pop();
-              // TODO: Edit item
+              sheetContext.pop();
+              // TODO: Mark as completed
             },
             child: const Text('Mark as completed'),
           ),
           CupertinoActionSheetAction(
             isDestructiveAction: true,
             onPressed: () {
-              context.pop();
-              // TODO: Delete item
+              if (groceryItemId != null) {
+                _cubit.removeItem(groceryItemId);
+              }
+              sheetContext.pop();
             },
             child: const Text('Remove from list'),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
           isDefaultAction: true,
-          onPressed: () => context.pop(),
+          onPressed: () => sheetContext.pop(),
           child: const Text('Cancel'),
         ),
       ),
