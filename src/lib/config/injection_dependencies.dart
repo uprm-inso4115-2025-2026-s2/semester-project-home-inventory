@@ -40,6 +40,21 @@ import 'package:src/features/core_inventory/domain/usecases/delete_inventory_ite
 import 'package:src/features/core_inventory/presentation/cubits/inventory_cubit.dart';
 import 'package:src/features/dashboard/domain/repositories/dashboard_repositories.dart';
 import 'package:src/features/dashboard/data/dashboard_repository_impl.dart';
+import 'package:src/features/sharing_budget/data/datasources/Invitation_remote_data_source.dart';
+import 'package:src/features/sharing_budget/data/datasources/household_remote_data_source.dart';
+import 'package:src/features/sharing_budget/data/repositories/sharing_repository_impl.dart';
+import 'package:src/features/sharing_budget/domain/repositories/sharing_repository.dart';
+import 'package:src/features/sharing_budget/domain/usecases/accept_roommate_invite.dart';
+import 'package:src/features/sharing_budget/domain/usecases/add_household_member.dart';
+import 'package:src/features/sharing_budget/domain/usecases/create_household.dart';
+import 'package:src/features/sharing_budget/domain/usecases/get_household_by_id.dart';
+import 'package:src/features/sharing_budget/domain/usecases/get_household_invites.dart';
+import 'package:src/features/sharing_budget/domain/usecases/get_household_members.dart';
+import 'package:src/features/sharing_budget/domain/usecases/get_invite_by_id.dart';
+import 'package:src/features/sharing_budget/domain/usecases/reject_roommate_invite.dart';
+import 'package:src/features/sharing_budget/domain/usecases/remove_household_member.dart';
+import 'package:src/features/sharing_budget/domain/usecases/send_roommate_invite.dart';
+import 'package:src/features/sharing_budget/domain/usecases/validate_household_membership.dart';
 
 final sl = GetIt.instance;
 
@@ -163,7 +178,48 @@ Future<void> initializeDependencies() async {
   // ...
 
   /// Sharing and Budget
-  // ...
+
+  // Data Sources
+  sl.registerLazySingleton<HouseholdRemoteDataSource>(
+    () => HouseholdRemoteDataSource(sl<SupabaseClient>()),
+  );
+
+  sl.registerLazySingleton<InvitationRemoteDataSource>(
+    () => InvitationRemoteDataSource(sl<SupabaseClient>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<SharingRepository>(
+    () => SharingRepositoryImpl(
+      householdRemoteDataSource: sl<HouseholdRemoteDataSource>(),
+      invitationRemoteDataSource: sl<InvitationRemoteDataSource>(),
+    ),
+  );
+
+  // Usecases
+  sl.registerLazySingleton<CreateHousehold>(() => CreateHousehold(sl()));
+  sl.registerLazySingleton<GetHouseholdById>(() => GetHouseholdById(sl()));
+  sl.registerLazySingleton<GetHouseholdMembers>(
+    () => GetHouseholdMembers(sl()),
+  );
+  sl.registerLazySingleton<AddHouseholdMember>(() => AddHouseholdMember(sl()));
+  sl.registerLazySingleton<RemoveHouseholdMember>(
+    () => RemoveHouseholdMember(sl()),
+  );
+  sl.registerLazySingleton<SendRoommateInvite>(() => SendRoommateInvite(sl()));
+  sl.registerLazySingleton<GetInviteById>(() => GetInviteById(sl()));
+  sl.registerLazySingleton<GetHouseholdInvites>(
+    () => GetHouseholdInvites(sl()),
+  );
+  sl.registerLazySingleton<AcceptRoommateInvite>(
+    () => AcceptRoommateInvite(sl()),
+  );
+  sl.registerLazySingleton<RejectRoommateInvite>(
+    () => RejectRoommateInvite(sl()),
+  );
+  sl.registerLazySingleton<ValidateHouseholdMembership>(
+    () => ValidateHouseholdMembership(sl()),
+  );
 
   /// Reports and Insights
   sl.registerLazySingleton<ReportRepository>(
