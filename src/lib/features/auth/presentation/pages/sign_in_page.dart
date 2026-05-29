@@ -33,7 +33,7 @@ class _SignInPageState extends State<SignInPage> {
     }
 
     setState(() => _invalidInfo = false);
-    context.go('/home');
+    context.go('/profile');
   }
 
   @override

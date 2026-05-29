@@ -38,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     setState(() => _invalidInfo = false);
-    context.go('/home');
+    context.go('/profile');
   }
 
   @override

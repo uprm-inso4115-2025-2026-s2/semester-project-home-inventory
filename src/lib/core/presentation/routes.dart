@@ -12,6 +12,8 @@ import 'package:src/features/reports/presentation/routes.dart';
 // TODO: route InviteRoommatePage properly
 import 'package:src/features/alerts_feed/presentation/routes.dart';
 import 'package:src/features/invite_roomate_page/presentation/routes.dart';
+//TDO: route profile screens properly
+import 'package:src/features/profile_screens/presentation/routes.dart';
 
 const List<MainNavTab> _mainTabs = [
   MainNavTab(label: 'Home', icon: Icons.home_filled, rootPath: '/home'),
