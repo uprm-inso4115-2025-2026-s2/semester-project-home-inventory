@@ -1,0 +1,292 @@
+= Concept Formation and Abstraction in the Home Inventory System
+
+== Objective
+
+This report applies the lecture topic of Concept Formation and Abstraction to the Digital Home Inventory System.
+
+Concept formation involves identifying lower-level domain phenomena and grouping them into higher-level domain concepts. Instead of treating every specific object, action, or situation as separate, related phenomena can be abstracted into clearer concepts that improve the domain model and domain narrative.
+
+The goal of this task is to identify concrete phenomena in the Home Inventory System and form useful abstractions that make the system easier to understand, document, and extend.
+
+---
+
+
+== Lower-Level Domain Phenomena
+
+The Home Inventory System contains many concrete domain phenomena, including:
+
+* Milk, eggs, bread, cleaning supplies, batteries, and other household objects
+* Refrigerator items, pantry items, bathroom items, and storage room items
+* Adding an item to inventory
+* Removing or consuming an item
+* Increasing or decreasing item quantity
+* Items becoming low in stock
+* Items reaching expiration
+* Users receiving alerts
+* Household owners inviting members
+* Members accepting or rejecting invitations
+* Users tracking spending related to household inventory
+* Budgets being assigned to categories or household activities
+
+These phenomena represent specific objects, events, and actions that occur in the domain.
+
+---
+
+== Formed Domain Concepts
+
+=== 1. Inventory Item
+
+*Lower-Level Phenomena:*
+
+* Milk
+* Eggs
+* Rice
+* Cleaning supplies
+* Batteries
+* Household objects stored in rooms
+
+*Formed Concept:*  
+*Inventory Item*
+
+*Definition:*  
+An inventory item is any household object that can be tracked by the system.
+
+*Reasoning:*  
+Instead of modeling each household object separately, the system abstracts them into the concept of an inventory item. This allows the same model to represent food, supplies, and other household products.
+
+*Benefit:*  
+This abstraction makes the system flexible because new types of household items can be added without changing the core domain model.
+
+---
+
+=== 2. Stock Entry
+
+*Lower-Level Phenomena:*
+
+* A product stored in an inventory
+* A quantity of a product
+* A product with a current stock status
+* A product with an optional expiration date
+
+*Formed Concept:*  
+*Stock Entry*
+
+*Definition:*  
+A stock entry represents the presence of a product inside an inventory, including its quantity, status, and related tracking information.
+
+*Reasoning:*  
+The system separates the general product definition from the actual tracked amount stored by a user or household. This distinction allows the same product to appear in different inventories with different quantities or expiration dates.
+
+*Benefit:*  
+This abstraction improves clarity by separating “what the product is” from “how much of it is currently available.”
+
+---
+
+=== 3. Inventory Change
+
+*Lower-Level Phenomena:*
+
+* Adding stock
+* Restocking an item
+* Consuming an item
+* Removing an item
+* Manually updating quantity
+* Quantity increasing or decreasing
+
+*Formed Concept:*  
+*Inventory Change*
+
+*Definition:*  
+An inventory change is any event that modifies the quantity or state of a stock entry.
+
+*Reasoning:*  
+Many user actions affect inventory in similar ways. Whether the user restocks milk or consumes rice, the domain behavior involves changing quantity.
+
+*Benefit:*  
+This abstraction helps the system describe stock movement consistently and supports future features such as transaction history or usage analytics.
+
+---
+
+=== 4. Inventory Status
+
+*Lower-Level Phenomena:*
+
+* Item is in stock
+* Item is low in stock
+* Item is out of stock
+* Item is near expiration
+* Item is expired
+
+*Formed Concept:*  
+*Inventory Status*
+
+*Definition:*  
+Inventory status represents the current condition of a stock entry based on quantity, expiration, or other relevant state information.
+
+*Reasoning:*  
+The system has multiple status-related concepts, including stock status and expiration status. These can be understood as specialized forms of a broader inventory status concept.
+
+*Benefit:*  
+This abstraction helps organize status logic and makes it easier to reason about the state of items in the system.
+
+---
+
+=== 5. Alert Event
+
+*Lower-Level Phenomena:*
+
+* Low-stock warning
+* Expiration warning
+* Expired item notification
+* Reminder to restock
+* System-generated notification
+
+*Formed Concept:*  
+*Alert Event*
+
+*Definition:*  
+An alert event is a system-generated communication triggered by an important inventory condition.
+
+*Reasoning:*  
+Different alerts may have different causes, but they all follow the same general pattern: the system detects a condition and informs the user.
+
+*Benefit:*  
+This abstraction makes notification behavior easier to document and extend. New alert types can be added without changing the overall alert concept.
+
+---
+
+=== 6. Household Collaboration
+
+*Lower-Level Phenomena:*
+
+* Household owner inviting another user
+* A roommate accepting an invitation
+* A household member viewing shared inventory
+* Members collaborating on inventory management
+* Access being granted or rejected
+
+*Formed Concept:*  
+*Household Collaboration*
+
+*Definition:*  
+Household collaboration represents the shared management of inventory by multiple users in the same household.
+
+*Reasoning:*  
+The system includes several user-sharing actions, such as invitations and membership roles. These can be grouped into a broader collaboration concept.
+
+*Benefit:*  
+This abstraction clarifies that the system is not only about individual inventory tracking, but also about coordinated household management.
+
+---
+
+=== 7. Household Participant
+
+*Lower-Level Phenomena:*
+
+* Owner
+* Household member
+* Invited user
+* Shared inventory user
+* Budget manager
+
+*Formed Concept:*  
+*Household Participant*
+
+*Definition:*  
+A household participant is any user who interacts with a household, inventory, or shared feature in the system.
+
+*Reasoning:*  
+Different user roles exist in the domain, but they all describe people participating in household inventory management.
+
+*Benefit:*  
+This abstraction helps organize access control, role behavior, and shared responsibility.
+
+---
+
+=== 8. Financial Activity
+
+*Lower-Level Phenomena:*
+
+* Budget creation
+* Budget allocation
+* Spending event
+* Grocery spending
+* Household expense tracking
+
+*Formed Concept:*  
+*Financial Activity*
+
+*Definition:*  
+Financial activity represents any budget or spending-related action connected to household inventory management.
+
+*Reasoning:*  
+The system contains budget and spending features that are related to household inventory decisions. Instead of treating each financial record separately, they can be grouped under a broader financial activity concept.
+
+*Benefit:*  
+This abstraction helps connect inventory management with household planning and spending analysis.
+
+---
+
+== Mapping of Phenomena to Formed Concepts
+
+[cols="2,2,2", options="header"]
+|===
+|Lower-Level Phenomena |Formed Concept |Purpose of Abstraction
+
+|Milk, eggs, rice, batteries, cleaning supplies
+|Inventory Item
+|Generalizes specific household objects into one trackable concept
+
+|Product quantity, stock status, expiration date
+|Stock Entry
+|Represents the tracked presence of a product in an inventory
+
+|Adding stock, consuming stock, updating quantity
+|Inventory Change
+|Groups actions that modify inventory state
+
+|Low stock, out of stock, expired, near expiration
+|Inventory Status
+|Groups different item condition states
+
+|Low-stock warning, expiration warning, reminder
+|Alert Event
+|Generalizes system notifications triggered by domain conditions
+
+|Owner invites member, member accepts, shared access
+|Household Collaboration
+|Represents shared inventory management
+
+|Owner, member, invitee, budget manager
+|Household Participant
+|Generalizes user roles involved in the household
+
+|Budget, allocation, spending event
+|Financial Activity
+|Groups money-related inventory and household actions
+|===
+
+---
+
+
+== Benefits of Concept Formation
+
+Concept formation improves the Home Inventory System in several ways:
+
+* *Simplifies the domain model:* Specific objects and events are grouped into reusable concepts.
+* *Improves terminology:* Developers can use consistent names such as Inventory Item, Stock Entry, and Alert Event.
+* *Reduces duplication:* Similar actions like restocking and consuming are treated as inventory changes.
+* *Supports extensibility:* New item types, alert types, or user roles can be added under existing abstractions.
+* *Improves communication:* Team members can discuss the system using clearer domain concepts.
+* *Strengthens documentation:* The domain narrative becomes more structured and less repetitive.
+
+---
+
+
+== Conclusion
+
+The Concept Formation and Abstraction analysis shows that the Home Inventory System can be understood through a smaller set of higher-level domain concepts.
+
+Specific household objects can be abstracted into *Inventory Items*. Quantity-based records can be understood as *Stock Entries*. Actions such as restocking and consumption can be grouped into *Inventory Changes*. Warnings and reminders can be represented as *Alert Events*, while shared access can be described through *Household Collaboration* and *Household Participants*.
+
+These abstractions make the domain model clearer, reduce repetition, and support future system growth. By applying concept formation, the project gains a stronger and more organized domain narrative.
