@@ -1,0 +1,151 @@
+= Decision Tables for Product Stock Feature
+Author: Jorge L. De León Orama
+:toc:
+:sectnums:
+
+
+This document formally defines the UI-level decision logic for the Product Stock Feature using standard decision tables. Each table captures a key decision point identified from the mockups, sequence diagram, and DFD, ensuring that every combination of conditions maps to an unambiguous action for developers and testers.
+
+The scope of these tables is limited to UI-level logic derivable from the current documentation. Business rules behind the stock status indicator dot (e.g., expiration threshold-to-color mapping) are out of scope and noted as deferred in <<deferred>>.
+
+[[table-1]]
+== Decision Table 1 — Filter and Sort Behavior
+
+Governs how the stock list is displayed based on whether a filter has been selected and the current sort direction toggle state.
+
+*Conditions*
+
+[cols="4,1,1,1,1", options="header"]
+|===
+| Condition                                | R1 | R2 | R3 | R4
+| Filter selected (Expiration Date)        | N  | Y  | Y  | Y
+| Sort direction toggled (ascending)       | —  | Y  | N  | —
+| Any stock entry has null expiration date | —  | —  | —  | Y
+|===
+
+*Actions*
+
+[cols="4,1,1,1,1", options="header"]
+|===
+| Action                                   | R1 | R2 | R3 | R4
+| Display list in default order            | X  |    |    |
+| Display list sorted by expiration asc.   |    | X  |    | X
+| Display list sorted by expiration desc.  |    |    | X  |
+| Null expiration entries sorted to end    |    |    |    | X
+|===
+
+NOTE: R4 is a sub-case of R2 (ascending, filter active). It is listed separately to make the null-date handling explicit. The sort direction toggle is only visible and interactive when a filter is actively applied.
+
+[[table-2]]
+== Decision Table 2 — Edit Modal Done Button (Save Action)
+
+Governs what happens when the user presses Done inside the Edit Item Info modal. Covers all combinations of field modification state and input validity.
+
+*Conditions*
+
+[cols="4,1,1,1,1,1,1,1,1", options="header"]
+|===
+| Condition                       | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8
+| Note field modified             | N  | N  | N  | N  | Y  | Y  | Y  | Y
+| Expiration date field modified  | N  | N  | Y  | Y  | N  | N  | Y  | Y
+| Input valid                     | —  | —  | Y  | N  | Y  | N  | Y  | N
+|===
+
+*Actions*
+
+[cols="4,1,1,1,1,1,1,1,1", options="header"]
+|===
+| Action                                  | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8
+| Close modal with no database call       | X  | X  |    |    |    |    |    |
+| Persist changes and close modal         |    |    | X  |    | X  |    | X  |
+| Show validation error, keep modal open  |    |    |    | X  |    | X  |    | X
+|===
+
+NOTE: R1 and R2 are equivalent (neither field modified; validity is irrelevant when no changes exist). Both are listed for completeness. The specific validation rules for each field (date format, max length, etc.) are not yet defined — the "input valid" condition is a placeholder until those constraints are formally specified. See <<deferred>>.
+
+NOTE: The return destination on close depends on entry path: if the modal was opened via the three-dots menu directly, it returns to the underlying screen-level state; if opened via the View More modal's Edit button, it returns to View More. This distinction applies to all close actions above.
+
+[[table-3]]
+== Decision Table 3 — Remove Item Confirmation Dialog
+
+Governs whether the Remove confirmation dialog is shown and what happens after the user responds.
+
+*Conditions*
+
+[cols="4,1,1,1,1", options="header"]
+|===
+| Condition               | R1 | R2 | R3 | R4
+| Edit Mode active        | N  | Y  | Y  | Y
+| Remove button tapped    | —  | Y  | Y  | Y
+| User confirms with YES  | —  | —  | Y  | N
+|===
+
+*Actions*
+
+[cols="4,1,1,1,1", options="header"]
+|===
+| Action                                  | R1 | R2 | R3 | R4
+| No action (Remove button not visible)   | X  |    |    |
+| Show confirmation dialog                |    | X  |    |
+| Permanently delete entry, refresh list  |    |    | X  |
+| Dismiss dialog, return to Edit Mode     |    |    |    | X
+|===
+
+NOTE: R1 captures the guard condition: the Remove button is only rendered when Edit Mode is active, so it cannot be tapped outside of that state. R2 represents the intermediate state where the dialog has been triggered but not yet resolved — it is listed to make the dialog-display action explicit.
+
+[[table-4]]
+== Decision Table 4 — Three-Dots Menu Action Selection
+
+Governs which action is taken based on the current Edit Mode state and what the user selects (or whether they dismiss) the three-dots context menu.
+
+VM = View More selected. E = Edit selected. — = menu dismissed (tap outside).
+
+*Conditions*
+
+[cols="4,1,1,1,1,1,1", options="header"]
+|===
+| Condition                              | R1 | R2 | R3 | R4 | R5 | R6
+| Edit Mode active                       | N  | N  | N  | Y  | Y  | Y
+| Selection (View More / Edit / dismiss) | VM | E  | —  | VM | E  | —
+|===
+
+*Actions*
+
+[cols="4,1,1,1,1,1,1", options="header"]
+|===
+| Action                              | R1 | R2 | R3 | R4 | R5 | R6
+| Open View More modal (read-only)    | X  |    |    | X  |    |
+| Open Edit modal directly            |    | X  |    |    | X  |
+| Close menu with no state change     |    |    | X  |    |    | X
+|===
+
+NOTE: The three-dots menu is accessible from both Idle and Edit Mode; the selection behavior is identical in both cases, but the underlying screen-level state affects the return destination when the modal is later closed.
+
+[[deferred]]
+== Deferred Decision Points
+
+The following decision points cannot be fully defined with the current documentation. They are noted here explicitly rather than omitted.
+
+[[deferred-status-dot]]
+=== Stock Status Indicator (Expiration Color Dot)
+
+The status indicator dot visible on each stock entry card in the mockups implies conditional logic mapping an item's expiration date to a color or urgency level. The rules governing this mapping (e.g., which date ranges correspond to which colors) are not documented. A decision table for this logic should be created as a follow-up once the business rules are formally specified.
+
+[[deferred-validation]]
+=== Edit Modal Field Validation Rules
+
+The decision table in <<table-2>> uses an "input valid" condition, but the specific constraints for each field are not yet defined. Once validation rules are specified (e.g., date must match YYYY-MM-DD format, note field max length), the table should be updated to expand the invalid-input rules into more specific sub-cases per field.
+
+[[summary]]
+== Summary
+
+[cols="1,3,1", options="header"]
+|===
+| Table | Decision point                  | Rules defined
+| 1     | Filter and sort behavior        | 4
+| 2     | Edit modal — Done (save action) | 8
+| 3     | Remove item confirmation dialog | 4
+| 4     | Three-dots menu action          | 6
+|===
+
+Total rules defined: 22. Deferred decision points: 2 (status dot logic, field validation specifics).
