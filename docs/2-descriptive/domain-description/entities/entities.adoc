@@ -40,7 +40,7 @@
 |Restock list / planner
 |entries (#item types#), reason (low/out/expired), optional responsibility marker, status (active/deferred)
 
-|Notification record
+|#Notification record#
 |type (low/out/near-expiry/expired/budget), target (item type/instance or budget), created time, read/unread, dismissed/deferred
 
 |Spending entry

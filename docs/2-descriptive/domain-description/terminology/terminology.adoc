@@ -183,23 +183,23 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | The set of actions that change or inspect the household inventory, such as adding, locating, updating, transferring, consuming, replenishing, archiving, or discarding items.
 | Umbrella term for inventory-related actions described across scenarios, requirements, and implementation.
 
-| Restock cycle
-| Behavior
-| Domain
-| *Item consumed* → *Availability* decreases → *Low-stock judgment* (or threshold crossing) → *Replenishment decided* → *Item replenished*.
-| Composite domain flow.
+| #Restock cycle#
+| #Behavior#
+| #Domain#
+| #*Item consumed* → *Availability* decreases → *Low-stock judgment* (or threshold crossing) → *Replenishment decided* → *Item replenished*.#
+| #Composite domain flow.#
 
-| Shared purchase flow
-| Behavior
-| Domain
-| *Item acquired* (by a member, on the household's behalf) → *Spending recorded* with shared scope → household recognizes the cost as shared rather than personal.
-| Composite domain flow.
+| #Shared purchase flow#
+| #Behavior#
+| #Domain#
+| #*Item acquired* (by a member, on the household's behalf) → *Spending recorded* with shared scope → household recognizes the cost as shared rather than personal.#
+| #Composite domain flow.#
 
-| Expiration monitoring
-| Behavior
-| Domain
-| *Item approaching expiration* → household notices or is informed → *Item consumed*, *Item discarded*, or instance retained according to household policy.
-| Composite domain flow.
+| #Expiration monitoring#
+| #Behavior#
+| #Domain#
+| #*Item approaching expiration* → household notices or is informed → *Item consumed*, *Item discarded*, or instance retained according to household policy.#
+| #Composite domain flow.#
 
 | Consumption
 | Action
