@@ -1,5 +1,5 @@
 [[appendix-inconsistency-detection-report]]
-= Inconsistency Detection Report
+= #Inconsistency Detection Report#
 :toc:
 :toc-title: Table of Contents
 :toclevels: 3
