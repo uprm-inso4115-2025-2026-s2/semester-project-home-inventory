@@ -1,0 +1,47 @@
+:nofooter:
+:milestone: Milestone 3
+:team: Team 3
+
+# {milestone} Week 3 — {team} Progress Report
+
+## Objective
+
+Ensure that during Scrum Prep, the project has a clear and organized summary of what {team} worked on this week.
+
+## What the Team Accomplished This Week
+
+* Continued implementation work for Sharing & Budget functionality
+* Finalized several remaining Lecture Topic Tasks and documentation efforts
+* Continued frontend development for Profile and Budget screens
+* Prepared milestone deliverables and implementation reviews
+
+## Tasks Completed / Issues Closed
+
+* {issue-base-url}746[Implement Budget Use Cases]
+* {issue-base-url}705[Stakeholder Roles for the Sharing & Budget Feature]
+* {issue-base-url}706[Stakeholder Persona for Sharing & Budget]
+* {issue-base-url}689[Modeling Shared Expense Data — Continuous vs Discrete Attributes]
+
+## What Is Currently In Progress
+
+* {issue-base-url}576[Implement Profile Page Screen]
+* {issue-base-url}672[Implement Sharing Use Cases]
+* {issue-base-url}673[Implement Sharing Cubits for State Management]
+* Implement Budget/Spending Cubits
+* Implement Budget Screen
+
+## Blockers or Challenges
+
+* Remaining frontend implementation tasks require additional integration work
+* Some milestone work remains dependent on pending Milestone 2 feedback
+
+## Plans for Next Week
+
+* Finalize remaining frontend screens
+* Continue Cubit integration and state management work
+* Refine documentation and prepare for future milestone transitions
+* Improve UI consistency across Sharing & Budget features
+
+## Documentation Links
+
+* Available throughout pull requests and issues mentioned above
