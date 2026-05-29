@@ -78,5 +78,40 @@ void main() {
       cubit.removeCustomCollectionItem(id);
       expect(cubit.state.hasCustomCollection, isFalse);
     });
+
+    test('markAsCompleted moves item to history sorted by date', () {
+      cubit.addItem('Milk');
+      final id = cubit.state.items.first.id;
+
+      expect(cubit.markAsCompleted(id), isTrue);
+      expect(cubit.state.items, isEmpty);
+      expect(cubit.state.completedItems.length, 1);
+      expect(cubit.state.completedItems.first.name, 'Milk');
+      expect(cubit.state.completedItems.first.quantity, 1);
+    });
+
+    test('markAsCompleted returns false for unknown id', () {
+      expect(cubit.markAsCompleted('missing'), isFalse);
+      expect(cubit.state.completedItems, isEmpty);
+    });
+
+    test('completed items are ordered most recent first', () {
+      cubit.addItem('Milk');
+      cubit.addItem('Eggs');
+      final milkId = cubit.state.items.firstWhere((i) => i.name == 'Milk').id;
+      final eggsId = cubit.state.items.firstWhere((i) => i.name == 'Eggs').id;
+
+      cubit.markAsCompleted(milkId);
+      cubit.markAsCompleted(eggsId);
+
+      expect(cubit.state.completedItems.first.name, 'Eggs');
+      expect(cubit.state.completedItems.last.name, 'Milk');
+      expect(
+        cubit.state.completedItems.first.completedAt.isAfter(
+          cubit.state.completedItems.last.completedAt,
+        ),
+        isTrue,
+      );
+    });
   });
 }

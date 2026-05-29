@@ -64,7 +64,10 @@ var groceryListRoutes = GoRoute(
     GoRoute(
       path: "history",
       builder: (_, __) {
-        return History();
+        return BlocProvider.value(
+          value: sl<GroceryListCubit>(),
+          child: const History(),
+        );
       },
     ),
   ],
