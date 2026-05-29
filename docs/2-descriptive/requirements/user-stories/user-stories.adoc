@@ -82,58 +82,58 @@ As *Andrea* (unofficial household manager), I want to *open one screen and quick
 * Low/expiring summaries include location context when available (e.g., "toilet paper low in bathroom").
 * The dashboard surfaces the household's top-level status without navigating multiple screens.
 
-=== User Story Decomposition Review
+=== #User Story Decomposition Review#
 
-The original user stories were reviewed to determine whether they each represented a single user-visible interaction or bundled multiple independent behaviors together. Several stories were found to combine creation, editing, synchronization, notification, and reporting concerns into one large interaction. To improve traceability, verification, implementation ownership, and acceptance testing, the stories were decomposed into smaller interaction-focused sub-stories.
+#The original user stories were reviewed to determine whether they each represented a single user-visible interaction or bundled multiple independent behaviors together. Several stories were found to combine creation, editing, synchronization, notification, and reporting concerns into one large interaction. To improve traceability, verification, implementation ownership, and acceptance testing, the stories were decomposed into smaller interaction-focused sub-stories.#
 
-The original stories remain as high-level parent stories describing broader goals, while the decomposed stories identify tighter user interactions that can be independently implemented and validated.
+#The original stories remain as high-level parent stories describing broader goals, while the decomposed stories identify tighter user interactions that can be independently implemented and validated.#
 
 [cols="1,2,2,2", options="header"]
 |===
-| Original Story
-| Issue Identified
-| Decomposition Decision
-| Resulting Interaction Stories
+| #Original Story#
+| #Issue Identified#
+| #Decomposition Decision#
+| #Resulting Interaction Stories#
 
-| US-INV-01: Add items to inventory
-| Combines item creation, barcode/manual entry, editing, and synchronization behavior.
-| Retain as a parent inventory-management story while identifying smaller interaction-focused behaviors.
-| US-INV-01A Add item manually +
-US-INV-01B Add item using barcode scan +
-US-INV-01C Edit existing item information +
-US-INV-01D Confirm inventory refresh after save
+| #US-INV-01: Add items to inventory#
+| #Combines item creation, barcode/manual entry, editing, and synchronization behavior.#
+| #Retain as a parent inventory-management story while identifying smaller interaction-focused behaviors.#
+| #US-INV-01A Add item manually# +
+#US-INV-01B Add item using barcode scan# +
+#US-INV-01C Edit existing item information# +
+#US-INV-01D Confirm inventory refresh after save#
 
-| US-INV-02: See what belongs to whom
-| Combines ownership visibility, ownership editing, synchronization, and spending separation.
-| Separate ownership visualization from ownership modification and financial visibility.
-| US-INV-02A Display ownership indicators +
-US-INV-02B Modify ownership status +
-US-INV-02C Synchronize ownership changes +
-US-INV-02D Separate personal and shared spending views
+| #US-INV-02: See what belongs to whom#
+| #Combines ownership visibility, ownership editing, synchronization, and spending separation.#
+| #Separate ownership visualization from ownership modification and financial visibility.#
+| #US-INV-02A Display ownership indicators# +
+#US-INV-02B Modify ownership status# +
+#US-INV-02C Synchronize ownership changes# +
+#US-INV-02D Separate personal and shared spending views#
 
-| US-ALT-01: Receive low-stock warnings
-| Combines threshold configuration, state detection, deduplication, notification grouping, and dashboard consistency.
-| Split configuration behaviors from system-generated alert behaviors.
-| US-ALT-01A Configure low-stock threshold +
-US-ALT-01B Detect low-stock transition +
-US-ALT-01C Prevent duplicate low-stock alerts +
-US-ALT-01D Display consistent low-stock state across views
+| #US-ALT-01: Receive low-stock warnings#
+| #Combines threshold configuration, state detection, deduplication, notification grouping, and dashboard consistency.#
+| #Split configuration behaviors from system-generated alert behaviors.#
+| #US-ALT-01A Configure low-stock threshold# +
+#US-ALT-01B Detect low-stock transition# +
+#US-ALT-01C Prevent duplicate low-stock alerts# +
+#US-ALT-01D Display consistent low-stock state across views#
 
-| US-SB-01: Split shared purchases with roommates
-| Combines purchase recording, cost splitting, reimbursement tracking, and dispute handling.
-| Break financial-management actions into separate user interactions.
-| US-SB-01A Record shared purchase +
-US-SB-01B Calculate roommate cost split +
-US-SB-01C Track reimbursement/payment status +
-US-SB-01D Flag disputed transaction items
+| #US-SB-01: Split shared purchases with roommates#
+| #Combines purchase recording, cost splitting, reimbursement tracking, and dispute handling.#
+| #Break financial-management actions into separate user interactions.#
+| #US-SB-01A Record shared purchase# +
+#US-SB-01B Calculate roommate cost split# +
+#US-SB-01C Track reimbursement/payment status# +
+#US-SB-01D Flag disputed transaction items#
 
-| US-RPT-01: See household dashboard with insights
-| Combines dashboard summaries, filtering, synchronization, and contextual reporting.
-| Keep dashboard overview as the parent story while separating dashboard interactions.
-| US-RPT-01A View dashboard summary +
-US-RPT-01B Filter dashboard by location +
-US-RPT-01C Refresh dashboard after synchronized updates +
-US-RPT-01D Display contextual low-stock/expiration information
+| #US-RPT-01: See household dashboard with insights#
+| #Combines dashboard summaries, filtering, synchronization, and contextual reporting.#
+| #Keep dashboard overview as the parent story while separating dashboard interactions.#
+| #US-RPT-01A View dashboard summary# +
+#US-RPT-01B Filter dashboard by location# +
+#US-RPT-01C Refresh dashboard after synchronized updates# +
+#US-RPT-01D Display contextual low-stock/expiration information#
 |===
 
-This decomposition improves requirements traceability because each acceptance test can target a specific interaction rather than multiple loosely related behaviors. It also improves maintainability by reducing ambiguity between interface concerns, synchronization behavior, and domain-level processing responsibilities.
+#This decomposition improves requirements traceability because each acceptance test can target a specific interaction rather than multiple loosely related behaviors. It also improves maintainability by reducing ambiguity between interface concerns, synchronization behavior, and domain-level processing responsibilities.#

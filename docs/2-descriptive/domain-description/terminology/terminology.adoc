@@ -408,8 +408,8 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Deduplication / anti-spam rule
 | Rule
 | Requirements
-| A constraint that prevents the system from creating another alert or auto-added restock entry for the same (household, item, condition type, triggering state) tuple while the condition remains unchanged. A repeated scheduled check, page refresh, or sync event is not enough to create a duplicate. A new alert or restock entry is allowed only when the underlying actionable state changes, the user explicitly snoozes / clears the previous entry and the snooze period expires, or the condition is resolved and later becomes true again.
-| Operationalizes the domain concern that repeated checks should not create alert spam or duplicate restock work.
+| #A constraint that prevents the system from creating another alert or auto-added restock entry for the same (household, item, condition type, triggering state) tuple while the condition remains unchanged. A repeated scheduled check, page refresh, or sync event is not enough to create a duplicate. A new alert or restock entry is allowed only when the underlying actionable state changes, the user explicitly snoozes / clears the previous entry and the snooze period expires, or the condition is resolved and later becomes true again.#
+| #Operationalizes the domain concern that repeated checks should not create alert spam or duplicate restock work.#
 
 | #Permission rule#
 | #Rule#

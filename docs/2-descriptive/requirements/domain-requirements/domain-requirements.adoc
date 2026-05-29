@@ -42,7 +42,7 @@ This DR set was also formally inspected against the defect-driven *Requirements 
 _Domain property behind this requirement:_ In the domain, low-stock is a judgment that an item is running low. This judgment may be qualitative or threshold-based. The requirement commits the system-to-be to threshold-based evaluation.
 
 * DR-13 (Expiration status): The system shall derive the expiration status of an item instance when an expiration date is present. If the expiration date is missing or unreadable, the system shall treat expiration status as unknown and shall not generate false-expired conditions.
-* DR-14 (Deduplicated alerting): The system shall deduplicate alerts by comparing the household, item or item instance, alert condition type, and current triggering state before creating a new alert record. Repeated checks without a changed condition shall not create a new alert. A new alert may be created only if one of the following occurs: the item transitions into a different actionable state, the previous condition is resolved and later reoccurs, or a user-controlled snooze/defer period expires.
+* #DR-14 (Deduplicated alerting): The system shall deduplicate alerts by comparing the household, item or item instance, alert condition type, and current triggering state before creating a new alert record. Repeated checks without a changed condition shall not create a new alert. A new alert may be created only if one of the following occurs: the item transitions into a different actionable state, the previous condition is resolved and later reoccurs, or a user-controlled snooze/defer period expires.#
 
 === Duplicate prevention and data integrity
 
