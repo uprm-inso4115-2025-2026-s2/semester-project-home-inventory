@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:src/config/injection_dependencies.dart';
 import 'package:src/config/theme.dart';
-import 'package:src/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:src/features/auth/presentation/routes.dart';
 
 const _kCardBg = Color(0xFFEDE8DC);
 const _kRed = Color(0xFFC1440E);
@@ -20,10 +16,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _shareContacts = true;
 
   Widget _buildToggleRow(
-    String label,
-    bool value,
-    ValueChanged<bool> onChanged,
-  ) {
+      String label, bool value, ValueChanged<bool> onChanged) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
@@ -45,16 +38,11 @@ class _SettingsPageState extends State<SettingsPage> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppTheme.primaryColor,
+            activeThumbColor: AppTheme.primaryColor,
           ),
         ],
       ),
     );
-  }
-
-  void _signOut(BuildContext context) {
-    sl<AuthCubit>().signOut();
-    context.go(AuthRoutes.landingPath);
   }
 
   @override
@@ -74,11 +62,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     alignment: Alignment.centerLeft,
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: AppTheme.primaryText,
-                        size: 20,
-                      ),
+                      child: const Icon(Icons.arrow_back_ios,
+                          color: AppTheme.primaryText, size: 20),
                     ),
                   ),
                   const Text(
@@ -103,7 +88,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 (v) => setState(() => _shareContacts = v),
               ),
               const Spacer(),
-              _PrimaryButton(label: 'Log Out', onTap: () => _signOut(context)),
+              _PrimaryButton(
+                label: 'Log Out',
+                onTap: () => Navigator.pop(context),
+              ),
               const SizedBox(height: 4),
               _PrimaryButton(
                 label: 'Delete Account',
@@ -141,14 +129,12 @@ class _PrimaryButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 10),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
+              borderRadius: BorderRadius.circular(30)),
           elevation: 0,
         ),
-        child: Text(
-          label,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-        ),
+        child: Text(label,
+            style:
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
       ),
     );
   }
