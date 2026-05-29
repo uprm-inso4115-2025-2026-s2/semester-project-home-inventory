@@ -4,12 +4,12 @@ Scenarios describe realistic end-to-end situations in the domain and how stakeho
 
 [NOTE]
 ====
-The scenarios catalogued below feed directly into two downstream walkthrough activities:
+#The scenarios catalogued below feed directly into two downstream walkthrough activities:#
 
-* <<_terminology_walkthroughs>> re-expresses standard scenarios using *only* the entities, events, actions, and behaviors in <<_terminology>> — surfacing gaps and fuzzy definitions in the glossary.
-* <<_requirements_walkthroughs>> maps user-story scenarios against the DR / IR / MR set — surfacing requirements that are missing or too ambiguous to support execution.
+* #<<_terminology_walkthroughs>> re-expresses standard scenarios using *only* the entities, events, actions, and behaviors in <<_terminology>> — surfacing gaps and fuzzy definitions in the glossary.#
+* #<<_requirements_walkthroughs>> maps user-story scenarios against the DR / IR / MR set — surfacing requirements that are missing or too ambiguous to support execution.#
 
-Cross-references from this scenarios section to those walkthroughs are intentional: scenarios stated here are the *input*, and the walkthroughs are where they are *executed* against the glossary and the requirements.
+#Cross-references from this scenarios section to those walkthroughs are intentional: scenarios stated here are the *input*, and the walkthroughs are where they are *executed* against the glossary and the requirements.#
 ====
 
 === Scenario S1a — Low-Stock Trigger After Partial Consumption

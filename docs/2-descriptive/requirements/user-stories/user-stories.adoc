@@ -4,7 +4,7 @@ These user stories describe the core user-visible behaviors of the Digital Home 
 
 [NOTE]
 ====
-The stories below are *executed* end-to-end against the requirement set in <<_requirements_walkthroughs>>. Each walkthrough picks one user story (or one of its decomposed sub-stories), traces the steps that would have to occur, and identifies which DR / IR / MR covers each step — flagging `[REQ-GAP]` and `[REQ-FUZZY]` where the requirements do not support actual execution. Walkthrough coverage so far: US-INV-01 / 01B (R1), US-ALT-01 / 01B (R2), US-INV-02 / 02A / 02B (R3), US-SB-01 / 01A / 01B / 01C (R4).
+#The stories below are *executed* end-to-end against the requirement set in <<_requirements_walkthroughs>>. Each walkthrough picks one user story (or one of its decomposed sub-stories), traces the steps that would have to occur, and identifies which DR / IR / MR covers each step — flagging `[REQ-GAP]` and `[REQ-FUZZY]` where the requirements do not support actual execution. Walkthrough coverage so far: US-INV-01 / 01B (R1), US-ALT-01 / 01B (R2), US-INV-02 / 02A / 02B (R3), US-SB-01 / 01A / 01B / 01C (R4).#
 ====
 
 === US-INV-01: Add items to inventory

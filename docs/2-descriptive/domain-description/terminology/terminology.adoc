@@ -4,7 +4,7 @@
 
 [NOTE]
 ====
-This glossary is exercised by the *Terminology walkthroughs* in <<_terminology_walkthroughs>>, where standard domain scenarios are traced step by step using only the terms defined below. That walkthrough is the canonical place to look for *gaps* and *fuzzy* terms surfaced by attempting to execute scenarios with this vocabulary.
+#This glossary is exercised by the *Terminology walkthroughs* in <<_terminology_walkthroughs>>, where standard domain scenarios are traced step by step using only the terms defined below. That walkthrough is the canonical place to look for *gaps* and *fuzzy* terms surfaced by attempting to execute scenarios with this vocabulary.#
 ====
 
 === #Phase tags#
