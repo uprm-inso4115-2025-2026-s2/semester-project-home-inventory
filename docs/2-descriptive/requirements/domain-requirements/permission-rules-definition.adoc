@@ -5,13 +5,13 @@ Establish clear role-based permission rules so system actions are consistent and
 
 === Core Concepts
 
-All term definitions used in this document — *Household*, *Member*, *Owner*, *Viewer*, *Membership*, *Membership state*, *Permission rule*, *Invitation*, *Row Level Security (RLS)* — are maintained in <<_terminology>>. This document does not redefine those terms; it specifies role hierarchy, action catalogs, and conflict-resolution rules that build on them.
+#All term definitions used in this document — *Household*, *Member*, *Owner*, *Viewer*, *Membership*, *Membership state*, *Permission rule*, *Invitation*, *Row Level Security (RLS)* — are maintained in <<_terminology>>. This document does not redefine those terms; it specifies role hierarchy, action catalogs, and conflict-resolution rules that build on them.#
 
 === Roles Model
 
 ==== Primary Roles
 
-The roles *Owner*, *Member*, and *Viewer* are defined in <<_terminology>>; refer to those entries for their meaning. This subsection records only how those roles are organized within the system.
+#The roles *Owner*, *Member*, and *Viewer* are defined in <<_terminology>>; refer to those entries for their meaning. This subsection records only how those roles are organized within the system.#
 
 ==== Role Hierarchy
 
@@ -25,7 +25,7 @@ All permissions of a lower role are included in the higher role. For example, an
 
 ==== Membership States
 
-The membership-state values *active*, *removed*, and *pending* are defined in <<_terminology>> under *Membership state*. They are not redefined here.
+#The membership-state values *active*, *removed*, and *pending* are defined in <<_terminology>> under *Membership state*. They are not redefined here.#
 
 === Actions Catalog
 

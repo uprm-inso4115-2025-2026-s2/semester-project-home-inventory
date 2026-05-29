@@ -48,8 +48,8 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Invitation
 | Entity
 | Domain
-| A persistent record of a temporary request that, while active, allows a participant to join a shared household context. Carries a sender, recipient, target household, lifecycle state, and expiration timestamp. Canonical lifecycle states: *pending*, *accepted*, *declined*, *expired*, *revoked* (see Notes).
-| Lifecycle state values are defined in this table under their own rows where applicable. Earlier drafts used "sent" for the initial state; "pending" is the canonical identifier. Distinct from a *Membership*: an accepted invitation produces a *Membership* whose state is then tracked separately.
+| #A persistent record of a temporary request that, while active, allows a participant to join a shared household context. Carries a sender, recipient, target household, lifecycle state, and expiration timestamp. Canonical lifecycle states: *pending*, *accepted*, *declined*, *expired*, *revoked* (see Notes).#
+| #Lifecycle state values are defined in this table under their own rows where applicable. Earlier drafts used "sent" for the initial state; "pending" is the canonical identifier. Distinct from a *Membership*: an accepted invitation produces a *Membership* whose state is then tracked separately.#
 
 | Membership
 | Entity (Relationship)
@@ -357,29 +357,29 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | A person who interacts with the system-to-be through its interface. A concrete account-holder that the system can authenticate and authorize. Each *User* may correspond to one or more *Household members*.
 | "User" is the system-facing term; "Household member" is the domain-facing term.
 
-| Owner
-| Entity (Role)
-| Requirements
-| The single *Household member* with full administrative responsibility for a household at a given time. The Owner can invite or remove members, change permissions, transfer ownership, and delete the household. Owner privileges include all Member and Viewer privileges. Ownership must be transferred to another Member before the current Owner leaves.
-| Canonical Requirements / Implementation role name. Also referred to as "Household admin" in earlier domain-level documents and "admin" in some requirements (e.g., DR-19); all three names refer to the same role.
+| #Owner#
+| #Entity (Role)#
+| #Requirements#
+| #The single *Household member* with full administrative responsibility for a household at a given time. The Owner can invite or remove members, change permissions, transfer ownership, and delete the household. Owner privileges include all Member and Viewer privileges. Ownership must be transferred to another Member before the current Owner leaves.#
+| #Canonical Requirements / Implementation role name. Also referred to as "Household admin" in earlier domain-level documents and "admin" in some requirements (e.g., DR-19); all three names refer to the same role.#
 
-| Member
-| Entity (Role)
-| Requirements
-| A *Household* participant with read/write access to the shared inventory. A Member may add, edit, and delete inventory items (subject to the household's ownership model), send invitations when permitted, view and manage their own membership, and leave the household. A Member does not have administrative capabilities.
-| Member privileges include all Viewer privileges.
+| #Member#
+| #Entity (Role)#
+| #Requirements#
+| #A *Household* participant with read/write access to the shared inventory. A Member may add, edit, and delete inventory items (subject to the household's ownership model), send invitations when permitted, view and manage their own membership, and leave the household. A Member does not have administrative capabilities.#
+| #Member privileges include all Viewer privileges.#
 
-| Viewer
-| Entity (Role)
-| Requirements
-| A read-only *Household* participant. A Viewer may inspect the shared inventory and membership information but cannot create, edit, or delete items, send invitations, or change household settings.
-| Optional role; sometimes called "Guest". Lowest tier in the role hierarchy *Owner > Member > Viewer*.
+| #Viewer#
+| #Entity (Role)#
+| #Requirements#
+| #A read-only *Household* participant. A Viewer may inspect the shared inventory and membership information but cannot create, edit, or delete items, send invitations, or change household settings.#
+| #Optional role; sometimes called "Guest". Lowest tier in the role hierarchy *Owner > Member > Viewer*.#
 
 | Membership state
 | Property
 | Requirements
-| The status of a user's participation in a household. Canonical values: *active* (the user is an active member with their role's permissions), *pending* (the user has been invited but has not yet accepted, and holds no household permissions until acceptance), and *removed* (the user has been removed from the household and no longer has access to its resources).
-| The value *revoked* (used in earlier drafts) is treated as a synonym for *removed*. Distinct from invitation lifecycle states (see *Invitation*).
+| #The status of a user's participation in a household. Canonical values: *active* (the user is an active member with their role's permissions), *pending* (the user has been invited but has not yet accepted, and holds no household permissions until acceptance), and *removed* (the user has been removed from the household and no longer has access to its resources).#
+| #The value *revoked* (used in earlier drafts) is treated as a synonym for *removed*. Distinct from invitation lifecycle states (see *Invitation*).#
 
 | Reorder point (threshold)
 | Property

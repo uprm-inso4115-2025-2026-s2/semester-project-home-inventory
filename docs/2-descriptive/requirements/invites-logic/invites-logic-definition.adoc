@@ -2,7 +2,7 @@
 
 === Core Concepts
 
-The terms *Invitation*, *Owner*, *Member*, *Household*, *Membership*, and *Permission rule* are defined in <<_terminology>>. The attribute schema for an *Invitation* (sender, recipient, target household, status, expiration timestamp) is documented in the entities section. This document does not redefine those terms; it specifies invitation-permission policy, lifecycle behavior, and validation rules built on them.
+#The terms *Invitation*, *Owner*, *Member*, *Household*, *Membership*, and *Permission rule* are defined in <<_terminology>>. The attribute schema for an *Invitation* (sender, recipient, target household, status, expiration timestamp) is documented in the entities section. This document does not redefine those terms; it specifies invitation-permission policy, lifecycle behavior, and validation rules built on them.#
 
 ==== Invitation Permissions
 
@@ -18,29 +18,29 @@ Users with the appropriate permissions can include:
 
 By default, invite permissions can only be made by Owners, unless Member permissions are expanded.
 
-=== Invitation Lifecycle Behavior
+=== #Invitation Lifecycle Behavior#
 
-The canonical invitation lifecycle states — *pending*, *accepted*, *declined*, *expired*, *revoked* — are defined under *Invitation* in <<_terminology>>. The subsections below describe only the operational behavior of the system in each state.
+#The canonical invitation lifecycle states — *pending*, *accepted*, *declined*, *expired*, *revoked* — are defined under *Invitation* in <<_terminology>>. The subsections below describe only the operational behavior of the system in each state.#
 
-==== pending
-- Invitation has been created and delivered; awaiting recipient response.
-- Editable or revocable by the sender.
+==== #pending#
+- #Invitation has been created and delivered; awaiting recipient response.#
+- #Editable or revocable by the sender.#
 
-==== accepted
-- Recipient has joined the household; the invitation becomes inactive.
-- Permissions are assigned based on the role configured at acceptance.
+==== #accepted#
+- #Recipient has joined the household; the invitation becomes inactive.#
+- #Permissions are assigned based on the role configured at acceptance.#
 
-==== declined
-- Invitation becomes inactive.
-- Sender may issue a new invitation.
+==== #declined#
+- #Invitation becomes inactive.#
+- #Sender may issue a new invitation.#
 
-==== expired
-- Cannot be accepted; the invitation is automatically marked inactive.
-- A new invitation must be sent to re-invite the recipient.
+==== #expired#
+- #Cannot be accepted; the invitation is automatically marked inactive.#
+- #A new invitation must be sent to re-invite the recipient.#
 
-==== revoked
-- Sender or Owner cancels the invitation before acceptance.
-- The recipient can no longer join using that invitation; it becomes inactive.
+==== #revoked#
+- #Sender or Owner cancels the invitation before acceptance.#
+- #The recipient can no longer join using that invitation; it becomes inactive.#
 
 === Validation Rules
 

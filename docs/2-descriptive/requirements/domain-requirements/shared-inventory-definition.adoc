@@ -13,7 +13,7 @@ The purpose of this document is to define and describe:
 
 == Core Concepts
 
-The terms used in this document — *Household*, *Inventory*, *Owner*, *Member*, *Viewer* (Guest), *Shared inventory*, *Invitation*, *Membership* — are defined in <<_terminology>>. This document does not redefine them; it specifies how they interact in the context of shared inventory and how the system shall behave when household members use them. If you encounter an unfamiliar term while reading this section, consult <<_terminology>>.
+#The terms used in this document — *Household*, *Inventory*, *Owner*, *Member*, *Viewer* (Guest), *Shared inventory*, *Invitation*, *Membership* — are defined in <<_terminology>>. This document does not redefine them; it specifies how they interact in the context of shared inventory and how the system shall behave when household members use them. If you encounter an unfamiliar term while reading this section, consult <<_terminology>>.#
 
 == Ownership Models
 
@@ -74,7 +74,7 @@ When a user creates a household:
 == Visibility Rules
 
 - All members can view shared inventory unless restricted by role.
-- Viewers (if enabled) have read-only access.
+- #Viewers# (if enabled) have read-only access.
 - Personal inventories remain private unless explicitly shared.
 
 == Technical Implementation Overview

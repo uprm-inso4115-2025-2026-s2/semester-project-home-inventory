@@ -42,20 +42,20 @@ Clarify system-wide assumptions and documentation rules so future implementation
 
 ==== Entity Naming Conventions
 
-These are coding conventions, not domain definitions. The meaning of each entity is defined in <<_terminology>>; this subsection only specifies how the names are spelled in code and data.
+#These are coding conventions, not domain definitions. The meaning of each entity is defined in <<_terminology>>; this subsection only specifies how the names are spelled in code and data.#
 
 - Use singular nouns for database entities ("Household", "membership", "inventory_item", ...).
 - Use snake_case for database tables.
 - Use camelCase for frontend variables.
-- Role identifiers in code must use the canonical names: "owner", "member", "viewer" (see *Owner*, *Member*, *Viewer* in <<_terminology>>).
+- #Role identifiers in code must use the canonical names: "owner", "member", "viewer" (see *Owner*, *Member*, *Viewer* in <<_terminology>>).#
 
 ==== Domain Terminology Rules
 
-All domain term definitions are maintained in <<_terminology>> and must not be redefined in this or any other document. When a term is referenced in this document — including *Household*, *Member*, *Owner*, *Invitation*, *Item type*, *Item instance*, *Inventory (reality)*, *Tracked inventory*, and *Shared inventory* — its meaning is the one stated in the terminology table.
+#All domain term definitions are maintained in <<_terminology>> and must not be redefined in this or any other document. When a term is referenced in this document — including *Household*, *Member*, *Owner*, *Invitation*, *Item type*, *Item instance*, *Inventory (reality)*, *Tracked inventory*, and *Shared inventory* — its meaning is the one stated in the terminology table.#
 
 ==== Status Naming Conventions
 
-The full meaning of each status value is defined in <<_terminology>> under *Invitation* (invitation lifecycle) and *Membership state* (membership lifecycle). This subsection only fixes the canonical spelling of the values used in code and data.
+#The full meaning of each status value is defined in <<_terminology>> under *Invitation* (invitation lifecycle) and *Membership state* (membership lifecycle). This subsection only fixes the canonical spelling of the values used in code and data.#
 
-* Invitation status identifiers: `pending`, `accepted`, `declined`, `expired`, `revoked`.
-* Membership status identifiers: `active`, `pending`, `removed`.
+* #Invitation status identifiers: `pending`, `accepted`, `declined`, `expired`, `revoked`.#
+* #Membership status identifiers: `active`, `pending`, `removed`.#
