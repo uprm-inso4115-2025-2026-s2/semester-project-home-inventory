@@ -1,29 +1,29 @@
 == Terminology
 
-This section consolidates the domain's ubiquitous language into a single annotated reference. Every term is tagged with two pieces of metadata: the *phase* in which it was first introduced, and the *phenomenon type* that determines how it is interpreted and how its definition is phrased.
+#This section consolidates the domain's ubiquitous language into a single annotated reference. Every term is tagged with two pieces of metadata: the *phase* in which it was first introduced, and the *phenomenon type* that determines how it is interpreted and how its definition is phrased.#
 
 [NOTE]
 ====
 This glossary is exercised by the *Terminology walkthroughs* in <<_terminology_walkthroughs>>, where standard domain scenarios are traced step by step using only the terms defined below. That walkthrough is the canonical place to look for *gaps* and *fuzzy* terms surfaced by attempting to execute scenarios with this vocabulary.
 ====
 
-=== Phase tags
+=== #Phase tags#
 
 * *Domain* — emerged from domain analysis (interviews, observations, informal practices)
 * *Requirements* — introduced when specifying capabilities of the system-to-be
 * #*Implementation* — introduced during M2/M3 software design, architecture, and deployment work#
 
-=== Phenomenon-type tags
+=== #Phenomenon-type tags#
 
-Each entry's *Type* column uses one of the following primary tags. The first four are the phenomenon categories the project commits to distinguishing; the remaining three cover entries that are not phenomena in their own right (they classify or constrain phenomena).
+#Each entry's *Type* column uses one of the following primary tags. The first four are the phenomenon categories the project commits to distinguishing; the remaining three cover entries that are not phenomena in their own right (they classify or constrain phenomena).#
 
-* *Entity* — A tangible, concrete thing that can be referred to, pointed at, observed, or counted: a person, place, package, record, artifact, component, or service. Definitions emphasize *what kind of thing it is* and what makes one instance distinguishable from another. Subtypes (Role, Record, Artifact, Component, Widget) are noted in parentheses when useful.
-* *Event* — An instantaneous state change in the world or in the system. Definitions are phrased in the past or perfect tense ("has just …") and focus on *what changed*, not on the actor performing the change. The actor may appear as context but is not the grammatical subject.
-* *Action* — An operation that can be invoked, with explicit inputs and outputs. Definitions follow the form *Takes: (inputs) → Produces: (outputs / observable effect)*, so the effect of invoking the action can be reasoned about precisely.
-* *Behavior* — A recurring sequence of events and actions that the domain recognizes as a pattern. Definitions are written as a flow of named events and actions joined by `→`, drawn from terms elsewhere in this table.
-* *Property* — An attribute of an entity or event, not a phenomenon in its own right (e.g., *Quantity*, *Expiration date*).
-* *Rule* — A constraint that must hold across the domain or system (e.g., *Deduplication / anti-spam rule*).
-* *Concept* — An abstract notion used to classify or reason about phenomena (e.g., *Actionable state*, *Shared inventory*).
+* #*Entity* — A tangible, concrete thing that can be referred to, pointed at, observed, or counted: a person, place, package, record, artifact, component, or service. Definitions emphasize *what kind of thing it is* and what makes one instance distinguishable from another. Subtypes (Role, Record, Artifact, Component, Widget) are noted in parentheses when useful.#
+* #*Event* — An instantaneous state change in the world or in the system. Definitions are phrased in the past or perfect tense ("has just …") and focus on *what changed*, not on the actor performing the change. The actor may appear as context but is not the grammatical subject.#
+* #*Action* — An operation that can be invoked, with explicit inputs and outputs. Definitions follow the form *Takes: (inputs) → Produces: (outputs / observable effect)*, so the effect of invoking the action can be reasoned about precisely.#
+* #*Behavior* — A recurring sequence of events and actions that the domain recognizes as a pattern. Definitions are written as a flow of named events and actions joined by `→`, drawn from terms elsewhere in this table.#
+* #*Property* — An attribute of an entity or event, not a phenomenon in its own right (e.g., *Quantity*, *Expiration date*).#
+* #*Rule* — A constraint that must hold across the domain or system (e.g., *Deduplication / anti-spam rule*).#
+* #*Concept* — An abstract notion used to classify or reason about phenomena (e.g., *Actionable state*, *Shared inventory*).#
 
 [cols="2,1,1,4,3", options="header"]
 |===
@@ -36,31 +36,31 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Household
 | Entity
 | Domain
-| A living unit (dorm, apartment, shared house) in which one or more people share responsibility for managing household essentials. Distinguishable by its members and the locations it contains.
+| #A living unit (dorm, apartment, shared house) in which one or more people share responsibility for managing household essentials. Distinguishable by its members and the locations it contains.#
 | Previously "Home."
 
 | Household member
 | Entity
 | Domain
-| A person who belongs to a household and participates in consuming, replenishing, or coordinating around its items. Distinguishable from other household members by identity; distinguishable from a *User* in that membership is a domain fact, not a system account.
+| #A person who belongs to a household and participates in consuming, replenishing, or coordinating around its items. Distinguishable from other household members by identity; distinguishable from a *User* in that membership is a domain fact, not a system account.#
 | Previously "Owner" or "Occupant."
 
 | Invitation
-| Entity
+| #Entity#
 | Domain
 | #A persistent record of a temporary request that, while active, allows a participant to join a shared household context. Carries a sender, recipient, target household, lifecycle state, and expiration timestamp. Canonical lifecycle states: *pending*, *accepted*, *declined*, *expired*, *revoked* (see Notes).#
 | #Lifecycle state values are defined in this table under their own rows where applicable. Earlier drafts used "sent" for the initial state; "pending" is the canonical identifier. Distinct from a *Membership*: an accepted invitation produces a *Membership* whose state is then tracked separately.#
 
 | Membership
-| Entity (Relationship)
+| #Entity (Relationship)#
 | Domain
-| The persistent relationship-as-record that connects one *Household member* to one *Household* for the purpose of shared coordination. Distinguishable by the pair (household, participant) and carries a role and a *Membership state*.
+| #The persistent relationship-as-record that connects one *Household member* to one *Household* for the purpose of shared coordination. Distinguishable by the pair (household, participant) and carries a role and a *Membership state*.#
 | Changes over time through joining, leaving, removal, or invitation acceptance.
 
 | Location
 | Entity
 | Domain
-| A concrete storage place within a household — a kitchen cabinet, pantry area, bathroom closet, car trunk, hallway bin — where item instances can be placed and later observed.
+| #A concrete storage place within a household — a kitchen cabinet, pantry area, bathroom closet, car trunk, hallway bin — where item instances can be placed and later observed.#
 | Previously "Room."
 
 | Item type
@@ -72,14 +72,14 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Item instance (package)
 | Entity
 | Domain
-| A concrete package or unit of an *Item type* that physically exists in the household — one specific milk carton, one specific medicine box. Distinguishable by being a particular physical object stored in a particular *Location*.
+| #A concrete package or unit of an *Item type* that physically exists in the household — one specific milk carton, one specific medicine box. Distinguishable by being a particular physical object stored in a particular *Location*.#
 | #Previously "Stock." *Item instance* is preferred over "Asset" / "Belonging" when referring to a specific physical object/package.#
 
 | #Inventory (reality)#
 | #Entity#
 | #Domain#
 | #The full set of *Item instances* that physically exist in a household at a given moment. A real-world thing, observable by walking through the house, not a list or record.#
-| Real-world state, not a representation.
+| #Real-world state, not a representation.#
 
 | #Tracked inventory#
 | #Entity#
@@ -88,45 +88,45 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | #Used as shorthand for the set of all tracked inventory records. Use *Tracked inventory record* for one specific entry and *Inventory (reality)* for the physical state.#
 
 | Tracked inventory record
-| Entity (Artifact)
+| #Entity (Artifact)#
 | Domain
-| One concrete representation of availability used by a household — a fridge note, a list entry, a chat message, a remembered fact, or a row in the application. Distinguishable from a *Spending entry* (financial) and from a *Transaction* (history of changes).
+| #One concrete representation of availability used by a household — a fridge note, a list entry, a chat message, a remembered fact, or a row in the application. Distinguishable from a *Spending entry* (financial) and from a *Transaction* (history of changes).#
 | Supports the "tracked vs. reality" distinction.
 
 | Spending category
-| Entity (Label)
+| #Entity (Label)#
 | Domain
-| A named grouping used to classify spending — e.g., groceries, cleaning, personal care. A label that exists as a thing one can choose, rename, or count entries against.
-| May align with item categories, but is not required to.
+| #A named grouping used to classify spending — e.g., groceries, cleaning, personal care. A label that exists as a thing one can choose, rename, or count entries against.#
+| #May align with item categories, but is not required to.#
 
 | Budget
-| Entity
+| #Entity#
 | Domain
-| A persistent financial limit defined for a budget cycle and a scope (household-level or category-level), against which spending is evaluated.
-| Budget window and cycle can vary; see *Budget cycle*.
+| #A persistent financial limit defined for a budget cycle and a scope (household-level or category-level), against which spending is evaluated.#
+| #Budget window and cycle can vary; see *Budget cycle*.#
 
 | Restock list / planner
-| Entity (Artifact)
+| #Entity (Artifact)#
 | Domain
-| A household-oriented list of *Item types* that should be replenished soon — a fridge note, a notes-app list, a chat thread, or an in-application list.
-| Canonical domain term. "Grocery list" is the system-facing feature name for the same artifact when presented through the application.
+| #A household-oriented list of *Item types* that should be replenished soon — a fridge note, a notes-app list, a chat thread, or an in-application list.#
+| #Canonical domain term. "Grocery list" is the system-facing feature name for the same artifact when presented through the application.#
 
 | Alert / notification (domain-level)
-| Entity (Message)
+| #Entity (Message)#
 | Domain
-| A message-thing that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed). The domain-level concept, independent of delivery mechanism or persistence.
+| #A message-thing that informs a household member about an actionable condition (low-stock, out-of-stock, expiring, expired, budget threshold crossed). The domain-level concept, independent of delivery mechanism or persistence.#
 | General notification concept. "Duplicate warning" is a specialized alert used for possible duplicate item or purchase situations.
 
 | Spending entry
-| Entity (Record)
+| #Entity (Record)#
 | Domain
-| A persistent record of a single financial transaction in a household (purchase, refund, or adjustment), optionally tied to an *Item type* and a *Spending category*.
+| #A persistent record of a single financial transaction in a household (purchase, refund, or adjustment), optionally tied to an *Item type* and a *Spending category*.#
 | Supports budgeting and reporting.
 
 | Transaction (quantity change)
-| Entity (Record)
+| #Entity (Record)#
 | Domain
-| A persistent record of an availability change (consume, restock, or adjust), carrying the affected item, the change, a reason, and a timestamp.
+| #A persistent record of an availability change (consume, restock, or adjust), carrying the affected item, the change, a reason, and a timestamp.#
 | Supports traceability and verification.
 
 | Availability
@@ -144,26 +144,26 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Expiration date
 | Property
 | Domain
-| A date after which an *Item instance* is considered expired or undesirable. Applies to some item types, not all; may be unreadable or missing on a given instance.
+| #A date after which an *Item instance* is considered expired or undesirable. Applies to some item types, not all; may be unreadable or missing on a given instance.#
 | —
 
 | Low-stock threshold
-| Property
+| #Property#
 | Domain
-| A boundary value used to decide when an *Item type* is considered low. Compared against *Quantity*.
+| #A boundary value used to decide when an *Item type* is considered low. Compared against *Quantity*.#
 | May be a fixed quantity initially.
 
 | Item condition
 | Property
 | Domain
-| The observed state of an *Item instance* — new, opened, damaged, expired, spoiled, or usable. Influences whether the instance should be kept, used, repaired, discarded, or replaced.
-| —
+| #The observed state of an *Item instance* — new, opened, damaged, expired, spoiled, or usable. Influences whether the instance should be kept, used, repaired, discarded, or replaced.#
+| #—#
 
 | Sentimental value
 | Property
 | Domain
-| Personal or emotional importance assigned to an item beyond its practical or financial value.
-| Important for non-consumable possessions where disposal or replacement decisions are not based only on quantity or cost.
+| #Personal or emotional importance assigned to an item beyond its practical or financial value.#
+| #Important for non-consumable possessions where disposal or replacement decisions are not based only on quantity or cost.#
 
 | Budget cycle (period)
 | Concept
@@ -172,7 +172,7 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | —
 
 | Backup supply
-| Concept
+| #Concept#
 | Domain
 | A household practice of keeping a spare instance or package to reduce the risk of running out.
 | Often used instead of numeric tracking.
@@ -181,7 +181,7 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Concept
 | Domain
 | The set of actions that change or inspect the household inventory, such as adding, locating, updating, transferring, consuming, replenishing, archiving, or discarding items.
-| Umbrella term for inventory-related actions described across scenarios, requirements, and implementation.
+| #Umbrella term for inventory-related actions described across scenarios, requirements, and implementation.#
 
 | #Restock cycle#
 | #Behavior#
@@ -204,157 +204,157 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Consumption
 | Action
 | Domain
-| *Takes:* a *Household member*, an *Item instance* (or *Item type* + *Quantity* delta), a time of use. *Produces:* decreased *Availability* for the affected item; optionally a *Transaction (quantity change)* record.
-| Rate may vary by context (exam weeks, guests).
+| #*Takes:* a *Household member*, an *Item instance* (or *Item type* + *Quantity* delta), a time of use. *Produces:* decreased *Availability* for the affected item; optionally a *Transaction (quantity change)* record.#
+| #Rate may vary by context (exam weeks, guests).#
 
 | Replenishment (restock)
 | Action
 | Domain
-| *Takes:* a *Household member*, an *Item type*, a *Quantity* delta, an optional *Location*. *Produces:* increased *Availability* and one or more new *Item instances* in the household.
-| Often triggered after low-stock, out-of-stock, or expiration events.
+| #*Takes:* a *Household member*, an *Item type*, a *Quantity* delta, an optional *Location*. *Produces:* increased *Availability* and one or more new *Item instances* in the household.#
+| #Often triggered after low-stock, out-of-stock, or expiration events.#
 
 | Snooze / defer
 | Action
 | Domain
-| *Takes:* an alert (or restock entry), a delay duration. *Produces:* the alert/entry marked as deferred until the duration expires; suppresses re-alerting in the meantime per the *Deduplication / anti-spam rule*.
-| The household member may receive another alert for the same actionable condition after the delay expires.
+| #*Takes:* an alert (or restock entry), a delay duration. *Produces:* the alert/entry marked as deferred until the duration expires; suppresses re-alerting in the meantime per the *Deduplication / anti-spam rule*.#
+| #The household member may receive another alert for the same actionable condition after the delay expires.#
 
 | Dismiss / ignore
 | Action
 | Domain
-| *Takes:* an alert. *Produces:* the alert marked as acknowledged and closed without a follow-up replenishment action.
+| #*Takes:* an alert. *Produces:* the alert marked as acknowledged and closed without a follow-up replenishment action.#
 | —
 
 | Item acquired
 | Event
 | Domain
-| One or more *Item instances* of an *Item type* have just entered the household, becoming available within it.
-| "Bought 24 yogurts from Costco." The acquiring member is context, not the grammatical subject.
+| #One or more *Item instances* of an *Item type* have just entered the household, becoming available within it.#
+| #"Bought 24 yogurts from Costco." The acquiring member is context, not the grammatical subject.#
 
 | Item stored
 | Event
 | Domain
-| An *Item instance* has just been placed in a household *Location*.
+| #An *Item instance* has just been placed in a household *Location*.#
 | "Rice stored in kitchen cabinet; backup in hallway bin."
 
 | Item consumed
 | Event
 | Domain
-| An *Item's* *Availability* has just decreased through use.
-| Usage rate may increase during exams or guest visits. "Consumption rate" is treated as a synonym of "usage rate."
+| #An *Item's* *Availability* has just decreased through use.#
+| #Usage rate may increase during exams or guest visits. "Consumption rate" is treated as a synonym of "usage rate."#
 
 | Backup opened
 | Event
 | Domain
-| A *Backup supply* for an item has just transitioned from spare to in-use.
+| #A *Backup supply* for an item has just transitioned from spare to in-use.#
 | Often used as a qualitative low-stock signal.
 
 | Low-stock judgment
-| Event
+| #Event#
 | Domain
-| An *Item type* has just been judged to be running low, either qualitatively ("feels light", "backup opened") or because a *Low-stock threshold* / *Reorder point* has been crossed.
+| #An *Item type* has just been judged to be running low, either qualitatively ("feels light", "backup opened") or because a *Low-stock threshold* / *Reorder point* has been crossed.#
 | Not inherently numeric.
 
 | Out-of-stock
-| Event
+| #Event#
 | Domain
-| An item's *Availability* has just reached zero (quantity at zero or judged empty).
+| #An item's *Availability* has just reached zero (quantity at zero or judged empty).#
 | Distinct from low-stock.
 
 | Replenishment decided
 | Event
 | Domain
-| A decision has just been recorded that more of an *Item type* should be acquired.
+| #A decision has just been recorded that more of an *Item type* should be acquired.#
 | May be prompted by low-stock, out-of-stock, or expiration.
 
 | Item replenished
 | Event
 | Domain
-| New *Item instances* of an *Item type* have just been added to the household, restoring *Availability*.
+| #New *Item instances* of an *Item type* have just been added to the household, restoring *Availability*.#
 | Can be duplicated if coordination fails.
 
 | Duplicate purchase
 | Event
 | Domain
-| Two or more acquisitions of the same *Item type* have just occurred within a coordination window, exceeding what the household needed.
+| #Two or more acquisitions of the same *Item type* have just occurred within a coordination window, exceeding what the household needed.#
 | Common for milk, eggs, and rice per interviews.
 
 | Item approaching expiration
 | Event
 | Domain
-| An *Item instance* has just entered its *Near-expiry window*.
+| #An *Item instance* has just entered its *Near-expiry window*.#
 | Motivates timely use or discard decisions.
 
 | Near-expiry
-| Event
+| #Event#
 | Domain
-| An *Item instance* has just crossed into the near-expiry state — the same instantaneous transition described by *Item approaching expiration*, treated as a recognized state.
-| Window length is governed by *Near-expiry window*.
+| #An *Item instance* has just crossed into the near-expiry state — the same instantaneous transition described by *Item approaching expiration*, treated as a recognized state.#
+| #Window length is governed by *Near-expiry window*.#
 
 | Item expired
 | Event
 | Domain
-| An *Item instance* has just passed its *Expiration date*.
+| #An *Item instance* has just passed its *Expiration date*.#
 | Policy on what to do varies by item type and household.
 
 | Expired
-| Event
+| #Event#
 | Domain
-| An *Item instance* has just transitioned into the expired state — the same transition as *Item expired*, treated as a recognized state.
+| #An *Item instance* has just transitioned into the expired state — the same transition as *Item expired*, treated as a recognized state.#
 | Expired does not always mean unavailable; policy varies by household.
 
 | Item discarded
 | Event
 | Domain
-| An *Item instance* has just been removed from the household for being expired, spoiled, or unwanted.
+| #An *Item instance* has just been removed from the household for being expired, spoiled, or unwanted.#
 | Can occur even when another unopened instance exists.
 
 | Alert generated
 | Event
 | Domain
-| A low-stock, out-of-stock, near-expiry, expired, or budget condition has just become actionable, producing an *Alert / notification* directed at household members.
+| #A low-stock, out-of-stock, near-expiry, expired, or budget condition has just become actionable, producing an *Alert / notification* directed at household members.#
 | —
 
 | Alert dismissed / deferred
 | Event
 | Domain
-| An *Alert / notification* has just been acknowledged and either closed without action or postponed to a later time.
+| #An *Alert / notification* has just been acknowledged and either closed without action or postponed to a later time.#
 | Supports snooze and anti-spam behavior.
 
 | Restock entry created / updated
 | Event
 | Domain
-| An entry on the *Restock list / planner* has just been added or modified in response to a low-stock, out-of-stock, or expired condition.
+| #An entry on the *Restock list / planner* has just been added or modified in response to a low-stock, out-of-stock, or expired condition.#
 | May be manual or derived from judgments.
 
 | Spending recorded
 | Event
 | Domain
-| A *Spending entry* has just been added to a household, capturing one purchase, refund, or adjustment.
+| #A *Spending entry* has just been added to a household, capturing one purchase, refund, or adjustment.#
 | May be shared or personal.
 
 | Budget threshold crossing
 | Event
 | Domain
-| Spending in the current *Budget cycle* has just reached or exceeded a defined warning level (e.g., 80%, 100% of the budget).
-| Can trigger alerts, subject to the *Deduplication / anti-spam rule* and the budget cycle.
+| #Spending in the current *Budget cycle* has just reached or exceeded a defined warning level (e.g., 80%, 100% of the budget).#
+| #Can trigger alerts, subject to the *Deduplication / anti-spam rule* and the budget cycle.#
 
 | Budget cycle started / ended
 | Event
 | Domain
-| A new *Budget cycle* has just begun, or the current cycle has just closed.
+| #A new *Budget cycle* has just begun, or the current cycle has just closed.#
 | Supports reset and rollover policies.
 
 | Household membership changed
 | Event
 | Domain
-| A *Membership* has just been added, removed, or had its role changed within a *Household*.
-| Motivates access-removal expectations later.
+| #A *Membership* has just been added, removed, or had its role changed within a *Household*.#
+| #Motivates access-removal expectations later.#
 
 | User
-| Entity (Actor)
+| #Entity (Actor)#
 | Requirements
-| A person who interacts with the system-to-be through its interface. A concrete account-holder that the system can authenticate and authorize. Each *User* may correspond to one or more *Household members*.
+| #A person who interacts with the system-to-be through its interface. A concrete account-holder that the system can authenticate and authorize. Each *User* may correspond to one or more *Household members*.#
 | "User" is the system-facing term; "Household member" is the domain-facing term.
 
 | #Owner#
@@ -382,27 +382,27 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | #The value *revoked* (used in earlier drafts) is treated as a synonym for *removed*. Distinct from invitation lifecycle states (see *Invitation*).#
 
 | Reorder point (threshold)
-| Property
+| #Property#
 | Requirements
-| A *Quantity* value at or below which an *Item type* is considered low. Initial requirements may accept a fixed per-item threshold.
+| #A *Quantity* value at or below which an *Item type* is considered low. Initial requirements may accept a fixed per-item threshold.#
 | Refines the domain's "low-stock threshold" with a numeric constraint.
 
 | Near-expiry window
-| Property
+| #Property#
 | Requirements
-| The number of days before an *Expiration date* at which the system shall recognize *Near-expiry*.
+| #The number of days before an *Expiration date* at which the system shall recognize *Near-expiry*.#
 | Window value is a requirements decision deferred from the domain.
 
 | Usage rate
-| Property (Derived)
+| #Property (Derived)#
 | Requirements
-| A computed estimate of how quickly an *Item type* is consumed over time, derived from *Transaction (quantity change)* records.
-| Canonical term. "Consumption rate" is a synonym and should be replaced with "usage rate" in running text when possible.
+| #A computed estimate of how quickly an *Item type* is consumed over time, derived from *Transaction (quantity change)* records.#
+| #Canonical term. "Consumption rate" is a synonym and should be replaced with "usage rate" in running text when possible.#
 
 | Budget status (derived)
-| Property (Derived)
+| #Property (Derived)#
 | Requirements
-| A computed view of spending versus a *Budget* within a *Budget cycle*: amount spent, amount remaining, percentage used, and threshold flags.
+| #A computed view of spending versus a *Budget* within a *Budget cycle*: amount spent, amount remaining, percentage used, and threshold flags.#
 | Derived from spending entries; not directly observable in the domain.
 
 | Deduplication / anti-spam rule
@@ -421,12 +421,12 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Rule
 | Implementation
 | An explicit constraint on user input that prevents invalid data from being submitted to the system.
-| Implemented in `form_validators.dart`; covers name length, quantity range, and date format.
+| #Implemented in `form_validators.dart`; covers name length, quantity range, and date format.#
 
 | Actionable state
 | Concept
 | Requirements
-| A system-recognized condition (low-stock, out-of-stock, near-expiry, expired, budget-threshold-crossed) that may trigger an *Alert / notification* or a restock entry.
+| #A system-recognized condition (low-stock, out-of-stock, near-expiry, expired, budget-threshold-crossed) that may trigger an *Alert / notification* or a restock entry.#
 | Refines domain-level events into system-detectable states.
 
 | Shared inventory
@@ -436,139 +436,139 @@ Each entry's *Type* column uses one of the following primary tags. The first fou
 | Related to household membership, permission rules, and duplicate purchase prevention.
 
 | Acceptance criteria
-| Concept
+| #Concept#
 | Requirements
 | A set of specific conditions that must be satisfied for a user story or requirement to be considered complete.
 | Used to make user stories measurable and testable.
 
 | Row Level Security (RLS)
-| Concept
+| #Concept#
 | Implementation
-| A database-level access-control approach that restricts which records a user can view or modify based on household membership, role, or permission rules.
-| Often abbreviated "RLS"; related to *Supabase Auth*, *Permission rule*, and *Shared inventory*.
+| #A database-level access-control approach that restricts which records a user can view or modify based on household membership, role, or permission rules.#
+| #Often abbreviated "RLS"; related to *Supabase Auth*, *Permission rule*, and *Shared inventory*.#
 
 | Barcode scanning
-| Action
+| #Action#
 | Requirements
-| *Takes:* a camera-captured barcode image (or barcode string). *Produces:* a matched *Item type* with prefilled fields, or a "not found" outcome that hands off to *Manual entry*.
-| Related to manual entry and *Item acquired*.
+| #*Takes:* a camera-captured barcode image (or barcode string). *Produces:* a matched *Item type* with prefilled fields, or a "not found" outcome that hands off to *Manual entry*.#
+| #Related to manual entry and *Item acquired*.#
 
 | Manual entry
-| Action
+| #Action#
 | Requirements
-| *Takes:* user-typed item details (name, quantity, optional location, expiration, category). *Produces:* a new or updated *Tracked inventory record*.
+| #*Takes:* user-typed item details (name, quantity, optional location, expiration, category). *Produces:* a new or updated *Tracked inventory record*.#
 | Used when barcode scanning is unavailable, unreliable, or the item has no barcode.
 
 | Scheduled sweep
-| Action
+| #Action#
 | Requirements
-| *Takes:* the current time and the current *Tracked inventory* state, on a recurring schedule. *Produces:* a set of detected *Actionable states* (low-stock, near-expiry, expired) and the corresponding *Alert / notification* and restock-entry triggers.
-| Periodic background mechanism; distinct from immediate per-transaction checks. Delivery details of resulting alerts are implementation-level.
+| #*Takes:* the current time and the current *Tracked inventory* state, on a recurring schedule. *Produces:* a set of detected *Actionable states* (low-stock, near-expiry, expired) and the corresponding *Alert / notification* and restock-entry triggers.#
+| #Periodic background mechanism; distinct from immediate per-transaction checks. Delivery details of resulting alerts are implementation-level.#
 
 | End-to-end (E2E) test
-| Action
+| #Action#
 | Requirements
-| *Takes:* a user workflow scenario and a configured system under test. *Produces:* a pass / fail verdict for the full workflow, from user interaction through backend behavior and observable result.
+| #*Takes:* a user workflow scenario and a configured system under test. *Produces:* a pass / fail verdict for the full workflow, from user interaction through backend behavior and observable result.#
 | Often used with acceptance testing to validate user-visible behavior.
 
 | Validation activity
-| Behavior
+| #Behavior#
 | Requirements
-| Stakeholder review / scenario walkthrough / usability check / feedback session → reviewer observations recorded → adjustments to requirements or design. A recurring activity sequence used to check that the system addresses the right user needs.
+| #Stakeholder review / scenario walkthrough / usability check / feedback session → reviewer observations recorded → adjustments to requirements or design. A recurring activity sequence used to check that the system addresses the right user needs.#
 | Related to Section 3.2 validation and verification.
 
 | Notification record
-| Entity (Record)
+| #Entity (Record)#
 | Requirements
-| A persisted requirements-level representation of an *Alert / notification*, carrying type, timestamp, recipient, and read / unread or lifecycle status, available at minimum for in-app review.
-| Refines the domain-level *Alert / notification* with persistence and status tracking.
+| #A persisted requirements-level representation of an *Alert / notification*, carrying type, timestamp, recipient, and read / unread or lifecycle status, available at minimum for in-app review.#
+| #Refines the domain-level *Alert / notification* with persistence and status tracking.#
 
 | Grocery list
-| Entity (Artifact)
+| #Entity (Artifact)#
 | Requirements
-| The system-facing feature that presents items the user may need to purchase or replenish.
-| Use *Restock list / planner* as the canonical domain term; *Grocery list* refers to the implemented or designed application feature.
+| #The system-facing feature that presents items the user may need to purchase or replenish.#
+| #Use *Restock list / planner* as the canonical domain term; *Grocery list* refers to the implemented or designed application feature.#
 
 | Duplicate warning
-| Entity (Alert subtype)
+| #Entity (Alert subtype)#
 | Requirements
-| A specialized *Alert / notification* that informs the user when an item, purchase, or restock action may duplicate an existing inventory item or planned item.
-| Specialized form of *Alert / notification*; supports duplicate purchase prevention and shared-household coordination.
+| #A specialized *Alert / notification* that informs the user when an item, purchase, or restock action may duplicate an existing inventory item or planned item.#
+| #Specialized form of *Alert / notification*; supports duplicate purchase prevention and shared-household coordination.#
 
 | Report
-| Entity (Artifact)
+| #Entity (Artifact)#
 | Requirements
-| A system-generated summary that presents household information to support review or decision-making.
-| Umbrella term. Prefer more specific terms such as *Expenditure report* or *Stock summary* when the report type is known.
+| #A system-generated summary that presents household information to support review or decision-making.#
+| #Umbrella term. Prefer more specific terms such as *Expenditure report* or *Stock summary* when the report type is known.#
 
 | Expenditure report
-| Entity (Artifact)
+| #Entity (Artifact)#
 | Requirements
 | A report that summarizes spending entries over a selected period, category, household, or user.
-| Related to *Budget status*, *Spending category*, and *Spending entry*.
+| #Related to *Budget status*, *Spending category*, and *Spending entry*.#
 
 | Stock summary
-| Entity (Artifact)
+| #Entity (Artifact)#
 | Requirements
 | A report or view that summarizes current item availability, low-stock items, out-of-stock items, and related inventory conditions.
-| Related to *Availability*, *Quantity*, *Low-stock judgment*, and *Actionable state*.
+| #Related to *Availability*, *Quantity*, *Low-stock judgment*, and *Actionable state*.#
 
 | Automation System
-| Entity (Component)
+| #Entity (Component)#
 | Requirements
 | The system component responsible for evaluating inventory-related conditions such as low-stock, out-of-stock, near-expiry, and expired states.
-| Detects relevant state transitions but does not directly own notification delivery.
+| #Detects relevant state transitions but does not directly own notification delivery.#
 
 | Notification Service
-| Entity (Component)
+| #Entity (Component)#
 | Requirements
-| The system component responsible for creating and storing *Notification records* after relevant state transitions are detected.
-| Receives triggers from the *Automation System*; distinct from alert condition evaluation.
+| #The system component responsible for creating and storing *Notification records* after relevant state transitions are detected.#
+| #Receives triggers from the *Automation System*; distinct from alert condition evaluation.#
 
 | Supabase
-| Entity (External Service)
+| #Entity (External Service)#
 | Implementation
 | The backend platform used by the system to support database persistence, authentication, storage, real-time synchronization, and backend functions when applicable.
-| M2/M3 implementation and deployment term used across software design, architecture, and validation / verification documentation.
+| #M2/M3 implementation and deployment term used across software design, architecture, and validation / verification documentation.#
 
 | Supabase Auth
-| Entity (External Service)
+| #Entity (External Service)#
 | Implementation
 | The authentication service used to identify users and provide session information for authorization decisions.
-| Related to household membership, permission rules, *Row Level Security (RLS)*, and authenticated access.
+| #Related to household membership, permission rules, *Row Level Security (RLS)*, and authenticated access.#
 
 | Supabase Realtime
-| Entity (External Service)
+| #Entity (External Service)#
 | Implementation
-| The Supabase service that allows the application to receive backend data updates without requiring users to manually refresh the interface.
-| Used for shared-inventory synchronization, dashboard updates, and multi-user coordination.
+| #The Supabase service that allows the application to receive backend data updates without requiring users to manually refresh the interface.#
+| #Used for shared-inventory synchronization, dashboard updates, and multi-user coordination.#
 
 | Edge Function
-| Entity (Component)
+| #Entity (Component)#
 | Implementation
-| A server-side function deployed alongside the database, used to execute backend logic outside the client — especially for validation, scheduled execution, or cross-table coordination.
+| #A server-side function deployed alongside the database, used to execute backend logic outside the client — especially for validation, scheduled execution, or cross-table coordination.#
 | In this project, Edge Functions are mainly discussed in the context of Supabase backend logic.
 
 | Deployment target
-| Entity (Environment)
+| #Entity (Environment)#
 | Implementation
 | The platform, service, or environment where the system is intended to run for review, testing, staging, or release.
 | Related to machine requirements, build procedure, deployment documentation, and external service configuration.
 
 | Delete confirmation dialog
-| Entity (Widget)
+| #Entity (Widget)#
 | Implementation
 | A modal dialog that requires explicit user confirmation before performing destructive actions.
 | Implemented in `delete_confirmation_dialog.dart`; prevents accidental deletions.
 
 | Error handler
-| Entity (Utility)
+| #Entity (Utility)#
 | Implementation
 | A reusable utility that converts technical exceptions into user-friendly error messages with titles, actions, and error types.
 | Implemented in `error_handler.dart`; used by InventoryCubit and UI components.
 
 | Error state widget
-| Entity (Widget)
+| #Entity (Widget)#
 | Implementation
 | A UI component that displays user-friendly error messages with a retry button for recoverable failures.
 | Implemented in `error_state_widget.dart`; used on loading failure screens.
