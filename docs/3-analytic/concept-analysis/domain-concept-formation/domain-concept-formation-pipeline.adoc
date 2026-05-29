@@ -326,7 +326,7 @@ The Milestone 3 acquisition round added implementation-driven evidence, refining
 | M3-QA-04
 | Barcode fallback behavior needed a clearer low-friction minimum.
 | Fast fallback capture
-| DR-21, IR-11, IR-12
+| DR-21, IR-11, #IR-12#
 
 | M3-QA-05
 | Budget alerts were in scope conceptually but lacked user preference rules.
