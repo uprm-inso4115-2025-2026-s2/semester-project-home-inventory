@@ -19,82 +19,82 @@ Introduce new item instances of an item type into a household location, whether 
 * _ExpirationDate_ is optional; if provided, it is associated with the new instances.
 * The returned Household reflects the updated inventory.
 
-=== Create item instance
+=== #Create item instance#
 
-Create a new tracked item instance associated with an item type and an initial inventory state.
-
-----
-createItemInstance : Household × ItemType × Quantity × Location → ItemInstance
-----
-
-Example:
+#Create a new tracked item instance associated with an item type and an initial inventory state.#
 
 ----
-createItemInstance(myHome, Rice, 1, pantryShelf) -> riceBag01
+#createItemInstance : Household × ItemType × Quantity × Location → ItemInstance#
 ----
 
-* Returns a newly created `ItemInstance` associated with the specified household inventory.
-* The created item instance records its initial quantity and storage location.
-* The returned instance may later be consumed, moved, shared, expired, or removed through other inventory operations.
-* If the inventory model supports cumulative quantity tracking instead of uniquely identifiable physical items, the created instance may represent a tracked quantity group rather than a single physical object.
+#Example:#
+
+----
+#createItemInstance(myHome, Rice, 1, pantryShelf) -> riceBag01#
+----
+
+* #Returns a newly created `ItemInstance` associated with the specified household inventory.#
+* #The created item instance records its initial quantity and storage location.#
+* #The returned instance may later be consumed, moved, shared, expired, or removed through other inventory operations.#
+* #If the inventory model supports cumulative quantity tracking instead of uniquely identifiable physical items, the created instance may represent a tracked quantity group rather than a single physical object.#
 
 === Check location
 
-Inspect a location to determine which item types it contains and the quantities currently stored there (an observation function).
+#Inspect a location to determine which item types it contains and the quantities currently stored there (an observation function).#
 
 ----
-checkLocation : Household × Location → (ItemType → Amount)
+#checkLocation : Household × Location → (ItemType → Amount)#
 ----
 
-Example:
+#Example:#
 
 ----
-checkLocation(myHome, laundryBelowSink)[CatLitter] -> 2
+#checkLocation(myHome, laundryBelowSink)[CatLitter] -> 2#
 ----
 
-* Returns a quantity-aware mapping of item types stored at the specified location.
-* Supports expressing pre-/post-conditions for inventory operations — e.g., after `stockItem` adds 3 units of rice to the kitchen cabinet, `checkLocation(myHome, kitchenCabinet)[Rice]` increases by 3.
-* Models inventory state as tracked quantities rather than simple item presence or absence.
+* #Returns a quantity-aware mapping of item types stored at the specified location.#
+* #Supports expressing pre-/post-conditions for inventory operations — e.g., after `stockItem` adds 3 units of rice to the kitchen cabinet, `checkLocation(myHome, kitchenCabinet)[Rice]` increases by 3.#
+* #Models inventory state as tracked quantities rather than simple item presence or absence.#
 
 === Move item instance
 
-Change where an item instance is stored within the household inventory. The system first determines the item instance’s current location before applying the move operation. After moving, the previous location no longer includes the item instance and the destination location reflects the updated inventory state.
+#Change where an item instance is stored within the household inventory. The system first determines the item instance’s current location before applying the move operation. After moving, the previous location no longer includes the item instance and the destination location reflects the updated inventory state.#
 
 ----
-moveItemInstance : Household × ItemInstance × Location → Household
+#moveItemInstance : Household × ItemInstance × Location → Household#
 ----
 
-Example:
+#Example:#
 
 ----
-moveItemInstance(myHome, riceBag01, pantryShelf)
+#moveItemInstance(myHome, riceBag01, pantryShelf)#
 ----
 
-* _Location_ represents the destination location.
-* The operation determines the current location of the item instance before updating inventory state.
-* Ownership, expiration information, and item-type identity are preserved during the move operation.
-* If the inventory model tracks cumulative quantities instead of uniquely identifiable instances, the operation updates quantity counts at both the source and destination locations.
+* #_Location_ represents the destination location.#
+* #The operation determines the current location of the item instance before updating inventory state.#
+* #Ownership, expiration information, and item-type identity are preserved during the move operation.#
+* #If the inventory model tracks cumulative quantities instead of uniquely identifiable instances, the operation updates quantity counts at both the source and destination locations.#
 
 === Record consumption
 
-Decrease tracked availability when a household member uses part or all of an item. Consumption may be modeled at two levels depending on how the item is represented: as a uniquely tracked item instance or as a cumulative quantity of an item type.
+#Decrease tracked availability when a household member uses part or all of an item. Consumption may be modeled at two levels depending on how the item is represented: as a uniquely tracked item instance or as a cumulative quantity of an item type.#
 
 ----
-consumeInstance : Household × ItemInstance → Household
-consumeAmount : Household × ItemType × QuantityDelta → Household
+#consumeInstance : Household × ItemInstance → Household#
+#consumeAmount : Household × ItemType × QuantityDelta → Household#
 ----
 
-Examples:
+#Examples:#
 
 ----
-consumeInstance(myHome, soupCan01)
-consumeAmount(myHome, Rice, 2)
+#consumeInstance(myHome, soupCan01)#
+#consumeAmount(myHome, Rice, 2)#
 ----
 
-* `consumeInstance` applies when the household tracks a specific physical unit, such as a particular can, carton, or package. The consumed instance is marked unavailable, consumed, or removed from active inventory.
-* `consumeAmount` applies when the household tracks inventory cumulatively, such as "2 cups of rice" or "3 rolls of paper towels." The operation decreases the tracked amount for the item type.
-* `QuantityDelta` is used only for cumulative quantity updates and must not reduce the tracked amount below zero.
-* This separates unique item tracking from bulk quantity tracking: individual tracking happens at the `ItemInstance` level, while bulk consumption and count updates happen at the `ItemType` / amount level.
+* #`consumeInstance` applies when the household tracks a specific physical unit, such as a particular can, carton, or package. The consumed instance is marked unavailable, consumed, or removed from active inventory.#
+* #`consumeAmount` applies when the household tracks inventory cumulatively, such as "2 cups of rice" or "3 rolls of paper towels." The operation decreases the tracked amount for the item type.#
+* #`QuantityDelta` is used only for cumulative quantity updates and must not reduce the tracked amount below zero.#
+* #This separates unique item tracking from bulk quantity tracking: individual tracking happens at the `ItemInstance` level, while bulk consumption and count updates happen at the `ItemType` / amount level.#
 
 === Judge low-stock
 
