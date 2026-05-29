@@ -2,6 +2,13 @@
 
 Requirements expressed in domain language (capabilities/outcomes), independent of UI/technology. Terminology follows the domain description: *Household*, *Household member*, *Location*, *Item type*, *Item instance*, and *Spending entry*.
 
+[NOTE]
+====
+The DRs below are mapped against concrete user-story executions in <<_requirements_walkthroughs>>. That section identifies which DRs cover which user-visible steps and flags places where DRs are presupposed (e.g., DR-24 presupposes restock-list auto-add but DR-12 does not require it) or where downstream user-story acceptance criteria carry behavior no DR backs up (e.g., no-refresh save, cross-view consistency of derived stock status, historical-view policy on personal↔shared transitions). The consolidated findings table at the end of that walkthrough lists every fix recommended against this DR set.
+
+This DR set was also formally inspected against the defect-driven *Requirements Inspection Checklist*; the per-DR findings (with severity and proposed fix) are catalogued in <<applied-inspection-review-log>>. DRs explicitly cited there include DR-1, DR-3, DR-7, DR-12, DR-15, DR-17, DR-18, DR-19, DR-22, and DR-24.
+====
+
 === Inventory integrity
 
 * DR-1 (Barcode uniqueness): A single barcode shall map to exactly one *Item type*. The system shall not create a second item-type definition for an already-known barcode.
@@ -35,7 +42,7 @@ Requirements expressed in domain language (capabilities/outcomes), independent o
 _Domain property behind this requirement:_ In the domain, low-stock is a judgment that an item is running low. This judgment may be qualitative or threshold-based. The requirement commits the system-to-be to threshold-based evaluation.
 
 * DR-13 (Expiration status): The system shall derive the expiration status of an item instance when an expiration date is present. If the expiration date is missing or unreadable, the system shall treat expiration status as unknown and shall not generate false-expired conditions.
-* DR-14 (Deduplicated alerting): The system shall deduplicate alerts and trigger them primarily on actionable state transitions, so that repeated checks without state change do not generate repeated alerts.
+* DR-14 (Deduplicated alerting): The system shall deduplicate alerts by comparing the household, item or item instance, alert condition type, and current triggering state before creating a new alert record. Repeated checks without a changed condition shall not create a new alert. A new alert may be created only if one of the following occurs: the item transitions into a different actionable state, the previous condition is resolved and later reoccurs, or a user-controlled snooze/defer period expires.
 
 === Duplicate prevention and data integrity
 
@@ -71,11 +78,9 @@ The following domain requirements were added or revised after the Milestone 3 se
 * DR-22 (Opt-in budget threshold alerts): Budget threshold alerts shall be optional and shall support configurable warning levels, including default warning levels at 80% and 100% of the active budget when budget tracking is enabled.
 ** M3 source: M3-QA-05.
 
-* DR-23 (Shared alert audience control): Shared household alerts shall be represented as household-level alert records. Delivery to individual members shall respect notification preferences and shall avoid repeated notifications for unchanged conditions.
-** M3 source: M3-QA-06.
+* DR-23 (Shared alert audience control): Shared household alerts shall be represented as household-level alert records. Delivery to individual members shall respect notification preferences and shall avoid repeated notifications for unchanged conditions. Deduplication shall be evaluated at the household alert-record level before individual delivery preferences are applied, so the system does not create multiple alert records for the same unchanged household-item-condition combination.
 
-* DR-24 (Restock auto-add override): Auto-added restock list entries shall be removable or snoozable by an authorized household member. The system shall not immediately re-add a removed or snoozed entry unless a new qualifying state transition occurs or the snooze period expires.
-** M3 source: M3-QA-07.
+* DR-24 (Restock auto-add override): Auto-added restock list entries shall be removable or snoozable by an authorized household member. The system shall not immediately re-add a removed or snoozed entry unless a new qualifying state transition occurs, the original condition is resolved and later reoccurs, or the snooze period expires. Repeated scheduled checks alone shall not recreate the entry.
 
 * DR-25 (Pending offline inventory changes): The system shall support pending offline item creation and quantity updates. Pending changes shall be clearly marked until synchronized, and conflicts shall be surfaced to the household member instead of silently overwriting remote updates.
 ** M3 source: M3-QA-08.

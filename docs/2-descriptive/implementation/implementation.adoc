@@ -615,6 +615,66 @@ The diagram shows the architecture from the mobile client outward:
 
 ---
 
+=== Architectural Rationale: Why This Architecture
+
+The Home Inventory system uses a Flutter mobile client connected to Supabase backend services. This architecture was selected because the project requires mobile-first inventory management, shared household synchronization, authentication, persistent storage, and maintainable multi-developer collaboration within the milestone timeline.
+
+Flutter was chosen to support a single cross-platform mobile codebase while still allowing access to device features such as camera scanning and local storage. Supabase was selected because it provides authentication, relational persistence, realtime synchronization, and backend services without requiring the team to build and maintain a custom backend infrastructure.
+
+==== Alternative Architectures Considered
+
+[cols="1,2", options="header"]
+|===
+| Alternative
+| Reason Rejected
+
+| Local-only mobile application
+| Does not support shared household synchronization, shared alerts, or multi-user collaboration.
+
+| Custom backend with REST API
+| Would require significantly more implementation, deployment, and maintenance effort than the project timeline allows.
+
+| Firebase backend
+| The project relies heavily on relational household, inventory, spending, and membership data better suited to PostgreSQL/Supabase.
+
+| Web-first responsive application
+| The primary workflows depend on mobile usage, barcode scanning, and shopping-time interactions.
+
+| Separate native Android/iOS applications
+| Maintaining multiple native codebases would increase development and coordination complexity.
+|===
+
+==== Business and Technical Trade-offs
+
+[cols="1,2,2", options="header"]
+|===
+| Decision
+| Benefit
+| Trade-off
+
+| Flutter mobile client
+| Shared cross-platform codebase and faster UI development
+| Some platform-specific configuration is still required
+
+| Supabase backend
+| Built-in authentication, persistence, and realtime synchronization
+| Increased dependency on Supabase services and configuration
+
+| PostgreSQL relational storage
+| Strong support for household and inventory relationships
+| Requires schema and migration management
+
+| Realtime synchronization
+| Shared inventory updates appear without manual refresh
+| Concurrent update conflicts still require handling
+|===
+
+==== Final Justification
+
+The selected Flutter + Supabase architecture provides the best balance between implementation complexity, collaboration support, realtime synchronization, and mobile usability. Simpler architectures did not adequately support shared-household workflows, while more complex architectures exceeded the project’s implementation capacity and maintenance constraints for the milestone timeline.
+
+---
+
 === Technical Stack Versions and Tooling
 
 The component roles (Flutter client, Bloc/Cubit state management, GoRouter, Material 3, Supabase Auth/PostgreSQL/Realtime/Storage/Edge Functions, FCM/APNs, barcode lookup) are described in the Architecture Overview above. This subsection records only what that overview does not:
