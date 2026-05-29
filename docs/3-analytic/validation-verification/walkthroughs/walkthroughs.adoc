@@ -42,200 +42,200 @@ These questions validate mental models and domain assumptions, not satisfaction.
 |Add preferences or scoping; emphasize grouping/deduplication and "transition-only" alerting.
 |===
 
-=== Terminology walkthroughs
+=== #Terminology walkthroughs#
 
-A *terminology walkthrough* is a self-validation activity. Stakeholder walkthroughs (above) check the team's mental model against participants; a terminology walkthrough checks the team's glossary against itself. The team writes down a small set of standard domain scenarios and then tries to express each one using *only* the entities, events, actions, behaviors, properties, rules, and concepts defined in <<_terminology>>. Anywhere the trace must fall back to undefined prose, the glossary has a gap.
+#A *terminology walkthrough* is a self-validation activity. Stakeholder walkthroughs (above) check the team's mental model against participants; a terminology walkthrough checks the team's glossary against itself. The team writes down a small set of standard domain scenarios and then tries to express each one using *only* the entities, events, actions, behaviors, properties, rules, and concepts defined in <<_terminology>>. Anywhere the trace must fall back to undefined prose, the glossary has a gap.#
 
-==== Method
+==== #Method#
 
-For each scenario:
+#For each scenario:#
 
-1. State the scenario in plain household language (one paragraph).
-2. Re-express it as a *trace* — an ordered sequence of *Entities* (state), *Actions* (with explicit inputs and outputs), and *Events* (instantaneous state changes), all named directly from <<_terminology>>.
-3. Anywhere a step needs a term that does not exist in the glossary, mark it `[GAP: …]` and continue.
-4. After the trace, list the gaps and any *fuzzy* terms — terms that exist but had to be stretched or interpreted to make the trace work.
+1. #State the scenario in plain household language (one paragraph).#
+2. #Re-express it as a *trace* — an ordered sequence of *Entities* (state), *Actions* (with explicit inputs and outputs), and *Events* (instantaneous state changes), all named directly from <<_terminology>>.#
+3. #Anywhere a step needs a term that does not exist in the glossary, mark it `[GAP: …]` and continue.#
+4. #After the trace, list the gaps and any *fuzzy* terms — terms that exist but had to be stretched or interpreted to make the trace work.#
 
-Italicized term names below are references to <<_terminology>>; bracketed `[GAP: …]` markers are the findings of this walkthrough.
+#Italicized term names below are references to <<_terminology>>; bracketed `[GAP: …]` markers are the findings of this walkthrough.#
 
-==== Scenario A — Solo restock cycle
+==== #Scenario A — Solo restock cycle#
 
-*Plain-language scenario.* Maria lives alone. After dinner she notices her last pasta box is nearly empty. She uses the last serving, jots "pasta" on her shopping list, buys three boxes the next day, and puts them in the pantry.
+#*Plain-language scenario.* Maria lives alone. After dinner she notices her last pasta box is nearly empty. She uses the last serving, jots "pasta" on her shopping list, buys three boxes the next day, and puts them in the pantry.#
 
-*Trace.*
+#*Trace.*#
 
-. *Entity* state: a single-member *Household* with Maria as its sole *Household member*. The pantry is a *Location*. An *Item type* "pasta" exists; one *Item instance* "pasta box A" is stored in the pantry with low *Availability*.
-. *Action — Consumption.* Takes (Maria, "pasta box A", time of use); produces decreased *Availability* and a *Transaction (quantity change)* record.
-. *Event — Item consumed.* The *Item instance*'s *Availability* has just decreased through use.
-. *Event — Low-stock judgment.* Maria judges qualitatively that pasta is running low (no numeric *Reorder point* is set on this item).
-. `[GAP-A1: no Action defined for "add to restock list."]` Maria adds "pasta" to her *Restock list / planner*, but the glossary has the *Event* `Restock entry created / updated` without a corresponding *Action* with explicit inputs/outputs. Other domain actions (Consumption, Replenishment) have both an Action and an Event; this pair is asymmetric.
-. *Event — Restock entry created / updated.* An entry appears on the *Restock list / planner* with reason `LOW_STOCK`. (Note: the definition speaks of being triggered "in response to low-stock, out-of-stock, or expired conditions," which fits Maria's manual entry, but only barely — see Fuzzy terms.)
-. *Event — Replenishment decided.* Maria has decided to acquire more pasta.
-. Next day: *Action — Replenishment (restock).* Takes (Maria, *Item type* "pasta", *Quantity* +3, *Location* pantry); produces three new *Item instances* and increased *Availability*.
-. *Event — Item acquired.* Three *Item instances* of pasta have just entered the household.
-. *Event — Item stored.* The new instances have just been placed in the pantry *Location*.
-. *Event — Item replenished.* Pasta *Availability* has just been restored.
-. *Event — Spending recorded.* A *Spending entry* has just been added (purchase scope = personal).
+. #*Entity* state: a single-member *Household* with Maria as its sole *Household member*. The pantry is a *Location*. An *Item type* "pasta" exists; one *Item instance* "pasta box A" is stored in the pantry with low *Availability*.#
+. #*Action — Consumption.* Takes (Maria, "pasta box A", time of use); produces decreased *Availability* and a *Transaction (quantity change)* record.#
+. #*Event — Item consumed.* The *Item instance*'s *Availability* has just decreased through use.#
+. #*Event — Low-stock judgment.* Maria judges qualitatively that pasta is running low (no numeric *Reorder point* is set on this item).#
+. #`[GAP-A1: no Action defined for "add to restock list."]` Maria adds "pasta" to her *Restock list / planner*, but the glossary has the *Event* `Restock entry created / updated` without a corresponding *Action* with explicit inputs/outputs. Other domain actions (Consumption, Replenishment) have both an Action and an Event; this pair is asymmetric.#
+. #*Event — Restock entry created / updated.* An entry appears on the *Restock list / planner* with reason `LOW_STOCK`. (Note: the definition speaks of being triggered "in response to low-stock, out-of-stock, or expired conditions," which fits Maria's manual entry, but only barely — see Fuzzy terms.)#
+. #*Event — Replenishment decided.* Maria has decided to acquire more pasta.#
+. #Next day: *Action — Replenishment (restock).* Takes (Maria, *Item type* "pasta", *Quantity* +3, *Location* pantry); produces three new *Item instances* and increased *Availability*.#
+. #*Event — Item acquired.* Three *Item instances* of pasta have just entered the household.#
+. #*Event — Item stored.* The new instances have just been placed in the pantry *Location*.#
+. #*Event — Item replenished.* Pasta *Availability* has just been restored.#
+. #*Event — Spending recorded.* A *Spending entry* has just been added (purchase scope = personal).#
 
-*Findings from Scenario A.*
+#*Findings from Scenario A.*#
 
-* `[GAP-A1]` No Action paired with `Restock entry created / updated`. Asymmetric with Consumption ↔ Item consumed and Replenishment ↔ Item replenished.
-* `[GAP-A2]` No Action paired with `Spending recorded`. The Event exists; the Action (input = purchase details, output = a *Spending entry*) is missing.
-* `[GAP-A3]` *Item acquired*, *Item stored*, and *Item replenished* all fire from a single real-world act of buying and putting away. Their ordering and whether they are mandatory in every replenishment is not specified anywhere. The walkthrough had to guess.
-* *Fuzzy:* `Restock entry created / updated` says triggered "by low-stock, out-of-stock, or expired conditions," but Maria's manual addition is driven by *judgment*, not a detected condition. The definition should explicitly admit a manual trigger.
+* #`[GAP-A1]` No Action paired with `Restock entry created / updated`. Asymmetric with Consumption ↔ Item consumed and Replenishment ↔ Item replenished.#
+* #`[GAP-A2]` No Action paired with `Spending recorded`. The Event exists; the Action (input = purchase details, output = a *Spending entry*) is missing.#
+* #`[GAP-A3]` *Item acquired*, *Item stored*, and *Item replenished* all fire from a single real-world act of buying and putting away. Their ordering and whether they are mandatory in every replenishment is not specified anywhere. The walkthrough had to guess.#
+* #*Fuzzy:* `Restock entry created / updated` says triggered "by low-stock, out-of-stock, or expired conditions," but Maria's manual addition is driven by *judgment*, not a detected condition. The definition should explicitly admit a manual trigger.#
 
-==== Scenario B — Shared inventory prevents a duplicate purchase
+==== #Scenario B — Shared inventory prevents a duplicate purchase#
 
-*Plain-language scenario.* Alex and Sam share an apartment. Alex notices the shared milk is low and adds milk to the shared restock list. Later that day Sam, at the supermarket, opens the app, sees milk on the shared list, buys one, and updates the inventory.
+#*Plain-language scenario.* Alex and Sam share an apartment. Alex notices the shared milk is low and adds milk to the shared restock list. Later that day Sam, at the supermarket, opens the app, sees milk on the shared list, buys one, and updates the inventory.#
 
-*Trace.*
+#*Trace.*#
 
-. *Entity* state: a two-member *Household* (Alex, Sam) with a *Shared inventory*. The *Restock list / planner* is shared. An *Item type* "milk" exists; one *Item instance* "milk carton X" is in the fridge with low *Availability*.
-. Alex: *Event — Low-stock judgment* for milk.
-. `[GAP-B1: no "add to restock list" Action — see GAP-A1.]`
-. *Event — Restock entry created / updated* on the shared list (Alex).
-. Sam at the supermarket: `[GAP-B2: no Action defined for "check restock list" or "inspect tracked inventory."]` There is no glossary Action whose output is *the current state of the Restock list / planner* observed by a user. The closest is the *Tracked inventory* concept itself, but it is a state, not an action.
-. *Action — Replenishment (restock).* Takes (Sam, *Item type* "milk", *Quantity* +1, *Location* fridge); produces one new *Item instance*.
-. *Event — Item acquired*, *Event — Item stored*, *Event — Item replenished*.
-. *Event — Spending recorded* with scope = shared (see *Spending entry* definition).
-. `[GAP-B3: no Event "Restock entry resolved" / "Restock entry removed."]` The milk line should disappear from (or be marked done on) the *Restock list / planner*. The glossary has *Restock entry created / updated* but no Event for resolution or removal.
-. *Behavior — Shared purchase flow* successfully composes these into a recognized pattern.
+. #*Entity* state: a two-member *Household* (Alex, Sam) with a *Shared inventory*. The *Restock list / planner* is shared. An *Item type* "milk" exists; one *Item instance* "milk carton X" is in the fridge with low *Availability*.#
+. #Alex: *Event — Low-stock judgment* for milk.#
+. #`[GAP-B1: no "add to restock list" Action — see GAP-A1.]`#
+. #*Event — Restock entry created / updated* on the shared list (Alex).#
+. #Sam at the supermarket: `[GAP-B2: no Action defined for "check restock list" or "inspect tracked inventory."]` There is no glossary Action whose output is *the current state of the Restock list / planner* observed by a user. The closest is the *Tracked inventory* concept itself, but it is a state, not an action.#
+. #*Action — Replenishment (restock).* Takes (Sam, *Item type* "milk", *Quantity* +1, *Location* fridge); produces one new *Item instance*.#
+. #*Event — Item acquired*, *Event — Item stored*, *Event — Item replenished*.#
+. #*Event — Spending recorded* with scope = shared (see *Spending entry* definition).#
+. #`[GAP-B3: no Event "Restock entry resolved" / "Restock entry removed."]` The milk line should disappear from (or be marked done on) the *Restock list / planner*. The glossary has *Restock entry created / updated* but no Event for resolution or removal.#
+. #*Behavior — Shared purchase flow* successfully composes these into a recognized pattern.#
 
-*Findings from Scenario B.*
+#*Findings from Scenario B.*#
 
-* `[GAP-B1]` Same as A1: missing Action for adding to the restock list.
-* `[GAP-B2]` No Action for inspecting / querying *Tracked inventory* or the *Restock list / planner*. Yet the entire duplicate-prevention story depends on members being able to look before they buy.
-* `[GAP-B3]` No Event for restock-list-entry resolution. Without it, an entry on the list never has a defined terminus.
-* *Fuzzy:* the *Spending entry* definition has an attribute "scope (shared/personal)" but no glossary term names *the act of choosing* shared vs. personal. The walkthrough had to invent it.
+* #`[GAP-B1]` Same as A1: missing Action for adding to the restock list.#
+* #`[GAP-B2]` No Action for inspecting / querying *Tracked inventory* or the *Restock list / planner*. Yet the entire duplicate-prevention story depends on members being able to look before they buy.#
+* #`[GAP-B3]` No Event for restock-list-entry resolution. Without it, an entry on the list never has a defined terminus.#
+* #*Fuzzy:* the *Spending entry* definition has an attribute "scope (shared/personal)" but no glossary term names *the act of choosing* shared vs. personal. The walkthrough had to invent it.#
 
-==== Scenario C — Expiring medication
+==== #Scenario C — Expiring medication#
 
-*Plain-language scenario.* The household has a cough syrup bottle expiring in five days. The *Near-expiry window* is seven days. The system flags it. One member uses some of the syrup and dismisses the alert. After the expiration date passes, another member throws the bottle away.
+#*Plain-language scenario.* The household has a cough syrup bottle expiring in five days. The *Near-expiry window* is seven days. The system flags it. One member uses some of the syrup and dismisses the alert. After the expiration date passes, another member throws the bottle away.#
 
-*Trace.*
+#*Trace.*#
 
-. *Entity* state: *Item instance* "cough syrup bottle Y" with *Expiration date* `today + 5` and *Availability* "about half full."
-. *Action — Scheduled sweep.* Takes (current time, *Tracked inventory* state); produces detected *Actionable states*. The "near-expiry" *Actionable state* is detected for "bottle Y."
-. *Event — Item approaching expiration.*
-. *Event — Near-expiry.* `[FUZZY-C1: Item approaching expiration and Near-expiry describe the same instantaneous transition under two names.]` The trace had to fire them both, which double-counts.
-. *Event — Alert generated* of type `NEAR_EXPIRY`. A *Notification record* is created.
-. Member receives alert: *Action — Dismiss / ignore.* Takes (the alert); produces the alert closed without follow-up.
-. *Action — Consumption.* Takes (member, "bottle Y", time of use); produces decreased *Availability*.
-. *Event — Item consumed.*
-. Five days pass. *Action — Scheduled sweep* again. Detected *Actionable state*: "expired" for "bottle Y."
-. *Event — Item expired* and *Event — Expired.* `[FUZZY-C2: same duplication as C1.]`
-. *Event — Alert generated* of type `EXPIRED`; another *Notification record*.
-. The other member sees the alert and throws the bottle away.
-. `[GAP-C3: no Action defined for "discard."]` *Item discarded* is an Event, but no Action with explicit inputs and outputs produces it. By contrast, *Consumption* (Action) ↔ *Item consumed* (Event) is the symmetric pair.
-. *Event — Item discarded.*
-. *Behavior — Expiration monitoring* successfully composes these into a recognized pattern.
+. #*Entity* state: *Item instance* "cough syrup bottle Y" with *Expiration date* `today + 5` and *Availability* "about half full."#
+. #*Action — Scheduled sweep.* Takes (current time, *Tracked inventory* state); produces detected *Actionable states*. The "near-expiry" *Actionable state* is detected for "bottle Y."#
+. #*Event — Item approaching expiration.*#
+. #*Event — Near-expiry.* `[FUZZY-C1: Item approaching expiration and Near-expiry describe the same instantaneous transition under two names.]` The trace had to fire them both, which double-counts.#
+. #*Event — Alert generated* of type `NEAR_EXPIRY`. A *Notification record* is created.#
+. #Member receives alert: *Action — Dismiss / ignore.* Takes (the alert); produces the alert closed without follow-up.#
+. #*Action — Consumption.* Takes (member, "bottle Y", time of use); produces decreased *Availability*.#
+. #*Event — Item consumed.*#
+. #Five days pass. *Action — Scheduled sweep* again. Detected *Actionable state*: "expired" for "bottle Y."#
+. #*Event — Item expired* and *Event — Expired.* `[FUZZY-C2: same duplication as C1.]`#
+. #*Event — Alert generated* of type `EXPIRED`; another *Notification record*.#
+. #The other member sees the alert and throws the bottle away.#
+. #`[GAP-C3: no Action defined for "discard."]` *Item discarded* is an Event, but no Action with explicit inputs and outputs produces it. By contrast, *Consumption* (Action) ↔ *Item consumed* (Event) is the symmetric pair.#
+. #*Event — Item discarded.*#
+. #*Behavior — Expiration monitoring* successfully composes these into a recognized pattern.#
 
-*Findings from Scenario C.*
+#*Findings from Scenario C.*#
 
-* `[FUZZY-C1]` *Item approaching expiration* and *Near-expiry* are double labels for the same instantaneous transition. The new terminology marks both as Events; either consolidate them or explicitly mark one as the *Property/state name* and one as the *transition Event*.
-* `[FUZZY-C2]` Same duplication for *Item expired* / *Expired*.
-* `[GAP-C3]` No Action whose output is *Item discarded*. By the project's Action-Event pairing convention (Consumption ↔ Item consumed, Replenishment ↔ Item replenished), this is asymmetric.
+* #`[FUZZY-C1]` *Item approaching expiration* and *Near-expiry* are double labels for the same instantaneous transition. The new terminology marks both as Events; either consolidate them or explicitly mark one as the *Property/state name* and one as the *transition Event*.#
+* #`[FUZZY-C2]` Same duplication for *Item expired* / *Expired*.#
+* #`[GAP-C3]` No Action whose output is *Item discarded*. By the project's Action-Event pairing convention (Consumption ↔ Item consumed, Replenishment ↔ Item replenished), this is asymmetric.#
 
-==== Scenario D — Budget threshold crossing
+==== #Scenario D — Budget threshold crossing#
 
-*Plain-language scenario.* The household has a $400 monthly budget. Mid-month spending reaches $320 (80%). The system alerts. Later, spending reaches $400 (100%). The system alerts again, once. The month ends; a new month begins.
+#*Plain-language scenario.* The household has a $400 monthly budget. Mid-month spending reaches $320 (80%). The system alerts. Later, spending reaches $400 (100%). The system alerts again, once. The month ends; a new month begins.#
 
-*Trace.*
+#*Trace.*#
 
-. *Entity* state: *Budget* of $400, *Budget cycle* = monthly, two *Spending categories* (groceries, household).
-. Multiple *Event — Spending recorded* fires throughout the month, each creating a *Spending entry*.
-. `[GAP-D1: no Action paired with "Spending recorded."]` Same gap as A2.
-. *Property — Budget status (derived).* Each new spending entry updates the derived value. `[GAP-D2: no Action "Compute budget status."]` The Property exists but no Action documents inputs (Budget, list of Spending entries, current date) → output (Budget status). The Property is a *result* but the trace has nowhere to attribute its computation.
-. At $320: *Event — Budget threshold crossing* (80%). *Deduplication / anti-spam rule* checks: first time this threshold is crossed in this cycle → allowed.
-. *Event — Alert generated* of type `BUDGET_THRESHOLD`. *Notification record* created.
-. At $400: *Event — Budget threshold crossing* (100%). *Deduplication / anti-spam rule* checks: different threshold → allowed.
-. *Event — Alert generated* of type `BUDGET_THRESHOLD`.
-. *Event — Budget cycle started / ended.* `[FUZZY-D3: this is one term covering two distinct events.]` The trace needs to fire one of the two at month-end and the other at month-start, but the glossary names them together.
+. #*Entity* state: *Budget* of $400, *Budget cycle* = monthly, two *Spending categories* (groceries, household).#
+. #Multiple *Event — Spending recorded* fires throughout the month, each creating a *Spending entry*.#
+. #`[GAP-D1: no Action paired with "Spending recorded."]` Same gap as A2.#
+. #*Property — Budget status (derived).* Each new spending entry updates the derived value. `[GAP-D2: no Action "Compute budget status."]` The Property exists but no Action documents inputs (Budget, list of Spending entries, current date) → output (Budget status). The Property is a *result* but the trace has nowhere to attribute its computation.#
+. #At $320: *Event — Budget threshold crossing* (80%). *Deduplication / anti-spam rule* checks: first time this threshold is crossed in this cycle → allowed.#
+. #*Event — Alert generated* of type `BUDGET_THRESHOLD`. *Notification record* created.#
+. #At $400: *Event — Budget threshold crossing* (100%). *Deduplication / anti-spam rule* checks: different threshold → allowed.#
+. #*Event — Alert generated* of type `BUDGET_THRESHOLD`.#
+. #*Event — Budget cycle started / ended.* `[FUZZY-D3: this is one term covering two distinct events.]` The trace needs to fire one of the two at month-end and the other at month-start, but the glossary names them together.#
 
-*Findings from Scenario D.*
+#*Findings from Scenario D.*#
 
-* `[GAP-D1]` Missing Action for spending recording (same shape as A2).
-* `[GAP-D2]` *Budget status (derived)* needs a paired Action that computes it (inputs and outputs). Without one, the Property hangs in the air.
-* `[GAP-D2b]` No Action exists for *setting / configuring* a Budget. The *Owner* role mentions managing settings, but no glossary Action covers it.
-* `[FUZZY-D3]` `Budget cycle started / ended` collapses two distinct instantaneous events into one entry; the trace had to split them.
+* #`[GAP-D1]` Missing Action for spending recording (same shape as A2).#
+* #`[GAP-D2]` *Budget status (derived)* needs a paired Action that computes it (inputs and outputs). Without one, the Property hangs in the air.#
+* #`[GAP-D2b]` No Action exists for *setting / configuring* a Budget. The *Owner* role mentions managing settings, but no glossary Action covers it.#
+* #`[FUZZY-D3]` `Budget cycle started / ended` collapses two distinct instantaneous events into one entry; the trace had to split them.#
 
-==== Scenario E — Invitation, acceptance, and removal
+==== #Scenario E — Invitation, acceptance, and removal#
 
-*Plain-language scenario.* Alex (Owner) invites Riley to the household. Riley accepts. Months later, Riley moves out and Alex removes them.
+#*Plain-language scenario.* Alex (Owner) invites Riley to the household. Riley accepts. Months later, Riley moves out and Alex removes them.#
 
-*Trace.*
+#*Trace.*#
 
-. *Entity* state: a *Household* with one *Membership*: (Alex, role = *Owner*, state = active).
-. `[GAP-E1: no Action defined for "send invitation."]` The *Owner* entry says "can invite or remove members," and *Permission rule* governs whether the action is allowed, but no glossary Action with explicit inputs (recipient, target household) → outputs (a new *Invitation* in state `pending`) is defined.
-. *Entity* created: an *Invitation* with state `pending`, sender = Alex, recipient = Riley, target household.
-. `[GAP-E2: no Action defined for "accept invitation."]` Riley accepts the invitation.
-. *Invitation* state transitions: `pending` → `accepted`.
-. *Entity* created: a *Membership* (Riley, role = *Member*, state = `active`).
-. *Event — Household membership changed.* `[FUZZY-E3: one Event covers add, remove, and role change.]`
-. Months pass. `[GAP-E4: no Action defined for "remove member."]` Alex removes Riley.
-. *Membership* state transitions: `active` → `removed`.
-. *Event — Household membership changed* fires again — indistinguishable, in name, from the add event.
-. Riley loses access to the household — handled by *Permission rule* and (at the implementation level) *Row Level Security (RLS)*.
+. #*Entity* state: a *Household* with one *Membership*: (Alex, role = *Owner*, state = active).#
+. #`[GAP-E1: no Action defined for "send invitation."]` The *Owner* entry says "can invite or remove members," and *Permission rule* governs whether the action is allowed, but no glossary Action with explicit inputs (recipient, target household) → outputs (a new *Invitation* in state `pending`) is defined.#
+. #*Entity* created: an *Invitation* with state `pending`, sender = Alex, recipient = Riley, target household.#
+. #`[GAP-E2: no Action defined for "accept invitation."]` Riley accepts the invitation.#
+. #*Invitation* state transitions: `pending` → `accepted`.#
+. #*Entity* created: a *Membership* (Riley, role = *Member*, state = `active`).#
+. #*Event — Household membership changed.* `[FUZZY-E3: one Event covers add, remove, and role change.]`#
+. #Months pass. `[GAP-E4: no Action defined for "remove member."]` Alex removes Riley.#
+. #*Membership* state transitions: `active` → `removed`.#
+. #*Event — Household membership changed* fires again — indistinguishable, in name, from the add event.#
+. #Riley loses access to the household — handled by *Permission rule* and (at the implementation level) *Row Level Security (RLS)*.#
 
-*Findings from Scenario E.*
+#*Findings from Scenario E.*#
 
-* `[GAP-E1, GAP-E2, GAP-E4]` Three missing Actions: *Send invitation*, *Accept / decline / revoke invitation*, and *Remove member*. All are explicitly named as Owner / Member privileges in the role entries, but none are first-class Actions in the glossary.
-* `[FUZZY-E3]` *Household membership changed* is a single Event term that the trace had to fire for two semantically different transitions (add, remove). Splitting it (or carrying a sub-type attribute) would let traces be unambiguous.
-* Also surfaced (not unique to E): no Action for *Transfer ownership*, despite the *Owner* entry describing it as a required operation.
+* #`[GAP-E1, GAP-E2, GAP-E4]` Three missing Actions: *Send invitation*, *Accept / decline / revoke invitation*, and *Remove member*. All are explicitly named as Owner / Member privileges in the role entries, but none are first-class Actions in the glossary.#
+* #`[FUZZY-E3]` *Household membership changed* is a single Event term that the trace had to fire for two semantically different transitions (add, remove). Splitting it (or carrying a sub-type attribute) would let traces be unambiguous.#
+* #Also surfaced (not unique to E): no Action for *Transfer ownership*, despite the *Owner* entry describing it as a required operation.#
 
-==== Consolidated findings
+==== #Consolidated findings#
 
 [cols="1,2,3,3",options="header"]
 |===
-| ID | Kind | What the walkthrough surfaced | Recommended fix in <<_terminology>>
+| #ID# | #Kind# | #What the walkthrough surfaced# | #Recommended fix in <<_terminology>>#
 
-| GAP-A1 / B1 | Missing Action
-| No Action paired with *Restock entry created / updated*.
-| Add Action `Add to restock list` with explicit *Takes / Produces*.
+| #GAP-A1 / B1# | #Missing Action#
+| #No Action paired with *Restock entry created / updated*.#
+| #Add Action `Add to restock list` with explicit *Takes / Produces*.#
 
-| GAP-A2 / D1 | Missing Action
-| No Action paired with *Spending recorded*.
-| Add Action `Record spending` with *Takes / Produces*.
+| #GAP-A2 / D1# | #Missing Action#
+| #No Action paired with *Spending recorded*.#
+| #Add Action `Record spending` with *Takes / Produces*.#
 
-| GAP-A3 | Underspecified ordering
-| *Item acquired*, *Item stored*, *Item replenished* fire from one real-world act; their ordering and obligation are unspecified.
-| Add a Notes column entry on *Item replenished* clarifying that it is *Item acquired* + *Item stored* for a known *Item type*.
+| #GAP-A3# | #Underspecified ordering#
+| #*Item acquired*, *Item stored*, *Item replenished* fire from one real-world act; their ordering and obligation are unspecified.#
+| #Add a Notes column entry on *Item replenished* clarifying that it is *Item acquired* + *Item stored* for a known *Item type*.#
 
-| GAP-B2 | Missing Action
-| No Action for inspecting *Tracked inventory* or *Restock list / planner*.
-| Add Action `Inspect tracked inventory` (output: a view of the current records) — analogous to the `Check location` operation in functions.adoc.
+| #GAP-B2# | #Missing Action#
+| #No Action for inspecting *Tracked inventory* or *Restock list / planner*.#
+| #Add Action `Inspect tracked inventory` (output: a view of the current records) — analogous to the `Check location` operation in functions.adoc.#
 
-| GAP-B3 | Missing Event
-| No Event for restock-list-entry resolution / removal.
-| Add Event `Restock entry resolved` (entry's reason satisfied or member cleared it).
+| #GAP-B3# | #Missing Event#
+| #No Event for restock-list-entry resolution / removal.#
+| #Add Event `Restock entry resolved` (entry's reason satisfied or member cleared it).#
 
-| FUZZY-C1 / C2 | Duplicate naming
-| *Item approaching expiration* / *Near-expiry* and *Item expired* / *Expired* are two names per transition.
-| Merge each pair, OR tag one entry "state name" and the other "transition Event" in the Type column.
+| #FUZZY-C1 / C2# | #Duplicate naming#
+| #*Item approaching expiration* / *Near-expiry* and *Item expired* / *Expired* are two names per transition.#
+| #Merge each pair, OR tag one entry "state name" and the other "transition Event" in the Type column.#
 
-| GAP-C3 | Missing Action
-| No Action paired with *Item discarded*.
-| Add Action `Discard item instance` with *Takes / Produces*.
+| #GAP-C3# | #Missing Action#
+| #No Action paired with *Item discarded*.#
+| #Add Action `Discard item instance` with *Takes / Produces*.#
 
-| GAP-D2 / D2b | Missing Action
-| No Action computes *Budget status (derived)*; no Action sets a *Budget*.
-| Add Actions `Compute budget status` and `Configure budget`.
+| #GAP-D2 / D2b# | #Missing Action#
+| #No Action computes *Budget status (derived)*; no Action sets a *Budget*.#
+| #Add Actions `Compute budget status` and `Configure budget`.#
 
-| FUZZY-D3 | Compound Event
-| *Budget cycle started / ended* is a single row for two distinct transitions.
-| Split into two Events: `Budget cycle started` and `Budget cycle ended`.
+| #FUZZY-D3# | #Compound Event#
+| #*Budget cycle started / ended* is a single row for two distinct transitions.#
+| #Split into two Events: `Budget cycle started` and `Budget cycle ended`.#
 
-| GAP-E1 / E2 / E4 | Missing Actions
-| *Send invitation*, *Accept / decline / revoke invitation*, *Remove member*, *Transfer ownership* are named in role entries but not defined as Actions.
-| Add an "Invitation and membership actions" cluster in <<_terminology>> with explicit *Takes / Produces* for each.
+| #GAP-E1 / E2 / E4# | #Missing Actions#
+| #*Send invitation*, *Accept / decline / revoke invitation*, *Remove member*, *Transfer ownership* are named in role entries but not defined as Actions.#
+| #Add an "Invitation and membership actions" cluster in <<_terminology>> with explicit *Takes / Produces* for each.#
 
-| FUZZY-E3 | Compound Event
-| *Household membership changed* fires for semantically distinct transitions (add, remove, role change).
-| Either split into three Events, or document a required sub-type attribute on the existing Event.
+| #FUZZY-E3# | #Compound Event#
+| #*Household membership changed* fires for semantically distinct transitions (add, remove, role change).#
+| #Either split into three Events, or document a required sub-type attribute on the existing Event.#
 |===
 
-==== Implications for the glossary
+==== #Implications for the glossary#
 
-The walkthroughs confirm that *Entities* and *Properties* in <<_terminology>> are largely well-covered: every scenario found a noun for every thing. The systematic gaps are in *Actions* — wherever the project documents an *Event* (e.g., *Restock entry created / updated*, *Spending recorded*, *Item discarded*, *Household membership changed*), there should be a paired *Action* whose *Produces* clause matches the *Event*. The project commits to that Action-Event pairing for *Consumption* ↔ *Item consumed* and *Replenishment* ↔ *Item replenished*; the missing pairings above are the most actionable terminology refinements for the next milestone.
+#The walkthroughs confirm that *Entities* and *Properties* in <<_terminology>> are largely well-covered: every scenario found a noun for every thing. The systematic gaps are in *Actions* — wherever the project documents an *Event* (e.g., *Restock entry created / updated*, *Spending recorded*, *Item discarded*, *Household membership changed*), there should be a paired *Action* whose *Produces* clause matches the *Event*. The project commits to that Action-Event pairing for *Consumption* ↔ *Item consumed* and *Replenishment* ↔ *Item replenished*; the missing pairings above are the most actionable terminology refinements for the next milestone.#
 
 === Requirements walkthroughs
 
